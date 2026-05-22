@@ -100,19 +100,19 @@ const newsSlides = [
     title: "Building Commission NSW — Updated Inspection Framework for Class 2 Buildings",
     tag: "Building Commission NSW",
     text: "The Building Commission NSW has released an updated inspection framework targeting waterproofing, concrete elements and façade systems across Class 2 residential buildings.",
-    image: "/images/categories/facade-external-envelope.jpg",
+    image: "/Images/Categories/facade-external-envelope.jpg",
   },
   {
     title: "Waterproofing Failures in Balcony Construction Remain the Leading Defect Type",
     tag: "Waterproofing Defects",
     text: "Analysis of recent defect reports identifies balcony waterproofing failures as the most frequently recorded defect, driven by inadequate membrane detailing at junctions.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
   },
   {
     title: "DBP Act Compliance: Key Obligations for Design and Building Practitioners",
     tag: "DBP Act",
     text: "NSW Fair Trading has outlined updated compliance expectations under the Design and Building Practitioners Act, with focus on documentation for Class 2 building works.",
-    image: "/images/categories/basements-substructure.jpg",
+    image: "/Images/Categories/basements-substructure.jpg",
   },
 ];
 

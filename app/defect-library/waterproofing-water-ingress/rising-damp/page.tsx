@@ -80,7 +80,7 @@ export default function RisingDampPage() {
               </p>
             </div>
             <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Rising damp in masonry wall" className="h-[420px] w-full object-cover" />
+              <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Rising damp in masonry wall" className="h-[420px] w-full object-cover" />
               <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
                 Characteristic tide mark staining and salt efflorescence from rising damp in a masonry wall.
               </div>
@@ -137,7 +137,7 @@ export default function RisingDampPage() {
             <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-700">
               Rising damp remediation must address both the source of moisture entry and the resulting internal damage. Confirmation of diagnosis by an experienced building consultant is essential before treatment.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Rising damp repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Rising damp repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
             <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
@@ -153,7 +153,7 @@ export default function RisingDampPage() {
             <p className="mt-4 text-base leading-8 text-slate-700">
               Typical rising damp condition before and after chemical DPC installation and internal plaster reinstatement.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Rising damp before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Rising damp before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">

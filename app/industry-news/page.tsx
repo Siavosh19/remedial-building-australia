@@ -45,7 +45,7 @@ const articles: Article[] = [
     category: "Building Commission NSW",
     source: "Building Commission NSW",
     publishedDate: "2026-05-15",
-    image: "/images/categories/facade-external-envelope.jpg",
+    image: "/Images/Categories/facade-external-envelope.jpg",
     excerpt:
       "The Building Commission NSW has released an updated inspection framework targeting Class 2 residential buildings, with increased scrutiny on waterproofing, concrete elements and façade systems throughout the construction phase.",
     externalUrl: "#",
@@ -59,7 +59,7 @@ const articles: Article[] = [
     category: "DBP Act",
     source: "NSW Fair Trading",
     publishedDate: "2026-05-10",
-    image: "/images/categories/basements-substructure.jpg",
+    image: "/Images/Categories/basements-substructure.jpg",
     excerpt:
       "NSW Fair Trading has outlined updated compliance expectations under the Design and Building Practitioners Act, with focus on documentation requirements for declared engineering work on Class 2 buildings.",
     externalUrl: "#",
@@ -73,7 +73,7 @@ const articles: Article[] = [
     category: "Waterproofing Defects",
     source: "Remedial Building Australia",
     publishedDate: "2026-05-08",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     excerpt:
       "Analysis of recent defect reports across Class 2 buildings continues to identify balcony waterproofing failures as the most frequently recorded defect type, driven by poor substrate preparation and inadequate membrane detailing at junctions.",
     externalUrl: "#",
@@ -87,7 +87,7 @@ const articles: Article[] = [
     category: "Concrete Repair",
     source: "Engineers Australia",
     publishedDate: "2026-05-05",
-    image: "/images/categories/concrete-structural-defects.jpg",
+    image: "/Images/Categories/concrete-structural-defects.jpg",
     excerpt:
       "Updated guidance on carbonation depth testing and concrete cover assessment for existing structures, particularly relevant for buildings constructed prior to current Australian Standards on concrete durability.",
     externalUrl: "#",
@@ -101,7 +101,7 @@ const articles: Article[] = [
     category: "Façade Defects",
     source: "NSW Government",
     publishedDate: "2026-04-28",
-    image: "/images/categories/facade-external-envelope.jpg",
+    image: "/Images/Categories/facade-external-envelope.jpg",
     excerpt:
       "The NSW Government has released updated data on the cladding rectification programme, with hundreds of buildings still requiring works and new compliance pathway guidance issued for building owners and owners corporations.",
     externalUrl: "#",
@@ -115,7 +115,7 @@ const articles: Article[] = [
     category: "Strata Defects",
     source: "NSW Fair Trading",
     publishedDate: "2026-04-22",
-    image: "/images/categories/balconies-podiums.jpg",
+    image: "/Images/Categories/balconies-podiums.jpg",
     excerpt:
       "NSW Fair Trading has updated its guidance for owners corporations on the strata building bond and inspection scheme, clarifying how the bond is triggered, inspected and claimed for serious building defects.",
     externalUrl: "#",
@@ -129,7 +129,7 @@ const articles: Article[] = [
     category: "Waterproofing Defects",
     source: "Remedial Building Australia",
     publishedDate: "2026-04-18",
-    image: "/images/categories/roofing-defects.jpg",
+    image: "/Images/Categories/roofing-defects.jpg",
     excerpt:
       "A review of roof waterproofing failures in Class 2 residential buildings identifies inadequate lap detailing, membrane incompatibility and poor penetration sealing as the three most common causes of premature failure.",
     externalUrl: "#",
@@ -143,7 +143,7 @@ const articles: Article[] = [
     category: "Product & Material Updates",
     source: "Remedial Building Australia",
     publishedDate: "2026-04-12",
-    image: "/images/categories/concrete-structural-defects.jpg",
+    image: "/Images/Categories/concrete-structural-defects.jpg",
     excerpt:
       "A technical comparison of polyurethane foam and epoxy resin crack injection systems, covering crack type suitability, movement tolerance, substrate conditions and long-term performance expectations.",
     externalUrl: "#",
@@ -157,7 +157,7 @@ const articles: Article[] = [
     category: "Building Commission NSW",
     source: "Building Commission NSW",
     publishedDate: "2026-04-08",
-    image: "/images/categories/basements-substructure.jpg",
+    image: "/Images/Categories/basements-substructure.jpg",
     excerpt:
       "The Building Commission NSW has released its latest inspection results, with waterproofing, fire safety and structural elements continuing to generate the highest volume of non-conformance notices across new buildings.",
     externalUrl: "#",
@@ -171,7 +171,7 @@ const articles: Article[] = [
     category: "Remedial Construction",
     source: "Remedial Building Australia",
     publishedDate: "2026-04-03",
-    image: "/images/categories/internal-defects-finishes.jpg",
+    image: "/Images/Categories/internal-defects-finishes.jpg",
     excerpt:
       "A review of disputed remedial building claims identifies scope ambiguity, missing hold points and undefined product specifications as the most common causes of cost disputes and defective repair outcomes.",
     externalUrl: "#",
@@ -185,7 +185,7 @@ const articles: Article[] = [
     category: "Strata Defects",
     source: "Remedial Building Australia",
     publishedDate: "2026-03-27",
-    image: "/images/categories/internal-defects-finishes.jpg",
+    image: "/Images/Categories/internal-defects-finishes.jpg",
     excerpt:
       "Magnesite flooring in older strata buildings continues to cause moisture-related reinforcement corrosion and slab damage. This article outlines the assessment process and current remediation approaches used in the industry.",
     externalUrl: "#",
@@ -199,7 +199,7 @@ const articles: Article[] = [
     category: "Building Defects",
     source: "Remedial Building Australia",
     publishedDate: "2026-03-20",
-    image: "/images/categories/concrete-structural-defects.jpg",
+    image: "/Images/Categories/concrete-structural-defects.jpg",
     excerpt:
       "Chloride-induced reinforcement corrosion in coastal Class 2 buildings requires a structured assessment approach to determine the extent of deterioration and inform a compliant, engineer-confirmed repair methodology.",
     externalUrl: "#",

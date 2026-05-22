@@ -79,7 +79,7 @@ export default function PenetratingDampPage() {
               </p>
             </div>
             <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Penetrating damp through external wall" className="h-[420px] w-full object-cover" />
+              <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Penetrating damp through external wall" className="h-[420px] w-full object-cover" />
               <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
                 Water staining on an internal wall consistent with penetrating damp through the external masonry.
               </div>
@@ -136,7 +136,7 @@ export default function PenetratingDampPage() {
             <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-700">
               Penetrating damp repair must target the specific water entry path. The methodology below covers a typical external masonry wall treatment and internal reinstatement sequence.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Penetrating damp repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Penetrating damp repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
             <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
@@ -152,7 +152,7 @@ export default function PenetratingDampPage() {
             <p className="mt-4 text-base leading-8 text-slate-700">
               Typical penetrating damp condition before and after external repointing, sealant replacement and water repellent treatment.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Penetrating damp before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Penetrating damp before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">

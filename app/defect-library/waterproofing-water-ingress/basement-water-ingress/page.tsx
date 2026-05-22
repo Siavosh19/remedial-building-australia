@@ -80,7 +80,7 @@ export default function BasementWaterIngressPage() {
               </p>
             </div>
             <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Basement water ingress" className="h-[420px] w-full object-cover" />
+              <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Basement water ingress" className="h-[420px] w-full object-cover" />
               <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
                 Active water ingress through a basement construction joint driven by hydrostatic pressure.
               </div>
@@ -137,7 +137,7 @@ export default function BasementWaterIngressPage() {
             <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-700">
               Basement water ingress repairs require a staged approach confirmed by a structural engineer and waterproofing specialist. The methodology below covers a typical negative-side and crack injection repair sequence.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Basement water ingress repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Basement water ingress repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
             <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
@@ -153,7 +153,7 @@ export default function BasementWaterIngressPage() {
             <p className="mt-4 text-base leading-8 text-slate-700">
               Typical basement condition before and after crack injection, joint repair and negative-side waterproofing application.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Basement water ingress before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Basement water ingress before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">

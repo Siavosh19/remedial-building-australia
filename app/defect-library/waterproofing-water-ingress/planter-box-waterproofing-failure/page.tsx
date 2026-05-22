@@ -82,7 +82,7 @@ export default function PlanterBoxWaterproofingFailurePage() {
               </p>
             </div>
             <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Planter box waterproofing failure" className="h-[420px] w-full object-cover" />
+              <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Planter box waterproofing failure" className="h-[420px] w-full object-cover" />
               <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
                 Planter box with failed membrane and evidence of moisture migration through the base slab.
               </div>
@@ -139,7 +139,7 @@ export default function PlanterBoxWaterproofingFailurePage() {
             <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-700">
               Full reinstatement of the planter box waterproofing and drainage system is typically required. The scope must be confirmed by a waterproofing consultant.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Planter box waterproofing repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Planter box waterproofing repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
             <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
@@ -155,7 +155,7 @@ export default function PlanterBoxWaterproofingFailurePage() {
             <p className="mt-4 text-base leading-8 text-slate-700">
               Typical planter box condition before and after full waterproofing and drainage reinstatement.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Planter box before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Planter box before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">

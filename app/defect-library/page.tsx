@@ -1,47 +1,47 @@
 const categoryData = [
   {
     title: "Concrete & Structural Defects",
-    image: "/images/categories/concrete-structural-defects.jpg",
+    image: "/Images/Categories/concrete-structural-defects.jpg",
     href: "/defect-library/concrete-structural-defects",
   },
   {
     title: "Waterproofing & Water Ingress",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress",
   },
   {
     title: "Façade & External Envelope",
-    image: "/images/categories/facade-external-envelope.jpg",
+    image: "/Images/Categories/facade-external-envelope.jpg",
     href: "/defect-library/facade-external-envelope",
   },
   {
     title: "Roofing Defects",
-    image: "/images/categories/roofing-defects.jpg",
+    image: "/Images/Categories/roofing-defects.jpg",
     href: "/defect-library/roofing-defects",
   },
   {
     title: "Balconies & Podiums",
-    image: "/images/categories/balconies-podiums.jpg",
+    image: "/Images/Categories/balconies-podiums.jpg",
     href: "/defect-library/balconies-podiums",
   },
   {
     title: "Internal Defects & Finishes",
-    image: "/images/categories/internal-defects-finishes.jpg",
+    image: "/Images/Categories/internal-defects-finishes.jpg",
     href: "/defect-library/internal-defects-finishes",
   },
   {
     title: "Services & Drainage",
-    image: "/images/categories/services-drainage.jpg",
+    image: "/Images/Categories/services-drainage.jpg",
     href: "/defect-library/services-drainage",
   },
   {
     title: "Basements & Substructure",
-    image: "/images/categories/basements-substructure.jpg",
+    image: "/Images/Categories/basements-substructure.jpg",
     href: "/defect-library/basements-substructure",
   },
   {
     title: "Miscellaneous / Other",
-    image: "/images/categories/miscellaneous-other.jpg",
+    image: "/Images/Categories/miscellaneous-other.jpg",
     href: "/defect-library/miscellaneous-other",
   },
 ];

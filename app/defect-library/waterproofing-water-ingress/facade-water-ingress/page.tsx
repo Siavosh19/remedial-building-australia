@@ -82,7 +82,7 @@ export default function FacadeWaterIngressPage() {
               </p>
             </div>
             <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Façade water ingress" className="h-[420px] w-full object-cover" />
+              <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Façade water ingress" className="h-[420px] w-full object-cover" />
               <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
                 Water ingress through failed façade sealant joints and cracked render.
               </div>
@@ -139,7 +139,7 @@ export default function FacadeWaterIngressPage() {
             <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-700">
               Façade repair requires safe elevated access and a systematic approach from top to bottom. The scope must be confirmed by a façade consultant following inspection from an elevated platform.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Façade water ingress repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Façade water ingress repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
             <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
@@ -155,7 +155,7 @@ export default function FacadeWaterIngressPage() {
             <p className="mt-4 text-base leading-8 text-slate-700">
               Typical façade condition before and after full joint reseal, render repair and penetrating water repellent treatment.
             </p>
-            <img src="/images/categories/waterproofing-water-ingress.jpg" alt="Façade water ingress before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
+            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Façade water ingress before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">

@@ -105,7 +105,7 @@ export default function BalconyWaterproofingFailurePage() {
 
             <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
               <img
-                src="/images/categories/waterproofing-water-ingress.jpg"
+                src="/Images/Categories/waterproofing-water-ingress.jpg"
                 alt="Balcony waterproofing failure"
                 className="h-[420px] w-full object-cover"
               />
@@ -178,7 +178,7 @@ export default function BalconyWaterproofingFailurePage() {
             </p>
 
             <img
-              src="/images/categories/waterproofing-water-ingress.jpg"
+              src="/Images/Categories/waterproofing-water-ingress.jpg"
               alt="Balcony waterproofing repair methodology"
               className="mt-8 w-full rounded-2xl border border-slate-200 object-cover"
             />
@@ -209,7 +209,7 @@ export default function BalconyWaterproofingFailurePage() {
             </p>
 
             <img
-              src="/images/categories/waterproofing-water-ingress.jpg"
+              src="/Images/Categories/waterproofing-water-ingress.jpg"
               alt="Balcony waterproofing before and after repair"
               className="mt-8 w-full rounded-2xl border border-slate-200 object-cover"
             />

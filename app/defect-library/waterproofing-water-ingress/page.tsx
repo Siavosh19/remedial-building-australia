@@ -11,7 +11,7 @@ const defects = [
     title: "Balcony Waterproofing Failure",
     description:
       "Failure of balcony waterproofing membranes at junctions, penetrations and field areas causing water ingress to the structure below.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure",
     imagePosition: "object-center",
   },
@@ -19,7 +19,7 @@ const defects = [
     title: "Roof Waterproofing Failure",
     description:
       "Deterioration or failure of roof waterproofing systems resulting in leaks, membrane delamination and structural water damage.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/roof-waterproofing-failure",
     imagePosition: "object-center",
   },
@@ -27,7 +27,7 @@ const defects = [
     title: "Planter Box Waterproofing Failure",
     description:
       "Waterproofing failure in planter box construction causing moisture migration, corrosion of reinforcement and substrate deterioration.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/planter-box-waterproofing-failure",
     imagePosition: "object-center",
   },
@@ -35,7 +35,7 @@ const defects = [
     title: "Basement Water Ingress",
     description:
       "Water ingress into basement and substructure areas driven by hydrostatic pressure, joint failures and waterproofing membrane defects.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/basement-water-ingress",
     imagePosition: "object-center",
   },
@@ -43,7 +43,7 @@ const defects = [
     title: "Podium Waterproofing Failure",
     description:
       "Failure of podium deck waterproofing systems under trafficable and landscaped areas causing water penetration to car parks and occupied spaces below.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/podium-waterproofing-failure",
     imagePosition: "object-center",
   },
@@ -51,7 +51,7 @@ const defects = [
     title: "Rising Damp",
     description:
       "Capillary rise of moisture through masonry, concrete and substructure elements causing internal finishes deterioration and salt efflorescence.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/rising-damp",
     imagePosition: "object-center",
   },
@@ -59,7 +59,7 @@ const defects = [
     title: "Penetrating Damp",
     description:
       "Lateral moisture penetration through external walls, masonry and façade elements driven by driving rain, failed sealants and porous substrates.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/penetrating-damp",
     imagePosition: "object-center",
   },
@@ -67,7 +67,7 @@ const defects = [
     title: "Façade Water Ingress",
     description:
       "Water ingress through the external building envelope via failed cladding junctions, render cracking, window perimeter failures and unsealed penetrations.",
-    image: "/images/categories/waterproofing-water-ingress.jpg",
+    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress/facade-water-ingress",
     imagePosition: "object-center",
   },
