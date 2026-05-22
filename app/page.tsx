@@ -101,7 +101,7 @@ type NewsSlide = {
   tag: string;
   text: string;
   image: string;
-  slug?: string;
+  sourceUrl?: string;
 };
 
 const FALLBACK_NEWS: NewsSlide[] = [
@@ -141,7 +141,7 @@ export default function RemedialBuildingAustraliaHome() {
     async function fetchNews() {
       const { data, error } = await supabase
         .from("news_articles")
-        .select("title, category, excerpt, image, image_url, date_published, published_date, slug, id")
+        .select("title, category, excerpt, image, image_url, date_published, published_date, source_url")
         .eq("status", "published")
         .order("date_published", { ascending: false })
         .limit(3);
@@ -157,7 +157,7 @@ export default function RemedialBuildingAustraliaHome() {
             row.image ??
             row.image_url ??
             "/Images/Categories/facade-external-envelope.jpg",
-          slug: row.slug ?? String(row.id),
+          sourceUrl: row.source_url ?? undefined,
         }))
       );
       setNewsIndex(0);
@@ -318,9 +318,11 @@ export default function RemedialBuildingAustraliaHome() {
             <img src={activeNews.image} alt={activeNews.title} className="absolute inset-0 h-full w-full object-cover opacity-45" />
             <div className="relative max-w-3xl p-8 text-white md:p-14">
               <div className="mb-4 inline-flex rounded-full bg-red-700 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em]">{activeNews.tag}</div>
-              {activeNews.slug ? (
+              {activeNews.sourceUrl ? (
                 <a
-                  href={`/industry-news/${activeNews.slug}`}
+                  href={activeNews.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-1 block cursor-pointer text-3xl font-extrabold text-white hover:underline md:text-5xl"
                 >
                   {activeNews.title}
