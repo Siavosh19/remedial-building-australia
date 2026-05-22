@@ -159,19 +159,34 @@ export default function RemedialBuildingAustraliaHome() {
 
       if (error || !data || data.length === 0) return;
 
+      const categoryImage: Record<string, string> = {
+        "Waterproofing Defects":      "/Images/Categories/waterproofing-water-ingress.jpg",
+        "Concrete Repair":            "/Images/Categories/concrete-structural-defects.jpg",
+        "Façade Defects":             "/Images/Categories/facade-external-envelope.jpg",
+        "Facade Defects":             "/Images/Categories/facade-external-envelope.jpg",
+        "Building Commission NSW":    "/Images/Categories/facade-external-envelope.jpg",
+        "Class 2 Buildings":          "/Images/Categories/concrete-structural-defects.jpg",
+        "Strata Defects":             "/Images/Categories/balconies-podiums.jpg",
+        "Building Defects":           "/Images/Categories/internal-defects-finishes.jpg",
+        "DBP Act":                    "/Images/Categories/miscellaneous-other.jpg",
+        "Remedial Construction":      "/Images/Categories/miscellaneous-other.jpg",
+        "Product & Material Updates": "/Images/Categories/miscellaneous-other.jpg",
+        "General":                    "/Images/Categories/miscellaneous-other.jpg",
+      };
+
       setNewsSlides(
-        data.map((row) => ({
-          title: row.title ?? "",
-          tag: row.category ?? "Industry News",
-          summary: row.summary ?? row.excerpt ?? "",
-          image:
-            row.image ??
-            row.image_url ??
-            "/Images/Categories/facade-external-envelope.jpg",
-          source: row.source ?? "Remedial Building Australia",
-          publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
-          sourceUrl: row.source_url ?? "",
-        }))
+        data.map((row) => {
+          const cat = row.category ?? "General";
+          return {
+            title: row.title ?? "",
+            tag: cat,
+            summary: row.summary ?? row.excerpt ?? "",
+            image: row.image_url ?? row.image ?? categoryImage[cat] ?? "",
+            source: row.source ?? "Remedial Building Australia",
+            publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
+            sourceUrl: row.source_url ?? "",
+          };
+        })
       );
       setNewsIndex(0);
     }
@@ -327,24 +342,30 @@ export default function RemedialBuildingAustraliaHome() {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[2rem] border border-sky-100 bg-sky-700 shadow-[0_24px_70px_rgba(8,47,73,0.12)]">
-            <img src={activeNews.image} alt={activeNews.title} className="absolute inset-0 h-full w-full object-cover opacity-45" />
-            <div className="relative max-w-3xl p-8 text-white md:p-14">
-              {/* Category badge */}
+          <div className="overflow-hidden rounded-[2rem] border border-sky-100 bg-white shadow-[0_24px_70px_rgba(8,47,73,0.12)]">
+            {/* 16:9 image or navy placeholder */}
+            <div className="aspect-video w-full overflow-hidden">
+              {activeNews.image ? (
+                <img src={activeNews.image} alt={activeNews.title} className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-sky-950 px-8">
+                  <span className="text-center text-base font-bold uppercase tracking-widest text-white/70">
+                    {activeNews.tag}
+                  </span>
+                </div>
+              )}
+            </div>
+            {/* Card content */}
+            <div className="bg-sky-700 p-8 text-white md:p-12">
               <div className="mb-4 inline-flex rounded-full bg-red-700 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em]">{activeNews.tag}</div>
-              {/* Title — plain text */}
-              <h3 className="text-3xl font-extrabold md:text-4xl">{activeNews.title}</h3>
-              {/* Date + source */}
+              <h3 className="text-2xl font-extrabold leading-snug md:text-3xl">{activeNews.title}</h3>
               <p className="mt-3 text-sm font-semibold text-sky-200">
                 {activeNews.publishedDate
                   ? new Date(activeNews.publishedDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })
-                  : ""
-                }
+                  : ""}
                 {activeNews.source ? ` · ${activeNews.source}` : ""}
               </p>
-              {/* Summary */}
-              <p className="mt-4 text-base leading-7 text-slate-200">{activeNews.summary}</p>
-              {/* Buttons */}
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200">{activeNews.summary}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 {activeNews.sourceUrl && (
                   <a

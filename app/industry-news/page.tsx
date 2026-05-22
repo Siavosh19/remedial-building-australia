@@ -40,15 +40,36 @@ type DbRow = {
   status?: string;
 };
 
+// ─── Category fallback images ─────────────────────────────────────────────────
+
+const CATEGORY_IMAGE: Record<string, string> = {
+  "Waterproofing Defects":      "/Images/Categories/waterproofing-water-ingress.jpg",
+  "Concrete Repair":            "/Images/Categories/concrete-structural-defects.jpg",
+  "Façade Defects":             "/Images/Categories/facade-external-envelope.jpg",
+  "Facade Defects":             "/Images/Categories/facade-external-envelope.jpg",
+  "Building Commission NSW":    "/Images/Categories/facade-external-envelope.jpg",
+  "Class 2 Buildings":          "/Images/Categories/concrete-structural-defects.jpg",
+  "Strata Defects":             "/Images/Categories/balconies-podiums.jpg",
+  "Building Defects":           "/Images/Categories/internal-defects-finishes.jpg",
+  "DBP Act":                    "/Images/Categories/miscellaneous-other.jpg",
+  "Remedial Construction":      "/Images/Categories/miscellaneous-other.jpg",
+  "Product & Material Updates": "/Images/Categories/miscellaneous-other.jpg",
+  "Services & Drainage":        "/Images/Categories/services-drainage.jpg",
+  "Basements":                  "/Images/Categories/basements-substructure.jpg",
+  "Roofing":                    "/Images/Categories/roofing-defects.jpg",
+  "General":                    "/Images/Categories/miscellaneous-other.jpg",
+};
+
 function mapRow(row: DbRow): Article {
+  const category = row.category ?? "General";
   return {
     id: String(row.id),
     title: row.title ?? "",
     slug: row.slug ?? String(row.id),
-    category: row.category ?? "General",
+    category,
     source: row.source ?? "Remedial Building Australia",
     publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
-    image: row.image ?? row.image_url ?? "/Images/Categories/facade-external-envelope.jpg",
+    image: row.image_url ?? row.image ?? CATEGORY_IMAGE[category] ?? "",
     summary: row.summary ?? row.excerpt ?? "",
     sourceUrl: row.source_url ?? row.external_url ?? "",
     tags: Array.isArray(row.tags)
@@ -96,12 +117,22 @@ function CategoryPill({ label }: { label: string }) {
   );
 }
 
-function ArticleCard({ article, imageHeight = "h-40" }: { article: Article; imageHeight?: string }) {
+function ArticleCard({ article }: { article: Article }) {
   const hasUrl = Boolean(article.sourceUrl);
+  const hasImage = Boolean(article.image);
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className={`${imageHeight} w-full shrink-0 overflow-hidden`}>
-        <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
+      {/* 16:9 image or placeholder */}
+      <div className="aspect-video w-full shrink-0 overflow-hidden">
+        {hasImage ? (
+          <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-sky-950 px-6">
+            <span className="text-center text-sm font-bold uppercase tracking-widest text-white/80">
+              {article.category}
+            </span>
+          </div>
+        )}
       </div>
       <div className="flex flex-1 flex-col p-5">
         {/* Category badge */}
@@ -315,11 +346,11 @@ export default function IndustryNewsPage() {
 
               <div className="grid gap-6 lg:grid-cols-[1.7fr_1fr]">
                 {featuredArticles[0] && (
-                  <ArticleCard article={featuredArticles[0]} imageHeight="h-52" />
+                  <ArticleCard article={featuredArticles[0]} />
                 )}
                 <div className="flex flex-col gap-6">
                   {featuredArticles.slice(1, 3).map((a) => (
-                    <ArticleCard key={a.id} article={a} imageHeight="h-32" />
+                    <ArticleCard key={a.id} article={a} />
                   ))}
                 </div>
               </div>
