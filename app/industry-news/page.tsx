@@ -40,13 +40,88 @@ type DbRow = {
   status?: string;
 };
 
+// ─── Category normalisation ───────────────────────────────────────────────────
+// Canonical tabs shown in the filter bar
+const VALID_CATEGORIES = new Set([
+  "Building Commission NSW",
+  "Class 2 Buildings",
+  "Waterproofing Defects",
+  "Concrete Repair",
+  "Façade Defects",
+  "Strata Defects",
+  "DBP Act",
+  "Remedial Construction",
+  "Building Defects",
+  "Product & Material Updates",
+  "Other",
+]);
+
+// Map any variation that might come from Make.com / AI to a canonical tab
+const CATEGORY_ALIAS: Record<string, string> = {
+  // Façade variations
+  "Facade Defects":             "Façade Defects",
+  "Facade":                     "Façade Defects",
+  "Façade":                     "Façade Defects",
+  "External Envelope":          "Façade Defects",
+  // Waterproofing variations
+  "Waterproofing":              "Waterproofing Defects",
+  "Water Ingress":              "Waterproofing Defects",
+  "Waterproofing & Water Ingress": "Waterproofing Defects",
+  // Concrete variations
+  "Concrete":                   "Concrete Repair",
+  "Concrete Defects":           "Concrete Repair",
+  "Concrete & Structural":      "Concrete Repair",
+  // Strata variations
+  "Strata":                     "Strata Defects",
+  "Strata Construction":        "Strata Defects",
+  // DBP variations
+  "DBP":                        "DBP Act",
+  "DBPA":                       "DBP Act",
+  "Design and Building Practitioners Act": "DBP Act",
+  // Building Commission variations
+  "Building Commission":        "Building Commission NSW",
+  "NSW Building Commission":    "Building Commission NSW",
+  // Remedial Construction variations
+  "Remedial":                   "Remedial Construction",
+  "Remedial Works":             "Remedial Construction",
+  // Class 2 variations
+  "Class 2":                    "Class 2 Buildings",
+  "Class 2 Building":           "Class 2 Buildings",
+  // Building Defects variations
+  "Defects":                    "Building Defects",
+  "Building":                   "Building Defects",
+  "Roofing":                    "Building Defects",
+  "Roofing Defects":            "Building Defects",
+  "Balconies":                  "Building Defects",
+  "Balconies & Podiums":        "Building Defects",
+  "Basements":                  "Building Defects",
+  "Basements & Substructure":   "Building Defects",
+  "Services & Drainage":        "Building Defects",
+  "Internal Defects":           "Building Defects",
+  // Product variations
+  "Products":                   "Product & Material Updates",
+  "Materials":                  "Product & Material Updates",
+  "Products & Materials":       "Product & Material Updates",
+  // Catch-alls → Other
+  "Industry News":              "Other",
+  "News":                       "Other",
+  "General":                    "Other",
+  "Uncategorised":              "Other",
+  "Uncategorized":              "Other",
+};
+
+function normaliseCategory(raw: string | undefined): string {
+  if (!raw) return "Other";
+  if (VALID_CATEGORIES.has(raw)) return raw;
+  return CATEGORY_ALIAS[raw] ?? "Other";
+}
+
 // ─── Category fallback images ─────────────────────────────────────────────────
 
 const CATEGORY_IMAGE: Record<string, string> = {
   "Waterproofing Defects":      "/Images/Categories/waterproofing-water-ingress.jpg",
   "Concrete Repair":            "/Images/Categories/concrete-structural-defects.jpg",
   "Façade Defects":             "/Images/Categories/facade-external-envelope.jpg",
-  "Facade Defects":             "/Images/Categories/facade-external-envelope.jpg",
   "Building Commission NSW":    "/Images/Categories/facade-external-envelope.jpg",
   "Class 2 Buildings":          "/Images/Categories/concrete-structural-defects.jpg",
   "Strata Defects":             "/Images/Categories/balconies-podiums.jpg",
@@ -54,14 +129,11 @@ const CATEGORY_IMAGE: Record<string, string> = {
   "DBP Act":                    "/Images/Categories/miscellaneous-other.jpg",
   "Remedial Construction":      "/Images/Categories/miscellaneous-other.jpg",
   "Product & Material Updates": "/Images/Categories/miscellaneous-other.jpg",
-  "Services & Drainage":        "/Images/Categories/services-drainage.jpg",
-  "Basements":                  "/Images/Categories/basements-substructure.jpg",
-  "Roofing":                    "/Images/Categories/roofing-defects.jpg",
-  "General":                    "/Images/Categories/miscellaneous-other.jpg",
+  "Other":                      "/Images/Categories/miscellaneous-other.jpg",
 };
 
 function mapRow(row: DbRow): Article {
-  const category = row.category ?? "General";
+  const category = normaliseCategory(row.category);
   return {
     id: String(row.id),
     title: row.title ?? "",
@@ -95,6 +167,7 @@ const CATEGORIES = [
   "Remedial Construction",
   "Building Defects",
   "Product & Material Updates",
+  "Other",
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
