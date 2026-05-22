@@ -66,6 +66,28 @@ const VALID_CATEGORIES = [
   "New Construction Systems",
 ];
 
+// ─── Blocked (paywalled) domains ─────────────────────────────────────────────
+
+const BLOCKED_DOMAINS = new Set([
+  "theaustralian.com.au",
+  "afr.com",
+  "smh.com.au",
+  "age.com.au",
+  "ft.com",
+  "wsj.com",
+  "bloomberg.com",
+  "theadviser.com.au",
+]);
+
+function isBlockedDomain(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return BLOCKED_DOMAINS.has(host);
+  } catch {
+    return false;
+  }
+}
+
 // ─── RSS parsing ──────────────────────────────────────────────────────────────
 
 interface RSSItem {
@@ -132,16 +154,41 @@ function parseRSS(xml: string): RSSItem[] {
 }
 
 // ─── OG image extraction ──────────────────────────────────────────────────────
+// Returns: string = image URL (may be empty), null = paywall detected → skip article
 
-async function fetchOGImage(url: string): Promise<string> {
+const PAYWALL_PATTERNS = [
+  /login/i,
+  /subscribe/i,
+  /subscription/i,
+  /signin/i,
+  /sign-in/i,
+  /paywall/i,
+  /register/i,
+  /access-denied/i,
+];
+
+async function fetchOGImage(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
       headers: { "User-Agent": "Mozilla/5.0 (compatible; RemBuildAU/1.0)" },
       signal: AbortSignal.timeout(6000),
+      redirect: "follow",
     });
+
+    // 401/403 = auth required → skip article
+    if (res.status === 401 || res.status === 403) return null;
+
+    // Redirected to a login/subscribe page → skip article
+    if (PAYWALL_PATTERNS.some((p) => p.test(res.url))) return null;
+
     if (!res.ok) return "";
+
     const html = await res.text();
-    // Match <meta property="og:image" content="..."> in any attribute order
+
+    // Check if the landed page itself looks like a paywall
+    if (PAYWALL_PATTERNS.some((p) => p.test(res.url))) return null;
+
+    // Extract og:image in any attribute order
     const m =
       html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ??
       html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
@@ -263,6 +310,7 @@ export async function GET() {
     inserted: 0,
     skipped_duplicate: 0,
     skipped_irrelevant: 0,
+    skipped_paywall: 0,
     errors: [] as string[],
     total_fetched: 0,
   };
@@ -303,6 +351,12 @@ export async function GET() {
   // 3. Process articles sequentially to respect Anthropic rate limits
   for (const item of queue) {
     try {
+      // Skip paywalled domains immediately — no API calls wasted
+      if (isBlockedDomain(item.link)) {
+        stats.skipped_paywall++;
+        continue;
+      }
+
       // Check for existing article with same URL
       const { data: existing } = await supabase
         .from("news_articles")
@@ -320,6 +374,12 @@ export async function GET() {
         classify(item.title, item.description),
         fetchOGImage(item.link),
       ]);
+
+      // null from fetchOGImage means paywall detected at fetch time → skip
+      if (image_url === null) {
+        stats.skipped_paywall++;
+        continue;
+      }
 
       if (category === "IRRELEVANT") {
         stats.skipped_irrelevant++;
