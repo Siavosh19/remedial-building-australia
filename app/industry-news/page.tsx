@@ -53,6 +53,7 @@ const VALID_CATEGORIES = new Set([
   "Remedial Construction",
   "Building Defects",
   "Product & Material Updates",
+  "New Construction Systems",
   "Other",
 ]);
 
@@ -102,6 +103,13 @@ const CATEGORY_ALIAS: Record<string, string> = {
   "Products":                   "Product & Material Updates",
   "Materials":                  "Product & Material Updates",
   "Products & Materials":       "Product & Material Updates",
+  "Product and Material Updates": "Product & Material Updates",
+  "Product & Materials":        "Product & Material Updates",
+  // New Construction Systems variations
+  "New Construction":           "New Construction Systems",
+  "Construction Systems":       "New Construction Systems",
+  "New Systems":                "New Construction Systems",
+  "Innovation":                 "New Construction Systems",
   // Catch-alls → Other
   "Industry News":              "Other",
   "News":                       "Other",
@@ -129,6 +137,7 @@ const CATEGORY_IMAGE: Record<string, string> = {
   "DBP Act":                    "/Images/Categories/miscellaneous-other.jpg",
   "Remedial Construction":      "/Images/Categories/miscellaneous-other.jpg",
   "Product & Material Updates": "/Images/Categories/miscellaneous-other.jpg",
+  "New Construction Systems":   "/Images/Categories/concrete-structural-defects.jpg",
   "Other":                      "/Images/Categories/miscellaneous-other.jpg",
 };
 
@@ -167,6 +176,7 @@ const CATEGORIES = [
   "Remedial Construction",
   "Building Defects",
   "Product & Material Updates",
+  "New Construction Systems",
   "Other",
 ];
 

@@ -27,12 +27,12 @@ const VALID_CATEGORIES = [
   "Class 2 Buildings",
   "Waterproofing Defects",
   "Concrete Repair",
-  "Facade Defects",
+  "Façade Defects",
   "Strata Defects",
   "DBP Act",
   "Remedial Construction",
   "Building Defects",
-  "Product and Material Updates",
+  "Product & Material Updates",
   "New Construction Systems",
 ];
 
