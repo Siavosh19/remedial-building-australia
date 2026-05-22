@@ -7,19 +7,17 @@ export const maxDuration = 60;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY ?? "";
 
 const RSS_FEEDS = [
-  "https://news.google.com/rss/search?q=building+commission+nsw",
-  "https://news.google.com/rss/search?q=nsw+fair+trading+building+defects",
-  "https://news.google.com/rss/search?q=DBP+Act+NSW+practitioners",
-  "https://news.google.com/rss/search?q=waterproofing+defects+australia+class+2",
-  "https://news.google.com/rss/search?q=concrete+repair+spalling+australia",
-  "https://news.google.com/rss/search?q=cladding+facade+defects+NSW",
-  "https://news.google.com/rss/search?q=strata+building+defects+NSW",
-  "https://news.google.com/rss/search?q=remedial+building+australia",
-  "https://news.google.com/rss/search?q=master+builders+australia+construction",
-  "https://news.google.com/rss/search?q=concrete+institute+australia",
-  "https://news.google.com/rss/search?q=combustible+cladding+australia",
-  "https://news.google.com/rss/search?q=new+building+construction+system+australia",
-  "https://sourceable.net/feed",
+  "https://news.google.com/rss/search?q=class+2+building+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=design+practitioner+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=building+practitioner+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=building+consultant+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=remedial+building+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=facade+maintenance+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=concrete+spalling+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=waterproofing+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=concrete+cancer+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=master+builders+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=insurance+class+2+builders+australia&hl=en-AU&gl=AU&ceid=AU:en",
 ];
 
 const VALID_CATEGORIES = [
