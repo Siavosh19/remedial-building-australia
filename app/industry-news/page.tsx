@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Search, Mail, ArrowRight } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { Search, Mail, ArrowRight, Loader2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,7 +20,45 @@ type Article = {
   featured: boolean;
 };
 
-// ─── Categories ───────────────────────────────────────────────────────────────
+// Row shape coming back from Supabase (snake_case DB columns)
+type DbRow = {
+  id: string | number;
+  title: string;
+  slug?: string;
+  category?: string;
+  source?: string;
+  date_published?: string;
+  published_date?: string;
+  image?: string;
+  image_url?: string;
+  excerpt?: string;
+  external_url?: string;
+  tags?: string[] | string;
+  featured?: boolean;
+  status?: string;
+};
+
+function mapRow(row: DbRow): Article {
+  return {
+    id: String(row.id),
+    title: row.title ?? "",
+    slug: row.slug ?? String(row.id),
+    category: row.category ?? "General",
+    source: row.source ?? "Remedial Building Australia",
+    publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
+    image: row.image ?? row.image_url ?? "/Images/Categories/facade-external-envelope.jpg",
+    excerpt: row.excerpt ?? "",
+    externalUrl: row.external_url ?? "#",
+    tags: Array.isArray(row.tags)
+      ? row.tags
+      : typeof row.tags === "string"
+      ? row.tags.split(",").map((t: string) => t.trim())
+      : [],
+    featured: row.featured ?? false,
+  };
+}
+
+// ─── Static category list ─────────────────────────────────────────────────────
 
 const CATEGORIES = [
   "All",
@@ -33,179 +72,6 @@ const CATEGORIES = [
   "Remedial Construction",
   "Building Defects",
   "Product & Material Updates",
-];
-
-// ─── Article Data ─────────────────────────────────────────────────────────────
-
-const articles: Article[] = [
-  {
-    id: "1",
-    title: "Building Commission NSW Releases Updated Inspection Framework for Class 2 Buildings",
-    slug: "bcnsw-updated-inspection-framework-class-2",
-    category: "Building Commission NSW",
-    source: "Building Commission NSW",
-    publishedDate: "2026-05-15",
-    image: "/Images/Categories/facade-external-envelope.jpg",
-    excerpt:
-      "The Building Commission NSW has released an updated inspection framework targeting Class 2 residential buildings, with increased scrutiny on waterproofing, concrete elements and façade systems throughout the construction phase.",
-    externalUrl: "#",
-    tags: ["Building Commission", "Class 2", "Inspection", "NSW"],
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "DBP Act Compliance: Key Obligations for Design and Building Practitioners in 2026",
-    slug: "dbp-act-compliance-obligations-2026",
-    category: "DBP Act",
-    source: "NSW Fair Trading",
-    publishedDate: "2026-05-10",
-    image: "/Images/Categories/basements-substructure.jpg",
-    excerpt:
-      "NSW Fair Trading has outlined updated compliance expectations under the Design and Building Practitioners Act, with focus on documentation requirements for declared engineering work on Class 2 buildings.",
-    externalUrl: "#",
-    tags: ["DBP Act", "Compliance", "NSW", "Class 2"],
-    featured: true,
-  },
-  {
-    id: "3",
-    title: "Waterproofing Failures in Balcony Construction Remain the Leading Defect Type",
-    slug: "waterproofing-failures-balcony-leading-defect",
-    category: "Waterproofing Defects",
-    source: "Remedial Building Australia",
-    publishedDate: "2026-05-08",
-    image: "/Images/Categories/waterproofing-water-ingress.jpg",
-    excerpt:
-      "Analysis of recent defect reports across Class 2 buildings continues to identify balcony waterproofing failures as the most frequently recorded defect type, driven by poor substrate preparation and inadequate membrane detailing at junctions.",
-    externalUrl: "#",
-    tags: ["Waterproofing", "Balcony", "Defects", "Class 2"],
-    featured: true,
-  },
-  {
-    id: "4",
-    title: "Concrete Spalling and Carbonation: Assessment Requirements for Existing Buildings",
-    slug: "concrete-spalling-carbonation-assessment",
-    category: "Concrete Repair",
-    source: "Engineers Australia",
-    publishedDate: "2026-05-05",
-    image: "/Images/Categories/concrete-structural-defects.jpg",
-    excerpt:
-      "Updated guidance on carbonation depth testing and concrete cover assessment for existing structures, particularly relevant for buildings constructed prior to current Australian Standards on concrete durability.",
-    externalUrl: "#",
-    tags: ["Concrete", "Carbonation", "Spalling", "Structural"],
-    featured: false,
-  },
-  {
-    id: "5",
-    title: "NSW Cladding Combustibility Compliance — Façade Rectification Progress",
-    slug: "nsw-cladding-facade-rectification-progress",
-    category: "Façade Defects",
-    source: "NSW Government",
-    publishedDate: "2026-04-28",
-    image: "/Images/Categories/facade-external-envelope.jpg",
-    excerpt:
-      "The NSW Government has released updated data on the cladding rectification programme, with hundreds of buildings still requiring works and new compliance pathway guidance issued for building owners and owners corporations.",
-    externalUrl: "#",
-    tags: ["Cladding", "Façade", "Rectification", "NSW"],
-    featured: false,
-  },
-  {
-    id: "6",
-    title: "Strata Building Bond and Defect Inspections — What Owners Corporations Need to Know",
-    slug: "strata-building-bond-defect-inspections",
-    category: "Strata Defects",
-    source: "NSW Fair Trading",
-    publishedDate: "2026-04-22",
-    image: "/Images/Categories/balconies-podiums.jpg",
-    excerpt:
-      "NSW Fair Trading has updated its guidance for owners corporations on the strata building bond and inspection scheme, clarifying how the bond is triggered, inspected and claimed for serious building defects.",
-    externalUrl: "#",
-    tags: ["Strata", "Building Bond", "Owners Corporation", "NSW"],
-    featured: false,
-  },
-  {
-    id: "7",
-    title: "Roof Waterproofing Defects in Class 2 Buildings — Common Failure Mechanisms",
-    slug: "roof-waterproofing-defects-class-2-failure",
-    category: "Waterproofing Defects",
-    source: "Remedial Building Australia",
-    publishedDate: "2026-04-18",
-    image: "/Images/Categories/roofing-defects.jpg",
-    excerpt:
-      "A review of roof waterproofing failures in Class 2 residential buildings identifies inadequate lap detailing, membrane incompatibility and poor penetration sealing as the three most common causes of premature failure.",
-    externalUrl: "#",
-    tags: ["Roofing", "Waterproofing", "Class 2", "Defects"],
-    featured: false,
-  },
-  {
-    id: "8",
-    title: "Polyurethane vs Epoxy Crack Injection — Selecting the Right System",
-    slug: "polyurethane-vs-epoxy-crack-injection-guide",
-    category: "Product & Material Updates",
-    source: "Remedial Building Australia",
-    publishedDate: "2026-04-12",
-    image: "/Images/Categories/concrete-structural-defects.jpg",
-    excerpt:
-      "A technical comparison of polyurethane foam and epoxy resin crack injection systems, covering crack type suitability, movement tolerance, substrate conditions and long-term performance expectations.",
-    externalUrl: "#",
-    tags: ["Crack Injection", "Polyurethane", "Epoxy", "Concrete Repair"],
-    featured: false,
-  },
-  {
-    id: "9",
-    title: "Building Commission NSW — Inspection Results for New Class 2 Buildings",
-    slug: "bcnsw-class-2-inspection-results-2026",
-    category: "Building Commission NSW",
-    source: "Building Commission NSW",
-    publishedDate: "2026-04-08",
-    image: "/Images/Categories/basements-substructure.jpg",
-    excerpt:
-      "The Building Commission NSW has released its latest inspection results, with waterproofing, fire safety and structural elements continuing to generate the highest volume of non-conformance notices across new buildings.",
-    externalUrl: "#",
-    tags: ["Building Commission", "Inspections", "Non-Conformance", "Class 2"],
-    featured: false,
-  },
-  {
-    id: "10",
-    title: "Remedial Scope Writing — Common Gaps That Lead to Disputed Claims",
-    slug: "remedial-scope-writing-disputed-claims",
-    category: "Remedial Construction",
-    source: "Remedial Building Australia",
-    publishedDate: "2026-04-03",
-    image: "/Images/Categories/internal-defects-finishes.jpg",
-    excerpt:
-      "A review of disputed remedial building claims identifies scope ambiguity, missing hold points and undefined product specifications as the most common causes of cost disputes and defective repair outcomes.",
-    externalUrl: "#",
-    tags: ["Scope Writing", "Remedial", "Claims", "Documentation"],
-    featured: false,
-  },
-  {
-    id: "11",
-    title: "Magnesite Flooring in Strata Buildings — Deterioration, Risk and Remediation",
-    slug: "magnesite-flooring-strata-deterioration-remediation",
-    category: "Strata Defects",
-    source: "Remedial Building Australia",
-    publishedDate: "2026-03-27",
-    image: "/Images/Categories/internal-defects-finishes.jpg",
-    excerpt:
-      "Magnesite flooring in older strata buildings continues to cause moisture-related reinforcement corrosion and slab damage. This article outlines the assessment process and current remediation approaches used in the industry.",
-    externalUrl: "#",
-    tags: ["Magnesite", "Strata", "Flooring", "Deterioration"],
-    featured: false,
-  },
-  {
-    id: "12",
-    title: "Reinforcement Corrosion in Coastal Class 2 Buildings — Assessment and Repair",
-    slug: "reinforcement-corrosion-coastal-class-2",
-    category: "Building Defects",
-    source: "Remedial Building Australia",
-    publishedDate: "2026-03-20",
-    image: "/Images/Categories/concrete-structural-defects.jpg",
-    excerpt:
-      "Chloride-induced reinforcement corrosion in coastal Class 2 buildings requires a structured assessment approach to determine the extent of deterioration and inform a compliant, engineer-confirmed repair methodology.",
-    externalUrl: "#",
-    tags: ["Reinforcement", "Corrosion", "Coastal", "Concrete"],
-    featured: false,
-  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -333,10 +199,36 @@ export default function IndustryNewsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [email, setEmail] = useState("");
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchArticles() {
+      setLoading(true);
+      setFetchError(null);
+      try {
+        const { data, error } = await supabase
+          .from("news_articles")
+          .select("*")
+          .eq("status", "published")
+          .order("date_published", { ascending: false });
+
+        if (error) throw error;
+        setArticles((data as DbRow[]).map(mapRow));
+      } catch (err) {
+        setFetchError("Unable to load articles. Please try again later.");
+        console.error("Supabase fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchArticles();
+  }, []);
 
   const featuredArticles = useMemo(
     () => articles.filter((a) => a.featured).slice(0, 3),
-    []
+    [articles]
   );
 
   const isFiltering = searchQuery.trim().length > 0 || activeCategory !== "All";
@@ -357,7 +249,7 @@ export default function IndustryNewsPage() {
       );
     }
     return pool;
-  }, [searchQuery, activeCategory, isFiltering]);
+  }, [searchQuery, activeCategory, isFiltering, articles]);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -455,8 +347,22 @@ export default function IndustryNewsPage() {
         {/* ── Content ────────────────────────────────────────────────────────── */}
         <div className="mx-auto max-w-7xl px-5 py-10 space-y-10">
 
-          {/* Featured — hidden when filtering */}
-          {!isFiltering && (
+          {/* Loading state */}
+          {loading && (
+            <div className="flex items-center justify-center py-24">
+              <Loader2 className="animate-spin text-sky-700" size={36} />
+            </div>
+          )}
+
+          {/* Error state */}
+          {!loading && fetchError && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+              <p className="text-base font-semibold text-red-700">{fetchError}</p>
+            </div>
+          )}
+
+          {/* Featured — hidden when loading, error, or filtering */}
+          {!loading && !fetchError && !isFiltering && (
             <section>
               <div className="mb-8">
                 <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Featured</p>
@@ -477,7 +383,7 @@ export default function IndustryNewsPage() {
           )}
 
           {/* Latest News Grid */}
-          <section>
+          {!loading && !fetchError && <section>
             <div className="mb-8 flex items-end justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-700">
@@ -518,12 +424,12 @@ export default function IndustryNewsPage() {
                 </button>
               </div>
             )}
-          </section>
+          </section>}
 
         </div>
 
         {/* ── Articles ───────────────────────────────────────────────────────── */}
-        {!isFiltering && (
+        {!loading && !fetchError && !isFiltering && (
           <div className="mx-auto max-w-7xl px-5 pb-10">
             <div className="mb-8">
               <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Technical Articles</p>
