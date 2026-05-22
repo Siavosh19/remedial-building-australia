@@ -14,7 +14,7 @@ type Article = {
   source: string;
   publishedDate: string;
   image: string;
-  excerpt: string;
+  summary: string;
   sourceUrl: string;
   tags: string[];
   featured: boolean;
@@ -31,6 +31,7 @@ type DbRow = {
   published_date?: string;
   image?: string;
   image_url?: string;
+  summary?: string;
   excerpt?: string;
   source_url?: string;
   external_url?: string;
@@ -48,8 +49,8 @@ function mapRow(row: DbRow): Article {
     source: row.source ?? "Remedial Building Australia",
     publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
     image: row.image ?? row.image_url ?? "/Images/Categories/facade-external-envelope.jpg",
-    excerpt: row.excerpt ?? "",
-    sourceUrl: row.source_url ?? row.external_url ?? "#",
+    summary: row.summary ?? row.excerpt ?? "",
+    sourceUrl: row.source_url ?? row.external_url ?? "",
     tags: Array.isArray(row.tags)
       ? row.tags
       : typeof row.tags === "string"
@@ -96,43 +97,41 @@ function CategoryPill({ label }: { label: string }) {
 }
 
 function ArticleCard({ article, imageHeight = "h-40" }: { article: Article; imageHeight?: string }) {
-  const hasUrl = Boolean(article.sourceUrl && article.sourceUrl !== "#");
+  const hasUrl = Boolean(article.sourceUrl);
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className={`${imageHeight} w-full shrink-0 overflow-hidden`}>
         <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        {/* Category + date */}
-        <div className="flex flex-wrap items-center gap-2">
-          <CategoryPill label={article.category} />
-          <span className="text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
-        </div>
+        {/* Category badge */}
+        <CategoryPill label={article.category} />
 
         {/* Title */}
         <h3 className="mt-3 text-sm font-bold leading-snug text-sky-950">{article.title}</h3>
 
-        {/* Summary */}
-        <p className="mt-2 flex-1 text-xs leading-5 text-slate-500 line-clamp-3">{article.excerpt}</p>
+        {/* Date + source */}
+        <p className="mt-1.5 text-xs text-slate-400">
+          {formatDate(article.publishedDate)} &middot; {article.source}
+        </p>
 
-        {/* Source name */}
-        <p className="mt-3 text-xs font-semibold text-slate-400">Source: {article.source}</p>
+        {/* Summary */}
+        <p className="mt-3 flex-1 text-xs leading-5 text-slate-500 line-clamp-3">{article.summary}</p>
+
 
         {/* CTA */}
-        <div className="mt-4 border-t border-slate-100 pt-4">
-          {hasUrl ? (
+        {hasUrl && (
+          <div className="mt-4 border-t border-slate-100 pt-4">
             <a
               href={article.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-800"
             >
-              View Source — {article.source} <ArrowRight size={12} />
+              Read Full Article <ArrowRight size={12} />
             </a>
-          ) : (
-            <span className="text-xs font-semibold text-slate-400 italic">Source link unavailable</span>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

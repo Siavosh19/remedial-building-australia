@@ -99,29 +99,40 @@ const heroSlides = heroSlidesBase.map((slide, i) => ({
 type NewsSlide = {
   title: string;
   tag: string;
-  text: string;
+  summary: string;
   image: string;
-  sourceUrl?: string;
+  source: string;
+  publishedDate: string;
+  sourceUrl: string;
 };
 
 const FALLBACK_NEWS: NewsSlide[] = [
   {
     title: "Building Commission NSW — Updated Inspection Framework for Class 2 Buildings",
     tag: "Building Commission NSW",
-    text: "The Building Commission NSW has released an updated inspection framework targeting waterproofing, concrete elements and façade systems across Class 2 residential buildings.",
+    summary: "The Building Commission NSW has released an updated inspection framework targeting waterproofing, concrete elements and façade systems across Class 2 residential buildings. The changes affect how inspections are scoped and documented for strata remedial works.",
     image: "/Images/Categories/facade-external-envelope.jpg",
+    source: "Building Commission NSW",
+    publishedDate: new Date().toISOString(),
+    sourceUrl: "",
   },
   {
     title: "Waterproofing Failures in Balcony Construction Remain the Leading Defect Type",
     tag: "Waterproofing Defects",
-    text: "Analysis of recent defect reports identifies balcony waterproofing failures as the most frequently recorded defect, driven by inadequate membrane detailing at junctions.",
+    summary: "Analysis of recent defect reports identifies balcony waterproofing failures as the most frequently recorded defect, driven by inadequate membrane detailing at junctions. Remedial professionals should prioritise inspection of upturns, penetrations and sheet-to-sheet laps.",
     image: "/Images/Categories/waterproofing-water-ingress.jpg",
+    source: "Remedial Building Australia",
+    publishedDate: new Date().toISOString(),
+    sourceUrl: "",
   },
   {
     title: "DBP Act Compliance: Key Obligations for Design and Building Practitioners",
     tag: "DBP Act",
-    text: "NSW Fair Trading has outlined updated compliance expectations under the Design and Building Practitioners Act, with focus on documentation for Class 2 building works.",
+    summary: "NSW Fair Trading has outlined updated compliance expectations under the Design and Building Practitioners Act, with focus on documentation for Class 2 building works. Practitioners must ensure design compliance declarations are lodged before construction begins.",
     image: "/Images/Categories/basements-substructure.jpg",
+    source: "NSW Fair Trading",
+    publishedDate: new Date().toISOString(),
+    sourceUrl: "",
   },
 ];
 
@@ -141,7 +152,7 @@ export default function RemedialBuildingAustraliaHome() {
     async function fetchNews() {
       const { data, error } = await supabase
         .from("news_articles")
-        .select("title, category, excerpt, image, image_url, date_published, published_date, source_url")
+        .select("title, category, summary, excerpt, image, image_url, date_published, published_date, source, source_url")
         .eq("status", "published")
         .order("date_published", { ascending: false })
         .limit(3);
@@ -152,12 +163,14 @@ export default function RemedialBuildingAustraliaHome() {
         data.map((row) => ({
           title: row.title ?? "",
           tag: row.category ?? "Industry News",
-          text: row.excerpt ?? "",
+          summary: row.summary ?? row.excerpt ?? "",
           image:
             row.image ??
             row.image_url ??
             "/Images/Categories/facade-external-envelope.jpg",
-          sourceUrl: row.source_url ?? undefined,
+          source: row.source ?? "Remedial Building Australia",
+          publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
+          sourceUrl: row.source_url ?? "",
         }))
       );
       setNewsIndex(0);
@@ -317,23 +330,36 @@ export default function RemedialBuildingAustraliaHome() {
           <div className="relative overflow-hidden rounded-[2rem] border border-sky-100 bg-sky-700 shadow-[0_24px_70px_rgba(8,47,73,0.12)]">
             <img src={activeNews.image} alt={activeNews.title} className="absolute inset-0 h-full w-full object-cover opacity-45" />
             <div className="relative max-w-3xl p-8 text-white md:p-14">
+              {/* Category badge */}
               <div className="mb-4 inline-flex rounded-full bg-red-700 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em]">{activeNews.tag}</div>
-              {activeNews.sourceUrl ? (
-                <a
-                  href={activeNews.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 block cursor-pointer text-3xl font-extrabold text-white hover:underline md:text-5xl"
-                >
-                  {activeNews.title}
+              {/* Title — plain text */}
+              <h3 className="text-3xl font-extrabold md:text-4xl">{activeNews.title}</h3>
+              {/* Date + source */}
+              <p className="mt-3 text-sm font-semibold text-sky-200">
+                {activeNews.publishedDate
+                  ? new Date(activeNews.publishedDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })
+                  : ""
+                }
+                {activeNews.source ? ` · ${activeNews.source}` : ""}
+              </p>
+              {/* Summary */}
+              <p className="mt-4 text-base leading-7 text-slate-200">{activeNews.summary}</p>
+              {/* Buttons */}
+              <div className="mt-8 flex flex-wrap gap-3">
+                {activeNews.sourceUrl && (
+                  <a
+                    href={activeNews.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-sky-950 hover:bg-slate-100"
+                  >
+                    Read Full Article →
+                  </a>
+                )}
+                <a href="/industry-news" className="inline-flex rounded-xl border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/20">
+                  Browse All News
                 </a>
-              ) : (
-                <h3 className="text-3xl font-extrabold md:text-5xl">{activeNews.title}</h3>
-              )}
-              <p className="mt-5 text-lg leading-8 text-slate-200">{activeNews.text}</p>
-              <a href="/industry-news" className="mt-8 inline-flex rounded-xl bg-white px-5 py-3 text-sm font-semibold text-sky-950 hover:bg-slate-100">
-                Browse Industry News & Articles
-              </a>
+              </div>
             </div>
           </div>
         </section>
