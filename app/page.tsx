@@ -100,46 +100,31 @@ type NewsSlide = {
   title: string;
   tag: string;
   summary: string;
-  image: string;
   source: string;
   publishedDate: string;
   sourceUrl: string;
 };
 
-const FALLBACK_NEWS: NewsSlide[] = [
-  {
-    title: "Building Commission NSW — Updated Inspection Framework for Class 2 Buildings",
-    tag: "Building Commission NSW",
-    summary: "The Building Commission NSW has released an updated inspection framework targeting waterproofing, concrete elements and façade systems across Class 2 residential buildings. The changes affect how inspections are scoped and documented for strata remedial works.",
-    image: "/Images/Categories/facade-external-envelope.jpg",
-    source: "Building Commission NSW",
-    publishedDate: new Date().toISOString(),
-    sourceUrl: "",
-  },
-  {
-    title: "Waterproofing Failures in Balcony Construction Remain the Leading Defect Type",
-    tag: "Waterproofing Defects",
-    summary: "Analysis of recent defect reports identifies balcony waterproofing failures as the most frequently recorded defect, driven by inadequate membrane detailing at junctions. Remedial professionals should prioritise inspection of upturns, penetrations and sheet-to-sheet laps.",
-    image: "/Images/Categories/waterproofing-water-ingress.jpg",
-    source: "Remedial Building Australia",
-    publishedDate: new Date().toISOString(),
-    sourceUrl: "",
-  },
-  {
-    title: "DBP Act Compliance: Key Obligations for Design and Building Practitioners",
-    tag: "DBP Act",
-    summary: "NSW Fair Trading has outlined updated compliance expectations under the Design and Building Practitioners Act, with focus on documentation for Class 2 building works. Practitioners must ensure design compliance declarations are lodged before construction begins.",
-    image: "/Images/Categories/basements-substructure.jpg",
-    source: "NSW Fair Trading",
-    publishedDate: new Date().toISOString(),
-    sourceUrl: "",
-  },
-];
+const CATEGORY_COLOR: Record<string, string> = {
+  "Waterproofing Defects":      "bg-blue-900",
+  "Concrete Repair":            "bg-slate-600",
+  "Strata Defects":             "bg-teal-800",
+  "Building Commission NSW":    "bg-slate-800",
+  "DBP Act":                    "bg-slate-800",
+  "Façade Defects":             "bg-zinc-700",
+  "Facade Defects":             "bg-zinc-700",
+  "Class 2 Buildings":          "bg-sky-800",
+  "Remedial Construction":      "bg-sky-700",
+  "Building Defects":           "bg-sky-700",
+  "Product & Material Updates": "bg-green-800",
+  "New Construction Systems":   "bg-sky-700",
+  "Other":                      "bg-sky-700",
+};
 
 export default function RemedialBuildingAustraliaHome() {
   const [heroIndex, setHeroIndex] = useState(0);
-  const [newsIndex, setNewsIndex] = useState(0);
-  const [newsSlides, setNewsSlides] = useState<NewsSlide[]>(FALLBACK_NEWS);
+  const [newsSlides, setNewsSlides] = useState<NewsSlide[]>([]);
+  const [newsLoading, setNewsLoading] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -150,51 +135,34 @@ export default function RemedialBuildingAustraliaHome() {
 
   useEffect(() => {
     async function fetchNews() {
-      const { data, error } = await supabase
-        .from("news_articles")
-        .select("title, category, summary, excerpt, image, image_url, date_published, published_date, source, source_url")
-        .eq("status", "published")
-        .order("date_published", { ascending: false })
-        .limit(3);
+      try {
+        const { data, error } = await supabase
+          .from("news_articles")
+          .select("title, category, summary, date_published, published_date, source, source_url")
+          .eq("status", "published")
+          .order("date_published", { ascending: false })
+          .limit(3);
 
-      if (error || !data || data.length === 0) return;
-
-      const categoryImage: Record<string, string> = {
-        "Waterproofing Defects":      "/Images/Categories/waterproofing-water-ingress.jpg",
-        "Concrete Repair":            "/Images/Categories/concrete-structural-defects.jpg",
-        "Façade Defects":             "/Images/Categories/facade-external-envelope.jpg",
-        "Facade Defects":             "/Images/Categories/facade-external-envelope.jpg",
-        "Building Commission NSW":    "/Images/Categories/facade-external-envelope.jpg",
-        "Class 2 Buildings":          "/Images/Categories/concrete-structural-defects.jpg",
-        "Strata Defects":             "/Images/Categories/balconies-podiums.jpg",
-        "Building Defects":           "/Images/Categories/internal-defects-finishes.jpg",
-        "DBP Act":                    "/Images/Categories/miscellaneous-other.jpg",
-        "Remedial Construction":      "/Images/Categories/miscellaneous-other.jpg",
-        "Product & Material Updates": "/Images/Categories/miscellaneous-other.jpg",
-        "General":                    "/Images/Categories/miscellaneous-other.jpg",
-      };
-
-      setNewsSlides(
-        data.map((row) => {
-          const cat = row.category ?? "General";
-          return {
-            title: row.title ?? "",
-            tag: cat,
-            summary: row.summary ?? row.excerpt ?? "",
-            image: row.image_url ?? row.image ?? categoryImage[cat] ?? "",
-            source: row.source ?? "Remedial Building Australia",
-            publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
-            sourceUrl: row.source_url ?? "",
-          };
-        })
-      );
-      setNewsIndex(0);
+        if (!error && data && data.length > 0) {
+          setNewsSlides(
+            data.map((row) => ({
+              title: row.title ?? "",
+              tag: row.category ?? "Other",
+              summary: row.summary ?? "",
+              source: row.source ?? "Remedial Building Australia",
+              publishedDate: row.date_published ?? row.published_date ?? "",
+              sourceUrl: row.source_url ?? "",
+            }))
+          );
+        }
+      } finally {
+        setNewsLoading(false);
+      }
     }
     fetchNews();
   }, []);
 
   const activeHero = heroSlides[heroIndex];
-  const activeNews = newsSlides[newsIndex];
 
   return (
     <div className="min-h-screen bg-white text-sky-950">
@@ -327,62 +295,62 @@ export default function RemedialBuildingAustraliaHome() {
           <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
               <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News & Articles</div>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Industry News & Articles</h2>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Top Stories</h2>
             </div>
-
-            <div className="flex gap-2">
-              {newsSlides.map((slide, index) => (
-                <button
-                  key={slide.title}
-                  onClick={() => setNewsIndex(index)}
-                  className={`h-3 w-10 rounded-full ${index === newsIndex ? "bg-red-700" : "bg-slate-300"}`}
-                  aria-label={slide.title}
-                />
-              ))}
-            </div>
+            <a href="/industry-news" className="text-sm font-bold text-sky-700 hover:text-red-700">
+              View all news →
+            </a>
           </div>
 
-          <div className="overflow-hidden rounded-[2rem] border border-sky-100 bg-white shadow-[0_24px_70px_rgba(8,47,73,0.12)]">
-            {/* 16:9 image or navy placeholder */}
-            <div className="aspect-video w-full overflow-hidden">
-              {activeNews.image ? (
-                <img src={activeNews.image} alt={activeNews.title} className="h-full w-full object-cover" />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-sky-950 px-8">
-                  <span className="text-center text-base font-bold uppercase tracking-widest text-white/70">
-                    {activeNews.tag}
-                  </span>
-                </div>
-              )}
+          {newsLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-sky-700" />
             </div>
-            {/* Card content */}
-            <div className="bg-sky-700 p-8 text-white md:p-12">
-              <div className="mb-4 inline-flex rounded-full bg-red-700 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em]">{activeNews.tag}</div>
-              <h3 className="text-2xl font-extrabold leading-snug md:text-3xl">{activeNews.title}</h3>
-              <p className="mt-3 text-sm font-semibold text-sky-200">
-                {activeNews.publishedDate
-                  ? new Date(activeNews.publishedDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })
-                  : ""}
-                {activeNews.source ? ` · ${activeNews.source}` : ""}
-              </p>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200">{activeNews.summary}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                {activeNews.sourceUrl && (
-                  <a
-                    href={activeNews.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-sky-950 hover:bg-slate-100"
-                  >
-                    Read Full Article →
-                  </a>
-                )}
-                <a href="/industry-news" className="inline-flex rounded-xl border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/20">
-                  Browse All News
-                </a>
-              </div>
+          ) : newsSlides.length === 0 ? (
+            <div className="rounded-2xl border border-slate-200 bg-white py-16 text-center">
+              <p className="text-sm text-slate-400">No recent articles available.</p>
             </div>
-          </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {newsSlides.map((slide) => {
+                const bannerColor = CATEGORY_COLOR[slide.tag] ?? "bg-sky-700";
+                const dateStr = slide.publishedDate
+                  ? (() => { const d = new Date(slide.publishedDate); return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }); })()
+                  : "";
+                return (
+                  <div key={slide.title} className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                    <div className={`flex h-20 w-full shrink-0 items-center justify-center px-6 ${bannerColor}`}>
+                      <span className="text-center text-xs font-bold uppercase tracking-widest text-white">
+                        {slide.tag}
+                      </span>
+                    </div>
+                    <div className="flex flex-1 flex-col p-5">
+                      <span className="inline-block shrink-0 rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-sky-950 w-fit">
+                        {slide.tag}
+                      </span>
+                      <h3 className="mt-3 text-sm font-bold leading-snug text-sky-950">{slide.title}</h3>
+                      <p className="mt-1.5 text-xs text-slate-400">
+                        {dateStr ? `${dateStr} · ` : ""}{slide.source}
+                      </p>
+                      <p className="mt-3 flex-1 text-xs leading-5 text-slate-500 line-clamp-3">{slide.summary}</p>
+                      {slide.sourceUrl && (
+                        <div className="mt-4 border-t border-slate-100 pt-4">
+                          <a
+                            href={slide.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-800"
+                          >
+                            Read Full Article <ArrowRight size={12} />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         <section className="bg-sky-700 py-20 text-white">

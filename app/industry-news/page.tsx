@@ -13,7 +13,6 @@ type Article = {
   category: string;
   source: string;
   publishedDate: string;
-  image: string;
   summary: string;
   sourceUrl: string;
   tags: string[];
@@ -123,21 +122,21 @@ function normaliseCategory(raw: string | undefined): string {
   return CATEGORY_ALIAS[raw] ?? "Other";
 }
 
-// ─── Category fallback images ─────────────────────────────────────────────────
+// ─── Category colour banners ──────────────────────────────────────────────────
 
-const CATEGORY_IMAGE: Record<string, string> = {
-  "Waterproofing Defects":      "/Images/Categories/waterproofing-water-ingress.jpg",
-  "Concrete Repair":            "/Images/Categories/concrete-structural-defects.jpg",
-  "Façade Defects":             "/Images/Categories/facade-external-envelope.jpg",
-  "Building Commission NSW":    "/Images/Categories/facade-external-envelope.jpg",
-  "Class 2 Buildings":          "/Images/Categories/concrete-structural-defects.jpg",
-  "Strata Defects":             "/Images/Categories/balconies-podiums.jpg",
-  "Building Defects":           "/Images/Categories/internal-defects-finishes.jpg",
-  "DBP Act":                    "/Images/Categories/miscellaneous-other.jpg",
-  "Remedial Construction":      "/Images/Categories/miscellaneous-other.jpg",
-  "Product & Material Updates": "/Images/Categories/miscellaneous-other.jpg",
-  "New Construction Systems":   "/Images/Categories/concrete-structural-defects.jpg",
-  "Other":                      "/Images/Categories/miscellaneous-other.jpg",
+const CATEGORY_COLOR: Record<string, string> = {
+  "Waterproofing Defects":      "bg-blue-900",
+  "Concrete Repair":            "bg-slate-600",
+  "Strata Defects":             "bg-teal-800",
+  "Building Commission NSW":    "bg-slate-800",
+  "DBP Act":                    "bg-slate-800",
+  "Façade Defects":             "bg-zinc-700",
+  "Class 2 Buildings":          "bg-sky-800",
+  "Remedial Construction":      "bg-sky-700",
+  "Building Defects":           "bg-sky-700",
+  "Product & Material Updates": "bg-green-800",
+  "New Construction Systems":   "bg-sky-700",
+  "Other":                      "bg-sky-700",
 };
 
 function mapRow(row: DbRow): Article {
@@ -148,8 +147,7 @@ function mapRow(row: DbRow): Article {
     slug: row.slug ?? String(row.id),
     category,
     source: row.source ?? "Remedial Building Australia",
-    publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
-    image: row.image_url ?? row.image ?? CATEGORY_IMAGE[category] ?? "",
+    publishedDate: row.date_published ?? row.published_date ?? "",
     summary: row.summary ?? "",
     sourceUrl: row.source_url ?? row.external_url ?? "",
     tags: Array.isArray(row.tags)
@@ -182,11 +180,10 @@ const CATEGORIES = [
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
 }
 
 // ─── Components ───────────────────────────────────────────────────────────────
@@ -201,38 +198,23 @@ function CategoryPill({ label }: { label: string }) {
 
 function ArticleCard({ article }: { article: Article }) {
   const hasUrl = Boolean(article.sourceUrl);
-  const hasImage = Boolean(article.image);
+  const bannerColor = CATEGORY_COLOR[article.category] ?? "bg-sky-700";
+  const date = formatDate(article.publishedDate);
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      {/* 16:9 image or placeholder */}
-      <div className="aspect-video w-full shrink-0 overflow-hidden">
-        {hasImage ? (
-          <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center bg-sky-950 px-6">
-            <span className="text-center text-sm font-bold uppercase tracking-widest text-white/80">
-              {article.category}
-            </span>
-          </div>
-        )}
+      {/* Category colour banner */}
+      <div className={`flex h-20 w-full shrink-0 items-center justify-center px-6 ${bannerColor}`}>
+        <span className="text-center text-xs font-bold uppercase tracking-widest text-white">
+          {article.category}
+        </span>
       </div>
       <div className="flex flex-1 flex-col p-5">
-        {/* Category badge */}
         <CategoryPill label={article.category} />
-
-        {/* Title */}
         <h3 className="mt-3 text-sm font-bold leading-snug text-sky-950">{article.title}</h3>
-
-        {/* Date + source */}
         <p className="mt-1.5 text-xs text-slate-400">
-          {formatDate(article.publishedDate)} &middot; {article.source}
+          {date ? `${date} · ` : ""}{article.source}
         </p>
-
-        {/* Summary */}
         <p className="mt-3 flex-1 text-xs leading-5 text-slate-500 line-clamp-3">{article.summary}</p>
-
-
-        {/* CTA */}
         {hasUrl && (
           <div className="mt-4 border-t border-slate-100 pt-4">
             <a
