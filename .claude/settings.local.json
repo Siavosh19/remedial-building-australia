@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init *)",
+      "Bash(xargs sed -i '' 's/h-\\\\[66px\\\\] w-\\\\[66px\\\\]/h-\\\\[20px\\\\] w-\\\\[20px\\\\]/g')",
+      "Bash(xargs sed -i '' 's/h-\\\\[20px\\\\] w-\\\\[20px\\\\]/h-10 w-auto/g')",
+      "Bash(sips *)",
+      "Bash(perl -0777 -i -pe 's|<nav className=\"hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex\">\\\\s*<a href=\"/materials-products\"[^>]*>Materials</a>\\\\s*<a href=\"/ai-scope-builder\"[^>]*>AI Scope Builder</a>\\\\s*</nav>|<nav className=\"hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex\">\\\\n          <a href=\"/defect-library\" className=\"whitespace-nowrap hover:text-red-700\">Defect Library</a>\\\\n          <a href=\"/repair-systems\" className=\"whitespace-nowrap hover:text-red-700\">Repair Systems</a>\\\\n          <a href=\"/materials-products\" className=\"whitespace-nowrap hover:text-red-700\">Materials</a>\\\\n          <a href=\"/industry-news\" className=\"whitespace-nowrap hover:text-red-700\">Industry News</a>\\\\n          <a href=\"/ai-scope-builder\" className=\"whitespace-nowrap hover:text-red-700\">AI Scope Builder</a>\\\\n        </nav>|g' /Users/siasepehrara/remedial-building-australia/app/page.tsx)",
+      "Bash(xargs perl -i -pe 's/tracking-\\\\[0\\\\.22em\\\\] text-sky-500/tracking-[0.22em] text-slate-900/g')",
+      "Bash(python3 *)",
+      "Bash(/usr/bin/python3 *)",
+      "Bash(node *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git --version)",
+      "Read(//usr/local/bin/**)",
+      "Read(//usr/bin/**)",
+      "Bash(DEVELOPER_DIR=\"\" GIT_EXEC_PATH=\"\" /usr/bin/git *)",
+      "Bash(gh --version)",
+      "Read(//Users/siasepehrara/**)",
+      "Bash(xcode-select *)",
+      "Bash(npm run *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)"
+    ]
+  }
+}
