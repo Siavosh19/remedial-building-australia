@@ -95,136 +95,42 @@ function CategoryPill({ label }: { label: string }) {
   );
 }
 
-// Large card — used for the primary featured article
-function FeaturedMainCard({ article }: { article: Article }) {
-  const hasUrl = article.sourceUrl && article.sourceUrl !== "#";
-  return (
-    <div className="flex overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="w-52 shrink-0 overflow-hidden">
-        <img
-          src={article.image}
-          alt={article.title}
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div className="flex flex-1 flex-col p-6">
-        <CategoryPill label={article.category} />
-        <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
-        {hasUrl ? (
-          <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 text-lg font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700 cursor-pointer"
-          >
-            {article.title}
-          </a>
-        ) : (
-          <h2 className="mt-3 text-lg font-bold leading-snug text-sky-950">{article.title}</h2>
-        )}
-        <p className="mt-2 flex-1 text-sm leading-6 text-slate-500 line-clamp-3">{article.excerpt}</p>
-        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-          <span className="text-xs font-semibold text-slate-400">Source: {article.source}</span>
-          {hasUrl && (
-            <a
-              href={article.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
-            >
-              Read Article <ArrowRight size={12} />
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Stacked card — used for the two secondary featured articles
-function FeaturedSideCard({ article }: { article: Article }) {
-  const hasUrl = article.sourceUrl && article.sourceUrl !== "#";
+function ArticleCard({ article, imageHeight = "h-40" }: { article: Article; imageHeight?: string }) {
+  const hasUrl = Boolean(article.sourceUrl && article.sourceUrl !== "#");
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="h-32 w-full shrink-0 overflow-hidden">
-        <img
-          src={article.image}
-          alt={article.title}
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div className="flex flex-1 flex-col p-4">
-        <CategoryPill label={article.category} />
-        <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
-        {hasUrl ? (
-          <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700 cursor-pointer"
-          >
-            {article.title}
-          </a>
-        ) : (
-          <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950">{article.title}</h3>
-        )}
-        <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
-          <span className="text-xs font-semibold text-slate-400">Source: {article.source}</span>
-          {hasUrl && (
-            <a
-              href={article.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
-            >
-              Read Article <ArrowRight size={12} />
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Standard grid card — used in Latest News section
-function NewsCard({ article }: { article: Article }) {
-  const hasUrl = article.sourceUrl && article.sourceUrl !== "#";
-  return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="h-36 w-full shrink-0 overflow-hidden">
-        <img
-          src={article.image}
-          alt={article.title}
-          className="h-full w-full object-cover"
-        />
+      <div className={`${imageHeight} w-full shrink-0 overflow-hidden`}>
+        <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <CategoryPill label={article.category} />
-        <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
-        {hasUrl ? (
-          <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700 cursor-pointer"
-          >
-            {article.title}
-          </a>
-        ) : (
-          <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950">{article.title}</h3>
-        )}
-        <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{article.excerpt}</p>
-        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-          <span className="text-xs font-semibold text-slate-400">Source: {article.source}</span>
-          {hasUrl && (
+        {/* Category + date */}
+        <div className="flex flex-wrap items-center gap-2">
+          <CategoryPill label={article.category} />
+          <span className="text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
+        </div>
+
+        {/* Title */}
+        <h3 className="mt-3 text-sm font-bold leading-snug text-sky-950">{article.title}</h3>
+
+        {/* Summary */}
+        <p className="mt-2 flex-1 text-xs leading-5 text-slate-500 line-clamp-3">{article.excerpt}</p>
+
+        {/* Source name */}
+        <p className="mt-3 text-xs font-semibold text-slate-400">Source: {article.source}</p>
+
+        {/* CTA */}
+        <div className="mt-4 border-t border-slate-100 pt-4">
+          {hasUrl ? (
             <a
               href={article.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
+              className="inline-flex items-center gap-2 rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-800"
             >
-              Read Article <ArrowRight size={12} />
+              View Source — {article.source} <ArrowRight size={12} />
             </a>
+          ) : (
+            <span className="text-xs font-semibold text-slate-400 italic">Source link unavailable</span>
           )}
         </div>
       </div>
@@ -410,11 +316,11 @@ export default function IndustryNewsPage() {
 
               <div className="grid gap-6 lg:grid-cols-[1.7fr_1fr]">
                 {featuredArticles[0] && (
-                  <FeaturedMainCard article={featuredArticles[0]} />
+                  <ArticleCard article={featuredArticles[0]} imageHeight="h-52" />
                 )}
                 <div className="flex flex-col gap-6">
                   {featuredArticles.slice(1, 3).map((a) => (
-                    <FeaturedSideCard key={a.id} article={a} />
+                    <ArticleCard key={a.id} article={a} imageHeight="h-32" />
                   ))}
                 </div>
               </div>
@@ -447,7 +353,7 @@ export default function IndustryNewsPage() {
             {filteredArticles.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredArticles.map((a) => (
-                  <NewsCard key={a.id} article={a} />
+                  <ArticleCard key={a.id} article={a} />
                 ))}
               </div>
             ) : (
