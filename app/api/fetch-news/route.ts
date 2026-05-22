@@ -7,9 +7,14 @@ export const maxDuration = 60;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY ?? "";
 
 const RSS_FEEDS = [
+  // Google News — AU-localised searches
   "https://news.google.com/rss/search?q=class+2+building+australia&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=design+practitioner+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=design+practitioner+act+NSW&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=building+practitioner+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=building+practitioner+act+NSW&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=residential+apartment+buildings+act+NSW&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=RAB+act+NSW+building&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=building+consultant+australia&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=remedial+building+australia&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=facade+maintenance+australia&hl=en-AU&gl=AU&ceid=AU:en",
@@ -18,6 +23,33 @@ const RSS_FEEDS = [
   "https://news.google.com/rss/search?q=concrete+cancer+australia&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=master+builders+australia&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=insurance+class+2+builders+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=strata+building+bond+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=NSW+building+commissioner&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=David+Chandler+building+NSW&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=NSW+building+reforms&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=Construct+NSW&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=cladding+rectification+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=combustible+cladding+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=strata+building+defects+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=post+tensioned+concrete+repair+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=balcony+waterproofing+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=structural+crack+repair+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=fire+upgrade+building+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=fire+compliance+building+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=passive+fire+protection+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=NCC+building+code+changes+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=building+code+compliance+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=building+regulations+australia+2025&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=decennial+liability+insurance+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=building+defects+warranty+australia&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=fair+trading+building+NSW&hl=en-AU&gl=AU&ceid=AU:en",
+  "https://news.google.com/rss/search?q=icare+building+insurance+NSW&hl=en-AU&gl=AU&ceid=AU:en",
+  // Direct industry feeds
+  "https://sourceable.net/feed/",
+  "https://www.constructionreview.com.au/feed/",
+  "https://www.mbansw.asn.au/feed",
+  "https://www.thefifthestate.com.au/feed/",
+  "https://architectureau.com/feed/",
 ];
 
 const VALID_CATEGORIES = [
@@ -143,47 +175,53 @@ Article title: "${title}"
 Article description: "${description}"
 
 STEP 1 — RELEVANCE CHECK
-Only save articles that are directly relevant to at least one of these topics:
+Only save articles directly relevant to at least one of these topics:
 - Class 2 building (apartments, strata, multi-residential)
 - Design practitioner or building practitioner (NSW/Australia)
+- DBP Act / Design and Building Practitioners Act NSW
+- RAB Act / Residential Apartment Buildings Act NSW
 - Building consultant (construction defects, compliance)
 - Remedial building works
 - Façade maintenance or cladding rectification
 - Concrete spalling, concrete cancer, or structural crack repair
 - Waterproofing (balconies, roofs, basements, wet areas)
+- Balcony waterproofing
+- Post-tensioned concrete repair
 - Master Builders Australia
-- Insurance for Class 2 builders or decennial liability insurance
+- Insurance for Class 2 builders
+- Decennial liability insurance
 - Building defects warranty
-- Strata building bond or strata defects
-- NSW Building Commissioner
+- Strata building bond
+- Strata defects
+- NSW Building Commissioner or David Chandler
+- NSW building reforms or Construct NSW
 - Combustible cladding
-- Post-tensioned concrete
 - Fire upgrade, fire compliance, or passive fire protection
 - NCC building code, building code compliance, or building regulations
-- DBP Act (Design and Building Practitioners Act NSW)
 - Fair Trading building NSW
+- icare building insurance NSW
 
-Mark as IRRELEVANT if the article is about:
-- General residential houses or greenfield construction (not Class 2 strata)
-- Infrastructure, roads, tunnels, or civil works
-- Commercial fitout or retail construction
+Mark IRRELEVANT if the article is about:
+- General residential houses or greenfield land development (not Class 2 strata)
+- Infrastructure, roads, tunnels, bridges, or civil works
+- Commercial fitout, retail, or hotel construction
 - International news with no direct Australian application
-- General business, finance, or property market news
-- Unrelated industries
+- General business, property market prices, or finance news
+- Unrelated industries (mining, agriculture, tech, etc.)
 
 STEP 2 — CATEGORY (only if relevant)
-Assign EXACTLY one category from this list:
+Assign EXACTLY one category:
 ${VALID_CATEGORIES.map((c) => `- ${c}`).join("\n")}
 
 STEP 3 — SUMMARY (only if relevant)
-Write 2–3 sentences in plain English explaining:
+Write 2–3 sentences in plain English:
 1. What the article is about
-2. Why it matters to remedial building professionals working on Class 2 buildings in Australia
+2. Why it matters to remedial building professionals on Class 2 buildings in Australia
 Write in your own words. Do not copy from the article.
 
-Respond in this exact format with no other text:
-CATEGORY: <one category from the list above, or IRRELEVANT>
-SUMMARY: <2-3 sentence summary, or leave blank if IRRELEVANT>`;
+Respond in this exact format — no other text:
+CATEGORY: <one category from the list, or IRRELEVANT>
+SUMMARY: <2-3 sentence summary, or blank if IRRELEVANT>`;
 
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {

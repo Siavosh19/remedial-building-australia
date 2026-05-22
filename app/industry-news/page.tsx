@@ -32,7 +32,6 @@ type DbRow = {
   image?: string;
   image_url?: string;
   summary?: string;
-  excerpt?: string;
   source_url?: string;
   external_url?: string;
   tags?: string[] | string;
@@ -151,7 +150,7 @@ function mapRow(row: DbRow): Article {
     source: row.source ?? "Remedial Building Australia",
     publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
     image: row.image_url ?? row.image ?? CATEGORY_IMAGE[category] ?? "",
-    summary: row.summary ?? row.excerpt ?? "",
+    summary: row.summary ?? "",
     sourceUrl: row.source_url ?? row.external_url ?? "",
     tags: Array.isArray(row.tags)
       ? row.tags
