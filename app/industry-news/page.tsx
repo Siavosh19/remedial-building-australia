@@ -291,7 +291,7 @@ export default function IndustryNewsPage() {
       pool = pool.filter(
         (a) =>
           a.title.toLowerCase().includes(q) ||
-          a.excerpt.toLowerCase().includes(q) ||
+          a.summary.toLowerCase().includes(q) ||
           a.source.toLowerCase().includes(q) ||
           a.tags.some((t) => t.toLowerCase().includes(q))
       );
@@ -489,42 +489,42 @@ export default function IndustryNewsPage() {
                 {
                   title: "Understanding AS 3740 Waterproofing Requirements for Balconies and Wet Areas",
                   category: "Waterproofing",
-                  excerpt: "A detailed walkthrough of AS 3740 requirements for membrane type selection, upturn heights, drainage falls, penetration detailing and flood testing in Class 2 buildings.",
+                  summary: "A detailed walkthrough of AS 3740 requirements for membrane type selection, upturn heights, drainage falls, penetration detailing and flood testing in Class 2 buildings.",
                   image: "/Images/Categories/waterproofing-water-ingress.jpg",
                   readTime: "8 min read",
                 },
                 {
                   title: "How to Read a Concrete Condition Report: A Practical Guide for Strata Managers",
                   category: "Concrete Repair",
-                  excerpt: "Breaking down the key elements of a structural concrete condition report — carbonation depths, cover measurements, corrosion risk and repair priority recommendations.",
+                  summary: "Breaking down the key elements of a structural concrete condition report — carbonation depths, cover measurements, corrosion risk and repair priority recommendations.",
                   image: "/Images/Categories/concrete-structural-defects.jpg",
                   readTime: "6 min read",
                 },
                 {
                   title: "Facade Sealant Replacement: Planning a Building-Wide Programme",
                   category: "Façade Defects",
-                  excerpt: "How to scope, specify, sequence and quality-control a building-wide sealant replacement programme — from initial condition survey through to post-repair hose testing.",
+                  summary: "How to scope, specify, sequence and quality-control a building-wide sealant replacement programme — from initial condition survey through to post-repair hose testing.",
                   image: "/Images/Categories/facade-external-envelope.jpg",
                   readTime: "7 min read",
                 },
                 {
                   title: "Polyurethane Injection for Basement Cracks: When It Works and When It Fails",
                   category: "Concrete Repair",
-                  excerpt: "A technical review of the conditions under which polyurethane hydrophilic injection succeeds and fails — covering crack activity, product selection, injection pressure and monitoring.",
+                  summary: "A technical review of the conditions under which polyurethane hydrophilic injection succeeds and fails — covering crack activity, product selection, injection pressure and monitoring.",
                   image: "/Images/Categories/basements-substructure.jpg",
                   readTime: "9 min read",
                 },
                 {
                   title: "Balustrade Corrosion in Strata Buildings: Structural Risk and Remediation",
                   category: "Building Defects",
-                  excerpt: "Assessing the structural significance of corroded balustrade posts, load testing requirements under AS 1170.1, and a step-by-step replacement and waterproofing methodology.",
+                  summary: "Assessing the structural significance of corroded balustrade posts, load testing requirements under AS 1170.1, and a step-by-step replacement and waterproofing methodology.",
                   image: "/Images/Categories/balconies-podiums.jpg",
                   readTime: "7 min read",
                 },
                 {
                   title: "Magnesite Flooring Assessment and Remediation in Older Strata Buildings",
                   category: "Strata Defects",
-                  excerpt: "The full assessment process for magnesite flooring in strata buildings — moisture testing, corrosion risk, removal scope, and compliant reinstatement options under current Australian Standards.",
+                  summary: "The full assessment process for magnesite flooring in strata buildings — moisture testing, corrosion risk, removal scope, and compliant reinstatement options under current Australian Standards.",
                   image: "/Images/Categories/internal-defects-finishes.jpg",
                   readTime: "8 min read",
                 },
@@ -537,7 +537,7 @@ export default function IndustryNewsPage() {
                     <span className="inline-block shrink-0 rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-sky-950 w-fit">{article.category}</span>
                     <span className="mt-1.5 text-xs text-slate-400">{article.readTime}</span>
                     <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 group-hover:text-sky-700">{article.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{article.excerpt}</p>
+                    <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{article.summary}</p>
                     <div className="mt-4 border-t border-slate-100 pt-3">
                       <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
                         Read Article <ArrowRight size={12} />
