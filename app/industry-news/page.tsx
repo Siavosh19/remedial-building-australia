@@ -15,7 +15,7 @@ type Article = {
   publishedDate: string;
   image: string;
   excerpt: string;
-  externalUrl: string;
+  sourceUrl: string;
   tags: string[];
   featured: boolean;
 };
@@ -32,6 +32,7 @@ type DbRow = {
   image?: string;
   image_url?: string;
   excerpt?: string;
+  source_url?: string;
   external_url?: string;
   tags?: string[] | string;
   featured?: boolean;
@@ -48,7 +49,7 @@ function mapRow(row: DbRow): Article {
     publishedDate: row.date_published ?? row.published_date ?? new Date().toISOString(),
     image: row.image ?? row.image_url ?? "/Images/Categories/facade-external-envelope.jpg",
     excerpt: row.excerpt ?? "",
-    externalUrl: row.external_url ?? "#",
+    sourceUrl: row.source_url ?? row.external_url ?? "#",
     tags: Array.isArray(row.tags)
       ? row.tags
       : typeof row.tags === "string"
@@ -98,7 +99,9 @@ function CategoryPill({ label }: { label: string }) {
 function FeaturedMainCard({ article }: { article: Article }) {
   return (
     <a
-      href={article.externalUrl}
+      href={article.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group flex overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl"
     >
       <div className="w-52 shrink-0 overflow-hidden">
@@ -116,11 +119,11 @@ function FeaturedMainCard({ article }: { article: Article }) {
         </h2>
         <p className="mt-2 flex-1 text-sm leading-6 text-slate-500 line-clamp-3">{article.excerpt}</p>
         <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            {article.source}
+          <span className="text-xs font-semibold text-slate-400">
+            Source: {article.source}
           </span>
           <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
-            Read More <ArrowRight size={12} />
+            Read Original <ArrowRight size={12} />
           </span>
         </div>
       </div>
@@ -132,7 +135,9 @@ function FeaturedMainCard({ article }: { article: Article }) {
 function FeaturedSideCard({ article }: { article: Article }) {
   return (
     <a
-      href={article.externalUrl}
+      href={article.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-lg"
     >
       <div className="h-32 w-full shrink-0 overflow-hidden">
@@ -149,11 +154,11 @@ function FeaturedSideCard({ article }: { article: Article }) {
           {article.title}
         </h3>
         <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            {article.source}
+          <span className="text-xs font-semibold text-slate-400">
+            Source: {article.source}
           </span>
           <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
-            Read More <ArrowRight size={12} />
+            Read Original <ArrowRight size={12} />
           </span>
         </div>
       </div>
@@ -165,7 +170,9 @@ function FeaturedSideCard({ article }: { article: Article }) {
 function NewsCard({ article }: { article: Article }) {
   return (
     <a
-      href={article.externalUrl}
+      href={article.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg"
     >
       <div className="h-36 w-full shrink-0 overflow-hidden">
@@ -183,9 +190,9 @@ function NewsCard({ article }: { article: Article }) {
         </h3>
         <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{article.excerpt}</p>
         <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">{article.source}</span>
+          <span className="text-xs font-semibold text-slate-400">Source: {article.source}</span>
           <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
-            Read More <ArrowRight size={12} />
+            Read Original <ArrowRight size={12} />
           </span>
         </div>
       </div>
@@ -501,6 +508,13 @@ export default function IndustryNewsPage() {
             </div>
           </div>
         )}
+
+        {/* ── Disclaimer ─────────────────────────────────────────────────────── */}
+        <div className="mx-auto max-w-7xl px-5 pb-10">
+          <p className="text-xs leading-6 text-slate-400 border-t border-slate-200 pt-6">
+            Articles sourced from third-party publications. Remedial Building Australia does not own or reproduce article content. All articles link directly to their original source.
+          </p>
+        </div>
 
         {/* ── Newsletter ──────────────────────────────────────────────────────── */}
         <section className="bg-sky-950 px-8 py-20 text-white">

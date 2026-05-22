@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Mail, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabase";
 
 const coreServices = [
   {
@@ -95,7 +96,14 @@ const heroSlides = heroSlidesBase.map((slide, i) => ({
   image: coverPhotos[i % coverPhotos.length],
 }));
 
-const newsSlides = [
+type NewsSlide = {
+  title: string;
+  tag: string;
+  text: string;
+  image: string;
+};
+
+const FALLBACK_NEWS: NewsSlide[] = [
   {
     title: "Building Commission NSW — Updated Inspection Framework for Class 2 Buildings",
     tag: "Building Commission NSW",
@@ -119,12 +127,40 @@ const newsSlides = [
 export default function RemedialBuildingAustraliaHome() {
   const [heroIndex, setHeroIndex] = useState(0);
   const [newsIndex, setNewsIndex] = useState(0);
+  const [newsSlides, setNewsSlides] = useState<NewsSlide[]>(FALLBACK_NEWS);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroIndex((i) => (i + 1) % heroSlides.length);
     }, 5000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    async function fetchNews() {
+      const { data, error } = await supabase
+        .from("news_articles")
+        .select("title, category, excerpt, image, image_url, date_published, published_date")
+        .eq("status", "published")
+        .order("date_published", { ascending: false })
+        .limit(3);
+
+      if (error || !data || data.length === 0) return;
+
+      setNewsSlides(
+        data.map((row) => ({
+          title: row.title ?? "",
+          tag: row.category ?? "Industry News",
+          text: row.excerpt ?? "",
+          image:
+            row.image ??
+            row.image_url ??
+            "/Images/Categories/facade-external-envelope.jpg",
+        }))
+      );
+      setNewsIndex(0);
+    }
+    fetchNews();
   }, []);
 
   const activeHero = heroSlides[heroIndex];
