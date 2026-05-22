@@ -137,26 +137,53 @@ function slugify(title: string): string {
 async function classify(title: string, description: string): Promise<{ category: string; summary: string }> {
   if (!ANTHROPIC_KEY) return { category: "IRRELEVANT", summary: "" };
 
-  const prompt = `You are classifying Australian construction news articles for a remedial building knowledge platform.
+  const prompt = `You are a strict content filter for an Australian remedial building knowledge platform.
 
 Article title: "${title}"
 Article description: "${description}"
 
-Task 1 — Category:
-Return EXACTLY one of these categories if the article is relevant to Australian remedial building, Class 2 apartment/strata defects, waterproofing, concrete repair, façade defects, DBP Act compliance, or building regulation:
+STEP 1 — RELEVANCE CHECK
+Only save articles that are directly relevant to at least one of these topics:
+- Class 2 building (apartments, strata, multi-residential)
+- Design practitioner or building practitioner (NSW/Australia)
+- Building consultant (construction defects, compliance)
+- Remedial building works
+- Façade maintenance or cladding rectification
+- Concrete spalling, concrete cancer, or structural crack repair
+- Waterproofing (balconies, roofs, basements, wet areas)
+- Master Builders Australia
+- Insurance for Class 2 builders or decennial liability insurance
+- Building defects warranty
+- Strata building bond or strata defects
+- NSW Building Commissioner
+- Combustible cladding
+- Post-tensioned concrete
+- Fire upgrade, fire compliance, or passive fire protection
+- NCC building code, building code compliance, or building regulations
+- DBP Act (Design and Building Practitioners Act NSW)
+- Fair Trading building NSW
+
+Mark as IRRELEVANT if the article is about:
+- General residential houses or greenfield construction (not Class 2 strata)
+- Infrastructure, roads, tunnels, or civil works
+- Commercial fitout or retail construction
+- International news with no direct Australian application
+- General business, finance, or property market news
+- Unrelated industries
+
+STEP 2 — CATEGORY (only if relevant)
+Assign EXACTLY one category from this list:
 ${VALID_CATEGORIES.map((c) => `- ${c}`).join("\n")}
 
-Return IRRELEVANT if the article is about:
-- General residential houses (not Class 2 strata/apartments)
-- International news not applicable to Australia
-- Unrelated construction or business topics
+STEP 3 — SUMMARY (only if relevant)
+Write 2–3 sentences in plain English explaining:
+1. What the article is about
+2. Why it matters to remedial building professionals working on Class 2 buildings in Australia
+Write in your own words. Do not copy from the article.
 
-Task 2 — Summary (only if NOT irrelevant):
-Write a 2–3 sentence plain English summary explaining what the article is about and why it matters to remedial building professionals. Write in your own words. Do not copy from the article.
-
-Respond in this exact format (no other text):
-CATEGORY: <category name or IRRELEVANT>
-SUMMARY: <your 2-3 sentence summary, or leave blank if IRRELEVANT>`;
+Respond in this exact format with no other text:
+CATEGORY: <one category from the list above, or IRRELEVANT>
+SUMMARY: <2-3 sentence summary, or leave blank if IRRELEVANT>`;
 
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
