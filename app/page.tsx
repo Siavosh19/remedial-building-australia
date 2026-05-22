@@ -125,6 +125,8 @@ export default function RemedialBuildingAustraliaHome() {
   const [heroIndex, setHeroIndex] = useState(0);
   const [newsSlides, setNewsSlides] = useState<NewsSlide[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -161,6 +163,24 @@ export default function RemedialBuildingAustraliaHome() {
     }
     fetchNews();
   }, []);
+
+  async function handleNewsletterSubscribe() {
+    if (!newsletterEmail.trim() || newsletterStatus === "loading") return;
+    setNewsletterStatus("loading");
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert({ email: newsletterEmail.trim() });
+      if (error) {
+        setNewsletterStatus("error");
+      } else {
+        setNewsletterStatus("success");
+        setNewsletterEmail("");
+      }
+    } catch {
+      setNewsletterStatus("error");
+    }
+  }
 
   const activeHero = heroSlides[heroIndex];
 
@@ -362,12 +382,34 @@ export default function RemedialBuildingAustraliaHome() {
             </div>
 
             <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <input className="min-h-12 flex-1 rounded-xl border border-white/20 bg-white px-4 text-sky-950 outline-none" placeholder="Email address" />
-                <Button className="min-h-12 bg-red-700 hover:bg-red-800">
-                  <Mail className="mr-2" size={18} /> Subscribe
-                </Button>
-              </div>
+              {newsletterStatus === "success" ? (
+                <div className="flex min-h-12 items-center justify-center rounded-xl bg-green-700/40 px-6 py-4">
+                  <p className="text-sm font-semibold text-white">You&apos;re subscribed! We&apos;ll be in touch fortnightly.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input
+                      type="email"
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubscribe()}
+                      placeholder="Email address"
+                      className="min-h-12 flex-1 rounded-xl border border-white/20 bg-white px-4 text-sky-950 outline-none"
+                    />
+                    <Button
+                      onClick={handleNewsletterSubscribe}
+                      disabled={newsletterStatus === "loading"}
+                      className="min-h-12 bg-red-700 hover:bg-red-800 disabled:opacity-60"
+                    >
+                      <Mail className="mr-2" size={18} /> {newsletterStatus === "loading" ? "Subscribing…" : "Subscribe"}
+                    </Button>
+                  </div>
+                  {newsletterStatus === "error" && (
+                    <p className="mt-2 text-xs text-red-300">Something went wrong. Please try again.</p>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </section>

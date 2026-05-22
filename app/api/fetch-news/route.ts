@@ -64,6 +64,7 @@ const VALID_CATEGORIES = [
   "Building Defects",
   "Product & Material Updates",
   "New Construction Systems",
+  "Other",
 ];
 
 // ─── Blocked (paywalled) domains ─────────────────────────────────────────────
@@ -247,6 +248,7 @@ Only save articles directly relevant to at least one of these topics:
 - NCC building code, building code compliance, or building regulations
 - Fair Trading building NSW
 - icare building insurance NSW
+- NSW building reforms
 
 Mark IRRELEVANT if the article is about:
 - General residential houses or greenfield land development (not Class 2 strata)
@@ -255,10 +257,12 @@ Mark IRRELEVANT if the article is about:
 - International news with no direct Australian application
 - General business, property market prices, or finance news
 - Unrelated industries (mining, agriculture, tech, etc.)
+- Property investment advice or real estate market commentary
 
 STEP 2 — CATEGORY (only if relevant)
-Assign EXACTLY one category:
-${VALID_CATEGORIES.map((c) => `- ${c}`).join("\n")}
+Assign EXACTLY one category from this list:
+${VALID_CATEGORIES.filter((c) => c !== "Other").map((c) => `- ${c}`).join("\n")}
+- Other (use for relevant articles that do not fit any category above)
 
 STEP 3 — SUMMARY (only if relevant)
 Write 2–3 sentences in plain English:
@@ -267,7 +271,7 @@ Write 2–3 sentences in plain English:
 Write in your own words. Do not copy from the article.
 
 Respond in this exact format — no other text:
-CATEGORY: <one category from the list, or IRRELEVANT>
+CATEGORY: <one category from the list above, or IRRELEVANT>
 SUMMARY: <2-3 sentence summary, or blank if IRRELEVANT>`;
 
   try {
@@ -392,7 +396,9 @@ export async function GET() {
         slug: slugify(item.title),
         category,
         source: item.sourceName || "Industry News",
-        date_published: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
+        date_published: item.pubDate
+          ? (() => { const d = new Date(item.pubDate); return isNaN(d.getTime()) ? null : d.toISOString(); })()
+          : null,
         excerpt: item.description,
         summary,
         source_url: item.link,

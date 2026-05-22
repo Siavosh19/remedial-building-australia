@@ -241,6 +241,8 @@ export default function IndustryNewsPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   useEffect(() => {
     async function fetchArticles() {
@@ -264,6 +266,30 @@ export default function IndustryNewsPage() {
     }
     fetchArticles();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeCategory]);
+
+  async function handleNewsletterSubscribe() {
+    if (!email.trim() || newsletterStatus === "loading") return;
+    setNewsletterStatus("loading");
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert({ email: email.trim() });
+      if (error) {
+        setNewsletterStatus("error");
+      } else {
+        setNewsletterStatus("success");
+        setEmail("");
+      }
+    } catch {
+      setNewsletterStatus("error");
+    }
+  }
+
+  const ARTICLES_PER_PAGE = 12;
 
   const featuredArticles = useMemo(
     () => articles.filter((a) => a.featured).slice(0, 3),
@@ -289,6 +315,12 @@ export default function IndustryNewsPage() {
     }
     return pool;
   }, [searchQuery, activeCategory, isFiltering, articles]);
+
+  const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE);
+  const paginatedArticles = filteredArticles.slice(
+    (currentPage - 1) * ARTICLES_PER_PAGE,
+    currentPage * ARTICLES_PER_PAGE
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -445,11 +477,35 @@ export default function IndustryNewsPage() {
             </div>
 
             {filteredArticles.length > 0 ? (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredArticles.map((a) => (
-                  <ArticleCard key={a.id} article={a} />
-                ))}
-              </div>
+              <>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {paginatedArticles.map((a) => (
+                    <ArticleCard key={a.id} article={a} />
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="mt-10 flex items-center justify-center gap-4">
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:border-sky-300 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      ← Previous
+                    </button>
+                    <span className="text-sm font-semibold text-slate-500">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:border-sky-300 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Next →
+                    </button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="rounded-2xl border border-slate-200 bg-white py-20 text-center">
                 <p className="text-base font-semibold text-slate-400">
@@ -562,19 +618,35 @@ export default function IndustryNewsPage() {
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-white/10 p-6">
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email address"
-                  className="min-h-12 flex-1 rounded-xl border border-white/20 bg-white/10 px-4 text-sm text-white placeholder-sky-400 outline-none focus:border-sky-400"
-                />
-                <button className="flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-red-700 px-6 text-sm font-bold text-white hover:bg-red-800">
-                  <Mail size={16} /> Subscribe
-                </button>
-              </div>
-              <p className="mt-3 text-xs text-sky-500">No spam. Unsubscribe at any time.</p>
+              {newsletterStatus === "success" ? (
+                <div className="flex min-h-12 items-center justify-center rounded-xl bg-green-700/40 px-6 py-4">
+                  <p className="text-sm font-semibold text-white">You&apos;re subscribed! We&apos;ll be in touch fortnightly.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubscribe()}
+                      placeholder="Your email address"
+                      className="min-h-12 flex-1 rounded-xl border border-white/20 bg-white/10 px-4 text-sm text-white placeholder-sky-400 outline-none focus:border-sky-400"
+                    />
+                    <button
+                      onClick={handleNewsletterSubscribe}
+                      disabled={newsletterStatus === "loading"}
+                      className="flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-red-700 px-6 text-sm font-bold text-white hover:bg-red-800 disabled:opacity-60"
+                    >
+                      <Mail size={16} /> {newsletterStatus === "loading" ? "Subscribing…" : "Subscribe"}
+                    </button>
+                  </div>
+                  {newsletterStatus === "error" && (
+                    <p className="mt-2 text-xs text-red-300">Something went wrong. Please try again.</p>
+                  )}
+                  <p className="mt-3 text-xs text-sky-500">No spam. Unsubscribe at any time.</p>
+                </>
+              )}
             </div>
           </div>
         </section>
