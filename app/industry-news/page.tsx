@@ -110,9 +110,7 @@ function FeaturedMainCard({ article }: { article: Article }) {
         <CategoryPill label={article.category} />
         <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
         <a
-          href={article.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`/industry-news/${article.slug}`}
           className="mt-3 cursor-pointer text-lg font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700"
         >
           {article.title}
@@ -123,12 +121,10 @@ function FeaturedMainCard({ article }: { article: Article }) {
             Source: {article.source}
           </span>
           <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={`/industry-news/${article.slug}`}
             className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
           >
-            Read Original <ArrowRight size={12} />
+            Read More <ArrowRight size={12} />
           </a>
         </div>
       </div>
@@ -151,9 +147,7 @@ function FeaturedSideCard({ article }: { article: Article }) {
         <CategoryPill label={article.category} />
         <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
         <a
-          href={article.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`/industry-news/${article.slug}`}
           className="mt-2 flex-1 cursor-pointer text-sm font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700"
         >
           {article.title}
@@ -163,12 +157,10 @@ function FeaturedSideCard({ article }: { article: Article }) {
             Source: {article.source}
           </span>
           <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={`/industry-news/${article.slug}`}
             className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
           >
-            Read Original <ArrowRight size={12} />
+            Read More <ArrowRight size={12} />
           </a>
         </div>
       </div>
@@ -191,9 +183,7 @@ function NewsCard({ article }: { article: Article }) {
         <CategoryPill label={article.category} />
         <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
         <a
-          href={article.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`/industry-news/${article.slug}`}
           className="mt-2 flex-1 cursor-pointer text-sm font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700"
         >
           {article.title}
@@ -202,12 +192,10 @@ function NewsCard({ article }: { article: Article }) {
         <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
           <span className="text-xs font-semibold text-slate-400">Source: {article.source}</span>
           <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={`/industry-news/${article.slug}`}
             className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
           >
-            Read Original <ArrowRight size={12} />
+            Read More <ArrowRight size={12} />
           </a>
         </div>
       </div>
