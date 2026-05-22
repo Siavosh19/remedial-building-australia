@@ -98,12 +98,7 @@ function CategoryPill({ label }: { label: string }) {
 // Large card — used for the primary featured article
 function FeaturedMainCard({ article }: { article: Article }) {
   return (
-    <a
-      href={article.sourceUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl"
-    >
+    <div className="group flex overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl">
       <div className="w-52 shrink-0 overflow-hidden">
         <img
           src={article.image}
@@ -114,32 +109,37 @@ function FeaturedMainCard({ article }: { article: Article }) {
       <div className="flex flex-1 flex-col p-6">
         <CategoryPill label={article.category} />
         <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
-        <h2 className="mt-3 text-lg font-bold leading-snug text-sky-950 group-hover:text-sky-700">
+        <a
+          href={article.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 cursor-pointer text-lg font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700"
+        >
           {article.title}
-        </h2>
+        </a>
         <p className="mt-2 flex-1 text-sm leading-6 text-slate-500 line-clamp-3">{article.excerpt}</p>
         <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
           <span className="text-xs font-semibold text-slate-400">
             Source: {article.source}
           </span>
-          <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
+          >
             Read Original <ArrowRight size={12} />
-          </span>
+          </a>
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 
 // Stacked card — used for the two secondary featured articles
 function FeaturedSideCard({ article }: { article: Article }) {
   return (
-    <a
-      href={article.sourceUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-lg"
-    >
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-lg">
       <div className="h-32 w-full shrink-0 overflow-hidden">
         <img
           src={article.image}
@@ -150,31 +150,36 @@ function FeaturedSideCard({ article }: { article: Article }) {
       <div className="flex flex-1 flex-col p-4">
         <CategoryPill label={article.category} />
         <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
-        <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 group-hover:text-sky-700">
+        <a
+          href={article.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 flex-1 cursor-pointer text-sm font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700"
+        >
           {article.title}
-        </h3>
+        </a>
         <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
           <span className="text-xs font-semibold text-slate-400">
             Source: {article.source}
           </span>
-          <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
+          >
             Read Original <ArrowRight size={12} />
-          </span>
+          </a>
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 
 // Standard grid card — used in Latest News section
 function NewsCard({ article }: { article: Article }) {
   return (
-    <a
-      href={article.sourceUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-    >
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
       <div className="h-36 w-full shrink-0 overflow-hidden">
         <img
           src={article.image}
@@ -185,18 +190,28 @@ function NewsCard({ article }: { article: Article }) {
       <div className="flex flex-1 flex-col p-5">
         <CategoryPill label={article.category} />
         <span className="mt-1.5 text-xs text-slate-400">{formatDate(article.publishedDate)}</span>
-        <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 group-hover:text-sky-700">
+        <a
+          href={article.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 flex-1 cursor-pointer text-sm font-bold leading-snug text-sky-950 hover:underline hover:text-sky-700"
+        >
           {article.title}
-        </h3>
+        </a>
         <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{article.excerpt}</p>
         <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
           <span className="text-xs font-semibold text-slate-400">Source: {article.source}</span>
-          <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-red-700"
+          >
             Read Original <ArrowRight size={12} />
-          </span>
+          </a>
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 
