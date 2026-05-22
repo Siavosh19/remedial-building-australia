@@ -260,8 +260,8 @@ export default function RemedialBuildingAustraliaHome() {
         <section className="mx-auto max-w-7xl px-5 py-20">
           <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
-              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News</div>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Featured updates</h2>
+              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News & Articles</div>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Industry News & Articles</h2>
             </div>
 
             <div className="flex gap-2">
@@ -283,7 +283,7 @@ export default function RemedialBuildingAustraliaHome() {
               <h3 className="text-3xl font-extrabold md:text-5xl">{activeNews.title}</h3>
               <p className="mt-5 text-lg leading-8 text-slate-200">{activeNews.text}</p>
               <a href="/industry-news" className="mt-8 inline-flex rounded-xl bg-white px-5 py-3 text-sm font-semibold text-sky-950 hover:bg-slate-100">
-                Browse Industry News
+                Browse Industry News & Articles
               </a>
             </div>
           </div>

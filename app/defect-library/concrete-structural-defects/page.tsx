@@ -37,6 +37,22 @@ const defects = [
       "/defect-library/concrete-structural-defects/magnesite-flooring-deterioration",
     imagePosition: "object-center",
   },
+  {
+    title: "Settlement Cracks",
+    description:
+      "Structural cracking caused by differential foundation movement, soil changes and inadequate footing design.",
+    image: "/Images/Categories/concrete-structural-defects.jpg",
+    href: "/defect-library/concrete-structural-defects/settlement-cracks",
+    imagePosition: "object-center",
+  },
+  {
+    title: "Slab Edge Deterioration",
+    description:
+      "Progressive concrete breakdown at exposed slab perimeters from carbonation, corrosion and moisture exposure.",
+    image: "/Images/Categories/concrete-structural-defects.jpg",
+    href: "/defect-library/concrete-structural-defects/slab-edge-deterioration",
+    imagePosition: "object-center",
+  },
 ];
 
 export default function ConcreteStructuralDefectsPage() {

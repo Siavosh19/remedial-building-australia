@@ -399,10 +399,10 @@ export default function IndustryNewsPage() {
         <section className="bg-sky-950 px-8 py-10">
           <div className="mx-auto max-w-5xl">
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-white">
-              Industry News
+              Industry News & Articles
             </p>
             <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-white md:text-5xl">
-              Industry News
+              Industry News & Articles
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-sky-300">
               Tracking Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects, strata issues, concrete repair and DBP Act developments.
@@ -521,6 +521,80 @@ export default function IndustryNewsPage() {
           </section>
 
         </div>
+
+        {/* ── Articles ───────────────────────────────────────────────────────── */}
+        {!isFiltering && (
+          <div className="mx-auto max-w-7xl px-5 pb-10">
+            <div className="mb-8">
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Technical Articles</p>
+              <h2 className="mt-2 text-2xl font-extrabold text-sky-950">In-Depth Articles</h2>
+              <p className="mt-2 text-sm text-slate-500 max-w-2xl">Detailed technical content on defect assessment, repair methodology and industry practice from the Remedial Building Australia editorial team.</p>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  title: "Understanding AS 3740 Waterproofing Requirements for Balconies and Wet Areas",
+                  category: "Waterproofing",
+                  excerpt: "A detailed walkthrough of AS 3740 requirements for membrane type selection, upturn heights, drainage falls, penetration detailing and flood testing in Class 2 buildings.",
+                  image: "/Images/Categories/waterproofing-water-ingress.jpg",
+                  readTime: "8 min read",
+                },
+                {
+                  title: "How to Read a Concrete Condition Report: A Practical Guide for Strata Managers",
+                  category: "Concrete Repair",
+                  excerpt: "Breaking down the key elements of a structural concrete condition report — carbonation depths, cover measurements, corrosion risk and repair priority recommendations.",
+                  image: "/Images/Categories/concrete-structural-defects.jpg",
+                  readTime: "6 min read",
+                },
+                {
+                  title: "Facade Sealant Replacement: Planning a Building-Wide Programme",
+                  category: "Façade Defects",
+                  excerpt: "How to scope, specify, sequence and quality-control a building-wide sealant replacement programme — from initial condition survey through to post-repair hose testing.",
+                  image: "/Images/Categories/facade-external-envelope.jpg",
+                  readTime: "7 min read",
+                },
+                {
+                  title: "Polyurethane Injection for Basement Cracks: When It Works and When It Fails",
+                  category: "Concrete Repair",
+                  excerpt: "A technical review of the conditions under which polyurethane hydrophilic injection succeeds and fails — covering crack activity, product selection, injection pressure and monitoring.",
+                  image: "/Images/Categories/basements-substructure.jpg",
+                  readTime: "9 min read",
+                },
+                {
+                  title: "Balustrade Corrosion in Strata Buildings: Structural Risk and Remediation",
+                  category: "Building Defects",
+                  excerpt: "Assessing the structural significance of corroded balustrade posts, load testing requirements under AS 1170.1, and a step-by-step replacement and waterproofing methodology.",
+                  image: "/Images/Categories/balconies-podiums.jpg",
+                  readTime: "7 min read",
+                },
+                {
+                  title: "Magnesite Flooring Assessment and Remediation in Older Strata Buildings",
+                  category: "Strata Defects",
+                  excerpt: "The full assessment process for magnesite flooring in strata buildings — moisture testing, corrosion risk, removal scope, and compliant reinstatement options under current Australian Standards.",
+                  image: "/Images/Categories/internal-defects-finishes.jpg",
+                  readTime: "8 min read",
+                },
+              ].map((article) => (
+                <div key={article.title} className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                  <div className="h-36 w-full shrink-0 overflow-hidden">
+                    <img src={article.image} alt={article.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <span className="inline-block shrink-0 rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-sky-950 w-fit">{article.category}</span>
+                    <span className="mt-1.5 text-xs text-slate-400">{article.readTime}</span>
+                    <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 group-hover:text-sky-700">{article.title}</h3>
+                    <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{article.excerpt}</p>
+                    <div className="mt-4 border-t border-slate-100 pt-3">
+                      <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
+                        Read Article <ArrowRight size={12} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* ── Newsletter ──────────────────────────────────────────────────────── */}
         <section className="bg-sky-950 px-8 py-20 text-white">
