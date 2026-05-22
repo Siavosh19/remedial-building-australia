@@ -272,9 +272,9 @@ export default function ConcreteCrackingPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>          </div>
+            <a href="/about" className="underline hover:text-sky-700">About</a>
+            <a href="/terms" className="underline hover:text-sky-700">Terms</a>
+            <a href="/contact" className="underline hover:text-sky-700">Contact</a>          </div>
         </div>
       </footer>
     </div>
