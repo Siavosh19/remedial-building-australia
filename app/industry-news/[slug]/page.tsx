@@ -71,8 +71,7 @@ export default function IndustryNewsArticlePage() {
     ? article.industry_impact.split(" | ").map((s) => s.trim()).filter(Boolean)
     : [];
 
-  const heroImage =
-    article?.featured_image || getCategoryImage(article?.category ?? "Other");
+  const heroImage = getCategoryImage(article?.category ?? "Other");
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
