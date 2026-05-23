@@ -319,9 +319,9 @@ export default function RemedialBuildingAustraliaHome() {
             <a href="/industry-news" className="text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
           </div>
 
-          <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr]">
+          <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr] lg:min-h-[320px]">
             {/* Rotating image panel */}
-            <div className="relative min-h-64 lg:min-h-0">
+            <div className="relative min-h-72 overflow-hidden lg:min-h-full">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={newsImageIndex}
