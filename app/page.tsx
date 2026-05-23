@@ -96,6 +96,15 @@ const heroSlides = heroSlidesBase.map((slide, i) => ({
   image: coverPhotos[i % coverPhotos.length],
 }));
 
+const NEWS_IMAGES = [
+  "/Images/News1.png",
+  "/Images/News2.png",
+  "/Images/News3.png",
+  "/Images/News4.png",
+  "/Images/News6.png",
+  "/Images/News7.png",
+];
+
 type NewsSlide = {
   title: string;
   tag: string;
@@ -108,6 +117,7 @@ type NewsSlide = {
 
 export default function RemedialBuildingAustraliaHome() {
   const [heroIndex, setHeroIndex] = useState(0);
+  const [newsImageIndex, setNewsImageIndex] = useState(0);
   const [newsSlides, setNewsSlides] = useState<NewsSlide[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
   const [newsletterEmail, setNewsletterEmail] = useState("");
@@ -117,6 +127,13 @@ export default function RemedialBuildingAustraliaHome() {
     const timer = setInterval(() => {
       setHeroIndex((i) => (i + 1) % heroSlides.length);
     }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNewsImageIndex((i) => (i + 1) % NEWS_IMAGES.length);
+    }, 3500);
     return () => clearInterval(timer);
   }, []);
 
@@ -297,27 +314,49 @@ export default function RemedialBuildingAustraliaHome() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-20">
-          <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News & Articles</div>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Top Stories</h2>
-            </div>
-            <a href="/industry-news" className="text-sm font-bold text-sky-700 hover:text-red-700">
-              View all news →
-            </a>
+          <div className="mb-8 flex items-center justify-between">
+            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News & Articles</div>
+            <a href="/industry-news" className="text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
           </div>
 
-          {newsLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="h-7 w-7 animate-spin rounded-full border-4 border-slate-200 border-t-sky-700" />
+          <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr]">
+            {/* Rotating image panel */}
+            <div className="relative min-h-64 lg:min-h-0">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={newsImageIndex}
+                  src={NEWS_IMAGES[newsImageIndex]}
+                  alt="Industry news"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.9 }}
+                />
+              </AnimatePresence>
+              {/* Dot indicators */}
+              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                {NEWS_IMAGES.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setNewsImageIndex(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${i === newsImageIndex ? "w-5 bg-white" : "w-1.5 bg-white/50"}`}
+                  />
+                ))}
+              </div>
             </div>
-          ) : newsSlides.length === 0 ? (
-            <div className="rounded-2xl border border-slate-200 bg-white py-12 text-center">
-              <p className="text-sm text-slate-400">No recent articles available.</p>
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-slate-200 bg-white px-6">
-              {newsSlides.map((slide) => {
+
+            {/* Articles list */}
+            <div className="divide-y divide-slate-100 px-6">
+              {newsLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="h-6 w-6 animate-spin rounded-full border-4 border-slate-200 border-t-sky-700" />
+                </div>
+              ) : newsSlides.length === 0 ? (
+                <div className="py-12 text-center">
+                  <p className="text-sm text-slate-400">No recent articles.</p>
+                </div>
+              ) : newsSlides.map((slide) => {
                 const dateStr = slide.publishedDate
                   ? (() => { const d = new Date(slide.publishedDate); return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }); })()
                   : "";
@@ -329,36 +368,28 @@ export default function RemedialBuildingAustraliaHome() {
                   .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
                   .replace(/https?:\/\/\S+/g, "")
                   .replace(/\s{2,}/g, " ").trim();
-                const meta = [dateStr, source].filter(Boolean).join(" · ");
+                const meta = [showTag ? slide.tag : null, dateStr, source].filter(Boolean).join(" · ");
+                const cleanedTitle = slide.title.replace(/\s+-\s+[^-]+$/, "").trim() || slide.title;
+                const isDuplicate = summary.toLowerCase().replace(/[^\w]/g, "").startsWith(cleanedTitle.toLowerCase().replace(/[^\w]/g, "").slice(0, 60));
                 return (
-                  <div key={slide.title} className="border-b border-slate-100 py-5 last:border-0">
-                    <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
-                      {showTag && <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">{slide.tag}</span>}
-                      {showTag && meta && <span className="text-slate-300 text-xs">·</span>}
-                      {meta && <span className="text-xs text-slate-400">{meta}</span>}
-                    </div>
+                  <div key={slide.title} className="py-5">
+                    {meta && <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{meta}</p>}
                     {slide.sourceUrl ? (
-                      <a
-                        href={slide.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
-                      >
-                        {slide.title.replace(/\s+-\s+[^-]+$/, "").trim() || slide.title}
+                      <a href={slide.sourceUrl} target="_blank" rel="noopener noreferrer"
+                        className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline">
+                        {cleanedTitle}
                       </a>
                     ) : (
-                      <span className="text-sm font-semibold leading-snug text-sky-950">
-                        {slide.title.replace(/\s+-\s+[^-]+$/, "").trim() || slide.title}
-                      </span>
+                      <span className="text-sm font-semibold leading-snug text-sky-950">{cleanedTitle}</span>
                     )}
-                    {summary && (
-                      <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
+                    {summary && !isDuplicate && (
+                      <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
                     )}
                   </div>
                 );
               })}
             </div>
-          )}
+          </div>
         </section>
 
         <section className="bg-sky-700 py-20 text-white">
