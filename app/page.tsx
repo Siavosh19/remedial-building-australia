@@ -324,7 +324,11 @@ export default function RemedialBuildingAustraliaHome() {
                 const hiddenSources = new Set(["Google News", "Industry News"]);
                 const source = hiddenSources.has(slide.source) ? "" : slide.source;
                 const showTag = slide.tag && slide.tag !== "Other";
-                const summary = slide.summary.replace(/https?:\/\/\S+/g, "").replace(/\s{2,}/g, " ").trim();
+                const summary = slide.summary
+                  .replace(/<[^>]+>/g, " ")
+                  .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+                  .replace(/https?:\/\/\S+/g, "")
+                  .replace(/\s{2,}/g, " ").trim();
                 const meta = [dateStr, source].filter(Boolean).join(" · ");
                 return (
                   <div key={slide.title} className="border-b border-slate-100 py-5 last:border-0">

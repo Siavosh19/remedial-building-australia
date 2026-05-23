@@ -173,43 +173,56 @@ function formatDate(dateStr: string) {
 const HIDDEN_SOURCES = new Set(["Google News", "Industry News"]);
 
 function cleanSummary(text: string): string {
-  return text.replace(/https?:\/\/\S+/g, "").replace(/\s{2,}/g, " ").trim();
+  return text
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/https?:\/\/\S+/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 // ─── Components ───────────────────────────────────────────────────────────────
 
-function ArticleRow({ article }: { article: Article }) {
+function ArticleRow({ article, index }: { article: Article; index: number }) {
   const date = formatDate(article.publishedDate);
   const showCategory = article.category && article.category !== "Other";
   const source = HIDDEN_SOURCES.has(article.source) ? "" : article.source;
   const summary = cleanSummary(article.summary);
   const meta = [date, source].filter(Boolean).join(" · ");
   return (
-    <div className="border-b border-slate-100 py-5 last:border-0">
-      <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
-        {showCategory && (
-          <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">
-            {article.category}
-          </span>
+    <div className="flex gap-4 border-b border-slate-100 py-5 last:border-0">
+      <span className="w-7 shrink-0 pt-0.5 text-right text-sm font-bold text-slate-300">{index}.</span>
+      <div className="flex-1 min-w-0">
+        <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+          {showCategory && (
+            <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">
+              {article.category}
+            </span>
+          )}
+          {showCategory && meta && <span className="text-slate-300 text-xs">·</span>}
+          {meta && <span className="text-xs text-slate-400">{meta}</span>}
+        </div>
+        {article.sourceUrl ? (
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
+          >
+            {article.title}
+          </a>
+        ) : (
+          <span className="text-sm font-semibold leading-snug text-sky-950">{article.title}</span>
         )}
-        {showCategory && meta && <span className="text-slate-300 text-xs">·</span>}
-        {meta && <span className="text-xs text-slate-400">{meta}</span>}
+        {summary && (
+          <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
+        )}
       </div>
-      {article.sourceUrl ? (
-        <a
-          href={article.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
-        >
-          {article.title}
-        </a>
-      ) : (
-        <span className="text-sm font-semibold leading-snug text-sky-950">{article.title}</span>
-      )}
-      {summary && (
-        <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
-      )}
     </div>
   );
 }
@@ -408,8 +421,8 @@ export default function IndustryNewsPage() {
               {filteredArticles.length > 0 ? (
                 <>
                   <div className="rounded-2xl border border-slate-200 bg-white px-6">
-                    {paginatedArticles.map((a) => (
-                      <ArticleRow key={a.id} article={a} />
+                    {paginatedArticles.map((a, i) => (
+                      <ArticleRow key={a.id} article={a} index={(currentPage - 1) * ARTICLES_PER_PAGE + i + 1} />
                     ))}
                   </div>
 
