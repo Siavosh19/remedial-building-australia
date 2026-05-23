@@ -98,11 +98,13 @@ const heroSlides = heroSlidesBase.map((slide, i) => ({
 
 const NEWS_IMAGES = [
   "/Images/News1.jpg",
-  "/Images/News2.jpg",
-  "/Images/News3.jpg",
-  "/Images/News4.jpg",
-  "/Images/News6.jpg",
-  "/Images/News7.jpg",
+  "/Images/News2-Building-Commissioner.jpg",
+  "/Images/News3-class%202%20building%20Registration.jpg",
+  "/Images/News5-Cladding.jpg",
+  "/Images/News7-Concrete%20Spalling.jpg",
+  "/Images/News8-Apartment.jpg",
+  "/Images/News9waterproroing%20defects%20planterbxoes.jpg",
+  "/Images/News10-NCC-Building%20Codes-Standard.jpg",
 ];
 
 type NewsSlide = {

@@ -256,7 +256,7 @@ export default function IndustryNewsPage() {
               >
                 <div className="relative h-64 w-full overflow-hidden lg:h-auto">
                   <Image
-                    src={featuredArticle.featured_image || getCategoryImage(featuredArticle.category)}
+                    src={getCategoryImage(featuredArticle.category)}
                     alt={featuredArticle.title}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
@@ -313,7 +313,7 @@ export default function IndustryNewsPage() {
                       >
                         <div className="relative h-44 w-full overflow-hidden">
                           <Image
-                            src={article.featured_image || getCategoryImage(article.category)}
+                            src={getCategoryImage(article.category)}
                             alt={article.title}
                             fill
                             className="object-cover transition duration-500 group-hover:scale-105"
