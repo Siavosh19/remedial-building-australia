@@ -184,7 +184,7 @@ STEP 2 — Respond in this EXACT format (no other text):
 RELEVANT: yes
 CATEGORY: <exactly one of: Building Commission NSW | DBP Act | Class 2 Buildings | Waterproofing Defects | Façade Defects | Concrete Repair | Strata Defects | Building Defects | Remedial Construction | Product & Material Updates | New Construction Systems | Other>
 TAGS: <3–5 comma-separated keywords>
-SUMMARY: <2–3 sentences written in your own words — original, not copied. What happened and the factual context. Written for a professional audience of remedial building consultants, waterproofing contractors and strata managers.>
+SUMMARY: <8–10 sentences written in your own words — original, not copied. Cover: what happened, the key details and context, who is affected, what changed or was decided, and the broader significance. Written for a professional audience of remedial building consultants, waterproofing contractors and strata managers in Australia. Be specific and informative — this is the main reading experience for the user, not just a teaser.>
 IMPACT: <2–3 short points separated by " | " explaining the practical consequence for Australian remedial building professionals. Each point starts with the action or implication, e.g. "Strata managers should…" or "This may increase demand for…">
 
 If not relevant, respond only:
@@ -200,7 +200,7 @@ RELEVANT: no`;
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 400,
+        max_tokens: 800,
         messages: [{ role: "user", content: prompt }],
       }),
     });
