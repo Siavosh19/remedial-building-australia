@@ -281,39 +281,42 @@ export async function GET() {
 
   stats.total_fetched = queue.length;
 
-  // 3. Process articles sequentially to respect Anthropic rate limits
-  for (const item of queue) {
-    try {
-      // Check for existing article with same URL
-      const { data: existing } = await supabase
-        .from("industry_news")
-        .select("id")
-        .eq("source_url", item.link)
-        .single();
+  // 3. Fetch all existing source_urls in one query to deduplicate in memory
+  const { data: existingRows } = await supabase
+    .from("industry_news")
+    .select("source_url");
+  const existingUrls = new Set((existingRows ?? []).map((r: { source_url: string }) => r.source_url));
 
-      if (existing) {
-        stats.skipped_duplicate++;
-        continue;
+  const newItems = queue.filter((item) => {
+    if (existingUrls.has(item.link)) {
+      stats.skipped_duplicate++;
+      return false;
+    }
+    return true;
+  });
+
+  // 4. Cap at 15 new articles per run, then classify all in parallel
+  const batch = newItems.slice(0, 15);
+
+  const enriched = await Promise.allSettled(
+    batch.map((item) => classifyAndEnrich(item.title, item.description))
+  );
+
+  // 5. Insert all relevant articles in parallel
+  await Promise.allSettled(
+    batch.map(async (item, i) => {
+      const result = enriched[i];
+      if (result.status === "rejected") {
+        stats.errors.push(`AI error: ${String(result.reason)}`);
+        return;
       }
-
-      // Classify and enrich with AI
-      const { relevant, category, tags, summary, impact } = await classifyAndEnrich(
-        item.title,
-        item.description
-      );
-
+      const { relevant, category, tags, summary, impact } = result.value;
       if (!relevant) {
         stats.skipped_irrelevant++;
-        continue;
+        return;
       }
-
-      // Assign featured image from category mapping
       const featured_image = getCategoryImage(category);
-
-      // Generate slug
       const slug = slugify(item.title);
-
-      // Parse published_date
       const published_date = item.pubDate
         ? (() => {
             const d = new Date(item.pubDate);
@@ -321,7 +324,6 @@ export async function GET() {
           })()
         : new Date().toISOString();
 
-      // Insert to industry_news table
       const { error } = await supabase.from("industry_news").insert({
         title: item.title,
         slug,
@@ -341,10 +343,8 @@ export async function GET() {
       } else {
         stats.inserted++;
       }
-    } catch (err) {
-      stats.errors.push(String(err));
-    }
-  }
+    })
+  );
 
   return NextResponse.json({ success: true, ...stats });
 }
