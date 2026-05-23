@@ -193,20 +193,14 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
   const showCategory = article.category && article.category !== "Other";
   const source = HIDDEN_SOURCES.has(article.source) ? "" : article.source;
   const summary = cleanSummary(article.summary);
-  const meta = [date, source].filter(Boolean).join(" · ");
+  const meta = [showCategory ? article.category : null, date, source].filter(Boolean).join(" · ");
   return (
-    <div className="flex gap-4 border-b border-slate-100 py-5 last:border-0">
-      <span className="w-7 shrink-0 pt-0.5 text-right text-sm font-bold text-slate-300">{index}.</span>
-      <div className="flex-1 min-w-0">
-        <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
-          {showCategory && (
-            <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">
-              {article.category}
-            </span>
-          )}
-          {showCategory && meta && <span className="text-slate-300 text-xs">·</span>}
-          {meta && <span className="text-xs text-slate-400">{meta}</span>}
-        </div>
+    <div className="py-4">
+      {meta && (
+        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{meta}</p>
+      )}
+      <div className="flex items-baseline gap-2">
+        <span className="shrink-0 text-sm font-bold text-sky-950">{index}.</span>
         {article.sourceUrl ? (
           <a
             href={article.sourceUrl}
@@ -219,10 +213,10 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
         ) : (
           <span className="text-sm font-semibold leading-snug text-sky-950">{article.title}</span>
         )}
-        {summary && (
-          <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
-        )}
       </div>
+      {summary && (
+        <p className="mt-1 pl-5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
+      )}
     </div>
   );
 }
