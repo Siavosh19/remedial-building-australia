@@ -344,10 +344,12 @@ export default function RemedialBuildingAustraliaHome() {
                         rel="noopener noreferrer"
                         className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
                       >
-                        {slide.title}
+                        {slide.title.replace(/\s+-\s+[^-]+$/, "").trim() || slide.title}
                       </a>
                     ) : (
-                      <span className="text-sm font-semibold leading-snug text-sky-950">{slide.title}</span>
+                      <span className="text-sm font-semibold leading-snug text-sky-950">
+                        {slide.title.replace(/\s+-\s+[^-]+$/, "").trim() || slide.title}
+                      </span>
                     )}
                     {summary && (
                       <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>

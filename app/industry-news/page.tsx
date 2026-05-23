@@ -163,6 +163,10 @@ const CATEGORIES = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function cleanTitle(title: string): string {
+  return title.replace(/\s+-\s+[^-]+$/, "").trim() || title;
+}
+
 function formatDate(dateStr: string) {
   if (!dateStr) return "";
   const d = new Date(dateStr);
@@ -195,7 +199,7 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
   const summary = cleanSummary(article.summary);
   const meta = [showCategory ? article.category : null, date, source].filter(Boolean).join(" · ");
   return (
-    <div className="py-4">
+    <div className="border-b border-slate-100 py-4 last:border-0">
       {meta && (
         <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{meta}</p>
       )}
@@ -208,10 +212,10 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
             rel="noopener noreferrer"
             className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
           >
-            {article.title}
+            {cleanTitle(article.title)}
           </a>
         ) : (
-          <span className="text-sm font-semibold leading-snug text-sky-950">{article.title}</span>
+          <span className="text-sm font-semibold leading-snug text-sky-950">{cleanTitle(article.title)}</span>
         )}
       </div>
       {summary && !summary.toLowerCase().replace(/[^\w]/g, "").startsWith(
