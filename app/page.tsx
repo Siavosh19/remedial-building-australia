@@ -321,14 +321,17 @@ export default function RemedialBuildingAustraliaHome() {
                 const dateStr = slide.publishedDate
                   ? (() => { const d = new Date(slide.publishedDate); return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }); })()
                   : "";
+                const hiddenSources = new Set(["Google News", "Industry News"]);
+                const source = hiddenSources.has(slide.source) ? "" : slide.source;
+                const showTag = slide.tag && slide.tag !== "Other";
+                const summary = slide.summary.replace(/https?:\/\/\S+/g, "").replace(/\s{2,}/g, " ").trim();
+                const meta = [dateStr, source].filter(Boolean).join(" · ");
                 return (
                   <div key={slide.title} className="border-b border-slate-100 py-5 last:border-0">
                     <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">{slide.tag}</span>
-                      {dateStr && <span className="text-slate-300 text-xs">·</span>}
-                      {dateStr && <span className="text-xs text-slate-400">{dateStr}</span>}
-                      {slide.source && <span className="text-slate-300 text-xs">·</span>}
-                      {slide.source && <span className="text-xs text-slate-400">{slide.source}</span>}
+                      {showTag && <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">{slide.tag}</span>}
+                      {showTag && meta && <span className="text-slate-300 text-xs">·</span>}
+                      {meta && <span className="text-xs text-slate-400">{meta}</span>}
                     </div>
                     {slide.sourceUrl ? (
                       <a
@@ -342,8 +345,8 @@ export default function RemedialBuildingAustraliaHome() {
                     ) : (
                       <span className="text-sm font-semibold leading-snug text-sky-950">{slide.title}</span>
                     )}
-                    {slide.summary && (
-                      <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{slide.summary}</p>
+                    {summary && (
+                      <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
                     )}
                   </div>
                 );

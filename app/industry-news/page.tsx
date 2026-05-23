@@ -170,20 +170,30 @@ function formatDate(dateStr: string) {
   return d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
 }
 
+const HIDDEN_SOURCES = new Set(["Google News", "Industry News"]);
+
+function cleanSummary(text: string): string {
+  return text.replace(/https?:\/\/\S+/g, "").replace(/\s{2,}/g, " ").trim();
+}
+
 // ─── Components ───────────────────────────────────────────────────────────────
 
 function ArticleRow({ article }: { article: Article }) {
   const date = formatDate(article.publishedDate);
+  const showCategory = article.category && article.category !== "Other";
+  const source = HIDDEN_SOURCES.has(article.source) ? "" : article.source;
+  const summary = cleanSummary(article.summary);
+  const meta = [date, source].filter(Boolean).join(" · ");
   return (
     <div className="border-b border-slate-100 py-5 last:border-0">
       <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">
-          {article.category}
-        </span>
-        {(date || article.source) && <span className="text-slate-300 text-xs">·</span>}
-        {date && <span className="text-xs text-slate-400">{date}</span>}
-        {date && article.source && <span className="text-slate-300 text-xs">·</span>}
-        {article.source && <span className="text-xs text-slate-400">{article.source}</span>}
+        {showCategory && (
+          <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">
+            {article.category}
+          </span>
+        )}
+        {showCategory && meta && <span className="text-slate-300 text-xs">·</span>}
+        {meta && <span className="text-xs text-slate-400">{meta}</span>}
       </div>
       {article.sourceUrl ? (
         <a
@@ -197,8 +207,8 @@ function ArticleRow({ article }: { article: Article }) {
       ) : (
         <span className="text-sm font-semibold leading-snug text-sky-950">{article.title}</span>
       )}
-      {article.summary && (
-        <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{article.summary}</p>
+      {summary && (
+        <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
       )}
     </div>
   );
@@ -355,29 +365,6 @@ export default function IndustryNewsPage() {
                   Clear
                 </button>
               )}
-            </div>
-          </div>
-        </section>
-
-        <div className="h-1 w-full bg-red-700" />
-
-        {/* ── Category Filter ────────────────────────────────────────────────── */}
-        <section className="border-b border-slate-200 bg-white px-5 py-3">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex flex-wrap gap-1.5">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`rounded-md px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] transition ${
-                    activeCategory === cat
-                      ? "bg-sky-950 text-white"
-                      : "border border-slate-200 bg-white text-slate-500 hover:border-sky-300 hover:text-sky-800"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
             </div>
           </div>
         </section>
