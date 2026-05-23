@@ -107,6 +107,7 @@ const NEWS_IMAGES = [
 
 type NewsSlide = {
   title: string;
+  slug: string;
   tag: string;
   summary: string;
   source: string;
@@ -141,20 +142,21 @@ export default function RemedialBuildingAustraliaHome() {
     async function fetchNews() {
       try {
         const { data, error } = await supabase
-          .from("news_articles")
-          .select("title, category, summary, date_published, published_date, source, source_url")
+          .from("industry_news")
+          .select("title, slug, category, summary, source_name, published_date, source_url")
           .eq("status", "published")
-          .order("date_published", { ascending: false })
-          .limit(3);
+          .order("published_date", { ascending: false })
+          .limit(5);
 
         if (!error && data && data.length > 0) {
           setNewsSlides(
             data.map((row) => ({
               title: row.title ?? "",
+              slug: row.slug ?? "",
               tag: row.category ?? "Other",
               summary: row.summary ?? "",
-              source: row.source ?? "Remedial Building Australia",
-              publishedDate: row.date_published ?? row.published_date ?? "",
+              source: row.source_name ?? "Remedial Building Australia",
+              publishedDate: row.published_date ?? "",
               sourceUrl: row.source_url ?? "",
             }))
           );
@@ -351,7 +353,12 @@ export default function RemedialBuildingAustraliaHome() {
             </div>
 
             {/* Articles list */}
-            <div className="divide-y divide-slate-100 px-6">
+            <div className="px-6 py-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-base font-extrabold tracking-tight text-sky-950">Latest News</h3>
+                <a href="/industry-news" className="text-xs font-bold text-sky-600 hover:text-red-700">View all →</a>
+              </div>
+              <div className="divide-y divide-slate-100">
               {newsLoading ? (
                 <div className="flex items-center justify-center py-12">
                   <div className="h-6 w-6 animate-spin rounded-full border-4 border-slate-200 border-t-sky-700" />
@@ -360,7 +367,7 @@ export default function RemedialBuildingAustraliaHome() {
                 <div className="py-12 text-center">
                   <p className="text-sm text-slate-400">No recent articles.</p>
                 </div>
-              ) : newsSlides.map((slide) => {
+              ) : newsSlides.map((slide, idx) => {
                 const dateStr = slide.publishedDate
                   ? (() => { const d = new Date(slide.publishedDate); return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }); })()
                   : "";
@@ -376,22 +383,26 @@ export default function RemedialBuildingAustraliaHome() {
                 const cleanedTitle = slide.title.replace(/\s+-\s+[^-]+$/, "").trim() || slide.title;
                 const isDuplicate = summary.toLowerCase().replace(/[^\w]/g, "").startsWith(cleanedTitle.toLowerCase().replace(/[^\w]/g, "").slice(0, 60));
                 return (
-                  <div key={slide.title} className="py-5">
+                  <div key={slide.title} className="py-4">
                     {meta && <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{meta}</p>}
-                    {slide.sourceUrl ? (
-                      <a href={slide.sourceUrl} target="_blank" rel="noopener noreferrer"
-                        className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline">
-                        {cleanedTitle}
-                      </a>
-                    ) : (
-                      <span className="text-sm font-semibold leading-snug text-sky-950">{cleanedTitle}</span>
-                    )}
+                    <div className="flex items-baseline gap-2">
+                      <span className="shrink-0 text-sm font-bold text-sky-950">{idx + 1}.</span>
+                      {slide.slug ? (
+                        <a href={`/industry-news/${slide.slug}`}
+                          className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline">
+                          {cleanedTitle}
+                        </a>
+                      ) : (
+                        <span className="text-sm font-semibold leading-snug text-sky-950">{cleanedTitle}</span>
+                      )}
+                    </div>
                     {summary && !isDuplicate && (
-                      <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
+                      <p className="mt-1 pl-5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
                     )}
                   </div>
                 );
               })}
+              </div>
             </div>
           </div>
         </section>

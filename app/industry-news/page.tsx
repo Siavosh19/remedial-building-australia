@@ -2,238 +2,33 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { Search, Mail, ArrowRight, Loader2 } from "lucide-react";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
+import { FILTER_CATEGORIES, getCategoryImage, formatDate } from "@/lib/news-categories";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Article = {
+type NewsArticle = {
   id: string;
   title: string;
   slug: string;
-  category: string;
-  source: string;
-  publishedDate: string;
   summary: string;
-  sourceUrl: string;
+  industry_impact: string;
+  category: string;
   tags: string[];
-  featured: boolean;
+  source_name: string;
+  source_url: string;
+  published_date: string;
+  featured_image: string;
 };
-
-// Row shape coming back from Supabase (snake_case DB columns)
-type DbRow = {
-  id: string | number;
-  title: string;
-  slug?: string;
-  category?: string;
-  source?: string;
-  date_published?: string;
-  published_date?: string;
-  image?: string;
-  image_url?: string;
-  summary?: string;
-  source_url?: string;
-  external_url?: string;
-  tags?: string[] | string;
-  featured?: boolean;
-  status?: string;
-};
-
-// ─── Category normalisation ───────────────────────────────────────────────────
-// Canonical tabs shown in the filter bar
-const VALID_CATEGORIES = new Set([
-  "Building Commission NSW",
-  "Class 2 Buildings",
-  "Waterproofing Defects",
-  "Concrete Repair",
-  "Façade Defects",
-  "Strata Defects",
-  "DBP Act",
-  "Remedial Construction",
-  "Building Defects",
-  "Product & Material Updates",
-  "New Construction Systems",
-  "Other",
-]);
-
-// Map any variation that might come from Make.com / AI to a canonical tab
-const CATEGORY_ALIAS: Record<string, string> = {
-  // Façade variations
-  "Facade Defects":             "Façade Defects",
-  "Facade":                     "Façade Defects",
-  "Façade":                     "Façade Defects",
-  "External Envelope":          "Façade Defects",
-  // Waterproofing variations
-  "Waterproofing":              "Waterproofing Defects",
-  "Water Ingress":              "Waterproofing Defects",
-  "Waterproofing & Water Ingress": "Waterproofing Defects",
-  // Concrete variations
-  "Concrete":                   "Concrete Repair",
-  "Concrete Defects":           "Concrete Repair",
-  "Concrete & Structural":      "Concrete Repair",
-  // Strata variations
-  "Strata":                     "Strata Defects",
-  "Strata Construction":        "Strata Defects",
-  // DBP variations
-  "DBP":                        "DBP Act",
-  "DBPA":                       "DBP Act",
-  "Design and Building Practitioners Act": "DBP Act",
-  // Building Commission variations
-  "Building Commission":        "Building Commission NSW",
-  "NSW Building Commission":    "Building Commission NSW",
-  // Remedial Construction variations
-  "Remedial":                   "Remedial Construction",
-  "Remedial Works":             "Remedial Construction",
-  // Class 2 variations
-  "Class 2":                    "Class 2 Buildings",
-  "Class 2 Building":           "Class 2 Buildings",
-  // Building Defects variations
-  "Defects":                    "Building Defects",
-  "Building":                   "Building Defects",
-  "Roofing":                    "Building Defects",
-  "Roofing Defects":            "Building Defects",
-  "Balconies":                  "Building Defects",
-  "Balconies & Podiums":        "Building Defects",
-  "Basements":                  "Building Defects",
-  "Basements & Substructure":   "Building Defects",
-  "Services & Drainage":        "Building Defects",
-  "Internal Defects":           "Building Defects",
-  // Product variations
-  "Products":                   "Product & Material Updates",
-  "Materials":                  "Product & Material Updates",
-  "Products & Materials":       "Product & Material Updates",
-  "Product and Material Updates": "Product & Material Updates",
-  "Product & Materials":        "Product & Material Updates",
-  // New Construction Systems variations
-  "New Construction":           "New Construction Systems",
-  "Construction Systems":       "New Construction Systems",
-  "New Systems":                "New Construction Systems",
-  "Innovation":                 "New Construction Systems",
-  // Catch-alls → Other
-  "Industry News":              "Other",
-  "News":                       "Other",
-  "General":                    "Other",
-  "Uncategorised":              "Other",
-  "Uncategorized":              "Other",
-};
-
-function normaliseCategory(raw: string | undefined): string {
-  if (!raw) return "Other";
-  if (VALID_CATEGORIES.has(raw)) return raw;
-  return CATEGORY_ALIAS[raw] ?? "Other";
-}
-
-
-function mapRow(row: DbRow): Article {
-  const category = normaliseCategory(row.category);
-  return {
-    id: String(row.id),
-    title: row.title ?? "",
-    slug: row.slug ?? String(row.id),
-    category,
-    source: row.source ?? "Remedial Building Australia",
-    publishedDate: row.date_published ?? row.published_date ?? "",
-    summary: row.summary ?? "",
-    sourceUrl: row.source_url ?? row.external_url ?? "",
-    tags: Array.isArray(row.tags)
-      ? row.tags
-      : typeof row.tags === "string"
-      ? row.tags.split(",").map((t: string) => t.trim())
-      : [],
-    featured: row.featured ?? false,
-  };
-}
-
-// ─── Static category list ─────────────────────────────────────────────────────
-
-const CATEGORIES = [
-  "All",
-  "Building Commission NSW",
-  "Class 2 Buildings",
-  "Waterproofing Defects",
-  "Concrete Repair",
-  "Façade Defects",
-  "Strata Defects",
-  "DBP Act",
-  "Remedial Construction",
-  "Building Defects",
-  "Product & Material Updates",
-  "New Construction Systems",
-  "Other",
-];
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function cleanTitle(title: string): string {
-  return title.replace(/\s+-\s+[^-]+$/, "").trim() || title;
-}
-
-function formatDate(dateStr: string) {
-  if (!dateStr) return "";
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return "";
-  return d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
-}
-
-const HIDDEN_SOURCES = new Set(["Google News", "Industry News"]);
-
-function cleanSummary(text: string): string {
-  return text
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/https?:\/\/\S+/g, "")
-    .replace(/\s{2,}/g, " ")
-    .trim();
-}
-
-// ─── Components ───────────────────────────────────────────────────────────────
-
-function ArticleRow({ article, index }: { article: Article; index: number }) {
-  const date = formatDate(article.publishedDate);
-  const showCategory = article.category && article.category !== "Other";
-  const source = HIDDEN_SOURCES.has(article.source) ? "" : article.source;
-  const summary = cleanSummary(article.summary);
-  const meta = [showCategory ? article.category : null, date, source].filter(Boolean).join(" · ");
-  return (
-    <div className="border-b border-slate-100 py-4 last:border-0">
-      {meta && (
-        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{meta}</p>
-      )}
-      <div className="flex items-baseline gap-2">
-        <span className="shrink-0 text-sm font-bold text-sky-950">{index}.</span>
-        {article.sourceUrl ? (
-          <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
-          >
-            {cleanTitle(article.title)}
-          </a>
-        ) : (
-          <span className="text-sm font-semibold leading-snug text-sky-950">{cleanTitle(article.title)}</span>
-        )}
-      </div>
-      {summary && !summary.toLowerCase().replace(/[^\w]/g, "").startsWith(
-        article.title.toLowerCase().replace(/[^\w]/g, "").slice(0, 60)
-      ) && (
-        <p className="mt-1 pl-5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
-      )}
-    </div>
-  );
-}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function IndustryNewsPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
   const [email, setEmail] = useState("");
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -245,13 +40,31 @@ export default function IndustryNewsPage() {
       setFetchError(null);
       try {
         const { data, error } = await supabase
-          .from("news_articles")
-          .select("*")
+          .from("industry_news")
+          .select(
+            "id, title, slug, summary, industry_impact, category, tags, source_name, source_url, published_date, featured_image"
+          )
           .eq("status", "published")
-          .order("date_published", { ascending: false });
+          .order("published_date", { ascending: false });
 
         if (error) throw error;
-        setArticles((data as DbRow[]).map(mapRow));
+        setArticles(
+          (data ?? []).map((row: Record<string, unknown>) => ({
+            id: String(row.id ?? ""),
+            title: String(row.title ?? ""),
+            slug: String(row.slug ?? ""),
+            summary: String(row.summary ?? ""),
+            industry_impact: String(row.industry_impact ?? ""),
+            category: String(row.category ?? "Other"),
+            tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
+            source_name: String(row.source_name ?? ""),
+            source_url: String(row.source_url ?? ""),
+            published_date: String(row.published_date ?? ""),
+            featured_image: String(
+              row.featured_image ?? getCategoryImage(String(row.category ?? "Other"))
+            ),
+          }))
+        );
       } catch (err) {
         setFetchError("Unable to load articles. Please try again later.");
         console.error("Supabase fetch error:", err);
@@ -285,7 +98,6 @@ export default function IndustryNewsPage() {
   }
 
   const ARTICLES_PER_PAGE = 12;
-
   const isFiltering = searchQuery.trim().length > 0 || activeCategory !== "All";
 
   const filteredArticles = useMemo(() => {
@@ -299,15 +111,22 @@ export default function IndustryNewsPage() {
         (a) =>
           a.title.toLowerCase().includes(q) ||
           a.summary.toLowerCase().includes(q) ||
-          a.source.toLowerCase().includes(q) ||
+          a.source_name.toLowerCase().includes(q) ||
           a.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
     return pool;
   }, [searchQuery, activeCategory, articles]);
 
-  const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE);
-  const paginatedArticles = filteredArticles.slice(
+  // Featured article: first article when not filtering
+  const featuredArticle =
+    !isFiltering && articles.length > 0 ? articles[0] : null;
+
+  // Grid articles: exclude featured from the grid
+  const gridPool = isFiltering ? filteredArticles : filteredArticles.slice(1);
+
+  const totalPages = Math.ceil(gridPool.length / ARTICLES_PER_PAGE);
+  const paginatedArticles = gridPool.slice(
     (currentPage - 1) * ARTICLES_PER_PAGE,
     currentPage * ARTICLES_PER_PAGE
   );
@@ -382,6 +201,27 @@ export default function IndustryNewsPage() {
           </div>
         </section>
 
+        {/* ── Category Filter Pills ────────────────────────────────────────── */}
+        <div className="border-b border-slate-200 bg-white px-5">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
+              {FILTER_CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition whitespace-nowrap ${
+                    activeCategory === cat
+                      ? "bg-sky-950 text-white"
+                      : "border border-slate-200 bg-white text-slate-600 hover:border-sky-300"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* ── Content ────────────────────────────────────────────────────────── */}
         <div className="mx-auto max-w-7xl px-5 py-10 space-y-10">
 
@@ -399,35 +239,111 @@ export default function IndustryNewsPage() {
             </div>
           )}
 
-          {/* News list */}
+          {/* Featured Article */}
+          {!loading && !fetchError && featuredArticle && (
+            <section>
+              <div className="mb-4 flex items-center gap-3">
+                <span className="inline-block rounded-full bg-red-700 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                  Latest
+                </span>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                  Featured Article
+                </p>
+              </div>
+              <a
+                href={`/industry-news/${featuredArticle.slug}`}
+                className="group grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg lg:grid-cols-[1fr_1fr]"
+              >
+                <div className="relative h-64 w-full overflow-hidden lg:h-auto">
+                  <Image
+                    src={featuredArticle.featured_image || getCategoryImage(featuredArticle.category)}
+                    alt={featuredArticle.title}
+                    fill
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+                <div className="flex flex-col justify-center p-8">
+                  <span className="inline-block w-fit rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-sky-950">
+                    {featuredArticle.category}
+                  </span>
+                  <p className="mt-2 text-xs text-slate-400">
+                    {formatDate(featuredArticle.published_date)}
+                    {featuredArticle.source_name && ` · ${featuredArticle.source_name}`}
+                  </p>
+                  <h2 className="mt-4 text-2xl font-extrabold leading-tight text-sky-950 group-hover:text-sky-700">
+                    {featuredArticle.title}
+                  </h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">
+                    {featuredArticle.summary}
+                  </p>
+                  <span className="mt-5 flex items-center gap-1.5 text-sm font-bold text-sky-700 group-hover:text-red-700">
+                    Read Full Summary <ArrowRight size={14} />
+                  </span>
+                </div>
+              </a>
+            </section>
+          )}
+
+          {/* News Grid */}
           {!loading && !fetchError && (
             <section>
-              <div className="mb-4 flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
-                  {isFiltering
-                    ? `${filteredArticles.length} article${filteredArticles.length !== 1 ? "s" : ""} found`
-                    : `${articles.length} articles`}
-                </p>
-                {isFiltering && (
+              {isFiltering && (
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
+                    {filteredArticles.length} article{filteredArticles.length !== 1 ? "s" : ""} found
+                  </p>
                   <button
                     onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
                     className="text-xs font-bold text-sky-700 hover:text-red-700"
                   >
                     Clear filters
                   </button>
-                )}
-              </div>
+                </div>
+              )}
 
-              {filteredArticles.length > 0 ? (
+              {paginatedArticles.length > 0 ? (
                 <>
-                  <div className="rounded-2xl border border-slate-200 bg-white px-6">
-                    {paginatedArticles.map((a, i) => (
-                      <ArticleRow key={a.id} article={a} index={(currentPage - 1) * ARTICLES_PER_PAGE + i + 1} />
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {paginatedArticles.map((article) => (
+                      <a
+                        key={article.id}
+                        href={`/industry-news/${article.slug}`}
+                        className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                      >
+                        <div className="relative h-44 w-full overflow-hidden">
+                          <Image
+                            src={article.featured_image || getCategoryImage(article.category)}
+                            alt={article.title}
+                            fill
+                            className="object-cover transition duration-500 group-hover:scale-105"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                        </div>
+                        <div className="flex flex-1 flex-col p-5">
+                          <span className="inline-block w-fit rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-950">
+                            {article.category}
+                          </span>
+                          <p className="mt-1 text-xs text-slate-400">
+                            {formatDate(article.published_date)}
+                            {article.source_name && ` · ${article.source_name}`}
+                          </p>
+                          <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 line-clamp-2 group-hover:text-sky-700">
+                            {article.title}
+                          </h3>
+                          <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">
+                            {article.summary}
+                          </p>
+                          <span className="mt-3 flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
+                            Read Summary <ArrowRight size={12} />
+                          </span>
+                        </div>
+                      </a>
                     ))}
                   </div>
 
                   {totalPages > 1 && (
-                    <div className="mt-8 flex items-center justify-center gap-4">
+                    <div className="mt-10 flex items-center justify-center gap-3">
                       <button
                         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
@@ -435,9 +351,19 @@ export default function IndustryNewsPage() {
                       >
                         ← Previous
                       </button>
-                      <span className="text-sm font-semibold text-slate-500">
-                        Page {currentPage} of {totalPages}
-                      </span>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`rounded-lg border px-4 py-2.5 text-sm font-semibold shadow-sm transition ${
+                            page === currentPage
+                              ? "border-sky-950 bg-sky-950 text-white"
+                              : "border-slate-200 bg-white text-slate-600 hover:border-sky-300 hover:text-sky-800"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
                       <button
                         onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                         disabled={currentPage === totalPages}
@@ -449,100 +375,20 @@ export default function IndustryNewsPage() {
                   )}
                 </>
               ) : (
-                <div className="rounded-2xl border border-slate-200 bg-white py-20 text-center">
-                  <p className="text-base font-semibold text-slate-400">No articles found.</p>
-                  <button
-                    onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
-                    className="mt-4 text-sm font-bold text-sky-700 hover:text-red-700"
-                  >
-                    Clear filters
-                  </button>
-                </div>
+                !loading && (
+                  <div className="rounded-2xl border border-slate-200 bg-white py-20 text-center">
+                    <p className="text-base font-semibold text-slate-400">No articles found.</p>
+                    <button
+                      onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
+                      className="mt-4 text-sm font-bold text-sky-700 hover:text-red-700"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
+                )
               )}
             </section>
           )}
-
-        </div>
-
-        {/* ── Articles ───────────────────────────────────────────────────────── */}
-        {!loading && !fetchError && !isFiltering && (
-          <div className="mx-auto max-w-7xl px-5 pb-10">
-            <div className="mb-8">
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Technical Articles</p>
-              <h2 className="mt-2 text-2xl font-extrabold text-sky-950">In-Depth Articles</h2>
-              <p className="mt-2 text-sm text-slate-500 max-w-2xl">Detailed technical content on defect assessment, repair methodology and industry practice from the Remedial Building Australia editorial team.</p>
-            </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  title: "Understanding AS 3740 Waterproofing Requirements for Balconies and Wet Areas",
-                  category: "Waterproofing",
-                  summary: "A detailed walkthrough of AS 3740 requirements for membrane type selection, upturn heights, drainage falls, penetration detailing and flood testing in Class 2 buildings.",
-                  image: "/Images/Categories/waterproofing-water-ingress.jpg",
-                  readTime: "8 min read",
-                },
-                {
-                  title: "How to Read a Concrete Condition Report: A Practical Guide for Strata Managers",
-                  category: "Concrete Repair",
-                  summary: "Breaking down the key elements of a structural concrete condition report — carbonation depths, cover measurements, corrosion risk and repair priority recommendations.",
-                  image: "/Images/Categories/concrete-structural-defects.jpg",
-                  readTime: "6 min read",
-                },
-                {
-                  title: "Facade Sealant Replacement: Planning a Building-Wide Programme",
-                  category: "Façade Defects",
-                  summary: "How to scope, specify, sequence and quality-control a building-wide sealant replacement programme — from initial condition survey through to post-repair hose testing.",
-                  image: "/Images/Categories/facade-external-envelope.jpg",
-                  readTime: "7 min read",
-                },
-                {
-                  title: "Polyurethane Injection for Basement Cracks: When It Works and When It Fails",
-                  category: "Concrete Repair",
-                  summary: "A technical review of the conditions under which polyurethane hydrophilic injection succeeds and fails — covering crack activity, product selection, injection pressure and monitoring.",
-                  image: "/Images/Categories/basements-substructure.jpg",
-                  readTime: "9 min read",
-                },
-                {
-                  title: "Balustrade Corrosion in Strata Buildings: Structural Risk and Remediation",
-                  category: "Building Defects",
-                  summary: "Assessing the structural significance of corroded balustrade posts, load testing requirements under AS 1170.1, and a step-by-step replacement and waterproofing methodology.",
-                  image: "/Images/Categories/balconies-podiums.jpg",
-                  readTime: "7 min read",
-                },
-                {
-                  title: "Magnesite Flooring Assessment and Remediation in Older Strata Buildings",
-                  category: "Strata Defects",
-                  summary: "The full assessment process for magnesite flooring in strata buildings — moisture testing, corrosion risk, removal scope, and compliant reinstatement options under current Australian Standards.",
-                  image: "/Images/Categories/internal-defects-finishes.jpg",
-                  readTime: "8 min read",
-                },
-              ].map((article) => (
-                <div key={article.title} className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                  <div className="h-36 w-full shrink-0 overflow-hidden">
-                    <img src={article.image} alt={article.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                  </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <span className="inline-block shrink-0 rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-sky-950 w-fit">{article.category}</span>
-                    <span className="mt-1.5 text-xs text-slate-400">{article.readTime}</span>
-                    <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 group-hover:text-sky-700">{article.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{article.summary}</p>
-                    <div className="mt-4 border-t border-slate-100 pt-3">
-                      <span className="flex items-center gap-1 text-xs font-bold text-sky-700 group-hover:text-red-700">
-                        Read Article <ArrowRight size={12} />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── Disclaimer ─────────────────────────────────────────────────────── */}
-        <div className="mx-auto max-w-7xl px-5 pb-10">
-          <p className="text-xs leading-6 text-slate-400 border-t border-slate-200 pt-6">
-            Articles sourced from third-party publications. Remedial Building Australia does not own or reproduce article content. All articles link directly to their original source.
-          </p>
         </div>
 
         {/* ── Newsletter ──────────────────────────────────────────────────────── */}

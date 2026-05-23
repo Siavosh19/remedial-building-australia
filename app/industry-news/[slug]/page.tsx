@@ -3,23 +3,25 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
+import { getCategoryImage, formatDate } from "@/lib/news-categories";
 
 type Article = {
   id: string;
   title: string;
   slug: string;
+  summary: string;
+  industry_impact: string;
   category: string;
-  source: string;
-  publishedDate: string;
-  image: string;
-  excerpt: string;
-  body: string;
-  sourceUrl: string;
   tags: string[];
+  source_name: string;
+  source_url: string;
+  published_date: string;
+  featured_image: string;
 };
 
-export default function ArticleDetailPage() {
+export default function IndustryNewsArticlePage() {
   const params = useParams();
   const slug = params?.slug as string;
 
@@ -32,7 +34,7 @@ export default function ArticleDetailPage() {
     async function fetchArticle() {
       setLoading(true);
       const { data, error } = await supabase
-        .from("news_articles")
+        .from("industry_news")
         .select("*")
         .eq("slug", slug)
         .eq("status", "published")
@@ -49,34 +51,28 @@ export default function ArticleDetailPage() {
         id: String(row.id ?? ""),
         title: String(row.title ?? ""),
         slug: String(row.slug ?? slug),
-        category: String(row.category ?? "General"),
-        source: String(row.source ?? "Remedial Building Australia"),
-        publishedDate: String(row.date_published ?? row.published_date ?? ""),
-        image: String(
-          row.image ?? row.image_url ?? "/Images/Categories/facade-external-envelope.jpg"
+        summary: String(row.summary ?? ""),
+        industry_impact: String(row.industry_impact ?? ""),
+        category: String(row.category ?? "Other"),
+        tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
+        source_name: String(row.source_name ?? ""),
+        source_url: String(row.source_url ?? ""),
+        published_date: String(row.published_date ?? ""),
+        featured_image: String(
+          row.featured_image ?? getCategoryImage(String(row.category ?? "Other"))
         ),
-        excerpt: String(row.excerpt ?? ""),
-        body: String(row.body ?? row.content ?? row.full_content ?? ""),
-        sourceUrl: String(row.source_url ?? row.external_url ?? ""),
-        tags: Array.isArray(row.tags)
-          ? (row.tags as string[])
-          : typeof row.tags === "string"
-          ? (row.tags as string).split(",").map((t) => t.trim())
-          : [],
       });
       setLoading(false);
     }
     fetchArticle();
   }, [slug]);
 
-  function formatDate(dateStr: string) {
-    if (!dateStr) return "";
-    return new Date(dateStr).toLocaleDateString("en-AU", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  }
+  const impactBullets = article?.industry_impact
+    ? article.industry_impact.split(" | ").map((s) => s.trim()).filter(Boolean)
+    : [];
+
+  const heroImage =
+    article?.featured_image || getCategoryImage(article?.category ?? "Other");
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -110,14 +106,17 @@ export default function ArticleDetailPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-5 py-10">
+      <main>
 
-        <a
-          href="/industry-news"
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100"
-        >
-          <ArrowLeft size={16} /> Back to Industry News
-        </a>
+        {/* Back button */}
+        <div className="mx-auto max-w-4xl px-5 pt-8">
+          <a
+            href="/industry-news"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100"
+          >
+            <ArrowLeft size={16} /> Industry News
+          </a>
+        </div>
 
         {/* Loading */}
         {loading && (
@@ -128,7 +127,7 @@ export default function ArticleDetailPage() {
 
         {/* Not found */}
         {!loading && notFound && (
-          <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-12 text-center">
+          <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-slate-200 bg-white p-12 text-center">
             <p className="text-lg font-bold text-slate-500">Article not found.</p>
             <a href="/industry-news" className="mt-4 inline-block text-sm font-bold text-sky-700 hover:text-red-700">
               ← Browse all articles
@@ -138,85 +137,118 @@ export default function ArticleDetailPage() {
 
         {/* Article */}
         {!loading && article && (
-          <article className="mt-8">
-
-            {/* Category & date */}
-            <div className="flex flex-wrap items-center gap-3">
+          <>
+            {/* Article header */}
+            <div className="mx-auto max-w-4xl px-5 pt-10">
               <span className="inline-block rounded-md bg-sky-100 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.1em] text-sky-950">
                 {article.category}
               </span>
-              {article.publishedDate && (
-                <span className="text-sm text-slate-400">{formatDate(article.publishedDate)}</span>
-              )}
-              {article.source && (
-                <span className="text-sm font-semibold text-slate-500">· Source: {article.source}</span>
+              <p className="mt-2 text-sm text-slate-400">
+                {formatDate(article.published_date)}
+                {article.source_name && ` · ${article.source_name}`}
+              </p>
+              <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-4xl">
+                {article.title}
+              </h1>
+              {article.tags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {article.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               )}
             </div>
 
-            {/* Title */}
-            <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-4xl">
-              {article.title}
-            </h1>
-
-            {/* Tags */}
-            {article.tags.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-500">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {/* Image */}
-            {article.image && (
-              <div className="mt-8 overflow-hidden rounded-2xl">
-                <img
-                  src={article.image}
+            {/* Featured image */}
+            <div className="mx-auto mt-6 max-w-4xl px-5">
+              <div className="relative h-72 w-full overflow-hidden rounded-2xl md:h-96">
+                <Image
+                  src={heroImage}
                   alt={article.title}
-                  className="h-72 w-full object-cover md:h-96"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 896px) 100vw, 896px"
+                  priority
                 />
               </div>
-            )}
-
-            {/* Body or excerpt */}
-            <div className="mt-8 space-y-5 text-base leading-8 text-slate-700">
-              {article.body ? (
-                article.body.split("\n").filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))
-              ) : article.excerpt ? (
-                <p>{article.excerpt}</p>
-              ) : (
-                <p className="text-slate-400 italic">No article content available.</p>
-              )}
             </div>
 
-            {/* Read original CTA */}
-            {article.sourceUrl && (
-              <div className="mt-10 rounded-2xl border border-sky-100 bg-sky-50 p-6">
-                <p className="text-sm font-semibold text-sky-800">
-                  This article was originally published by <span className="font-bold">{article.source}</span>.
+            {/* Content */}
+            <div className="mx-auto max-w-4xl px-5 pb-10">
+
+              {/* Summary section */}
+              <div className="mt-10">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Summary</p>
+                <p className="mt-3 text-base leading-8 text-slate-700">
+                  {article.summary}
                 </p>
-                <a
-                  href={article.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-sky-700 px-6 py-3 text-sm font-bold text-white hover:bg-sky-800"
-                >
-                  Read Original Article <ExternalLink size={14} />
-                </a>
               </div>
-            )}
 
-            {/* Disclaimer */}
-            <p className="mt-10 border-t border-slate-200 pt-6 text-xs leading-6 text-slate-400">
-              Articles sourced from third-party publications. Remedial Building Australia does not own or reproduce article content.
-            </p>
-          </article>
+              {/* Industry Impact section */}
+              {impactBullets.length > 0 && (
+                <div className="mt-8 border-l-4 border-red-700 rounded-r-2xl bg-sky-50 px-6 py-5">
+                  <p className="text-sm font-extrabold uppercase tracking-wider text-red-700">
+                    Industry Impact
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Why this matters for Australian remedial building professionals
+                  </p>
+                  <ul className="mt-4 space-y-2">
+                    {impactBullets.map((bullet, i) => (
+                      <li key={i} className="flex items-start gap-3 text-sm leading-7 text-slate-700">
+                        <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-red-700" />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Tags */}
+              {article.tags.length > 0 && (
+                <div className="mt-8 flex flex-wrap gap-2">
+                  {article.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Source section */}
+              {article.source_url && (
+                <div className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                  <p className="text-sm text-slate-600">
+                    This article was sourced from{" "}
+                    <span className="font-bold text-slate-800">{article.source_name}</span>.{" "}
+                    Read the original article on their website.
+                  </p>
+                  <a
+                    href={article.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-bold text-white hover:bg-sky-800 transition"
+                  >
+                    Read Original Source <ExternalLink size={14} />
+                  </a>
+                </div>
+              )}
+
+              {/* Disclaimer */}
+              <p className="mt-10 border-t border-slate-200 pt-6 text-xs leading-6 text-slate-400">
+                AI-generated summary and industry impact analysis. Always verify with the original source.
+              </p>
+            </div>
+          </>
         )}
-
       </main>
 
       {/* Footer */}
