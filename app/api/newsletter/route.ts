@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getCategoryImage, formatDate } from "@/lib/news-categories";
+import { getNewsImage, formatDate } from "@/lib/news-categories";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://remedialbuildingaustralia.com.au";
@@ -27,7 +27,7 @@ function buildHtml(articles: NewsRow[]): string {
   const monthYear = now.toLocaleDateString("en-AU", { month: "long", year: "numeric" });
   const subject = `Remedial Building Australia — Industry Update ${monthYear}`;
 
-  const featuredImg = featured.featured_image || getCategoryImage(featured.category);
+  const featuredImg = getNewsImage(featured.category, featured.title);
   const featuredDate = formatDate(featured.published_date);
 
   // Featured article HTML
@@ -58,7 +58,7 @@ function buildHtml(articles: NewsRow[]): string {
     const right = rest[i + 1];
 
     function articleCell(a: NewsRow): string {
-      const img = a.featured_image || getCategoryImage(a.category);
+      const img = getNewsImage(a.category, a.title);
       const date = formatDate(a.published_date);
       return `
         <td width="50%" valign="top" style="padding:8px;">
