@@ -319,23 +319,27 @@ export default function RemedialBuildingAustraliaHome() {
             <a href="/industry-news" className="text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
           </div>
 
-          <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr] lg:min-h-[320px]">
+          <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr]">
             {/* Rotating image panel */}
-            <div className="relative min-h-72 overflow-hidden lg:min-h-full">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={newsImageIndex}
-                  src={NEWS_IMAGES[newsImageIndex]}
+            <div className="relative bg-slate-200" style={{ minHeight: "280px" }}>
+              {NEWS_IMAGES.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
                   alt="Industry news"
-                  className="absolute inset-0 h-full w-full object-cover"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.9 }}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    opacity: i === newsImageIndex ? 1 : 0,
+                    transition: "opacity 0.9s ease",
+                  }}
                 />
-              </AnimatePresence>
+              ))}
               {/* Dot indicators */}
-              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+              <div className="absolute bottom-3 left-0 right-0 z-10 flex justify-center gap-1.5">
                 {NEWS_IMAGES.map((_, i) => (
                   <button
                     key={i}
