@@ -141,14 +141,17 @@ function parseRSS(xml: string): RSSItem[] {
 // ─── Slug ─────────────────────────────────────────────────────────────────────
 
 function slugify(title: string): string {
-  const base = title
+  return title
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
-    .slice(0, 70);
-  return `${base}-${Date.now().toString(36)}`;
+    .slice(0, 90);
+}
+
+function normTitle(title: string): string {
+  return title.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 80);
 }
 
 // ─── AI classification + enrichment ──────────────────────────────────────────
@@ -263,6 +266,7 @@ export async function GET() {
 
   // 2. Collect unique articles (max 5 per feed to control API costs)
   const seenLinks = new Set<string>();
+  const seenTitles = new Set<string>();
   const queue: RSSItem[] = [];
 
   for (let i = 0; i < feedResults.length; i++) {
@@ -272,8 +276,10 @@ export async function GET() {
       continue;
     }
     for (const item of result.value.slice(0, 5)) {
-      if (!seenLinks.has(item.link)) {
+      const nt = normTitle(item.title);
+      if (!seenLinks.has(item.link) && !seenTitles.has(nt)) {
         seenLinks.add(item.link);
+        seenTitles.add(nt);
         queue.push(item);
       }
     }
@@ -326,7 +332,7 @@ export async function GET() {
             featured_image,
             status: "published",
           },
-          { onConflict: "source_url", ignoreDuplicates: true }
+          { onConflict: "slug", ignoreDuplicates: true }
         )
         .select("id");
 
