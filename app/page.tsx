@@ -285,42 +285,12 @@ export default function RemedialBuildingAustraliaHome() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-20">
-          <div className="mb-10">
-            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">What We Provide</div>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Core platform sections</h2>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {coreServices.map((service) => (
-              <a
-                key={service.title}
-                href={service.href}
-                className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
-              >
-                <div className="h-64 w-full overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col p-8">
-                  <div className="mb-4 h-1.5 w-12 rounded-full bg-red-700" />
-                  <h3 className="text-2xl font-extrabold text-sky-950">{service.title}</h3>
-                  <p className="mt-3 text-base leading-7 text-slate-500">{service.text}</p>
-                  <div className="mt-auto pt-6 flex items-center text-sm font-bold text-sky-700">
-                    View more <ArrowRight className="ml-2" size={16} />
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-5 py-20">
           <div className="mb-8 flex items-center justify-between">
-            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News & Articles</div>
-            <a href="/industry-news" className="text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
+            <div>
+              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News & Articles</div>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-5xl">Latest Industry News</h2>
+            </div>
+            <a href="/industry-news" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
           </div>
 
           <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr]">
@@ -406,6 +376,39 @@ export default function RemedialBuildingAustraliaHome() {
               })}
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-5 py-20">
+          <div className="mb-10">
+            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">What We Provide</div>
+            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Core platform sections</h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {coreServices.map((service) => (
+              <a
+                key={service.title}
+                href={service.href}
+                className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <div className="h-64 w-full overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-8">
+                  <div className="mb-4 h-1.5 w-12 rounded-full bg-red-700" />
+                  <h3 className="text-2xl font-extrabold text-sky-950">{service.title}</h3>
+                  <p className="mt-3 text-base leading-7 text-slate-500">{service.text}</p>
+                  <div className="mt-auto pt-6 flex items-center text-sm font-bold text-sky-700">
+                    View more <ArrowRight className="ml-2" size={16} />
+                  </div>
+                </div>
+              </a>
+            ))}
           </div>
         </section>
 
