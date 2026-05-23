@@ -29,11 +29,11 @@ export const CATEGORY_IMAGES: Record<string, string> = {
   "Remedial Construction":    "/Images/News10-NCC-Building%20Codes-Standard.jpg",
   "Product & Material Updates": "/Images/News10-NCC-Building%20Codes-Standard.jpg",
   "New Construction Systems": "/Images/News10-NCC-Building%20Codes-Standard.jpg",
-  "Other":                    "/Images/News11-No%20title.png",
+  "Other":                    "/Images/News11-No%20title.jpg",
 };
 
 export function getCategoryImage(category: string): string {
-  return CATEGORY_IMAGES[category] ?? "/Images/News11-No%20title.png";
+  return CATEGORY_IMAGES[category] ?? "/Images/News11-No%20title.jpg";
 }
 
 export function formatDate(dateStr: string): string {
