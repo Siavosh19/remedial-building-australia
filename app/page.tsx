@@ -105,21 +105,6 @@ type NewsSlide = {
   sourceUrl: string;
 };
 
-const CATEGORY_COLOR: Record<string, string> = {
-  "Waterproofing Defects":      "bg-blue-900",
-  "Concrete Repair":            "bg-slate-600",
-  "Strata Defects":             "bg-teal-800",
-  "Building Commission NSW":    "bg-slate-800",
-  "DBP Act":                    "bg-slate-800",
-  "Façade Defects":             "bg-zinc-700",
-  "Facade Defects":             "bg-zinc-700",
-  "Class 2 Buildings":          "bg-sky-800",
-  "Remedial Construction":      "bg-sky-700",
-  "Building Defects":           "bg-sky-700",
-  "Product & Material Updates": "bg-green-800",
-  "New Construction Systems":   "bg-sky-700",
-  "Other":                      "bg-sky-700",
-};
 
 export default function RemedialBuildingAustraliaHome() {
   const [heroIndex, setHeroIndex] = useState(0);
@@ -323,49 +308,43 @@ export default function RemedialBuildingAustraliaHome() {
           </div>
 
           {newsLoading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-sky-700" />
+            <div className="flex items-center justify-center py-12">
+              <div className="h-7 w-7 animate-spin rounded-full border-4 border-slate-200 border-t-sky-700" />
             </div>
           ) : newsSlides.length === 0 ? (
-            <div className="rounded-2xl border border-slate-200 bg-white py-16 text-center">
+            <div className="rounded-2xl border border-slate-200 bg-white py-12 text-center">
               <p className="text-sm text-slate-400">No recent articles available.</p>
             </div>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-2xl border border-slate-200 bg-white px-6">
               {newsSlides.map((slide) => {
-                const bannerColor = CATEGORY_COLOR[slide.tag] ?? "bg-sky-700";
                 const dateStr = slide.publishedDate
                   ? (() => { const d = new Date(slide.publishedDate); return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }); })()
                   : "";
                 return (
-                  <div key={slide.title} className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                    <div className={`flex h-20 w-full shrink-0 items-center justify-center px-6 ${bannerColor}`}>
-                      <span className="text-center text-xs font-bold uppercase tracking-widest text-white">
-                        {slide.tag}
-                      </span>
+                  <div key={slide.title} className="border-b border-slate-100 py-5 last:border-0">
+                    <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">{slide.tag}</span>
+                      {dateStr && <span className="text-slate-300 text-xs">·</span>}
+                      {dateStr && <span className="text-xs text-slate-400">{dateStr}</span>}
+                      {slide.source && <span className="text-slate-300 text-xs">·</span>}
+                      {slide.source && <span className="text-xs text-slate-400">{slide.source}</span>}
                     </div>
-                    <div className="flex flex-1 flex-col p-5">
-                      <span className="inline-block shrink-0 rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-sky-950 w-fit">
-                        {slide.tag}
-                      </span>
-                      <h3 className="mt-3 text-sm font-bold leading-snug text-sky-950">{slide.title}</h3>
-                      <p className="mt-1.5 text-xs text-slate-400">
-                        {dateStr ? `${dateStr} · ` : ""}{slide.source}
-                      </p>
-                      <p className="mt-3 flex-1 text-xs leading-5 text-slate-500 line-clamp-3">{slide.summary}</p>
-                      {slide.sourceUrl && (
-                        <div className="mt-4 border-t border-slate-100 pt-4">
-                          <a
-                            href={slide.sourceUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-800"
-                          >
-                            Read Full Article <ArrowRight size={12} />
-                          </a>
-                        </div>
-                      )}
-                    </div>
+                    {slide.sourceUrl ? (
+                      <a
+                        href={slide.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
+                      >
+                        {slide.title}
+                      </a>
+                    ) : (
+                      <span className="text-sm font-semibold leading-snug text-sky-950">{slide.title}</span>
+                    )}
+                    {slide.summary && (
+                      <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{slide.summary}</p>
+                    )}
                   </div>
                 );
               })}

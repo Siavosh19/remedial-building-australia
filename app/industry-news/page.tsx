@@ -122,22 +122,6 @@ function normaliseCategory(raw: string | undefined): string {
   return CATEGORY_ALIAS[raw] ?? "Other";
 }
 
-// ─── Category colour banners ──────────────────────────────────────────────────
-
-const CATEGORY_COLOR: Record<string, string> = {
-  "Waterproofing Defects":      "bg-blue-900",
-  "Concrete Repair":            "bg-slate-600",
-  "Strata Defects":             "bg-teal-800",
-  "Building Commission NSW":    "bg-slate-800",
-  "DBP Act":                    "bg-slate-800",
-  "Façade Defects":             "bg-zinc-700",
-  "Class 2 Buildings":          "bg-sky-800",
-  "Remedial Construction":      "bg-sky-700",
-  "Building Defects":           "bg-sky-700",
-  "Product & Material Updates": "bg-green-800",
-  "New Construction Systems":   "bg-sky-700",
-  "Other":                      "bg-sky-700",
-};
 
 function mapRow(row: DbRow): Article {
   const category = normaliseCategory(row.category);
@@ -188,46 +172,34 @@ function formatDate(dateStr: string) {
 
 // ─── Components ───────────────────────────────────────────────────────────────
 
-function CategoryPill({ label }: { label: string }) {
-  return (
-    <span className="inline-block shrink-0 rounded-md bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-sky-950">
-      {label}
-    </span>
-  );
-}
-
-function ArticleCard({ article }: { article: Article }) {
-  const hasUrl = Boolean(article.sourceUrl);
-  const bannerColor = CATEGORY_COLOR[article.category] ?? "bg-sky-700";
+function ArticleRow({ article }: { article: Article }) {
   const date = formatDate(article.publishedDate);
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      {/* Category colour banner */}
-      <div className={`flex h-20 w-full shrink-0 items-center justify-center px-6 ${bannerColor}`}>
-        <span className="text-center text-xs font-bold uppercase tracking-widest text-white">
+    <div className="border-b border-slate-100 py-5 last:border-0">
+      <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700">
           {article.category}
         </span>
+        {(date || article.source) && <span className="text-slate-300 text-xs">·</span>}
+        {date && <span className="text-xs text-slate-400">{date}</span>}
+        {date && article.source && <span className="text-slate-300 text-xs">·</span>}
+        {article.source && <span className="text-xs text-slate-400">{article.source}</span>}
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <CategoryPill label={article.category} />
-        <h3 className="mt-3 text-sm font-bold leading-snug text-sky-950">{article.title}</h3>
-        <p className="mt-1.5 text-xs text-slate-400">
-          {date ? `${date} · ` : ""}{article.source}
-        </p>
-        <p className="mt-3 flex-1 text-xs leading-5 text-slate-500 line-clamp-3">{article.summary}</p>
-        {hasUrl && (
-          <div className="mt-4 border-t border-slate-100 pt-4">
-            <a
-              href={article.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-800"
-            >
-              Read Full Article <ArrowRight size={12} />
-            </a>
-          </div>
-        )}
-      </div>
+      {article.sourceUrl ? (
+        <a
+          href={article.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-semibold leading-snug text-sky-950 hover:text-red-700 hover:underline"
+        >
+          {article.title}
+        </a>
+      ) : (
+        <span className="text-sm font-semibold leading-snug text-sky-950">{article.title}</span>
+      )}
+      {article.summary && (
+        <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-slate-500">{article.summary}</p>
+      )}
     </div>
   );
 }
@@ -291,15 +263,10 @@ export default function IndustryNewsPage() {
 
   const ARTICLES_PER_PAGE = 12;
 
-  const featuredArticles = useMemo(
-    () => articles.filter((a) => a.featured).slice(0, 3),
-    [articles]
-  );
-
   const isFiltering = searchQuery.trim().length > 0 || activeCategory !== "All";
 
   const filteredArticles = useMemo(() => {
-    let pool = isFiltering ? articles : articles.filter((a) => !a.featured);
+    let pool = articles;
     if (activeCategory !== "All") {
       pool = pool.filter((a) => a.category === activeCategory);
     }
@@ -314,7 +281,7 @@ export default function IndustryNewsPage() {
       );
     }
     return pool;
-  }, [searchQuery, activeCategory, isFiltering, articles]);
+  }, [searchQuery, activeCategory, articles]);
 
   const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE);
   const paginatedArticles = filteredArticles.slice(
@@ -432,94 +399,68 @@ export default function IndustryNewsPage() {
             </div>
           )}
 
-          {/* Featured — hidden when loading, error, or filtering */}
-          {!loading && !fetchError && !isFiltering && (
+          {/* News list */}
+          {!loading && !fetchError && (
             <section>
-              <div className="mb-8">
-                <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Featured</p>
-                <h2 className="mt-2 text-2xl font-extrabold text-sky-950">Top Stories</h2>
-              </div>
-
-              <div className="grid gap-6 lg:grid-cols-[1.7fr_1fr]">
-                {featuredArticles[0] && (
-                  <ArticleCard article={featuredArticles[0]} />
-                )}
-                <div className="flex flex-col gap-6">
-                  {featuredArticles.slice(1, 3).map((a) => (
-                    <ArticleCard key={a.id} article={a} />
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Latest News Grid */}
-          {!loading && !fetchError && <section>
-            <div className="mb-8 flex items-end justify-between">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-700">
-                  {isFiltering ? "Results" : "Latest"}
-                </p>
-                <h2 className="mt-2 text-2xl font-extrabold text-sky-950">
+              <div className="mb-4 flex items-center justify-between">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
                   {isFiltering
                     ? `${filteredArticles.length} article${filteredArticles.length !== 1 ? "s" : ""} found`
-                    : "Latest News"}
-                </h2>
-              </div>
-              {isFiltering && (
-                <button
-                  onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
-                  className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-500 hover:border-sky-300 hover:text-sky-800"
-                >
-                  Clear filters
-                </button>
-              )}
-            </div>
-
-            {filteredArticles.length > 0 ? (
-              <>
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {paginatedArticles.map((a) => (
-                    <ArticleCard key={a.id} article={a} />
-                  ))}
-                </div>
-
-                {totalPages > 1 && (
-                  <div className="mt-10 flex items-center justify-center gap-4">
-                    <button
-                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                      disabled={currentPage === 1}
-                      className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:border-sky-300 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                      ← Previous
-                    </button>
-                    <span className="text-sm font-semibold text-slate-500">
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    <button
-                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                      disabled={currentPage === totalPages}
-                      className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:border-sky-300 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                      Next →
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="rounded-2xl border border-slate-200 bg-white py-20 text-center">
-                <p className="text-base font-semibold text-slate-400">
-                  No articles found for this search.
+                    : `${articles.length} articles`}
                 </p>
-                <button
-                  onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
-                  className="mt-4 text-sm font-bold text-sky-700 hover:text-red-700"
-                >
-                  Clear filters
-                </button>
+                {isFiltering && (
+                  <button
+                    onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
+                    className="text-xs font-bold text-sky-700 hover:text-red-700"
+                  >
+                    Clear filters
+                  </button>
+                )}
               </div>
-            )}
-          </section>}
+
+              {filteredArticles.length > 0 ? (
+                <>
+                  <div className="rounded-2xl border border-slate-200 bg-white px-6">
+                    {paginatedArticles.map((a) => (
+                      <ArticleRow key={a.id} article={a} />
+                    ))}
+                  </div>
+
+                  {totalPages > 1 && (
+                    <div className="mt-8 flex items-center justify-center gap-4">
+                      <button
+                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                        className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:border-sky-300 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        ← Previous
+                      </button>
+                      <span className="text-sm font-semibold text-slate-500">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                      <button
+                        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
+                        className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 shadow-sm hover:border-sky-300 hover:text-sky-800 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        Next →
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="rounded-2xl border border-slate-200 bg-white py-20 text-center">
+                  <p className="text-base font-semibold text-slate-400">No articles found.</p>
+                  <button
+                    onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
+                    className="mt-4 text-sm font-bold text-sky-700 hover:text-red-700"
+                  >
+                    Clear filters
+                  </button>
+                </div>
+              )}
+            </section>
+          )}
 
         </div>
 
