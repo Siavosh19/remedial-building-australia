@@ -214,7 +214,9 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
           <span className="text-sm font-semibold leading-snug text-sky-950">{article.title}</span>
         )}
       </div>
-      {summary && (
+      {summary && !summary.toLowerCase().replace(/[^\w]/g, "").startsWith(
+        article.title.toLowerCase().replace(/[^\w]/g, "").slice(0, 60)
+      ) && (
         <p className="mt-1 pl-5 line-clamp-2 text-sm leading-6 text-slate-500">{summary}</p>
       )}
     </div>
