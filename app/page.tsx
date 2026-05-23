@@ -97,12 +97,12 @@ const heroSlides = heroSlidesBase.map((slide, i) => ({
 }));
 
 const NEWS_IMAGES = [
-  "/Images/News1.png",
-  "/Images/News2.png",
-  "/Images/News3.png",
-  "/Images/News4.png",
-  "/Images/News6.png",
-  "/Images/News7.png",
+  "/Images/News1.jpg",
+  "/Images/News2.jpg",
+  "/Images/News3.jpg",
+  "/Images/News4.jpg",
+  "/Images/News6.jpg",
+  "/Images/News7.jpg",
 ];
 
 type NewsSlide = {
