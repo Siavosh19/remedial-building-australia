@@ -281,28 +281,14 @@ export async function GET() {
 
   stats.total_fetched = queue.length;
 
-  // 3. Fetch all existing source_urls in one query to deduplicate in memory
-  const { data: existingRows } = await supabase
-    .from("industry_news")
-    .select("source_url");
-  const existingUrls = new Set((existingRows ?? []).map((r: { source_url: string }) => r.source_url));
-
-  const newItems = queue.filter((item) => {
-    if (existingUrls.has(item.link)) {
-      stats.skipped_duplicate++;
-      return false;
-    }
-    return true;
-  });
-
-  // 4. Cap at 15 new articles per run, then classify all in parallel
-  const batch = newItems.slice(0, 15);
+  // 3. Cap at 15 per run, classify all in parallel
+  const batch = queue.slice(0, 15);
 
   const enriched = await Promise.allSettled(
     batch.map((item) => classifyAndEnrich(item.title, item.description))
   );
 
-  // 5. Insert all relevant articles in parallel
+  // 4. Upsert in parallel — DB UNIQUE constraint on source_url prevents duplicates
   await Promise.allSettled(
     batch.map(async (item, i) => {
       const result = enriched[i];
@@ -324,24 +310,32 @@ export async function GET() {
           })()
         : new Date().toISOString();
 
-      const { error } = await supabase.from("industry_news").insert({
-        title: item.title,
-        slug,
-        summary,
-        industry_impact: impact,
-        category,
-        tags,
-        source_name: item.sourceName || "Industry News",
-        source_url: item.link,
-        published_date,
-        featured_image,
-        status: "published",
-      });
+      const { error, data } = await supabase
+        .from("industry_news")
+        .upsert(
+          {
+            title: item.title,
+            slug,
+            summary,
+            industry_impact: impact,
+            category,
+            tags,
+            source_name: item.sourceName || "Industry News",
+            source_url: item.link,
+            published_date,
+            featured_image,
+            status: "published",
+          },
+          { onConflict: "source_url", ignoreDuplicates: true }
+        )
+        .select("id");
 
       if (error) {
-        stats.errors.push(`Insert failed: ${error.message}`);
-      } else {
+        stats.errors.push(`Upsert failed: ${error.message}`);
+      } else if (data && data.length > 0) {
         stats.inserted++;
+      } else {
+        stats.skipped_duplicate++;
       }
     })
   );
