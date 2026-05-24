@@ -172,7 +172,7 @@ export default function RepairMortarsPage() {
             </div>
 
             {/* ── Collapsible technical detail ── */}
-            <TechnicalAccordion>
+            <TechnicalAccordion defaultOpen={true}>
               {/* 3-column grid */}
               <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                 <TechCard
