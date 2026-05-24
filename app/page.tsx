@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Mail, Menu } from "lucide-react";
+import { ArrowRight, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 interface CoreService {
   title: string;
@@ -143,8 +144,6 @@ export default function RemedialBuildingAustraliaHome() {
   const [newsImageIndex, setNewsImageIndex] = useState(0);
   const [newsSlides, setNewsSlides] = useState<NewsSlide[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -190,24 +189,6 @@ export default function RemedialBuildingAustraliaHome() {
     fetchNews();
   }, []);
 
-  async function handleNewsletterSubscribe() {
-    if (!newsletterEmail.trim() || newsletterStatus === "loading") return;
-    setNewsletterStatus("loading");
-    try {
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .insert({ email: newsletterEmail.trim() });
-      if (error) {
-        setNewsletterStatus("error");
-      } else {
-        setNewsletterStatus("success");
-        setNewsletterEmail("");
-      }
-    } catch {
-      setNewsletterStatus("error");
-    }
-  }
-
   const activeHero = heroSlides[heroIndex];
 
   return (
@@ -226,12 +207,17 @@ export default function RemedialBuildingAustraliaHome() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-          <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
-          <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-          <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
-          <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
-          <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-        </nav>
+            <a href="/defect-library"   className="whitespace-nowrap hover:text-red-700 transition">Defect Library</a>
+            <a href="/repair-systems"   className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
+            <a href="/industry-news"    className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
+            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
+            <a
+              href="/newsletter"
+              className="whitespace-nowrap rounded-lg bg-red-700 px-4 py-2 text-white hover:bg-red-800 transition"
+            >
+              Subscribe
+            </a>
+          </nav>
 
           <Menu className="md:hidden" />
         </div>
@@ -463,46 +449,7 @@ export default function RemedialBuildingAustraliaHome() {
           </div>
         </section>
 
-        <section className="bg-sky-700 py-20 text-white">
-          <div className="mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-[1fr_0.9fr] md:items-center">
-            <div>
-              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-300">Newsletter</div>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">Fortnightly remedial building updates</h2>
-              <p className="mt-4 max-w-2xl text-sky-50">Industry news, defect trends, technical updates and new articles.</p>
-            </div>
-
-            <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-              {newsletterStatus === "success" ? (
-                <div className="flex min-h-12 items-center justify-center rounded-xl bg-green-700/40 px-6 py-4">
-                  <p className="text-sm font-semibold text-white">You&apos;re subscribed! We&apos;ll be in touch fortnightly.</p>
-                </div>
-              ) : (
-                <>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <input
-                      type="email"
-                      value={newsletterEmail}
-                      onChange={(e) => setNewsletterEmail(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubscribe()}
-                      placeholder="Email address"
-                      className="min-h-12 flex-1 rounded-xl border border-white/20 bg-white px-4 text-sky-950 outline-none"
-                    />
-                    <Button
-                      onClick={handleNewsletterSubscribe}
-                      disabled={newsletterStatus === "loading"}
-                      className="min-h-12 bg-red-700 hover:bg-red-800 disabled:opacity-60"
-                    >
-                      <Mail className="mr-2" size={18} /> {newsletterStatus === "loading" ? "Subscribing…" : "Subscribe"}
-                    </Button>
-                  </div>
-                  {newsletterStatus === "error" && (
-                    <p className="mt-2 text-xs text-red-300">Something went wrong. Please try again.</p>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-        </section>
+        <NewsletterSignup variant="section" />
       </main>
 
       <footer className="border-t border-sky-100 bg-white">

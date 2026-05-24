@@ -95,6 +95,12 @@ export default function IndustryNewsArticlePage() {
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+            <a
+              href="/newsletter"
+              className="whitespace-nowrap rounded-lg bg-red-700 px-4 py-2 text-sm text-white hover:bg-red-800 transition"
+            >
+              Subscribe
+            </a>
           </nav>
           <a
             href="/"
