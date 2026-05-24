@@ -11,7 +11,6 @@ import {
   XCircle,
   Package,
   ShoppingCart,
-  AlertCircle,
 } from "lucide-react";
 import type { RepairMortarProduct } from "@/lib/repair-systems-data";
 
@@ -340,60 +339,40 @@ function RetailerTable({ retailers }: { retailers: import("@/lib/repair-systems-
   return (
     <div className="overflow-hidden rounded-2xl border-2 border-sky-900 shadow-md">
       {/* Table header */}
-      <div className="grid grid-cols-[1fr_auto_auto] bg-sky-950 px-4 py-2.5">
+      <div className="grid grid-cols-[1fr_auto] bg-sky-950 px-4 py-2.5">
         <span className="text-[10px] font-bold uppercase tracking-widest text-sky-300">Retailer</span>
-        <span className="px-4 text-right text-[10px] font-bold uppercase tracking-widest text-sky-300">Price (incl GST)</span>
-        <span className="text-center text-[10px] font-bold uppercase tracking-widest text-sky-300">Stock</span>
+        <span className="text-right text-[10px] font-bold uppercase tracking-widest text-sky-300">Price (incl GST)</span>
       </div>
 
       {/* Rows */}
       <div className="divide-y divide-slate-100 bg-white">
         {retailers.map((r) => (
-          <div
+          <a
             key={r.name}
-            className="grid grid-cols-[1fr_auto_auto] items-center px-4 py-3.5 transition hover:bg-sky-50"
+            href={r.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="grid grid-cols-[1fr_auto] items-center px-4 py-3.5 transition hover:bg-sky-50"
           >
-            {/* Retailer name + link */}
-            <a
-              href={r.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-bold text-sky-800 hover:text-red-700 transition"
-            >
+            <span className="flex items-center gap-2 text-sm font-bold text-sky-800 group-hover:text-red-700">
+              <ShoppingCart size={13} className="shrink-0 text-sky-300" />
               {r.name}
               <ExternalLink size={11} className="shrink-0 text-sky-300" />
-            </a>
-
-            {/* Price */}
-            <div className="px-4 text-right">
+            </span>
+            <span className="text-right">
               {r.price ? (
                 <span className="text-base font-extrabold text-sky-950">{r.price}</span>
               ) : (
                 <span className="text-xs italic text-slate-400">See site</span>
               )}
-            </div>
-
-            {/* Stock badge */}
-            <div className="text-center">
-              {r.inStock === true ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-[11px] font-bold text-green-700">
-                  <CheckCircle size={10} /> In stock
-                </span>
-              ) : r.inStock === false ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2.5 py-1 text-[11px] font-bold text-red-600">
-                  <AlertCircle size={10} /> Out of stock
-                </span>
-              ) : (
-                <span className="text-xs text-slate-300">—</span>
-              )}
-            </div>
-          </div>
+            </span>
+          </a>
         ))}
       </div>
 
       {/* Footer note */}
       <div className="bg-sky-950 px-4 py-2">
-        <p className="text-[10px] leading-4 text-sky-400">Prices indicative only — verify with retailer before use in any cost estimate or tender.</p>
+        <p className="text-[10px] leading-4 text-sky-400">Prices indicative only — verify with retailer before purchasing or use in any cost estimate.</p>
       </div>
     </div>
   );
