@@ -8,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { ProductCarousel } from "@/components/repair-systems/ProductCarousel";
+import { TechnicalAccordion } from "@/components/repair-systems/TechnicalAccordion";
 import {
   REPAIR_SYSTEM_TABS,
   REPAIR_MORTAR_SYSTEM_INFO,
@@ -130,18 +131,12 @@ export default function RepairMortarsPage() {
           </div>
         </div>
 
-        {/* ── Technical system panel ── */}
+        {/* ── Intro + Products ── */}
         <section className="px-8 py-14">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-10 flex items-start gap-3">
-              <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-              <h2 className="text-2xl font-extrabold text-sky-950">
-                System Technical Reference
-              </h2>
-            </div>
+          <div className="mx-auto max-w-7xl space-y-10">
 
             {/* What is */}
-            <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
               <div className="mb-4 flex items-center gap-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
                   <BookOpen size={15} />
@@ -155,107 +150,96 @@ export default function RepairMortarsPage() {
               </p>
             </div>
 
-            {/* 3-column grid */}
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-
-              {/* Typical applications */}
-              <TechCard
-                icon={<Layers size={15} />}
-                title="Typical Applications"
-                items={REPAIR_MORTAR_SYSTEM_INFO.typicalApplications}
-                itemStyle="bullet"
-              />
-
-              {/* Selection criteria */}
-              <TechCard
-                icon={<Ruler size={15} />}
-                title="Selection Criteria"
-                items={REPAIR_MORTAR_SYSTEM_INFO.selectionCriteria}
-                itemStyle="check"
-              />
-
-              {/* Limitations */}
-              <TechCard
-                icon={<AlertTriangle size={15} />}
-                title="Limitations"
-                items={REPAIR_MORTAR_SYSTEM_INFO.limitations}
-                itemStyle="warn"
-              />
-
-              {/* Standards */}
-              <TechCard
-                icon={<BookOpen size={15} />}
-                title="Standards &amp; Testing Notes"
-                items={REPAIR_MORTAR_SYSTEM_INFO.standardsNotes}
-                itemStyle="bullet"
-              />
-
-              {/* Suitable defects */}
-              <TechCard
-                icon={<CheckCircle size={15} />}
-                title="Suitable Defects"
-                items={REPAIR_MORTAR_SYSTEM_INFO.suitableDefects}
-                itemStyle="check"
-              />
-
-              {/* Substrates */}
-              <TechCard
-                icon={<SquareStack size={15} />}
-                title="Typical Substrates"
-                items={REPAIR_MORTAR_SYSTEM_INFO.typicalSubstrates}
-                itemStyle="bullet"
-              />
-            </div>
-
-            {/* Practical spec fields grid */}
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-              <h3 className="mb-5 text-base font-extrabold text-sky-950">
-                Key Technical Fields — What to Check per Product
-              </h3>
-              <div className="grid gap-0 divide-y divide-slate-100 sm:grid-cols-2 sm:divide-y-0">
-                {[
-                  ["Repair depth range (mm)",     "Minimum and maximum per lift — critical for specification compliance"],
-                  ["Exposure class (AS 3600)",     "B1, B2, C1, C2 — must match project exposure environment"],
-                  ["Compressive strength (MPa)",   "Verify against adjacent substrate — typically ≥ 35–45 MPa at 28 days"],
-                  ["Bond strength (MPa)",          "Pull-off bond strength — minimum 1.5 MPa for structural repair (indicative)"],
-                  ["Shrinkage classification",     "Controlled / low shrinkage — important for crack resistance"],
-                  ["Chloride resistance",          "Critical for coastal, marine, and parking structure applications"],
-                  ["Carbonation resistance",       "Important for long-term durability of concrete cover"],
-                  ["Primer requirement",           "Mandatory bonding primer — do not substitute without manufacturer approval"],
-                  ["Wet area suitability",         "Most repair mortars are not waterproof — confirm if wet area is in scope"],
-                  ["Marine / coastal suitability", "Confirm explicitly for buildings within 1 km of the coastline"],
-                ].map(([field, desc]) => (
-                  <div key={field} className="flex flex-col gap-0.5 py-3 px-0 sm:px-4 sm:first:pl-0 sm:last:pr-0">
-                    <span className="text-xs font-bold text-sky-950">{field}</span>
-                    <span className="text-xs leading-5 text-slate-500">{desc}</span>
+            {/* ── Product carousel ── */}
+            <div>
+              <div className="mb-6 flex items-start justify-between gap-6">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+                  <div>
+                    <h2 className="text-2xl font-extrabold text-sky-950">
+                      Product Reference
+                    </h2>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Use the TDS link for verified specifications before specifying on any project.
+                    </p>
                   </div>
-                ))}
+                </div>
+                <span className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
+                  {REPAIR_MORTAR_PRODUCTS.length} products
+                </span>
               </div>
+              <ProductCarousel products={REPAIR_MORTAR_PRODUCTS} />
             </div>
-          </div>
-        </section>
 
-        {/* ── Product carousel section ── */}
-        <section className="border-t border-slate-200 bg-white px-8 py-14">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-8 flex items-start justify-between gap-6">
-              <div className="flex items-start gap-3">
-                <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-                <div>
-                  <h2 className="text-2xl font-extrabold text-sky-950">
-                    Product Reference
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Sample products for illustration. Use the TDS link for verified specifications before specifying on any project.
-                  </p>
+            {/* ── Collapsible technical detail ── */}
+            <TechnicalAccordion>
+              {/* 3-column grid */}
+              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                <TechCard
+                  icon={<Layers size={15} />}
+                  title="Typical Applications"
+                  items={REPAIR_MORTAR_SYSTEM_INFO.typicalApplications}
+                  itemStyle="bullet"
+                />
+                <TechCard
+                  icon={<Ruler size={15} />}
+                  title="Selection Criteria"
+                  items={REPAIR_MORTAR_SYSTEM_INFO.selectionCriteria}
+                  itemStyle="check"
+                />
+                <TechCard
+                  icon={<AlertTriangle size={15} />}
+                  title="Limitations"
+                  items={REPAIR_MORTAR_SYSTEM_INFO.limitations}
+                  itemStyle="warn"
+                />
+                <TechCard
+                  icon={<BookOpen size={15} />}
+                  title="Standards &amp; Testing Notes"
+                  items={REPAIR_MORTAR_SYSTEM_INFO.standardsNotes}
+                  itemStyle="bullet"
+                />
+                <TechCard
+                  icon={<CheckCircle size={15} />}
+                  title="Suitable Defects"
+                  items={REPAIR_MORTAR_SYSTEM_INFO.suitableDefects}
+                  itemStyle="check"
+                />
+                <TechCard
+                  icon={<SquareStack size={15} />}
+                  title="Typical Substrates"
+                  items={REPAIR_MORTAR_SYSTEM_INFO.typicalSubstrates}
+                  itemStyle="bullet"
+                />
+              </div>
+
+              {/* Key technical fields table */}
+              <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                <h3 className="mb-5 text-sm font-extrabold text-sky-950">
+                  Key Technical Fields — What to Check per Product
+                </h3>
+                <div className="grid gap-0 divide-y divide-slate-100 sm:grid-cols-2 sm:divide-y-0">
+                  {[
+                    ["Repair depth range (mm)",     "Minimum and maximum per lift — critical for specification compliance"],
+                    ["Exposure class (AS 3600)",     "B1, B2, C1, C2 — must match project exposure environment"],
+                    ["Compressive strength (MPa)",   "Verify against adjacent substrate — typically ≥ 35–45 MPa at 28 days"],
+                    ["Bond strength (MPa)",          "Pull-off bond strength — minimum 1.5 MPa for structural repair (indicative)"],
+                    ["Shrinkage classification",     "Controlled / low shrinkage — important for crack resistance"],
+                    ["Chloride resistance",          "Critical for coastal, marine, and parking structure applications"],
+                    ["Carbonation resistance",       "Important for long-term durability of concrete cover"],
+                    ["Primer requirement",           "Mandatory bonding primer — do not substitute without manufacturer approval"],
+                    ["Wet area suitability",         "Most repair mortars are not waterproof — confirm if wet area is in scope"],
+                    ["Marine / coastal suitability", "Confirm explicitly for buildings within 1 km of the coastline"],
+                  ].map(([field, desc]) => (
+                    <div key={field} className="flex flex-col gap-0.5 py-3 px-0 sm:px-4">
+                      <span className="text-xs font-bold text-sky-950">{field}</span>
+                      <span className="text-xs leading-5 text-slate-500">{desc}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <span className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
-                {REPAIR_MORTAR_PRODUCTS.length} products
-              </span>
-            </div>
+            </TechnicalAccordion>
 
-            <ProductCarousel products={REPAIR_MORTAR_PRODUCTS} />
           </div>
         </section>
 
