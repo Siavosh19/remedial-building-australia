@@ -1,16 +1,20 @@
 /*
   Run this in your Supabase SQL editor ONCE before using this route:
 
-  ALTER TABLE newsletter_subscribers
-    ADD COLUMN IF NOT EXISTS name              text,
-    ADD COLUMN IF NOT EXISTS interest_category text,
-    ADD COLUMN IF NOT EXISTS subscribed_at     timestamptz DEFAULT now();
+  CREATE TABLE IF NOT EXISTS public.newsletter_subscribers (
+    id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    name              text NOT NULL,
+    email             text NOT NULL,
+    interest_category text,
+    subscribed_at     timestamptz DEFAULT now()
+  );
 
   CREATE UNIQUE INDEX IF NOT EXISTS newsletter_subscribers_email_idx
-    ON newsletter_subscribers (lower(email));
+    ON public.newsletter_subscribers (lower(email));
 */
 
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
 import { supabase } from "@/lib/supabase";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -78,6 +82,37 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+
+  // ── Send confirmation email ─────────────────────────────────────────────────
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  await resend.emails.send({
+    from: "Remedial Building Australia <newsletter@remedialbuildingaustralia.com.au>",
+    to: email,
+    subject: "You're subscribed — Remedial Building Australia",
+    html: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#0c2340">
+        <div style="background:#0c2340;padding:24px 32px;border-radius:12px 12px 0 0">
+          <p style="margin:0;font-size:13px;font-weight:700;color:#f87171;letter-spacing:0.2em;text-transform:uppercase">Newsletter</p>
+          <h1 style="margin:8px 0 0;font-size:22px;color:#ffffff">Remedial Building Australia</h1>
+        </div>
+        <div style="background:#f8fafc;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e2e8f0;border-top:none">
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hi ${name},</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6">
+            Thanks for subscribing to the <strong>Fortnightly Remedial Building Update</strong>.
+            You'll receive curated industry news, compliance updates and technical references
+            directly to your inbox every fortnight.
+          </p>
+          <p style="margin:0 0 8px;font-size:13px;color:#64748b"><strong>Your interest area:</strong> ${interest}</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0"/>
+          <p style="margin:0;font-size:12px;color:#94a3b8;line-height:1.6">
+            You're receiving this because you subscribed at remedialbuildingaustralia.com.au.<br/>
+            To unsubscribe, reply to this email or contact
+            <a href="mailto:info@remedialbuildingaustralia.com.au" style="color:#0ea5e9">info@remedialbuildingaustralia.com.au</a>.
+          </p>
+        </div>
+      </div>
+    `,
+  });
 
   return NextResponse.json({ success: true });
 }
