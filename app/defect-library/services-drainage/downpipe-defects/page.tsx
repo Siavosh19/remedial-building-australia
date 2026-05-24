@@ -43,19 +43,14 @@ export default function Page() {
     <div className="min-h-screen bg-slate-100 text-slate-800">
       <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3"><div><div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div><div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">Technical Defect Database</div></div></a>
+          <a href="/" className="flex shrink-0 items-center gap-3"><div><div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div><div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">Technical Remedial Building Platform</div></div></a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
+            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-            <a
-              href="/newsletter"
-              className="whitespace-nowrap rounded-lg bg-red-700 px-4 py-2 text-sm text-white hover:bg-red-800 transition"
-            >
-              Subscribe
-            </a>
           </nav>
           <a href="/" className="hidden shrink-0 rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800 md:inline-flex">Home</a>
         </div>

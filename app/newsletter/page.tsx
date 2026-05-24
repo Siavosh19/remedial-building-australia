@@ -39,21 +39,22 @@ export default function NewsletterPage() {
                 Remedial Building Australia
               </div>
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Technical Defect Database
+                Technical Remedial Building Platform
               </div>
             </div>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/defect-library"   className="whitespace-nowrap hover:text-red-700 transition">Defect Library</a>
-            <a href="/repair-systems"   className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
-            <a href="/industry-news"    className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
+            <a href="/"               className="whitespace-nowrap hover:text-red-700 transition">Home</a>
+            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700 transition">Defect Library</a>
+            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
+            <a href="/industry-news"  className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
           </nav>
           <a
-            href="/"
-            className="hidden shrink-0 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-800 transition md:inline-flex"
+            href="/newsletter"
+            className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex"
           >
-            Home
+            Subscribe
           </a>
         </div>
       </header>

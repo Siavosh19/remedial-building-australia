@@ -54,7 +54,7 @@ export default function ConcreteSpallingPage() {
                 Remedial Building Australia
               </div>
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">
-                Technical Defect Database
+                Technical Remedial Building Platform
               </div>
             </div>
           </a>

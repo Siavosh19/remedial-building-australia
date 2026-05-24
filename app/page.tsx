@@ -201,7 +201,7 @@ export default function RemedialBuildingAustraliaHome() {
                 Remedial Building Australia
               </div>
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">
-                Technical Defect Database
+                Technical Remedial Building Platform
               </div>
             </div>
           </a>
@@ -211,14 +211,14 @@ export default function RemedialBuildingAustraliaHome() {
             <a href="/repair-systems"   className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
             <a href="/industry-news"    className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
-            <a
-              href="/newsletter"
-              className="whitespace-nowrap rounded-lg bg-red-700 px-4 py-2 text-white hover:bg-red-800 transition"
-            >
-              Subscribe
-            </a>
           </nav>
 
+          <a
+            href="/newsletter"
+            className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex"
+          >
+            Subscribe
+          </a>
           <Menu className="md:hidden" />
         </div>
       </header>
