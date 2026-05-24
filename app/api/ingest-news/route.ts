@@ -66,11 +66,11 @@ const RSS_FEEDS = [
   "https://news.google.com/rss/search?q=fair+trading+building+NSW&hl=en-AU&gl=AU&ceid=AU:en",
   "https://news.google.com/rss/search?q=icare+building+insurance+NSW&hl=en-AU&gl=AU&ceid=AU:en",
   // Direct industry feeds
-  "https://sourceable.net/feed/",
   "https://www.constructionreview.com.au/feed/",
   "https://www.mbansw.asn.au/feed",
   "https://www.thefifthestate.com.au/feed/",
-  "https://architectureau.com/feed/",
+  // sourceable.net/feed — timing out, removed
+  // architectureau.com/feed — 404, removed
 ];
 
 // ─── RSS parsing ──────────────────────────────────────────────────────────────
@@ -249,6 +249,7 @@ export async function GET() {
     skipped_irrelevant: 0,
     errors: [] as string[],
     total_fetched: 0,
+    new_candidates: 0,
   };
 
   // 1. Fetch all RSS feeds simultaneously
@@ -257,6 +258,7 @@ export async function GET() {
       const res = await fetch(url, {
         headers: { "User-Agent": "Mozilla/5.0 (compatible; RemBuildAU/1.0)" },
         cache: "no-store",
+        signal: AbortSignal.timeout(8000),
       });
       if (!res.ok) throw new Error(`Feed ${url} returned HTTP ${res.status}`);
       const xml = await res.text();
@@ -264,7 +266,7 @@ export async function GET() {
     })
   );
 
-  // 2. Collect unique articles (max 5 per feed to control API costs)
+  // 2. Collect unique articles (max 5 per feed)
   const seenLinks = new Set<string>();
   const seenTitles = new Set<string>();
   const queue: RSSItem[] = [];
@@ -287,14 +289,27 @@ export async function GET() {
 
   stats.total_fetched = queue.length;
 
-  // 3. Cap at 15 per run, classify all in parallel
-  const batch = queue.slice(0, 15);
+  // 3. Pre-filter against DB — only send NEW articles to Claude
+  //    This is the critical step: without it, the same old articles eat the
+  //    entire batch budget every run and nothing new ever gets classified.
+  const { data: existingRows } = await supabase
+    .from("industry_news")
+    .select("source_url");
+
+  const existingUrls = new Set((existingRows ?? []).map((r: { source_url: string }) => r.source_url));
+  const newQueue = queue.filter((item) => !existingUrls.has(item.link));
+
+  stats.skipped_duplicate = queue.length - newQueue.length;
+  stats.new_candidates = newQueue.length;
+
+  // 4. Classify up to 40 genuinely new articles in parallel
+  const batch = newQueue.slice(0, 40);
 
   const enriched = await Promise.allSettled(
     batch.map((item) => classifyAndEnrich(item.title, item.description))
   );
 
-  // 4. Upsert in parallel — DB UNIQUE constraint on source_url prevents duplicates
+  // 5. Insert relevant articles in parallel
   await Promise.allSettled(
     batch.map(async (item, i) => {
       const result = enriched[i];
@@ -316,12 +331,28 @@ export async function GET() {
           })()
         : new Date().toISOString();
 
-      const { error, data } = await supabase
+      const { error } = await supabase
         .from("industry_news")
-        .upsert(
-          {
+        .insert({
+          title: item.title,
+          slug,
+          summary,
+          industry_impact: impact,
+          category,
+          tags,
+          source_name: item.sourceName || "Industry News",
+          source_url: item.link,
+          published_date,
+          featured_image,
+          status: "published",
+        });
+
+      if (error) {
+        // slug collision on a truly new URL — append timestamp and retry
+        if (error.code === "23505") {
+          const { error: e2 } = await supabase.from("industry_news").insert({
             title: item.title,
-            slug,
+            slug: `${slug}-${Date.now().toString(36)}`,
             summary,
             industry_impact: impact,
             category,
@@ -331,17 +362,14 @@ export async function GET() {
             published_date,
             featured_image,
             status: "published",
-          },
-          { onConflict: "slug", ignoreDuplicates: true }
-        )
-        .select("id");
-
-      if (error) {
-        stats.errors.push(`Upsert failed: ${error.message}`);
-      } else if (data && data.length > 0) {
-        stats.inserted++;
+          });
+          if (e2) stats.errors.push(`Insert retry failed: ${e2.message}`);
+          else stats.inserted++;
+        } else {
+          stats.errors.push(`Insert failed: ${error.message}`);
+        }
       } else {
-        stats.skipped_duplicate++;
+        stats.inserted++;
       }
     })
   );
