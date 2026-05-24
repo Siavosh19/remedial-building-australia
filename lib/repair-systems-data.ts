@@ -245,8 +245,10 @@ export const REPAIR_MORTAR_PRODUCTS: RepairMortarProduct[] = [
       { name: "ARDEX Australia", url: "https://ardexaustralia.com/product/ardex-br-345/" },
     ],
     retailers: [
-      { name: "Komerco",    url: "https://komerco.com.au/products/ardex-br-345",                                              price: "$82.50 incl GST", inStock: true  },
-      { name: "TradieCart", url: "https://www.tradiecart.com.au/ardex-br-345-20kg-structural-patch-and-repair-mortar/",       price: "$77.00 incl GST", inStock: true  },
+      { name: "TradieCart",          url: "https://www.tradiecart.com.au/ardex-br-345-20kg-structural-patch-and-repair-mortar/",       price: "$77.00 incl GST", inStock: true  },
+      { name: "Bldcare",             url: "https://www.bldcare.com.au/concrete-products/66-ardex-br-345-microtec-high-resistivity-patching-mortar-20kg.html", price: "$78.00 incl GST" },
+      { name: "Komerco",             url: "https://komerco.com.au/products/ardex-br-345",                                              price: "$82.50 incl GST", inStock: true  },
+      { name: "WPD Group",           url: "https://www.wpdgroup.com.au/products/ardex-br345",                                          price: "$106.96 incl GST", inStock: false },
     ],
     bestFor: "High-build structural patch repair on vertical, horizontal, and overhead concrete — façades, balcony soffits, columns, and beams where a single lift up to 80 mm is required.",
     applications: [
