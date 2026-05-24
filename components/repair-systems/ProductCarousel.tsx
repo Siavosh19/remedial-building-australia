@@ -148,7 +148,7 @@ export function ProductCarousel({ products }: Props) {
         {/* Body: three-column grid */}
         <div className="grid gap-0 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
-          {/* Column 1: Applications + Coverage */}
+          {/* Column 1: Applications + Coverage + Price Comparison */}
           <div className="px-6 py-6">
             <SectionLabel>Typical Applications</SectionLabel>
             <ul className="mt-3 space-y-1.5">
@@ -162,6 +162,15 @@ export function ProductCarousel({ products }: Props) {
             <div className="mt-5">
               <SectionLabel>Coverage Rate</SectionLabel>
               <p className="mt-1.5 text-xs leading-5 text-slate-600">{product.coverageRate}</p>
+            </div>
+
+            {/* ── Price comparison ── */}
+            <div className="mt-6">
+              <div className="mb-3 flex items-center gap-2">
+                <ShoppingCart size={14} className="text-sky-950" />
+                <span className="text-sm font-extrabold text-sky-950">Buy Online — Compare Prices</span>
+              </div>
+              <RetailerTable retailers={product.retailers} />
             </div>
           </div>
 
@@ -231,10 +240,6 @@ export function ProductCarousel({ products }: Props) {
               </div>
             </div>
 
-            <div className="mt-5">
-              <SectionLabel>Buy Online — Price Comparison</SectionLabel>
-              <RetailerTable retailers={product.retailers} />
-            </div>
           </div>
         </div>
 
@@ -331,61 +336,64 @@ function SpecPill({
 }
 
 function RetailerTable({ retailers }: { retailers: import("@/lib/repair-systems-data").ProductRetailer[] }) {
-  if (retailers.length === 0) return <p className="mt-2 text-[11px] text-slate-400">No online retailers listed.</p>;
+  if (retailers.length === 0) return <p className="mt-2 text-xs text-slate-400">No online retailers listed.</p>;
   return (
-    <div className="mt-2 overflow-hidden rounded-xl border border-slate-200">
-      <table className="w-full text-[11px]">
-        <thead>
-          <tr className="border-b border-slate-100 bg-slate-50">
-            <th className="py-2 pl-3 pr-2 text-left font-bold text-slate-400 uppercase tracking-wider text-[9px]">Retailer</th>
-            <th className="py-2 px-2 text-right font-bold text-slate-400 uppercase tracking-wider text-[9px]">Price</th>
-            <th className="py-2 pl-2 pr-3 text-center font-bold text-slate-400 uppercase tracking-wider text-[9px]">Stock</th>
-          </tr>
-        </thead>
-        <tbody>
-          {retailers.map((r, i) => (
-            <tr
-              key={r.name}
-              className={`border-b border-slate-50 last:border-0 transition hover:bg-sky-50 ${i % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}
+    <div className="overflow-hidden rounded-2xl border-2 border-sky-900 shadow-md">
+      {/* Table header */}
+      <div className="grid grid-cols-[1fr_auto_auto] bg-sky-950 px-4 py-2.5">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-sky-300">Retailer</span>
+        <span className="px-4 text-right text-[10px] font-bold uppercase tracking-widest text-sky-300">Price (incl GST)</span>
+        <span className="text-center text-[10px] font-bold uppercase tracking-widest text-sky-300">Stock</span>
+      </div>
+
+      {/* Rows */}
+      <div className="divide-y divide-slate-100 bg-white">
+        {retailers.map((r) => (
+          <div
+            key={r.name}
+            className="grid grid-cols-[1fr_auto_auto] items-center px-4 py-3.5 transition hover:bg-sky-50"
+          >
+            {/* Retailer name + link */}
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm font-bold text-sky-800 hover:text-red-700 transition"
             >
-              <td className="py-2.5 pl-3 pr-2">
-                <a
-                  href={r.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 font-semibold text-sky-800 hover:text-red-700 transition"
-                >
-                  <ShoppingCart size={10} className="shrink-0 text-sky-400" />
-                  {r.name}
-                  <ExternalLink size={8} className="shrink-0 opacity-40" />
-                </a>
-              </td>
-              <td className="py-2.5 px-2 text-right">
-                {r.price ? (
-                  <span className="font-bold text-sky-950">{r.price}</span>
-                ) : (
-                  <span className="text-slate-400 italic">See site</span>
-                )}
-              </td>
-              <td className="py-2.5 pl-2 pr-3 text-center">
-                {r.inStock === true ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-[9px] font-bold text-green-700">
-                    <CheckCircle size={9} /> In stock
-                  </span>
-                ) : r.inStock === false ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[9px] font-bold text-red-600">
-                    <AlertCircle size={9} /> Out of stock
-                  </span>
-                ) : (
-                  <span className="text-slate-300">—</span>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="border-t border-slate-100 bg-slate-50 px-3 py-2">
-        <p className="text-[9px] leading-4 text-slate-400">Prices are indicative only. Verify with retailer before use in cost estimates. Stock status may change without notice.</p>
+              {r.name}
+              <ExternalLink size={11} className="shrink-0 text-sky-300" />
+            </a>
+
+            {/* Price */}
+            <div className="px-4 text-right">
+              {r.price ? (
+                <span className="text-base font-extrabold text-sky-950">{r.price}</span>
+              ) : (
+                <span className="text-xs italic text-slate-400">See site</span>
+              )}
+            </div>
+
+            {/* Stock badge */}
+            <div className="text-center">
+              {r.inStock === true ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 text-[11px] font-bold text-green-700">
+                  <CheckCircle size={10} /> In stock
+                </span>
+              ) : r.inStock === false ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2.5 py-1 text-[11px] font-bold text-red-600">
+                  <AlertCircle size={10} /> Out of stock
+                </span>
+              ) : (
+                <span className="text-xs text-slate-300">—</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer note */}
+      <div className="bg-sky-950 px-4 py-2">
+        <p className="text-[10px] leading-4 text-sky-400">Prices indicative only — verify with retailer before use in any cost estimate or tender.</p>
       </div>
     </div>
   );
