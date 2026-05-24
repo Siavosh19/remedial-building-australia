@@ -150,29 +150,8 @@ export default function RepairMortarsPage() {
               </p>
             </div>
 
-            {/* ── Product carousel ── */}
-            <div>
-              <div className="mb-6 flex items-start justify-between gap-6">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-                  <div>
-                    <h2 className="text-2xl font-extrabold text-sky-950">
-                      Product Reference
-                    </h2>
-                    <p className="mt-1 text-sm text-slate-500">
-                      Use the TDS link for verified specifications before specifying on any project.
-                    </p>
-                  </div>
-                </div>
-                <span className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
-                  {REPAIR_MORTAR_PRODUCTS.length} products
-                </span>
-              </div>
-              <ProductCarousel products={REPAIR_MORTAR_PRODUCTS} />
-            </div>
-
             {/* ── Collapsible technical detail ── */}
-            <TechnicalAccordion defaultOpen={true}>
+            <TechnicalAccordion defaultOpen={false}>
               {/* 3-column grid */}
               <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                 <TechCard
@@ -239,6 +218,27 @@ export default function RepairMortarsPage() {
                 </div>
               </div>
             </TechnicalAccordion>
+
+            {/* ── Product carousel ── */}
+            <div>
+              <div className="mb-6 flex items-start justify-between gap-6">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+                  <div>
+                    <h2 className="text-2xl font-extrabold text-sky-950">
+                      Product Reference
+                    </h2>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Use the TDS link for verified specifications before specifying on any project.
+                    </p>
+                  </div>
+                </div>
+                <span className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
+                  {REPAIR_MORTAR_PRODUCTS.length} products
+                </span>
+              </div>
+              <ProductCarousel products={REPAIR_MORTAR_PRODUCTS} />
+            </div>
 
           </div>
         </section>
