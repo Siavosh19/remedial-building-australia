@@ -215,7 +215,8 @@ export interface RepairMortarProduct {
   bagSizeKg: number;
   priceRange: string;       // always "Indicative only" — update via data field
   priceNote: string;
-  retailers: ProductRetailer[];
+  suppliers: ProductRetailer[];  // manufacturer / official distributor pages
+  retailers: ProductRetailer[];  // online stores where you can purchase
   bestFor: string;
   applications: string[];
   coverageRate: string;
@@ -238,11 +239,13 @@ export const REPAIR_MORTAR_PRODUCTS: RepairMortarProduct[] = [
     bagSizeKg: 20,
     priceRange: "~$77–$83 per 20 kg bag",
     priceNote: "Indicative online range only. Prices vary by supplier, region, and order volume. Verify with supplier prior to use in any cost estimate.",
+    suppliers: [
+      { name: "ARDEX Australia", url: "https://ardexaustralia.com/product/ardex-br-345/" },
+    ],
     retailers: [
-      { name: "ARDEX Australia (Official)",   url: "https://ardexaustralia.com/product/ardex-br-345/" },
-      { name: "The Waterproofing Shop",        url: "https://thewaterproofingshop.com.au/products/ardex-br-345-concrete-patching-20kg" },
-      { name: "Komerco",                       url: "https://komerco.com.au/products/ardex-br-345" },
-      { name: "TradieCart",                    url: "https://www.tradiecart.com.au/ardex-br-345-20kg-structural-patch-and-repair-mortar/" },
+      { name: "The Waterproofing Shop", url: "https://thewaterproofingshop.com.au/products/ardex-br-345-concrete-patching-20kg" },
+      { name: "Komerco",               url: "https://komerco.com.au/products/ardex-br-345" },
+      { name: "TradieCart",            url: "https://www.tradiecart.com.au/ardex-br-345-20kg-structural-patch-and-repair-mortar/" },
     ],
     bestFor: "High-build structural patch repair on vertical, horizontal, and overhead concrete — façades, balcony soffits, columns, and beams where a single lift up to 80 mm is required.",
     applications: [
@@ -295,11 +298,13 @@ export const REPAIR_MORTAR_PRODUCTS: RepairMortarProduct[] = [
     bagSizeKg: 20,
     priceRange: "~$83–$90 per 20 kg bag",
     priceNote: "Indicative online range only. Prices vary by supplier, region, and order volume. Verify with supplier prior to use in any cost estimate.",
+    suppliers: [
+      { name: "Fosroc Australia", url: "https://www.fosroc.com.au/product/renderoc-hb40" },
+    ],
     retailers: [
-      { name: "Fosroc Australia (Official)", url: "https://www.fosroc.com.au/product/renderoc-hb40" },
-      { name: "Jaybro",                      url: "https://www.jaybro.com.au/fosrocr-renderoc-hb40-20kg.html" },
-      { name: "Blackwoods",                  url: "https://www.blackwoods.com.au/adhesives-sealants-fillers/repair-and-wear-resistant-compounds/fosroc-renderoc/mortar-renderoc-hb40-20kg/p/00489421" },
-      { name: "Bldcare",                     url: "https://www.bldcare.com.au/concrete-repair-mortars/278-fosroc-renderoc-hb40-20kg.html" },
+      { name: "Jaybro",      url: "https://www.jaybro.com.au/fosrocr-renderoc-hb40-20kg.html" },
+      { name: "Blackwoods",  url: "https://www.blackwoods.com.au/adhesives-sealants-fillers/repair-and-wear-resistant-compounds/fosroc-renderoc/mortar-renderoc-hb40-20kg/p/00489421" },
+      { name: "Bldcare",     url: "https://www.bldcare.com.au/concrete-repair-mortars/278-fosroc-renderoc-hb40-20kg.html" },
     ],
     bestFor: "Localised vertical and overhead patch repair on reinforced concrete up to 45 MPa — suited to balcony soffits, columns, and façade repairs where wet-spray or trowel application is required.",
     applications: [
@@ -354,12 +359,15 @@ export const REPAIR_MORTAR_PRODUCTS: RepairMortarProduct[] = [
     bagSizeKg: 20,
     priceRange: "~$80–$100 per 20 kg bag",
     priceNote: "Indicative online range only. Prices vary by supplier, region, and order volume. Verify with supplier prior to use in any cost estimate.",
+    suppliers: [
+      { name: "Sika Australia", url: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-412nfg.html" },
+    ],
     retailers: [
-      { name: "Waterproofing Direct",         url: "https://www.waterproofingdirect.com.au/sika-monotop-412nfg-20kg.ir" },
-      { name: "Sydney Industrial Coatings",   url: "https://www.sydneyindustrialcoatings.com.au/product/sika-monotop-412nfg-20kg/" },
-      { name: "TradieCart",                   url: "https://www.tradiecart.com.au/sika-monotop-412nfg-20kg-repair-mortar/" },
-      { name: "Komerco",                      url: "https://komerco.com.au/products/sika-monotop-412-nfg" },
-      { name: "BCSands",                      url: "https://www.bcsands.com.au/index.php?main_page=product_info&products_id=1267" },
+      { name: "Waterproofing Direct",       url: "https://www.waterproofingdirect.com.au/sika-monotop-412nfg-20kg.ir" },
+      { name: "Sydney Industrial Coatings", url: "https://www.sydneyindustrialcoatings.com.au/product/sika-monotop-412nfg-20kg/" },
+      { name: "TradieCart",                 url: "https://www.tradiecart.com.au/sika-monotop-412nfg-20kg-repair-mortar/" },
+      { name: "Komerco",                    url: "https://komerco.com.au/products/sika-monotop-412-nfg" },
+      { name: "BCSands",                    url: "https://www.bcsands.com.au/index.php?main_page=product_info&products_id=1267" },
     ],
     bestFor: "R4-class structural concrete repair on reinforced concrete buildings — façades, balcony soffits, columns, and beams where engineering specification requires EN 1504-3 R4 classification and no bonding primer.",
     applications: [

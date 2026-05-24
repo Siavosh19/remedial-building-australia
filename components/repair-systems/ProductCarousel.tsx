@@ -213,7 +213,25 @@ export function ProductCarousel({ products }: Props) {
             </div>
 
             <div className="mt-5">
-              <SectionLabel>Retailers / Suppliers</SectionLabel>
+              <SectionLabel>Manufacturer / Supplier</SectionLabel>
+              <div className="mt-2 space-y-1.5">
+                {product.suppliers.map((s) => (
+                  <a
+                    key={s.name}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-xs font-semibold text-sky-950 hover:text-red-700 transition"
+                  >
+                    <ExternalLink size={11} className="shrink-0 text-sky-400" />
+                    {s.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <SectionLabel>Buy Online — Retailers</SectionLabel>
               <div className="mt-2 space-y-1.5">
                 {product.retailers.map((r) => (
                   <a
