@@ -1,30 +1,10 @@
 import { NewsletterSignup } from "@/components/NewsletterSignup";
-import { CheckCircle } from "lucide-react";
 
 export const metadata = {
   title: "Newsletter — Remedial Building Australia",
   description:
     "Subscribe to the fortnightly Remedial Building Australia update — industry news, compliance changes, product releases and technical references for building consultants and waterproofing contractors.",
 };
-
-const WHAT_YOU_GET = [
-  {
-    heading: "Industry News",
-    body: "Building Commission NSW, DBP Act, strata defect cases and regulatory changes — summarised and relevant.",
-  },
-  {
-    heading: "Repair System Updates",
-    body: "New products, system approvals, material testing results and application guidance.",
-  },
-  {
-    heading: "Compliance & Standards",
-    body: "NCC updates, AS 3600 changes, waterproofing standards and exposure class guidance.",
-  },
-  {
-    heading: "Defect Trends",
-    body: "Emerging defect types, common failure patterns and remediation approaches across Class 2 buildings.",
-  },
-];
 
 export default function NewsletterPage() {
   return (
@@ -60,58 +40,7 @@ export default function NewsletterPage() {
       </header>
 
       <main>
-
-        {/* ── Hero ── */}
-        <section className="border-b border-slate-200 bg-white px-8 py-14">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-red-700">
-              Newsletter
-            </p>
-            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-              Fortnightly Remedial<br className="hidden sm:block" /> Building Update
-            </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-slate-500">
-              Curated industry news, compliance updates and technical references for building
-              consultants, waterproofing contractors and strata managers across Australia.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-3 py-1.5 text-xs font-bold text-green-700">
-                <CheckCircle size={12} /> Free
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-700">
-                Fortnightly
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-600">
-                No spam — unsubscribe anytime
-              </span>
-            </div>
-          </div>
-        </section>
-
-        {/* ── What you get ── */}
-        <section className="px-8 py-14">
-          <div className="mx-auto max-w-5xl">
-            <p className="mb-8 text-center text-[11px] font-bold uppercase tracking-widest text-slate-400">
-              What&apos;s included
-            </p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {WHAT_YOU_GET.map((item) => (
-                <div
-                  key={item.heading}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-                >
-                  <div className="mb-3 h-1.5 w-8 rounded-full bg-red-700" />
-                  <h3 className="text-sm font-extrabold text-sky-950">{item.heading}</h3>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Subscribe form (section variant) ── */}
         <NewsletterSignup variant="section" />
-
       </main>
 
       {/* ── Footer ── */}

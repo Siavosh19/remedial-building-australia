@@ -71,11 +71,13 @@ export async function POST(req: NextRequest) {
     subscribed_at: new Date().toISOString(),
   });
 
-  if (error)
+  if (error) {
+    console.error("[subscribe] Supabase insert error:", error);
     return NextResponse.json(
       { error: "Unable to subscribe right now. Please try again shortly." },
       { status: 500 }
     );
+  }
 
   return NextResponse.json({ success: true });
 }
