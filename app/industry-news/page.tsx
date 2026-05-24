@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Search, Mail, ArrowRight, Loader2 } from "lucide-react";
+import { Search, ArrowRight, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { FILTER_CATEGORIES, getNewsImage, formatDate } from "@/lib/news-categories";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -27,12 +28,10 @@ type NewsArticle = {
 export default function IndustryNewsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [email, setEmail] = useState("");
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   useEffect(() => {
     async function fetchArticles() {
@@ -78,24 +77,6 @@ export default function IndustryNewsPage() {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, activeCategory]);
-
-  async function handleNewsletterSubscribe() {
-    if (!email.trim() || newsletterStatus === "loading") return;
-    setNewsletterStatus("loading");
-    try {
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .insert({ email: email.trim() });
-      if (error) {
-        setNewsletterStatus("error");
-      } else {
-        setNewsletterStatus("success");
-        setEmail("");
-      }
-    } catch {
-      setNewsletterStatus("error");
-    }
-  }
 
   const ARTICLES_PER_PAGE = 12;
   const isFiltering = searchQuery.trim().length > 0 || activeCategory !== "All";
@@ -392,51 +373,7 @@ export default function IndustryNewsPage() {
         </div>
 
         {/* ── Newsletter ──────────────────────────────────────────────────────── */}
-        <section className="bg-sky-950 px-8 py-20 text-white">
-          <div className="mx-auto max-w-7xl grid gap-10 md:grid-cols-[1fr_0.85fr] md:items-center">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-white">Newsletter</p>
-              <h2 className="mt-4 text-3xl font-extrabold leading-tight md:text-4xl">
-                Get the Fortnightly Remedial Building Update
-              </h2>
-              <p className="mt-4 max-w-lg text-base leading-7 text-sky-300">
-                Industry news, defect trends, compliance updates and technical articles — delivered fortnightly.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/10 p-6">
-              {newsletterStatus === "success" ? (
-                <div className="flex min-h-12 items-center justify-center rounded-xl bg-green-700/40 px-6 py-4">
-                  <p className="text-sm font-semibold text-white">You&apos;re subscribed! We&apos;ll be in touch fortnightly.</p>
-                </div>
-              ) : (
-                <>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubscribe()}
-                      placeholder="Your email address"
-                      className="min-h-12 flex-1 rounded-xl border border-white/20 bg-white/10 px-4 text-sm text-white placeholder-sky-400 outline-none focus:border-sky-400"
-                    />
-                    <button
-                      onClick={handleNewsletterSubscribe}
-                      disabled={newsletterStatus === "loading"}
-                      className="flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-red-700 px-6 text-sm font-bold text-white hover:bg-red-800 disabled:opacity-60"
-                    >
-                      <Mail size={16} /> {newsletterStatus === "loading" ? "Subscribing…" : "Subscribe"}
-                    </button>
-                  </div>
-                  {newsletterStatus === "error" && (
-                    <p className="mt-2 text-xs text-red-300">Something went wrong. Please try again.</p>
-                  )}
-                  <p className="mt-3 text-xs text-sky-500">No spam. Unsubscribe at any time.</p>
-                </>
-              )}
-            </div>
-          </div>
-        </section>
+        <NewsletterSignup variant="section" />
 
       </main>
 
