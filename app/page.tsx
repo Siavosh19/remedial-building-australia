@@ -6,7 +6,16 @@ import { ArrowRight, Mail, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 
-const coreServices = [
+interface CoreService {
+  title: string;
+  text: string;
+  image: string;
+  href: string;
+  badge?: string;
+  quickLinks?: { label: string; href: string; available: boolean }[];
+}
+
+const coreServices: CoreService[] = [
   {
     title: "Defect Library",
     text: "Structured guidance for common Class 2 building defects, organised by category, cause, risk and repair pathway.",
@@ -15,9 +24,15 @@ const coreServices = [
   },
   {
     title: "Repair Systems",
-    text: "Compare waterproofing, concrete repair, crack injection, coatings, sealants and corrosion protection systems.",
+    text: "Technical reference for concrete repair mortars, corrosion inhibitors, waterproofing, crack injection and coatings — structured for Australian Class 2 remedial practice.",
     image: "/Images/Repair%20methods.jpg",
     href: "/repair-systems",
+    badge: "Now Live",
+    quickLinks: [
+      { label: "Repair Mortars",       href: "/repair-systems/repair-mortars",       available: true  },
+      { label: "Corrosion Inhibitors", href: "/repair-systems/corrosion-inhibitors", available: false },
+      { label: "Waterproofing",        href: "/repair-systems/waterproofing-systems", available: false },
+    ],
   },
   {
     title: "Materials & Products",
@@ -27,9 +42,14 @@ const coreServices = [
   },
   {
     title: "AI Scope Builder",
-    text: "AI-assisted remedial scope writing using structured technical data for faster, more accurate outputs.",
+    text: "AI-assisted remedial scope writing — select defects, repair systems, materials and clauses, then generate a consultant, builder, strata or tender scope.",
     image: "/Images/AI%20Scope%20Builder.png",
     href: "/ai-scope-builder",
+    badge: "Live",
+    quickLinks: [
+      { label: "New Scope",        href: "/ai-scope-builder/new",      available: true },
+      { label: "Saved Projects",   href: "/ai-scope-builder/projects", available: true },
+    ],
   },
   {
     title: "Courses",
@@ -64,9 +84,9 @@ const heroSlidesBase = [
   {
     label: "Repair Systems",
     title: "Compare and select the right repair system for every defect type.",
-    description: "Waterproofing, concrete repair, crack injection, coatings, sealants and corrosion protection systems — all structured for quick selection.",
+    description: "Concrete repair mortars, corrosion inhibitors, waterproofing systems, crack injection and coatings — now with product comparisons, technical specs and selection guidance.",
     href: "/repair-systems",
-    cta: "View Repair Systems",
+    cta: "Browse Repair Systems",
   },
   {
     label: "Materials & Products",
@@ -85,9 +105,9 @@ const heroSlidesBase = [
   {
     label: "AI Scope Builder",
     title: "AI-assisted scope writing built on structured technical data.",
-    description: "Future tool for faster, more accurate remedial scope writing using a structured defect and repair system database.",
+    description: "Select defects, repair systems, materials and clauses — then generate a consultant, builder, strata or tender scope of works in seconds.",
     href: "/ai-scope-builder",
-    cta: "Learn About AI Scope Builder",
+    cta: "Open AI Scope Builder",
   },
 ];
 
@@ -392,18 +412,49 @@ export default function RemedialBuildingAustraliaHome() {
                 href={service.href}
                 className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
-                <div className="h-64 w-full overflow-hidden">
+                <div className="relative h-64 w-full overflow-hidden">
                   <img
                     src={service.image}
                     alt={service.title}
                     className="h-full w-full object-cover"
                   />
+                  {service.badge && (
+                    <div className="absolute right-4 top-4 rounded-full bg-sky-950 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">
+                      {service.badge}
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col p-8">
                   <div className="mb-4 h-1.5 w-12 rounded-full bg-red-700" />
                   <h3 className="text-2xl font-extrabold text-sky-950">{service.title}</h3>
                   <p className="mt-3 text-base leading-7 text-slate-500">{service.text}</p>
-                  <div className="mt-auto pt-6 flex items-center text-sm font-bold text-sky-700">
+
+                  {service.quickLinks && service.quickLinks.length > 0 && (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {service.quickLinks.map((ql) =>
+                        ql.available ? (
+                          <span
+                            key={ql.label}
+                            onClick={(e) => { e.preventDefault(); window.location.href = ql.href; }}
+                            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-bold text-sky-800 transition hover:bg-sky-100 hover:text-red-700"
+                          >
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                            {ql.label}
+                          </span>
+                        ) : (
+                          <span
+                            key={ql.label}
+                            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-400"
+                          >
+                            <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+                            {ql.label}
+                          </span>
+                        )
+                      )}
+                    </div>
+                  )}
+
+                  <div className="mt-auto pt-6 flex items-center text-sm font-bold text-sky-700 group-hover:text-red-700 transition">
                     View more <ArrowRight className="ml-2" size={16} />
                   </div>
                 </div>

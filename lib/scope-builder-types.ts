@@ -29,6 +29,9 @@ export interface ProjectData {
   reportDate: string;
   accessConstraints: string;
   coastalExposure: boolean;
+  constructionType: string;
+  roofType: string;
+  externalWallType: string;
   notes: string;
 }
 
@@ -40,6 +43,7 @@ export interface Defect {
   severity: Severity;
   quantity: string;
   suspectedCause: string;
+  diagnosticNotes: string;
   notes: string;
 }
 

@@ -742,3 +742,279 @@ export const OUTPUT_TYPE_LABELS: Record<string, string> = {
   methodology: "Methodology Statement",
   tender: "Tender Scope",
 };
+
+// ─── Building construction options ───────────────────────────────────────────
+
+export const CONSTRUCTION_TYPES = [
+  "Reinforced concrete frame",
+  "Post-tensioned concrete",
+  "Precast concrete panels",
+  "Steel frame with concrete floors",
+  "Timber frame (Class 2 / walk-up)",
+  "Masonry / brick construction",
+  "Mixed construction",
+  "Unknown / not yet investigated",
+];
+
+export const ROOF_TYPES = [
+  "Flat — liquid applied membrane",
+  "Flat — sheet membrane (torch-on / self-adhesive)",
+  "Flat — bituminous / built-up system",
+  "Flat — concrete slab (waterproofed)",
+  "Flat — green roof / podium garden",
+  "Pitched — metal (Colorbond / Zincalume)",
+  "Pitched — concrete or terracotta tile",
+  "Pitched — fibrous cement or slate",
+  "Unknown / not yet investigated",
+];
+
+export const EXTERNAL_WALL_TYPES = [
+  "Brick / masonry cavity wall",
+  "Brick / masonry solid wall",
+  "Reinforced concrete (off-form)",
+  "Precast concrete panels",
+  "Rendered masonry or concrete",
+  "Lightweight fibre cement cladding",
+  "Aluminium composite panel (ACP)",
+  "Glass curtain wall / unitised system",
+  "Timber or metal weatherboard cladding",
+  "External insulation and finish system (EIFS)",
+  "Mixed / multiple types",
+  "Unknown / not yet investigated",
+];
+
+// ─── Defect library URL mapping ───────────────────────────────────────────────
+// Links defect categories back to the Defect Library for cross-reference
+
+export const DEFECT_LIBRARY_URLS: Partial<Record<DefectCategory, string>> = {
+  "Waterproofing & Water Ingress": "/defect-library/waterproofing-water-ingress",
+  "Concrete & Structural Defects": "/defect-library/concrete-structural-defects",
+  "Façade & External Envelope":    "/defect-library/facade-external-envelope",
+  "Roofing Defects":               "/defect-library/roofing-defects",
+  "Balconies & Podiums":           "/defect-library/balconies-podiums",
+  "Services & Drainage":           "/defect-library/services-drainage",
+};
+
+// ─── Diagnostic question templates ───────────────────────────────────────────
+// Auto-populated when a defect type is selected. User fills in the blanks.
+// These questions mirror the investigation approach in the Defect Library.
+
+export const DIAGNOSTIC_QUESTIONS: Record<string, string> = {
+  // ── Waterproofing ──
+  "Balcony Membrane Failure":
+`Approximate age of existing membrane (years):
+Visible blistering, bubbling or delamination:
+Water ingress evidence below (soffit staining / ceiling damage):
+Finishes type over membrane (tiles / pavers / screed / exposed):
+Previous repairs attempted (yes/no — describe if yes):
+Drainage outlet condition (clear / blocked / corroded / absent):
+Extent (localised areas / widespread / full deck): `,
+
+  "Podium Deck Waterproofing Failure":
+`Podium deck area (m²):
+Existing finish (tiles / pavers / exposed membrane / screed):
+Age of waterproofing system (years):
+Water ingress into carpark or occupied space below:
+Evidence of tree or plant root intrusion:
+Number and condition of drainage outlets:
+Falls to drainage (adequate / ponding water observed): `,
+
+  "Wet Area Membrane Failure":
+`Affected wet area type (shower recess / bathroom / laundry / ensuite):
+Unit / lot number(s):
+Water damage to adjacent walls or ceilings:
+Mould growth present (yes/no — extent):
+Duration issue has been evident (years / months):
+Finishes to be retained or replaced:
+Shower hob or hobless design: `,
+
+  "Planter Box Waterproofing Failure":
+`Number of planter boxes affected:
+Planter box dimensions (approx.):
+Root barrier in place (yes / no / unknown):
+Evidence of overflow from planting:
+Age of planter box installation:
+Water ingress below (soffit / garage / occupied space): `,
+
+  "Below-Ground / Basement Waterproofing Failure":
+`Area of basement affected (m²):
+Type of ingress (active seepage / damp / flooding):
+Location of ingress (floor slab / walls / construction joints / pile caps):
+Groundwater table level (high / low / seasonal / unknown):
+Existing waterproofing system (if known):
+Age of building:
+Any dewatering systems in place: `,
+
+  "External Wall Water Ingress":
+`Location of ingress (window reveals / wall face / joints / parapet):
+Floor levels affected:
+Internal damage observed (plasterboard / paint / flooring):
+Weather conditions causing ingress (heavy rain / driven rain / any rain):
+Cladding / wall type:
+Previous repairs or investigations: `,
+
+  // ── Concrete & Structural ──
+  "Concrete Spalling (Concrete Cancer)":
+`Structural elements affected (soffit / column / beam / slab edge / wall / balcony):
+Visible rust staining on surface (extent and location):
+Depth of existing spalling (mm):
+Estimated extent of affected area (m² or no. of locations):
+Building age (years):
+Concrete cover depth if known (mm):
+Structural engineer involved or required:
+Previous concrete patch repairs (yes/no): `,
+
+  "Carbonation-Induced Corrosion":
+`Building age (years):
+Depth of carbonation if tested (mm):
+Concrete cover depth (mm):
+Extent of rust staining visible:
+Structural elements affected:
+Carbonation or half-cell testing conducted (yes/no — results if available):
+Previous protective treatments applied: `,
+
+  "Chloride-Induced Corrosion":
+`Distance from coastline (approx. m):
+Building age (years):
+Chloride levels tested (yes/no — results if available):
+Extent and location of rust staining:
+Structural elements affected:
+Concrete cover depth if known (mm):
+Corrosion protection measures in original design: `,
+
+  "Structural Cracking":
+`Crack widths observed (mm):
+Crack length and extent:
+Pattern (diagonal / vertical / horizontal / stepped / map cracking):
+Active (moving) or dormant:
+Any associated water ingress:
+Location (internal / external / structural element):
+Structural engineer assessment conducted (yes/no): `,
+
+  "Post-Tensioned Concrete Defects":
+`Evidence of PT tendon corrosion or failure:
+Location of defects (slab / beam / suspended floor):
+Structural engineer involved (yes/no):
+Any deflection or serviceability issues:
+Building age:
+Extent of delamination or cracking: `,
+
+  "Concrete Delamination":
+`Extent of delamination (m²):
+Structural elements affected:
+Tap test conducted — hollow areas identified:
+Any associated cracking or rust staining:
+Suspected cause (shrinkage / freeze-thaw / contamination / construction defect): `,
+
+  // ── Façade & External Envelope ──
+  "External Wall Coating Failure":
+`Failure type (peeling / blistering / chalking / cracking / delamination):
+Extent of failure (localised / widespread — %):
+Years since last repaint or coating application:
+Underlying substrate condition (sound / friable / cracked / damp):
+Evidence of water ingress through coating:
+Previously applied coating system (if known): `,
+
+  "Cladding Defects":
+`Cladding material type (ACP / fibre cement / EIFS / GRC / other):
+Combustibility concerns identified (yes/no):
+Fixings condition (secure / corroding / missing / loose):
+Joint and sealant condition:
+Evidence of water ingress behind cladding:
+Area of cladding affected (m²): `,
+
+  "Expansion Joint Failure":
+`Number of joints affected:
+Joint type (movement joint / construction joint / control joint):
+Sealant condition (debonded / cracked / missing / hardened):
+Evidence of water ingress through joint:
+Joint width (mm):
+Previous joint treatment: `,
+
+  "Render Failure":
+`Failure type (cracking / delamination / hollow / moisture damage / efflorescence):
+Area of failure (m²):
+Render thickness (mm if known):
+Substrate type (masonry / concrete / lightweight):
+Evidence of water ingress:
+Age of existing render system: `,
+
+  // ── Roofing ──
+  "Roof Membrane Failure":
+`Roof area (m²):
+Membrane type (liquid applied / sheet / torch-on / bituminous):
+Age of system (years):
+Evidence of ponding water:
+Drainage outlet condition and number:
+Fall to drainage (adequate / areas of reverse fall):
+Previous repairs carried out: `,
+
+  "Flashing Failure":
+`Location of failed flashing (parapet / penetration / edge / step flashing / cap):
+Flashing material (aluminium / Colorbond / lead / PVC):
+Failure mode (corroded / open lap / lifted / missing / unsealed):
+Evidence of water ingress at flashing:
+Number of locations affected: `,
+
+  // ── Balconies & Podiums ──
+  "Balcony Tile Delamination":
+`Approximate area of hollow or delaminated tiles (m²):
+Tile size and type (ceramic / porcelain / stone):
+Signs of grout cracking or joint failure:
+Evidence of water ingress below:
+Age of tile installation (years):
+Bedding compound type (if known): `,
+
+  "Balcony Drainage Failure":
+`Number and location of outlets affected:
+Outlet type (centre drain / edge drain / scupper):
+Evidence of ponding water during or after rain:
+Floor level falls (adequate / reverse fall / flat):
+Evidence of overflow or water ingress into building: `,
+
+  "Structural Concrete Deterioration":
+`Location on balcony (slab edge / soffit / beam / balustrade post base):
+Extent of concrete deterioration:
+Rust staining visible:
+Structural engineer involved:
+Any cracking or deflection of balcony: `,
+
+  // ── Windows & Flashings ──
+  "Window Sealant Failure":
+`Number of windows and units affected:
+Evidence of water ingress into building (yes/no):
+Sealant condition (shrunk / cracked / debonded / absent):
+Window frame material (aluminium / timber / uPVC):
+Age of windows (years):
+Failure location (head / jamb / sill / perimeter): `,
+
+  "Head Flashing Failure":
+`Number of windows affected:
+Evidence of water ingress at window head:
+Flashing material and condition:
+Weep holes present and clear (yes/no):
+Adjacent render or cladding condition: `,
+
+  // ── Services & Drainage ──
+  "Blocked Stormwater Drainage":
+`Number of outlets affected:
+Frequency of overflow during rain:
+Evidence of property damage from overflows:
+Pipe material (PVC / cast iron / clay / concrete):
+Last cleaned or inspected (date if known):
+Location (roof / podium / carpark / garden): `,
+
+  "Inadequate Drainage Capacity":
+`Area of hard surface draining to affected outlets (m²):
+Pipe diameter and gradient:
+Frequency and severity of overflow:
+Hydraulic engineer assessment undertaken:
+Proposed catchment area changes (e.g. green roof to hard surface): `,
+
+  "Drainage Outlet Failure":
+`Number of outlets affected:
+Outlet type (membrane-flanged / cast iron / PVC / scupper):
+Failure mode (blocked / corroded / debonded / missing flange):
+Evidence of leakage at outlet:
+Age of outlets (years): `,
+};

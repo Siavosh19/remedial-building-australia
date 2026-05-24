@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2, ChevronDown, ChevronUp, Camera } from "lucide-react";
+import { Trash2, ChevronDown, ChevronUp, Camera, ExternalLink } from "lucide-react";
 import type { Defect, DefectCategory, Severity } from "@/lib/scope-builder-types";
-import { DEFECT_CATEGORIES } from "@/lib/scope-builder-data";
+import { DEFECT_CATEGORIES, DIAGNOSTIC_QUESTIONS, DEFECT_LIBRARY_URLS } from "@/lib/scope-builder-data";
 
 const SEVERITY_CONFIG: Record<Severity, { label: string; active: string }> = {
   Minor:    { label: "Minor",    active: "border-slate-500 bg-slate-500 text-white" },
@@ -114,8 +114,12 @@ export function DefectModuleCard({ defect, index, onUpdate, onRemove }: Props) {
               <select
                 value={defect.category}
                 onChange={(e) => {
-                  set("category", e.target.value as DefectCategory);
-                  set("defectType", "");
+                  onUpdate({
+                    ...defect,
+                    category: e.target.value as DefectCategory,
+                    defectType: "",
+                    diagnosticNotes: "",
+                  });
                 }}
                 className={INPUT_CLS}
               >
@@ -127,10 +131,30 @@ export function DefectModuleCard({ defect, index, onUpdate, onRemove }: Props) {
 
             {/* Defect Type */}
             <div>
-              <label className={LABEL_CLS}>Defect Type</label>
+              <div className="mb-1 flex items-center justify-between">
+                <label className={LABEL_CLS} style={{ marginBottom: 0 }}>Defect Type</label>
+                {defect.category && DEFECT_LIBRARY_URLS[defect.category] && (
+                  <a
+                    href={DEFECT_LIBRARY_URLS[defect.category]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-[10px] font-bold text-sky-700 hover:text-red-700 transition"
+                  >
+                    Defect Library <ExternalLink size={10} />
+                  </a>
+                )}
+              </div>
               <select
                 value={defect.defectType}
-                onChange={(e) => set("defectType", e.target.value)}
+                onChange={(e) => {
+                  const type = e.target.value;
+                  const template = DIAGNOSTIC_QUESTIONS[type] ?? "";
+                  onUpdate({
+                    ...defect,
+                    defectType: type,
+                    diagnosticNotes: defect.diagnosticNotes || template,
+                  });
+                }}
                 className={INPUT_CLS}
               >
                 <option value="">— Select type —</option>
@@ -200,6 +224,36 @@ export function DefectModuleCard({ defect, index, onUpdate, onRemove }: Props) {
               </select>
             </div>
 
+            {/* Diagnostic questions */}
+            <div className="sm:col-span-2">
+              <div className="mb-1 flex items-center justify-between">
+                <label className={LABEL_CLS} style={{ marginBottom: 0 }}>Diagnostic Observations</label>
+                {defect.defectType && DIAGNOSTIC_QUESTIONS[defect.defectType] && (
+                  <button
+                    type="button"
+                    onClick={() => set("diagnosticNotes", DIAGNOSTIC_QUESTIONS[defect.defectType] ?? "")}
+                    className="text-[10px] font-bold text-sky-700 hover:text-red-700 transition"
+                  >
+                    Reset to template
+                  </button>
+                )}
+              </div>
+              <textarea
+                value={defect.diagnosticNotes}
+                onChange={(e) => set("diagnosticNotes", e.target.value)}
+                rows={defect.diagnosticNotes ? Math.min(10, (defect.diagnosticNotes.match(/\n/g) ?? []).length + 2) : 3}
+                placeholder={
+                  defect.defectType
+                    ? "Select a defect type above to load guided diagnostic questions, or type your observations directly…"
+                    : "Diagnostic observations, site test results, and guided answers will appear here…"
+                }
+                className={`${INPUT_CLS} font-mono text-xs leading-relaxed`}
+              />
+              <p className="mt-1 text-[10px] text-slate-400">
+                Answer the guided questions above, or add your own site observations. This feeds directly into the AI-generated scope.
+              </p>
+            </div>
+
             {/* Notes */}
             <div className="sm:col-span-2">
               <label className={LABEL_CLS}>Additional Notes</label>
@@ -207,7 +261,7 @@ export function DefectModuleCard({ defect, index, onUpdate, onRemove }: Props) {
                 value={defect.notes}
                 onChange={(e) => set("notes", e.target.value)}
                 rows={2}
-                placeholder="History, previous repairs, observations, or further investigation items…"
+                placeholder="History, previous repairs, further investigation items…"
                 className={INPUT_CLS}
               />
             </div>

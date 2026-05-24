@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
-import { getCategoryImage, formatDate } from "@/lib/news-categories";
+import { getNewsImage, formatDate } from "@/lib/news-categories";
 
 type Article = {
   id: string;
@@ -59,7 +59,7 @@ export default function IndustryNewsArticlePage() {
         source_url: String(row.source_url ?? ""),
         published_date: String(row.published_date ?? ""),
         featured_image: String(
-          row.featured_image ?? getCategoryImage(String(row.category ?? "Other"))
+          getNewsImage(String(row.category ?? "Other"), String(row.title ?? ""))
         ),
       });
       setLoading(false);
@@ -71,7 +71,7 @@ export default function IndustryNewsArticlePage() {
     ? article.industry_impact.split(" | ").map((s) => s.trim()).filter(Boolean)
     : [];
 
-  const heroImage = getCategoryImage(article?.category ?? "Other");
+  const heroImage = getNewsImage(article?.category ?? "Other", article?.title ?? "");
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">

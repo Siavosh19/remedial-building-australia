@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Search, Mail, ArrowRight, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
-import { FILTER_CATEGORIES, getCategoryImage, formatDate } from "@/lib/news-categories";
+import { FILTER_CATEGORIES, getNewsImage, formatDate } from "@/lib/news-categories";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -61,7 +61,7 @@ export default function IndustryNewsPage() {
             source_url: String(row.source_url ?? ""),
             published_date: String(row.published_date ?? ""),
             featured_image: String(
-              row.featured_image ?? getCategoryImage(String(row.category ?? "Other"))
+              getNewsImage(String(row.category ?? "Other"), String(row.title ?? ""))
             ),
           }))
         );
@@ -256,7 +256,7 @@ export default function IndustryNewsPage() {
               >
                 <div className="relative h-64 w-full overflow-hidden lg:h-auto">
                   <Image
-                    src={getCategoryImage(featuredArticle.category)}
+                    src={getNewsImage(featuredArticle.category, featuredArticle.title)}
                     alt={featuredArticle.title}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
@@ -313,7 +313,7 @@ export default function IndustryNewsPage() {
                       >
                         <div className="relative h-44 w-full overflow-hidden">
                           <Image
-                            src={getCategoryImage(article.category)}
+                            src={getNewsImage(article.category, article.title)}
                             alt={article.title}
                             fill
                             className="object-cover transition duration-500 group-hover:scale-105"

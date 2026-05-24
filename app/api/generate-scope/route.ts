@@ -69,6 +69,9 @@ Prepared By: ${p.preparedBy || "Not specified"}
 Date: ${p.reportDate ? new Date(p.reportDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : new Date().toLocaleDateString("en-AU")}
 Access Constraints: ${p.accessConstraints || "Not specified"}
 Coastal Exposure: ${p.coastalExposure ? "Yes — within 1km of coastline" : "No"}
+Structural Construction Type: ${p.constructionType || "Not specified"}
+Roof Type: ${p.roofType || "Not specified"}
+External Wall Type: ${p.externalWallType || "Not specified"}
 Notes: ${p.notes || "None"}`;
   } else {
     projectBlock = `Address: ${body.projectAddress || "Not specified"}
@@ -93,6 +96,7 @@ Date: ${body.reportDate || new Date().toLocaleDateString("en-AU")}`;
   Severity: ${d.severity}
   Quantity / Extent: ${d.quantity || "Not specified"}
   Suspected Cause: ${d.suspectedCause || "Not specified"}
+  Diagnostic Observations: ${d.diagnosticNotes?.trim() || "None provided"}
   Notes: ${d.notes || "None"}`
         )
         .join("\n\n")

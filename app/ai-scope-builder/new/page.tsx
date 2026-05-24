@@ -40,6 +40,9 @@ const DEFAULT_PROJECT: ProjectData = {
   reportDate: new Date().toLocaleDateString("en-CA"),
   accessConstraints: "No significant constraints",
   coastalExposure: false,
+  constructionType: "",
+  roofType: "",
+  externalWallType: "",
   notes: "",
 };
 
@@ -52,6 +55,7 @@ function newDefect(): Defect {
     severity: "Moderate",
     quantity: "",
     suspectedCause: "",
+    diagnosticNotes: "",
     notes: "",
   };
 }
