@@ -202,6 +202,8 @@ export interface RepairMortarSpecs {
 export interface ProductRetailer {
   name: string;
   url: string;
+  price?: string;       // e.g. "$77.00 incl GST" — leave undefined if not publicly listed
+  inStock?: boolean;    // undefined = unknown
 }
 
 export interface RepairMortarProduct {
@@ -243,9 +245,8 @@ export const REPAIR_MORTAR_PRODUCTS: RepairMortarProduct[] = [
       { name: "ARDEX Australia", url: "https://ardexaustralia.com/product/ardex-br-345/" },
     ],
     retailers: [
-      { name: "The Waterproofing Shop", url: "https://thewaterproofingshop.com.au/products/ardex-br-345-concrete-patching-20kg" },
-      { name: "Komerco",               url: "https://komerco.com.au/products/ardex-br-345" },
-      { name: "TradieCart",            url: "https://www.tradiecart.com.au/ardex-br-345-20kg-structural-patch-and-repair-mortar/" },
+      { name: "Komerco",    url: "https://komerco.com.au/products/ardex-br-345",                                              price: "$82.50 incl GST", inStock: true  },
+      { name: "TradieCart", url: "https://www.tradiecart.com.au/ardex-br-345-20kg-structural-patch-and-repair-mortar/",       price: "$77.00 incl GST", inStock: true  },
     ],
     bestFor: "High-build structural patch repair on vertical, horizontal, and overhead concrete — façades, balcony soffits, columns, and beams where a single lift up to 80 mm is required.",
     applications: [
@@ -302,9 +303,9 @@ export const REPAIR_MORTAR_PRODUCTS: RepairMortarProduct[] = [
       { name: "Fosroc Australia", url: "https://www.fosroc.com.au/product/renderoc-hb40" },
     ],
     retailers: [
+      { name: "Bldcare",     url: "https://www.bldcare.com.au/concrete-repair-mortars/278-fosroc-renderoc-hb40-20kg.html",                                                                                              price: "$83.50 incl GST", inStock: false },
       { name: "Jaybro",      url: "https://www.jaybro.com.au/fosrocr-renderoc-hb40-20kg.html" },
       { name: "Blackwoods",  url: "https://www.blackwoods.com.au/adhesives-sealants-fillers/repair-and-wear-resistant-compounds/fosroc-renderoc/mortar-renderoc-hb40-20kg/p/00489421" },
-      { name: "Bldcare",     url: "https://www.bldcare.com.au/concrete-repair-mortars/278-fosroc-renderoc-hb40-20kg.html" },
     ],
     bestFor: "Localised vertical and overhead patch repair on reinforced concrete up to 45 MPa — suited to balcony soffits, columns, and façade repairs where wet-spray or trowel application is required.",
     applications: [
@@ -363,10 +364,9 @@ export const REPAIR_MORTAR_PRODUCTS: RepairMortarProduct[] = [
       { name: "Sika Australia", url: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-412nfg.html" },
     ],
     retailers: [
-      { name: "Waterproofing Direct",       url: "https://www.waterproofingdirect.com.au/sika-monotop-412nfg-20kg.ir" },
-      { name: "Sydney Industrial Coatings", url: "https://www.sydneyindustrialcoatings.com.au/product/sika-monotop-412nfg-20kg/" },
-      { name: "TradieCart",                 url: "https://www.tradiecart.com.au/sika-monotop-412nfg-20kg-repair-mortar/" },
-      { name: "Komerco",                    url: "https://komerco.com.au/products/sika-monotop-412-nfg" },
+      { name: "Komerco",                    url: "https://komerco.com.au/products/sika-monotop-412-nfg",                                          price: "$72.95 incl GST", inStock: true  },
+      { name: "Sydney Industrial Coatings", url: "https://www.sydneyindustrialcoatings.com.au/product/sika-monotop-412nfg-20kg/",                 price: "$68.00 incl GST", inStock: true  },
+      { name: "TradieCart",                 url: "https://www.tradiecart.com.au/sika-monotop-412nfg-20kg-repair-mortar/",                         price: "$99.00 incl GST", inStock: true  },
       { name: "BCSands",                    url: "https://www.bcsands.com.au/index.php?main_page=product_info&products_id=1267" },
     ],
     bestFor: "R4-class structural concrete repair on reinforced concrete buildings — façades, balcony soffits, columns, and beams where engineering specification requires EN 1504-3 R4 classification and no bonding primer.",

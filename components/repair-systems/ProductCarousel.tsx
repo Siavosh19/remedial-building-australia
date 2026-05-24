@@ -10,7 +10,8 @@ import {
   CheckCircle,
   XCircle,
   Package,
-  Store,
+  ShoppingCart,
+  AlertCircle,
 } from "lucide-react";
 import type { RepairMortarProduct } from "@/lib/repair-systems-data";
 
@@ -213,7 +214,7 @@ export function ProductCarousel({ products }: Props) {
             </div>
 
             <div className="mt-5">
-              <SectionLabel>Manufacturer / Supplier</SectionLabel>
+              <SectionLabel>Manufacturer / Official</SectionLabel>
               <div className="mt-2 space-y-1.5">
                 {product.suppliers.map((s) => (
                   <a
@@ -230,23 +231,9 @@ export function ProductCarousel({ products }: Props) {
               </div>
             </div>
 
-            <div className="mt-4">
-              <SectionLabel>Buy Online — Retailers</SectionLabel>
-              <div className="mt-2 space-y-1.5">
-                {product.retailers.map((r) => (
-                  <a
-                    key={r.name}
-                    href={r.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs font-semibold text-sky-700 hover:text-red-700 transition"
-                  >
-                    <Store size={11} className="shrink-0" />
-                    {r.name}
-                    <ExternalLink size={9} className="opacity-50" />
-                  </a>
-                ))}
-              </div>
+            <div className="mt-5">
+              <SectionLabel>Buy Online — Price Comparison</SectionLabel>
+              <RetailerTable retailers={product.retailers} />
             </div>
           </div>
         </div>
@@ -338,6 +325,67 @@ function SpecPill({
         }`}
       >
         {value}
+      </div>
+    </div>
+  );
+}
+
+function RetailerTable({ retailers }: { retailers: import("@/lib/repair-systems-data").ProductRetailer[] }) {
+  if (retailers.length === 0) return <p className="mt-2 text-[11px] text-slate-400">No online retailers listed.</p>;
+  return (
+    <div className="mt-2 overflow-hidden rounded-xl border border-slate-200">
+      <table className="w-full text-[11px]">
+        <thead>
+          <tr className="border-b border-slate-100 bg-slate-50">
+            <th className="py-2 pl-3 pr-2 text-left font-bold text-slate-400 uppercase tracking-wider text-[9px]">Retailer</th>
+            <th className="py-2 px-2 text-right font-bold text-slate-400 uppercase tracking-wider text-[9px]">Price</th>
+            <th className="py-2 pl-2 pr-3 text-center font-bold text-slate-400 uppercase tracking-wider text-[9px]">Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          {retailers.map((r, i) => (
+            <tr
+              key={r.name}
+              className={`border-b border-slate-50 last:border-0 transition hover:bg-sky-50 ${i % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}
+            >
+              <td className="py-2.5 pl-3 pr-2">
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 font-semibold text-sky-800 hover:text-red-700 transition"
+                >
+                  <ShoppingCart size={10} className="shrink-0 text-sky-400" />
+                  {r.name}
+                  <ExternalLink size={8} className="shrink-0 opacity-40" />
+                </a>
+              </td>
+              <td className="py-2.5 px-2 text-right">
+                {r.price ? (
+                  <span className="font-bold text-sky-950">{r.price}</span>
+                ) : (
+                  <span className="text-slate-400 italic">See site</span>
+                )}
+              </td>
+              <td className="py-2.5 pl-2 pr-3 text-center">
+                {r.inStock === true ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-[9px] font-bold text-green-700">
+                    <CheckCircle size={9} /> In stock
+                  </span>
+                ) : r.inStock === false ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[9px] font-bold text-red-600">
+                    <AlertCircle size={9} /> Out of stock
+                  </span>
+                ) : (
+                  <span className="text-slate-300">—</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="border-t border-slate-100 bg-slate-50 px-3 py-2">
+        <p className="text-[9px] leading-4 text-slate-400">Prices are indicative only. Verify with retailer before use in cost estimates. Stock status may change without notice.</p>
       </div>
     </div>
   );
