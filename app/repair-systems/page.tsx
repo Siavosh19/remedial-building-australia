@@ -1,8 +1,8 @@
 import { ArrowRight, Wrench } from "lucide-react";
 import {
-  REPAIR_SYSTEM_CATEGORIES,
   REPAIR_SYSTEM_DEFECT_CHIPS,
 } from "@/lib/repair-systems-data";
+import { CONCRETE_DEFECTS_DATA } from "@/lib/concrete-defects-data";
 
 export const metadata = {
   title: "Repair Systems Hub — Remedial Building Australia",
@@ -89,24 +89,37 @@ export default function RepairSystemsHubPage() {
           </div>
         </section>
 
-        {/* ── Category cards ── */}
+        {/* ── Subcategory cards ── */}
         <section className="px-8 py-16">
           <div className="mx-auto max-w-7xl">
             <div className="mb-10 flex items-start gap-3">
               <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
               <div>
                 <h2 className="text-2xl font-extrabold text-sky-950">
-                  Browse by System Category
+                  Concrete &amp; Structural Defects — Repair Systems
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  Select a system category to view technical information and product comparisons.
+                  Select a defect subcategory to browse product categories and brand comparisons.
                 </p>
               </div>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {REPAIR_SYSTEM_CATEGORIES.map((cat) => (
-                <CategoryCard key={cat.slug} cat={cat} />
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {CONCRETE_DEFECTS_DATA.map((sub) => (
+                <a
+                  key={sub.slug}
+                  href={`/repair-systems/${sub.slug}`}
+                  className="group h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:border-sky-200"
+                >
+                  <div className="p-5">
+                    <div className="mb-3 h-0.5 w-8 rounded-full bg-red-700" />
+                    <h3 className="text-base font-extrabold leading-tight text-sky-950">{sub.label}</h3>
+                    <p className="mt-2 text-xs leading-5 text-slate-500">{sub.productCategories.length} product categories</p>
+                    <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 group-hover:text-red-700 transition">
+                      View Systems <ArrowRight size={12} />
+                    </div>
+                  </div>
+                </a>
               ))}
             </div>
           </div>
@@ -140,23 +153,6 @@ export default function RepairSystemsHubPage() {
           </div>
         </section>
 
-        {/* ── Platform note ── */}
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                Platform Note
-              </p>
-              <p className="text-sm leading-6 text-slate-600">
-                This repair systems reference is being built progressively. Repair Mortars is available now.
-                Additional categories — Corrosion Inhibitors, Sacrificial Anodes, Primers &amp; Coatings,
-                Waterproofing Systems, Injection &amp; Crack Repair, Screeds, and Tools — will be published
-                progressively. Product data will be expanded to include filter-by-manufacturer,
-                filter-by-exposure-class, and integration with the AI Scope Builder.
-              </p>
-            </div>
-          </div>
-        </section>
 
       </main>
 
@@ -189,74 +185,3 @@ export default function RepairSystemsHubPage() {
   );
 }
 
-// ── Category card ─────────────────────────────────────────────────────────────
-
-function CategoryCard({
-  cat,
-}: {
-  cat: (typeof REPAIR_SYSTEM_CATEGORIES)[number];
-}) {
-  const inner = (
-    <div
-      className={`group h-full overflow-hidden rounded-2xl border bg-white shadow-sm transition duration-200 ${
-        cat.available
-          ? "border-slate-200 hover:-translate-y-0.5 hover:shadow-lg hover:border-sky-200"
-          : "border-slate-200 opacity-70"
-      }`}
-    >
-      {/* Image placeholder */}
-      <div className="relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-        {cat.imageUrl ? (
-          <img
-            src={cat.imageUrl}
-            alt={cat.title}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex flex-col items-center text-slate-300">
-            <Wrench size={32} />
-            <span className="mt-2 text-[10px] font-semibold uppercase tracking-wider">
-              Image placeholder
-            </span>
-          </div>
-        )}
-        {!cat.available && (
-          <div className="absolute right-3 top-3 rounded-full bg-slate-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-            Coming Soon
-          </div>
-        )}
-        {cat.available && (
-          <div className="absolute right-3 top-3 rounded-full bg-sky-950 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-            Available
-          </div>
-        )}
-      </div>
-
-      <div className="p-5">
-        <div className="mb-3 h-0.5 w-8 rounded-full bg-red-700" />
-        <h3 className="text-base font-extrabold leading-tight text-sky-950">
-          {cat.title}
-        </h3>
-        <p className="mt-2 text-xs leading-5 text-slate-500">{cat.description}</p>
-
-        {cat.available ? (
-          <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 group-hover:text-red-700 transition">
-            View Systems <ArrowRight size={12} />
-          </div>
-        ) : (
-          <div className="mt-4 text-xs font-semibold text-slate-400">
-            Coming soon
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  return cat.available ? (
-    <a href={cat.href} className="block h-full">
-      {inner}
-    </a>
-  ) : (
-    <div className="h-full cursor-default">{inner}</div>
-  );
-}
