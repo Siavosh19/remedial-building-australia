@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
 
   // ── Send confirmation email ─────────────────────────────────────────────────
   const resend = new Resend(process.env.RESEND_API_KEY);
-  await resend.emails.send({
+  const { data: emailData, error: emailError } = await resend.emails.send({
     from: "Remedial Building Australia <newsletter@remedialbuildingaustralia.com.au>",
     to: email,
     subject: "You're subscribed — Remedial Building Australia",
@@ -113,6 +113,9 @@ export async function POST(req: NextRequest) {
       </div>
     `,
   });
+
+  if (emailError) console.error("[subscribe] Resend error:", emailError);
+  else console.log("[subscribe] Confirmation email sent:", emailData?.id);
 
   return NextResponse.json({ success: true });
 }
