@@ -6,8 +6,9 @@ export function generateStaticParams() {
   return CONCRETE_DEFECTS_DATA.map((s) => ({ subcategory: s.slug }));
 }
 
-export function generateMetadata({ params }: { params: { subcategory: string } }) {
-  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === params.subcategory);
+export async function generateMetadata({ params }: { params: Promise<{ subcategory: string }> }) {
+  const { subcategory } = await params;
+  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === subcategory);
   if (!sub) return {};
   return {
     title: `${sub.label} — Repair Systems — Remedial Building Australia`,
@@ -15,8 +16,9 @@ export function generateMetadata({ params }: { params: { subcategory: string } }
   };
 }
 
-export default function SubcategoryPage({ params }: { params: { subcategory: string } }) {
-  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === params.subcategory);
+export default async function SubcategoryPage({ params }: { params: Promise<{ subcategory: string }> }) {
+  const { subcategory } = await params;
+  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === subcategory);
   if (!sub) notFound();
 
   return (
@@ -32,11 +34,11 @@ export default function SubcategoryPage({ params }: { params: { subcategory: str
             </div>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700 transition">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap text-sky-950 underline underline-offset-4 decoration-red-700">Repair Systems</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
+          
           </nav>
           <a href="/newsletter" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Subscribe</a>
         </div>
@@ -50,6 +52,8 @@ export default function SubcategoryPage({ params }: { params: { subcategory: str
               <a href="/" className="hover:text-sky-700 transition">Home</a>
               <span>/</span>
               <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
+              <span>/</span>
+              <a href="/repair-systems/concrete-structural-defects" className="hover:text-sky-700 transition">Concrete &amp; Structural</a>
               <span>/</span>
               <span className="text-sky-950">{sub.label}</span>
             </nav>
@@ -94,13 +98,21 @@ export default function SubcategoryPage({ params }: { params: { subcategory: str
       {/* ── Footer ── */}
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/repair-systems" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition">← Repair Systems Hub</a>
+          <a href="/repair-systems/concrete-structural-defects" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition">← Concrete &amp; Structural Defects</a>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p>
           </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>
             <a href="/terms" className="underline hover:text-sky-700">Terms</a>

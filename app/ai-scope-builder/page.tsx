@@ -11,7 +11,6 @@ import {
   Plus,
 } from "lucide-react";
 import { ScopeShell } from "@/components/scope-builder/ScopeShell";
-import type { SavedProject } from "@/lib/scope-builder-types";
 import { OUTPUT_TYPE_LABELS } from "@/lib/scope-builder-data";
 
 const WORKFLOW_STEPS = [
@@ -81,15 +80,30 @@ const QUICK_LINKS = [
   },
 ];
 
+// Works for V1, V2, and V3 saved project shapes
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getProjectTitle(p: any): string {
+  return p?.project?.name || p?.project?.address
+    || p?.projectData?.buildingName || p?.projectData?.address
+    || "Unnamed Project";
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getProjectAddress(p: any): string {
+  return p?.project?.address || p?.projectData?.address || "";
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getOutputLabel(p: any): string {
+  return OUTPUT_TYPE_LABELS[p?.outputType] ?? p?.outputFormat ?? p?.outputType ?? "";
+}
+
 export default function ScopeBuilderLandingPage() {
-  const [recentProjects, setRecentProjects] = useState<SavedProject[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [recentProjects, setRecentProjects] = useState<any[]>([]);
 
   useEffect(() => {
     try {
-      const saved: SavedProject[] = JSON.parse(
-        localStorage.getItem("scope_projects") ?? "[]"
-      );
-      setRecentProjects(saved.slice(0, 3));
+      const saved = JSON.parse(localStorage.getItem("scope_projects") ?? "[]");
+      setRecentProjects(Array.isArray(saved) ? saved.slice(0, 3) : []);
     } catch {
       setRecentProjects([]);
     }
@@ -193,19 +207,21 @@ export default function ScopeBuilderLandingPage() {
                       <FileText size={14} className="mt-0.5 shrink-0 text-red-700" />
                       <div className="min-w-0">
                         <div className="truncate text-sm font-bold text-sky-950">
-                          {p.project.name || p.project.address}
+                          {getProjectTitle(p)}
                         </div>
                         <div className="truncate text-xs text-slate-400">
-                          {p.project.address}
+                          {getProjectAddress(p)}
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-[10px] text-slate-400">
                       <Clock size={10} />
                       {new Date(p.createdAt).toLocaleDateString("en-AU")}
-                      <span className="rounded-full bg-slate-100 px-2 py-0.5 font-semibold">
-                        {OUTPUT_TYPE_LABELS[p.outputType] ?? p.outputType}
-                      </span>
+                      {getOutputLabel(p) && (
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 font-semibold">
+                          {getOutputLabel(p)}
+                        </span>
+                      )}
                     </div>
                   </a>
                 ))}

@@ -52,12 +52,12 @@ export default function Page() {
             </div>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+          
           </nav>
           <a href="/" className="hidden shrink-0 rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800 md:inline-flex">Home</a>
         </div>
@@ -69,17 +69,11 @@ export default function Page() {
             ← Back to Balconies & Podiums
           </a>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mt-10">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Balconies & Podiums</p>
               <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Tile Delamination</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Tile delamination on balconies and podiums is the loss of adhesion between tiles and their substrate — caused by substrate movement, inadequate adhesive coverage, moisture under the tile bed or thermal stress. Delaminated tiles present a safety hazard as they can crack under load and detach from the substrate, particularly at balcony edges and step nosings. In tiled waterproofing systems, delaminated tiles also indicate a breach of the membrane system below and should be treated as a waterproofing concern as well as an adhesion failure.</p>
-            </div>
-            <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/Images/Categories/balconies-podiums.jpg" alt="Tile Delamination" className="h-[420px] w-full object-cover" />
-              <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
-                Typical tile delamination condition in a Class 2 building.
-              </div>
             </div>
           </div>
 
@@ -108,8 +102,7 @@ export default function Page() {
 
           <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">
             <h2 className="text-3xl font-bold text-sky-950">Typical Repair Methodology</h2>
-            <img src="/Images/Categories/balconies-podiums.jpg" alt="Tile Delamination repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
-            <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
+<ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
                   <span className="mt-1 shrink-0 text-sm font-bold text-slate-500">{String(index + 1).padStart(2, "0")}.</span>
@@ -117,11 +110,6 @@ export default function Page() {
                 </li>
               ))}
             </ol>
-          </section>
-
-          <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">
-            <h2 className="text-3xl font-bold text-sky-950">Before / After Repair</h2>
-            <img src="/Images/Categories/balconies-podiums.jpg" alt="Tile Delamination before and after" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">
@@ -162,6 +150,14 @@ export default function Page() {
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.</p>
           </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>
             <a href="/terms" className="underline hover:text-sky-700">Terms</a>

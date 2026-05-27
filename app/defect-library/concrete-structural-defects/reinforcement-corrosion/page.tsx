@@ -61,12 +61,12 @@ export default function ReinforcementCorrosionPage() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+          
           </nav>
 
           <a
@@ -87,7 +87,7 @@ export default function ReinforcementCorrosionPage() {
             ← Back to Concrete & Structural Defects
           </a>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mt-10">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
                 Concrete & Structural Defects
@@ -103,17 +103,6 @@ export default function ReinforcementCorrosionPage() {
                 through the concrete cover, resulting in expansive rust products
                 that crack and delaminate the surrounding concrete.
               </p>
-            </div>
-
-            <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img
-                src="/Images/Categories/concrete-structural-defects/reinforcement-corrosion.jpg"
-                alt="Reinforcement corrosion with rust staining"
-                className="h-[420px] w-full object-cover"
-              />
-              <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
-                Typical rust staining and concrete delamination from corroding reinforcement.
-              </div>
             </div>
           </div>
 
@@ -179,12 +168,6 @@ export default function ReinforcementCorrosionPage() {
               methodology for reinforcement corrosion repairs.
             </p>
 
-            <img
-              src="/Images/Categories/concrete-structural-defects/reinforcement-corrosion/Repair%20Details.png"
-              alt="Reinforcement corrosion repair methodology"
-              className="mt-8 w-full rounded-2xl border border-slate-200 object-cover"
-            />
-
             <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li
@@ -199,22 +182,6 @@ export default function ReinforcementCorrosionPage() {
                 </li>
               ))}
             </ol>
-          </section>
-
-          <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">
-            <h2 className="text-3xl font-bold text-sky-950">
-              Before / After Repair
-            </h2>
-
-            <p className="mt-4 text-base leading-8 text-slate-700">
-              Typical reinforcement corrosion condition before and after remedial repair.
-            </p>
-
-            <img
-              src="/Images/Categories/concrete-structural-defects/reinforcement-corrosion/Before%20%26%20after.png"
-              alt="Reinforcement corrosion before and after repair"
-              className="mt-8 w-full rounded-2xl border border-slate-200 object-cover"
-            />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2" style={{ paddingTop: "3mm" }}>
@@ -272,6 +239,15 @@ export default function ReinforcementCorrosionPage() {
               defects, repair systems, materials and future AI-assisted scope writing.
             </p>
           </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
 
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>

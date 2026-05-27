@@ -89,3 +89,78 @@ export interface SavedProject {
   createdAt: string;
   updatedAt: string;
 }
+
+// ── V2 types (checklist-driven workflow) ─────────────────────────────────────
+
+export interface ProjectDataV2 {
+  buildingName: string;
+  address: string;
+  suburb: string;
+  state: string;
+  buildingClass: string;
+  storeys: string;
+  yearOfConstruction: string;
+  coastal: boolean;
+  occupied: boolean;
+  hazmat: boolean;
+  hazmatNotes: string;
+  consultantName: string;
+  reportDate: string;
+  aiNotes: string;
+}
+
+export interface WorkItemState {
+  checked: string[];                  // checklist sub-item IDs
+  quantities: Record<string, string>; // sub-item ID → quantity
+  notes: string;
+}
+
+export interface SavedProjectV2 {
+  id: string;
+  version: 2;
+  projectData: ProjectDataV2;
+  constructionTypes: string[];
+  selectedWorkItems: string[];
+  customWorkItems: string[];
+  workItemStates: Record<string, WorkItemState>;
+  outputFormat: "consultant" | "tender" | "strata" | "methodology" | "all";
+  consultantNotes: string;
+  prelimClauses: string[];
+  generatedScope: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ── V3 types (area-first workflow) ────────────────────────────────────────────
+
+export interface DefectEntryV3 {
+  defectId: string;
+  severity: "Minor" | "Moderate" | "Widespread" | "Severe" | "Safety Critical";
+  extent: "Localised" | "Moderate" | "Widespread";
+  probableCause: string;
+  notes: string;
+}
+
+export interface AreaStateV3 {
+  constructionTypes: string[]; // selected construction type IDs
+  defects: DefectEntryV3[];
+}
+
+export interface SavedProjectV3 {
+  id: string;
+  version: 3;
+  projectData: ProjectDataV2;
+  areas: Record<string, AreaStateV3>; // areaId → AreaStateV3
+  selectedWorkItems: string[];
+  customWorkItems: string[];
+  workItemStates: Record<string, WorkItemState>;
+  accessConstraints: string[];
+  complianceTriggers: string[];
+  investigations: string[];
+  outputFormat: string;
+  consultantNotes: string;
+  prelimClauses: string[];
+  generatedScope: string;
+  createdAt: string;
+  updatedAt: string;
+}

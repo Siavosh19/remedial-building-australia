@@ -32,16 +32,40 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
         "label": "Repair mortars (polymer-modified)",
         "materials": [
           {
-            "materialName": "Concrete repair mortar (polymer-modified)",
+            "materialName": "Structural repair mortar — general use",
             "productType": "Polymer-modified structural repair mortar",
-            "brandArdex": "Ardex TRM – polymer-modified structural repair mortar, 20 kg bag",
-            "brandSika": "Sika MonoTop-612 / MonoTop-620 – polymer-modified repair mortar, 25 kg bag",
-            "brandFosroc": "Fosroc Renderoc HB / Renderoc LA – structural repair mortar, 25 kg bag",
-            "brandTremco": "Tremco TREMproof 900 – polymer-modified repair mortar, 25 kg bag",
-            "brandParchem": "Parchem Nitomortar FC – polymer-modified repair mortar, 25 kg bag",
+            "brandSika": "Sika MonoTop-352NFG – structural repair mortar, EN 1504-3 Class R3, 20 kg bag — available at Bunnings",
+            "brandArdex": "Ardex BR 340 – polymer-modified structural repair mortar, 20 kg bag",
+            "brandFosroc": "Fosroc Renderoc HB – structural repair mortar (hand applied, bulk), 25 kg bag",
+            "brandParchem": "Mapei Mapegrout Thixotropic – thixotropic polymer repair mortar, 25 kg bag",
+            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
             "unitOfMeasure": "bag",
-            "packSize": "20 kg",
-            "notes": "Polymer-modified; complies with AS 1012. Apply in layers max 30 mm. Bond coat essential before application."
+            "packSize": "20–25 kg",
+            "notes": "Commonly specified polymer-modified repair mortar in Australian remedial practice. Apply in layers up to 30–40 mm. Bond coat primer mandatory. Suitable for Class 2 strata, carparks and civil structures."
+          },
+          {
+            "materialName": "High-build structural repair mortar — deep patches and large areas",
+            "productType": "High-build polymer repair mortar for repairs 30–100 mm depth",
+            "brandSika": "Sika MonoTop-620 – high-build structural repair mortar, 25 kg bag",
+            "brandArdex": "Ardex BR 345 – high-build polymer repair mortar, 20 kg bag",
+            "brandFosroc": "Fosroc Renderoc LA – large area structural repair mortar, 25 kg bag",
+            "brandParchem": "Mapei Mapegrout SFR – steel fibre reinforced repair mortar, 25 kg bag",
+            "brandTremco": null,
+            "unitOfMeasure": "bag",
+            "packSize": "20–25 kg",
+            "notes": "High-build formulation for deep spall repairs and large areas. Single layer application up to 50–100 mm. Reduced shrinkage compared to standard grades. Reinforce with stainless mesh in repairs exceeding 50 mm depth."
+          },
+          {
+            "materialName": "Fine polymer repair mortar — cosmetic, thin-section and profiling",
+            "productType": "Fine-aggregate polymer repair mortar for cosmetic surface repairs",
+            "brandSika": "Sika MonoTop-412N – normal-setting fine repair mortar, 25 kg bag",
+            "brandArdex": "Ardex Feather Finish – polymer-modified feather-edge patching compound, 10 kg bag",
+            "brandFosroc": "Fosroc Renderoc FC – fine concrete repair mortar, 25 kg bag",
+            "brandParchem": "Mapei Mapegrout Fine Fibre – fine fibre-reinforced repair mortar, 25 kg bag",
+            "brandTremco": null,
+            "unitOfMeasure": "bag",
+            "packSize": "5–25 kg",
+            "notes": "Fine aggregate for cosmetic repairs, profiling, honeycombing and surface blemishes. Can be feathered to 2–3 mm at edges. Suitable for architecturally exposed concrete where surface match is required."
           }
         ]
       },
@@ -52,10 +76,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Cementitious repair mortar",
             "productType": "Cementitious polymer repair mortar",
-            "brandArdex": "Ardex TRM – cementitious polymer repair mortar, 20 kg bag",
-            "brandSika": "Sika MonoTop-412N – cementitious repair mortar, 25 kg bag",
+            "brandArdex": "Ardex BR 340 – cementitious polymer repair mortar, 20 kg bag",
+            "brandSika": "Sika MonoTop-436N – general purpose cementitious repair mortar, 25 kg bag",
             "brandFosroc": "Fosroc Renderoc GP – general purpose cementitious repair mortar, 25 kg bag",
-            "brandTremco": "Tremco TREMproof Mortar – cementitious repair mortar, 25 kg bag",
+            "brandTremco": "Tremco Eucocrete RM – cementitious repair mortar, 25 kg bag",
             "brandParchem": "Mapei Mapegrout Fast-Set – cementitious repair mortar, 25 kg bag",
             "unitOfMeasure": "bag",
             "packSize": "20-25 kg",
@@ -70,11 +94,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy repair mortar",
             "productType": "2-part / 3-part epoxy repair mortar",
-            "brandArdex": "Ardex WA / Ardex FE – 3-part epoxy repair mortar, 5 kg kit",
+            "brandArdex": "Ardex RA 88 Plus – 2-part structural epoxy repair mortar, 4.5 kg kit",
             "brandSika": "Sika Sikadur-42 / Sika MonoTop Epoxy – 2-part epoxy repair mortar, 5 kg kit",
             "brandFosroc": "Fosroc Nitomortar 50 – 3-part epoxy repair mortar, 5 kg kit",
-            "brandTremco": "Tremco Spectru-Bond 600 – 2-part epoxy repair mortar, 5 kg kit",
-            "brandParchem": "Parchem Nitomortar EF – 3-part epoxy repair mortar, 5 kg kit",
+            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
+            "brandParchem": "Fosroc Nitomortar AP – 3-part structural epoxy repair mortar, 4.5 kg kit",
             "unitOfMeasure": "bag/kit",
             "packSize": "5-25 kg",
             "notes": "Use where high early strength or chemical resistance required. Max layer 10 mm. Priming essential."
@@ -88,11 +112,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Bonding agent / SBR latex",
             "productType": "SBR polymer bonding agent and primer",
-            "brandArdex": "Ardex P 51 – acrylic/SBR bonding agent and primer, 5 L",
+            "brandArdex": "Ardex P 51 – water-based acrylic bonding primer, 5 L",
             "brandSika": "Sika Latex SBR – SBR latex bonding admixture, 5 L; Sika Icosit EP Primer – epoxy bond coat, 5 L kit",
             "brandFosroc": "Fosroc Nitobond SBR – SBR latex bonding agent, 5 L; Fosroc Nitobond EP – epoxy bond coat, 5 L",
             "brandTremco": "Tremco THC Bonding Agent – acrylic bonding primer, 5 L",
-            "brandParchem": "Parchem Concure SBR – SBR admixture and bonding agent, 5 L",
+            "brandParchem": "Fosroc Nitobond SBR – SBR latex bonding agent and admixture, 5 L",
             "unitOfMeasure": "litre",
             "packSize": "5-20 L",
             "notes": "Brush onto prepared substrate before mortar. Also added to mortar mix at 10% by weight of water."
@@ -106,10 +130,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Reinforcement primer (epoxy/zinc-rich)",
             "productType": "2-part epoxy zinc-rich rebar primer",
-            "brandArdex": "Ardex – specify Fosroc Nitoprime Zincrich (complementary system)",
+            "brandArdex": "Ardex BR 10 ZP – single-component zinc-rich rebar primer, 1 L",
             "brandSika": "Sika Ferrogard-903+ – migrating corrosion inhibitor applied to concrete surface, 5-20 L",
             "brandFosroc": "Fosroc Nitoprime Zincrich – 2-part epoxy zinc-rich rebar primer, 1 L kit",
-            "brandTremco": "Dulux Zincanode 402 – 2-part epoxy zinc-rich primer, 4 L kit",
+            "brandTremco": "Tremco TREMcrete Zinc Rich Primer – epoxy zinc-rich rebar primer, 1 L kit",
             "brandParchem": "Parchem Zinc Primer – 2-part epoxy zinc-rich rebar primer, 1 L kit",
             "unitOfMeasure": "litre",
             "packSize": "1-5 L",
@@ -124,10 +148,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Curing compound (acrylic)",
             "productType": "Water-based acrylic concrete curing compound",
-            "brandArdex": "Ardex WB2 – water-based acrylic curing compound, 5 L",
+            "brandArdex": null,
             "brandSika": "Sika Antisol E – acrylic resin curing compound, 5 L",
-            "brandFosroc": "Fosroc Concure WB – water-based curing membrane, 5 L",
-            "brandTremco": "Parchem Concure WB – water-based acrylic curing compound, 5 L",
+            "brandFosroc": "Fosroc Concure WB30 – water-based wax emulsion curing compound, 5 L",
+            "brandTremco": "Tremco Eucocrete WB Cure – water-based acrylic curing compound, 5 L",
             "brandParchem": "Mapei Mapecure S – acrylic curing compound, 5 L",
             "unitOfMeasure": "litre",
             "packSize": "5-20 L",
@@ -324,7 +348,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "productType": "Migrating corrosion inhibitor (MCI)",
             "brandArdex": "Ardex – specify Sika Ferrogard-903+ (complementary system)",
             "brandSika": "Sika Ferrogard-903+ – migrating corrosion inhibitor, surface-applied, 5-20 L",
-            "brandFosroc": "Fosroc Renderoc IC – integral corrosion inhibitor added to repair mortar, 1 L",
+            "brandFosroc": "Fosroc Renderoc TS-IC – structural repair mortar with integral corrosion inhibitor, 25 kg bag",
             "brandTremco": "Tremco Ferroguard – migrating amino alcohol corrosion inhibitor, 5 L",
             "brandParchem": "Parchem Nitocor – corrosion inhibitor admixture for repair mortar, 5 L",
             "unitOfMeasure": "litre",
@@ -340,11 +364,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy zinc-rich primer",
             "productType": "2-part epoxy zinc-rich rebar primer",
-            "brandArdex": "Ardex – specify Dulux Zincanode 402 or Fosroc Nitoprime Zincrich (complementary)",
+            "brandArdex": "Ardex BR 10 ZP – single-component zinc-rich rebar primer, 1 L",
             "brandSika": "Sika Ferrogard-903+ – corrosion inhibitor and primer coat for cleaned rebar, 5 L",
             "brandFosroc": "Fosroc Nitoprime Zincrich – 2-part epoxy zinc-rich rebar primer, 1 L kit",
-            "brandTremco": "Dulux Zincanode 402 – 2-part epoxy zinc-rich primer, 4 L kit",
-            "brandParchem": "Jotun Barrier – 2-part zinc-rich epoxy primer, 5 L kit",
+            "brandTremco": "Tremco TREMcrete Zinc Rich Primer – epoxy zinc-rich rebar primer, 1 L kit",
+            "brandParchem": "Fosroc Nitoprime Zincrich – 2-part epoxy zinc-rich rebar primer, 1 L kit",
             "unitOfMeasure": "litre",
             "packSize": "1-5 L",
             "notes": "Apply to blast-cleaned rebar (Sa 2.5) before repair mortar. Zinc content min 85% dry film. Two coats."
@@ -359,9 +383,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "materialName": "Reinforcement primer (2-part epoxy)",
             "productType": "2-part epoxy rebar primer and bond coat",
             "brandArdex": "Ardex – specify Fosroc Nitoprime Zincrich (complementary)",
-            "brandSika": "Sika Ferrogard-903+ – 2-part epoxy primer system for rebar, 5 L",
+            "brandSika": "Sika MonoTop-610 – 2-part epoxy-modified rebar primer, 1 L kit",
             "brandFosroc": "Fosroc Nitoprime Zincrich – 2-part epoxy zinc-rich rebar primer, 1 L kit",
-            "brandTremco": "Dulux Zincanode 402 – 2-pack epoxy zinc primer, 4 L kit",
+            "brandTremco": "Tremco TREMcrete Zinc Rich Primer – epoxy zinc-rich rebar primer, 1 L kit",
             "brandParchem": "Parchem Zinc Primer – 2-part epoxy rebar primer, 1 L kit",
             "unitOfMeasure": "kit",
             "packSize": "2 L",
@@ -376,10 +400,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Cathodic protection anodes (zinc/titanium)",
             "productType": "Embedded sacrificial zinc and impressed current anodes",
-            "brandArdex": "Fosroc Cathanode – embedded zinc sacrificial anode system for concrete repair",
-            "brandSika": "Galvashield XP – discrete embedded zinc sacrificial anode for concrete CP",
-            "brandFosroc": "Vector Corrosion Technologies – Galvashield embedded zinc anodes",
-            "brandTremco": "Corrpro Australia – impressed current titanium mesh anode system",
+            "brandArdex": "Ardex BRX 60 LO – sacrificial zinc anode for concrete repair",
+            "brandSika": null,
+            "brandFosroc": "Fosroc/Vector Galvashield CC – discrete galvanic zinc anode for concrete repair, each",
+            "brandTremco": null,
             "brandParchem": "CPT (Cathodic Protection Technologies) – zinc / MMO titanium anodes",
             "unitOfMeasure": "each",
             "packSize": "various",
@@ -394,11 +418,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Concrete repair mortar (polymer-modified)",
             "productType": "Polymer-modified structural repair mortar",
-            "brandArdex": "Ardex TRM – polymer-modified structural repair mortar, 20 kg bag",
+            "brandArdex": "Ardex BR 340 – polymer-modified structural repair mortar, 20 kg bag",
             "brandSika": "Sika MonoTop-612 / MonoTop-620 – polymer repair mortar, 25 kg bag",
             "brandFosroc": "Fosroc Renderoc HB / Renderoc LA – structural repair mortar, 25 kg bag",
-            "brandTremco": "Tremco TREMproof 900 – polymer-modified repair mortar, 25 kg bag",
-            "brandParchem": "Parchem Nitomortar FC – polymer-modified repair mortar, 25 kg bag",
+            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
+            "brandParchem": "Mapei Mapegrout SHB – structural polymer repair mortar, 25 kg bag",
             "unitOfMeasure": "bag",
             "packSize": "20 kg",
             "notes": "Encapsulate rebar after priming. Build out in layers max 30 mm. Cure minimum 7 days. Low permeability critical."
@@ -430,11 +454,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy adhesive (rebar anchoring)",
             "productType": "Structural 2-part epoxy anchor and injection resin",
-            "brandArdex": "Ardex AF 200 – 2-part epoxy anchoring adhesive, 380 mL cartridge",
+            "brandArdex": "Ardex RA 142 – 2-part epoxy injection and anchoring adhesive, 380 mL cartridge",
             "brandSika": "Sika AnchorFix-3+ – high-strength 2-part epoxy anchor adhesive, 345 mL cartridge",
             "brandFosroc": "Fosroc Nitobond EP – 2-part structural epoxy adhesive, 380 mL cartridge",
-            "brandTremco": "Hilti HIT-RE 500 V4 – 2-part epoxy rebar injection system, 500 mL cartridge",
-            "brandParchem": "Simpson Strong-Tie SET-XP – high-strength 2-part epoxy anchor resin, 380 mL",
+            "brandTremco": null,
+            "brandParchem": null,
             "unitOfMeasure": "cartridge",
             "packSize": "380 mL",
             "notes": "Drill hole 1.5x bar dia. Clean: blow, brush, blow x3. Inject resin, insert bar with rotation. Min embedment per ETA."
@@ -448,9 +472,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Carbon-fibre reinforcement strip (CFRP)",
             "productType": "Pultruded CFRP laminate strip",
-            "brandArdex": "Sika CarboDur S512 / S612 – pultruded CFRP laminate strip, 50-120 mm wide x 1.2 mm thick, roll",
+            "brandArdex": null,
             "brandSika": "Sika CarboDur M614 – higher modulus CFRP laminate strip, roll",
-            "brandFosroc": "Fosroc Nitowrap CFRP – pultruded carbon fibre laminate strip, roll",
+            "brandFosroc": "Fosroc Nitowrap CW – unidirectional carbon fibre fabric system for structural strengthening, roll",
             "brandTremco": "Mapei Mapewrap C Uni-Axial – CFRP unidirectional strip, roll",
             "brandParchem": "Parchem Nitowrap Carbon – CFRP laminate reinforcement strip, roll",
             "unitOfMeasure": "roll/length",
@@ -468,9 +492,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "productType": "2-part epoxy laminating and impregnation resin for CFRP",
             "brandArdex": "Ardex – specify Sika Sikadur-300 epoxy laminating system (complementary)",
             "brandSika": "Sika Sikadur-300 – 2-part epoxy impregnation and laminating resin for CFRP, kit",
-            "brandFosroc": "Fosroc Nitowrap EP – 2-part epoxy primer and laminating resin for CFRP, kit",
-            "brandTremco": "Mapei Mapewrap 31 – 2-part epoxy laminating resin for CFRP bonding, kit",
-            "brandParchem": "Parchem Nitowrap EP – 2-part epoxy laminating resin for CFRP, kit",
+            "brandFosroc": "Fosroc Nitowrap 410 – 2-part epoxy laminating resin for CFRP strengthening systems, kit",
+            "brandTremco": null,
+            "brandParchem": "Fosroc Nitowrap 410 – 2-part epoxy laminating resin for CFRP systems (via Parchem), kit",
             "unitOfMeasure": "kit",
             "packSize": "various",
             "notes": "Prime concrete first. Apply resin, embed CFRP strip, apply second resin coat. Control temperature 10-35 deg C."
@@ -520,11 +544,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Polyurethane injection resin (flexible)",
             "productType": "Flexible and hydrophilic PU injection resin",
-            "brandArdex": "Ardex WPM-PI – flexible polyurethane injection resin, 600 mL cartridge / 20 L drum",
+            "brandArdex": "Ardex CE 300 – hydrophilic polyurethane injection resin, 600 mL / 20 L drum",
             "brandSika": "Sika Injection-107 (hydrophilic) / Sika Injection-306 (hydrophobic) – PU resin, 600 mL",
-            "brandFosroc": "Fosroc Nitofill PU Flex – flexible polyurethane injection resin, 600 mL cartridge",
+            "brandFosroc": "Fosroc Nitofill PU130 – hydrophobic flexible polyurethane injection resin, 600 mL cartridge",
             "brandTremco": "Tremco THC Injection Resin – expanding polyurethane injection resin, 600 mL",
-            "brandParchem": "Parchem Nitofill PU Hydrophilic – flexible and expanding PU injection resin, 600 mL",
+            "brandParchem": "Fosroc Nitofill PU150 – hydrophilic expanding polyurethane injection resin, 600 mL",
             "unitOfMeasure": "cartridge/drum",
             "packSize": "600 mL / 20 L",
             "notes": "For active or dormant cracks. Hydrophilic type expands on contact with water. Min crack width 0.1 mm."
@@ -538,10 +562,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy injection resin (rigid, structural)",
             "productType": "2-part rigid epoxy structural injection resin",
-            "brandArdex": "Ardex WPM-EI – 2-part rigid epoxy injection resin, 380 mL cartridge",
+            "brandArdex": null,
             "brandSika": "Sika Injection-451 N / Sikadur-52 – low-viscosity 2-part epoxy injection resin, 380 mL",
             "brandFosroc": "Fosroc Nitofill Epoxy – 2-part rigid epoxy injection resin, 380 mL cartridge",
-            "brandTremco": "Tremco Spectru-Bond 600 – 2-part epoxy injection resin, 380 mL cartridge",
+            "brandTremco": null,
             "brandParchem": "Parchem Nitofill Epoxy – 2-part rigid epoxy injection resin, 380 mL kit",
             "unitOfMeasure": "cartridge/kit",
             "packSize": "380 mL / 5 L",
@@ -577,7 +601,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "brandArdex": "Ardex – specify Sika Sikadur-31 (complementary system)",
             "brandSika": "Sika Sikadur-31 – high-modulus 2-part epoxy paste adhesive, 380 mL cartridge",
             "brandFosroc": "Fosroc Nitobond EP Paste – 2-part structural epoxy paste adhesive, 380 mL cartridge",
-            "brandTremco": "Tremco Spectru-Bond Paste – 2-part epoxy port adhesive, 380 mL cartridge",
+            "brandTremco": null,
             "brandParchem": "Parchem Epoxy Port Adhesive – 2-part epoxy paste, 380 mL cartridge",
             "unitOfMeasure": "cartridge",
             "packSize": "380 mL",
@@ -592,9 +616,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Polyurethane sealant (flexible joint)",
             "productType": "1-part polyurethane flexible joint sealant",
-            "brandArdex": "Ardex ST – 1-part polyurethane joint sealant, 600 mL cartridge",
+            "brandArdex": "Ardex RA 040 – 1-part polyurethane joint sealant, 600 mL cartridge",
             "brandSika": "Sika Sikaflex-11FC / Sikaflex Pro-3 WF – 1-part PU sealant, 600 mL cartridge",
-            "brandFosroc": "Fosroc Thioflex 600 / Nitoseal MS600 – PU joint sealant, 600 mL cartridge",
+            "brandFosroc": "Fosroc Thioflex 600 (polysulfide) / Nitoseal MS600 (MS polymer) – flexible joint sealants, 600 mL cartridge",
             "brandTremco": "Tremco Dymonic 100 – high-movement PU sealant, 600 mL cartridge",
             "brandParchem": "Parchem Pro-Sealant PU600 – 1-part PU sealant, 600 mL cartridge",
             "unitOfMeasure": "cartridge",
@@ -664,11 +688,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Concrete repair mortar (polymer-modified)",
             "productType": "Polymer-modified structural repair mortar",
-            "brandArdex": "Ardex TRM – polymer-modified structural repair mortar, 20 kg bag",
+            "brandArdex": "Ardex BR 340 – polymer-modified structural repair mortar, 20 kg bag",
             "brandSika": "Sika MonoTop-612 / MonoTop-620 – polymer repair mortar, 25 kg bag",
             "brandFosroc": "Fosroc Renderoc HB / Renderoc LA – structural repair mortar, 25 kg bag",
-            "brandTremco": "Tremco TREMproof 900 – polymer-modified repair mortar, 25 kg bag",
-            "brandParchem": "Parchem Nitomortar FC – polymer-modified repair mortar, 25 kg bag",
+            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
+            "brandParchem": "Mapei Mapegrout SHB – structural polymer repair mortar, 25 kg bag",
             "unitOfMeasure": "bag",
             "packSize": "20 kg",
             "notes": "Structural repair per engineer spec. Min concrete cover per AS 3600 must be reinstated in repair."
@@ -682,10 +706,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy repair mortar (structural)",
             "productType": "2-part / 3-part structural epoxy repair mortar",
-            "brandArdex": "Ardex WA – 3-part structural epoxy repair mortar, 5 kg kit",
+            "brandArdex": "Ardex RA 88 Plus – 2-part structural epoxy repair mortar, 4.5 kg kit",
             "brandSika": "Sika Sikadur-42 – 3-part structural epoxy mortar system, 5 kg kit",
             "brandFosroc": "Fosroc Nitomortar 50 – 3-part structural epoxy repair mortar, 5 kg kit",
-            "brandTremco": "Tremco Spectru-Bond 600 – 2-part structural epoxy mortar, 5 kg kit",
+            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
             "brandParchem": "Parchem Nitomortar EF – 3-part structural epoxy mortar, 5 kg kit",
             "unitOfMeasure": "kit",
             "packSize": "5-25 kg",
@@ -700,9 +724,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Carbon-fibre reinforcement strip (CFRP)",
             "productType": "Pultruded CFRP laminate and unidirectional fibre sheet",
-            "brandArdex": "Sika CarboDur S512 / S612 – pultruded CFRP laminate strip, various widths, roll",
+            "brandArdex": null,
             "brandSika": "Sika CarboDur Wrap – unidirectional CFRP fabric sheet, roll",
-            "brandFosroc": "Fosroc Nitowrap CFRP – pultruded carbon fibre laminate strip, roll",
+            "brandFosroc": "Fosroc Nitowrap CW – unidirectional carbon fibre fabric system for structural strengthening, roll",
             "brandTremco": "Mapei Mapewrap C Uni-Axial – CFRP unidirectional reinforcement fabric, roll",
             "brandParchem": "Parchem Nitowrap Carbon Fibre – CFRP laminate strip and fabric, roll",
             "unitOfMeasure": "roll/length",
@@ -720,8 +744,8 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "productType": "2-part epoxy primer and laminating resin system for CFRP",
             "brandArdex": "Ardex – specify Sika Sikadur-300 epoxy system (complementary)",
             "brandSika": "Sika Sikadur-300 – 2-part low-viscosity epoxy primer and laminating resin, kit",
-            "brandFosroc": "Fosroc Nitowrap EP – 2-part epoxy primer and laminating resin for CFRP, kit",
-            "brandTremco": "Mapei Mapewrap 31 – 2-part epoxy laminating resin for CFRP bonding, kit",
+            "brandFosroc": "Fosroc Nitowrap 410 – 2-part epoxy laminating resin for CFRP strengthening systems, kit",
+            "brandTremco": null,
             "brandParchem": "Parchem Nitowrap EP – 2-part epoxy primer and laminating resin for CFRP, kit",
             "unitOfMeasure": "kit",
             "packSize": "various",
@@ -736,11 +760,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Stainless steel dowels / anchors",
             "productType": "316 SS mechanical and chemical anchor system",
-            "brandArdex": "Hilti HSA-R2 – 316 SS torque-controlled expansion anchor bolt, M10-M20",
+            "brandArdex": null,
             "brandSika": "Sika AnchorFix-3+ – 316 SS chemical anchor resin with threaded rod, M10-M20",
             "brandFosroc": "Fosroc Nitobond EP + 316 SS threaded rod – 2-part epoxy dowel anchor system",
-            "brandTremco": "Simpson Strong-Tie SS Wedge Anchor – 316 SS expansion anchor, M10-M20",
-            "brandParchem": "Fischer FH II-SS – stainless steel wedge anchor bolt, M10-M20",
+            "brandTremco": null,
+            "brandParchem": null,
             "unitOfMeasure": "each",
             "packSize": "various",
             "notes": "316 SS min in aggressive environments. Load design per ETA or engineer spec. Pull-test if critical."
@@ -748,7 +772,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Post-installed anchor bolts (stainless)",
             "productType": "316 SS post-installed expansion and chemical anchor bolts",
-            "brandArdex": "Hilti HSA-R2 – 316 SS torque-controlled expansion anchor bolt, M10-M20",
+            "brandArdex": null,
             "brandSika": "Sika AnchorFix-3+ with SS threaded rod – post-installed chemical anchor, M10-M20",
             "brandFosroc": "Fosroc Nitobond EP with 316 SS rod – post-installed epoxy anchor system",
             "brandTremco": "Simpson Strong-Tie SS Wedge Anchor – 316 SS wedge anchor bolt, M10-M20",
@@ -766,7 +790,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy adhesive (anchoring)",
             "productType": "2-part structural epoxy anchoring adhesive",
-            "brandArdex": "Ardex AF 200 – 2-part epoxy anchoring adhesive, 380 mL cartridge",
+            "brandArdex": "Ardex RA 142 – 2-part epoxy injection and anchoring adhesive, 380 mL cartridge",
             "brandSika": "Sika AnchorFix-3+ – 2-part epoxy anchor adhesive, 345 mL cartridge",
             "brandFosroc": "Fosroc Nitobond EP – 2-part structural epoxy anchoring resin, 380 mL cartridge",
             "brandTremco": "Hilti HIT-RE 500 V4 – 2-part epoxy rebar and anchor injection system, 500 mL",
@@ -802,9 +826,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Non-shrink grout",
             "productType": "Non-shrink precision cementitious grout",
-            "brandArdex": "Ardex A 36 / Ardex Grout 12 – non-shrink precision cementitious grout, 25 kg bag",
+            "brandArdex": "Ardex BG 90 GP – non-shrink cementitious construction grout, 25 kg bag",
             "brandSika": "Sika SikaGrout-314 – non-shrink cementitious construction grout, 25 kg bag",
-            "brandFosroc": "Fosroc Conbextra GP2 – non-shrink precision cementitious grout, 25 kg bag",
+            "brandFosroc": "Fosroc Conbextra GP – non-shrink precision cementitious grout, 25 kg bag",
             "brandTremco": "Tremco TREMgrout NS – non-shrink cementitious grout, 25 kg bag",
             "brandParchem": "Parchem Conbextra GP – non-shrink cementitious grout, 25 kg bag",
             "unitOfMeasure": "bag",
@@ -820,11 +844,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Bonding agent / SBR latex",
             "productType": "SBR polymer bonding agent and primer",
-            "brandArdex": "Ardex P 51 – acrylic/SBR bonding agent and primer, 5 L",
+            "brandArdex": "Ardex P 51 – water-based acrylic bonding primer, 5 L",
             "brandSika": "Sika Latex SBR – SBR latex bonding admixture, 5 L",
             "brandFosroc": "Fosroc Nitobond SBR – SBR latex bonding agent, 5 L",
             "brandTremco": "Tremco THC Bonding Agent – acrylic bonding primer, 5 L",
-            "brandParchem": "Parchem Concure SBR – SBR admixture and bonding agent, 5 L",
+            "brandParchem": "Fosroc Nitobond SBR – SBR latex bonding agent and admixture, 5 L",
             "unitOfMeasure": "litre",
             "packSize": "5-20 L",
             "notes": "Brush onto prepared substrate before mortar. Apply mortar while bond coat is still tacky."
@@ -844,7 +868,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Polyurethane sealant (movement joint)",
             "productType": "1-part polyurethane movement joint sealant",
-            "brandArdex": "Ardex ST – 1-part polyurethane movement joint sealant, 600 mL cartridge",
+            "brandArdex": "Ardex RA 040 – 1-part polyurethane movement joint sealant, 600 mL cartridge",
             "brandSika": "Sika Sikaflex-11FC / Sikaflex Pro-3 WF – 1-part PU sealant, 600 mL cartridge",
             "brandFosroc": "Fosroc Nitoseal MS600 – 1-part MS polymer movement joint sealant, 600 mL cartridge",
             "brandTremco": "Tremco Dymonic 100 – high-movement polyurethane sealant, 600 mL cartridge",
@@ -862,7 +886,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Silicone sealant (movement joint)",
             "productType": "Neutral-cure silicone movement joint sealant",
-            "brandArdex": "Ardex ST Silicone – neutral cure silicone movement joint sealant, 310 mL cartridge",
+            "brandArdex": "Ardex ST – neutral-cure silicone movement joint sealant, 310 mL cartridge",
             "brandSika": "Sika Sikasil WS-305 CN / Sikasil-C – neutral cure silicone sealant, 310 mL cartridge",
             "brandFosroc": "Fosroc Nitoseal S30 – neutral cure silicone sealant, 310 mL cartridge",
             "brandTremco": "Tremco Spectrem 1 – neutral cure structural silicone sealant, 310 mL cartridge",
@@ -898,11 +922,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Polyurethane injection resin (expanding)",
             "productType": "Expanding and hydrophilic polyurethane injection resin",
-            "brandArdex": "Ardex WPM-PI Expanding – expanding PU injection resin, 600 mL cartridge / 20 L drum",
+            "brandArdex": "Ardex CE 300 – hydrophilic expanding polyurethane injection resin, 600 mL / 20 L drum",
             "brandSika": "Sika Injection-107 – expanding hydrophilic PU injection resin, 600 mL / 20 L drum",
-            "brandFosroc": "Fosroc Nitofill PU Hydrophilic – expanding hydrophilic PU injection, 600 mL / 20 L drum",
+            "brandFosroc": "Fosroc Nitofill PU150 – hydrophilic expanding polyurethane injection resin, 600 mL / 20 L drum",
             "brandTremco": "Tremco THC Injection Resin – expanding polyurethane injection, 600 mL / 20 L drum",
-            "brandParchem": "Parchem Nitofill PU Hydrophilic – expanding hydrophilic PU injection, 600 mL / 20 L",
+            "brandParchem": "Fosroc Nitofill PU150 – hydrophilic expanding polyurethane injection resin, 600 mL / 20 L",
             "unitOfMeasure": "drum",
             "packSize": "20 L",
             "notes": "Use for active leaks or voids. Reacts with water to expand. Multiple injection stages may be needed."
@@ -916,10 +940,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Flexible epoxy injection resin",
             "productType": "Flexible 2-part epoxy injection resin",
-            "brandArdex": "Ardex WPM-EI Flex – flexible 2-part epoxy injection resin, 600 mL cartridge",
+            "brandArdex": null,
             "brandSika": "Sika Injection-306 – hydrophobic flexible 2-part epoxy injection resin, 600 mL",
             "brandFosroc": "Fosroc Nitofill Epoxy Flex – flexible 2-part epoxy injection resin, 600 mL",
-            "brandTremco": "Tremco Spectru-Bond Flex – flexible 2-part epoxy injection resin, 600 mL",
+            "brandTremco": null,
             "brandParchem": "Parchem Nitofill Epoxy Flex – flexible 2-part epoxy injection resin, 600 mL",
             "unitOfMeasure": "cartridge",
             "packSize": "600 mL",
@@ -976,9 +1000,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Polyurethane injection resin (expanding)",
             "productType": "Expanding and hydrophilic polyurethane injection resin",
-            "brandArdex": "Ardex WPM-PI Expanding – expanding PU injection resin, 600 mL cartridge / 20 L drum",
+            "brandArdex": "Ardex CE 300 – hydrophilic expanding polyurethane injection resin, 600 mL / 20 L drum",
             "brandSika": "Sika Injection-107 – expanding hydrophilic PU injection resin, 600 mL / 20 L drum",
-            "brandFosroc": "Fosroc Nitofill PU Hydrophilic – expanding hydrophilic PU, 600 mL / 20 L drum",
+            "brandFosroc": "Fosroc Nitofill PU150 – hydrophilic expanding polyurethane injection resin, 600 mL / 20 L drum",
             "brandTremco": "Tremco THC Injection Resin – expanding PU foam injection, 600 mL / 20 L drum",
             "brandParchem": "Parchem Nitofill PU Hydrophilic – expanding PU injection, 600 mL / 20 L drum",
             "unitOfMeasure": "drum",
@@ -994,10 +1018,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy injection resin (rigid)",
             "productType": "Rigid 2-part epoxy structural injection resin",
-            "brandArdex": "Ardex WPM-EI – rigid 2-part epoxy injection resin, 380 mL cartridge",
+            "brandArdex": null,
             "brandSika": "Sika Injection-451 N / Sikadur-52 – low-viscosity rigid 2-part epoxy injection, 380 mL",
             "brandFosroc": "Fosroc Nitofill Epoxy – rigid 2-part epoxy injection resin, 380 mL cartridge",
-            "brandTremco": "Tremco Spectru-Bond 600 – rigid 2-part epoxy injection resin, 380 mL cartridge",
+            "brandTremco": null,
             "brandParchem": "Parchem Nitofill Epoxy – rigid 2-part epoxy injection resin, 380 mL kit",
             "unitOfMeasure": "cartridge/kit",
             "packSize": "380 mL / 5 L",
@@ -1048,7 +1072,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Masonry repair mortar",
             "productType": "Polymer-modified masonry and crack repair mortar",
-            "brandArdex": "Ardex TRM – polymer-modified masonry repair mortar, 20 kg bag",
+            "brandArdex": "Ardex BR 340 – polymer-modified masonry repair mortar, 20 kg bag",
             "brandSika": "Sika MonoTop-412N – polymer-modified masonry repair mortar, 25 kg bag",
             "brandFosroc": "Fosroc Renderoc GP – general purpose masonry repair mortar, 25 kg bag",
             "brandTremco": "Tremco TREMproof Mortar – masonry repair mortar, 25 kg bag",
@@ -1084,7 +1108,7 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Polyurethane sealant",
             "productType": "1-part polyurethane crack and joint sealant",
-            "brandArdex": "Ardex ST – 1-part polyurethane sealant, 600 mL cartridge",
+            "brandArdex": "Ardex RA 040 – 1-part polyurethane sealant, 600 mL cartridge",
             "brandSika": "Sika Sikaflex-11FC – 1-part polyurethane sealant, 600 mL cartridge",
             "brandFosroc": "Fosroc Nitoseal MS600 – 1-part MS polymer sealant, 600 mL cartridge",
             "brandTremco": "Tremco Dymonic 100 – 1-part polyurethane sealant, 600 mL cartridge",
@@ -1126,11 +1150,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Concrete repair mortar",
             "productType": "Polymer-modified slab edge repair mortar",
-            "brandArdex": "Ardex TRM – polymer-modified slab edge repair mortar, 20 kg bag",
+            "brandArdex": "Ardex BR 340 – polymer-modified slab edge repair mortar, 20 kg bag",
             "brandSika": "Sika MonoTop-612 / MonoTop-620 – polymer repair mortar for slab edge, 25 kg bag",
             "brandFosroc": "Fosroc Renderoc HB / Renderoc LA – structural slab edge repair mortar, 25 kg bag",
-            "brandTremco": "Tremco TREMproof 900 – polymer-modified repair mortar, 25 kg bag",
-            "brandParchem": "Parchem Nitomortar FC – polymer-modified repair mortar, 25 kg bag",
+            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
+            "brandParchem": "Mapei Mapegrout SHB – structural polymer repair mortar, 25 kg bag",
             "unitOfMeasure": "bag",
             "packSize": "20 kg",
             "notes": "Form edge with steel or PVC angle. Apply in lifts max 30 mm. Cure min 7 days. Protect from traffic."
@@ -1144,11 +1168,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Epoxy repair mortar",
             "productType": "2-part / 3-part epoxy slab edge repair mortar",
-            "brandArdex": "Ardex WA – 3-part epoxy slab edge repair mortar, 5 kg kit",
+            "brandArdex": "Ardex RA 88 Plus – 2-part structural epoxy repair mortar, 4.5 kg kit",
             "brandSika": "Sika Sikadur-42 – 3-part epoxy mortar for slab edge, 5 kg kit",
             "brandFosroc": "Fosroc Nitomortar 50 – 3-part epoxy slab edge repair mortar, 5 kg kit",
-            "brandTremco": "Tremco Spectru-Bond 600 – 2-part epoxy repair mortar, 5 kg kit",
-            "brandParchem": "Parchem Nitomortar EF – 3-part epoxy repair mortar, 5 kg kit",
+            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
+            "brandParchem": "Fosroc Nitomortar AP – 3-part structural epoxy repair mortar, 4.5 kg kit",
             "unitOfMeasure": "kit",
             "packSize": "5 kg",
             "notes": "High-strength early return to service. Good abrasion and impact resistance for slab edges. Temp 10-35 deg C."
@@ -1162,11 +1186,11 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Bonding agent / SBR latex",
             "productType": "SBR polymer bonding agent and primer",
-            "brandArdex": "Ardex P 51 – acrylic/SBR bonding agent and primer, 5 L",
+            "brandArdex": "Ardex P 51 – water-based acrylic bonding primer, 5 L",
             "brandSika": "Sika Latex SBR – SBR latex bonding agent, 5 L",
             "brandFosroc": "Fosroc Nitobond SBR – SBR latex bonding agent, 5 L",
             "brandTremco": "Tremco THC Bonding Agent – acrylic bonding primer, 5 L",
-            "brandParchem": "Parchem Concure SBR – SBR admixture and bonding agent, 5 L",
+            "brandParchem": "Fosroc Nitobond SBR – SBR latex bonding agent and admixture, 5 L",
             "unitOfMeasure": "litre",
             "packSize": "5 L",
             "notes": "Essential for adhesion of repair mortar to existing slab edge. Apply, allow to become tacky, then apply mortar."
@@ -1216,10 +1240,10 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
           {
             "materialName": "Curing compound",
             "productType": "Water-based acrylic concrete curing compound",
-            "brandArdex": "Ardex WB2 – water-based acrylic curing compound, 5 L",
+            "brandArdex": null,
             "brandSika": "Sika Antisol E – acrylic resin curing compound, 5 L",
-            "brandFosroc": "Fosroc Concure WB – water-based curing membrane, 5 L",
-            "brandTremco": "Parchem Concure WB – water-based acrylic curing compound, 5 L",
+            "brandFosroc": "Fosroc Concure WB30 – water-based wax emulsion curing compound, 5 L",
+            "brandTremco": "Tremco Eucocrete WB Cure – water-based acrylic curing compound, 5 L",
             "brandParchem": "Mapei Mapecure S – acrylic curing compound, 5 L",
             "unitOfMeasure": "litre",
             "packSize": "5 L",
@@ -1242,6 +1266,132 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "unitOfMeasure": "each",
             "packSize": "100/125 mm",
             "notes": "Prepare slab edge surface prior to repair. Achieve min CSP 3 profile per ICRI 310.2. Use with vacuum extraction."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "magnesite-flooring-deterioration",
+    "label": "Magnesite flooring deterioration",
+    "productCategories": [
+      {
+        "slug": "moisture-suppression-primers",
+        "label": "Moisture suppression primers",
+        "materials": [
+          {
+            "materialName": "Two-part epoxy moisture control primer",
+            "productType": "Two-part epoxy moisture-suppressing floor primer",
+            "brandArdex": "Ardex MC Rapid – two-part epoxy moisture control primer for high-RH substrates, 10 L kit",
+            "brandSika": "Sika Primer MB – two-part epoxy moisture-suppressing floor primer, 8 L kit",
+            "brandFosroc": "Fosroc Nitoprime 28 – two-part penetrating epoxy primer for damp and high-moisture substrates, 4 L kit",
+            "brandTremco": "Parchem Epirez 510 – two-part low-viscosity epoxy adhesion and moisture-control primer, 5 L kit",
+            "brandParchem": "Mapei Primer G – solvent-free acrylic adhesion and moisture-barrier primer, 1 L",
+            "unitOfMeasure": "kit",
+            "packSize": "4–10 L",
+            "notes": "Mandatory pre-application moisture testing — ASTM F2170 in-situ RH probe or anhydrous calcium chloride test. Substrate must achieve minimum CSP 2 profile. Remove all friable, delaminating, or actively corroding magnesite before priming. Allow primer to cure fully before applying self-levelling compound. Do not apply over active efflorescence or contaminated surface."
+          },
+          {
+            "materialName": "Single-component acrylic adhesion primer",
+            "productType": "Single-component acrylic floor levelling primer",
+            "brandArdex": "Ardex P 51 – single-component acrylic adhesion primer for floor levelling systems, 5 L",
+            "brandSika": "Sika Primer-3N – single-component adhesion primer for porous and semi-porous substrates, 1 L",
+            "brandFosroc": "Fosroc Nitobond SBR – SBR latex adhesion primer for floor levelling, 5 L",
+            "brandTremco": "Parchem Concure SBR – SBR primer and curing admixture for floor applications, 5 L",
+            "brandParchem": "Mapei Eco Prim T – single-component acrylic primer for self-levelling underlayments, 1 L",
+            "unitOfMeasure": "litre",
+            "packSize": "1–5 L",
+            "notes": "Used over encapsulated magnesite where moisture levels are within acceptable limits (typically <75% RH). Apply to clean primed surface, allow to become tacky before applying self-levelling compound. Do not dilute. Coverage approx 8–12 m²/L depending on porosity."
+          }
+        ]
+      },
+      {
+        "slug": "self-levelling-underlayments",
+        "label": "Self-levelling underlayments",
+        "materials": [
+          {
+            "materialName": "Cementitious self-levelling compound",
+            "productType": "Cement-based self-levelling floor underlayment",
+            "brandArdex": "Ardex K 15 – cement-based self-levelling floor compound 3–20 mm, 25 kg bag",
+            "brandSika": "Sika Level-01 Top – cement-based self-levelling underlayment 3–20 mm, 25 kg bag",
+            "brandFosroc": "Fosroc Nitofloor FC3 – cementitious floor levelling and screed compound, 25 kg bag",
+            "brandTremco": "Parchem Flowfill FC – pumpable self-levelling floor compound 2–30 mm, 25 kg bag",
+            "brandParchem": "Mapei Ultraplan Eco – self-levelling underlayment 2–20 mm, 25 kg bag",
+            "unitOfMeasure": "bag",
+            "packSize": "25 kg",
+            "notes": "Apply over fully cured moisture suppression primer. Pour and spread to required depth — product self-levels within tolerance. Minimum application thickness 3 mm. Do not apply directly to magnesite without moisture primer. Allow full cure before installing floor coverings — typically 24–48 hrs depending on thickness and ambient conditions. Inspect for pinholes and touch up before covering."
+          },
+          {
+            "materialName": "Rapid-setting self-levelling compound",
+            "productType": "Rapid-setting self-levelling floor underlayment",
+            "brandArdex": "Ardex K 301 – rapid-setting self-levelling compound, trafficable 2–4 hrs, 25 kg bag",
+            "brandSika": "Sika Level-125 – rapid-setting self-levelling floor compound, 25 kg bag",
+            "brandFosroc": "Fosroc Nitofloor RS – rapid-setting floor levelling compound, 25 kg bag",
+            "brandTremco": "Parchem Flowfill RS – rapid-set self-levelling compound, trafficable 3–4 hrs, 25 kg bag",
+            "brandParchem": "Mapei Ultraplan Maxi Plus – rapid self-levelling underlayment 3–30 mm, 25 kg bag",
+            "unitOfMeasure": "bag",
+            "packSize": "25 kg",
+            "notes": "Use where fast return to service is required. Mixing is time-critical — use a mechanical spiral mixer and pour within 10 minutes of mixing. Close windows and doors to prevent draughts during application. Do not walk on surface for minimum 2–4 hours. Check manufacturer TDS for floor covering installation timelines after rapid-set SLCs."
+          }
+        ]
+      },
+      {
+        "slug": "floor-patching-compounds",
+        "label": "Floor patching compounds",
+        "materials": [
+          {
+            "materialName": "Feather-edge skim patch compound",
+            "productType": "Polymer-modified feather-edge floor patching compound",
+            "brandArdex": "Ardex Feather Finish – polymer-modified feather-edge skimming and patching compound, 10 kg bag",
+            "brandSika": "Sika MonoTop-412N – fine polymer repair mortar for feather edge to 10 mm, 25 kg bag",
+            "brandFosroc": "Fosroc Renderoc FC – fine cosmetic fairing mortar for thin-section patching, 25 kg bag",
+            "brandTremco": "Parchem Renderoc FC – polymer-modified fairing coat for floor patching, 25 kg bag",
+            "brandParchem": "Mapei Planitop Fast 330 – rapid-set repair mortar for thin-section floor patching, 25 kg bag",
+            "unitOfMeasure": "bag",
+            "packSize": "10–25 kg",
+            "notes": "For localised failed areas, low spots, and surface irregularities in existing magnesite or concrete substrate. Prime surface first. Can feather to near-zero edge. Apply in layers not exceeding 10 mm per lift. Not a substitute for full self-levelling compound where planarity tolerance is critical for hard floor coverings."
+          },
+          {
+            "materialName": "Rapid-set floor patching mortar",
+            "productType": "Rapid-setting cementitious floor repair mortar",
+            "brandArdex": "Ardex RA 90 – rapid-setting floor repair and patching mortar, 25 kg bag",
+            "brandSika": "Sika MonoTop-412N – rapid-setting fine repair mortar, 0–10 mm, 25 kg bag",
+            "brandFosroc": "Fosroc Renderoc LA – rapid low-alkali repair mortar for thin-section floor patching, 25 kg bag",
+            "brandTremco": "Parchem Speed Rep – rapid-setting floor repair mortar, 25 kg bag",
+            "brandParchem": "Mapei Planitop 400 – polymer-modified rapid repair mortar for floors, 25 kg bag",
+            "unitOfMeasure": "bag",
+            "packSize": "25 kg",
+            "notes": "Use for isolated floor depressions, damaged saw-cut edges, or localised substrate failure prior to self-levelling. Trafficable typically within 1–3 hours. Do not overcoat with SLC until mortar has reached sufficient compressive strength — check TDS."
+          }
+        ]
+      },
+      {
+        "slug": "floor-grinding-preparation",
+        "label": "Floor grinding & preparation",
+        "materials": [
+          {
+            "materialName": "Floor grinder (single or double head)",
+            "productType": "Diamond floor grinding machine for surface preparation",
+            "brandArdex": "Husqvarna PG 280 – single-head floor grinder with dust shroud, 280 mm working width",
+            "brandSika": "Scanmaskin SM 250 – single-head concrete floor grinding machine, 250 mm dia",
+            "brandFosroc": "Blastrac 1-10DS – single-head floor grinder with integrated vacuum connection, 250 mm",
+            "brandTremco": "HTC Superfloor 270EG – edge and floor grinder, 270 mm",
+            "brandParchem": "Bosch GBR 15 CA – angle grinder with floor grinding cup wheel, 150 mm",
+            "unitOfMeasure": "each",
+            "packSize": "various",
+            "notes": "CAUTION: Magnesite dust contains magnesium chloride — classified as a respiratory hazard. Grinding must be performed wet or with M-class or H-class HEPA vacuum extraction at all times. Operator PPE: P2 respirator minimum, eye protection, gloves. Achieve min CSP 2 profile on magnesite before primer application. Do not generate dry airborne dust."
+          },
+          {
+            "materialName": "HEPA vacuum (M-class / H-class)",
+            "productType": "M-class HEPA dust extractor for magnesite and concrete dust",
+            "brandArdex": "Festool CTL MIDI – M-class HEPA dust extractor, 15 L, for magnesite grinding",
+            "brandSika": "Makita VC3211MX1 – M-class HEPA industrial vacuum, 32 L",
+            "brandFosroc": "Nilfisk ATTIX 33 – M-class HEPA dust extractor, 33 L",
+            "brandTremco": "Karcher NT 30/1 Me – M-class HEPA wet/dry vacuum, 30 L",
+            "brandParchem": "Bosch GAS 35 M AFC – M-class HEPA dust extractor, 35 L",
+            "unitOfMeasure": "each",
+            "packSize": "various",
+            "notes": "Mandatory for magnesite grinding and preparation. M-class filtration rated to capture particles down to 1 µm. Connect directly to grinder dust shroud. Dispose of collected magnesite dust as chemical waste — do not empty into general waste. Replace HEPA filter regularly. Safe Work Australia guidance on silica and construction dust applies."
           }
         ]
       }

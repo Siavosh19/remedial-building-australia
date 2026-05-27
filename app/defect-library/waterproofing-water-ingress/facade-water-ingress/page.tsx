@@ -57,12 +57,12 @@ export default function FacadeWaterIngressPage() {
             </div>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+          
           </nav>
           <a href="/" className="hidden shrink-0 rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800 md:inline-flex">Home</a>
         </div>
@@ -74,19 +74,13 @@ export default function FacadeWaterIngressPage() {
             ← Back to Waterproofing & Water Ingress
           </a>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mt-10">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
               <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Façade Water Ingress</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Façade water ingress is the penetration of water through the external building envelope into the building structure and interior spaces. In Class 2 multi-storey residential buildings, the façade is the primary barrier against weather — and when sealant joints fail, render cracks, cladding is damaged or flashings are absent, rainwater tracks directly into the building fabric. Façade water ingress typically presents as isolated wet patches on internal walls and ceilings, but sustained ingress causes progressive structural damage, mould growth and finishes deterioration that significantly escalates remediation costs.
               </p>
-            </div>
-            <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Façade water ingress" className="h-[420px] w-full object-cover" />
-              <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
-                Water ingress through failed façade sealant joints and cracked render.
-              </div>
             </div>
           </div>
 
@@ -140,8 +134,7 @@ export default function FacadeWaterIngressPage() {
             <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-700">
               Façade repair requires safe elevated access and a systematic approach from top to bottom. The scope must be confirmed by a façade consultant following inspection from an elevated platform.
             </p>
-            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Façade water ingress repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
-            <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
+<ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
                   <span className="mt-1 shrink-0 text-sm font-bold text-slate-500">{String(index + 1).padStart(2, "0")}.</span>
@@ -149,14 +142,6 @@ export default function FacadeWaterIngressPage() {
                 </li>
               ))}
             </ol>
-          </section>
-
-          <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">
-            <h2 className="text-3xl font-bold text-sky-950">Before / After Repair</h2>
-            <p className="mt-4 text-base leading-8 text-slate-700">
-              Typical façade condition before and after full joint reseal, render repair and penetrating water repellent treatment.
-            </p>
-            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Façade water ingress before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">
@@ -197,6 +182,14 @@ export default function FacadeWaterIngressPage() {
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.</p>
           </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>
             <a href="/terms" className="underline hover:text-sky-700">Terms</a>

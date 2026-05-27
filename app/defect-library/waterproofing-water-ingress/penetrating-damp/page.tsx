@@ -13,6 +13,7 @@ const inspectionItems = [
   "Assess the relationship between the damp area and weather exposure — penetrating damp is typically worse on the windward elevation.",
   "Probe mortar joints to assess depth of deterioration and the porosity of the masonry units.",
   "Inspect cavity walls for the presence of wall ties carrying moisture across the cavity and cavity fill that may be bridging.",
+  "In masonry cavity wall construction, inspect the first perpendicular mortar joints above floor level on the external face for functional weep holes at the correct spacing — their absence is a strong indicator that no cavity base flashing was installed. Confirm by carefully removing a single brick course in an inconspicuous location to expose the cavity base and inspect for the presence, material and condition of the DPC or metal flashing.",
   "Review evidence of water penetration only appearing during or after rain events to differentiate from rising damp and condensation.",
   "Consider a water hose test on the external face to replicate and confirm the water entry path.",
 ];
@@ -27,6 +28,9 @@ const methodology = [
   "Ensure the water repellent is applied to clean, dry masonry and allowed to penetrate fully before the surface becomes wet.",
   "Where the masonry face is too deteriorated for water repellent alone, apply a compatible textured render or masonry coating system.",
   "Remove any external elements bridging the cavity — check and clear cavity weep holes to allow drainage.",
+  "Where cavity base wall flashing is confirmed absent or non-functional: engage a licensed bricklayer to carefully remove the affected section of the outer masonry leaf in working sections of approximately one metre, staging and recording each brick for reinstatement. Clean all mortar debris from the cavity and prepare the inner leaf face.",
+  "Install a new continuous cavity base flashing — flexible polyethylene DPC membrane, lead, or aluminium — in compliance with AS 3700, AS 2904 and NCC 2022 Part 5.7. The flashing must be a minimum of 20 mm wider than the masonry leaf, turned up and bonded against the inner leaf face, and extend to the outer face of the wall with a formed drip edge or turn-down to direct water clear. Fix at 600 mm centres with a minimum 150 mm lap at all joints.",
+  "Reinstate brickwork over the new flashing using mortar matched to the existing in type and compressive strength to avoid stress concentration on the surrounding masonry. Form open weep holes at maximum 1200 mm centres in the first perpendicular mortar joint above the flashing, in accordance with NCC 2022 Part 5.3.",
   "Remove internal plaster and finishes affected by moisture — allow the wall to dry fully before reinstating with a breathable plaster or render.",
   "Reinstate internal finishes using breathable paints and materials compatible with residual moisture vapour movement.",
   "Monitor the repaired areas for recurrence over one to two full winter seasons before closing out the defect.",
@@ -54,12 +58,12 @@ export default function PenetratingDampPage() {
             </div>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+          
           </nav>
           <a href="/" className="hidden shrink-0 rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800 md:inline-flex">Home</a>
         </div>
@@ -71,19 +75,13 @@ export default function PenetratingDampPage() {
             ← Back to Waterproofing & Water Ingress
           </a>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mt-10">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
               <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Penetrating Damp</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Penetrating damp is the lateral movement of water through external walls driven by wind-driven rain, hydrostatic pressure against below-ground walls and water ponding at wall bases. Unlike rising damp, which moves upward through capillary action, penetrating damp tracks horizontally through the building fabric via cracks, failed mortar joints, defective sealants, window perimeter failures and porous masonry. It is one of the most common causes of water ingress complaints in strata buildings across coastal and high-rainfall areas of Australia.
               </p>
-            </div>
-            <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
-              <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Penetrating damp through external wall" className="h-[420px] w-full object-cover" />
-              <div className="border-t border-slate-200 p-5 text-base font-semibold text-slate-700">
-                Water staining on an internal wall consistent with penetrating damp through the external masonry.
-              </div>
             </div>
           </div>
 
@@ -98,6 +96,7 @@ export default function PenetratingDampPage() {
                 "Salt efflorescence on external masonry and render",
                 "Mould growth on internal wall faces and behind furniture",
                 "Open or crumbling mortar joints on the external elevation",
+                "Persistent horizontal damp band or mould growth at skirting board level on external-facing walls in masonry construction — a characteristic sign of absent or failed base cavity flashing where water in the cavity has no drainage path and migrates through the inner skin at its base",
               ]}
             />
             <InfoCard
@@ -110,6 +109,7 @@ export default function PenetratingDampPage() {
                 "Missing or failed flashings over windows and lintels",
                 "Cavity wall ties corroding and carrying water across the cavity",
                 "Cavity fill bridging the clear cavity and providing a moisture path",
+                "Absent or failed base cavity wall flashing — where no continuous DPC membrane or metal flashing was installed at the base of the outer masonry leaf, or the original flashing has corroded, perforated or been mortar-bridged during construction, water descending the cavity face has no drainage path to weep holes and migrates through the inner skin. Required under AS 3700, AS 2904 and NCC 2022 Part 5.7, absent base cavity flashing is one of the most frequently undiagnosed causes of chronic damp and mould at skirting board level in older cavity masonry construction",
               ]}
             />
             <InfoCard title="Risk of Neglect" items={risks} />
@@ -137,8 +137,7 @@ export default function PenetratingDampPage() {
             <p className="mt-4 max-w-4xl text-lg leading-8 text-slate-700">
               Penetrating damp repair must target the specific water entry path. The methodology below covers a typical external masonry wall treatment and internal reinstatement sequence.
             </p>
-            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Penetrating damp repair methodology" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
-            <ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
+<ol className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 px-7 py-6">
               {methodology.map((step, index) => (
                 <li key={step} className="flex gap-4 text-base leading-8 text-slate-800" style={{ marginBottom: index < methodology.length - 1 ? "3mm" : 0 }}>
                   <span className="mt-1 shrink-0 text-sm font-bold text-slate-500">{String(index + 1).padStart(2, "0")}.</span>
@@ -146,14 +145,6 @@ export default function PenetratingDampPage() {
                 </li>
               ))}
             </ol>
-          </section>
-
-          <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">
-            <h2 className="text-3xl font-bold text-sky-950">Before / After Repair</h2>
-            <p className="mt-4 text-base leading-8 text-slate-700">
-              Typical penetrating damp condition before and after external repointing, sealant replacement and water repellent treatment.
-            </p>
-            <img src="/Images/Categories/waterproofing-water-ingress.jpg" alt="Penetrating damp before and after repair" className="mt-8 w-full rounded-2xl border border-slate-200 object-cover" />
           </section>
 
           <section className="mt-16 grid gap-8 md:grid-cols-2">
@@ -194,6 +185,14 @@ export default function PenetratingDampPage() {
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.</p>
           </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>
             <a href="/terms" className="underline hover:text-sky-700">Terms</a>

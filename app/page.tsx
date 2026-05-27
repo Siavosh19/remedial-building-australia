@@ -118,14 +118,14 @@ const heroSlides = heroSlidesBase.map((slide, i) => ({
 }));
 
 const NEWS_IMAGES = [
-  "/Images/News1.jpg",
-  "/Images/News2-Building-Commissioner.jpg",
-  "/Images/News3-class%202%20building%20Registration.jpg",
-  "/Images/News5-Cladding.jpg",
-  "/Images/News7-Concrete%20Spalling.jpg",
-  "/Images/News8-Apartment.jpg",
-  "/Images/News9waterproroing%20defects%20planterbxoes.jpg",
-  "/Images/News10-NCC-Building%20Codes-Standard.jpg",
+  "/Images/News15 Building Commissioner.png",
+  "/Images/News17-  civil engineer - inspection.jpg",
+  "/Images/News14 Rope Access.png",
+  "/Images/News16-Cladding.jpg",
+  "/Images/News13-plumbing-stormwater-downpipes.jpg",
+  "/Images/News18 - passive Fire inspection.jpg",
+  "/Images/News10-NCC-Building Codes-Standard.jpg",
+  "/Images/News12-smoke-alarm-electricalworks.jpg",
 ];
 
 type NewsSlide = {
@@ -207,10 +207,11 @@ export default function RemedialBuildingAustraliaHome() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/defect-library"   className="whitespace-nowrap hover:text-red-700 transition">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems"   className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
             <a href="/industry-news"    className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
+          
           </nav>
 
           <a
@@ -461,7 +462,14 @@ export default function RemedialBuildingAustraliaHome() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-sm font-semibold text-slate-500 md:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+<div className="grid grid-cols-2 gap-3 text-sm font-semibold text-slate-500 md:grid-cols-3">
             <a href="/about">About</a>
             <a href="/terms">Terms</a>
             <a href="/contact">Contact</a>          </div>

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { CONCRETE_DEFECTS_DATA } from "@/lib/concrete-defects-data";
-import { ProductCategoryCarousel, TechnicalAccordionClient } from "@/components/repair-systems/ProductCategoryClient";
+import { ProductGrid, TechnicalAccordionClient } from "@/components/repair-systems/ProductCategoryClient";
+import { CATEGORY_ENRICHMENT, CATEGORY_TECH_INFO } from "@/lib/product-enrichment";
 import { ArrowRight, BookOpen } from "lucide-react";
 
 export function generateStaticParams() {
@@ -13,13 +14,14 @@ export function generateStaticParams() {
   return params;
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { subcategory: string; productCategory: string };
+  params: Promise<{ subcategory: string; productCategory: string }>;
 }) {
-  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === params.subcategory);
-  const cat = sub?.productCategories.find((c) => c.slug === params.productCategory);
+  const { subcategory, productCategory } = await params;
+  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === subcategory);
+  const cat = sub?.productCategories.find((c) => c.slug === productCategory);
   if (!sub || !cat) return {};
   return {
     title: `${cat.label} — ${sub.label} — Repair Systems — Remedial Building Australia`,
@@ -27,15 +29,16 @@ export function generateMetadata({
   };
 }
 
-export default function ProductCategoryPage({
+export default async function ProductCategoryPage({
   params,
 }: {
-  params: { subcategory: string; productCategory: string };
+  params: Promise<{ subcategory: string; productCategory: string }>;
 }) {
-  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === params.subcategory);
+  const { subcategory, productCategory } = await params;
+  const sub = CONCRETE_DEFECTS_DATA.find((s) => s.slug === subcategory);
   if (!sub) notFound();
 
-  const cat = sub.productCategories.find((c) => c.slug === params.productCategory);
+  const cat = sub.productCategories.find((c) => c.slug === productCategory);
   if (!cat) notFound();
 
   const firstNotes = cat.materials.find((m) => m.notes)?.notes ?? "";
@@ -56,7 +59,7 @@ export default function ProductCategoryPage({
     0
   );
 
-  const techInfo = {
+  const techInfo = CATEGORY_TECH_INFO[cat.slug] ?? {
     typicalApplications: [
       `${cat.label} for ${sub.label.toLowerCase()} remediation`,
       "Concrete repair and substrate reinstatement",
@@ -110,11 +113,11 @@ export default function ProductCategoryPage({
             </div>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700 transition">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap text-sky-950 underline underline-offset-4 decoration-red-700">Repair Systems</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
+          
           </nav>
           <a href="/newsletter" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Subscribe</a>
         </div>
@@ -129,6 +132,8 @@ export default function ProductCategoryPage({
               <a href="/" className="hover:text-sky-700 transition">Home</a>
               <span>/</span>
               <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
+              <span>/</span>
+              <a href="/repair-systems/concrete-structural-defects" className="hover:text-sky-700 transition">Concrete &amp; Structural</a>
               <span>/</span>
               <a href={`/repair-systems/${sub.slug}`} className="hover:text-sky-700 transition">{sub.label}</a>
               <span>/</span>
@@ -194,7 +199,8 @@ export default function ProductCategoryPage({
                 <h3 className="text-base font-extrabold text-sky-950">What is {cat.label.toLowerCase()}?</h3>
               </div>
               <p className="text-sm leading-7 text-slate-600">
-                {firstNotes ||
+                {CATEGORY_ENRICHMENT[cat.slug]?.description ||
+                  firstNotes ||
                   `${cat.label} are specialist materials used for ${sub.label.toLowerCase()} repair and remediation in Australian concrete and building practice. Products are selected based on substrate condition, exposure class, and specific repair requirements in accordance with AS 3600 and manufacturer specifications.`}
               </p>
             </div>
@@ -202,19 +208,31 @@ export default function ProductCategoryPage({
             {/* Technical Accordion — client component */}
             <TechnicalAccordionClient techInfo={techInfo} />
 
-            {/* Product Carousel — client component */}
+            {/* Product Grid — client component */}
             <div>
               <div className="mb-6 flex items-start justify-between gap-6">
                 <div className="flex items-start gap-3">
                   <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
                   <div>
                     <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-                    <p className="mt-1 text-sm text-slate-500">Use the TDS link for verified specifications before specifying on any project.</p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Scroll right to see all brands. Use each card&apos;s TDS link for verified specifications before specifying on any project.
+                    </p>
                   </div>
                 </div>
                 <span className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">{totalCards} products</span>
               </div>
-              <ProductCategoryCarousel materials={cat.materials} />
+              {(() => {
+                const enrichment = CATEGORY_ENRICHMENT[cat.slug] ?? { advantages: [], disadvantages: [] };
+                return (
+                  <ProductGrid
+                    materials={cat.materials}
+                    catSlug={cat.slug}
+                    advantages={enrichment.advantages}
+                    disadvantages={enrichment.disadvantages}
+                  />
+                );
+              })()}
             </div>
 
             {/* Brand Equivalents */}
@@ -229,13 +247,13 @@ export default function ProductCategoryPage({
               <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
                 <table className="min-w-full text-xs">
                   <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="bg-slate-800 px-5 py-3 text-left font-bold text-white whitespace-nowrap sticky left-0">Material</th>
-                      <th className="bg-orange-600 px-4 py-3 text-left font-bold text-white whitespace-nowrap">Ardex</th>
-                      <th className="bg-red-600 px-4 py-3 text-left font-bold text-white whitespace-nowrap">Sika</th>
-                      <th className="bg-blue-700 px-4 py-3 text-left font-bold text-white whitespace-nowrap">Fosroc</th>
-                      <th className="bg-green-700 px-4 py-3 text-left font-bold text-white whitespace-nowrap">Tremco / Other</th>
-                      <th className="bg-teal-700 px-4 py-3 text-left font-bold text-white whitespace-nowrap">Parchem / Mapei</th>
+                    <tr className="border-b border-slate-200 bg-slate-50">
+                      <th className="px-5 py-3 text-left text-xs font-bold text-slate-700 whitespace-nowrap sticky left-0 bg-slate-50 border-r border-slate-200">Material</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold text-slate-600 whitespace-nowrap">Ardex</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold text-slate-600 whitespace-nowrap">Sika</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold text-slate-600 whitespace-nowrap">Fosroc</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold text-slate-600 whitespace-nowrap">Tremco / Other</th>
+                      <th className="px-4 py-3 text-left text-xs font-bold text-slate-600 whitespace-nowrap">Parchem / Mapei</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -269,6 +287,7 @@ export default function ProductCategoryPage({
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
                 { href: "/defect-library/concrete-structural-defects", label: "Defect Library", title: "Concrete & Structural Defects", desc: "Identify defect types, causes, and repair pathways before selecting a system." },
+                { href: `/repair-systems/concrete-structural-defects`, label: "Back to Concrete & Structural", title: "Concrete & Structural Defects", desc: "Browse all concrete and structural defect subcategories." },
                 { href: `/repair-systems/${sub.slug}`, label: "Back to Subcategory", title: sub.label, desc: `Browse all product categories for ${sub.label.toLowerCase()}.` },
                 { href: "/ai-scope-builder/new", label: "AI Scope Builder", title: "Generate a Scope of Works", desc: "Use the AI Scope Builder to assemble a remedial scope." },
               ].map((card) => (
@@ -295,6 +314,14 @@ export default function ProductCategoryPage({
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p>
           </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>
             <a href="/terms" className="underline hover:text-sky-700">Terms</a>

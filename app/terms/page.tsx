@@ -81,6 +81,42 @@ const sections = [
   },
   {
     number: "8",
+    title: "News & Industry Commentary",
+    content: `Remedial Building Australia publishes industry news summaries and editorial commentary for general informational purposes. Users should be aware of the following:\n\nPlatform identity: Remedial Building Australia is an independent industry information platform. It is not a news publisher, engineering consultant, building certifier, legal advisor, or practitioner service provider.\n\nEditorial summaries: News summaries are prepared as independent editorial commentary. They do not reproduce original article wording and are not a substitute for reading the original source material.\n\nHedged language: Industry commentary uses cautious, hedged language ("may", "could", "is reported to", "appears to"). This language is intentional and does not constitute a professional assessment of any obligation, requirement, or legal position.\n\nIndependent verification: All news and commentary should be independently verified against primary sources — including legislation, official regulatory publications, and qualified professional advice — before being relied upon for any purpose.`,
+  },
+  {
+    number: "9",
+    title: "No Professional Advice — Expanded",
+    content: "For the avoidance of doubt, nothing on this website constitutes:",
+    bullets: [
+      "Engineering advice or engineering certification",
+      "Structural engineering assessment or advice",
+      "Waterproofing certification or compliance assessment",
+      "Legal advice or legal opinion",
+      "Building certification advice",
+      "Insurance advice",
+      "Professional consulting services of any kind",
+      "Project-specific construction or remediation advice",
+      "Regulatory compliance advice",
+      "Any representation that products, systems, or methodologies described are suitable for any specific project",
+    ],
+    footer: "Users must obtain independent advice from appropriately qualified professionals — including engineers, lawyers, certifiers, and licensed contractors — before relying on any information for design, construction, rectification, certification, compliance, insurance, or legal purposes.",
+  },
+  {
+    number: "10",
+    title: "External Links Disclaimer",
+    content: "This website contains links to external websites and original source articles. When you follow an external link:",
+    bullets: [
+      "You are leaving the Remedial Building Australia platform",
+      "Remedial Building Australia has no control over the content, accuracy, or availability of external sites",
+      "External links are provided for reference only and do not constitute an endorsement",
+      "The content of external sites may have changed since the link was published",
+      "Remedial Building Australia accepts no responsibility for the content of external websites",
+    ],
+    footer: "Always verify information from external sources independently before relying on it.",
+  },
+  {
+    number: "11",
     title: "User Conduct",
     content: "Users agree not to:",
     bullets: [
@@ -93,7 +129,7 @@ const sections = [
     footer: "We reserve the right to restrict or terminate access where misuse is identified.",
   },
   {
-    number: "9",
+    number: "12",
     title: "Future Services & Paid Features",
     content: "Certain features may become paid services in the future, including:",
     bullets: [
@@ -106,17 +142,17 @@ const sections = [
     footer: "Additional terms may apply to those services.",
   },
   {
-    number: "10",
+    number: "13",
     title: "Privacy",
     content: "Use of this website is also governed by our Privacy Policy.",
   },
   {
-    number: "11",
+    number: "14",
     title: "Changes to Terms",
     content: "Remedial Building Australia reserves the right to update or modify these Terms & Conditions at any time without prior notice. Continued use of the website constitutes acceptance of any updated terms.",
   },
   {
-    number: "12",
+    number: "15",
     title: "Contact",
     content: "For general enquiries regarding these Terms & Conditions:",
     bullets: [
@@ -144,12 +180,12 @@ export default function TermsPage() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+          
           </nav>
 
           <a
@@ -237,6 +273,14 @@ export default function TermsPage() {
               A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.
             </p>
           </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>
             <a href="/terms" className="underline hover:text-sky-700">Terms</a>

@@ -1,48 +1,102 @@
 const categoryData = [
   {
     title: "Concrete & Structural Defects",
-    image: "/Images/Categories/concrete-structural-defects.jpg",
     href: "/defect-library/concrete-structural-defects",
+    defects: [
+      { title: "Concrete Spalling",               href: "/defect-library/concrete-structural-defects/concrete-spalling" },
+      { title: "Reinforcement Corrosion",          href: "/defect-library/concrete-structural-defects/reinforcement-corrosion" },
+      { title: "Concrete Cracking",                href: "/defect-library/concrete-structural-defects/concrete-cracking" },
+      { title: "Magnesite Flooring Deterioration", href: "/defect-library/concrete-structural-defects/magnesite-flooring-deterioration" },
+      { title: "Settlement Cracks",                href: "/defect-library/concrete-structural-defects/settlement-cracks" },
+      { title: "Slab Edge Deterioration",          href: "/defect-library/concrete-structural-defects/slab-edge-deterioration" },
+    ],
   },
   {
     title: "Waterproofing & Water Ingress",
-    image: "/Images/Categories/waterproofing-water-ingress.jpg",
     href: "/defect-library/waterproofing-water-ingress",
+    defects: [
+      { title: "Balcony Waterproofing Failure",       href: "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure" },
+      { title: "Roof Waterproofing Failure",          href: "/defect-library/waterproofing-water-ingress/roof-waterproofing-failure" },
+      { title: "Planter Box Waterproofing Failure",   href: "/defect-library/waterproofing-water-ingress/planter-box-waterproofing-failure" },
+      { title: "Basement Water Ingress",              href: "/defect-library/waterproofing-water-ingress/basement-water-ingress" },
+      { title: "Podium Waterproofing Failure",        href: "/defect-library/waterproofing-water-ingress/podium-waterproofing-failure" },
+      { title: "Rising Damp",                         href: "/defect-library/waterproofing-water-ingress/rising-damp" },
+      { title: "Penetrating Damp",                    href: "/defect-library/waterproofing-water-ingress/penetrating-damp" },
+      { title: "Façade Water Ingress",                href: "/defect-library/waterproofing-water-ingress/facade-water-ingress" },
+    ],
   },
   {
     title: "Façade & External Envelope",
-    image: "/Images/Categories/facade-external-envelope.jpg",
     href: "/defect-library/facade-external-envelope",
+    defects: [
+      { title: "Render Cracking & Delamination",  href: "/defect-library/facade-external-envelope/render-cracking-delamination" },
+      { title: "Brickwork Deterioration",         href: "/defect-library/facade-external-envelope/brickwork-deterioration" },
+      { title: "Cladding Failure",                href: "/defect-library/facade-external-envelope/cladding-failure" },
+      { title: "Failed Sealants & Joints",        href: "/defect-library/facade-external-envelope/failed-sealants-joints" },
+      { title: "Façade Cracking",                 href: "/defect-library/facade-external-envelope/facade-cracking" },
+      { title: "Window & Door Perimeter Failure", href: "/defect-library/facade-external-envelope/window-door-perimeter-failure" },
+    ],
   },
   {
     title: "Roofing Defects",
-    image: "/Images/Categories/roofing-defects.jpg",
     href: "/defect-library/roofing-defects",
+    defects: [
+      { title: "Roof Leaks",         href: "/defect-library/roofing-defects/roof-leaks" },
+      { title: "Box Gutter Failure", href: "/defect-library/roofing-defects/box-gutter-failure" },
+      { title: "Flashing Failures",  href: "/defect-library/roofing-defects/flashing-failures" },
+      { title: "Poor Falls & Ponding", href: "/defect-library/roofing-defects/poor-falls-ponding" },
+      { title: "Overflow Issues",    href: "/defect-library/roofing-defects/overflow-issues" },
+    ],
   },
   {
     title: "Balconies & Podiums",
-    image: "/Images/Categories/balconies-podiums.jpg",
     href: "/defect-library/balconies-podiums",
+    defects: [
+      { title: "Balcony Leaks",          href: "/defect-library/balconies-podiums/balcony-leaks" },
+      { title: "Tile Delamination",      href: "/defect-library/balconies-podiums/tile-delamination" },
+      { title: "Concrete Deterioration", href: "/defect-library/balconies-podiums/concrete-deterioration" },
+      { title: "Failed Screeds",         href: "/defect-library/balconies-podiums/failed-screeds" },
+      { title: "Rusted Balustrades",     href: "/defect-library/balconies-podiums/rusted-balustrades" },
+    ],
   },
   {
     title: "Internal Defects & Finishes",
-    image: "/Images/Categories/internal-defects-finishes.jpg",
     href: "/defect-library/internal-defects-finishes",
+    defects: [
+      { title: "Ceiling Water Damage",   href: "/defect-library/internal-defects-finishes/ceiling-water-damage" },
+      { title: "Internal Cracking",      href: "/defect-library/internal-defects-finishes/internal-cracking" },
+      { title: "Mould & Moisture Damage", href: "/defect-library/internal-defects-finishes/mould-moisture-damage" },
+      { title: "Paint Failure",          href: "/defect-library/internal-defects-finishes/paint-failure" },
+    ],
   },
   {
     title: "Services & Drainage",
-    image: "/Images/Categories/services-drainage.jpg",
     href: "/defect-library/services-drainage",
+    defects: [
+      { title: "Blocked & Undersized Stormwater", href: "/defect-library/services-drainage/blocked-undersized-stormwater" },
+      { title: "Downpipe Defects",                href: "/defect-library/services-drainage/downpipe-defects" },
+      { title: "Inadequate Drainage Design",      href: "/defect-library/services-drainage/inadequate-drainage-design" },
+      { title: "Pipe Penetration Failure",        href: "/defect-library/services-drainage/pipe-penetrations-failure" },
+    ],
   },
   {
     title: "Basements & Substructure",
-    image: "/Images/Categories/basements-substructure.jpg",
     href: "/defect-library/basements-substructure",
+    defects: [
+      { title: "Crack Injection Failures",             href: "/defect-library/basements-substructure/crack-injection-failures" },
+      { title: "Hydrostatic Pressure Issues",          href: "/defect-library/basements-substructure/hydrostatic-pressure-issues" },
+      { title: "Joint Leaks",                          href: "/defect-library/basements-substructure/joint-leaks" },
+      { title: "Negative-Side Waterproofing Failure",  href: "/defect-library/basements-substructure/negative-side-waterproofing-failure" },
+    ],
   },
   {
     title: "Miscellaneous / Other",
-    image: "/Images/Categories/miscellaneous-other.jpg",
     href: "/defect-library/miscellaneous-other",
+    defects: [
+      { title: "Acoustic Issues",             href: "/defect-library/miscellaneous-other/acoustic-issues" },
+      { title: "Fire Compliance Defects",     href: "/defect-library/miscellaneous-other/fire-compliance-defects" },
+      { title: "Thermal & Condensation Issues", href: "/defect-library/miscellaneous-other/thermal-condensation-issues" },
+    ],
   },
 ];
 
@@ -63,12 +117,12 @@ export default function DefectLibraryPage() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/defect-library" className="whitespace-nowrap hover:text-red-700">Defect Library</a>
+                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+          
           </nav>
 
           <a
@@ -107,17 +161,10 @@ export default function DefectLibraryPage() {
 
           <div className="mt-16 grid items-start gap-8 md:grid-cols-2 xl:grid-cols-3">
             {categoryData.map((category) => (
-              <a
-                href={category.href}
+              <div
                 key={category.title}
-                className="block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                className="rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl"
               >
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  className="h-64 w-full object-cover"
-                />
-
                 <div className="p-8">
                   <div className="mb-5 h-1.5 w-16 rounded-full bg-red-700" />
 
@@ -125,16 +172,29 @@ export default function DefectLibraryPage() {
                     {category.title}
                   </h2>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-600">
-                    Browse defects, inspection methods, causes of failure,
-                    associated risks and compliant remedial repair pathways.
-                  </p>
+                  <ul className="mt-5 space-y-0.5">
+                    {category.defects.map((defect) => (
+                      <li key={defect.title}>
+                        <a
+                          href={defect.href}
+                          className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm text-slate-600 transition hover:bg-sky-50 hover:text-sky-800"
+                        >
+                          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-700" />
+                          <span className="flex-1">{defect.title}</span>
+                          <span className="text-slate-300 transition group-hover:text-sky-500">→</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
 
-                  <div className="mt-8 w-full rounded-2xl bg-sky-900 px-5 py-4 text-center text-sm font-semibold text-white transition hover:bg-sky-800">
+                  <a
+                    href={category.href}
+                    className="mt-6 block w-full rounded-2xl bg-sky-900 px-5 py-4 text-center text-sm font-semibold text-white transition hover:bg-sky-800"
+                  >
                     Open Category
-                  </div>
+                  </a>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </section>
@@ -153,6 +213,14 @@ export default function DefectLibraryPage() {
               A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.
             </p>
           </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
+            <a href="/" className="underline hover:text-sky-700">Home</a>
+            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
+            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
+            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
+            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          </div>
+
           <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
             <a href="/about" className="underline hover:text-sky-700">About</a>
             <a href="/terms" className="underline hover:text-sky-700">Terms</a>
