@@ -17,66 +17,110 @@ export type NewsCategory = typeof VALID_CATEGORIES[number];
 
 export const FILTER_CATEGORIES = ["All", ...VALID_CATEGORIES] as const;
 
-// ─── Local industry news image pool (public/Images/News) ─────────────────────
+// ─── Image pools by visual topic ─────────────────────────────────────────────
 const IMAGE_DIR = "/Images/News";
 const p = (name: string) => `${IMAGE_DIR}/${name}`;
 
 const PHOTOS = {
+  // People on site: commissioners, practitioners, engineers, inspectors
   workers: [
-    p("news-04.jpg"), // design practitioner
-    p("news-06.jpg"), // design practitioner
-    p("news-17.jpg"), // civil engineer inspection
-    p("news-15.jpg"), // building commissioner
-    p("news-02.jpg"), // building commissioner
-    p("news-14.jpg"), // rope access
+    p("news-04.jpg"),  // design practitioner
+    p("news-06.jpg"),  // design practitioner
+    p("news-02.jpg"),  // building commissioner
+    p("news-15.jpg"),  // building commissioner
+    p("news-17.jpg"),  // civil engineer inspection
+    p("news-14.jpg"),  // rope access technician
   ],
+  // Concrete defects: spalling, cracking, structural, magnesite
   concrete: [
-    p("news-07.jpg"), // concrete spalling
-    p("news-20.jpg"), // concrete spalling
-    p("news-21.jpg"), // structural defects
+    p("news-07.jpg"),  // concrete spalling
+    p("news-20.jpg"),  // concrete spalling
+    p("news-23.jpg"),  // concrete cracking
+    p("news-21.jpg"),  // structural defects
     p("news-22b.jpg"), // concrete and structural
-    p("news-23.jpg"), // concrete cracking
-    p("news-25.jpg"), // magnesite deterioration
+    p("news-25.jpg"),  // magnesite deterioration
   ],
+  // Facades: cladding, high-rise, apartments, rope access
   facades: [
-    p("news-05.jpg"), // cladding
-    p("news-16.jpg"), // cladding
-    p("news-22.jpg"), // building defects
-    p("news-30.jpg"), // highrise building
-    p("news-03.jpg"), // class 2 building registration
-    p("news-08.jpg"), // apartment
-    p("news-27.jpg"), // defective apartment
+    p("news-05.jpg"),  // cladding
+    p("news-16.jpg"),  // cladding
+    p("news-30.jpg"),  // highrise building
+    p("news-08.jpg"),  // apartment building
+    p("news-27.jpg"),  // defective apartment
+    p("news-03.jpg"),  // class 2 building
   ],
-  site: [
-    p("news-01.jpg"),
-    p("news-10.jpg"), // NCC building codes
-    p("news-24.jpg"), // remedial works
-    p("news-11.jpg"),
-    p("news-13.jpg"), // plumbing stormwater
-    p("news-31.jpg"), // Sydney
-  ],
+  // Waterproofing: wet areas, planterboxes, water ingress
   waterproofing: [
-    p("news-26.jpg"), // waterproofing issues
-    p("news-28.jpg"), // waterproofing issues
-    p("news-09.jpg"), // waterproofing planterboxes
-    p("news-18.jpg"), // passive fire/waterproofing
-    p("news-12.jpg"), // smoke alarm / services
+    p("news-26.jpg"),  // waterproofing issues
+    p("news-28.jpg"),  // waterproofing issues
+    p("news-09.jpg"),  // waterproofing planterboxes
+    p("news-13.jpg"),  // plumbing / stormwater
   ],
+  // General site / regulatory / compliance
+  site: [
+    p("news-10.jpg"),  // NCC building codes / standards
+    p("news-24.jpg"),  // remedial works on site
+    p("news-01.jpg"),  // general site
+    p("news-31.jpg"),  // Sydney skyline
+    p("news-22.jpg"),  // building defects general
+    p("news-18.jpg"),  // passive fire inspection
+    p("news-12.jpg"),  // smoke alarm / electrical services
+    p("news-11.jpg"),  // general
+    p("news-13.jpg"),  // plumbing / stormwater
+  ],
+} as const;
+
+type PhotoTopic = keyof typeof PHOTOS;
+
+// ─── Topic tags per clean filename ───────────────────────────────────────────
+// Used by the dynamic-pool assignment to match articles to relevant images.
+// A file can belong to multiple topics; earlier topics take precedence.
+const IMAGE_TOPICS: Record<string, PhotoTopic[]> = {
+  "news-01.jpg":  ["site"],
+  "news-02.jpg":  ["workers"],
+  "news-03.jpg":  ["facades", "site"],
+  "news-04.jpg":  ["workers"],
+  "news-05.jpg":  ["facades"],
+  "news-06.jpg":  ["workers"],
+  "news-07.jpg":  ["concrete"],
+  "news-08.jpg":  ["facades", "site"],
+  "news-09.jpg":  ["waterproofing"],
+  "news-10.jpg":  ["site"],
+  "news-11.jpg":  ["site"],
+  "news-12.jpg":  ["site"],
+  "news-13.jpg":  ["waterproofing", "site"],
+  "news-14.jpg":  ["facades", "workers"],
+  "news-15.jpg":  ["workers"],
+  "news-16.jpg":  ["facades"],
+  "news-17.jpg":  ["workers"],
+  "news-18.jpg":  ["site"],
+  "news-20.jpg":  ["concrete"],
+  "news-21.jpg":  ["concrete"],
+  "news-22.jpg":  ["site"],
+  "news-22b.jpg": ["concrete"],
+  "news-23.jpg":  ["concrete"],
+  "news-24.jpg":  ["site"],
+  "news-25.jpg":  ["concrete"],
+  "news-26.jpg":  ["waterproofing"],
+  "news-27.jpg":  ["facades"],
+  "news-28.jpg":  ["waterproofing"],
+  "news-30.jpg":  ["facades"],
+  "news-31.jpg":  ["facades", "site"],
 };
 
-// Category → preferred topic order
-const CATEGORY_TOPIC_ORDER: Record<NewsCategory, Array<keyof typeof PHOTOS>> = {
-  "Building Commission NSW":    ["workers", "site", "concrete"],
-  "DBP Act":                    ["site", "workers", "concrete"],
-  "Class 2 Buildings":          ["site", "facades", "workers"],
-  "Strata Defects":             ["site", "concrete", "workers"],
-  "Waterproofing Defects":      ["waterproofing", "concrete", "site"],
-  "Façade Defects":             ["facades", "concrete", "workers"],
+// ─── Category → preferred topic order ────────────────────────────────────────
+const CATEGORY_TOPIC_ORDER: Record<NewsCategory, PhotoTopic[]> = {
+  "Building Commission NSW":    ["workers", "site", "facades"],
+  "DBP Act":                    ["workers", "site", "facades"],
+  "Class 2 Buildings":          ["facades", "site", "workers"],
+  "Waterproofing Defects":      ["waterproofing", "facades", "site"],
+  "Façade Defects":             ["facades", "waterproofing", "workers"],
   "Concrete Repair":            ["concrete", "workers", "site"],
-  "Building Defects":           ["site", "workers", "concrete"],
+  "Strata Defects":             ["facades", "site", "concrete"],
+  "Building Defects":           ["site", "facades", "concrete"],
   "Remedial Construction":      ["site", "workers", "concrete"],
   "Product & Material Updates": ["site", "concrete", "workers"],
-  "New Construction Systems":   ["site", "workers", "concrete"],
+  "New Construction Systems":   ["facades", "site", "workers"],
   "Other":                      ["site", "workers", "facades"],
 };
 
@@ -91,11 +135,13 @@ function titleHash(s: string): number {
 /**
  * Assigns a unique local image to every article.
  *
- * When `imagePool` is supplied (dynamic filesystem list from /api/news-images),
- * uses that pool — hash-based so assignments are deterministic.
- * Falls back to empty string when pool exhausted; caller handles gracefully.
+ * Dynamic mode (imagePool provided): category-aware — picks from topic-tagged
+ * images that match the article's category first, then falls back to any unused
+ * image in the pool. New images dropped into /Images/News/ are auto-discovered
+ * if they are added to IMAGE_TOPICS above.
  *
- * When `imagePool` is omitted, uses the hardcoded category-matched pools above.
+ * Legacy mode (no imagePool): uses the hardcoded PHOTOS pools (same logic,
+ * used as a build-time fallback).
  */
 export function assignUniqueImages<T extends { title: string; category: string }>(
   articles: T[],
@@ -105,29 +151,52 @@ export function assignUniqueImages<T extends { title: string; category: string }
   const used = new Set(reservedImages);
 
   if (imagePool) {
+    const basename = (path: string) => path.split("/").pop() ?? "";
+
     return articles.map((article) => {
       if (imagePool.length === 0) return { ...article, featured_image: "" };
+
       const hash = titleHash(article.title ?? "");
-      let image: string | undefined;
+      const topicOrder: PhotoTopic[] =
+        CATEGORY_TOPIC_ORDER[article.category as NewsCategory] ??
+        ["site", "workers", "facades"];
+
+      // Try each preferred topic — pick deterministically from matching unused images
+      for (const topic of topicOrder) {
+        const candidates = imagePool.filter((path) => {
+          const tags = IMAGE_TOPICS[basename(path)];
+          return tags?.includes(topic) && !used.has(path);
+        });
+        if (candidates.length > 0) {
+          const image = candidates[hash % candidates.length];
+          used.add(image);
+          return { ...article, featured_image: image };
+        }
+      }
+
+      // Fallback: any unused image from pool
       for (let i = 0; i < imagePool.length; i++) {
         const candidate = imagePool[(hash + i) % imagePool.length];
-        if (!used.has(candidate)) { image = candidate; break; }
+        if (!used.has(candidate)) {
+          used.add(candidate);
+          return { ...article, featured_image: candidate };
+        }
       }
-      if (!image) return { ...article, featured_image: "" };
-      used.add(image);
-      return { ...article, featured_image: image };
+
+      return { ...article, featured_image: "" };
     });
   }
 
-  // Legacy / fallback mode — category-matched hardcoded pools
+  // Legacy / build-time fallback — category-matched hardcoded pools
   return articles.map((article) => {
     const hash = titleHash(article.title ?? "");
-    const topicOrder = (CATEGORY_TOPIC_ORDER[article.category as NewsCategory] ?? ["site"]) as Array<keyof typeof PHOTOS>;
+    const topicOrder: PhotoTopic[] =
+      CATEGORY_TOPIC_ORDER[article.category as NewsCategory] ?? ["site"];
 
     let image: string | undefined;
 
     for (const topic of topicOrder) {
-      const pool = PHOTOS[topic];
+      const pool = PHOTOS[topic] as readonly string[];
       for (let i = 0; i < pool.length; i++) {
         const candidate = pool[(hash + i) % pool.length];
         if (!used.has(candidate)) { image = candidate; break; }
@@ -152,13 +221,13 @@ export function assignUniqueImages<T extends { title: string; category: string }
 // Legacy exports kept so ingest route still compiles
 export const CATEGORY_IMAGES: Record<string, string> = {};
 export function getNewsImage(category: string, title: string): string {
-  const topic = CATEGORY_TOPIC_ORDER[category as NewsCategory]?.[0] ?? "site";
-  const pool = PHOTOS[topic] ?? ALL_PHOTOS;
+  const topic = (CATEGORY_TOPIC_ORDER[category as NewsCategory]?.[0] ?? "site") as PhotoTopic;
+  const pool = PHOTOS[topic] as readonly string[];
   return pool[titleHash(title ?? "") % pool.length];
 }
 export function getCategoryImage(category: string): string {
-  const topic = CATEGORY_TOPIC_ORDER[category as NewsCategory]?.[0] ?? "site";
-  const pool = PHOTOS[topic] ?? ALL_PHOTOS;
+  const topic = (CATEGORY_TOPIC_ORDER[category as NewsCategory]?.[0] ?? "site") as PhotoTopic;
+  const pool = PHOTOS[topic] as readonly string[];
   return pool[titleHash(category) % pool.length];
 }
 
