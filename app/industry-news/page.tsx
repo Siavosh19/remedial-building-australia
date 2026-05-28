@@ -1,3 +1,5 @@
+import { readdirSync, existsSync } from "fs";
+import { join, extname } from "path";
 import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { NewsGridClient, type NewsArticle } from "@/components/industry-news/NewsGridClient";
@@ -6,6 +8,17 @@ import { assignUniqueImages } from "@/lib/news-categories";
 
 export const revalidate = 3600;
 
+const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
+
+function getNewsImagePool(): string[] {
+  const dir = join(process.cwd(), "public", "Images", "News");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => IMAGE_EXTS.has(extname(f).toLowerCase()))
+    .sort()
+    .map((f) => `/Images/News/${f}`);
+}
+
 async function getArticles(): Promise<Omit<NewsArticle, "featured_image">[]> {
   const { data } = await supabase
     .from("industry_news")
@@ -13,7 +26,7 @@ async function getArticles(): Promise<Omit<NewsArticle, "featured_image">[]> {
       "id, title, slug, summary, category, tags, source_name, source_url, published_date, created_at, priority"
     )
     .eq("status", "published")
-    .order("priority", { ascending: true, nullsFirst: false })
+    .order("published_date", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
 
   return (data ?? []).map((row: Record<string, unknown>) => ({
@@ -31,7 +44,11 @@ async function getArticles(): Promise<Omit<NewsArticle, "featured_image">[]> {
 }
 
 export default async function IndustryNewsPage() {
-  const articles = assignUniqueImages(await getArticles());
+  const [rawArticles, imagePool] = await Promise.all([
+    getArticles(),
+    Promise.resolve(getNewsImagePool()),
+  ]);
+  const articles = assignUniqueImages(rawArticles, [], imagePool);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
@@ -110,19 +127,20 @@ export default async function IndustryNewsPage() {
               A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.
             </p>
           </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
-            <a href="/" className="underline hover:text-sky-700">Home</a>
-            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
-            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
-            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
-            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
-
-          <div className="grid grid-cols-3 gap-3 text-sm font-bold text-sky-950">
-            <a href="/about" className="underline hover:text-sky-700">About</a>
-            <a href="/terms" className="underline hover:text-sky-700">Terms</a>
-            <a href="/contact" className="underline hover:text-sky-700">Contact</a>
-          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
 

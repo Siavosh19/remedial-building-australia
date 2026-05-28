@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Search, ArrowRight, Clock } from "lucide-react";
 import Image from "next/image";
 import { FILTER_CATEGORIES, formatDate } from "@/lib/news-categories";
@@ -31,6 +31,33 @@ function excerpt(summary: string, maxLen = 155): string {
 
 const ARTICLES_PER_PAGE = 12;
 
+function getTime(d: string): number {
+  if (!d) return -Infinity;
+  const t = new Date(d).getTime();
+  return isNaN(t) ? -Infinity : t;
+}
+
+const GradientFallback = () => (
+  <div className="h-full w-full bg-gradient-to-br from-sky-900 to-sky-950" />
+);
+
+function NewsImage({ src, alt, priority = false, sizes }: { src: string; alt: string; priority?: boolean; sizes: string }) {
+  const [errored, setErrored] = useState(false);
+  const handleError = useCallback(() => setErrored(true), []);
+  if (!src || errored) return <GradientFallback />;
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className="object-cover transition duration-500 group-hover:scale-105"
+      sizes={sizes}
+      priority={priority}
+      onError={handleError}
+    />
+  );
+}
+
 export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
@@ -38,8 +65,14 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
 
   const isFiltering = searchQuery.trim().length > 0 || activeCategory !== "All";
 
+  // Always sort newest-first as a client-side guarantee, regardless of server order
+  const sortedArticles = useMemo(
+    () => [...articles].sort((a, b) => getTime(b.published_date) - getTime(a.published_date)),
+    [articles]
+  );
+
   const filteredArticles = useMemo(() => {
-    let pool = articles;
+    let pool = sortedArticles;
     if (activeCategory !== "All") {
       pool = pool.filter((a) => a.category === activeCategory);
     }
@@ -54,12 +87,10 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
       );
     }
     return pool;
-  }, [searchQuery, activeCategory, articles]);
+  }, [searchQuery, activeCategory, sortedArticles]);
 
-  // Featured = first P1 article; fall back to first P2, then any article
-  const featuredArticle = !isFiltering && articles.length > 0
-    ? (articles.find((a) => a.priority === 1) ?? articles.find((a) => a.priority === 2) ?? articles[0])
-    : null;
+  // Featured = always the newest article (sortedArticles[0])
+  const featuredArticle = !isFiltering && sortedArticles.length > 0 ? sortedArticles[0] : null;
   const gridPool = isFiltering
     ? filteredArticles
     : filteredArticles.filter((a) => a.id !== featuredArticle?.id);
@@ -148,13 +179,11 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
             href={`/industry-news/${featuredArticle.slug}`}
             className="group grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl lg:grid-cols-[1.1fr_0.9fr]"
           >
-            <div className="relative h-64 w-full overflow-hidden lg:h-80">
-              <Image
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 lg:aspect-[3/1]">
+              <NewsImage
                 src={featuredArticle.featured_image}
                 alt={featuredArticle.title}
-                fill
-                className="object-cover transition duration-700 group-hover:scale-105"
-                sizes="(max-width: 1024px) 100vw, 55vw"
+                sizes="100vw"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
@@ -209,12 +238,10 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
                       : "border-slate-200 bg-white"
                   }`}
                 >
-                  <div className="relative h-44 w-full overflow-hidden">
-                    <Image
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
+                    <NewsImage
                       src={article.featured_image}
                       alt={article.title}
-                      fill
-                      className="object-cover transition duration-500 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     {article.priority === 1 && (

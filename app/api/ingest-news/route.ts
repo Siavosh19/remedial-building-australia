@@ -379,7 +379,7 @@ export async function GET() {
           source_url: item.link,
           status: "rejected",
           published_date: item.pubDate
-            ? (() => { const d = new Date(item.pubDate); return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString(); })()
+            ? (() => { const d = new Date(item.pubDate); return isNaN(d.getTime()) ? new Date().toISOString() : new Date(Math.min(d.getTime(), Date.now())).toISOString(); })()
             : new Date().toISOString(),
         });
         return;
@@ -390,7 +390,7 @@ export async function GET() {
       const published_date = item.pubDate
         ? (() => {
             const d = new Date(item.pubDate);
-            return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+            return isNaN(d.getTime()) ? new Date().toISOString() : new Date(Math.min(d.getTime(), Date.now())).toISOString();
           })()
         : new Date().toISOString();
 

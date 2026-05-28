@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Menu } from "lucide-react";
+import { ArrowRight, Menu, Users, HardHat, Droplets, Layers, Search, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
@@ -44,7 +44,7 @@ const coreServices: CoreService[] = [
   {
     title: "AI Scope Builder",
     text: "AI-assisted remedial scope writing — select defects, repair systems, materials and clauses, then generate a consultant, builder, strata or tender scope.",
-    image: "/Images/AI%20Scope%20Builder.png",
+    image: "/Images/AI%20Scope%20Builder.jpg",
     href: "/ai-scope-builder",
     badge: "Live",
     quickLinks: [
@@ -69,7 +69,7 @@ const coreServices: CoreService[] = [
 
 // Add new cover photos here as they are saved — they will automatically rotate across hero slides.
 const coverPhotos = [
-  "/Images/Home%20Cover%20Photo.Jpg",
+  "/Images/Home%20Cover%20Photo%201.Jpg",
   "/Images/Home%20Cover%20Photo%202.Jpg",
   "/Images/Home%20Cover%20Photo%203.Jpg",
 ];
@@ -117,16 +117,6 @@ const heroSlides = heroSlidesBase.map((slide, i) => ({
   image: coverPhotos[i % coverPhotos.length],
 }));
 
-const NEWS_IMAGES = [
-  "/Images/News15 Building Commissioner.png",
-  "/Images/News17-  civil engineer - inspection.jpg",
-  "/Images/News14 Rope Access.png",
-  "/Images/News16-Cladding.jpg",
-  "/Images/News13-plumbing-stormwater-downpipes.jpg",
-  "/Images/News18 - passive Fire inspection.jpg",
-  "/Images/News10-NCC-Building Codes-Standard.jpg",
-  "/Images/News12-smoke-alarm-electricalworks.jpg",
-];
 
 type NewsSlide = {
   title: string;
@@ -141,9 +131,12 @@ type NewsSlide = {
 
 export default function RemedialBuildingAustraliaHome() {
   const [heroIndex, setHeroIndex] = useState(0);
+  const [carouselImages, setCarouselImages] = useState<string[]>([]);
   const [newsImageIndex, setNewsImageIndex] = useState(0);
   const [newsSlides, setNewsSlides] = useState<NewsSlide[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
+  const [directoryQuery, setDirectoryQuery] = useState("");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -152,12 +145,22 @@ export default function RemedialBuildingAustraliaHome() {
     return () => clearInterval(timer);
   }, []);
 
+  // Load available carousel images dynamically from the News folder
   useEffect(() => {
+    fetch("/api/news-images")
+      .then((r) => r.json())
+      .then((imgs: string[]) => { if (imgs.length > 0) setCarouselImages(imgs); })
+      .catch(() => {});
+  }, []);
+
+  // Rotate carousel — restarts if image list changes
+  useEffect(() => {
+    if (carouselImages.length === 0) return;
     const timer = setInterval(() => {
-      setNewsImageIndex((i) => (i + 1) % NEWS_IMAGES.length);
+      setNewsImageIndex((i) => (i + 1) % carouselImages.length);
     }, 3500);
     return () => clearInterval(timer);
-  }, []);
+  }, [carouselImages.length]);
 
   useEffect(() => {
     async function fetchNews() {
@@ -166,8 +169,9 @@ export default function RemedialBuildingAustraliaHome() {
           .from("industry_news")
           .select("title, slug, category, summary, source_name, published_date, source_url")
           .eq("status", "published")
-          .order("published_date", { ascending: false })
-          .limit(5);
+          .order("published_date", { ascending: false, nullsFirst: false })
+          .order("created_at", { ascending: false })
+          .limit(15);
 
         if (!error && data && data.length > 0) {
           setNewsSlides(
@@ -215,13 +219,32 @@ export default function RemedialBuildingAustraliaHome() {
           </nav>
 
           <a
-            href="/newsletter"
-            className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex"
+            href="/directory/login"
+            className="hidden shrink-0 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 md:inline-flex"
           >
-            Subscribe
+            Login
           </a>
-          <Menu className="md:hidden" />
+          <button
+            className="md:hidden p-1"
+            onClick={() => setMobileNavOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            <Menu size={22} />
+          </button>
         </div>
+        {mobileNavOpen && (
+          <div className="border-t border-sky-100 bg-white px-6 py-4 md:hidden">
+            <nav className="flex flex-col gap-4 text-sm font-semibold text-sky-800">
+              <a href="/" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Home</a>
+              <a href="/repair-systems" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Repair Systems</a>
+              <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Industry News</a>
+              <a href="/ai-scope-builder" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">AI Scope Builder</a>
+              <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Defect Library</a>
+              <a href="/directory" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Business Directory</a>
+              <a href="/directory/login" onClick={() => setMobileNavOpen(false)} className="mt-2 inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-50 transition">Login</a>
+            </nav>
+          </div>
+        )}
       </header>
 
       <main>
@@ -291,6 +314,78 @@ export default function RemedialBuildingAustraliaHome() {
           </div>
         </section>
 
+        {/* ── Find Strata Building Specialists ────────────────────────────── */}
+        <section className="border-y border-slate-200 bg-slate-50 py-14">
+          <div className="mx-auto max-w-7xl px-5">
+            <div className="mb-8">
+              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry Directory</div>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">
+                Find Strata Building Specialists
+              </h2>
+              <p className="mt-2 text-base text-slate-500">
+                Search Australia&rsquo;s strata building services directory
+              </p>
+            </div>
+
+            {/* Search bar */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const q = directoryQuery.trim();
+                window.location.href = q ? `/directory?q=${encodeURIComponent(q)}` : "/directory";
+              }}
+              className="mb-8 flex max-w-2xl gap-2"
+            >
+              <input
+                type="text"
+                value={directoryQuery}
+                onChange={(e) => setDirectoryQuery(e.target.value)}
+                placeholder="Search by service, suburb or postcode…"
+                className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-100"
+              />
+              <button
+                type="submit"
+                className="shrink-0 rounded-xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
+              >
+                Search Directory
+              </button>
+            </form>
+
+            {/* Category cards */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              {[
+                { name: "Remedial Consultants",  href: "/directory/consultants-practitioners", Icon: Users      },
+                { name: "Remedial Builders",     href: "/directory/remedial-contractors",       Icon: HardHat    },
+                { name: "Waterproofing",         href: "/directory/waterproofing",             Icon: Droplets   },
+                { name: "Facade & Cladding",     href: "/directory/facade-external-envelope",  Icon: Layers     },
+                { name: "Access Systems",        href: "/directory/access-systems",            Icon: Search     },
+                { name: "Testing & Investigation",href: "/directory/investigation-testing",    Icon: ScanSearch },
+              ].map(({ name, href, Icon }) => (
+                <a
+                  key={name}
+                  href={href}
+                  className="flex flex-col items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-sky-300 hover:shadow-md"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                    <Icon size={20} />
+                  </span>
+                  <span className="text-xs font-bold leading-tight text-sky-950">{name}</span>
+                </a>
+              ))}
+            </div>
+
+            {/* Browse all link */}
+            <div className="mt-7 text-center">
+              <a
+                href="/directory"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-sky-800 shadow-sm transition hover:border-sky-300 hover:text-red-700"
+              >
+                Browse the Full Directory <ArrowRight size={15} />
+              </a>
+            </div>
+          </div>
+        </section>
+
         <section className="mx-auto max-w-7xl px-5 py-20">
           <div className="mb-8 flex items-center justify-between">
             <div>
@@ -301,43 +396,48 @@ export default function RemedialBuildingAustraliaHome() {
           </div>
 
           <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr]">
-            {/* Rotating image panel */}
-            <div className="relative bg-slate-200" style={{ minHeight: "280px" }}>
-              {NEWS_IMAGES.map((src, i) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt="Industry news"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    opacity: i === newsImageIndex ? 1 : 0,
-                    transition: "opacity 0.9s ease",
-                  }}
-                />
-              ))}
-              {/* Dot indicators */}
-              <div className="absolute bottom-3 left-0 right-0 z-10 flex justify-center gap-1.5">
-                {NEWS_IMAGES.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setNewsImageIndex(i)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${i === newsImageIndex ? "w-5 bg-white" : "w-1.5 bg-white/50"}`}
+            {/* Rotating image panel — images loaded dynamically from /Images/News/ */}
+            <div className="relative min-h-[280px] bg-slate-200">
+              {carouselImages.length > 0 ? (
+                carouselImages.map((src, i) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt="Industry news"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      opacity: i === newsImageIndex % carouselImages.length ? 1 : 0,
+                      transition: "opacity 0.9s ease",
+                    }}
                   />
-                ))}
-              </div>
+                ))
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-900 to-sky-950" />
+              )}
+              {carouselImages.length > 1 && (
+                <div className="absolute bottom-3 left-0 right-0 z-10 flex justify-center gap-1.5">
+                  {carouselImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setNewsImageIndex(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${i === newsImageIndex % carouselImages.length ? "w-5 bg-white" : "w-1.5 bg-white/50"}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Articles list */}
-            <div className="px-6 py-5">
-              <div className="mb-4 flex items-center justify-between">
+            {/* Articles list — scrollable, newest first */}
+            <div className="flex flex-col px-6 py-5">
+              <div className="mb-4 flex shrink-0 items-center justify-between">
                 <h3 className="text-base font-extrabold tracking-tight text-sky-950">Latest News</h3>
                 <a href="/industry-news" className="text-xs font-bold text-sky-600 hover:text-red-700">View all →</a>
               </div>
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 overflow-y-auto" style={{ maxHeight: "520px" }}>
               {newsLoading ? (
                 <div className="flex items-center justify-center py-12">
                   <div className="h-6 w-6 animate-spin rounded-full border-4 border-slate-200 border-t-sky-700" />
@@ -462,17 +562,20 @@ export default function RemedialBuildingAustraliaHome() {
             </p>
           </div>
 
-                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
-            <a href="/" className="underline hover:text-sky-700">Home</a>
-            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
-            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
-            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
-            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
-<div className="grid grid-cols-2 gap-3 text-sm font-semibold text-slate-500 md:grid-cols-3">
-            <a href="/about">About</a>
-            <a href="/terms">Terms</a>
-            <a href="/contact">Contact</a>          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
     </div>
