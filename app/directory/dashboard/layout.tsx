@@ -23,7 +23,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     where: { users: { some: { user_id: user.id } } },
   });
 
-  if (!company && user.role !== "admin") redirect("/directory/signup/company");
+  if (user.role === "admin") redirect("/directory/admin");
+  if (!company) redirect("/directory/signup/company");
 
   const statusCls = company ? (STATUS_COLOR[company.profile_status] ?? "bg-slate-700 text-slate-200") : "";
 
