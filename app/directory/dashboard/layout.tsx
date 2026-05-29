@@ -51,7 +51,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             >
               View listing ↗
             </a>
-            <
+            <a
               href="/api/directory/logout"
               className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-red-500"
             >
