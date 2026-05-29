@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About | Remedial Building Australia",
   description:
-    "Remedial Building Australia is a structured technical knowledge platform for Australian remedial building, focused on defects, repair systems, materials, and practical scope development.",
+    "Remedial Building Australia is a structured technical knowledge platform and industry directory for Australian remedial building professionals — defects, repair systems, contractors, consultants and more.",
 };
 
 const coverageCards = [
@@ -20,16 +20,28 @@ const coverageCards = [
     href: "/repair-systems",
   },
   {
-    title: "Materials & Products",
+    title: "Industry News",
     description:
-      "Technical product references covering applications, compatible substrates, coverage rates and linked defect types.",
-    href: "/materials-products",
+      "Focused updates on the DBP Act, Building Commission rulings, strata remedial works, waterproofing compliance and façade rectification.",
+    href: "/industry-news",
+  },
+  {
+    title: "Business Directory",
+    description:
+      "Australia-wide directory of remedial contractors, consultants, waterproofers, engineers and specialist trade services — searchable by category and state.",
+    href: "/directory",
   },
   {
     title: "AI Scope Builder",
     description:
-      "Future AI-assisted tool for draft remedial scope writing, built on a structured defect and repair system database.",
+      "AI-assisted remedial scope writing — select defects, repair systems and materials, then generate a consultant, builder, strata or tender scope of works.",
     href: "/ai-scope-builder",
+  },
+  {
+    title: "Materials & Products",
+    description:
+      "Technical product references covering applications, compatible substrates, coverage rates and linked defect types.",
+    href: "/materials-products",
   },
 ];
 
@@ -52,19 +64,18 @@ export default function AboutPage() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
+            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          
           </nav>
 
           <a
-            href="/"
-            className="hidden shrink-0 rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800 md:inline-flex"
+            href="/directory/login"
+            className="hidden shrink-0 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 md:inline-flex"
           >
-            Home
+            Business Login
           </a>
         </div>
       </header>
@@ -97,10 +108,10 @@ export default function AboutPage() {
             </h2>
             <div className="mt-8 space-y-6 text-lg leading-9 text-slate-600">
               <p>
-                Remedial Building Australia is being developed to organise remedial construction knowledge into a clear, searchable format for builders, consultants, strata managers, engineers, and industry professionals.
+                Remedial Building Australia organises remedial construction knowledge into a clear, searchable format for builders, consultants, strata managers, engineers, and industry professionals.
               </p>
               <p>
-                The platform covers common building defects, repair methodologies, waterproofing failures, concrete deterioration, façade issues, material systems, and practical scope development for Class 2 and existing buildings across Australia.
+                The platform covers common building defects, repair methodologies, waterproofing failures, concrete deterioration, façade issues and material systems — plus an industry-wide business directory listing over 6,500 Australian remedial contractors, consultants and specialist trades, searchable by category and state.
               </p>
             </div>
           </div>
@@ -116,7 +127,7 @@ export default function AboutPage() {
               What we cover
             </h2>
 
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {coverageCards.map((card) => (
                 <a
                   key={card.title}
@@ -187,7 +198,7 @@ export default function AboutPage() {
               Built for the Australian remedial building industry
             </h2>
             <p className="mx-auto mt-7 max-w-xl text-lg leading-8 text-sky-300">
-              The platform continues to grow with new defect articles, repair system summaries, material references, and future AI-assisted scope writing tools.
+              The platform continues to grow with new defect articles, repair system summaries, industry news, a business directory of 6,500+ Australian specialists, and AI-assisted scope writing tools.
             </p>
           </div>
         </section>
@@ -210,22 +221,23 @@ export default function AboutPage() {
               Remedial Building Australia
             </div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">
-              A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.
+              A structured Australian remedial building knowledge platform — defects, repair systems, industry news, business directory and AI-assisted scope writing.
             </p>
           </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
-            <a href="/" className="underline hover:text-sky-700">Home</a>
-            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
-            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
-            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
-            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
-
-          <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
-            <a href="/about" className="underline hover:text-sky-700">About</a>
-            <a href="/terms" className="underline hover:text-sky-700">Terms</a>
-            <a href="/contact" className="underline hover:text-sky-700">Contact</a>
-          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
 

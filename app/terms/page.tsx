@@ -8,158 +8,78 @@ export const metadata: Metadata = {
 const sections = [
   {
     number: "1",
-    title: "General Information",
-    content: `Remedial Building Australia provides general educational, technical, and industry-related information relating to remedial building, waterproofing, concrete repair, façade rectification, building defects, repair systems, materials, and associated construction topics.\n\nThe information provided on this website is intended for general informational purposes only and should not be relied upon as project-specific professional advice.`,
+    title: "About This Website",
+    content: "Remedial Building Australia is a website operated by Arasep Projects Pty Ltd ABN 20 675 874 003.\n\nBy accessing or using Remedial Building Australia you agree to the following terms and conditions.",
   },
   {
     number: "2",
-    title: "No Professional Advice",
-    content: "The content on this website does not constitute:",
+    title: "Use of This Website",
     bullets: [
-      "Engineering advice",
-      "Structural advice",
-      "Waterproofing certification",
-      "Legal advice",
-      "Building certification advice",
-      "Professional consulting services",
-      "Project-specific construction advice",
+      "This website provides a directory of building and strata industry businesses across Australia",
+      "Information displayed is sourced from publicly available sources and submitted by businesses",
+      "Remedial Building Australia does not guarantee the accuracy of any listing information",
+      "Listed businesses have not been endorsed or vetted unless explicitly stated",
     ],
-    footer: "Users should obtain independent advice from appropriately qualified professionals before relying on any information for design, construction, rectification, certification, compliance, or legal purposes.",
   },
   {
     number: "3",
-    title: "Accuracy of Information",
-    content: "While reasonable efforts are made to keep information accurate and current, Remedial Building Australia makes no warranties or representations regarding:",
+    title: "Privacy",
     bullets: [
-      "Accuracy",
-      "Completeness",
-      "Suitability",
-      "Reliability",
-      "Compliance with current legislation or standards",
+      "We collect names and contact details submitted via enquiry forms",
+      "We collect business details including ABN and licence information submitted by directory listings",
+      "We do not sell personal information to third parties",
+      "Business listing information is displayed publicly as part of the directory",
+      "You may request access, correction or removal of your personal information by contacting us at info@remedialbuildingaustralia.com.au",
+      "We handle all personal information in accordance with the Australian Privacy Act 1988",
     ],
-    footer: "Building codes, Australian Standards, regulations, and product systems may change over time. Users are responsible for independently verifying all technical information.",
   },
   {
     number: "4",
-    title: "Limitation of Liability",
-    content: "To the maximum extent permitted by law, Remedial Building Australia excludes all liability for any loss, damage, cost, or expense arising directly or indirectly from:",
+    title: "Licence Information",
     bullets: [
-      "Reliance on website content",
-      "Errors or omissions",
-      "Technical inaccuracies",
-      "Outdated information",
-      "Use of repair methodologies",
-      "Construction defects",
-      "Product selection decisions",
-      "Scope preparation",
-      "AI-generated content or suggestions",
+      "Licence details displayed are shown in good faith",
+      "Users should independently verify licence status before engaging any listed business",
+      "Remedial Building Australia accepts no liability for lapsed or incorrect licence information",
     ],
-    footer: "Use of this website is entirely at the user's own risk.",
   },
   {
     number: "5",
-    title: "AI-Generated Content",
-    content: "Certain sections of the website may utilise artificial intelligence tools or automated systems to assist with:",
+    title: "Copyright and Intellectual Property",
     bullets: [
-      "Scope generation",
-      "Technical summaries",
-      "Defect categorisation",
-      "Repair methodology suggestions",
-      "Content recommendations",
+      "All website content, directory data, category structure, repair systems, defect library content, written content, design and layout is owned by Arasep Projects Pty Ltd",
+      "All rights reserved",
+      "No part of this website may be copied, reproduced, republished, uploaded, distributed or transmitted in any form without prior written permission from Arasep Projects Pty Ltd",
+      "Unauthorised use of any content from this website may result in legal action",
     ],
-    footer: "AI-generated information may contain errors, omissions, or incomplete recommendations and must always be independently reviewed by qualified professionals before use.",
   },
   {
     number: "6",
-    title: "Intellectual Property",
-    content: "Unless otherwise stated, all website content including text, graphics, layouts, databases, technical categorisation systems, articles, branding, logos, images, and downloadable resources are the property of Remedial Building Australia and may not be reproduced, copied, distributed, or commercially used without prior written consent.",
+    title: "Limitation of Liability",
+    bullets: [
+      "Remedial Building Australia and Arasep Projects Pty Ltd accept no liability for any loss or damage arising from use of this directory or engagement with any listed business",
+      "We make no warranties about the completeness or accuracy of information displayed on this website",
+    ],
   },
   {
     number: "7",
-    title: "Third-Party Links & Products",
-    content: "This website may contain links to third-party websites, suppliers, manufacturers, articles, or external resources. Remedial Building Australia does not endorse or guarantee third-party products, supplier performance, external website accuracy, or external technical advice. Users access third-party resources at their own discretion and risk.",
+    title: "Removal Requests",
+    bullets: [
+      "Businesses may request removal from the directory by contacting info@remedialbuildingaustralia.com.au",
+      "Requests will be actioned within 14 business days",
+    ],
   },
   {
     number: "8",
-    title: "News & Industry Commentary",
-    content: `Remedial Building Australia publishes industry news summaries and editorial commentary for general informational purposes. Users should be aware of the following:\n\nPlatform identity: Remedial Building Australia is an independent industry information platform. It is not a news publisher, engineering consultant, building certifier, legal advisor, or practitioner service provider.\n\nEditorial summaries: News summaries are prepared as independent editorial commentary. They do not reproduce original article wording and are not a substitute for reading the original source material.\n\nHedged language: Industry commentary uses cautious, hedged language ("may", "could", "is reported to", "appears to"). This language is intentional and does not constitute a professional assessment of any obligation, requirement, or legal position.\n\nIndependent verification: All news and commentary should be independently verified against primary sources — including legislation, official regulatory publications, and qualified professional advice — before being relied upon for any purpose.`,
+    title: "Changes to These Terms",
+    bullets: [
+      "We reserve the right to update these terms at any time",
+      "Continued use of the website constitutes acceptance of updated terms",
+    ],
   },
   {
     number: "9",
-    title: "No Professional Advice — Expanded",
-    content: "For the avoidance of doubt, nothing on this website constitutes:",
-    bullets: [
-      "Engineering advice or engineering certification",
-      "Structural engineering assessment or advice",
-      "Waterproofing certification or compliance assessment",
-      "Legal advice or legal opinion",
-      "Building certification advice",
-      "Insurance advice",
-      "Professional consulting services of any kind",
-      "Project-specific construction or remediation advice",
-      "Regulatory compliance advice",
-      "Any representation that products, systems, or methodologies described are suitable for any specific project",
-    ],
-    footer: "Users must obtain independent advice from appropriately qualified professionals — including engineers, lawyers, certifiers, and licensed contractors — before relying on any information for design, construction, rectification, certification, compliance, insurance, or legal purposes.",
-  },
-  {
-    number: "10",
-    title: "External Links Disclaimer",
-    content: "This website contains links to external websites and original source articles. When you follow an external link:",
-    bullets: [
-      "You are leaving the Remedial Building Australia platform",
-      "Remedial Building Australia has no control over the content, accuracy, or availability of external sites",
-      "External links are provided for reference only and do not constitute an endorsement",
-      "The content of external sites may have changed since the link was published",
-      "Remedial Building Australia accepts no responsibility for the content of external websites",
-    ],
-    footer: "Always verify information from external sources independently before relying on it.",
-  },
-  {
-    number: "11",
-    title: "User Conduct",
-    content: "Users agree not to:",
-    bullets: [
-      "Use the website unlawfully",
-      "Copy or scrape content without permission",
-      "Attempt to disrupt website functionality",
-      "Upload malicious software or code",
-      "Misrepresent technical information from this platform",
-    ],
-    footer: "We reserve the right to restrict or terminate access where misuse is identified.",
-  },
-  {
-    number: "12",
-    title: "Future Services & Paid Features",
-    content: "Certain features may become paid services in the future, including:",
-    bullets: [
-      "Technical downloads",
-      "AI scope tools",
-      "Training modules",
-      "Premium databases",
-      "Industry resources",
-    ],
-    footer: "Additional terms may apply to those services.",
-  },
-  {
-    number: "13",
-    title: "Privacy",
-    content: "Use of this website is also governed by our Privacy Policy.",
-  },
-  {
-    number: "14",
-    title: "Changes to Terms",
-    content: "Remedial Building Australia reserves the right to update or modify these Terms & Conditions at any time without prior notice. Continued use of the website constitutes acceptance of any updated terms.",
-  },
-  {
-    number: "15",
     title: "Contact",
-    content: "For general enquiries regarding these Terms & Conditions:",
-    bullets: [
-      "Remedial Building Australia",
-      "Website: www.remedialbuildingaustralia.com.au",
-      "Email: info@remedialbuildingaustralia.com.au",
-    ],
+    content: "Last updated: May 2025\n\nFor all enquiries contact: info@remedialbuildingaustralia.com.au",
   },
 ];
 
@@ -182,10 +102,10 @@ export default function TermsPage() {
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
                         <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          
+
           </nav>
 
           <a
@@ -214,10 +134,10 @@ export default function TermsPage() {
               Terms & Conditions
             </h1>
             <p className="mt-4 text-base text-slate-500">
-              Remedial Building Australia &mdash; Last Updated: 21 May 2026
+              Remedial Building Australia &mdash; Last Updated: May 2025
             </p>
             <p className="mt-6 text-lg leading-8 text-slate-700">
-              Welcome to Remedial Building Australia. By accessing or using this website, you agree to comply with these Terms & Conditions. If you do not agree, please do not use this website.
+              Remedial Building Australia is operated by Arasep Projects Pty Ltd ABN 20 675 874 003. By accessing or using this website, you agree to the following terms and conditions.
             </p>
           </div>
 
@@ -245,12 +165,6 @@ export default function TermsPage() {
                     ))}
                   </ul>
                 )}
-
-                {section.footer && (
-                  <p className="mt-4 text-base leading-8 text-slate-700">
-                    {section.footer}
-                  </p>
-                )}
               </div>
             ))}
           </div>
@@ -273,18 +187,20 @@ export default function TermsPage() {
               A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.
             </p>
           </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
-            <a href="/" className="underline hover:text-sky-700">Home</a>
-            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
-            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
-            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
-            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
-
-          <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
-            <a href="/about" className="underline hover:text-sky-700">About</a>
-            <a href="/terms" className="underline hover:text-sky-700">Terms</a>
-            <a href="/contact" className="underline hover:text-sky-700">Contact</a>          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
     </div>

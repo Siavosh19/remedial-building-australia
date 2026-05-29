@@ -6,7 +6,7 @@ import { NewsGridClient, type NewsArticle } from "@/components/industry-news/New
 import { NewsLegalFooter } from "@/components/industry-news/NewsLegalFooter";
 import { assignUniqueImages } from "@/lib/news-categories";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 
@@ -26,8 +26,8 @@ async function getArticles(): Promise<Omit<NewsArticle, "featured_image">[]> {
       "id, title, slug, summary, category, tags, source_name, source_url, published_date, created_at, priority"
     )
     .eq("status", "published")
-    .order("published_date", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .order("published_date", { ascending: false, nullsFirst: false });
 
   return (data ?? []).map((row: Record<string, unknown>) => ({
     id: String(row.id ?? ""),
@@ -70,6 +70,7 @@ export default async function IndustryNewsPage() {
                         <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/industry-news" className="whitespace-nowrap text-red-700">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           
           </nav>

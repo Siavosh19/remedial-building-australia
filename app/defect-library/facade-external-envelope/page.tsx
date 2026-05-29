@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Façade & External Envelope | Remedial Building Australia",
   description:
-    "Technical guidance on façade and external envelope defects in Class 2 buildings — render cracking, brickwork deterioration, cladding failure, joint sealants, and perimeter leaks.",
+    "Technical guidance on façade and external envelope defects in Class 2 buildings — render cracking, brickwork deterioration, cladding failure, joint sealants, balustrades, coatings and perimeter leaks.",
 };
 
 const defects = [
@@ -44,9 +44,23 @@ const defects = [
   },
   {
     title: "Window & Door Perimeter Failure",
-    description: "Water ingress at window and door perimeters from failed flashings, inadequate sealants and poor installation detailing.",
+    description: "Water ingress, rotten frames, jammed sashes, failed flashings, missing storm angles and non-compliant door hobs at window and door perimeters.",
     image: "/Images/Categories/facade-external-envelope.jpg",
     href: "/defect-library/facade-external-envelope/window-door-perimeter-failure",
+    imagePosition: "object-center",
+  },
+  {
+    title: "Defective & Non-Compliant Balustrades",
+    description: "Corroded steel posts, rotten timber frames, non-compliant heights, failed glass fixings and structurally inadequate masonry balustrades.",
+    image: "/Images/Categories/facade-external-envelope.jpg",
+    href: "/defect-library/facade-external-envelope/defective-non-compliant-balustrades",
+    imagePosition: "object-center",
+  },
+  {
+    title: "External Coating & Paint Deterioration",
+    description: "Peeling, blistering, chalking and failed external coatings on rendered, masonry, concrete, timber and metal facade elements.",
+    image: "/Images/Categories/facade-external-envelope.jpg",
+    href: "/defect-library/facade-external-envelope/external-coating-paint-deterioration",
     imagePosition: "object-center",
   },
 ];
@@ -65,8 +79,8 @@ export default function FacadeExternalEnvelopePage() {
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
                         <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           
           </nav>
@@ -84,7 +98,7 @@ export default function FacadeExternalEnvelopePage() {
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Defect Category</p>
             <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Façade & External Envelope</h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Technical guidance covering render, brickwork, cladding, joint sealant and perimeter failures across the external envelope of Class 2 residential and mixed-use buildings.
+              Technical guidance covering render, brickwork, cladding, joint sealants, window and door perimeters, balustrades, external coatings and perimeter failures across the external envelope of Class 2 residential and mixed-use buildings.
             </p>
           </div>
 
@@ -112,18 +126,20 @@ export default function FacadeExternalEnvelopePage() {
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.</p>
           </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
-            <a href="/" className="underline hover:text-sky-700">Home</a>
-            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
-            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
-            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
-            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
-<div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
-            <a href="/about" className="underline hover:text-sky-700">About</a>
-            <a href="/terms" className="underline hover:text-sky-700">Terms</a>
-            <a href="/contact" className="underline hover:text-sky-700">Contact</a>
-          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
     </div>

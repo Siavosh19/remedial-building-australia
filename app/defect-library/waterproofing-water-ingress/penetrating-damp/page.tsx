@@ -60,8 +60,8 @@ export default function PenetratingDampPage() {
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
                         <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/materials-products" className="whitespace-nowrap hover:text-red-700">Materials</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           
           </nav>
@@ -116,12 +116,7 @@ export default function PenetratingDampPage() {
           </section>
 
           <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">
-            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-              <h2 className="text-3xl font-bold text-sky-950">Inspection Requirements</h2>
-              <a href="/downloads/penetrating-damp-inspection-checklist.pdf" className="rounded-xl bg-sky-900 px-5 py-3 text-base font-semibold text-white hover:bg-sky-800">
-                Download Inspection Checklist
-              </a>
-            </div>
+            <h2 className="text-3xl font-bold text-sky-950">Inspection Requirements</h2>
             <ul className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-slate-50 p-7">
               {inspectionItems.map((item) => (
                 <li key={item} className="flex gap-3 text-base leading-8 text-slate-800">
@@ -131,6 +126,12 @@ export default function PenetratingDampPage() {
               ))}
             </ul>
           </section>
+          <div className="mt-6">
+            <a href="/ai-scope-builder/new" className="inline-flex rounded-xl bg-sky-900 px-5 py-3 text-base font-semibold text-white hover:bg-sky-800">
+              Start Inspection Checklist
+            </a>
+            <p className="mt-2 text-sm text-slate-500">Create a project inspection record, add defect locations, upload photos, and save notes for scope writing.</p>
+          </div>
 
           <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">
             <h2 className="text-3xl font-bold text-sky-950">Typical Repair Methodology</h2>
@@ -147,7 +148,7 @@ export default function PenetratingDampPage() {
             </ol>
           </section>
 
-          <section className="mt-16 grid gap-8 md:grid-cols-2">
+          <section className="mt-16">
             <a href="/repair-systems/waterproofing-systems" className="block rounded-3xl border border-slate-200 bg-white p-8 text-sky-950 shadow-md transition hover:shadow-xl">
               <h3 className="text-2xl font-bold">Related Repair Systems</h3>
               <ul className="mt-4 space-y-2">
@@ -159,18 +160,6 @@ export default function PenetratingDampPage() {
                 ))}
               </ul>
               <div className="mt-6 font-bold text-red-700">Open Repair Systems →</div>
-            </a>
-            <a href="/materials-products/waterproofing" className="block rounded-3xl border border-slate-200 bg-white p-8 text-sky-950 shadow-md transition hover:shadow-xl">
-              <h3 className="text-2xl font-bold">Related Materials</h3>
-              <ul className="mt-4 space-y-2">
-                {["Silane and siloxane water repellents", "Low-modulus silicone and polyurethane sealants", "Repointing mortars and repair compounds", "Backing rods and bond breaker tapes", "Breathable masonry paints and renders"].map((item) => (
-                  <li key={item} className="flex gap-3 text-base leading-7 text-slate-700">
-                    <span className="mt-2.5 h-2.5 w-2.5 shrink-0 rounded-full bg-slate-800" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 font-bold text-red-700">Open Materials →</div>
             </a>
           </section>
         </section>
@@ -185,19 +174,20 @@ export default function PenetratingDampPage() {
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.</p>
           </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
-            <a href="/" className="underline hover:text-sky-700">Home</a>
-            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
-            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
-            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
-            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
-
-          <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-3">
-            <a href="/about" className="underline hover:text-sky-700">About</a>
-            <a href="/terms" className="underline hover:text-sky-700">Terms</a>
-            <a href="/contact" className="underline hover:text-sky-700">Contact</a>
-          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
     </div>

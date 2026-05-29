@@ -1,0 +1,365 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum CompanyStatus {
+  draft
+  published
+  needs_review
+  rejected
+}
+
+enum ProfileStatus {
+  basic
+  contact_verified
+  business_verified
+  licence_verified
+  practitioner_verified
+  claimed
+  featured
+}
+
+enum LocationState {
+  NSW
+  VIC
+  QLD
+  WA
+  SA
+  TAS
+  ACT
+  NT
+}
+
+enum LicenceStatus {
+  verified
+  needs_review
+  unverified
+  expired
+}
+
+enum TagType {
+  service
+  defect
+  repair_system
+  capability
+}
+
+enum UserRole {
+  company_owner
+  admin
+  staff
+}
+
+enum CompanyUserRole {
+  owner
+  manager
+  staff
+}
+
+enum LeadPlan {
+  free
+  starter
+  professional
+  premium
+}
+
+enum LeadType {
+  service_request
+  quote_request
+  enquiry
+}
+
+enum LeadStatus {
+  new
+  sent
+  viewed
+  accepted
+  declined
+  expired
+}
+
+enum LeadResponseStatus {
+  pending
+  accepted
+  declined
+  no_response
+}
+
+enum AdminReviewStatus {
+  discovered
+  possible_match
+  verified
+  needs_review
+  rejected
+  published
+  needs_recheck
+}
+
+enum LeadUrgency {
+  emergency
+  within_week
+  within_month
+  planning
+}
+
+model Company {
+  id               Int                 @id @default(autoincrement())
+  slug             String              @unique
+  name             String
+  abn              String?
+  website          String?
+  phone            String?
+  email            String
+  google_business_url String?
+  description      String?
+  year_established Int?
+  main_category_id Int?
+  status           CompanyStatus       @default(draft)
+  profile_status   ProfileStatus       @default(basic)
+  confidence_score Int                 @default(0)
+  is_claimed       Boolean             @default(false)
+  is_featured      Boolean             @default(false)
+  created_at       DateTime            @default(now())
+  updated_at       DateTime            @updatedAt
+
+  main_category    Category?           @relation("CompanyMainCategory", fields: [main_category_id], references: [id])
+  locations        Location[]
+  company_categories CompanyCategory[]
+  licences         Licence[]
+  company_tags     CompanyTag[]
+  users            CompanyUser[]
+  lead_subscriptions LeadSubscription[]
+  lead_deliveries  LeadDelivery[]
+  admin_review_queue AdminReviewQueue[]
+
+  @@index([status])
+  @@index([is_featured])
+  @@index([confidence_score])
+  @@index([is_claimed])
+  @@index([name])
+  @@map("companies")
+}
+
+model Location {
+  id                   Int           @id @default(autoincrement())
+  company_id           Int
+  address              String
+  suburb               String?
+  city                 String?
+  state                LocationState
+  postcode             String
+  latitude             Float?
+  longitude            Float?
+  service_radius_km    Int?
+  services_statewide   Boolean       @default(false)
+  services_nationwide  Boolean       @default(false)
+  states_serviced      LocationState[]
+
+  company              Company       @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
+  @@index([latitude])
+  @@index([longitude])
+  @@index([state])
+  @@index([postcode])
+  @@map("locations")
+}
+
+model Category {
+  id           Int        @id @default(autoincrement())
+  name         String
+  slug         String     @unique
+  description  String?
+  parent_id    Int?
+  display_order Int       @default(0)
+  icon         String?
+  is_active    Boolean    @default(true)
+
+  parent       Category?  @relation("CategoryParent", fields: [parent_id], references: [id])
+  children     Category[] @relation("CategoryParent")
+  companies    Company[]  @relation("CompanyMainCategory")
+  company_categories CompanyCategory[]
+  leads        Lead[]     @relation("LeadCategory")
+  sub_leads    Lead[]     @relation("LeadSubcategory")
+
+  @@map("categories")
+}
+
+model CompanyCategory {
+  id           Int       @id @default(autoincrement())
+  company_id   Int
+  category_id  Int
+  is_primary   Boolean   @default(false)
+  is_approved  Boolean   @default(false)
+  approved_at  DateTime?
+  approved_by  Int?
+
+  company      Company   @relation(fields: [company_id], references: [id])
+  category     Category  @relation(fields: [category_id], references: [id])
+  approvedBy   User?     @relation("CompanyCategoryApprover", fields: [approved_by], references: [id])
+
+  @@map("company_categories")
+}
+
+model Licence {
+  id                     Int            @id @default(autoincrement())
+  company_id             Int
+  licence_number         String
+  licence_class          String?
+  licence_authority      String?
+  licence_state          String?
+  verification_source_url String?
+  verification_date      DateTime?
+  last_checked_date      DateTime?
+  status                 LicenceStatus  @default(needs_review)
+
+  company                Company        @relation(fields: [company_id], references: [id])
+
+  @@map("licences")
+}
+
+model Tag {
+  id       Int      @id @default(autoincrement())
+  name     String
+  slug     String   @unique
+  tag_type TagType
+
+  company_tags CompanyTag[]
+
+  @@map("tags")
+}
+
+model CompanyTag {
+  id          Int      @id @default(autoincrement())
+  company_id  Int
+  tag_id      Int
+  is_approved Boolean  @default(false)
+
+  company     Company  @relation(fields: [company_id], references: [id])
+  tag         Tag      @relation(fields: [tag_id], references: [id])
+
+  @@map("company_tags")
+}
+
+model User {
+  id                Int               @id @default(autoincrement())
+  email             String            @unique
+  password_hash     String
+  full_name         String?
+  phone             String?
+  role              UserRole
+  is_verified       Boolean           @default(false)
+  email_verified_at DateTime?
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+
+  company_users     CompanyUser[]
+  approved_company_categories CompanyCategory[] @relation("CompanyCategoryApprover")
+  review_queue     AdminReviewQueue[] @relation("AdminReviewQueueReviewer")
+
+  @@map("users")
+}
+
+model CompanyUser {
+  id          Int             @id @default(autoincrement())
+  company_id  Int
+  user_id     Int
+  role        CompanyUserRole
+  is_primary  Boolean         @default(false)
+  invited_at  DateTime?
+  accepted_at DateTime?
+
+  company     Company         @relation(fields: [company_id], references: [id])
+  user        User            @relation(fields: [user_id], references: [id])
+
+  @@map("company_users")
+}
+
+model LeadSubscription {
+  id                      Int           @id @default(autoincrement())
+  company_id              Int
+  is_active               Boolean       @default(false)
+  plan                    LeadPlan      @default(free)
+  categories_subscribed   Int[]
+  states_subscribed       LocationState[]
+  radius_km               Int?
+  max_leads_per_month     Int?
+  leads_received_this_month Int?        @default(0)
+  subscription_start      DateTime?
+  subscription_end        DateTime?
+  created_at              DateTime      @default(now())
+  updated_at              DateTime      @updatedAt
+
+  company                 Company       @relation(fields: [company_id], references: [id])
+
+  @@map("lead_subscriptions")
+}
+
+model Lead {
+  id            Int        @id @default(autoincrement())
+  lead_type     LeadType
+  status        LeadStatus @default(new)
+  submitted_by_name  String
+  submitted_by_email String
+  submitted_by_phone String?
+  postcode      String
+  suburb        String?
+  state         LocationState
+  category_id   Int?
+  subcategory_id Int?
+  description   String?
+  urgency       LeadUrgency
+  budget_range  String?
+  created_at    DateTime   @default(now())
+  expires_at    DateTime?
+
+  category      Category?  @relation("LeadCategory", fields: [category_id], references: [id])
+  subcategory   Category?  @relation("LeadSubcategory", fields: [subcategory_id], references: [id])
+  deliveries    LeadDelivery[]
+
+  @@index([status])
+  @@index([category_id])
+  @@index([state])
+  @@index([created_at])
+  @@map("leads")
+}
+
+model LeadDelivery {
+  id              Int                @id @default(autoincrement())
+  lead_id         Int
+  company_id      Int
+  delivered_at    DateTime           @default(now())
+  opened_at       DateTime?
+  response_status LeadResponseStatus @default(pending)
+  responded_at    DateTime?
+
+  lead            Lead               @relation(fields: [lead_id], references: [id])
+  company         Company            @relation(fields: [company_id], references: [id])
+
+  @@index([lead_id])
+  @@index([company_id])
+  @@index([response_status])
+  @@map("lead_deliveries")
+}
+
+model AdminReviewQueue {
+  id           Int               @id @default(autoincrement())
+  company_id   Int
+  status       AdminReviewStatus
+  source       String?
+  notes        String?
+  reviewed_by  Int?
+  reviewed_at  DateTime?
+  created_at   DateTime          @default(now())
+
+  company      Company           @relation(fields: [company_id], references: [id])
+  reviewer     User?             @relation("AdminReviewQueueReviewer", fields: [reviewed_by], references: [id])
+
+  @@map("admin_review_queue")
+}

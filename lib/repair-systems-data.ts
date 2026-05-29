@@ -99,18 +99,18 @@ export interface DefectChip {
 }
 
 export const REPAIR_SYSTEM_DEFECT_CHIPS: DefectChip[] = [
-  { label: "Concrete Spalling",        href: "/defect-library/concrete-structural-defects" },
-  { label: "Reinforcement Corrosion",  href: "/defect-library/concrete-structural-defects" },
-  { label: "Carbonation",              href: "/defect-library/concrete-structural-defects" },
-  { label: "Chloride Ingress",         href: "/defect-library/concrete-structural-defects" },
-  { label: "Balcony Membrane Failure", href: "/defect-library/balconies-podiums" },
-  { label: "Water Ingress",            href: "/defect-library/waterproofing-water-ingress" },
-  { label: "Crack Repair",             href: "/defect-library/concrete-structural-defects" },
-  { label: "Façade Deterioration",     href: "/defect-library/facade-external-envelope" },
-  { label: "Roof Membrane Failure",    href: "/defect-library/roofing-defects" },
-  { label: "Drainage Failure",         href: "/defect-library/services-drainage" },
-  { label: "Sealant Failure",          href: "/defect-library/facade-external-envelope" },
-  { label: "Substrate Delamination",   href: "/defect-library/concrete-structural-defects" },
+  { label: "Concrete Spalling",             href: "/defect-library/concrete-structural-defects/concrete-spalling" },
+  { label: "Reinforcement Corrosion",       href: "/defect-library/concrete-structural-defects/reinforcement-corrosion" },
+  { label: "Concrete Cracking",             href: "/defect-library/concrete-structural-defects/concrete-cracking" },
+  { label: "Settlement Cracks",             href: "/defect-library/concrete-structural-defects/settlement-cracks" },
+  { label: "Water Ingress",                 href: "/defect-library/waterproofing-water-ingress" },
+  { label: "Balcony Waterproofing",         href: "/defect-library/waterproofing-water-ingress" },
+  { label: "Crack Injection",               href: "/defect-library/concrete-structural-defects/concrete-cracking" },
+  { label: "Façade Deterioration",          href: "/defect-library/facade-external-envelope" },
+  { label: "Roof Membrane Failure",         href: "/defect-library/roofing-defects" },
+  { label: "Drainage Failure",              href: "/defect-library/services-drainage" },
+  { label: "Sealant Failure",               href: "/defect-library/facade-external-envelope/failed-sealants-joints" },
+  { label: "Magnesite Flooring",            href: "/defect-library/concrete-structural-defects/magnesite-flooring-deterioration" },
 ];
 
 // ── Repair Mortars — technical system overview ────────────────────────────────

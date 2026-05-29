@@ -92,7 +92,7 @@ const heroSlidesBase = [
   {
     label: "Materials & Products",
     title: "Technical product data prepared for real remedial applications.",
-    description: "Future product database with applications, compatible substrates, coverage rates and defects linked directly to material selection.",
+    description: "Product references with applications, compatible substrates, coverage rates and defects linked directly to material selection.",
     href: "/materials-products",
     cta: "Browse Materials",
   },
@@ -169,8 +169,8 @@ export default function RemedialBuildingAustraliaHome() {
           .from("industry_news")
           .select("title, slug, category, summary, source_name, published_date, source_url")
           .eq("status", "published")
-          .order("published_date", { ascending: false, nullsFirst: false })
           .order("created_at", { ascending: false })
+          .order("published_date", { ascending: false, nullsFirst: false })
           .limit(15);
 
         if (!error && data && data.length > 0) {
@@ -211,11 +211,11 @@ export default function RemedialBuildingAustraliaHome() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/repair-systems"   className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
-            <a href="/industry-news"    className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
+            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
+            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
+            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
-          
           </nav>
 
           <a
@@ -354,12 +354,12 @@ export default function RemedialBuildingAustraliaHome() {
             {/* Category cards */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {[
-                { name: "Remedial Consultants",  href: "/directory/consultants-practitioners", Icon: Users      },
-                { name: "Remedial Builders",     href: "/directory/remedial-contractors",       Icon: HardHat    },
-                { name: "Waterproofing",         href: "/directory/waterproofing",             Icon: Droplets   },
-                { name: "Facade & Cladding",     href: "/directory/facade-external-envelope",  Icon: Layers     },
-                { name: "Access Systems",        href: "/directory/access-systems",            Icon: Search     },
-                { name: "Testing & Investigation",href: "/directory/investigation-testing",    Icon: ScanSearch },
+                { name: "Remedial Consultants",   href: "/directory?category=consultants-practitioners",  Icon: Users      },
+                { name: "Remedial Builders",      href: "/directory?category=remedial-contractors",        Icon: HardHat    },
+                { name: "Waterproofing",          href: "/directory?category=waterproofing",               Icon: Droplets   },
+                { name: "Facade & Cladding",      href: "/directory?category=facade-external-envelope",    Icon: Layers     },
+                { name: "Access Systems",         href: "/directory?category=access-systems",              Icon: Search     },
+                { name: "Testing & Investigation",href: "/directory?category=investigation-testing",       Icon: ScanSearch },
               ].map(({ name, href, Icon }) => (
                 <a
                   key={name}
@@ -558,7 +558,7 @@ export default function RemedialBuildingAustraliaHome() {
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-              A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.
+              A structured Australian remedial building knowledge platform — defects, repair systems, industry news, business directory and AI-assisted scope writing.
             </p>
           </div>
 

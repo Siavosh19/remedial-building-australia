@@ -259,6 +259,7 @@ export default async function IndustryNewsArticlePage({
                         <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
             <a href="/industry-news" className="whitespace-nowrap text-red-700">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           
           </nav>
@@ -274,7 +275,7 @@ export default async function IndustryNewsArticlePage({
       <main>
 
         {/* ── Hero image ─────────────────────────────────────────────────── */}
-        <div className="relative h-72 w-full overflow-hidden bg-slate-200 md:h-[420px]">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-200 md:aspect-[3/1]">
           <Image
             src={heroImage}
             alt={article.title}
@@ -524,7 +525,7 @@ export default async function IndustryNewsArticlePage({
                     href={`/industry-news/${rel.slug}`}
                     className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   >
-                    <div className="relative h-36 overflow-hidden">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
                       <Image
                         src={rel.featured_image}
                         alt={rel.title}
@@ -581,19 +582,20 @@ export default async function IndustryNewsArticlePage({
               An independent Australian remedial building information platform. General information only — not professional or engineering advice.
             </p>
           </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm font-bold text-sky-950 md:grid-cols-5">
-            <a href="/" className="underline hover:text-sky-700">Home</a>
-            <a href="/repair-systems" className="underline hover:text-sky-700">Repair Systems</a>
-            <a href="/ai-scope-builder" className="underline hover:text-sky-700">AI Scope Builder</a>
-            <a href="/industry-news" className="underline hover:text-sky-700">Industry News</a>
-            <a href="/defect-library" className="underline hover:text-sky-700">Defect Library</a>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
-
-          <div className="grid grid-cols-3 gap-3 text-sm font-bold text-sky-950">
-            <a href="/about" className="underline hover:text-sky-700">About</a>
-            <a href="/terms" className="underline hover:text-sky-700">Terms</a>
-            <a href="/contact" className="underline hover:text-sky-700">Contact</a>
-          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
 
