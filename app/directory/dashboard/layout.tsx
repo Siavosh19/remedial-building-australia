@@ -26,7 +26,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   if (user.role === "admin") redirect("/directory/admin");
   if (!company) redirect("/directory/signup/company");
 
-  const statusCls = company ? (STATUS_COLOR[company.profile_status] ?? "bg-slate-700 text-slate-200") : "";
+  const statusCls = STATUS_COLOR[company.profile_status] ?? "bg-slate-700 text-slate-200";
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -38,29 +38,20 @@ export default async function DashboardLayout({ children }: { children: ReactNod
               Remedial Building Australia
             </a>
             <span className="h-4 w-px bg-sky-200" aria-hidden />
-            <span className="text-sm font-semibold text-slate-600">
-              {company ? company.name : user.full_name ?? "Admin"}
-            </span>
+            <span className="text-sm font-semibold text-slate-600">{company.name}</span>
           </div>
           <div className="flex items-center gap-3">
-            {company && (
-              <>
-                <span className={`rounded-full px-3 py-1 text-xs font-bold tracking-wide ${statusCls}`}>
-                  {company.profile_status.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
-                </span>
-                <a
-                  href={`/directory/company/${company.slug}`}
-                  target="_blank"
-                  className="rounded-lg border border-sky-300 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-sky-400 hover:text-slate-900"
-                >
-                  View listing ↗
-                </a>
-              </>
-            )}
-            {user.role === "admin" && (
-              <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-700">Admin</span>
-            )}
+            <span className={`rounded-full px-3 py-1 text-xs font-bold tracking-wide ${statusCls}`}>
+              {company.profile_status.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+            </span>
             <a
+              href={`/directory/company/${company.slug}`}
+              target="_blank"
+              className="rounded-lg border border-sky-300 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-sky-400 hover:text-slate-900"
+            >
+              View listing ↗
+            </a>
+            <
               href="/api/directory/logout"
               className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-red-500"
             >
