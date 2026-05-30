@@ -9,7 +9,7 @@ export default async function AdminPage() {
   const user = await getCurrentDirectoryUser();
   if (!user || user.role !== "admin") redirect("/directory/login");
 
-  const [queue, companies, users, publishedCount] = await Promise.all([
+  const [queue, users, totalCompanies, publishedCount] = await Promise.all([
     prisma.adminReviewQueue.findMany({
       where: { status: { in: ["discovered", "needs_review", "needs_recheck"] } },
       orderBy: { created_at: "asc" },
@@ -27,24 +27,6 @@ export default async function AdminPage() {
         },
       },
     }),
-
-    prisma.company.findMany({
-      orderBy: { created_at: "desc" },
-      take: 500,
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        email: true,
-        status: true,
-        profile_status: true,
-        is_claimed: true,
-        created_at: true,
-        main_category: { select: { name: true } },
-        locations: { take: 1, select: { suburb: true, state: true } },
-      },
-    }),
-
     prisma.user.findMany({
       orderBy: { created_at: "desc" },
       select: {
@@ -56,16 +38,13 @@ export default async function AdminPage() {
         created_at: true,
       },
     }),
-
+    prisma.company.count(),
     prisma.company.count({ where: { status: "published" } }),
   ]);
-
-  const totalCompanies = await prisma.company.count();
 
   return (
     <AdminPanel
       queue={JSON.parse(JSON.stringify(queue))}
-      companies={JSON.parse(JSON.stringify(companies))}
       users={JSON.parse(JSON.stringify(users))}
       stats={{
         pending: queue.length,
