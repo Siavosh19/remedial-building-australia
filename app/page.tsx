@@ -216,6 +216,8 @@ export default function RemedialBuildingAustraliaHome() {
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
+            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
+            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
           </nav>
 
           <a

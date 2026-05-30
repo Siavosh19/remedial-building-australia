@@ -77,6 +77,8 @@ export default function ConcreteStructuralDefectsPage() {
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
+            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
+            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
           
           </nav>
 
