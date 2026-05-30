@@ -9,12 +9,12 @@ export const metadata = {
 const SYSTEMS = [
   {
     num: "01",
-    slug: "waterproofing-systems",
+    slug: "waterproofing-water-ingress",
     label: "Waterproofing Systems",
     description:
       "Membrane systems, liquid-applied waterproofing, sheet membranes, balcony and wet area waterproofing products for Australian Class 2 remediation.",
     icon: Droplets,
-    live: false,
+    live: true,
   },
   {
     num: "02",
@@ -136,10 +136,10 @@ export default function RepairSystemsHubPage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-bold text-green-700 border border-green-200">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                1 system live
+                2 systems live
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 border border-slate-200">
-                8 systems in development
+                7 systems in development
               </span>
             </div>
           </div>
