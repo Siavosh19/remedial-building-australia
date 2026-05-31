@@ -43,13 +43,15 @@ function buildWhere(params: {
   q: string;
   category: string;
   stateFilter: string;
+  suburb: string;
+  postcode: string;
   featured: boolean;
   licenceVerified: boolean;
   claimed: boolean;
   radiusMode: "statewide" | "nationwide" | "km";
   locationState: string;
 }): Prisma.CompanyWhereInput {
-  const { q, category, stateFilter, featured, licenceVerified, claimed, radiusMode, locationState } = params;
+  const { q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, radiusMode, locationState } = params;
 
   const where: Prisma.CompanyWhereInput = { status: "published" };
   const AND: Prisma.CompanyWhereInput[] = [];
@@ -95,23 +97,29 @@ function buildWhere(params: {
     });
   }
 
-  // ── State dropdown filter ───────────────────────────────────────────
+  // ── Location filters — always combined into a single locations.some ──
+  // Suburb + state together (suburb selection from autocomplete)
   const validDropdownState = VALID_STATES.find((s) => s === stateFilter.toUpperCase());
-  if (validDropdownState) {
+
+  if (suburb && validDropdownState) {
+    // Single location record must satisfy both suburb AND state
+    AND.push({
+      locations: {
+        some: {
+          suburb: { contains: suburb, mode: "insensitive" },
+          state: validDropdownState,
+        },
+      },
+    });
+  } else if (suburb) {
+    AND.push({ locations: { some: { suburb: { contains: suburb, mode: "insensitive" } } } });
+  } else if (validDropdownState) {
     AND.push({ locations: { some: { state: validDropdownState } } });
   }
 
-  // ── Statewide radius: filter by geocoded state ──────────────────────
-  if (radiusMode === "statewide" && locationState && !validDropdownState) {
-    const locState = VALID_STATES.find((s) => s === locationState.toUpperCase());
-    if (locState) {
-      AND.push({
-        OR: [
-          { locations: { some: { state: locState } } },
-          { locations: { some: { services_nationwide: true } } },
-        ],
-      });
-    }
+  // ── Postcode filter — exact match ───────────────────────────────────
+  if (postcode) {
+    AND.push({ locations: { some: { postcode } } });
   }
 
   // ── Verification badge filters ──────────────────────────────────────
@@ -188,6 +196,8 @@ export async function GET(request: NextRequest) {
   const locationState = sp.get("locationState") ?? "";
   const category = sp.get("category")?.trim() ?? "";
   const stateFilter = sp.get("state")?.trim() ?? "";
+  const suburb = sp.get("suburb")?.trim() ?? "";
+  const postcode = sp.get("postcode")?.trim() ?? "";
   const featured = sp.get("featured") === "true";
   const licenceVerified = sp.get("licenceVerified") === "true";
   const claimed = sp.get("claimed") === "true";
@@ -205,7 +215,7 @@ export async function GET(request: NextRequest) {
       ? "nationwide"
       : "km";
 
-  const where = buildWhere({ q, category, stateFilter, featured, licenceVerified, claimed, radiusMode, locationState });
+  const where = buildWhere({ q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, radiusMode, locationState });
 
   try {
     // ── No location or nationwide: pure Prisma ────────────────────────

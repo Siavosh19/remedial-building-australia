@@ -16,7 +16,17 @@
       "Bash(git rm *)",
       "Bash(npx next *)",
       "Bash(grep -v \"^\\\\s*$\")",
-      "Bash(xargs perl -i -0pe 's|\\(<a href=\"/ai-scope-builder\"[^>]*>\\\\s*AI Scope Builder\\\\s*</a>\\)|$1\\\\n            <a href=\"/directory/login\" className=\"whitespace-nowrap hover:text-red-700 transition\">Login</a>|g')"
+      "Bash(xargs perl -i -0pe 's|\\(<a href=\"/ai-scope-builder\"[^>]*>\\\\s*AI Scope Builder\\\\s*</a>\\)|$1\\\\n            <a href=\"/directory/login\" className=\"whitespace-nowrap hover:text-red-700 transition\">Login</a>|g')",
+      "Bash(awk -F: '{print $1}')",
+      "Bash(perl -i -pe 'next if m{href=\"/directory/login\" className=\"whitespace-nowrap hover:text-red-700 transition\">Login</a>};' /Users/siasepehrara/remedial-building-australia/app/page.tsx)",
+      "Bash(perl -i -ne 'print unless m{href=\"/directory/login\" className=\"whitespace-nowrap hover:text-red-700 transition\">Login</a>};' /Users/siasepehrara/remedial-building-australia/app/page.tsx)",
+      "Bash(sed -n '620,635p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/sheet-membranes-torch-on/TorchOnProductSection.tsx)",
+      "Bash(sed -n '720,735p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/sheet-membranes-cold-applied/ColdAppliedProductSection.tsx)",
+      "Bash(sed -n '720,735p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/cementitious-flexible-membranes/CementitiousProductSection.tsx)",
+      "Bash(sed -n '820,835p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/primers-bonding-agents/PrimersProductSection.tsx)",
+      "Bash(curl -s -X POST https://www.remedialbuildingaustralia.com.au/api/contact -H 'Content-Type: application/json' -d '{\"name\":\"Test\",\"email\":\"test@example.com\",\"subject\":\"Delivery test\",\"message\":\"Testing contact form delivery.\"}')",
+      "Bash(DATABASE_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true\" node *)",
+      "Bash(curl *)"
     ]
   }
 }

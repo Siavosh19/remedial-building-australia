@@ -33,29 +33,20 @@ type CompanyResult = {
   licences: Array<{ status: string }>;
 };
 
-type GeoResult = {
-  lat: number;
-  lng: number;
-  displayName: string;
-  state: string;
-} | null;
+type LocationSuggestion = {
+  type: "state" | "suburb" | "postcode";
+  label: string;
+  stateCode: string;
+  suburb?: string;
+  postcode?: string;
+};
+
+type SelectedLocation = LocationSuggestion | null;
 
 interface Props {
   categories: CategoryOption[];
   initialCompanies: CompanyResult[];
 }
-
-const STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
-
-const RADIUS_OPTIONS = [
-  { value: "5", label: "5 km" },
-  { value: "10", label: "10 km" },
-  { value: "25", label: "25 km" },
-  { value: "50", label: "50 km" },
-  { value: "100", label: "100 km" },
-  { value: "statewide", label: "Statewide" },
-  { value: "nationwide", label: "Australia-wide" },
-];
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -204,7 +195,7 @@ function Pagination({
   );
 }
 
-// ─── Collapsible category selector ───────────────────────────────────────────
+// ─── Category selector ────────────────────────────────────────────────────────
 
 function CategorySelector({
   categories,
@@ -269,7 +260,6 @@ function CategorySelector({
 
       {open && (
         <div className="absolute left-0 top-full z-50 mt-1.5 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
-          {/* Search input */}
           <div className="border-b border-slate-100 px-3 py-2.5">
             <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5">
               <svg width={13} height={13} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="shrink-0 text-slate-400">
@@ -289,9 +279,7 @@ function CategorySelector({
             </div>
           </div>
 
-          {/* List */}
           <div className="max-h-80 overflow-y-auto">
-            {/* All categories option */}
             <button
               type="button"
               onClick={() => select("")}
@@ -326,7 +314,6 @@ function CategorySelector({
                         type="button"
                         onClick={() => setExpandedId(isExpanded ? null : parent.id)}
                         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
-                        aria-label={isExpanded ? "Collapse" : "Expand"}
                       >
                         <svg
                           width={12} height={12} viewBox="0 0 12 12" fill="currentColor"
@@ -339,7 +326,7 @@ function CategorySelector({
                   </div>
 
                   {isExpanded && (
-                    <div className="border-l-2 border-sky-100 ml-4 mb-1">
+                    <div className="ml-4 mb-1 border-l-2 border-sky-100">
                       {subs.map((sub) => (
                         <button
                           key={sub.id}
@@ -366,76 +353,182 @@ function CategorySelector({
   );
 }
 
+// ─── Location autocomplete ────────────────────────────────────────────────────
+
+const TYPE_ICONS: Record<LocationSuggestion["type"], string> = {
+  state: "🗺",
+  suburb: "📍",
+  postcode: "🔢",
+};
+
+const TYPE_LABELS: Record<LocationSuggestion["type"], string> = {
+  state: "State",
+  suburb: "Suburb",
+  postcode: "Postcode",
+};
+
+function LocationAutocomplete({
+  selectedLocation,
+  onSelect,
+  onClear,
+}: {
+  selectedLocation: SelectedLocation;
+  onSelect: (loc: LocationSuggestion) => void;
+  onClear: () => void;
+}) {
+  const [inputVal, setInputVal] = useState("");
+  const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
+  const [fetching, setFetching] = useState(false);
+  const [open, setOpen] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  function handleInput(val: string) {
+    setInputVal(val);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (val.length < 1) {
+      setSuggestions([]);
+      setOpen(false);
+      return;
+    }
+    debounceRef.current = setTimeout(async () => {
+      setFetching(true);
+      try {
+        const res = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(val)}`);
+        const data = await res.json();
+        setSuggestions(data.suggestions ?? []);
+        setOpen(true);
+      } catch {
+        setSuggestions([]);
+      } finally {
+        setFetching(false);
+      }
+    }, 280);
+  }
+
+  function selectSuggestion(s: LocationSuggestion) {
+    onSelect(s);
+    setInputVal("");
+    setSuggestions([]);
+    setOpen(false);
+  }
+
+  if (selectedLocation) {
+    return (
+      <div className="flex items-center gap-2.5 rounded-2xl border border-sky-300 bg-sky-50 px-4 py-3">
+        <span className="text-base">{TYPE_ICONS[selectedLocation.type]}</span>
+        <div className="min-w-0 flex-1">
+          <span className="block text-[10px] font-bold uppercase tracking-wider text-sky-500">
+            {TYPE_LABELS[selectedLocation.type]}
+          </span>
+          <span className="block truncate text-sm font-semibold text-sky-900">{selectedLocation.label}</span>
+        </div>
+        <button
+          onClick={onClear}
+          className="shrink-0 rounded-lg px-2 py-1 text-xs font-bold text-sky-500 hover:bg-sky-100 hover:text-sky-700"
+        >
+          × Clear
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="relative">
+      <svg
+        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+        width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
+        aria-hidden
+      >
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+        <circle cx={12} cy={9} r={2.5} />
+      </svg>
+      <input
+        type="text"
+        value={inputVal}
+        onChange={(e) => handleInput(e.target.value)}
+        placeholder="State, suburb or postcode…"
+        className="w-full rounded-2xl border border-slate-300 bg-slate-50 py-3 pl-10 pr-10 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
+        autoComplete="off"
+      />
+      {fetching && (
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+          Searching…
+        </span>
+      )}
+
+      {open && suggestions.length > 0 && (
+        <div className="absolute left-0 top-full z-50 mt-1.5 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+          {suggestions.map((s, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => selectSuggestion(s)}
+              className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-sky-50 focus:bg-sky-50 focus:outline-none"
+            >
+              <span className="shrink-0 text-base">{TYPE_ICONS[s.type]}</span>
+              <div className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold text-sky-950">{s.label}</span>
+                <span className="block text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                  {TYPE_LABELS[s.type]}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {open && !fetching && suggestions.length === 0 && inputVal.length >= 2 && (
+        <div className="absolute left-0 top-full z-50 mt-1.5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-xl">
+          <p className="text-sm text-slate-400">No locations found for &ldquo;{inputVal}&rdquo;</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function DirectoryListing({ categories, initialCompanies }: Props) {
-  // Seed q from ?q= URL param on first render
   const [q, setQ] = useState(() => {
     if (typeof window === "undefined") return "";
     return new URLSearchParams(window.location.search).get("q") ?? "";
   });
-  const [locationStr, setLocationStr] = useState("");
-  const [radius, setRadius] = useState("25");
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>(null);
   const [category, setCategory] = useState(() => {
     if (typeof window === "undefined") return "";
     return new URLSearchParams(window.location.search).get("category") ?? "";
   });
-  const [stateFilter, setStateFilter] = useState("");
   const [featured, setFeatured] = useState(false);
   const [licenceVerified, setLicenceVerified] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [page, setPage] = useState(1);
 
-  // Geocoding state
-  const [geo, setGeo] = useState<GeoResult>(null);
-  const [geocoding, setGeocoding] = useState(false);
-
-  // Results state
   const [companies, setCompanies] = useState<CompanyResult[]>(initialCompanies);
   const [total, setTotal] = useState(initialCompanies.length);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const geoDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const hasFilters = Boolean(q || locationStr || category || stateFilter || featured || licenceVerified || claimed);
+  const hasFilters = Boolean(q || selectedLocation || category || featured || licenceVerified || claimed);
 
-  // ── Geocode location string ─────────────────────────────────────────
-  useEffect(() => {
-    if (geoDebounceRef.current) clearTimeout(geoDebounceRef.current);
-
-    if (!locationStr || locationStr.length < 2) {
-      setGeo(null);
-      return;
-    }
-
-    geoDebounceRef.current = setTimeout(async () => {
-      setGeocoding(true);
-      try {
-        const res = await fetch(`/api/directory/geocode?q=${encodeURIComponent(locationStr)}`);
-        const data = await res.json();
-        setGeo(data);
-      } catch {
-        setGeo(null);
-      } finally {
-        setGeocoding(false);
-      }
-    }, 600);
-
-    return () => {
-      if (geoDebounceRef.current) clearTimeout(geoDebounceRef.current);
-    };
-  }, [locationStr]);
-
-  // ── Fetch search results ────────────────────────────────────────────
+  // ── Fetch results ───────────────────────────────────────────────────
   const fetchResults = useCallback(
     async (params: {
       q: string;
-      geo: GeoResult;
-      radius: string;
+      selectedLocation: SelectedLocation;
       category: string;
-      stateFilter: string;
       featured: boolean;
       licenceVerified: boolean;
       claimed: boolean;
@@ -444,14 +537,20 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
       setLoading(true);
       const sp = new URLSearchParams();
       if (params.q) sp.set("q", params.q);
-      if (params.geo) {
-        sp.set("lat", String(params.geo.lat));
-        sp.set("lng", String(params.geo.lng));
-        sp.set("radius", params.radius);
-        if (params.geo.state) sp.set("locationState", params.geo.state);
+
+      if (params.selectedLocation) {
+        const loc = params.selectedLocation;
+        if (loc.type === "state") {
+          sp.set("state", loc.stateCode);
+        } else if (loc.type === "suburb" && loc.suburb) {
+          sp.set("suburb", loc.suburb);
+          sp.set("state", loc.stateCode);
+        } else if (loc.type === "postcode" && loc.postcode) {
+          sp.set("postcode", loc.postcode);
+        }
       }
+
       if (params.category) sp.set("category", params.category);
-      if (params.stateFilter) sp.set("state", params.stateFilter);
       if (params.featured) sp.set("featured", "true");
       if (params.licenceVerified) sp.set("licenceVerified", "true");
       if (params.claimed) sp.set("claimed", "true");
@@ -472,33 +571,30 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
     []
   );
 
-  // Reset page when filters (not page) change
+  // Reset page when filters change
   useEffect(() => {
     setPage(1);
-  }, [q, locationStr, radius, category, stateFilter, featured, licenceVerified, claimed, geo]);
+  }, [q, selectedLocation, category, featured, licenceVerified, claimed]);
 
   // Trigger search on filter or page change
   useEffect(() => {
     if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
     const delay = q ? 350 : 0;
     searchDebounceRef.current = setTimeout(() => {
-      fetchResults({ q, geo, radius, category, stateFilter, featured, licenceVerified, claimed, page });
+      fetchResults({ q, selectedLocation, category, featured, licenceVerified, claimed, page });
     }, delay);
     return () => {
       if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
     };
-  }, [q, geo, radius, category, stateFilter, featured, licenceVerified, claimed, page, fetchResults]);
+  }, [q, selectedLocation, category, featured, licenceVerified, claimed, page, fetchResults]);
 
   function clearFilters() {
     setQ("");
-    setLocationStr("");
-    setRadius("25");
+    setSelectedLocation(null);
     setCategory("");
-    setStateFilter("");
     setFeatured(false);
     setLicenceVerified(false);
     setClaimed(false);
-    setGeo(null);
     setPage(1);
   }
 
@@ -508,18 +604,13 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
       <div className="sticky top-[73px] z-40 border-b border-slate-200 bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-6 py-5">
 
-          {/* Row 1: keyword + location */}
+          {/* Row 1: keyword + location autocomplete */}
           <div className="grid gap-3 md:grid-cols-[1fr_1fr]">
             {/* Keyword search */}
             <div className="relative">
               <svg
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                width={16}
-                height={16}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
+                width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
                 aria-hidden
               >
                 <circle cx={11} cy={11} r={8} />
@@ -534,93 +625,24 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
               />
             </div>
 
-            {/* Location search */}
-            <div className="relative">
-              <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                width={16}
-                height={16}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-                aria-hidden
-              >
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                <circle cx={12} cy={9} r={2.5} />
-              </svg>
-              <input
-                type="text"
-                value={locationStr}
-                onChange={(e) => setLocationStr(e.target.value)}
-                placeholder="Near suburb or postcode…"
-                className="w-full rounded-2xl border border-slate-300 bg-slate-50 py-3 pl-10 pr-4 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
-              />
-              {geocoding && (
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-                  Locating…
-                </span>
-              )}
-            </div>
+            {/* Location autocomplete */}
+            <LocationAutocomplete
+              selectedLocation={selectedLocation}
+              onSelect={(loc) => setSelectedLocation(loc)}
+              onClear={() => setSelectedLocation(null)}
+            />
           </div>
 
-          {/* Geocode confirmation pill */}
-          {geo && !geocoding && (
-            <div className="mt-2 flex items-center gap-2">
-              <span className="flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-800 ring-1 ring-sky-200">
-                <span>📍</span> Searching near {geo.displayName}
-                {geo.state ? `, ${geo.state}` : ""}
-              </span>
-              <button
-                onClick={() => { setLocationStr(""); setGeo(null); }}
-                className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-200"
-              >
-                × Clear location
-              </button>
-            </div>
-          )}
-
-          {/* Row 2: dropdowns + toggles */}
+          {/* Row 2: category + verification toggles */}
           <div className="mt-3 flex flex-wrap items-center gap-2.5">
-            {/* Category — collapsible tree selector */}
             <CategorySelector
               categories={categories}
               value={category}
               onChange={setCategory}
             />
 
-            {/* State */}
-            <select
-              value={stateFilter}
-              onChange={(e) => setStateFilter(e.target.value)}
-              className="rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 focus:border-sky-600 focus:outline-none"
-            >
-              <option value="">All States</option>
-              {STATES.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-
-            {/* Radius (active only when location is set) */}
-            <select
-              value={radius}
-              onChange={(e) => setRadius(e.target.value)}
-              disabled={!geo}
-              title={!geo ? "Enter a location to enable radius filter" : undefined}
-              className={`rounded-xl border px-3.5 py-2 text-sm font-semibold focus:border-sky-600 focus:outline-none ${
-                geo
-                  ? "border-sky-300 bg-sky-50 text-sky-800"
-                  : "border-slate-200 bg-slate-50 text-slate-400"
-              }`}
-            >
-              {RADIUS_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
-            </select>
-
             <div className="mx-0.5 h-6 w-px bg-slate-200" aria-hidden />
 
-            {/* Verification toggles */}
             {(
               [
                 { label: "Featured", active: featured, toggle: () => setFeatured((v) => !v) },
@@ -661,9 +683,9 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
             {loading
               ? "Searching…"
               : `${total} ${total === 1 ? "company" : "companies"} found`}
-            {geo && !loading && total > 0 && (
-              <span className="ml-1 text-slate-400 font-normal">
-                near {geo.displayName}
+            {selectedLocation && !loading && total > 0 && (
+              <span className="ml-1 font-normal text-slate-400">
+                in {selectedLocation.label}
               </span>
             )}
           </p>
@@ -684,9 +706,7 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
             <p className="text-lg font-bold text-sky-950">No companies found</p>
             <p className="mt-2 text-sm text-slate-500">
               {hasFilters
-                ? geo
-                  ? `No listings found within ${radius === "statewide" ? "this state" : radius === "nationwide" ? "Australia" : `${radius} km`} matching your search.`
-                  : "Try adjusting your search or clearing your filters."
+                ? "Try adjusting your search or clearing your filters."
                 : "No listings are published yet. Be the first to list your business."}
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">

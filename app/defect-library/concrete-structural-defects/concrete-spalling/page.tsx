@@ -77,16 +77,10 @@ export default function ConcreteSpallingPage() {
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">
               AI Scope Builder
             </a>
-            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
           
           </nav>
 
-          <a
-            href="/"
-            className="hidden shrink-0 rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800 md:inline-flex"
-          >
-            Home
-          </a>
+          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
         </div>
       </header>
 

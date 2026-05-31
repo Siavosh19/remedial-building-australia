@@ -76,37 +76,37 @@ const coverPhotos = [
 
 const heroSlidesBase = [
   {
+    label: "Business Directory",
+    title: "Find verified remedial building specialists across Australia.",
+    description: "Search waterproofing contractors, façade engineers, strata building consultants and more — filtered by location, licence status and specialisation.",
+    href: "/directory",
+    cta: "Search the Directory",
+  },
+  {
     label: "Defect Library",
-    title: "Structured remedial building knowledge for Australian strata and Class 2 buildings.",
-    description: "Structured guidance for common Class 2 building defects, organised by category, cause, risk and repair pathway.",
+    title: "Every major Class 2 building defect — causes, risks and repair pathways.",
+    description: "Structured technical guidance on concrete deterioration, waterproofing failure, façade defects, basement ingress and more — organised for Australian strata practice.",
     href: "/defect-library",
     cta: "Explore Defect Library",
   },
   {
     label: "Repair Systems",
-    title: "Compare and select the right repair system for every defect type.",
-    description: "Concrete repair mortars, corrosion inhibitors, waterproofing systems, crack injection and coatings — now with product comparisons, technical specs and selection guidance.",
+    title: "Technical product reference for every stage of remedial work.",
+    description: "Repair mortars, corrosion inhibitors, waterproofing membranes, crack injection systems and protective coatings — with product comparisons, specs and selection criteria.",
     href: "/repair-systems",
     cta: "Browse Repair Systems",
   },
   {
-    label: "Materials & Products",
-    title: "Technical product data prepared for real remedial applications.",
-    description: "Product references with applications, compatible substrates, coverage rates and defects linked directly to material selection.",
-    href: "/materials-products",
-    cta: "Browse Materials",
-  },
-  {
     label: "Industry News",
-    title: "Stay current with remedial building and strata construction updates.",
-    description: "Focused updates for Building Commission, DBP Act, strata remedial works, waterproofing compliance and façade rectification.",
+    title: "Regulatory and technical updates for the remedial building sector.",
+    description: "Coverage of Building Commission decisions, DBP Act changes, strata remedial obligations, waterproofing compliance and façade rectification programs.",
     href: "/industry-news",
     cta: "Read Industry News",
   },
   {
     label: "AI Scope Builder",
-    title: "AI-assisted scope writing built on structured technical data.",
-    description: "Select defects, repair systems, materials and clauses — then generate a consultant, builder, strata or tender scope of works in seconds.",
+    title: "Generate a professional scope of works in minutes.",
+    description: "Select your defects, repair systems and clauses — the AI Scope Builder structures a consultant, builder or strata-ready scope of works tailored to the job.",
     href: "/ai-scope-builder",
     cta: "Open AI Scope Builder",
   },
@@ -216,16 +216,9 @@ export default function RemedialBuildingAustraliaHome() {
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
-            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
-            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
           </nav>
 
-          <a
-            href="/directory/login"
-            className="hidden shrink-0 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 md:inline-flex"
-          >
-            Login
-          </a>
+          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
           <button
             className="md:hidden p-1"
             onClick={() => setMobileNavOpen((o) => !o)}
@@ -243,7 +236,7 @@ export default function RemedialBuildingAustraliaHome() {
               <a href="/ai-scope-builder" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">AI Scope Builder</a>
               <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Defect Library</a>
               <a href="/directory" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Business Directory</a>
-              <a href="/directory/login" onClick={() => setMobileNavOpen(false)} className="mt-2 inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-50 transition">Login</a>
+              <a href="/directory/login" onClick={() => setMobileNavOpen(false)} className="mt-2 inline-flex rounded-xl bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800 transition">Login / Create Account</a>
             </nav>
           </div>
         )}
@@ -291,12 +284,10 @@ export default function RemedialBuildingAustraliaHome() {
                   {activeHero.description}
                 </p>
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <a href={activeHero.href} className="rounded-xl bg-red-700 px-6 py-4 text-base font-semibold text-white hover:bg-red-800">
+                <div className="mt-8">
+                  <a href={activeHero.href} className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-7 py-4 text-base font-semibold text-white hover:bg-red-800 transition">
                     {activeHero.cta}
-                  </a>
-                  <a href="/defect-library" className="rounded-xl border border-white/40 bg-white/15 px-6 py-4 text-base font-semibold text-white hover:bg-white hover:text-sky-950">
-                    Browse Defect Library
+                    <ArrowRight size={16} />
                   </a>
                 </div>
 

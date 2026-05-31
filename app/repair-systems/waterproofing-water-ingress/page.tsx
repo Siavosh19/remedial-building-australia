@@ -8,10 +8,10 @@ export const metadata = {
 
 const SUBCATEGORIES = [
   {
-    label: "Balcony waterproofing failure",
+    label: "Balcony, roof, planter box and podium waterproofing failure",
     slug: "balcony-waterproofing-failure",
-    count: 18,
-    description: "Liquid applied membranes, sheet systems, crystalline waterproofing, drainage accessories, penetration collars and flood test equipment.",
+    count: 27,
+    description: "Liquid applied membranes, sheet systems, HDPE and hot melt asphalt systems, root resistant membranes, tapered insulation, pedestal and drainage cell systems, drainage accessories, penetration collars and flood test equipment.",
     live: true,
   },
   {
@@ -63,10 +63,8 @@ export default function WaterproofingSystemsPage() {
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
-            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
-            <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Login</a>
           </nav>
-          <a href="/newsletter" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Subscribe</a>
+          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
         </div>
       </header>
 
