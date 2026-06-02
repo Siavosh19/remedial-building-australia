@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { readdirSync, existsSync } from "fs";
+import { join, extname } from "path";
 import { ArrowLeft, ExternalLink, Clock, Calendar, Building2, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
-import { getNewsImage, formatDate, assignUniqueImages } from "@/lib/news-categories";
+import { getArticleImage, formatDate } from "@/lib/news-categories";
 import { ArticleDisclaimer } from "@/components/industry-news/ArticleDisclaimer";
 import { NewsLegalFooter } from "@/components/industry-news/NewsLegalFooter";
 
 export const revalidate = 3600;
+
+const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
+const EXCLUDE = new Set(["Home page.jpg", "ChatGPT Image Apr 4, 2025, 03_51_18 PM.png"]);
+
+function getNewsImagePool(): string[] {
+  const dir = join(process.cwd(), "public", "Images", "News");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => IMAGE_EXTS.has(extname(f).toLowerCase()) && !EXCLUDE.has(f))
+    .sort()
+    .map((f) => `/Images/News/${f}`);
+}
 
 // ─── Internal resource links by category ─────────────────────────────────────
 
@@ -228,8 +242,12 @@ export default async function IndustryNewsArticlePage({
 
   if (!article) notFound();
 
-  const heroImage = getNewsImage(article.category, article.title);
-  const relatedArticlesWithImages = assignUniqueImages(relatedArticles, [heroImage]);
+  const imagePool = getNewsImagePool();
+  const heroImage = getArticleImage(article.category, article.title, imagePool);
+  const relatedArticlesWithImages = relatedArticles.map((r) => ({
+    ...r,
+    featured_image: getArticleImage(r.category, r.title, imagePool),
+  }));
   const paragraphs = summaryToParagraphs(article.summary);
   const impactBullets = article.industry_impact
     ? article.industry_impact.split(" | ").map((s) => s.trim()).filter(Boolean)

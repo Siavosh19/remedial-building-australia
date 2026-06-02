@@ -25,6 +25,7 @@ const SIBLING_TABS = [
   { label: "Tile adhesive", slug: "tile-adhesive-systems" },
   { label: "Tools", slug: "abrasives-blades-tools" },
   { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
   { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
   { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
   { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },

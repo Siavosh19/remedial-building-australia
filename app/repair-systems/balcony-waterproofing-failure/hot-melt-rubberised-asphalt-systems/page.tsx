@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Clock, ArrowRight } from "lucide-react";
+import { BookOpen, AlertTriangle, Info, ArrowRight } from "lucide-react";
+import { HotMeltProductSection } from "./HotMeltProductSection";
 
 export const metadata: Metadata = {
-  title: "Hot Melt Rubberised Asphalt Systems — Podium and Roof Waterproofing — Remedial Building Australia",
+  title: "Hot Melt Rubberised Asphalt Systems — Roofs and Podiums — Remedial Building Australia",
   description:
-    "Technical product reference for hot melt rubberised asphalt systems used in balcony, roof deck, planter box and podium waterproofing remediation in Australian Class 2 strata buildings. Content coming soon.",
+    "Technical product reference for hot melt rubberised asphalt waterproofing systems used on roof decks and podium slabs in Australian Class 2 strata apartment buildings — monolithic fully bonded hot-fluid-applied systems, fabric reinforcement, inverted roof applications, specialist equipment and applicator requirements, Australian market availability, and brand comparisons.",
 };
 
 const SIBLING_TABS = [
@@ -25,6 +26,7 @@ const SIBLING_TABS = [
   { label: "Tile adhesive", slug: "tile-adhesive-systems" },
   { label: "Tools", slug: "abrasives-blades-tools" },
   { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
   { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
   { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
   { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
@@ -75,13 +77,31 @@ export default function HotMeltRubberisedAsphaltSystemsPage() {
               <span>/</span>
               <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
               <span>/</span>
-              <span className="text-sky-950">Hot melt rubberised asphalt systems (roofs and podiums)</span>
+              <span className="text-sky-950">Hot melt rubberised asphalt systems — roofs and podiums</span>
             </nav>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Sheet Membranes</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                Hot melt rubberised asphalt systems (roofs and podiums)
-              </h1>
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Sheet Membranes</p>
+                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                  Hot melt rubberised asphalt systems — roofs and podiums
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+                  Technical product reference for hot-fluid-applied rubberised asphalt waterproofing systems. Covers system principles, inverted roof assembly, specialist equipment and applicator requirements, Australian market availability, and brand comparisons for podium slab, roof deck, and plaza deck applications.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                {[
+                  { label: "Products listed",  value: "4" },
+                  { label: "Brands covered",   value: "3" },
+                  { label: "System type",      value: "Hot-fluid-applied" },
+                  { label: "Applications",     value: "Podium and roof deck — specialist application" },
+                ].map((s) => (
+                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
+                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -110,23 +130,135 @@ export default function HotMeltRubberisedAsphaltSystemsPage() {
           </div>
         </div>
 
-        {/* ── Coming soon ── */}
-        <section className="px-8 py-20">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 shadow-sm text-center">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-950 text-white">
-                <Clock size={22} />
+        {/* ── Content ── */}
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl space-y-10">
+
+            {/* Intro — clean prose only */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+                  <BookOpen size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-sky-950">What are hot melt rubberised asphalt systems — roofs and podiums?</h3>
               </div>
-              <h2 className="text-xl font-extrabold text-sky-950">Content coming soon</h2>
-              <p className="mt-3 max-w-lg mx-auto text-sm leading-7 text-slate-500">
-                Technical product reference, system comparisons and brand equivalents for hot melt rubberised asphalt systems (roofs and podiums) will be published here. Check back soon.
+              <div className="space-y-4 text-sm leading-7 text-slate-600">
+                <p>
+                  Hot melt rubberised asphalt is a hot-fluid-applied waterproofing membrane system applied as a heated liquid directly to a prepared concrete deck or roof substrate. The material — a blend of refined bitumen or asphalt, synthetic rubber polymers, and mineral stabilisers — is heated in a specialised thermostatically controlled melting kettle to between 160°C and 190°C and poured or pumped onto the substrate, where it flows to conform to the deck surface before cooling and solidifying into a continuous, monolithic, fully bonded waterproofing layer. A reinforcing fabric (typically polyester fleece) is embedded into the hot material while it is still fluid, and a second pour is applied over the fabric to complete the system. The result is a seamless, joint-free membrane that fully bonds to the substrate — eliminating the risk of lateral water migration beneath the membrane that is possible with loose-laid or mechanically fixed sheet systems.
+                </p>
+                <p>
+                  Hot melt rubberised asphalt is primarily specified on large concrete podium slabs, roof decks, plaza decks, and car park structures where the application area, loading conditions, and design life requirements justify the plant and specialist labour involved. Key advantages over torch-on modified bitumen sheet and single-ply sheet membranes include: full substrate adhesion preventing lateral water tracking, self-healing properties where the material can re-seal minor punctures under heat, zero-fall capability on inverted roof assemblies, and compatibility with heavy ballast, paver, and growing medium systems above the membrane. The system is applied in an inverted roof configuration — the membrane is applied first, protection board and insulation are placed above the membrane, and ballast or growing medium is placed above the insulation.
+                </p>
+                <p>
+                  Hot melt rubberised asphalt is a niche product category in the Australian waterproofing market. The principal brands — Henry 790-11, Soprema Colphene H, and SikaShield Hot Melt — are well established in the UK, North American, and European markets but have limited documented distributor presence in Australia. Specifiers should confirm current Australian product availability, distributor access, and accredited applicator availability before specifying hot melt rubberised asphalt on any Australian project.
+                </p>
+              </div>
+            </div>
+
+            {/* Client component: accordion + product cards + comparison table */}
+            <HotMeltProductSection />
+
+            {/* ── All warning and callout boxes — below comparison table only ── */}
+
+            {/* Box 1 — Red: confirm AU availability */}
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-700 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-red-900">CONFIRM AUSTRALIAN PRODUCT AVAILABILITY AND SPECIALIST APPLICATOR ACCESS BEFORE SPECIFYING ANY HOT MELT SYSTEM</h3>
+              </div>
+              <p className="text-sm leading-7 text-red-900">
+                Hot melt rubberised asphalt systems are an established waterproofing technology in the UK and North American markets, but have limited confirmed distributor presence and specialist applicator networks in Australia. The principal international products — Henry 790-11, Soprema Colphene H, and SikaShield Hot Melt — may not be currently stocked, distributed, or supported by specialist applicators in the project location. Specifying a product that cannot be sourced or installed by an available specialist applicator in Australia will delay the project and may result in an alternative product substitution that is not equivalent. Confirm product availability, distributor access, and specialist applicator availability in writing with each manufacturer before including any hot melt rubberised asphalt product in a project specification.
               </p>
-              <a
-                href="/repair-systems/balcony-waterproofing-failure"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-900 transition"
-              >
-                Back to all categories <ArrowRight size={14} />
-              </a>
+            </div>
+
+            {/* Box 2 — Red: specialist equipment */}
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-700 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-red-900">HOT MELT APPLICATION REQUIRES SPECIALIST THERMOSTATICALLY CONTROLLED MELTING EQUIPMENT — NOT STANDARD ROOFING PLANT</h3>
+              </div>
+              <p className="text-sm leading-7 text-red-900">
+                Hot melt rubberised asphalt must be heated in a mechanically agitated, thermostatically controlled melting cooker capable of maintaining a precise temperature range — typically 165°C to 185°C. Standard roofing torches, open flame kettles, and general heating equipment are not appropriate for hot melt rubberised asphalt application. Overheating above the maximum application temperature (typically 220°C) degrades the rubber polymer and permanently reduces membrane performance — overheated material must be discarded. Underheating produces a material that is too viscous to flow and bond correctly to the substrate. The melting cooker must be confirmed as available and in calibrated working order before the application programme is committed. Additionally, the structural loading of the melting kettle on the roof or podium deck must be confirmed with the structural engineer before plant is placed.
+              </p>
+            </div>
+
+            {/* Box 3 — Amber: mastic vs rubberised */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">MASTIC ASPHALT IS NOT THE SAME PRODUCT AS MODERN RUBBERISED ASPHALT — DO NOT SPECIFY AS EQUIVALENT</h3>
+              </div>
+              <p className="text-sm leading-7 text-amber-900">
+                Mastic asphalt and hot melt rubberised asphalt are related but distinct bituminous products. Mastic asphalt is a traditional hand-applied system using bitumen, limestone aggregate, and mineral filler, applied at 200°C+ to a typical total thickness of 20mm or more by specialist mastic asphalt screeders. Modern rubberised asphalt (Henry 790-11, Soprema Colphene H) is a rubber-polymer-modified system poured at lower temperatures to a thinner total thickness of 5–6mm. They have different mechanical properties, different application methods, different weights, and different structural loading implications. When specifying remediation of an existing mastic asphalt system, confirm with the waterproofing consultant whether new mastic asphalt, a compatible liquid-applied membrane, or a sheet membrane system is the correct remediation approach — do not assume they are interchangeable.
+              </p>
+            </div>
+
+            {/* Box 4 — Blue: inverted roof only */}
+            <div className="rounded-2xl border border-sky-200 bg-sky-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-700 text-white">
+                  <Info size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-sky-900">HOT MELT RUBBERISED ASPHALT IS AN INVERTED ROOF (PROTECTED MEMBRANE) SYSTEM — THE MEMBRANE IS NEVER EXPOSED</h3>
+              </div>
+              <p className="text-sm leading-7 text-sky-900">
+                Hot melt rubberised asphalt is applied directly to the structural slab and immediately covered by a protection course, then insulation (XPS board), then drainage layer and filter fabric, then ballast, pavers, or growing medium. The cured membrane is never left exposed to UV, foot traffic, or the elements — it is permanently buried under the system build-up. This is the inverted (protected membrane) roof assembly. The hot melt membrane is not suitable for exposed applications and should not be specified as an exposed surface finish. If an exposed podium or roof deck finish is required, specify a PVC or FPO single-ply sheet membrane (see the Single-Ply Sheet Membranes page) or a liquid-applied PU membrane instead.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ── Disclaimer + related links ── */}
+        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
+              <p className="text-xs leading-6 text-amber-900">
+                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, substrate condition, structural loading capacity, drainage design, NCC requirements, and waterproofing consultant advice. Hot melt rubberised asphalt installation requires specialist thermostatically controlled melting equipment and specialist applicators — confirm Australian product availability, distributor access, and accredited applicator availability before specifying. Structural engineer confirmation of roof or podium slab loading capacity for melting plant is mandatory before application. Do not rely on this reference as a substitute for professional waterproofing consultant or structural engineer advice.
+              </p>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  href: "/repair-systems/waterproofing-water-ingress",
+                  label: "Back to Waterproofing Systems",
+                  title: "Browse all waterproofing defect subcategories",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure",
+                  label: "Back to Balcony Waterproofing Failure",
+                  title: "Browse all product categories for this defect",
+                },
+                {
+                  href: "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure",
+                  label: "Defect Library",
+                  title: "Balcony Waterproofing Failure — causes, inspection, methodology",
+                },
+                {
+                  href: "/ai-scope-builder/new",
+                  label: "AI Scope Builder",
+                  title: "Generate a scope of works for balcony waterproofing remediation",
+                },
+              ].map((card) => (
+                <a
+                  key={card.href}
+                  href={card.href}
+                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
+                >
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
+                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                    Open <ArrowRight size={11} />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </section>
@@ -137,7 +269,7 @@ export default function HotMeltRubberisedAsphaltSystemsPage() {
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
           <a href="/repair-systems/balcony-waterproofing-failure" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
-            ← Balcony, roof, planter box and podium waterproofing failure
+            ← Balcony Waterproofing Failure
           </a>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">

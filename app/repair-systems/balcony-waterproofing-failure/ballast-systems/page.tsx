@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Clock, ArrowRight } from "lucide-react";
+import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
+import { BallastProductSection } from "./BallastProductSection";
 
 export const metadata: Metadata = {
-  title: "Ballast Systems — Podium and Roof Waterproofing — Remedial Building Australia",
+  title: "Ballast Systems — Roofs and Podiums — Balcony Waterproofing — Remedial Building Australia",
   description:
-    "Technical product reference for ballast systems used in balcony, roof deck, planter box and podium waterproofing remediation in Australian Class 2 strata buildings. Content coming soon.",
+    "Technical product reference for ballast systems used on loose-laid single-ply waterproofing membrane roof decks and podium slabs in Australian Class 2 strata apartment buildings — washed river pebble ballast, precast concrete paver ballast, ballast depth and weight requirements, wind uplift zone design, structural loading, and protection board requirements.",
 };
 
 const SIBLING_TABS = [
@@ -25,6 +26,7 @@ const SIBLING_TABS = [
   { label: "Tile adhesive", slug: "tile-adhesive-systems" },
   { label: "Tools", slug: "abrasives-blades-tools" },
   { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
   { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
   { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
   { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
@@ -33,7 +35,7 @@ const SIBLING_TABS = [
   { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
   { label: "Ballast systems (roofs)", slug: "ballast-systems" },
   { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining (roofs)", slug: "gutter-lining-systems" },
+  { label: "Balcony edge trims", slug: "gutter-lining-systems" },
   { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
 ];
 
@@ -75,13 +77,31 @@ export default function BallastSystemsPage() {
               <span>/</span>
               <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
               <span>/</span>
-              <span className="text-sky-950">Ballast systems (roofs)</span>
+              <span className="text-sky-950">Ballast systems — roofs and podiums</span>
             </nav>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Ballast and Protection</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                Ballast systems (roofs)
-              </h1>
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Protection &amp; Overburden</p>
+                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                  Ballast systems — roofs and podiums
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+                  Technical product reference for ballast systems used on loose-laid single-ply waterproofing membrane systems on roof decks and podium slabs in Australian Class 2 strata apartment buildings.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                {[
+                  { label: "Products listed", value: "2" },
+                  { label: "Brands covered", value: "Trade supply" },
+                  { label: "Ballast types", value: "River pebble / concrete paver" },
+                  { label: "Categories", value: "Loose-laid membrane wind uplift ballast" },
+                ].map((s) => (
+                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
+                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -110,23 +130,135 @@ export default function BallastSystemsPage() {
           </div>
         </div>
 
-        {/* ── Coming soon ── */}
-        <section className="px-8 py-20">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 shadow-sm text-center">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-950 text-white">
-                <Clock size={22} />
+        {/* ── Content ── */}
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl space-y-10">
+
+            {/* Intro */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+                  <BookOpen size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-sky-950">What are ballast systems — roofs and podiums?</h3>
               </div>
-              <h2 className="text-xl font-extrabold text-sky-950">Content coming soon</h2>
-              <p className="mt-3 max-w-lg mx-auto text-sm leading-7 text-slate-500">
-                Technical product reference, system comparisons and brand equivalents for ballast systems (roofs) will be published here. Check back soon.
+              <div className="space-y-4 text-sm leading-7 text-slate-600">
+                <p>
+                  Ballast systems are used on loose-laid single-ply waterproofing membrane roofs and podium slabs to hold the membrane in place against wind uplift forces. When a single-ply PVC or FPO sheet membrane is installed loose-laid over a flat roof or podium deck — without being bonded or mechanically fixed to the substrate — it relies entirely on the weight of the material placed above it to resist the wind suction forces that act on the underside of the membrane during wind events. The ballast material — washed river pebble, precast concrete pavers, or pedestal-supported pavers — provides the dead weight required to counteract these uplift forces and keep the membrane in contact with the substrate below.
+                </p>
+                <p>
+                  Ballast systems are a fundamental component of loose-laid single-ply membrane installations using products such as Wolfin (Projex Group), Fatrafol (Fatra Australia), Sarnafil, and Sikaplan (Sika). On these systems, the membrane is unrolled and hot-air welded at seams but is not bonded or fixed to the substrate — the ballast above is the only mechanism holding the membrane down. The ballast also performs a secondary function: protecting the membrane from UV degradation, physical damage, and foot traffic, extending the service life of the membrane significantly compared to an exposed installation.
+                </p>
+                <p>
+                  Ballast design is not a simple material selection decision. The required ballast weight per square metre varies across the roof area — perimeter zones and corner zones are subject to significantly higher wind uplift forces than the field of the roof and require heavier ballast or a wider depth than the field. The required ballast weight is determined by a wind uplift analysis based on the building height, roof geometry, wind speed category (from AS/NZS 1170.2), and the specific membrane system being used. The structural engineer must confirm that the roof or podium slab can carry the imposed dead load of the ballast before the system is specified.
+                </p>
+              </div>
+            </div>
+
+            {/* Interactive: accordion + product grid + comparison table */}
+            <BallastProductSection />
+
+            {/* ── Warning boxes — below comparison table only ── */}
+
+            {/* Box 1 — Red (critical) */}
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-red-900">WIND UPLIFT ANALYSIS IS MANDATORY BEFORE BALLAST WEIGHTS ARE SPECIFIED — DO NOT ASSUME A STANDARD WEIGHT IS SUFFICIENT FOR ALL ZONES</h3>
+              </div>
+              <p className="text-sm leading-7 text-red-900">
+                The required ballast weight per square metre varies significantly across the roof area — perimeter zones and corner zones are subject to wind uplift forces two to three times greater than the central field area. Applying uniform ballast across the full roof without increasing the weight at perimeter and corner zones is one of the most common and dangerous errors in ballasted single-ply roof specification. A wind uplift analysis based on AS/NZS 1170.2 wind loading — accounting for building height, roof geometry, location, and wind region — is mandatory before ballast weights are determined. This analysis must be performed by the structural engineer or confirmed with the accredited membrane applicator who is responsible for the system warranty. Do not proceed with ballast specification on the basis of a standard depth or weight alone.
               </p>
-              <a
-                href="/repair-systems/balcony-waterproofing-failure"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-900 transition"
-              >
-                Back to all categories <ArrowRight size={14} />
-              </a>
+            </div>
+
+            {/* Box 2 — Red (critical) */}
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-red-900">STRUCTURAL ENGINEER MUST CONFIRM THE ROOF OR PODIUM SLAB CAN CARRY THE BALLAST DEAD LOAD BEFORE SPECIFICATION</h3>
+              </div>
+              <p className="text-sm leading-7 text-red-900">
+                Ballast imposes a significant additional dead load on the roof or podium slab — 80 kg/m² of pebble ballast adds approximately 0.8 kPa of dead load, and 100mm of pebble ballast adds approximately 1.5–1.7 kPa. On existing Class 2 strata roofs and podium slabs, the original structural design may not have included provision for ballast loads — many existing slabs were designed for membrane, screed, and tile loads only, not for an additional 80–110 kg/m² of ballast material. The structural engineer must confirm the slab's dead load capacity before ballast is specified. If the slab cannot carry the ballast load, a mechanically fixed or fully bonded membrane system must be specified instead of a loose-laid ballasted system.
+              </p>
+            </div>
+
+            {/* Box 3 — Amber (warning) */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">SHARP CRUSHED AGGREGATE MUST NOT BE USED AS ROOF BALLAST — ROUNDED SMOOTH PEBBLE ONLY</h3>
+              </div>
+              <p className="text-sm leading-7 text-amber-900">
+                Crushed rock aggregate has sharp, angular edges that concentrate load at point contacts with the membrane surface — under the weight of the ballast above, these point loads can puncture, abrade, and damage the membrane over time. Only rounded, smooth, washed river pebble or similar naturally rounded stone must be used as roof ballast. Crushed blue metal, crushed limestone, and similar sharp aggregate products must never be specified as membrane ballast regardless of their particle size. Confirm that the ballast material supplied is rounded and washed before acceptance on site — reject any ballast delivery that contains sharp-edged crushed material.
+              </p>
+            </div>
+
+            {/* Box 4 — Blue (informational) */}
+            <div className="rounded-2xl border border-sky-200 bg-sky-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+                  <BookOpen size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-sky-950">ALL MEMBRANE SEAMS MUST BE TESTED AND CONFIRMED BEFORE BALLAST IS PLACED — SEAMS CANNOT BE ACCESSED AFTER BALLASTING</h3>
+              </div>
+              <p className="text-sm leading-7 text-slate-700">
+                Once ballast is placed over the membrane, the membrane surface and all seams are permanently inaccessible without removing the full ballast load — a significant cost and disruption on an occupied strata building. All hot-air welded seams on the loose-laid single-ply membrane must be tested for continuity using point probe or air lance methods, inspected and confirmed defect-free, before any ballast is placed above. Any seam that fails testing must be repaired and re-tested before ballasting commences. The membrane manufacturer&apos;s accredited applicator is responsible for seam testing and must document the results as part of the project quality record before the installation is covered.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ── Disclaimer + related links ── */}
+        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
+              <p className="text-xs leading-6 text-amber-900">
+                This page provides general technical information only. Final ballast specification must be confirmed against the membrane manufacturer&apos;s system requirements, a wind uplift analysis per AS/NZS 1170.2, structural engineer confirmation of slab dead load capacity, NCC requirements, and accredited membrane applicator advice. Ballast weights specified on this page are indicative minimums for field zones only — perimeter and corner zones require heavier ballast confirmed by wind uplift analysis. Sharp crushed aggregate must not be used as membrane ballast. All membrane seams must be tested before ballast is placed. Do not rely on this reference as a substitute for professional structural engineer, wind engineer, or waterproofing consultant advice.
+              </p>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  href: "/repair-systems/waterproofing-water-ingress",
+                  label: "Back to Waterproofing Systems",
+                  title: "Browse all waterproofing defect subcategories",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure",
+                  label: "Back to Balcony Waterproofing Failure",
+                  title: "Browse all product categories for this defect",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure/tapered-insulation-board-systems",
+                  label: "Tapered Insulation Board Systems",
+                  title: "Tapered insulation for inverted ballasted roof systems — PIR / XPS / mineral wool",
+                },
+                {
+                  href: "/ai-scope-builder/new",
+                  label: "AI Scope Builder",
+                  title: "Generate a scope of works for roof waterproofing remediation",
+                },
+              ].map((card) => (
+                <a
+                  key={card.href}
+                  href={card.href}
+                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
+                >
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
+                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                    Open <ArrowRight size={11} />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </section>

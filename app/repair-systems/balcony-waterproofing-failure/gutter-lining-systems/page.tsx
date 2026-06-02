@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Clock, ArrowRight } from "lucide-react";
+import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
+import { GutterLiningProductSection } from "./GutterLiningProductSection";
 
 export const metadata: Metadata = {
-  title: "Gutter Lining Systems — Balcony and Podium Waterproofing — Remedial Building Australia",
+  title: "Balcony Edge Trims — Waterproof Termination and Drip Edge — Balcony Waterproofing — Remedial Building Australia",
   description:
-    "Technical product reference for gutter lining systems used in balcony, roof deck, planter box and podium waterproofing remediation in Australian Class 2 strata buildings. Content coming soon.",
+    "Technical product reference for balcony edge trims used in balcony and terrace waterproofing remediation on Australian Class 2 strata apartment buildings — aluminium drip edge trims, anodised aluminium balcony edge profiles, Schlüter BARA balcony profiles, custom fabricated Grade 316 stainless steel edge profiles — membrane integration, drip detail, facade protection, and brand comparisons.",
 };
 
 const SIBLING_TABS = [
@@ -25,6 +26,7 @@ const SIBLING_TABS = [
   { label: "Tile adhesive", slug: "tile-adhesive-systems" },
   { label: "Tools", slug: "abrasives-blades-tools" },
   { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
   { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
   { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
   { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
@@ -33,7 +35,7 @@ const SIBLING_TABS = [
   { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
   { label: "Ballast systems (roofs)", slug: "ballast-systems" },
   { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining (roofs)", slug: "gutter-lining-systems" },
+  { label: "Balcony edge trims", slug: "gutter-lining-systems" },
   { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
 ];
 
@@ -75,13 +77,31 @@ export default function GutterLiningSystemsPage() {
               <span>/</span>
               <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
               <span>/</span>
-              <span className="text-sky-950">Gutter lining systems (roofs)</span>
+              <span className="text-sky-950">Balcony edge trims — waterproof termination and drip edge</span>
             </nav>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Gutter Lining</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                Gutter lining systems (roofs)
-              </h1>
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 01</p>
+                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                  Balcony edge trims — waterproof termination and drip edge
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+                  Technical product reference for balcony perimeter edge trim systems used in balcony and terrace waterproofing remediation on Australian Class 2 strata buildings. Covers aluminium (powder coat and anodised) and custom fabricated 316L stainless steel edge trim selection for standard and coastal environments — membrane-integrated drip edge termination, tile anchor profiles, and concealed-fix perimeter trim systems.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                {[
+                  { label: "Products listed", value: "5" },
+                  { label: "Brands covered", value: "4" },
+                  { label: "Materials", value: "Al / anodised / 316 SS" },
+                  { label: "Categories", value: "Balcony edge waterproof termination" },
+                ].map((s) => (
+                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
+                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -110,23 +130,106 @@ export default function GutterLiningSystemsPage() {
           </div>
         </div>
 
-        {/* ── Coming soon ── */}
-        <section className="px-8 py-20">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 shadow-sm text-center">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-950 text-white">
-                <Clock size={22} />
+        {/* ── Content ── */}
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl space-y-10">
+
+            {/* Intro card */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+                  <BookOpen size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-sky-950">Balcony edge trims — scope of this page</h3>
               </div>
-              <h2 className="text-xl font-extrabold text-sky-950">Content coming soon</h2>
-              <p className="mt-3 max-w-lg mx-auto text-sm leading-7 text-slate-500">
-                Technical product reference, system comparisons and brand equivalents for gutter lining systems (roofs) will be published here. Check back soon.
+              <div className="space-y-4 text-sm leading-7 text-slate-600">
+                <p>
+                  This page covers balcony perimeter edge trim systems used in balcony and terrace waterproofing remediation on Australian Class 2 strata buildings. Balcony edge trims are critical secondary components in a waterproofing system — the membrane alone is not sufficient without a correctly specified edge termination that protects the membrane's terminal detail from water undercutting, UV exposure, and physical damage at the open slab perimeter.
+                </p>
+                <p>
+                  <strong className="text-sky-950">Balcony edge trims</strong> are installed at the perimeter of balcony slabs to protect and conceal the membrane termination edge and the exposed tile or screed edge. Selection is primarily driven by material grade — aluminium (powder coat or anodised) for standard environments, and 316L stainless steel for coastal buildings within 1 km of the ocean. Profile selection must match the specified tile build-up depth and must accommodate end caps at all terminations. Products covered include the Demtech BET Series adjustable concealed-fix aluminium trim, Schlüter BARA-RAK and BARA-RAKO anodised aluminium tile anchor profiles, Amark All-Edge concealed-fix aluminium trim, standard anodised aluminium drip angles, and custom fabricated Grade 316L stainless steel edge profiles for coastal environments.
+                </p>
+              </div>
+            </div>
+
+            {/* Interactive product sections + comparison tables */}
+            <GutterLiningProductSection />
+
+            {/* Warning boxes */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+                <div className="mb-4 flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-700 text-white">
+                    <AlertTriangle size={15} />
+                  </div>
+                  <h3 className="text-base font-extrabold text-red-900">Always install edge trim before membrane application</h3>
+                </div>
+                <p className="text-sm leading-7 text-red-900">
+                  Balcony edge trims must be installed and fixed to the substrate before the waterproofing membrane is applied — not after. The membrane must lap under or behind the base section of the trim to create a waterproof seal at the edge. Installing the trim after the membrane is applied results in a non-waterproof detail that will fail at the junction. Confirm the installation sequence with the trim manufacturer and waterproofing applicator before work commences.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+                <div className="mb-4 flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                    <AlertTriangle size={15} />
+                  </div>
+                  <h3 className="text-base font-extrabold text-amber-900">Specify 316L stainless steel for all coastal locations</h3>
+                </div>
+                <p className="text-sm leading-7 text-amber-900">
+                  Standard aluminium powder coat and standard anodised finishes are not appropriate for buildings within 1 km of the ocean or in severe salt air environments. Specify 316L (marine grade, molybdenum-alloyed) stainless steel — not 304 grade — for any coastal application. 304 grade stainless will show pitting, rust staining, and surface corrosion within 2–3 years in coastal environments. Always require a material test certificate from the fabricator confirming 316L grade.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* ── Disclaimer + related links ── */}
+        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
+              <p className="text-xs leading-6 text-amber-900">
+                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, membrane system compatibility, coastal exposure zone assessment, tile thickness and adhesive bed depth, NCC requirements, and waterproofing consultant advice. Balcony edge trims must be installed before the waterproofing membrane is applied. Grade 316 stainless steel is required for marine-exposed locations. Do not rely on this reference as a substitute for professional waterproofing consultant advice.
               </p>
-              <a
-                href="/repair-systems/balcony-waterproofing-failure"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-900 transition"
-              >
-                Back to all categories <ArrowRight size={14} />
-              </a>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  href: "/repair-systems/waterproofing-water-ingress",
+                  label: "Back to Waterproofing Systems",
+                  title: "Browse all waterproofing defect subcategories",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure",
+                  label: "Back to Balcony Waterproofing Failure",
+                  title: "Browse all product categories for this defect",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure/sheet-membranes-torch-on",
+                  label: "Related — Torch-on SBS membranes",
+                  title: "Full torch-on SBS modified bitumen product reference",
+                },
+                {
+                  href: "/ai-scope-builder/new",
+                  label: "AI Scope Builder",
+                  title: "Generate a scope of works for balcony waterproofing remediation",
+                },
+              ].map((card) => (
+                <a
+                  key={card.href}
+                  href={card.href}
+                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
+                >
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
+                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                    Open <ArrowRight size={11} />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </section>

@@ -13,8 +13,9 @@ const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 function getNewsImagePool(): string[] {
   const dir = join(process.cwd(), "public", "Images", "News");
   if (!existsSync(dir)) return [];
+  const EXCLUDE = new Set(["Home page.jpg", "ChatGPT Image Apr 4, 2025, 03_51_18 PM.png"]);
   return readdirSync(dir)
-    .filter((f) => IMAGE_EXTS.has(extname(f).toLowerCase()))
+    .filter((f) => IMAGE_EXTS.has(extname(f).toLowerCase()) && !EXCLUDE.has(f))
     .sort()
     .map((f) => `/Images/News/${f}`);
 }

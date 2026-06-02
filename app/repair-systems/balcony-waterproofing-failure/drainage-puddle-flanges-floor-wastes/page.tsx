@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
-import { DrainageProductSection } from "./DrainageProductSection";
+import { AlertTriangle, ArrowRight } from "lucide-react";
+import { DrainageProductSection, DrainageIntroSection } from "./DrainageProductSection";
 
 export const metadata: Metadata = {
   title: "Puddle Flanges and Floor Wastes — Balcony Waterproofing Repair — Remedial Building Australia",
@@ -26,6 +26,7 @@ const SIBLING_TABS = [
   { label: "Tile adhesive", slug: "tile-adhesive-systems" },
   { label: "Tools", slug: "abrasives-blades-tools" },
   { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
   { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
   { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
   { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
@@ -134,25 +135,7 @@ export default function DrainagePuddleFlangesPage() {
           <div className="mx-auto max-w-7xl space-y-10">
 
             {/* What is it */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-              <div className="mb-4 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
-                  <BookOpen size={15} />
-                </div>
-                <h3 className="text-base font-extrabold text-sky-950">What are puddle flanges and floor wastes — balcony waterproofing?</h3>
-              </div>
-              <div className="space-y-4 text-sm leading-7 text-slate-600">
-                <p>
-                  A puddle flange (also called a puddle collar, floor waste flange, or membrane clamp flange) is the membrane-integration fitting installed at every balcony and terrace floor waste outlet. The flange consists of a flat horizontal plate — PVC, stainless steel, or brass — that the waterproofing membrane is dressed over, bonded to, and mechanically clamped or heat-welded around, creating a continuous waterproof junction between the membrane field and the drainage point. Without correct puddle flange integration, the floor waste is invariably the first point of waterproofing failure on a balcony.
-                </p>
-                <p>
-                  In balcony waterproofing remediation, puddle flanges and floor wastes are almost always replaced as part of the waterproofing system strip-out and reinstatement — the existing waste is removed, the pipe stub is prepared, the new flange is set to the correct finished floor level to allow for screed and tile build-up, the membrane is dressed over the flange flap, and the strainer or grate is installed over the membrane to complete the assembly. Height-adjustable flanges — such as the Schlüter KERDI-DRAIN system — allow the outlet height to be set precisely before the membrane is applied, which is critical when tile build-up thickness varies across a project.
-                </p>
-                <p>
-                  Floor waste selection must be coordinated with both the waterproofing membrane type (torch-on membranes require torch-compatible PVC or stainless flanges; liquid-applied membranes require a bondable flange face) and the hydraulic drainage design — the waste size, outlet diameter, and grate open area must be sufficient to drain the balcony area in a code-compliant storm event. AS/NZS 3500.3 governs sanitary plumbing and drainage, and hydraulic engineer input is required on any project where drainage capacity, gradient, or outlet size is in question.
-                </p>
-              </div>
-            </div>
+            <DrainageIntroSection />
 
             {/* Interactive: accordion + product grid + comparison table */}
             <DrainageProductSection />

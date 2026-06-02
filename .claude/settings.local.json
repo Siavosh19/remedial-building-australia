@@ -26,7 +26,20 @@
       "Bash(sed -n '820,835p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/primers-bonding-agents/PrimersProductSection.tsx)",
       "Bash(curl -s -X POST https://www.remedialbuildingaustralia.com.au/api/contact -H 'Content-Type: application/json' -d '{\"name\":\"Test\",\"email\":\"test@example.com\",\"subject\":\"Delivery test\",\"message\":\"Testing contact form delivery.\"}')",
       "Bash(DATABASE_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true\" node *)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(sort -k5 -rh)",
+      "Bash(sips --version)",
+      "Bash(lsof -ti:3000)",
+      "Bash(npx --yes chromium-cli screenshot \"http://localhost:3000/directory/login\" --output /tmp/login-page.png --width 1280 --height 900)",
+      "Bash(npx playwright *)",
+      "Bash(mv \"news-01.jpg\"  \"commissioner-enforcement-stop-work-order.jpg\")",
+      "Bash(mv \"news-02.jpg\"  \"building-commissioner-desk-code-compliance.jpg\")",
+      "Bash(mv \"news-03.jpg\"  \"class2-building-registration-form.jpg\")",
+      "Bash(mv \"news-04.jpg\"  \"design-practitioner-cad-bim-workstation.jpg\")",
+      "Bash(mv \"news-05.jpg\"  \"cladding-removal-facade-workers-platform.jpg\")",
+      "Bash(echo \"WA done: $?\")",
+      "Bash(git reset *)",
+      "Bash(git restore *)"
     ]
   }
 }

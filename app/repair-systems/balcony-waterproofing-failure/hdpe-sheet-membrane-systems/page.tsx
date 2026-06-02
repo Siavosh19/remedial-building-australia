@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Clock, ArrowRight } from "lucide-react";
+import { BookOpen, AlertTriangle, ArrowRight, Info } from "lucide-react";
+import { SinglePlyProductSection } from "./SinglePlyProductSection";
 
 export const metadata: Metadata = {
-  title: "HDPE Sheet Membrane Systems — Balcony and Podium Waterproofing — Remedial Building Australia",
+  title: "Single-Ply Sheet Membrane Systems — Roofs and Podiums — Remedial Building Australia",
   description:
-    "Technical product reference for hDPE sheet membrane systems used in balcony, roof deck, planter box and podium waterproofing remediation in Australian Class 2 strata buildings. Content coming soon.",
+    "Technical product reference for single-ply polymeric sheet membrane systems used in roof deck, podium slab, and large terrace waterproofing remediation on Australian Class 2 strata apartment buildings — PVC sheet membranes, FPO/TPO sheet membranes, HDPE-bentonite composite systems — hot-air welded, loose-laid, and bonded systems, specialist applicator requirements, and brand comparisons.",
 };
 
 const SIBLING_TABS = [
@@ -25,6 +26,7 @@ const SIBLING_TABS = [
   { label: "Tile adhesive", slug: "tile-adhesive-systems" },
   { label: "Tools", slug: "abrasives-blades-tools" },
   { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
   { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
   { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
   { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
@@ -75,13 +77,31 @@ export default function HdpeSheetMembraneSystemsPage() {
               <span>/</span>
               <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
               <span>/</span>
-              <span className="text-sky-950">HDPE sheet membrane systems (roofs and podiums)</span>
+              <span className="text-sky-950">Single-ply sheet membrane systems — roofs and podiums</span>
             </nav>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Sheet Membranes</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                HDPE sheet membrane systems (roofs and podiums)
-              </h1>
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Single-Ply Sheet Membranes</p>
+                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                  Single-ply sheet membrane systems — roofs and podiums
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+                  Technical product reference for single-ply polymeric sheet membrane systems used in roof deck, podium slab, and large terrace waterproofing remediation on Australian Class 2 strata apartment buildings — PVC sheet membranes, FPO/TPO sheet membranes, HDPE-bentonite composite systems, and specialist applicator requirements.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                {[
+                  { label: "Products listed", value: "5" },
+                  { label: "Brands covered", value: "3" },
+                  { label: "Membrane types", value: "PVC / FPO-TPO / HDPE-bentonite" },
+                  { label: "Applications", value: "Roof deck and podium slab waterproofing" },
+                ].map((s) => (
+                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
+                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -110,23 +130,133 @@ export default function HdpeSheetMembraneSystemsPage() {
           </div>
         </div>
 
-        {/* ── Coming soon ── */}
-        <section className="px-8 py-20">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 shadow-sm text-center">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-950 text-white">
-                <Clock size={22} />
+        {/* ── Content ── */}
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl space-y-10">
+
+            {/* ── Intro — clean prose only ── */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+                  <BookOpen size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-sky-950">What are single-ply sheet membrane systems — roofs and podiums?</h3>
               </div>
-              <h2 className="text-xl font-extrabold text-sky-950">Content coming soon</h2>
-              <p className="mt-3 max-w-lg mx-auto text-sm leading-7 text-slate-500">
-                Technical product reference, system comparisons and brand equivalents for hDPE sheet membrane systems (roofs and podiums) will be published here. Check back soon.
+              <div className="space-y-4 text-sm leading-7 text-slate-600">
+                <p>
+                  Single-ply polymeric sheet membrane systems are factory-manufactured waterproofing membranes supplied in rolls and installed as a continuous sheet over roof decks, podium slabs, and large external terraces. Unlike liquid-applied membranes that are applied in multiple coats and cure in-situ, single-ply sheet membranes arrive on site at their full specified thickness and are installed by overlapping, hot-air welding, or bonding adjacent rolls to form a continuous, seam-welded waterproofing layer. They are used on large-area applications — podium slabs, communal roof decks, and large terraces — where the membrane area, exposure conditions, and design life requirements favour a factory-controlled sheet product over an in-situ applied liquid membrane.
+                </p>
+                <p>
+                  In Australian Class 2 strata remediation, single-ply sheet membranes are specified on podium slabs above car parks and basement levels, communal roof decks and terraces, and large balcony areas where torch-on modified bitumen sheet is not the appropriate solution and liquid-applied PU membrane cannot meet the required performance or area efficiency. The principal single-ply sheet membrane types used in the Australian market are PVC (polyvinyl chloride) sheet membranes and FPO/TPO (flexible polyolefin / thermoplastic polyolefin) sheet membranes — both are hot-air welded at seams and laps to create a watertight join. HDPE-bentonite composite systems are a separate category used primarily for below-grade and subsoil waterproofing rather than exposed roof and podium applications.
+                </p>
+                <p>
+                  Single-ply sheet membrane installation requires specialist accredited applicators. Unlike liquid-applied or torch-on membrane systems, single-ply PVC and FPO/TPO membranes are welded using hot-air welding equipment — the weld quality and seam continuity determine the system integrity. Manufacturers such as Projex Group (Wolfin, Cosmofin) and Sika (Sarnafil) require installation by accredited applicators and provide single-point warranties on both materials and workmanship when installed by their certified network.
+                </p>
+              </div>
+            </div>
+
+            {/* ── Accordion + Product Cards + Comparison Table (client component) ── */}
+            <SinglePlyProductSection />
+
+            {/* ── BOX 1 — RED: specialist applicator ── */}
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-700 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-red-900">SINGLE-PLY SHEET MEMBRANE INSTALLATION REQUIRES SPECIALIST ACCREDITED APPLICATORS — DO NOT SPECIFY WITHOUT CONFIRMING APPLICATOR AVAILABILITY</h3>
+              </div>
+              <p className="text-sm leading-7 text-red-900">
+                Hot-air welding of PVC and FPO/TPO single-ply sheet membranes is a specialist skill requiring calibrated welding equipment, manufacturer training, and verified installation experience. An improperly welded seam — incorrect weld temperature, speed, or pressure — may appear visually continuous but will fail under hydrostatic pressure and thermal cycling. Both Projex Group (Wolfin, Cosmofin) and Sika (Sarnafil) require installation by their accredited applicator networks and provide single-point warranties on workmanship and materials only through accredited installations. Do not specify single-ply sheet membranes without first confirming that a manufacturer-accredited applicator is available and accessible for the project location and programme. Accredited applicators are not available in all locations — confirm before specifying.
               </p>
-              <a
-                href="/repair-systems/balcony-waterproofing-failure"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-900 transition"
-              >
-                Back to all categories <ArrowRight size={14} />
-              </a>
+            </div>
+
+            {/* ── BOX 2 — RED: seam testing ── */}
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-700 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-red-900">ALL HOT-AIR WELDED SEAMS MUST BE TESTED BEFORE ANY COVERING LAYER IS INSTALLED</h3>
+              </div>
+              <p className="text-sm leading-7 text-red-900">
+                Every hot-air welded seam on a single-ply sheet membrane installation must be tested for continuity before the protection board, drainage layer, growing medium, ballast, or paver system is installed above. Point probe testing and air lance testing are the standard seam test methods for PVC and FPO/TPO membranes. A seam that fails testing can be repaired by re-welding and re-testing before covering. A seam that is covered without testing and subsequently leaks requires full removal of all covering layers to access and repair — at significant cost. Seam testing is mandatory, not optional, on all Class 2 strata podium and roof deck remediation projects.
+              </p>
+            </div>
+
+            {/* ── BOX 3 — AMBER: PVC and bitumen separation ── */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">PVC MEMBRANES MUST BE SEPARATED FROM BITUMEN AND INCOMPATIBLE MATERIALS</h3>
+              </div>
+              <p className="text-sm leading-7 text-amber-900">
+                PVC sheet membranes contain plasticisers that can migrate into and be extracted by contact with bituminous materials, coal tar, oils, and certain solvents. This plasticiser migration accelerates PVC degradation and can reduce the service life of the membrane. Where a PVC single-ply sheet membrane is installed over or adjacent to an existing bituminous membrane, screed, or surface treatment, a compatible separation layer must be installed between the PVC membrane and the bituminous material. Confirm the required separation layer type and thickness with the membrane manufacturer (Projex Group or Sika) before installing. Wolfin GWSK has a bitumen-compatible self-adhesive layer specifically designed for bonding over existing bituminous surfaces — confirm with Projex Group whether a separation layer is still required in specific circumstances.
+              </p>
+            </div>
+
+            {/* ── BOX 4 — BLUE: HDPE disambiguation ── */}
+            <div className="rounded-2xl border border-sky-200 bg-sky-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-700 text-white">
+                  <Info size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-sky-900">DO NOT CONFUSE HDPE-BENTONITE COMPOSITE MEMBRANES WITH PVC AND FPO SINGLE-PLY ROOF MEMBRANES</h3>
+              </div>
+              <p className="text-sm leading-7 text-sky-900">
+                HDPE-bentonite composite sheets (such as Tremco Paraseal LG) are below-grade waterproofing products — they require confining pressure from overburden or structural concrete to activate and maintain the bentonite seal. They are not UV stable and are not designed for exposed roof deck, podium surface, or above-grade applications. The tab title references HDPE sheet membranes, but the primary single-ply products used on Australian roof decks and podium slabs are PVC and FPO/TPO sheet membranes — not HDPE-bentonite composites. Select the correct product type for the application: PVC or FPO/TPO for exposed roof and podium; HDPE-bentonite for below-grade and subsoil.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ── Disclaimer + related links ── */}
+        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
+              <p className="text-xs leading-6 text-amber-900">
+                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, substrate condition, drainage design, structural loading, wind uplift design, AS 4654.1 and AS 4654.2 requirements, NCC requirements, and waterproofing consultant advice. Single-ply sheet membrane installation requires manufacturer-accredited specialist applicators — do not specify without confirming accredited applicator availability. All hot-air welded seams must be tested before covering. Do not rely on this reference as a substitute for professional waterproofing consultant or structural engineer advice.
+              </p>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  href: "/repair-systems/waterproofing-water-ingress",
+                  label: "Back to Waterproofing Systems",
+                  title: "Browse all waterproofing defect subcategories",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure",
+                  label: "Back to Balcony Waterproofing Failure",
+                  title: "Browse all product categories for this defect",
+                },
+                {
+                  href: "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure",
+                  label: "Defect Library",
+                  title: "Balcony Waterproofing Failure — causes, inspection, methodology",
+                },
+                {
+                  href: "/ai-scope-builder/new",
+                  label: "AI Scope Builder",
+                  title: "Generate a scope of works for roof and podium waterproofing remediation",
+                },
+              ].map((card) => (
+                <a
+                  key={card.href}
+                  href={card.href}
+                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
+                >
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
+                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                    Open <ArrowRight size={11} />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </section>

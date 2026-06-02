@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Clock, ArrowRight } from "lucide-react";
+import { AlertTriangle, BookOpen, ArrowRight } from "lucide-react";
+import { FlashingCompoundProductSection } from "./FlashingCompoundProductSection";
 
 export const metadata: Metadata = {
-  title: "Flashing Compound Systems — Balcony and Podium Waterproofing — Remedial Building Australia",
+  title: "Flashing Compound Systems — Roofs and Balconies — Remedial Building Australia",
   description:
-    "Technical product reference for flashing compound systems used in balcony, roof deck, planter box and podium waterproofing remediation in Australian Class 2 strata buildings. Content coming soon.",
+    "Technical product reference for flashing compound systems used in roof and balcony waterproofing remediation on Australian Class 2 strata apartment buildings — liquid PU-bitumen flashing compounds, bituminous brushable compounds, self-adhesive flashing tapes, upstand and parapet detail waterproofing, root-resistant flashing variants, and brand comparisons.",
 };
 
 const SIBLING_TABS = [
@@ -25,6 +26,7 @@ const SIBLING_TABS = [
   { label: "Tile adhesive", slug: "tile-adhesive-systems" },
   { label: "Tools", slug: "abrasives-blades-tools" },
   { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
   { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
   { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
   { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
@@ -33,7 +35,7 @@ const SIBLING_TABS = [
   { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
   { label: "Ballast systems (roofs)", slug: "ballast-systems" },
   { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining (roofs)", slug: "gutter-lining-systems" },
+  { label: "Edge trims & gutter lining", slug: "gutter-lining-systems" },
   { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
 ];
 
@@ -75,13 +77,31 @@ export default function FlashingCompoundSystemsPage() {
               <span>/</span>
               <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
               <span>/</span>
-              <span className="text-sky-950">Flashing compound systems (roofs)</span>
+              <span className="text-sky-950">Flashing compound systems — roofs and balconies</span>
             </nav>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Flashings</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                Flashing compound systems (roofs)
-              </h1>
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 01</p>
+                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                  Flashing compound systems — roofs and balconies
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+                  Technical product reference for liquid PU-bitumen flashing compounds, bituminous brushable compounds, and self-adhesive flashing tapes used to seal upstands, parapet junctions, penetrations, and detail areas on roofs and balconies in Australian Class 2 strata building remediation.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                {[
+                  { label: "Products listed", value: "7" },
+                  { label: "Brands covered", value: "4" },
+                  { label: "System types", value: "PU-bitumen / bituminous / tape" },
+                  { label: "Application", value: "Upstand and detail waterproofing" },
+                ].map((s) => (
+                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
+                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -110,23 +130,132 @@ export default function FlashingCompoundSystemsPage() {
           </div>
         </div>
 
-        {/* ── Coming soon ── */}
-        <section className="px-8 py-20">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 shadow-sm text-center">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-950 text-white">
-                <Clock size={22} />
+        {/* ── Content ── */}
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl space-y-10">
+
+            {/* ── Intro — clean prose only ── */}
+            <div>
+              <div className="mb-5 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+                  <BookOpen size={15} />
+                </div>
+                <h2 className="text-xl font-extrabold text-sky-950">What are flashing compound systems — roofs and balconies?</h2>
               </div>
-              <h2 className="text-xl font-extrabold text-sky-950">Content coming soon</h2>
-              <p className="mt-3 max-w-lg mx-auto text-sm leading-7 text-slate-500">
-                Technical product reference, system comparisons and brand equivalents for flashing compound systems (roofs) will be published here. Check back soon.
+              <div className="space-y-4 text-sm leading-7 text-slate-600">
+                <p>
+                  Flashing compound systems are liquid-applied or self-adhesive waterproofing products used to seal and waterproof upstands, parapet wall junctions, roof-to-wall interfaces, penetrations, step junctions, and other detail areas on roofs and balconies where a sheet membrane cannot be easily applied, heat-bonded, or formed into a watertight junction. On torch-on modified bitumen sheet membrane systems — the dominant sheet membrane system in Australian strata building remediation — the sheet membrane covers the horizontal field of the roof or balcony, but the junctions with vertical upstands, parapet walls, step flashings, and penetrations require a separate compound or flashing product to complete the waterproof detail. Flashing compounds bridge the gap between the field membrane and the vertical surface, conforming to irregular substrates and complex geometry that sheet membranes cannot reach.
+                </p>
+                <p>
+                  Flashing compound systems are also used as standalone repair compounds on existing waterproofing systems — applied over failed or cracked existing membrane at upstands, corners, and penetration perimeters where the primary membrane has failed but full replacement is not required or is not yet scheduled. In this repair role, flashing compounds extend the service life of an existing system at its most vulnerable detail locations.
+                </p>
+                <p>
+                  The three primary flashing compound types used in Australian roof and balcony waterproofing remediation are liquid PU-bitumen flashing compounds, bituminous brushable compounds, and self-adhesive flashing tapes. Each has a distinct substrate compatibility, membrane system compatibility, UV resistance, and application method. The correct flashing compound must be selected to match the primary membrane system it is used with — flashing compounds are not universally interchangeable across membrane systems and brands.
+                </p>
+              </div>
+            </div>
+
+            {/* Interactive: accordion + product sections + comparison tables */}
+            <FlashingCompoundProductSection />
+
+            {/* ── Warning boxes — ALL below comparison table ── */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+                <div className="mb-4 flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-700 text-white">
+                    <AlertTriangle size={15} />
+                  </div>
+                  <h3 className="text-base font-extrabold text-red-900">Flashing compounds are detail products — they do not replace the field membrane</h3>
+                </div>
+                <p className="text-sm leading-7 text-red-900">
+                  Flashing compounds and self-adhesive flashing tapes are detail products — they seal upstands, parapet bases, penetration perimeters, and step junctions. They are not field membrane products and must not be applied across the horizontal field of a roof or balcony as a substitute for the primary membrane system. A roof or balcony waterproofed only with flashing compound at details but without a correctly applied field membrane will fail — the flashing compound coverage is insufficient to provide the required waterproofing across the field area. Every correctly specified roof or balcony waterproofing system includes both a field membrane (torch-on sheet, single-ply, or liquid-applied) and a compatible flashing compound at all detail locations. Both are mandatory — neither replaces the other.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-7">
+                <div className="mb-4 flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-700 text-white">
+                    <AlertTriangle size={15} />
+                  </div>
+                  <h3 className="text-base font-extrabold text-red-900">Reinforcing fleece is mandatory at all angles and penetration perimeters with liquid flashing compounds</h3>
+                </div>
+                <p className="text-sm leading-7 text-red-900">
+                  Soprema Alsan Flashing, Alsan Flashing Quadro, and Alsan Flashing Jardin must all be applied with the correct reinforcing fleece (Alsan Polyfleece or Alsan Fleece 165B) embedded between coats at all internal and external angles, changes of plane, and penetration perimeters. Applying liquid flashing compound without embedded fleece at these locations produces a thin, unreinforced film that will crack under thermal movement at the angle — the most common location for liquid flashing compound failure. The fleece is not optional at angles — do not apply liquid flashing compound to any angle or change of plane without reinforcing fleece embedded between the first and second coats.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+                <div className="mb-4 flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                    <AlertTriangle size={15} />
+                  </div>
+                  <h3 className="text-base font-extrabold text-amber-900">Confirm flashing compound compatibility with the primary membrane system before specifying</h3>
+                </div>
+                <p className="text-sm leading-7 text-amber-900">
+                  Flashing compounds must be compatible with the primary field membrane being used on the project. Soprema Alsan Flashing is 100% compatible with SBS and APP bituminous sheet membranes — it is not automatically compatible with ARDEX or Mapei liquid-applied PU membranes. ARDEX Flashing Tape is a Weldtec system component — it is not for use in other ARDEX membrane systems. Tremco PermAFab is designed for Tremco roofing systems. Using a flashing compound from a different manufacturer's system than the field membrane — or using a system-specific flashing tape in a non-compatible system — risks adhesion failure at the detail junction and may void the membrane system warranty. Always confirm flashing compound compatibility with the field membrane manufacturer before specifying.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-sky-200 bg-sky-50 p-7">
+                <div className="mb-4 flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+                    <BookOpen size={15} />
+                  </div>
+                  <h3 className="text-base font-extrabold text-sky-950">Upstand height must meet AS 3740 and AS 4654 minimums — flashing compound must extend to the required height</h3>
+                </div>
+                <p className="text-sm leading-7 text-slate-700">
+                  The flashing compound applied at upstands, parapet bases, and wall junctions must extend to the minimum height required by AS 3740:2021 (for balcony and wet area applications) and AS 4654.2 (for roof membrane applications). For balcony applications, the minimum upstand height is typically 150mm above the finished floor level. The flashing compound must cover the full upstand height from the base — integrating with the field membrane — to the minimum required height on the vertical face. A flashing compound that terminates below the design upstand height leaves an unsealed gap between the top of the flashing and the wall surface — a direct water ingress path. Measure and mark the minimum upstand height on the wall before applying the flashing compound, and verify the height is achieved before the system is covered.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ── Disclaimer + related links ── */}
+        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
+              <p className="text-xs leading-6 text-amber-900">
+                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, primary membrane system compatibility, substrate condition, UV exposure status, upstand height requirements per AS 3740:2021 and AS 4654.2, NCC requirements, and reinforcing fleece requirements. Flashing compounds are detail products used in conjunction with a primary field membrane — they do not replace the field membrane. Reinforcing fleece is mandatory at all angles and penetration perimeters with liquid flashing compounds. Do not rely on this reference as a substitute for professional waterproofing consultant advice.
               </p>
-              <a
-                href="/repair-systems/balcony-waterproofing-failure"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-900 transition"
-              >
-                Back to all categories <ArrowRight size={14} />
-              </a>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  href: "/repair-systems/waterproofing-water-ingress",
+                  label: "Back to Waterproofing Systems",
+                  title: "Browse all waterproofing defect subcategories",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure",
+                  label: "Back to Balcony Waterproofing Failure",
+                  title: "Browse all product categories for this defect",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure/sheet-membranes-torch-on",
+                  label: "Related — Torch-on SBS membranes",
+                  title: "Full torch-on SBS modified bitumen membrane product reference",
+                },
+                {
+                  href: "/ai-scope-builder/new",
+                  label: "AI Scope Builder",
+                  title: "Generate a scope of works for roof and balcony waterproofing remediation",
+                },
+              ].map((card) => (
+                <a
+                  key={card.href}
+                  href={card.href}
+                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
+                >
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
+                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                    Open <ArrowRight size={11} />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </section>

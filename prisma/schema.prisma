@@ -187,6 +187,8 @@ model Category {
   company_categories CompanyCategory[]
   leads        Lead[]     @relation("LeadCategory")
   sub_leads    Lead[]     @relation("LeadSubcategory")
+  directory_leads     DirectoryLead[] @relation("DirectoryLeadCategory")
+  directory_sub_leads DirectoryLead[] @relation("DirectoryLeadSubcategory")
 
   @@map("categories")
 }
@@ -362,4 +364,44 @@ model AdminReviewQueue {
   reviewer     User?             @relation("AdminReviewQueueReviewer", fields: [reviewed_by], references: [id])
 
   @@map("admin_review_queue")
+}
+
+model DirectoryLead {
+  id                            Int            @id @default(autoincrement())
+  google_place_id               String         @unique
+  business_name                 String
+  phone                         String?
+  website                       String?
+  email                         String?
+  address                       String?
+  suburb                        String?
+  state                         LocationState?
+  postcode                      String?
+  latitude                      Float?
+  longitude                     Float?
+  google_maps_url               String?
+  google_rating                 Float?
+  google_review_count           Int?
+  category_id                   Int?
+  subcategory_id                Int?
+  category_name                 String?
+  subcategory_name              String?
+  search_query                  String?
+  status                        String         @default("unverified")
+  approved_for_public_directory Boolean        @default(false)
+  website_scraped               Boolean        @default(false)
+  website_scrape_error          String?
+  notes                         String?
+  collected_at                  DateTime       @default(now())
+  updated_at                    DateTime       @updatedAt
+
+  category                      Category?      @relation("DirectoryLeadCategory", fields: [category_id], references: [id])
+  subcategory                   Category?      @relation("DirectoryLeadSubcategory", fields: [subcategory_id], references: [id])
+
+  @@index([status])
+  @@index([category_id])
+  @@index([subcategory_id])
+  @@index([state])
+  @@index([collected_at])
+  @@map("directory_leads")
 }

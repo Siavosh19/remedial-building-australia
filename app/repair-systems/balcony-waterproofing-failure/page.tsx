@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import CategoryFilter from "./CategoryFilter";
 
 export const metadata = {
   title: "Balcony, Roof, Planter Box and Podium Waterproofing Failure — Repair Systems — Remedial Building Australia",
@@ -6,34 +6,64 @@ export const metadata = {
     "Product categories for balcony, roof, planter box and podium waterproofing repair in Australian Class 2 strata apartment buildings — liquid applied membranes, sheet systems, HDPE, hot melt asphalt, root resistant membranes, tapered insulation boards, pedestal systems, drainage cells, ballast and drainage accessories.",
 };
 
-const PRODUCT_CATEGORIES = [
-  { label: "Liquid applied membranes — polyurethane & hybrid", count: 10, slug: "liquid-applied-membranes-polyurethane" },
-  { label: "Liquid applied membranes — acrylic", count: 5, slug: "liquid-applied-membranes-acrylic" },
-  { label: "Sheet membranes — torch-on bitumen modified", count: 4, slug: "sheet-membranes-torch-on" },
-  { label: "Sheet membranes — cold-applied self-adhered", count: 4, slug: "sheet-membranes-cold-applied" },
-  { label: "Cementitious flexible membranes", count: 5, slug: "cementitious-flexible-membranes" },
-  { label: "Primers and bonding agents", count: 5, slug: "primers-bonding-agents" },
-  { label: "Screed systems — polymer-modified", count: 4, slug: "screed-systems-polymer-modified" },
-  { label: "Screed systems — self-levelling", count: 4, slug: "screed-systems-self-levelling" },
-  { label: "Drainage — puddle flanges and floor wastes", count: 5, slug: "drainage-puddle-flanges-floor-wastes" },
-  { label: "Drainage — linear grates and channel drains", count: 4, slug: "drainage-linear-grates-channel-drains" },
-  { label: "Penetration collars — pre-formed and site-formed", count: 4, slug: "penetration-collars" },
-  { label: "Protection boards", count: 3, slug: "protection-boards" },
-  { label: "Reinforcing fabric and mesh", count: 4, slug: "reinforcing-fabric-mesh" },
-  { label: "Flood test equipment and plugs", count: 3, slug: "flood-test-equipment" },
-  { label: "Tile adhesive systems", count: 5, slug: "tile-adhesive-systems" },
-  { label: "Abrasives, blades and tools", count: 3, slug: "abrasives-blades-tools" },
-  { label: "HDPE sheet membrane systems (roofs and podiums)", count: 0, slug: "hdpe-sheet-membrane-systems" },
-  { label: "Hot melt rubberised asphalt systems (roofs and podiums)", count: 0, slug: "hot-melt-rubberised-asphalt-systems" },
-  { label: "Root resistant membrane systems — polyolefin and HDPE (planter boxes and podiums)", count: 0, slug: "root-resistant-membrane-systems" },
-  { label: "Tapered insulation board systems — PIR / XPS / mineral wool (roofs and podiums)", count: 0, slug: "tapered-insulation-board-systems" },
-  { label: "Pedestal systems — adjustable height (podiums)", count: 0, slug: "pedestal-systems-adjustable-height" },
-  { label: "Drainage cell systems (planter boxes)", count: 0, slug: "drainage-cell-systems" },
-  { label: "Filter fabric systems (planter boxes)", count: 0, slug: "filter-fabric-systems" },
-  { label: "Ballast systems (roofs)", count: 0, slug: "ballast-systems" },
-  { label: "Drainage systems — podium outlets and scuppers (podiums)", count: 0, slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining systems (roofs)", count: 0, slug: "gutter-lining-systems" },
-  { label: "Flashing compound systems (roofs)", count: 0, slug: "flashing-compound-systems" },
+const GROUPS = [
+  {
+    heading: "Membrane Systems",
+    categories: [
+      { label: "Liquid applied membranes — polyurethane & hybrid", count: 10, slug: "liquid-applied-membranes-polyurethane" },
+      { label: "Liquid applied membranes — acrylic", count: 6, slug: "liquid-applied-membranes-acrylic" },
+      { label: "Sheet membranes — torch-on bitumen modified", count: 11, slug: "sheet-membranes-torch-on" },
+      { label: "Sheet membranes — cold-applied self-adhered", count: 4, slug: "sheet-membranes-cold-applied" },
+      { label: "Cementitious flexible membranes", count: 6, slug: "cementitious-flexible-membranes" },
+      { label: "HDPE sheet membrane systems (roofs and podiums)", count: 5, slug: "hdpe-sheet-membrane-systems" },
+      { label: "Hot melt rubberised asphalt systems (roofs and podiums)", count: 4, slug: "hot-melt-rubberised-asphalt-systems" },
+    ],
+  },
+  {
+    heading: "Preparation & Priming",
+    categories: [
+      { label: "Primers and bonding agents", count: 8, slug: "primers-bonding-agents" },
+      { label: "Reinforcing fabric and mesh", count: 5, slug: "reinforcing-fabric-mesh" },
+      { label: "Abrasives, blades and tools", count: 11, slug: "abrasives-blades-tools" },
+    ],
+  },
+  {
+    heading: "Screeds, Falls & Tile Build-up",
+    categories: [
+      { label: "Screed systems — polymer-modified", count: 7, slug: "screed-systems-polymer-modified" },
+      { label: "Screed systems — self-levelling", count: 4, slug: "screed-systems-self-levelling" },
+      { label: "Tile adhesive systems", count: 10, slug: "tile-adhesive-systems" },
+    ],
+  },
+  {
+    heading: "Drainage & Penetrations",
+    categories: [
+      { label: "Drainage — puddle flanges and floor wastes", count: 5, slug: "drainage-puddle-flanges-floor-wastes" },
+      { label: "Drainage — linear grates and channel drains", count: 6, slug: "drainage-linear-grates-channel-drains" },
+      { label: "Penetration collars — pre-formed and site-formed", count: 6, slug: "penetration-collars" },
+      { label: "Drainage systems — podium outlets and scuppers (podiums)", count: 0, slug: "drainage-podium-outlets-scuppers" },
+      { label: "Balcony edge trims", count: 5, slug: "gutter-lining-systems" },
+      { label: "Flashing compound systems (roofs)", count: 7, slug: "flashing-compound-systems" },
+    ],
+  },
+  {
+    heading: "Protection & Overburden",
+    categories: [
+      { label: "Protection boards", count: 6, slug: "protection-boards" },
+      { label: "Root resistant membrane systems — polyolefin and HDPE (planter boxes and podiums)", count: 6, slug: "root-resistant-membrane-systems" },
+      { label: "Tapered insulation board systems — PIR / XPS / mineral wool (roofs and podiums)", count: 6, slug: "tapered-insulation-board-systems" },
+      { label: "Pedestal systems — adjustable height (podiums)", count: 5, slug: "pedestal-systems-adjustable-height" },
+      { label: "Drainage cell systems (planter boxes)", count: 0, slug: "drainage-cell-systems" },
+      { label: "Filter fabric systems (planter boxes)", count: 0, slug: "filter-fabric-systems" },
+      { label: "Ballast systems (roofs)", count: 0, slug: "ballast-systems" },
+    ],
+  },
+  {
+    heading: "Testing & QA",
+    categories: [
+      { label: "Flood test equipment and plugs", count: 5, slug: "flood-test-equipment" },
+    ],
+  },
 ];
 
 export default function BalconyWaterproofingFailurePage() {
@@ -83,34 +113,8 @@ export default function BalconyWaterproofingFailurePage() {
           </div>
         </section>
 
-        {/* ── Product category cards ── */}
-        <section className="px-8 py-14">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-8 flex items-start gap-3">
-              <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-              <div>
-                <h2 className="text-2xl font-extrabold text-sky-950">Product Categories</h2>
-                <p className="mt-1 text-sm text-slate-500">27 product categories — select to view technical reference and brand equivalents.</p>
-              </div>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {PRODUCT_CATEGORIES.map((cat) => (
-                <a
-                  key={cat.slug}
-                  href={`/repair-systems/balcony-waterproofing-failure/${cat.slug}`}
-                  className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
-                >
-                  <div className="mb-3 h-0.5 w-8 rounded-full bg-red-700" />
-                  <h3 className="text-base font-extrabold leading-tight text-sky-950 group-hover:text-sky-700 transition">{cat.label}</h3>
-                  <p className="mt-2 text-xs font-semibold text-slate-400">{cat.count} products</p>
-                  <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 group-hover:text-red-700 transition">
-                    View systems <ArrowRight size={12} />
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ── Product category cards — grouped with search/filter ── */}
+        <CategoryFilter groups={GROUPS} />
       </main>
 
       {/* ── Footer ── */}
