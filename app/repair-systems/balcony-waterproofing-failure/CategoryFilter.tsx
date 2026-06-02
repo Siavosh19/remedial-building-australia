@@ -68,7 +68,7 @@ export default function CategoryFilter({ groups }: { groups: Group[] }) {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Categories</h2>
-            <p className="mt-1 text-sm text-slate-500">27 product categories across {PRODUCT_INDEX.length} products — search by product name, brand or keyword.</p>
+            <p className="mt-1 text-sm text-slate-500">{groups.reduce((n, g) => n + g.categories.length, 0)} product categories across {PRODUCT_INDEX.length} products — search by product name, brand or keyword.</p>
           </div>
         </div>
 
