@@ -1,4 +1,4 @@
-import { ArrowRight, Droplets, Layers } from "lucide-react";
+import { ArrowRight, Building2, Droplets, Home, Layers, Paintbrush, Wind, Wrench } from "lucide-react";
 
 export const metadata = {
   title: "Repair Systems — Remedial Building Australia",
@@ -23,6 +23,51 @@ const SYSTEMS = [
     description:
       "Polymer-modified and cementitious repair mortars, epoxy systems, bonding agents, corrosion inhibitors, crack injection and curing compounds.",
     icon: Layers,
+    live: true,
+  },
+  {
+    num: "03",
+    slug: "facade-external-envelope",
+    label: "Facade & External Envelope",
+    description:
+      "Render repair, brickwork, crack stitching, cladding, failed sealants, facade cracking, window and door perimeter failure, and external coating systems.",
+    icon: Building2,
+    live: true,
+  },
+  {
+    num: "04",
+    slug: "roofing-defects",
+    label: "Roofing Defects",
+    description:
+      "Roof tile replacement, ridge rebed, valley flashings, box gutters, flat roof falls, overflow systems, skylights and gutter replacement for Class 2 strata.",
+    icon: Home,
+    live: true,
+  },
+  {
+    num: "05",
+    slug: "internal-defects-finishes",
+    label: "Internal Defects & Finishes",
+    description:
+      "Ceiling water damage, internal cracking, mould and moisture remediation, and internal paint failure repair systems for Class 2 strata apartments.",
+    icon: Paintbrush,
+    live: true,
+  },
+  {
+    num: "06",
+    slug: "services-drainage",
+    label: "Services & Drainage",
+    description:
+      "Downpipe replacement (PVC, Colorbond, copper) and pipe penetration flashing collar systems for services and drainage defects on Class 2 strata buildings.",
+    icon: Wrench,
+    live: true,
+  },
+  {
+    num: "07",
+    slug: "mechanical-ventilation-exhaust",
+    label: "Mechanical, Ventilation & Exhaust",
+    description:
+      "Mushroom roof vents, mechanical and window exhaust fans, subfloor ventilation and carpark ventilation systems for Class 2 strata buildings.",
+    icon: Wind,
     live: true,
   },
 ] as const;
@@ -73,7 +118,7 @@ export default function RepairSystemsHubPage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-bold text-green-700 border border-green-200">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                2 systems live
+                7 systems live
               </span>
             </div>
           </div>
