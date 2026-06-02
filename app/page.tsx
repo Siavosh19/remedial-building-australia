@@ -48,7 +48,7 @@ const coreServices: CoreService[] = [
     href: "/ai-scope-builder",
     badge: "Live",
     quickLinks: [
-      { label: "New Scope",        href: "/ai-scope-builder/new",      available: true },
+      { label: "New Scope",        href: "/ai-scope-builder",      available: true },
       { label: "Saved Projects",   href: "/ai-scope-builder/projects", available: true },
     ],
   },
@@ -169,8 +169,8 @@ export default function RemedialBuildingAustraliaHome() {
           .from("industry_news")
           .select("title, slug, category, summary, source_name, published_date, source_url")
           .eq("status", "published")
-          .order("created_at", { ascending: false })
           .order("published_date", { ascending: false, nullsFirst: false })
+          .order("created_at", { ascending: false })
           .limit(15);
 
         if (!error && data && data.length > 0) {

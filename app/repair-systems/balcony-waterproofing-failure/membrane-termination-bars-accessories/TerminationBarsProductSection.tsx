@@ -156,6 +156,38 @@ const BRAND_EQUIV: { system: string; schluter: string; ardex: string; mapei: str
   { system: "Aluminium termination bar — liquid-applied membrane", schluter: "BARA-RK", ardex: "Termination Profile*", mapei: "Termination Profile*" },
 ];
 
+const SYSTEM_COMPARISON: {
+  product: string; brand: string; material: string; membraneSystem: string; fixingMethod: string; sealantAtTop: string; notes: string;
+}[] = [
+  {
+    product: "Schluter BARA-RK",
+    brand: "Schluter",
+    material: "Aluminium",
+    membraneSystem: "Schluter + compatible liquid-applied membranes",
+    fixingMethod: "Screw & plug — regular centres",
+    sealantAtTop: "Yes — maintenance joint",
+    notes: "Schluter system component — confirm compatibility with specific membrane",
+  },
+  {
+    product: "ARDEX Termination Profile",
+    brand: "ARDEX",
+    material: "Aluminium",
+    membraneSystem: "ARDEX WPM waterproofing systems",
+    fixingMethod: "Screw & plug — regular centres",
+    sealantAtTop: "Yes — maintenance joint",
+    notes: "Confirm exact ARDEX AU product designation with ARDEX technical",
+  },
+  {
+    product: "Mapei Termination Profile",
+    brand: "Mapei",
+    material: "Aluminium",
+    membraneSystem: "Mapelastic / Mapegum WPS systems",
+    fixingMethod: "Screw & plug — regular centres",
+    sealantAtTop: "Yes — maintenance joint",
+    notes: "Confirm exact Mapei AU product designation with Mapei technical",
+  },
+];
+
 const TECH_INFO = {
   typicalApplications: [
     "Top-edge termination of liquid-applied polyurethane and hybrid membranes at upstand walls on balconies",
@@ -502,6 +534,45 @@ export function TerminationBarsProductSection() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── System Comparison ── */}
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">Side-by-side technical comparison of membrane termination bar profiles. * Confirm exact product designation and specification with manufacturer.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Membrane system</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Fixing method</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Sealant at top edge</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.material}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.membraneSystem}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.fixingMethod}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.sealantAtTop}</td>
+                  <td className="px-4 py-3 italic text-slate-500">{row.notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

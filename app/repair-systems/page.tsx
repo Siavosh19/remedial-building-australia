@@ -1,4 +1,4 @@
-import { ArrowRight, Droplets, Layers, Paintbrush2, PenLine, Building2, Home, LayoutGrid, Waves, Pipette } from "lucide-react";
+import { ArrowRight, Droplets, Layers } from "lucide-react";
 
 export const metadata = {
   title: "Repair Systems — Remedial Building Australia",
@@ -24,69 +24,6 @@ const SYSTEMS = [
       "Polymer-modified and cementitious repair mortars, epoxy systems, bonding agents, corrosion inhibitors, crack injection and curing compounds.",
     icon: Layers,
     live: true,
-  },
-  {
-    num: "03",
-    slug: "coating-systems",
-    label: "Coating Systems",
-    description:
-      "Protective and decorative coatings for concrete and masonry — anti-carbonation, chloride barrier, elastomeric, penetrating sealer and anti-graffiti systems.",
-    icon: Paintbrush2,
-    live: false,
-  },
-  {
-    num: "04",
-    slug: "sealants-joint-systems",
-    label: "Sealants & Joint Systems",
-    description:
-      "Polyurethane, silicone and polysulfide joint sealants, expansion joint systems, backing rods and movement joint products for façade and structural joints.",
-    icon: PenLine,
-    live: false,
-  },
-  {
-    num: "05",
-    slug: "facade-cladding-repair",
-    label: "Façade & Cladding Repair Systems",
-    description:
-      "Render repair, masonry repointing, cladding rectification, brick veneer tie systems, façade anchoring and heritage façade restoration products.",
-    icon: Building2,
-    live: false,
-  },
-  {
-    num: "06",
-    slug: "roofing-repair-systems",
-    label: "Roofing Repair Systems",
-    description:
-      "Roof membrane repair, flashing systems, box gutter lining, roof coating systems and drainage accessory products for Class 2 and commercial roofing.",
-    icon: Home,
-    live: false,
-  },
-  {
-    num: "07",
-    slug: "balcony-podium-systems",
-    label: "Balcony & Podium Systems",
-    description:
-      "Balcony deck coatings, tile-over-membrane systems, podium slab waterproofing, planter box systems and trafficable membrane products.",
-    icon: Waves,
-    live: false,
-  },
-  {
-    num: "08",
-    slug: "internal-defects-finishes",
-    label: "Internal Defects & Finishes",
-    description:
-      "Remediation products for internal cracking, ceiling repairs, mould treatment, paint failure, moisture barriers and internal screed systems.",
-    icon: LayoutGrid,
-    live: false,
-  },
-  {
-    num: "09",
-    slug: "services-drainage",
-    label: "Services & Drainage",
-    description:
-      "Pipe penetration sealing, drainage channel systems, downpipe rectification, flood collar systems and stormwater remediation products.",
-    icon: Pipette,
-    live: false,
   },
 ] as const;
 
@@ -137,9 +74,6 @@ export default function RepairSystemsHubPage() {
               <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-bold text-green-700 border border-green-200">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
                 2 systems live
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500 border border-slate-200">
-                7 systems in development
               </span>
             </div>
           </div>

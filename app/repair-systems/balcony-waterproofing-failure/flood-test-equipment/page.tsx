@@ -281,7 +281,7 @@ export default function FloodTestEquipmentPage() {
                   title: "Balcony Waterproofing Failure — causes, inspection, methodology",
                 },
                 {
-                  href: "/ai-scope-builder/new",
+                  href: "/ai-scope-builder",
                   label: "AI Scope Builder",
                   title: "Generate a scope of works for balcony waterproofing remediation",
                 },

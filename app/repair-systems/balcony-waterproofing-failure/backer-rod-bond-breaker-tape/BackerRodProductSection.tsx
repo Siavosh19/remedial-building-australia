@@ -154,6 +154,38 @@ const BRAND_EQUIV: { system: string; nomaflex: string; tremco: string; various: 
   { system: "Bond breaker tape — flat", nomaflex: "—", tremco: "—", various: "PE tape — confirm with sealant mfr" },
 ];
 
+const SYSTEM_COMPARISON: {
+  product: string; supplier: string; type: string; profile: string; foamType: string; diameterRange: string; primaryUse: string;
+}[] = [
+  {
+    product: "Nomaflex Closed-Cell Backer Rod",
+    supplier: "Nomaflex / Carpenter Co.",
+    type: "Backer rod",
+    profile: "Round",
+    foamType: "Closed-cell PE",
+    diameterRange: "Various — 10 mm to 50 mm+ (confirm with supplier)",
+    primaryUse: "Movement joints — internal angle, perimeter, expansion joints",
+  },
+  {
+    product: "Tremco Closed Cell Backer Rod",
+    supplier: "Tremco CPG",
+    type: "Backer rod",
+    profile: "Round",
+    foamType: "Closed-cell PE",
+    diameterRange: "Various — confirm with Tremco CPG AU",
+    primaryUse: "Tremco sealant system specified joints",
+  },
+  {
+    product: "Polyethylene Bond Breaker Tape",
+    supplier: "Various",
+    type: "Bond breaker tape",
+    profile: "Flat / self-adhesive",
+    foamType: "N/A — PE film",
+    diameterRange: "N/A — various tape widths",
+    primaryUse: "Shallow / saw-cut / rebated joints where round backer rod cannot seat correctly",
+  },
+];
+
 const TECH_INFO = {
   typicalApplications: [
     "Movement joints in tiled balcony and wet area surfaces — backer rod installed before sealant application at internal angles and changes of plane",
@@ -501,6 +533,45 @@ export function BackerRodProductSection() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── System Comparison ── */}
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of backer rod and bond breaker tape products. Select closed-cell foam only — confirm diameter with sealant manufacturer.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Supplier</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Profile</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Foam type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Diameter / size range</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Primary use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.supplier}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.type}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.profile}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.foamType}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.diameterRange}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.primaryUse}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

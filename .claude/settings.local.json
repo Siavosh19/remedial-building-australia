@@ -39,7 +39,27 @@
       "Bash(mv \"news-05.jpg\"  \"cladding-removal-facade-workers-platform.jpg\")",
       "Bash(echo \"WA done: $?\")",
       "Bash(git reset *)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(git stash *)",
+      "Bash(git checkout *)",
+      "Bash(sed -n '133,145p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/primers-bonding-agents/page.tsx)",
+      "Bash(sed -n '133,145p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/screed-systems-polymer-modified/page.tsx)",
+      "Bash(sed -n '133,145p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/sheet-membranes-cold-applied/page.tsx)",
+      "Bash(sed -n '135,175p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/screed-systems-polymer-modified/page.tsx)",
+      "Bash(sed -n '135,175p' /Users/siasepehrara/remedial-building-australia/app/repair-systems/balcony-waterproofing-failure/sheet-membranes-cold-applied/page.tsx)",
+      "Bash(xargs perl -pi -e 's/text-\\\\[8px\\\\] font-bold uppercase tracking-\\\\[0\\\\.18em\\\\] text-slate-400 whitespace-nowrap/text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap/g')",
+      "WebFetch(domain:aus.sika.com)",
+      "WebFetch(domain:www.ardexaustralia.com)",
+      "WebSearch",
+      "WebFetch(domain:ardexaustralia.com)",
+      "WebFetch(domain:www.wpdgroup.com.au)",
+      "WebFetch(domain:www.bldcare.com.au)",
+      "WebFetch(domain:thewaterproofingshop.com.au)",
+      "WebFetch(domain:www.h2off.co.nz)",
+      "Read(//Users/siasepehrara/Library/CloudStorage/**)",
+      "Bash(xargs sed -i '' 's|href=\"/ai-scope-builder/new\"|href=\"/ai-scope-builder\"|g; s|href: \"/ai-scope-builder/new\"|href: \"/ai-scope-builder\"|g')",
+      "Bash(kill %1)",
+      "Bash(wait)"
     ]
   }
 }

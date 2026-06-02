@@ -137,8 +137,8 @@ export default function VapourControlLayersWarmRoofPage() {
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 {[
-                  { label: "Products listed", value: "3" },
-                  { label: "Brands available", value: "3" },
+                  { label: "Products listed", value: "4" },
+                  { label: "Brands available", value: "4" },
                   { label: "Material", value: "PE / foil" },
                   { label: "Standard", value: "AS/NZS 4200" },
                 ].map((s) => (
@@ -223,7 +223,7 @@ export default function VapourControlLayersWarmRoofPage() {
                   title: "PIR, XPS and mineral wool insulation board systems for warm-roof assemblies",
                 },
                 {
-                  href: "/ai-scope-builder/new",
+                  href: "/ai-scope-builder",
                   label: "AI Scope Builder",
                   title: "Generate a scope of works for balcony waterproofing remediation",
                 },

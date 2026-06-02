@@ -274,7 +274,7 @@ export default function RepairMortarsPage() {
                 disabled
               />
               <NextStepCard
-                href="/ai-scope-builder/new"
+                href="/ai-scope-builder"
                 label="AI Scope Builder"
                 title="Generate a Scope of Works"
                 desc="Use the AI Scope Builder to assemble a remedial scope using the repair systems and defects identified."

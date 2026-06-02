@@ -149,6 +149,44 @@ const PRODUCTS: Product[] = [
       { name: "Bunnings — in-store nationally", url: "https://www.bunnings.com.au" },
     ],
   },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au",
+    accentColor: "#3b82f6",
+    name: "Mapei Mapesil T",
+    descriptionLine: "One-component neutral-cure silicone sealant — sanitary wet area movement joints, tiled internal angles and floor-wall junctions",
+    productType: "Neutral-cure silicone",
+    filterTags: ["Silicone", "Sanitary", "Neutral-cure", "Wet-area", "Movement-joint", "Internal", "White", "Floor-wall-junction", "1C"],
+    techChips: [
+      { label: "Neutral-cure silicone", cls: "bg-sky-100 text-sky-800" },
+      { label: "One-component", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sanitary grade", cls: "bg-green-50 text-green-700" },
+      { label: "Wet area / tiling", cls: "bg-slate-100 text-slate-700" },
+      { label: "AS 3740", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Mapei Mapesil T is a one-component neutral-cure silicone sealant widely used in Australian tiling for sanitary movement joints, internal angles, floor-wall junctions, and around sanitaryware in wet areas and kitchens. Neutral-cure chemistry is non-corrosive and suitable for use against anodised aluminium, metals, natural stone, and most tile substrates. Mapesil T is part of the Mapei tiling system and is commonly specified alongside Mapei tile adhesives and grouts for complete system wet area installations.\n\nMould-inhibiting properties make Mapesil T suitable for continuously wet bathroom and kitchen environments. Available in an extensive colour range matched to Mapei Ultracolor Plus grout colours, making it widely used in coordinated tile and grout system specifications across Class 2 strata wet area remediation.",
+    technicalProperties: [
+      "Neutral-cure silicone — non-corrosive — suitable for metals, anodised aluminium, natural stone, and ceramic tile edges",
+      "Sanitary grade — mould-resistant properties — suited to continuously wet bathroom, kitchen and shower environments",
+      "One-component — no mixing required — applied by gun from standard cartridge",
+      "Extensive colour range matched to Mapei grout range — widely specified for coordinated grout and sealant systems",
+      "Part of Mapei integrated tiling system — compatible with Mapei tile adhesives, primers and grouts",
+    ],
+    limitations: [
+      "Not paintable after cure — plan joint colour selection against tile and grout before application",
+      "Silicone-to-silicone re-sealing requires full removal of existing cured silicone — new silicone will not bond reliably over cured silicone",
+      "Backer rod or bond breaker tape required in all movement joints — three-sided adhesion must be prevented",
+      "Joint faces must be clean, dry and free of grout or adhesive contamination before application",
+      "Confirm current product specification and compliance with Mapei Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — trade supply — contact for current pricing", url: "https://www.mapei.com/au" },
+      { name: "Beaumont Tiles — trade and retail nationally", url: "https://www.beaumontiles.com.au" },
+      { name: "Tile trade suppliers nationally — confirm current stock", url: "https://www.mapei.com/au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -165,9 +203,54 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
   { id: "1C", label: "One-component" },
 ];
 
-const BRAND_EQUIV: { system: string; sika: string; tremco: string; bostik: string }[] = [
-  { system: "PU sealant — 1C moisture-cure — wet area / balcony", sika: "Sikaflex-11 FC+", tremco: "—", bostik: "Seal-N-Flex 1" },
-  { system: "Neutral-cure silicone — sanitary / wet area", sika: "—", tremco: "Spectrem 1", bostik: "—" },
+const BRAND_EQUIV: { system: string; sika: string; tremco: string; bostik: string; mapei: string }[] = [
+  { system: "PU sealant — 1C moisture-cure — wet area / balcony", sika: "Sikaflex-11 FC+", tremco: "—", bostik: "Seal-N-Flex 1", mapei: "—" },
+  { system: "Neutral-cure silicone — sanitary / wet area", sika: "—", tremco: "Spectrem 1", bostik: "—", mapei: "Mapesil T" },
+];
+
+const SYSTEM_COMPARISON: {
+  product: string; brand: string; chemistry: string; cureType: string; mouldResistance: string; paintable: string; metalAlSafe: string; primaryUse: string;
+}[] = [
+  {
+    product: "Sikaflex-11 FC+",
+    brand: "Sika",
+    chemistry: "Polyurethane",
+    cureType: "Moisture-cure (1C)",
+    mouldResistance: "Standard",
+    paintable: "Yes (confirm with Sika)",
+    metalAlSafe: "Yes",
+    primaryUse: "Wet area / balcony movement joint — floor-wall junction",
+  },
+  {
+    product: "Tremco Spectrem 1",
+    brand: "Tremco",
+    chemistry: "Neutral-cure silicone",
+    cureType: "Condensation-cure (1C)",
+    mouldResistance: "Sanitary grade",
+    paintable: "No",
+    metalAlSafe: "Yes",
+    primaryUse: "Sanitary wet area / glazing / internal angles",
+  },
+  {
+    product: "Bostik Seal-N-Flex 1",
+    brand: "Bostik",
+    chemistry: "Polyurethane",
+    cureType: "Moisture-cure (1C)",
+    mouldResistance: "Standard",
+    paintable: "Yes (confirm with Bostik)",
+    metalAlSafe: "Confirm TDS",
+    primaryUse: "Wet area / balcony movement joint",
+  },
+  {
+    product: "Mapei Mapesil T",
+    brand: "Mapei",
+    chemistry: "Neutral-cure silicone",
+    cureType: "Condensation-cure (1C)",
+    mouldResistance: "Sanitary grade",
+    paintable: "No",
+    metalAlSafe: "Yes",
+    primaryUse: "Sanitary wet area / tiled internal angles",
+  },
 ];
 
 const TECH_INFO = {
@@ -427,7 +510,7 @@ export function TileSealantsProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — silicone and PU movement joint sealants — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">4 products — 4 brands — silicone and PU movement joint sealants — scroll to view all</p>
           </div>
         </div>
 
@@ -530,6 +613,51 @@ export function TileSealantsProductSection() {
         </div>
       </div>
 
+      {/* ── System Comparison ── */}
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">Side-by-side technical comparison of tile sealant products for wet area and balcony movement joints. Confirm current product specifications with manufacturer TDS.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Chemistry</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Cure type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Mould resistance</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Paintable</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Metal / Al safe</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Primary use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.chemistry}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.cureType}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.mouldResistance}</td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex items-center rounded px-2 py-0.5 text-[10px] font-bold ${row.paintable.startsWith("Yes") ? "bg-green-50 text-green-700" : row.paintable === "No" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"}`}>
+                      {row.paintable}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600">{row.metalAlSafe}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.primaryUse}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* ── Brand Equivalents ── */}
       <div>
         <div className="mb-6 flex items-start gap-3">
@@ -547,13 +675,14 @@ export function TileSealantsProductSection() {
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#ef4444" }}>Sika</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#22c55e" }}>Tremco</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#8b5cf6" }}>Bostik</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#3b82f6" }}>Mapei</th>
               </tr>
             </thead>
             <tbody>
               {BRAND_EQUIV.map((row, i) => (
                 <tr key={row.system} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-slate-800">{row.system}</td>
-                  {[row.sika, row.tremco, row.bostik].map((val, j) => (
+                  {[row.sika, row.tremco, row.bostik, row.mapei].map((val, j) => (
                     <td key={j} className="px-4 py-3 text-slate-600">{val === "—" ? <span className="text-slate-300">—</span> : val}</td>
                   ))}
                 </tr>

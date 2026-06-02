@@ -223,7 +223,7 @@ export default function ExpansionJointCoverSystemsPage() {
                   title: "Closed-cell PE backer rod and bond breaker tape for sealant joints",
                 },
                 {
-                  href: "/ai-scope-builder/new",
+                  href: "/ai-scope-builder",
                   label: "AI Scope Builder",
                   title: "Generate a scope of works for balcony waterproofing remediation",
                 },

@@ -13,34 +13,31 @@ const SUBCATEGORIES = [
     count: 27,
     description: "Liquid applied membranes, sheet systems, HDPE and hot melt asphalt systems, root resistant membranes, tapered insulation, pedestal and drainage cell systems, drainage accessories, penetration collars and flood test equipment.",
     live: true,
+    href: "/repair-systems/balcony-waterproofing-failure",
   },
   {
-    label: "Wet area waterproofing failure",
-    slug: "wet-area-waterproofing-failure",
-    count: 12,
-    description: "Internal wet area membrane systems, shower and bathroom waterproofing products, primers and reinforcing fabrics.",
-    live: false,
+    label: "Rising damp",
+    slug: "rising-damp",
+    count: 5,
+    description: "Chemical DPC injection (silane cream and siloxane liquid), renovating salt-resistant plaster systems, breathable render systems and breathable paint systems for rising damp remediation in Australian masonry walls.",
+    live: true,
+    href: "/repair-systems/rising-damp",
   },
   {
-    label: "Below-ground and basement waterproofing",
-    slug: "below-ground-waterproofing",
-    count: 10,
-    description: "Negative-side and positive-side waterproofing systems, crystalline slurries, drainage board systems and hydrostatic pressure membranes.",
-    live: false,
+    label: "Basement water ingress",
+    slug: "basement-water-ingress",
+    count: 7,
+    description: "Injection systems (hydrophilic PU, acrylic), hydraulic cement plugging, crystalline tanking (Xypex, Penetron), cavity drain membranes and sump pump systems for below-grade structures.",
+    live: true,
+    href: "/repair-systems/basement-water-ingress",
   },
   {
-    label: "Podium and planter box waterproofing",
-    slug: "podium-planter-box-waterproofing",
-    count: 8,
-    description: "Trafficable membrane systems, root barrier membranes, drainage composites and protection boards for podium slab applications.",
-    live: false,
-  },
-  {
-    label: "Roof waterproofing and membrane systems",
-    slug: "roof-waterproofing",
-    count: 9,
-    description: "Liquid-applied roof membranes, torch-on systems, flashing compounds, gutter lining systems and roof drainage accessories.",
-    live: false,
+    label: "Penetrating damp",
+    slug: "penetrating-damp",
+    count: 2,
+    description: "Penetrating silane and siloxane sealer systems for masonry and concrete — colourless, vapour-permeable water repellent treatments for brick veneer facades, concrete panels and heritage masonry affected by rain-driven moisture penetration.",
+    live: true,
+    href: "/repair-systems/penetrating-damp",
   },
 ] as const;
 
@@ -104,7 +101,7 @@ export default function WaterproofingSystemsPage() {
                 sub.live ? (
                   <a
                     key={sub.slug}
-                    href={`/repair-systems/${sub.slug}`}
+                    href={sub.href}
                     className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
                   >
                     <div className="mb-3 flex items-center justify-between">

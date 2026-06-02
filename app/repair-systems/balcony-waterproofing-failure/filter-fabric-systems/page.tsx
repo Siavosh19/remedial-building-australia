@@ -283,7 +283,7 @@ export default function FilterFabricSystemsPage() {
                   title: "Drainage cells for planter boxes — used below filter fabric",
                 },
                 {
-                  href: "/ai-scope-builder/new",
+                  href: "/ai-scope-builder",
                   label: "AI Scope Builder",
                   title: "Generate a scope of works for balcony waterproofing remediation",
                 },

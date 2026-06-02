@@ -229,7 +229,7 @@ export default function LinearDrainsPage() {
                   title: "Point drain systems — PVC, stainless and adjustable-height puddle flanges",
                 },
                 {
-                  href: "/ai-scope-builder/new",
+                  href: "/ai-scope-builder",
                   label: "AI Scope Builder",
                   title: "Generate a scope of works for balcony waterproofing remediation",
                 },

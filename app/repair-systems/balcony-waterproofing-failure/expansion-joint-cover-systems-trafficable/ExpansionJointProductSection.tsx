@@ -164,6 +164,38 @@ const BRAND_EQUIV: { system: string; schluter: string; sika: string; tremco: str
   { system: "EPDM dual-flange — trafficable deck — recessed", schluter: "—", sika: "—", tremco: "Emshield DFR*" },
 ];
 
+const SYSTEM_COMPARISON: {
+  product: string; brand: string; coverType: string; primaryMaterial: string; movementZone: string; trafficRating: string; installMethod: string;
+}[] = [
+  {
+    product: "Schluter DILEX-EKE",
+    brand: "Schluter",
+    coverType: "Tile-embedded profile",
+    primaryMaterial: "Aluminium",
+    movementZone: "EPDM rubber infill",
+    trafficRating: "Foot traffic — tiled deck",
+    installMethod: "Anchor legs embedded in tile adhesive each side of joint",
+  },
+  {
+    product: "Sikaflex Expansion Joint System",
+    brand: "Sika",
+    coverType: "Sealant-based system",
+    primaryMaterial: "Polyurethane sealant",
+    movementZone: "PU sealant (field-replaceable)",
+    trafficRating: "Foot traffic — confirm product with Sika",
+    installMethod: "Sealant over backer rod — saw-cut or formed joint",
+  },
+  {
+    product: "Tremco Emshield DFR",
+    brand: "Tremco",
+    coverType: "Dual-flange cover profile",
+    primaryMaterial: "EPDM rubber + metal flanges",
+    movementZone: "EPDM centre element",
+    trafficRating: "Foot + light vehicular — confirm with Tremco",
+    installMethod: "Mechanically fixed flanges — recessed substrate preparation",
+  },
+];
+
 const TECH_INFO = {
   typicalApplications: [
     "Structural expansion joints in concrete balcony and podium deck slabs requiring a trafficable waterproofed cover",
@@ -509,6 +541,45 @@ export function ExpansionJointProductSection() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── System Comparison ── */}
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of trafficable expansion joint cover systems for balcony and podium deck applications. * Confirm movement accommodation and traffic rating with manufacturer.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Cover type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Primary material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Movement zone</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Traffic rating</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Install method</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.coverType}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.primaryMaterial}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.movementZone}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.trafficRating}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.installMethod}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

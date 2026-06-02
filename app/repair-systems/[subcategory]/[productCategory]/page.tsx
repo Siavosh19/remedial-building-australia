@@ -290,7 +290,7 @@ export default async function ProductCategoryPage({
                 { href: "/defect-library/concrete-structural-defects", label: "Defect Library", title: "Concrete & Structural Defects", desc: "Identify defect types, causes, and repair pathways before selecting a system." },
                 { href: `/repair-systems/concrete-structural-defects`, label: "Back to Concrete & Structural", title: "Concrete & Structural Defects", desc: "Browse all concrete and structural defect subcategories." },
                 { href: `/repair-systems/${sub.slug}`, label: "Back to Subcategory", title: sub.label, desc: `Browse all product categories for ${sub.label.toLowerCase()}.` },
-                { href: "/ai-scope-builder/new", label: "AI Scope Builder", title: "Generate a Scope of Works", desc: "Use the AI Scope Builder to assemble a remedial scope." },
+                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a Scope of Works", desc: "Use the AI Scope Builder to assemble a remedial scope." },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block h-full rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

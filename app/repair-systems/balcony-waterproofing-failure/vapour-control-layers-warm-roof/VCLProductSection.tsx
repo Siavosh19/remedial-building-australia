@@ -140,6 +140,42 @@ const PRODUCTS: Product[] = [
       { name: "Roofing and insulation trade suppliers nationally — confirm product specification", url: "https://www.bunnings.com.au" },
     ],
   },
+  {
+    fullLabel: "DuPont Performance Building Solutions",
+    brandUrl: "https://www.dupont.com/tyvek.html",
+    tdsUrl: "https://www.dupont.com/tyvek.html",
+    accentColor: "#8b5cf6",
+    name: "DuPont Tyvek Airguard Reflective",
+    descriptionLine: "Foil-faced high-performance vapour control layer — warm-roof balcony and podium assemblies — very high vapour resistance",
+    productType: "Foil-faced VCL",
+    filterTags: ["VCL", "Vapour-control", "Foil-faced", "Warm-roof", "Flat-roof", "Balcony", "Podium", "Below-insulation", "Taped-laps"],
+    techChips: [
+      { label: "Foil-faced VCL", cls: "bg-sky-100 text-sky-800" },
+      { label: "Below-insulation", cls: "bg-slate-100 text-slate-700" },
+      { label: "Very high vapour resistance", cls: "bg-green-50 text-green-700" },
+      { label: "Warm-roof / flat roof", cls: "bg-amber-50 text-amber-700" },
+      { label: "AS/NZS 4200", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "DuPont Tyvek Airguard Reflective is a foil-faced vapour control layer used in warm-roof, flat roof, and balcony assemblies in Australia. The product combines a polyethylene film with a metallised foil facing to achieve very high vapour resistance (high Sd value), making it suitable for assemblies requiring a highly effective vapour barrier on the warm side of the insulation. Tyvek Airguard Reflective is widely distributed in Australia through roofing, insulation, and building products trade suppliers.\n\nInstalled below the insulation layer in warm-roof balcony and podium deck assemblies. All laps must be taped with Tyvek Tape or compatible foil tape. Penetrations must be sealed with compatible accessories. The reflective foil facing also contributes a small radiant resistance benefit in roof assemblies where an air gap is present.\n\n// TODO: Confirm current Airguard Reflective vapour resistance (Sd value) and AS/NZS 4200.1 class from current DuPont TDS — confirm Australian distributor availability.",
+    technicalProperties: [
+      "Foil-faced laminate — very high vapour resistance — effective VCL for most Australian warm-roof and flat-roof assemblies",
+      "AS/NZS 4200.1 compliant vapour membrane classification — confirm product class against assembly requirements",
+      "Widely distributed in Australia — available through roofing and insulation trade suppliers nationally",
+      "Reflective facing provides minor additional radiant resistance where an unventilated air gap is present",
+      "Compatible with Tyvek Tape for lap sealing — confirm tape specification with DuPont for the specific application",
+    ],
+    limitations: [
+      "Must be installed on the WARM SIDE (below) the insulation — installation above insulation is incorrect for VCL function",
+      "All laps and penetrations must be taped with compatible tape — unsealed laps negate the vapour barrier function",
+      "Confirm current vapour resistance (Sd value) and AS/NZS 4200.1 class from current DuPont TDS before specifying",
+      "Condensation analysis should be performed to confirm VCL specification is adequate for the specific assembly and climate zone",
+    ],
+    procurementSources: [
+      { name: "DuPont / Tyvek Australia — confirm current distributor network", url: "https://www.dupont.com/tyvek.html" },
+      { name: "Roofing and insulation trade suppliers nationally — confirm stock", url: "https://www.bunnings.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -155,9 +191,50 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
   { id: "Taped-laps", label: "Taped laps" },
 ];
 
-const BRAND_EQUIV: { system: string; kingspan: string; proclima: string; generic: string }[] = [
-  { system: "VCL — below insulation — high vapour resistance", kingspan: "See note*", proclima: "DB+", generic: "Heavy-duty PE / foil laminate" },
-  { system: "Vapour-open breather — above insulation", kingspan: "Nilvent", proclima: "Solitex range", generic: "Various breather membranes" },
+const BRAND_EQUIV: { system: string; kingspan: string; proclima: string; generic: string; dupont: string }[] = [
+  { system: "VCL — below insulation — high vapour resistance", kingspan: "See note*", proclima: "DB+", generic: "Heavy-duty PE / foil laminate", dupont: "Airguard Reflective" },
+  { system: "Vapour-open breather — above insulation", kingspan: "Nilvent", proclima: "Solitex range", generic: "Various breather membranes", dupont: "—" },
+];
+
+const SYSTEM_COMPARISON: {
+  product: string; brand: string; membraneType: string; functionInAssembly: string; vapourResistance: string; positionInAssembly: string; lapTapeRequired: string;
+}[] = [
+  {
+    product: "Kingspan Nilvent",
+    brand: "Kingspan",
+    membraneType: "Vapour-open breather",
+    functionInAssembly: "Allows vapour to escape outwards — NOT a VCL",
+    vapourResistance: "<0.1 m Sd (vapour-open)",
+    positionInAssembly: "Above / outside insulation",
+    lapTapeRequired: "Yes — Kingspan-compatible tape",
+  },
+  {
+    product: "Pro Clima DB+",
+    brand: "Pro Clima",
+    membraneType: "Polyethylene VCL",
+    functionInAssembly: "Prevents vapour entering assembly — warm side",
+    vapourResistance: "~100 m Sd (confirm TDS)",
+    positionInAssembly: "Below insulation — warm side",
+    lapTapeRequired: "Yes — TESCON VANA tape",
+  },
+  {
+    product: "Heavy-Duty PE Foil VCL",
+    brand: "Various",
+    membraneType: "PE / foil laminate VCL",
+    functionInAssembly: "Prevents vapour entering assembly — warm side",
+    vapourResistance: "High — confirm to AS/NZS 4200",
+    positionInAssembly: "Below insulation — warm side",
+    lapTapeRequired: "Yes — compatible VCL tape",
+  },
+  {
+    product: "DuPont Tyvek Airguard Reflective",
+    brand: "DuPont",
+    membraneType: "Foil-faced VCL",
+    functionInAssembly: "High-resistance vapour barrier — warm side",
+    vapourResistance: "Very high — confirm TDS",
+    positionInAssembly: "Below insulation — warm side",
+    lapTapeRequired: "Yes — Tyvek Tape / foil tape",
+  },
 ];
 
 const TECH_INFO = {
@@ -413,7 +490,7 @@ export function VCLProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — vapour control layer membranes for warm-roof assemblies — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">4 products — 4 brands — vapour control layer membranes for warm-roof assemblies — scroll to view all</p>
           </div>
         </div>
 
@@ -509,6 +586,45 @@ export function VCLProductSection() {
         </div>
       </div>
 
+      {/* ── System Comparison ── */}
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of VCL and vapour-open membranes for warm-roof assemblies. Note: Kingspan Nilvent is a vapour-OPEN breather — not a VCL. Confirm product position and function for your specific assembly.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Membrane type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Function in assembly</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Vapour resistance (Sd)</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Position in assembly</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Lap tape req.</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.membraneType}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.functionInAssembly}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.vapourResistance}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.positionInAssembly}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.lapTapeRequired}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* ── Brand Equivalents ── */}
       <div>
         <div className="mb-6 flex items-start gap-3">
@@ -528,13 +644,14 @@ export function VCLProductSection() {
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#f97316" }}>Kingspan</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#22c55e" }}>Pro Clima</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-600">Generic</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#8b5cf6" }}>DuPont</th>
               </tr>
             </thead>
             <tbody>
               {BRAND_EQUIV.map((row, i) => (
                 <tr key={row.system} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-slate-800">{row.system}</td>
-                  {[row.kingspan, row.proclima, row.generic].map((val, j) => (
+                  {[row.kingspan, row.proclima, row.generic, row.dupont].map((val, j) => (
                     <td key={j} className="px-4 py-3 text-slate-600">{val === "—" ? <span className="text-slate-300">—</span> : val}</td>
                   ))}
                 </tr>

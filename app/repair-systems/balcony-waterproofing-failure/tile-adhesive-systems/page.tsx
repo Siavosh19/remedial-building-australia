@@ -229,7 +229,7 @@ export default function TileAdhesiveSystemsPage() {
                   title: "Liquid-applied polyurethane and hybrid waterproofing systems",
                 },
                 {
-                  href: "/ai-scope-builder/new",
+                  href: "/ai-scope-builder",
                   label: "AI Scope Builder",
                   title: "Generate a scope of works for balcony waterproofing remediation",
                 },
