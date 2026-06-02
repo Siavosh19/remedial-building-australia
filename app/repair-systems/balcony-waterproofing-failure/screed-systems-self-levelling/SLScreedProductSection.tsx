@@ -284,6 +284,177 @@ const TECH_INFO = {
   ],
 };
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function SLScreedIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are self-levelling screed systems — balcony waterproofing?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Self-levelling screeds are cementitious compounds that, when mixed with water, flow under gravity to produce a smooth, flat, or lightly graded surface without the compaction and hand-finishing required by traditional sand-cement screeds. They are applied by pour, trowel, or pump, and are primarily used to prepare concrete substrates for the application of waterproofing membranes, tile adhesives, and floor coverings.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              In balcony and terrace waterproofing remediation, self-levelling screeds have a specific and limited role: substrate preparation prior to membrane application. They are used to smooth damaged, rough, or uneven concrete surfaces before the waterproofing membrane is applied, and in some products to fill depressions and achieve a minimal fall to drainage where the existing slab is close to the required level.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
+
 function TechCard({
   icon,
   title,
@@ -377,25 +548,11 @@ function ProductCard({ product }: { product: Product }) {
       <div className="space-y-3 px-5 py-4">
         <div>
           <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-          <ul className="space-y-1.5">
-            {product.technicalProperties.map((prop, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
-                {prop}
-              </li>
-            ))}
-          </ul>
+          <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
         </div>
         <div>
           <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-          <ul className="space-y-1.5">
-            {product.limitations.map((lim, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
-                {lim}
-              </li>
-            ))}
-          </ul>
+          <CollapsibleList items={product.limitations} icon="x" limit={3} />
         </div>
       </div>
 

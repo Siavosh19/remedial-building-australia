@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
-import { BallastProductSection } from "./BallastProductSection";
+import { BallastProductSection, BallastIntroSection } from "./BallastProductSection";
 
 export const metadata: Metadata = {
   title: "Ballast Systems — Roofs and Podiums — Balcony Waterproofing — Remedial Building Australia",
@@ -8,35 +8,81 @@ export const metadata: Metadata = {
     "Technical product reference for ballast systems used on loose-laid single-ply waterproofing membrane roof decks and podium slabs in Australian Class 2 strata apartment buildings — washed river pebble ballast, precast concrete paver ballast, ballast depth and weight requirements, wind uplift zone design, structural loading, and protection board requirements.",
 };
 
-const SIBLING_TABS = [
-  { label: "Liquid applied — PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
-  { label: "Liquid applied — acrylic", slug: "liquid-applied-membranes-acrylic" },
-  { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
-  { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
-  { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
-  { label: "Primers", slug: "primers-bonding-agents" },
-  { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
-  { label: "Screed SL", slug: "screed-systems-self-levelling" },
-  { label: "Drainage puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
-  { label: "Drainage linear", slug: "drainage-linear-grates-channel-drains" },
-  { label: "Penetration collars", slug: "penetration-collars" },
-  { label: "Protection boards", slug: "protection-boards" },
-  { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
-  { label: "Flood test", slug: "flood-test-equipment" },
-  { label: "Tile adhesive", slug: "tile-adhesive-systems" },
-  { label: "Tools", slug: "abrasives-blades-tools" },
-  { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
-  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
-  { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
-  { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
-  { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
-  { label: "Pedestal systems (podiums)", slug: "pedestal-systems-adjustable-height" },
-  { label: "Drainage cells (planter boxes)", slug: "drainage-cell-systems" },
-  { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
-  { label: "Ballast systems (roofs)", slug: "ballast-systems" },
-  { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Balcony edge trims", slug: "gutter-lining-systems" },
-  { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
+const SIBLING_GROUPS = [
+  {
+    heading: "Membrane Systems",
+    tabs: [
+      { label: "LQ PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
+      { label: "LQ acrylic", slug: "liquid-applied-membranes-acrylic" },
+      { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
+      { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
+      { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
+      { label: "HDPE (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+      { label: "Single-ply ballasted", slug: "single-ply-membrane-systems-ballasted" },
+      { label: "TPO/FPO exposed", slug: "tpo-fpo-sheet-membranes-exposed" },
+      { label: "Hot melt asphalt", slug: "hot-melt-rubberised-asphalt-systems" },
+    ],
+  },
+  {
+    heading: "Preparation",
+    tabs: [
+      { label: "Primers", slug: "primers-bonding-agents" },
+      { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
+      { label: "Tools", slug: "abrasives-blades-tools" },
+    ],
+  },
+  {
+    heading: "Screeds & Tile",
+    tabs: [
+      { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
+      { label: "Screed SL", slug: "screed-systems-self-levelling" },
+      { label: "Tile adhesive", slug: "tile-adhesive-systems" },
+      { label: "Tile sealants", slug: "tile-sealants-silicone-sanitary" },
+    ],
+  },
+  {
+    heading: "Drainage & Penetrations",
+    tabs: [
+      { label: "Puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
+      { label: "Linear drains", slug: "drainage-linear-grates-channel-drains" },
+      { label: "Penetration collars", slug: "penetration-collars" },
+      { label: "Podium outlets", slug: "drainage-podium-outlets-scuppers" },
+      { label: "Edge trims", slug: "gutter-lining-systems" },
+      { label: "Flashing compounds", slug: "flashing-compound-systems" },
+    ],
+  },
+  {
+    heading: "Prep & Fix",
+    tabs: [
+      { label: "Termination bars", slug: "membrane-termination-bars-accessories" },
+    ],
+  },
+  {
+    heading: "Joints & Movement",
+    tabs: [
+      { label: "Backer rod", slug: "backer-rod-bond-breaker-tape" },
+      { label: "Expansion joint covers", slug: "expansion-joint-cover-systems-trafficable" },
+    ],
+  },
+  {
+    heading: "Protection & Overburden",
+    tabs: [
+      { label: "Protection boards", slug: "protection-boards" },
+      { label: "Root resistant", slug: "root-resistant-membrane-systems" },
+      { label: "Tapered insulation", slug: "tapered-insulation-board-systems" },
+      { label: "Pedestals", slug: "pedestal-systems-adjustable-height" },
+      { label: "Drainage cells", slug: "drainage-cell-systems" },
+      { label: "Filter fabric", slug: "filter-fabric-systems" },
+      { label: "Ballast", slug: "ballast-systems" },
+      { label: "Vapour control layers", slug: "vapour-control-layers-warm-roof" },
+    ],
+  },
+  {
+    heading: "Testing & QA",
+    tabs: [
+      { label: "Flood test", slug: "flood-test-equipment" },
+    ],
+  },
 ];
 
 export default function BallastSystemsPage() {
@@ -106,26 +152,38 @@ export default function BallastSystemsPage() {
           </div>
         </section>
 
-        {/* ── Sibling tabs ── */}
+                {/* ── Sibling tabs ── */}
         <div className="border-b border-slate-200 bg-white px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="flex items-end gap-0 overflow-x-auto">
-              {SIBLING_TABS.map((tab) => {
-                const active = tab.slug === "ballast-systems";
-                return (
-                  <a
-                    key={tab.slug}
-                    href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
-                    className={`relative shrink-0 border-b-2 px-5 py-4 text-sm font-bold whitespace-nowrap transition ${
-                      active
-                        ? "border-red-700 text-sky-950"
-                        : "border-transparent text-slate-500 hover:text-sky-900"
-                    }`}
-                  >
-                    {tab.label}
-                  </a>
-                );
-              })}
+            <div className="flex items-stretch gap-0 overflow-x-auto">
+              {SIBLING_GROUPS.map((group, gi) => (
+                <div
+                  key={group.heading}
+                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
+                >
+                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
+                    {group.heading}
+                  </div>
+                  <div className="flex items-end">
+                    {group.tabs.map((tab) => {
+                      const active = tab.slug === "ballast-systems";
+                      return (
+                        <a
+                          key={tab.slug}
+                          href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
+                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
+                            active
+                              ? "border-red-700 text-sky-950"
+                              : "border-transparent text-slate-500 hover:text-sky-900"
+                          }`}
+                        >
+                          {tab.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -135,25 +193,8 @@ export default function BallastSystemsPage() {
           <div className="mx-auto max-w-7xl space-y-10">
 
             {/* Intro */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-              <div className="mb-4 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
-                  <BookOpen size={15} />
-                </div>
-                <h3 className="text-base font-extrabold text-sky-950">What are ballast systems — roofs and podiums?</h3>
-              </div>
-              <div className="space-y-4 text-sm leading-7 text-slate-600">
-                <p>
-                  Ballast systems are used on loose-laid single-ply waterproofing membrane roofs and podium slabs to hold the membrane in place against wind uplift forces. When a single-ply PVC or FPO sheet membrane is installed loose-laid over a flat roof or podium deck — without being bonded or mechanically fixed to the substrate — it relies entirely on the weight of the material placed above it to resist the wind suction forces that act on the underside of the membrane during wind events. The ballast material — washed river pebble, precast concrete pavers, or pedestal-supported pavers — provides the dead weight required to counteract these uplift forces and keep the membrane in contact with the substrate below.
-                </p>
-                <p>
-                  Ballast systems are a fundamental component of loose-laid single-ply membrane installations using products such as Wolfin (Projex Group), Fatrafol (Fatra Australia), Sarnafil, and Sikaplan (Sika). On these systems, the membrane is unrolled and hot-air welded at seams but is not bonded or fixed to the substrate — the ballast above is the only mechanism holding the membrane down. The ballast also performs a secondary function: protecting the membrane from UV degradation, physical damage, and foot traffic, extending the service life of the membrane significantly compared to an exposed installation.
-                </p>
-                <p>
-                  Ballast design is not a simple material selection decision. The required ballast weight per square metre varies across the roof area — perimeter zones and corner zones are subject to significantly higher wind uplift forces than the field of the roof and require heavier ballast or a wider depth than the field. The required ballast weight is determined by a wind uplift analysis based on the building height, roof geometry, wind speed category (from AS/NZS 1170.2), and the specific membrane system being used. The structural engineer must confirm that the roof or podium slab can carry the imposed dead load of the ballast before the system is specified.
-                </p>
-              </div>
-            </div>
+            <BallastIntroSection />
+
 
             {/* Interactive: accordion + product grid + comparison table */}
             <BallastProductSection />

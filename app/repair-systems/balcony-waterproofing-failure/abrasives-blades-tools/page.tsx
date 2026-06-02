@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookOpen, AlertTriangle, ArrowRight, Info } from "lucide-react";
-import { AbrasivesProductSection } from "./AbrasivesProductSection";
+import { AbrasivesProductSection, AbrasivesIntroSection } from "./AbrasivesProductSection";
 
 export const metadata: Metadata = {
   title: "Abrasives, Blades and Tools — Balcony Waterproofing — Remedial Building Australia",
@@ -8,35 +8,81 @@ export const metadata: Metadata = {
     "Technical product reference for abrasives, blades, and tools used in balcony waterproofing remediation on Australian Class 2 strata apartment buildings — tile removal tools, diamond cup wheels, floor grinders, scarifying machines, diamond saw blades, membrane application rollers and trowels, concrete moisture meters, and wet film thickness gauges.",
 };
 
-const SIBLING_TABS = [
-  { label: "Liquid applied — PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
-  { label: "Liquid applied — acrylic", slug: "liquid-applied-membranes-acrylic" },
-  { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
-  { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
-  { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
-  { label: "Primers", slug: "primers-bonding-agents" },
-  { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
-  { label: "Screed SL", slug: "screed-systems-self-levelling" },
-  { label: "Drainage puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
-  { label: "Drainage linear", slug: "drainage-linear-grates-channel-drains" },
-  { label: "Penetration collars", slug: "penetration-collars" },
-  { label: "Protection boards", slug: "protection-boards" },
-  { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
-  { label: "Flood test", slug: "flood-test-equipment" },
-  { label: "Tile adhesive", slug: "tile-adhesive-systems" },
-  { label: "Tools", slug: "abrasives-blades-tools" },
-  { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
-  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
-  { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
-  { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
-  { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
-  { label: "Pedestal systems (podiums)", slug: "pedestal-systems-adjustable-height" },
-  { label: "Drainage cells (planter boxes)", slug: "drainage-cell-systems" },
-  { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
-  { label: "Ballast systems (roofs)", slug: "ballast-systems" },
-  { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining (roofs)", slug: "gutter-lining-systems" },
-  { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
+const SIBLING_GROUPS = [
+  {
+    heading: "Membrane Systems",
+    tabs: [
+      { label: "LQ PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
+      { label: "LQ acrylic", slug: "liquid-applied-membranes-acrylic" },
+      { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
+      { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
+      { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
+      { label: "HDPE (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+      { label: "Single-ply ballasted", slug: "single-ply-membrane-systems-ballasted" },
+      { label: "TPO/FPO exposed", slug: "tpo-fpo-sheet-membranes-exposed" },
+      { label: "Hot melt asphalt", slug: "hot-melt-rubberised-asphalt-systems" },
+    ],
+  },
+  {
+    heading: "Preparation",
+    tabs: [
+      { label: "Primers", slug: "primers-bonding-agents" },
+      { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
+      { label: "Tools", slug: "abrasives-blades-tools" },
+    ],
+  },
+  {
+    heading: "Screeds & Tile",
+    tabs: [
+      { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
+      { label: "Screed SL", slug: "screed-systems-self-levelling" },
+      { label: "Tile adhesive", slug: "tile-adhesive-systems" },
+      { label: "Tile sealants", slug: "tile-sealants-silicone-sanitary" },
+    ],
+  },
+  {
+    heading: "Drainage & Penetrations",
+    tabs: [
+      { label: "Puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
+      { label: "Linear drains", slug: "drainage-linear-grates-channel-drains" },
+      { label: "Penetration collars", slug: "penetration-collars" },
+      { label: "Podium outlets", slug: "drainage-podium-outlets-scuppers" },
+      { label: "Edge trims", slug: "gutter-lining-systems" },
+      { label: "Flashing compounds", slug: "flashing-compound-systems" },
+    ],
+  },
+  {
+    heading: "Prep & Fix",
+    tabs: [
+      { label: "Termination bars", slug: "membrane-termination-bars-accessories" },
+    ],
+  },
+  {
+    heading: "Joints & Movement",
+    tabs: [
+      { label: "Backer rod", slug: "backer-rod-bond-breaker-tape" },
+      { label: "Expansion joint covers", slug: "expansion-joint-cover-systems-trafficable" },
+    ],
+  },
+  {
+    heading: "Protection & Overburden",
+    tabs: [
+      { label: "Protection boards", slug: "protection-boards" },
+      { label: "Root resistant", slug: "root-resistant-membrane-systems" },
+      { label: "Tapered insulation", slug: "tapered-insulation-board-systems" },
+      { label: "Pedestals", slug: "pedestal-systems-adjustable-height" },
+      { label: "Drainage cells", slug: "drainage-cell-systems" },
+      { label: "Filter fabric", slug: "filter-fabric-systems" },
+      { label: "Ballast", slug: "ballast-systems" },
+      { label: "Vapour control layers", slug: "vapour-control-layers-warm-roof" },
+    ],
+  },
+  {
+    heading: "Testing & QA",
+    tabs: [
+      { label: "Flood test", slug: "flood-test-equipment" },
+    ],
+  },
 ];
 
 export default function AbrasivesBladesToolsPage() {
@@ -106,26 +152,38 @@ export default function AbrasivesBladesToolsPage() {
           </div>
         </section>
 
-        {/* ── Sibling tabs ── */}
+                {/* ── Sibling tabs ── */}
         <div className="border-b border-slate-200 bg-white px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="flex items-end gap-0 overflow-x-auto">
-              {SIBLING_TABS.map((tab) => {
-                const active = tab.slug === "abrasives-blades-tools";
-                return (
-                  <a
-                    key={tab.slug}
-                    href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
-                    className={`relative shrink-0 border-b-2 px-5 py-4 text-sm font-bold whitespace-nowrap transition ${
-                      active
-                        ? "border-red-700 text-sky-950"
-                        : "border-transparent text-slate-500 hover:text-sky-900"
-                    }`}
-                  >
-                    {tab.label}
-                  </a>
-                );
-              })}
+            <div className="flex items-stretch gap-0 overflow-x-auto">
+              {SIBLING_GROUPS.map((group, gi) => (
+                <div
+                  key={group.heading}
+                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
+                >
+                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
+                    {group.heading}
+                  </div>
+                  <div className="flex items-end">
+                    {group.tabs.map((tab) => {
+                      const active = tab.slug === "abrasives-blades-tools";
+                      return (
+                        <a
+                          key={tab.slug}
+                          href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
+                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
+                            active
+                              ? "border-red-700 text-sky-950"
+                              : "border-transparent text-slate-500 hover:text-sky-900"
+                          }`}
+                        >
+                          {tab.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -135,25 +193,8 @@ export default function AbrasivesBladesToolsPage() {
           <div className="mx-auto max-w-7xl space-y-10">
 
             {/* ── Intro ── */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-              <div className="mb-4 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
-                  <BookOpen size={15} />
-                </div>
-                <h3 className="text-base font-extrabold text-sky-950">Abrasives, blades and tools — balcony waterproofing remediation</h3>
-              </div>
-              <div className="space-y-4 text-sm leading-7 text-slate-600">
-                <p>
-                  Balcony waterproofing remediation on Class 2 strata apartment buildings requires a controlled sequence of surface preparation, membrane application, and quality assurance — each step requiring specific tools that are suited to the substrate condition, membrane system, and site WHS requirements. The tool categories covered on this page span the full remediation sequence: tile and membrane removal by SDS-Max demolition tools, concrete surface preparation by diamond grinding and scarifying, perimeter and joint cutting by diamond saw blades, liquid membrane application by roller, notched trowel, and squeegee, and substrate quality assurance by concrete moisture meter and wet film thickness gauge.
-                </p>
-                <p>
-                  Surface preparation is the step most frequently responsible for premature waterproofing membrane failure in Australian strata remediation practice. Liquid-applied PU, acrylic, and cementitious membranes require the concrete substrate to be mechanically prepared to the ICRI CSP profile specified by the membrane manufacturer — typically CSP 3–4 — before primer application. Preparation methods vary based on the substrate condition: new or previously uncoated concrete requires diamond cup wheel grinding; old concrete with tile adhesive residue requires demolition chisel removal followed by grinding; heavily contaminated or painted substrates may require scarifying. Moisture testing before primer application is not optional — it is a mandatory step on every compliant balcony waterproofing scope.
-                </p>
-                <p>
-                  All grinding, scarifying, and cutting of concrete, ceramic tile, porcelain tile, and tile adhesive on Australian construction sites is subject to Safe Work Australia silica dust regulations — dry grinding or dry cutting on site is a WHS regulatory breach. Every tool listed in the surface preparation and cutting sections of this page requires either wet cutting (water feed) or a dust extraction shroud connected to an M-class or H-class vacuum. Compliance is not discretionary — confirm the site WHS controls and Safe Work Method Statement (SWMS) before commencing any surface preparation work.
-                </p>
-              </div>
-            </div>
+            <AbrasivesIntroSection />
+
 
             {/* ── Product Sections + Accordion + Comparison Table (client component) ── */}
             <AbrasivesProductSection />

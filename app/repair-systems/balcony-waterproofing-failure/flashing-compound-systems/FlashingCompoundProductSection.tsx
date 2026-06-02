@@ -489,6 +489,180 @@ const TECH_INFO = {
   ],
 };
 
+export function FlashingCompoundIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are flashing compound systems — roofs and balconies?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Flashing compound systems are liquid-applied or self-adhesive waterproofing products used to seal and waterproof upstands, parapet wall junctions, roof-to-wall interfaces, penetrations, step junctions, and other detail areas on roofs and balconies where a sheet membrane cannot be easily applied, heat-bonded, or formed into a watertight junction. On torch-on modified bitumen sheet membrane systems — the dominant sheet membrane system in Australian strata building remediation — the sheet membrane covers the horizontal field of the roof or balcony, but the junctions with vertical upstands, parapet walls, step flashings, and penetrations require a separate compound or flashing product to complete the waterproof detail. Flashing compounds bridge the gap between the field membrane and the vertical surface, conforming to irregular substrates and complex geometry that sheet membranes cannot reach.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              Flashing compound systems are also used as standalone repair compounds on existing waterproofing systems — applied over failed or cracked existing membrane at upstands, corners, and penetration perimeters where the primary membrane has failed but full replacement is not required or is not yet scheduled. In this repair role, flashing compounds extend the service life of an existing system at its most vulnerable detail locations.
+            </p>
+            <p>
+              The three primary flashing compound types used in Australian roof and balcony waterproofing remediation are liquid PU-bitumen flashing compounds, bituminous brushable compounds, and self-adhesive flashing tapes. Each has a distinct substrate compatibility, membrane system compatibility, UV resistance, and application method. The correct flashing compound must be selected to match the primary membrane system it is used with — flashing compounds are not universally interchangeable across membrane systems and brands.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
+
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
 function TechCard({
   icon,
   title,

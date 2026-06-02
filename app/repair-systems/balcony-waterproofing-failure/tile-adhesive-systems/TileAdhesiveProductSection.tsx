@@ -515,6 +515,183 @@ const TECH_INFO = {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function TileAdhesiveIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are tile adhesive and grout systems — balcony over-membrane?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Tile adhesive systems are the materials used to bond ceramic, porcelain, stone, and other tile formats to the cured waterproofing membrane surface on balconies and terraces. In a correctly sequenced balcony waterproofing system, the tile adhesive is the last structural layer before the tile — applied over the cured and flood-tested membrane, it bonds the tile to the system and transfers foot traffic loads back to the concrete substrate below.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              In balcony and terrace applications, tile adhesive selection is governed by three factors: compatibility with the specific waterproofing membrane below, flexibility sufficient to accommodate the thermal movement of an external exposed substrate, and compliance with AS/NZS 4992 for the tile format and fixing method being used. External balcony applications impose more demanding conditions than internal wet areas — higher UV exposure, greater thermal cycling, and the risk of prolonged water contact beneath the tile all require a correctly specified, membrane-compatible adhesive system.
+            </p>
+            <p>
+              Grout systems fill the joints between tiles and complete the tiled surface. In external balcony applications, grout selection must account for joint width, tile format, exposure conditions, and movement joint layout. Sanded cement-based grouts and epoxy grouts each have specific applications and limitations in external balcony use. Movement joints must be incorporated into the tile layout at all perimeters, changes of plane, and at regular field intervals — grout is never used to fill movement joints.
+            </p>
+            <p>
+              This page covers three product categories: polymer-modified tile adhesive systems, epoxy tile adhesive systems, and grout systems including sanded cement-based and epoxy grout.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
+
 function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title: string; items: string[]; style: "bullet" | "check" | "warn" }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">

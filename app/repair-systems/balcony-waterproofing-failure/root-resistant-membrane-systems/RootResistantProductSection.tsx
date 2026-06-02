@@ -439,6 +439,179 @@ const SYSTEM_COMPARISON: {
   },
 ];
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function RootResistantIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are root resistant membrane systems — planter boxes and podiums?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Root resistant membrane systems are waterproofing membranes specifically designed and tested to resist penetration by plant roots over the life of a planter box or green roof installation. Standard waterproofing membranes — whether liquid-applied polyurethane, torch-on modified bitumen, or PVC single-ply — are not designed to resist root penetration. Plant roots, particularly from woody shrubs, trees, and aggressive species such as bamboo and some ornamental grasses, exert significant mechanical pressure and produce organic acids and enzymes that can penetrate and degrade a standard membrane over time, leading to water ingress through the structural podium slab or roof deck below. Root resistant membranes address this by providing either a physical barrier through a dense, root-impenetrable material (typically weldable polypropylene or PVC), a chemical barrier through a root inhibitor compound (typically Preventol B2) incorporated into the membrane, or a combination of both mechanisms.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              The definitive performance standard for root resistance is the FLL Guideline — published by the German Forschungsgesellschaft Landschaftsentwicklung Landschaftsbau (FLL) — which defines a standardised test protocol for root and rhizome penetration resistance. Products that carry FLL root resistance certification have been independently tested and confirmed to resist root penetration through the membrane under the FLL test conditions. In the Australian market, FLL certification is the primary basis for specifying a membrane as root resistant. Products without FLL certification should not be specified as root resistant waterproofing in planter box or green roof applications regardless of manufacturer claims. The AS 4654 series covers waterproofing of wet areas including roofs, but FLL certification specifically addresses root resistance and remains the relevant standard for this application.
+            </p>
+            <p>
+              Root resistant membranes are one layer in a complete planter box or podium slab waterproofing system. The complete system above a structural concrete slab includes, in order from slab upward: the waterproofing membrane (root resistant), a protection board or drainage mat, a drainage cell or aggregate drainage layer, a geotextile filter fabric layer, and then growing medium and planting. The root resistant membrane is never left exposed and must be covered by a protection course immediately after application or installation — UV exposure and foot traffic will degrade any waterproofing membrane, including root resistant types, if left unprotected. Drainage design, outlet sizing, and filter fabric selection must be coordinated with the landscape architect to ensure the planter box system performs as a whole.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 export function RootResistantProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -604,11 +777,7 @@ export function RootResistantProductSection() {
                 {/* System Description */}
                 <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <div className="space-y-3">
-                    {product.systemDescription.split("\n\n").map((para, i) => (
-                      <p key={i} className="text-xs leading-6 text-slate-700">{para}</p>
-                    ))}
-                  </div>
+                  <CollapsibleDescription text={product.systemDescription} />
                 </div>
 
                 {/* Properties & Limitations */}

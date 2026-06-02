@@ -404,6 +404,180 @@ const TECH_INFO = {
   ],
 };
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function PenetrationCollarIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are penetration collars — balcony waterproofing?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Penetration collars are purpose-manufactured waterproofing elements that seal the junction between a pipe or conduit and a waterproofing membrane on a balcony or terrace slab. Where a drainage pipe, electrical conduit, irrigation line, or structural post passes through the membrane plane, the membrane cannot simply be lapped against the penetration — the junction must be formed using a collar that provides a continuous, bonded waterproof seal around the full perimeter of the pipe at membrane level. Penetration collar failure is one of the most common causes of localised waterproofing failure in balcony and terrace remediation because the junction is mechanically vulnerable and thermally active.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              Penetration collars are available in two forms: pre-formed collars and site-formed collars. Pre-formed collars are factory-manufactured in fixed pipe diameters from PVC, stainless steel, or EPDM rubber, and are bedded into the membrane before the membrane field coat is applied. The membrane is then lapped onto the collar flange and bonded to create the waterproof seal. Site-formed collars are built using proprietary bandage fabric, membrane, and detail compound — they are formed on the pipe in situ and are used where no pre-formed collar is available for the pipe size, pipe material, or pipe position, or where access constraints prevent pre-formed collar installation.
+            </p>
+            <p>
+              Collar selection is determined by the membrane system being applied, the pipe diameter, the pipe material, and the structural position of the penetration within the slab. Pre-formed PVC collars are compatible with liquid-applied membrane systems and not suitable for torch-on applications. Stainless steel collars are compatible with torch-on sheet membrane systems. EPDM rubber sleeve collars (Dektite type) are used for irregular pipe profiles, multiple-pipe clusters, and applications where the pipe protrudes at an angle. Site-formed collars are not a cost-saving shortcut — they require the same system discipline and inspection hold point as pre-formed collars, and are only used where pre-formed options are genuinely unsuitable.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
+
 function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title: string; items: string[]; style: "bullet" | "check" | "warn" }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">

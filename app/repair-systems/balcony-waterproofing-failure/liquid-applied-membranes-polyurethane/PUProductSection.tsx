@@ -470,6 +470,162 @@ const TECH_INFO = {
   ],
 };
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function PUIntroSection() {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are liquid-applied polyurethane and hybrid balcony membranes?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          This category covers liquid-applied polyurethane and hybrid waterproofing membranes used in balcony and terrace waterproofing remediation. These systems are typically used below tiles, screeds, pavers, pedestal systems, artificial grass finishes, or protected balcony finishes. Product selection must consider substrate preparation, primer compatibility, reinforcement at corners and junctions, wet film/dry film thickness, curing time, flood testing, UV exposure, tile adhesive compatibility, and whether the system is designed for exposed trafficable use or protected use only.
+        </p>
+      </div>
+    </div>
+  );
+}
 function TechCard({
   icon,
   title,
@@ -673,75 +829,41 @@ export function PUProductSection() {
                     </div>
                   </div>
                   <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-500">{product.descriptionLine}</p>
-                </div>
-
-                {/* Tech spec chips */}
-                <div className="flex flex-wrap gap-1.5 border-b border-slate-100 bg-white px-5 py-3">
-                  {product.techChips.map((chip) => (
-                    <span
-                      key={chip.label}
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}
-                    >
-                      {chip.label}
-                    </span>
-                  ))}
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                    {product.techChips.filter((c) => c.label.toLowerCase().includes("warranty")).map((chip) => (
+                      <span key={chip.label} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                        {chip.label}
+                      </span>
+                    ))}
+                  </div>
+                  <CollapsibleCardDetails
+                    text={product.descriptionLine}
+                    chips={product.techChips.filter((c) => !c.label.toLowerCase().includes("warranty"))}
+                  />
                 </div>
 
                 {/* System Description */}
                 <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <p className="text-xs leading-6 text-slate-700">{product.systemDescription}</p>
+                  <CollapsibleDescription text={product.systemDescription} />
                 </div>
 
                 {/* Technical Properties & Limitations */}
                 <div className="space-y-3 px-5 py-4">
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <ul className="space-y-1.5">
-                      {product.technicalProperties.map((prop, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
-                          {prop}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
                   </div>
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <ul className="space-y-1.5">
-                      {product.limitations.map((lim, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
-                          {lim}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
                   </div>
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-4">
-                  <p className="mb-3 text-[10px] uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
-                  <div className="space-y-2">
-                    {product.procurementSources.map((src) => (
-                      <div
-                        key={src.url}
-                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs"
-                      >
-                        <a
-                          href={src.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
-                        >
-                          {src.name}
-                          <ExternalLink size={9} className="text-slate-300" />
-                        </a>
-                      </div>
-                    ))}
-                  </div>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                  <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>
             </div>

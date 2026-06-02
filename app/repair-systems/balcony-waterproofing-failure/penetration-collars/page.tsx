@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookOpen, ArrowRight } from "lucide-react";
-import { PenetrationCollarProductSection } from "./PenetrationCollarProductSection";
+import { PenetrationCollarProductSection, PenetrationCollarIntroSection } from "./PenetrationCollarProductSection";
 
 export const metadata: Metadata = {
   title: "Penetration Collars — Pre-formed and Site-formed — Balcony Waterproofing Repair — Remedial Building Australia",
@@ -8,35 +8,81 @@ export const metadata: Metadata = {
     "Technical product reference for pre-formed and site-formed penetration collars used in balcony and terrace waterproofing remediation on Australian Class 2 strata apartment buildings — PVC, stainless steel, and EPDM rubber collar types, membrane compatibility, pipe diameter selection, ARDEX and Mapei system options, installation sequence, and brand comparisons.",
 };
 
-const SIBLING_TABS = [
-  { label: "Liquid applied — PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
-  { label: "Liquid applied — acrylic", slug: "liquid-applied-membranes-acrylic" },
-  { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
-  { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
-  { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
-  { label: "Primers", slug: "primers-bonding-agents" },
-  { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
-  { label: "Screed SL", slug: "screed-systems-self-levelling" },
-  { label: "Drainage puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
-  { label: "Drainage linear", slug: "drainage-linear-grates-channel-drains" },
-  { label: "Penetration collars", slug: "penetration-collars" },
-  { label: "Protection boards", slug: "protection-boards" },
-  { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
-  { label: "Flood test", slug: "flood-test-equipment" },
-  { label: "Tile adhesive", slug: "tile-adhesive-systems" },
-  { label: "Tools", slug: "abrasives-blades-tools" },
-  { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
-  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
-  { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
-  { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
-  { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
-  { label: "Pedestal systems (podiums)", slug: "pedestal-systems-adjustable-height" },
-  { label: "Drainage cells (planter boxes)", slug: "drainage-cell-systems" },
-  { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
-  { label: "Ballast systems (roofs)", slug: "ballast-systems" },
-  { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining (roofs)", slug: "gutter-lining-systems" },
-  { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
+const SIBLING_GROUPS = [
+  {
+    heading: "Membrane Systems",
+    tabs: [
+      { label: "LQ PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
+      { label: "LQ acrylic", slug: "liquid-applied-membranes-acrylic" },
+      { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
+      { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
+      { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
+      { label: "HDPE (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+      { label: "Single-ply ballasted", slug: "single-ply-membrane-systems-ballasted" },
+      { label: "TPO/FPO exposed", slug: "tpo-fpo-sheet-membranes-exposed" },
+      { label: "Hot melt asphalt", slug: "hot-melt-rubberised-asphalt-systems" },
+    ],
+  },
+  {
+    heading: "Preparation",
+    tabs: [
+      { label: "Primers", slug: "primers-bonding-agents" },
+      { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
+      { label: "Tools", slug: "abrasives-blades-tools" },
+    ],
+  },
+  {
+    heading: "Screeds & Tile",
+    tabs: [
+      { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
+      { label: "Screed SL", slug: "screed-systems-self-levelling" },
+      { label: "Tile adhesive", slug: "tile-adhesive-systems" },
+      { label: "Tile sealants", slug: "tile-sealants-silicone-sanitary" },
+    ],
+  },
+  {
+    heading: "Drainage & Penetrations",
+    tabs: [
+      { label: "Puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
+      { label: "Linear drains", slug: "drainage-linear-grates-channel-drains" },
+      { label: "Penetration collars", slug: "penetration-collars" },
+      { label: "Podium outlets", slug: "drainage-podium-outlets-scuppers" },
+      { label: "Edge trims", slug: "gutter-lining-systems" },
+      { label: "Flashing compounds", slug: "flashing-compound-systems" },
+    ],
+  },
+  {
+    heading: "Prep & Fix",
+    tabs: [
+      { label: "Termination bars", slug: "membrane-termination-bars-accessories" },
+    ],
+  },
+  {
+    heading: "Joints & Movement",
+    tabs: [
+      { label: "Backer rod", slug: "backer-rod-bond-breaker-tape" },
+      { label: "Expansion joint covers", slug: "expansion-joint-cover-systems-trafficable" },
+    ],
+  },
+  {
+    heading: "Protection & Overburden",
+    tabs: [
+      { label: "Protection boards", slug: "protection-boards" },
+      { label: "Root resistant", slug: "root-resistant-membrane-systems" },
+      { label: "Tapered insulation", slug: "tapered-insulation-board-systems" },
+      { label: "Pedestals", slug: "pedestal-systems-adjustable-height" },
+      { label: "Drainage cells", slug: "drainage-cell-systems" },
+      { label: "Filter fabric", slug: "filter-fabric-systems" },
+      { label: "Ballast", slug: "ballast-systems" },
+      { label: "Vapour control layers", slug: "vapour-control-layers-warm-roof" },
+    ],
+  },
+  {
+    heading: "Testing & QA",
+    tabs: [
+      { label: "Flood test", slug: "flood-test-equipment" },
+    ],
+  },
 ];
 
 export default function PenetrationCollarsPage() {
@@ -106,26 +152,38 @@ export default function PenetrationCollarsPage() {
           </div>
         </section>
 
-        {/* ── Sibling tabs ── */}
+                {/* ── Sibling tabs ── */}
         <div className="border-b border-slate-200 bg-white px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="flex items-end gap-0 overflow-x-auto">
-              {SIBLING_TABS.map((tab) => {
-                const active = tab.slug === "penetration-collars";
-                return (
-                  <a
-                    key={tab.slug}
-                    href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
-                    className={`relative shrink-0 border-b-2 px-5 py-4 text-sm font-bold whitespace-nowrap transition ${
-                      active
-                        ? "border-red-700 text-sky-950"
-                        : "border-transparent text-slate-500 hover:text-sky-900"
-                    }`}
-                  >
-                    {tab.label}
-                  </a>
-                );
-              })}
+            <div className="flex items-stretch gap-0 overflow-x-auto">
+              {SIBLING_GROUPS.map((group, gi) => (
+                <div
+                  key={group.heading}
+                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
+                >
+                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
+                    {group.heading}
+                  </div>
+                  <div className="flex items-end">
+                    {group.tabs.map((tab) => {
+                      const active = tab.slug === "penetration-collars";
+                      return (
+                        <a
+                          key={tab.slug}
+                          href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
+                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
+                            active
+                              ? "border-red-700 text-sky-950"
+                              : "border-transparent text-slate-500 hover:text-sky-900"
+                          }`}
+                        >
+                          {tab.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -135,25 +193,8 @@ export default function PenetrationCollarsPage() {
           <div className="mx-auto max-w-7xl space-y-10">
 
             {/* Intro — clean prose only, no boxes */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-              <div className="mb-4 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
-                  <BookOpen size={15} />
-                </div>
-                <h3 className="text-base font-extrabold text-sky-950">What are penetration collars — balcony waterproofing?</h3>
-              </div>
-              <div className="space-y-5 text-sm leading-7 text-slate-600">
-                <p>
-                  Penetration collars are purpose-manufactured waterproofing elements that seal the junction between a pipe or conduit and a waterproofing membrane on a balcony or terrace slab. Where a drainage pipe, electrical conduit, irrigation line, or structural post passes through the membrane plane, the membrane cannot simply be lapped against the penetration — the junction must be formed using a collar that provides a continuous, bonded waterproof seal around the full perimeter of the pipe at membrane level. Penetration collar failure is one of the most common causes of localised waterproofing failure in balcony and terrace remediation because the junction is mechanically vulnerable and thermally active.
-                </p>
-                <p>
-                  Penetration collars are available in two forms: pre-formed collars and site-formed collars. Pre-formed collars are factory-manufactured in fixed pipe diameters from PVC, stainless steel, or EPDM rubber, and are bedded into the membrane before the membrane field coat is applied. The membrane is then lapped onto the collar flange and bonded to create the waterproof seal. Site-formed collars are built using proprietary bandage fabric, membrane, and detail compound — they are formed on the pipe in situ and are used where no pre-formed collar is available for the pipe size, pipe material, or pipe position, or where access constraints prevent pre-formed collar installation.
-                </p>
-                <p>
-                  Collar selection is determined by the membrane system being applied, the pipe diameter, the pipe material, and the structural position of the penetration within the slab. Pre-formed PVC collars are compatible with liquid-applied membrane systems and not suitable for torch-on applications. Stainless steel collars are compatible with torch-on sheet membrane systems. EPDM rubber sleeve collars (Dektite type) are used for irregular pipe profiles, multiple-pipe clusters, and applications where the pipe protrudes at an angle. Site-formed collars are not a cost-saving shortcut — they require the same system discipline and inspection hold point as pre-formed collars, and are only used where pre-formed options are genuinely unsuitable.
-                </p>
-              </div>
-            </div>
+            <PenetrationCollarIntroSection />
+
 
             {/* Interactive: filter chips + product carousel + comparison table + warning boxes */}
             <PenetrationCollarProductSection />

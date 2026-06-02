@@ -725,6 +725,179 @@ const TECH_INFO = {
   ],
 };
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function AbrasivesIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          Abrasives, blades and tools — balcony waterproofing remediation
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Balcony waterproofing remediation on Class 2 strata apartment buildings requires a controlled sequence of surface preparation, membrane application, and quality assurance — each step requiring specific tools that are suited to the substrate condition, membrane system, and site WHS requirements. The tool categories covered on this page span the full remediation sequence: tile and membrane removal by SDS-Max demolition tools, concrete surface preparation by diamond grinding and scarifying, perimeter and joint cutting by diamond saw blades, liquid membrane application by roller, notched trowel, and squeegee, and substrate quality assurance by concrete moisture meter and wet film thickness gauge.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              Surface preparation is the step most frequently responsible for premature waterproofing membrane failure in Australian strata remediation practice. Liquid-applied PU, acrylic, and cementitious membranes require the concrete substrate to be mechanically prepared to the ICRI CSP profile specified by the membrane manufacturer — typically CSP 3–4 — before primer application. Preparation methods vary based on the substrate condition: new or previously uncoated concrete requires diamond cup wheel grinding; old concrete with tile adhesive residue requires demolition chisel removal followed by grinding; heavily contaminated or painted substrates may require scarifying. Moisture testing before primer application is not optional — it is a mandatory step on every compliant balcony waterproofing scope.
+            </p>
+            <p>
+              All grinding, scarifying, and cutting of concrete, ceramic tile, porcelain tile, and tile adhesive on Australian construction sites is subject to Safe Work Australia silica dust regulations — dry grinding or dry cutting on site is a WHS regulatory breach. Every tool listed in the surface preparation and cutting sections of this page requires either wet cutting (water feed) or a dust extraction shroud connected to an M-class or H-class vacuum. Compliance is not discretionary — confirm the site WHS controls and Safe Work Method Statement (SWMS) before commencing any surface preparation work.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 function TechCard({
   icon,
   title,
@@ -810,36 +983,18 @@ function ProductCard({ product }: { product: Product }) {
       {/* System description */}
       <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
         <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-        <div className="space-y-3">
-          {product.systemDescription.map((para, i) => (
-            <p key={i} className="text-xs leading-6 text-slate-700">{para}</p>
-          ))}
-        </div>
+        <CollapsibleDescription text={product.systemDescription.join('\n\n')} />
       </div>
 
       {/* Properties & Limitations */}
       <div className="space-y-3 px-5 py-4">
         <div>
           <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-          <ul className="space-y-1.5">
-            {product.technicalProperties.map((prop, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
-                {prop}
-              </li>
-            ))}
-          </ul>
+          <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
         </div>
         <div>
           <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-          <ul className="space-y-1.5">
-            {product.limitations.map((lim, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
-                {lim}
-              </li>
-            ))}
-          </ul>
+          <CollapsibleList items={product.limitations} icon="x" limit={3} />
         </div>
         {product.specifierNote && (
           <div className="rounded-lg border border-sky-100 bg-sky-50 px-3 py-2">
@@ -849,32 +1004,10 @@ function ProductCard({ product }: { product: Product }) {
         )}
       </div>
 
-      {/* Procurement */}
-      <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-4">
-        <p className="mb-3 text-[10px] uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
-        <div className="space-y-2">
-          {product.procurementSources.map((src) => (
-            <div key={src.name} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs">
-              {src.url ? (
-                <a
-                  href={src.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
-                >
-                  {src.name}
-                  <ExternalLink size={9} className="text-slate-300" />
-                </a>
-              ) : (
-                <span className="text-slate-600">{src.name}</span>
-              )}
-            </div>
-          ))}
+        {/* Procurement */}
+        <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+          <CollapsibleSources sources={product.procurementSources} />
         </div>
-        <p className="mt-3 text-[10px] italic text-slate-400">
-          Confirm suitability with current manufacturer TDS before specifying or applying.
-        </p>
-      </div>
     </div>
   );
 }
