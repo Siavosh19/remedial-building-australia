@@ -624,6 +624,29 @@ export function MetalSheetColorbondCorrugatedProductSection() {
           </table>
         </div>
       </div>
+
+      {/* ── Do not confuse ── */}
+      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+        <div className="mb-4 flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+            <AlertTriangle size={15} />
+          </div>
+          <h3 className="text-base font-extrabold text-amber-900">Do not confuse Colorbond corrugated sheet with:</h3>
+        </div>
+        <ul className="space-y-2.5">
+          {[
+            "Trimdek (high-rib trapezoidal) — a different profile with a trapezoidal rib, different fixing system, and different span/loading tables. Not interchangeable with corrugated sheet.",
+            "Klip-Lok (concealed fix) — completely different fixing mechanism using a concealed clip system, no through-fasteners in the field. Not interchangeable with corrugated sheet and requires a different substructure and installer competency.",
+            "Zincalume corrugated — the same standard sinusoidal corrugated profile (76mm pitch, 762mm cover) but with an unpainted zinc-aluminium alloy substrate rather than a Colorbond painted finish. Not a like-for-like substitute where a painted finish is required.",
+            "Uncoated galvanised iron (GI) sheet — older legacy corrugated product with a hot-dipped galvanised zinc coating, no paint finish. No longer used in new or replacement works in Australia. Do not specify or accept GI sheet as a replacement for Colorbond.",
+          ].map((item) => (
+            <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
