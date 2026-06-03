@@ -1,35 +1,50 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import RenderRepairCategoryFilter from "./RenderRepairCategoryFilter";
 
 export const metadata: Metadata = {
   title: "Render Repair Systems — Facade & External Envelope — Remedial Building Australia",
   description:
-    "Technical repair system reference for render repair, removal and reinstallation, salt attack and salt-contaminated render, and arris angles and render beads on Australian Class 2 strata and commercial facades.",
+    "Technical repair system reference for render repair, removal and reinstallation, salt attack and salt-contaminated render, and arris angles and render beads on Australian Class 2 strata and commercial facades — 18 product categories.",
 };
 
 const PARENT = "/repair-systems/facade-external-envelope";
+const BASE_RENDER = "/repair-systems/facade-external-envelope/render-repair-removal-reinstallation";
+const BASE_SALT   = "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render";
+const BASE_ARRIS  = "/repair-systems/facade-external-envelope/arris-angles-render-beads";
 
-const ITEMS = [
+const GROUPS = [
   {
-    label: "Render repair, removal and reinstallation",
-    href: "/repair-systems/facade-external-envelope/render-repair-removal-reinstallation",
-    count: 10,
-    description:
-      "Two-coat PM render, sand cement render, fibre-reinforced, acrylic spray, EIFS, salt-resistant render, breathable render, bonding agents, salt-retardant treatment and saline primer systems.",
+    heading: "Render Repair, Removal & Reinstallation",
+    categories: [
+      { label: "Two-coat polymer-modified render systems",       count: 4, href: `${BASE_RENDER}/two-coat-polymer-modified-render` },
+      { label: "Two-coat sand-cement render systems",            count: 3, href: `${BASE_RENDER}/two-coat-sand-cement-render` },
+      { label: "Fibre-reinforced render systems",                count: 4, href: `${BASE_RENDER}/fibre-reinforced-render` },
+      { label: "Acrylic spray-applied render systems",           count: 3, href: `${BASE_RENDER}/acrylic-spray-applied-render` },
+      { label: "EIFS render systems",                            count: 4, href: `${BASE_RENDER}/eifs-render-systems` },
+      { label: "Bonding agent and primer systems",               count: 4, href: `${BASE_RENDER}/bonding-agent-primer-systems` },
+    ],
   },
   {
-    label: "Salt attack and salt-contaminated render",
-    href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
-    count: 4,
-    description:
-      "Salt-resistant renovating render, salt-retardant substrate treatments, breathable vapour-permeable render and saline-resistant primer systems for salt attack defects.",
+    heading: "Salt Attack & Salt-Contaminated Render",
+    categories: [
+      { label: "Salt-resistant / renovating render systems",     count: 3, href: `${BASE_SALT}/salt-resistant-renovating-render` },
+      { label: "Salt-retardant substrate treatment systems",     count: 3, href: `${BASE_SALT}/salt-retardant-substrate-treatment` },
+      { label: "Breathable / vapour-permeable render systems",   count: 3, href: `${BASE_SALT}/breathable-vapour-permeable-render` },
+      { label: "Saline-resistant primer / slurry systems",       count: 3, href: `${BASE_SALT}/saline-resistant-primer-slurry` },
+    ],
   },
   {
-    label: "Arris angles and render beads",
-    href: "/repair-systems/facade-external-envelope/arris-angles-render-beads",
-    count: 8,
-    description:
-      "Aluminium, stainless steel and PVC arris angle beads, render stop beads, bellcast/drip beads, movement beads, reveal beads and mesh-wing render beads.",
+    heading: "Arris Angles & Render Beads",
+    categories: [
+      { label: "Aluminium arris and corner angle beads",         count: 4, href: `${BASE_ARRIS}/aluminium-arris-corner-angle-beads` },
+      { label: "Stainless steel arris and corner angle beads",   count: 3, href: `${BASE_ARRIS}/stainless-steel-arris-corner-angle-beads` },
+      { label: "PVC arris and corner angle beads",               count: 3, href: `${BASE_ARRIS}/pvc-arris-corner-angle-beads` },
+      { label: "Render stop beads",                              count: 3, href: `${BASE_ARRIS}/render-stop-beads` },
+      { label: "Bellcast and drip beads",                        count: 3, href: `${BASE_ARRIS}/bellcast-drip-beads` },
+      { label: "Movement and expansion beads",                   count: 3, href: `${BASE_ARRIS}/movement-expansion-beads` },
+      { label: "Reveal beads",                                   count: 3, href: `${BASE_ARRIS}/reveal-beads` },
+      { label: "Mesh-wing render beads",                         count: 3, href: `${BASE_ARRIS}/mesh-wing-render-beads` },
+    ],
   },
 ];
 
@@ -73,42 +88,12 @@ export default function RenderRepairSystemsPage() {
               Render Repair Systems
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              Technical repair system reference for render repair and reinstallation, salt attack remediation and facade edge bead systems — select a subcategory to view product categories, system information and brand equivalents.
+              Technical repair system reference for render repair and reinstallation, salt attack remediation and facade edge bead systems on Australian Class 2 strata and commercial buildings — select a product category to view system information, brand comparisons and procurement sources.
             </p>
           </div>
         </section>
 
-        {/* ── Subcategory cards ── */}
-        <section className="px-8 py-14">
-          <div className="mx-auto max-w-7xl">
-
-            <div className="mb-8 flex items-start gap-3">
-              <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-              <div>
-                <h2 className="text-2xl font-extrabold text-sky-950">Subcategories</h2>
-                <p className="mt-1 text-sm text-slate-500">3 subcategories — select a subcategory to view product categories, system comparisons and procurement sources.</p>
-              </div>
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {ITEMS.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
-                >
-                  <div className="mb-3 h-0.5 w-8 rounded-full bg-red-700" />
-                  <h3 className="text-base font-extrabold leading-tight text-sky-950 transition group-hover:text-sky-700">{item.label}</h3>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">{item.description}</p>
-                  <p className="mt-3 text-xs font-semibold text-slate-400">{item.count} product categories</p>
-                  <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                    View systems <ArrowRight size={12} />
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
+        <RenderRepairCategoryFilter groups={GROUPS} />
 
       </main>
 
