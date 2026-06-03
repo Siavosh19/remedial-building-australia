@@ -14,6 +14,12 @@ const SIBLING_GROUPS = [
     { label: "Aluminium lining", slug: "box-gutter-lining-aluminium" },
     { label: "Copper lining", slug: "box-gutter-lining-copper" },
   ]},
+  { heading: "Rainwater Heads", tabs: [
+    { label: "RWH — Colorbond", slug: "rainwater-head-colorbond" },
+    { label: "RWH — aluminium", slug: "rainwater-head-aluminium" },
+    { label: "RWH — copper", slug: "rainwater-head-copper" },
+    { label: "RWH — stainless", slug: "rainwater-head-stainless" },
+  ]},
   { heading: "Overflow & Protection", tabs: [
     { label: "Overflow scuppers/weirs", slug: "overflow-scupper-weir" },
     { label: "Leaf guard/strainer", slug: "leaf-guard-strainer" },

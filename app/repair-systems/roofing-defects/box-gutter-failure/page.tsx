@@ -18,6 +18,15 @@ const GROUPS = [
     ],
   },
   {
+    heading: "Rainwater Head Systems",
+    items: [
+      { label: "Rainwater head systems — Colorbond steel", slug: "rainwater-head-colorbond", count: 3, description: "Custom-fabricated and proprietary Colorbond steel rainwater heads for box gutter to downpipe transitions on Class 2 strata buildings." },
+      { label: "Rainwater head systems — aluminium", slug: "rainwater-head-aluminium", count: 3, description: "Aluminium rainwater heads — mill-finished and anodised — for box gutter outlets on strata and commercial buildings." },
+      { label: "Rainwater head systems — copper", slug: "rainwater-head-copper", count: 2, description: "Copper rainwater heads for heritage and high-specification box gutter applications on Class 2 buildings." },
+      { label: "Rainwater head systems — stainless steel", slug: "rainwater-head-stainless", count: 2, description: "AISI 316 stainless steel rainwater heads for coastal, industrial and premium Class 2 strata building applications." },
+    ],
+  },
+  {
     heading: "Overflow & Protection",
     items: [
       { label: "Overflow scupper and weir systems", slug: "overflow-scupper-weir", count: 3, description: "Blucher, Geberit and Alproc overflow scupper and weir systems for box gutter overflow compliance on Class 2 strata buildings." },

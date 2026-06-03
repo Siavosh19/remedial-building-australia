@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { AlertTriangle, ArrowRight } from "lucide-react";
-import { BoxGutterColorbondProductSection, BoxGutterColorbondIntroSection } from "./BoxGutterColorbondProductSection";
+import { RainwaterHeadCopperProductSection, RainwaterHeadCopperIntroSection } from "./RainwaterHeadCopperProductSection";
 
 export const metadata: Metadata = {
-  title: "Box Gutter Lining — Colorbond Steel — Box Gutter Failure — Remedial Building Australia",
+  title: "Rainwater Head Systems — Copper — Box Gutter Failure — Roofing Defects — Remedial Building Australia",
   description:
-    "Technical product reference for Colorbond steel box gutter lining systems used in box gutter failure remediation on Australian Class 2 strata apartment buildings — product classification, system selection, limitations, and brand comparisons.",
+    "Technical product reference for copper rainwater head systems used in box gutter failure remediation on Australian Class 2 strata apartment buildings — product classification, system selection, limitations, and brand comparisons.",
 };
 
 const SIBLING_GROUPS = [
@@ -26,7 +26,7 @@ const SIBLING_GROUPS = [
   ]},
 ];
 
-export default function BoxGutterLiningColorbondPage() {
+export default function RainwaterHeadCopperPage() {
   return (
     <div className="min-h-screen bg-slate-50">
 
@@ -64,24 +64,24 @@ export default function BoxGutterLiningColorbondPage() {
               <span>/</span>
               <a href="/repair-systems/roofing-defects/box-gutter-failure" className="hover:text-sky-700 transition">Box Gutter Failure</a>
               <span>/</span>
-              <span className="text-sky-950">Colorbond lining</span>
+              <span className="text-sky-950">RWH — copper</span>
             </nav>
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 04</p>
                 <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                  Box gutter lining systems — Colorbond steel
+                  Copper rainwater head systems for box gutters
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                  Technical product reference for Colorbond steel box gutter lining systems. Covers product classification, AS 1562.3 requirements, system selection, fabrication, and brand comparisons for Australian Class 2 strata building box gutter remediation.
+                  Copper rainwater heads are specified on heritage buildings, conservation-grade strata projects and premium architectural applications where natural patina and longevity are prioritised over cost. Soft-drawn copper sheet (AS 1432 Grade C11000) is fabricated into soldered rainwater heads that develop a protective verdigris patina and have a typical service life exceeding 80 years.
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 {[
-                  { label: "Products listed", value: "3" },
-                  { label: "Brands covered", value: "2" },
-                  { label: "Material", value: "Colorbond steel" },
-                  { label: "Standard", value: "AS 1562.3" },
+                  { label: "Material", value: "Copper C11000" },
+                  { label: "Standard", value: "AS 1432" },
+                  { label: "Patina", value: "Natural verdigris" },
+                  { label: "Service life", value: "80+ years" },
                 ].map((s) => (
                   <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
                     <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
@@ -107,7 +107,7 @@ export default function BoxGutterLiningColorbondPage() {
                   </div>
                   <div className="flex items-end">
                     {group.tabs.map((tab) => {
-                      const active = tab.slug === "box-gutter-lining-colorbond";
+                      const active = tab.slug === "rainwater-head-copper";
                       return (
                         <a
                           key={tab.slug}
@@ -133,9 +133,9 @@ export default function BoxGutterLiningColorbondPage() {
         <section className="px-8 py-14">
           <div className="mx-auto max-w-7xl space-y-10">
 
-            <BoxGutterColorbondIntroSection />
+            <RainwaterHeadCopperIntroSection />
 
-            <BoxGutterColorbondProductSection />
+            <RainwaterHeadCopperProductSection />
 
             {/* Do not confuse warning */}
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
@@ -143,15 +143,15 @@ export default function BoxGutterLiningColorbondPage() {
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
                   <AlertTriangle size={15} />
                 </div>
-                <h3 className="text-base font-extrabold text-amber-900">Do not confuse Colorbond box gutter lining with:</h3>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse copper rainwater heads with:</h3>
               </div>
               <ul className="space-y-2.5">
                 {[
-                  "Quad gutter (external gutter profile) — quad and half-round gutters are external, fascia-mounted gutters. Box gutters are internal gutters built into the roof structure. These are fundamentally different products used in different locations.",
-                  "Copper lining systems — copper box gutter lining is a separate premium/heritage specification requiring a specialist copper plumber. Listed separately on the copper lining page.",
-                  "Aluminium lining systems — aluminium sheet box gutter lining is a separate product category listed on the aluminium lining page. Aluminium and Colorbond have different joining, painting, and dissimilar metal requirements.",
-                  "Colorbond roofing sheets — Colorbond roof cladding panels are not box gutter products. Custom roll-forming to a box gutter profile is a separate fabrication process.",
-                  "UPVC gutter systems — plastic gutter systems are external residential products not suited to structural box gutter lining applications.",
+                  "Colorbond steel rainwater heads — Colorbond steel and copper must be isolated from direct contact — copper run-off will accelerate corrosion of Colorbond. Listed on the Colorbond rainwater head page.",
+                  "Aluminium rainwater heads — copper and aluminium form a galvanic couple and must never be in direct contact. Aluminium rainwater heads are a separate product category listed on the aluminium rainwater head page.",
+                  "Stainless steel rainwater heads — stainless steel is an alternative to copper for coastal and marine-zone environments without the heritage appearance. Listed on the stainless steel rainwater head page.",
+                  "Pre-patinated copper — pre-patinated copper is factory treated to develop an artificial verdigris before installation. Natural copper will develop its own patina over 5–10 years outdoors without any treatment.",
+                  "Bronze or brass components — bronze and brass are copper alloys and are compatible with copper, but they are not the same as C11000 copper sheet and should not be substituted.",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
@@ -170,30 +170,30 @@ export default function BoxGutterLiningColorbondPage() {
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
               <p className="text-xs leading-6 text-amber-900">
-                Box gutter design must comply with AS 1562.3 and be sized by a licensed hydraulic engineer or roofing engineer for the catchment area. This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, hydraulic design, and AS 1562.3 requirements. Do not rely on this reference as a substitute for professional engineering or roofing consultant advice.
+                Box gutter design must comply with AS 1562.3 and be sized by a licensed hydraulic engineer or roofing engineer for the catchment area. Heritage and conservation projects may have additional consent requirements — confirm with the relevant heritage authority before specifying copper. This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, and applicable requirements. Do not rely on this reference as a substitute for professional engineering or roofing consultant advice.
               </p>
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 {
-                  href: "/repair-systems/roofing-defects",
-                  label: "Back to Roofing Defects",
-                  title: "Browse all roofing defect subcategories",
+                  href: "/repair-systems/roofing-defects/box-gutter-failure/rainwater-head-colorbond",
+                  label: "RWH — Colorbond",
+                  title: "Colorbond steel rainwater head systems for box gutters",
+                },
+                {
+                  href: "/repair-systems/roofing-defects/box-gutter-failure/rainwater-head-aluminium",
+                  label: "RWH — Aluminium",
+                  title: "Aluminium rainwater head systems for box gutters",
+                },
+                {
+                  href: "/repair-systems/roofing-defects/box-gutter-failure/rainwater-head-stainless",
+                  label: "RWH — Stainless",
+                  title: "Stainless steel rainwater head systems for box gutters",
                 },
                 {
                   href: "/repair-systems/roofing-defects/box-gutter-failure",
-                  label: "Back to Box Gutter Failure",
-                  title: "Browse all product categories for this defect",
-                },
-                {
-                  href: "/defect-library/roofing-defects/box-gutter-failure",
-                  label: "Defect Library",
-                  title: "Box Gutter Failure — causes, inspection, methodology",
-                },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for box gutter remediation",
+                  label: "← Box Gutter Failure",
+                  title: "Browse all product categories for box gutter failure",
                 },
               ].map((card) => (
                 <a
