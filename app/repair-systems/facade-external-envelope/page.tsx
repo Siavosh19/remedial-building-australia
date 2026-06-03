@@ -1,37 +1,8 @@
-import { ArrowRight } from "lucide-react";
-
 export const metadata = {
   title: "Facade & External Envelope — Repair Systems — Remedial Building Australia",
   description:
     "Technical repair system reference for facade and external envelope defects in Australian Class 2 strata apartment buildings — render systems, brickwork, cladding, facade cracking, window perimeter failure and external coatings.",
 };
-
-const SUBCATEGORIES = [
-  {
-    label: "Render cracking and delamination",
-    slug: "render-cracking-delamination",
-    count: 6,
-    description: "Polymer-modified render repair systems, fibre-reinforced render, EIFS repair, elastomeric and texture coatings and bonding primers for render cracking and delamination on Class 2 strata facades.",
-    live: true,
-    href: "/repair-systems/facade-external-envelope/render-cracking-delamination",
-  },
-  {
-    label: "Render removal and installation",
-    slug: "render-removal-and-installation",
-    count: 4,
-    description: "Sand cement, polymer-modified, acrylic spray-applied render systems and EIFS systems for full render removal and replacement on Class 2 strata facades.",
-    live: true,
-    href: "/repair-systems/facade-external-envelope/render-removal-and-installation",
-  },
-  {
-    label: "Salt attack and salt-contaminated render",
-    slug: "salt-attack-salt-contaminated-render",
-    count: 4,
-    description: "Salt-resistant renovating render, salt-retardant substrate treatments, breathable vapour-permeable render and saline-resistant primer systems for salt attack defects on Class 2 strata facades.",
-    live: true,
-    href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
-  },
-] as const;
 
 export default function FacadeExternalEnvelopePage() {
   return (
@@ -75,55 +46,6 @@ export default function FacadeExternalEnvelopePage() {
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
               Technical repair system reference for facade and external envelope defects in Australian Class 2 strata — select a defect subcategory to view product categories, system information and brand equivalents.
             </p>
-          </div>
-        </section>
-
-        {/* ── Subcategory cards ── */}
-        <section className="px-8 py-14">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-8 flex items-start gap-3">
-              <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-              <div>
-                <h2 className="text-2xl font-extrabold text-sky-950">Defect Subcategories</h2>
-                <p className="mt-1 text-sm text-slate-500">Select a facade defect type to browse product categories and brand comparisons.</p>
-              </div>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {SUBCATEGORIES.map((sub) =>
-                sub.live ? (
-                  <a
-                    key={sub.slug}
-                    href={sub.href}
-                    className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
-                  >
-                    <div className="mb-3 flex items-center justify-between">
-                      <div className="h-0.5 w-8 rounded-full bg-red-700" />
-                      <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2.5 py-0.5 text-[10px] font-bold text-green-700">
-                        <span className="h-1 w-1 rounded-full bg-green-500" />Live
-                      </span>
-                    </div>
-                    <h3 className="text-base font-extrabold leading-tight text-sky-950 transition group-hover:text-sky-700">{sub.label}</h3>
-                    <p className="mt-2 text-xs leading-5 text-slate-500">{sub.description}</p>
-                    <p className="mt-3 text-xs font-semibold text-slate-400">{sub.count} product categories</p>
-                    <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                      View systems <ArrowRight size={12} />
-                    </div>
-                  </a>
-                ) : (
-                  <div key={sub.slug} className="rounded-2xl border border-slate-100 bg-white p-6 opacity-50">
-                    <div className="mb-3 flex items-center justify-between">
-                      <div className="h-0.5 w-8 rounded-full bg-slate-300" />
-                      <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-400">
-                        In development
-                      </span>
-                    </div>
-                    <h3 className="text-base font-extrabold leading-tight text-slate-600">{sub.label}</h3>
-                    <p className="mt-2 text-xs leading-5 text-slate-400">{sub.description}</p>
-                    <p className="mt-3 text-xs font-semibold text-slate-300">{sub.count} product categories</p>
-                  </div>
-                )
-              )}
-            </div>
           </div>
         </section>
       </main>
