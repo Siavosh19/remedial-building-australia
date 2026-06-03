@@ -1,28 +1,67 @@
-import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
-import { RoofLeaksIntroSection, RoofLeaksProductSection } from "./RoofLeaksProductSection";
 
-export const metadata: Metadata = {
-  title: "Roof Leaks — Pitched Tiled Roof — Roofing Defects Repair — Remedial Building Australia",
+export const metadata = {
+  title: "Roof Leaks — Pitched Tiled Roof — Roofing Defects — Remedial Building Australia",
   description:
-    "Technical product reference for roof tile replacement, ridge rebed mortar, valley flashings, step and counter-flashings, penetration flashing collars, sarking and roof sealant systems for pitched tiled roof leaks on Australian Class 2 strata apartment buildings.",
+    "Technical product reference for roof leak repair on pitched tiled roofs in Australian Class 2 strata buildings — select a product type to browse systems, brand comparisons and technical specifications.",
 };
 
-const SIBLING_GROUPS = [
-  { heading: "Pitched Roofing", tabs: [
-    { label: "Roof leaks — tiled", slug: "roof-leaks-pitched-tiled-roof" },
-    { label: "Flashing failures", slug: "flashing-failures" },
-    { label: "Skylight replacement", slug: "skylight-replacement" },
-    { label: "Roof access hatch", slug: "roof-access-hatch" },
-  ]},
-  { heading: "Flat Roofing", tabs: [
-    { label: "Poor falls / ponding", slug: "poor-falls-ponding-flat-roofs" },
-    { label: "Overflow issues", slug: "overflow-issues" },
-  ]},
-  { heading: "Gutters & Drainage", tabs: [
-    { label: "Box gutter failure", slug: "box-gutter-failure" },
-    { label: "Gutter replacement", slug: "gutter-replacement" },
-  ]},
+const DEFECT_SLUG = "roof-leaks-pitched-tiled-roof";
+
+const GROUPS = [
+  {
+    heading: "Roof Tile Systems",
+    items: [
+      { label: "Roof tile replacement — terracotta", slug: "roof-tile-replacement-terracotta", count: 4, description: "Monier, Boral and Bristile terracotta roof tile replacement systems for pitched tiled roofs." },
+      { label: "Roof tile replacement — concrete", slug: "roof-tile-replacement-concrete", count: 4, description: "Monier, Boral and Bristile concrete roof tile replacement systems for pitched tiled roofs." },
+      { label: "Roof tile replacement — slate", slug: "roof-tile-replacement-slate", count: 3, description: "Natural and fibre cement slate replacement systems for pitched slate roofs." },
+    ],
+  },
+  {
+    heading: "Ridge & Hip Systems",
+    items: [
+      { label: "Ridge and hip capping rebed — polymer mortar", slug: "ridge-hip-capping-rebed", count: 3, description: "Flexible polymer-modified bedding mortars for ridge and hip capping rebed and point on terracotta and concrete tiled roofs." },
+    ],
+  },
+  {
+    heading: "Valley Flashing Systems",
+    items: [
+      { label: "Valley flashing systems — aluminium", slug: "valley-flashing-aluminium", count: 3, description: "Aluminium roll valley iron and formed valley flashing systems for tiled roof valley replacement." },
+      { label: "Valley flashing systems — copper", slug: "valley-flashing-copper", count: 2, description: "Copper sheet valley flashing systems for high-specification and heritage tiled roof valley replacement." },
+      { label: "Valley flashing systems — Colorbond", slug: "valley-flashing-colorbond", count: 3, description: "BlueScope Colorbond and Lysaght roll valley iron systems for tiled roof valley replacement." },
+    ],
+  },
+  {
+    heading: "Step & Counter-Flashing Systems",
+    items: [
+      { label: "Step and counter-flashing — Colorbond", slug: "step-counter-flashing-colorbond", count: 2, description: "BlueScope Colorbond step and counter-flashing systems for wall-abutment flashings on tiled roofs." },
+      { label: "Step and counter-flashing — aluminium", slug: "step-counter-flashing-aluminium", count: 3, description: "Aluminium step and counter-flashing systems for wall-abutment flashings on tiled roofs." },
+      { label: "Step and counter-flashing — lead", slug: "step-counter-flashing-lead", count: 3, description: "Lead sheet step and counter-flashing systems — Code 3, 4 and 5 lead — for all flashing applications on tiled roofs." },
+    ],
+  },
+  {
+    heading: "Penetration Systems",
+    items: [
+      { label: "Penetration flashing collar systems", slug: "penetration-flashing-collar", count: 5, description: "Deks, Kempart and Polyplas pre-formed penetration flashing collar systems for pipe and service penetrations through pitched tiled roofs." },
+      { label: "Penetration plinth systems", slug: "penetration-plinth-systems", count: 2, description: "Fabricated and proprietary raised plinth systems for pipe service penetrations requiring a raised weathered surround on pitched tiled roofs." },
+    ],
+  },
+  {
+    heading: "Sarking & Underlay Systems",
+    items: [
+      { label: "Sarking — EHD anti-glare reflective foil", slug: "sarking-reflective-foil", count: 4, description: "Bradford Anticon, Fletcher Sisalation and equivalent extra heavy duty anti-glare reflective foil sarking systems for under-tile installation." },
+      { label: "Sarking — PIR under-tile insulation board", slug: "sarking-pir-under-tile", count: 3, description: "Kingspan, Recticel and equivalent PIR board sarking/insulation systems installed under roof tiles." },
+      { label: "Sarking — mineral wool under-tile insulation", slug: "sarking-mineral-wool", count: 3, description: "Bradford, Knauf and Rockwool mineral wool under-tile insulation systems for pitched roof insulation upgrade." },
+    ],
+  },
+  {
+    heading: "Structural & Substrate Systems",
+    items: [
+      { label: "Roof batten systems — H2 and H3 treated", slug: "roof-battens", count: 3, description: "H2 and H3 preservative-treated timber roof batten systems for tile replacement and roof re-battening." },
+      { label: "Anti-ponding board systems", slug: "anti-ponding-boards", count: 3, description: "Bradford and equivalent anti-ponding board systems for installation at eaves to prevent insulation blocking gutter airflow." },
+      { label: "Roof insulation systems — R4", slug: "roof-insulation-r4", count: 4, description: "Bradford Gold, Knauf Earthwool and Fletcher Insulation R4.0 ceiling batt systems for roof insulation upgrade on Class 2 strata buildings." },
+    ],
+  },
 ];
 
 export default function RoofLeaksPitchedTiledRoofPage() {
@@ -50,7 +89,6 @@ export default function RoofLeaksPitchedTiledRoofPage() {
       </header>
 
       <main>
-
         {/* ── Hero ── */}
         <section className="border-b border-slate-200 bg-white px-8 py-12">
           <div className="mx-auto max-w-7xl">
@@ -63,140 +101,62 @@ export default function RoofLeaksPitchedTiledRoofPage() {
               <span>/</span>
               <span className="text-sky-950">Roof Leaks — Pitched Tiled Roof</span>
             </nav>
-            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 04</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                  Roof Leaks — Pitched Tiled Roof
-                </h1>
-                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                  Technical product reference for roof tile replacement, ridge rebed mortar, valley flashings, step and counter-flashings, penetration flashing collars, sarking and roof sealant systems for pitched tiled roof leaks on Australian Class 2 strata apartment buildings.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                {[
-                  { label: "Products listed", value: "8" },
-                  { label: "Brands available", value: "6" },
-                  { label: "Chemistry", value: "Tile / Mortar" },
-                  { label: "Standard", value: "AS 2049" },
-                ].map((s) => (
-                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
-                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
-                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 04 — Roofing Defects</p>
+            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+              Roof leaks — pitched tiled roof repair systems
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+              Technical product reference for roof leak repair on pitched tiled roofs in Australian Class 2 strata buildings — select a product type to browse systems, brand comparisons and technical specifications.
+            </p>
           </div>
         </section>
 
-        {/* ── Sibling tabs ── */}
-        <div className="border-b border-slate-200 bg-white px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-stretch gap-0 overflow-x-auto">
-              {SIBLING_GROUPS.map((group, gi) => (
-                <div
-                  key={group.heading}
-                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
-                >
-                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
-                    {group.heading}
-                  </div>
-                  <div className="flex items-end">
-                    {group.tabs.map((tab) => {
-                      const active = tab.slug === "roof-leaks-pitched-tiled-roof";
-                      return (
-                        <a
-                          key={tab.slug}
-                          href={`/repair-systems/roofing-defects/${tab.slug}`}
-                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
-                            active
-                              ? "border-red-700 text-sky-950"
-                              : "border-transparent text-slate-500 hover:text-sky-900"
-                          }`}
-                        >
-                          {tab.label}
-                        </a>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Content ── */}
+        {/* ── Product type card groups ── */}
         <section className="px-8 py-14">
-          <div className="mx-auto max-w-7xl space-y-10">
-            <RoofLeaksIntroSection />
-            <RoofLeaksProductSection />
+          <div className="mx-auto max-w-7xl space-y-12">
+            {GROUPS.map((group) => (
+              <div key={group.heading}>
+                <div className="mb-6 flex items-start gap-3">
+                  <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+                  <h2 className="text-xs font-bold uppercase tracking-[0.22em] text-red-700">{group.heading}</h2>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.items.map((item) => (
+                    <a
+                      key={item.slug}
+                      href={`/repair-systems/roofing-defects/${DEFECT_SLUG}/${item.slug}`}
+                      className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
+                    >
+                      <div className="mb-3 flex items-center justify-between">
+                        <div className="h-0.5 w-8 rounded-full bg-red-700" />
+                        <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2.5 py-0.5 text-[10px] font-bold text-green-700">
+                          <span className="h-1 w-1 rounded-full bg-green-500" />Live
+                        </span>
+                      </div>
+                      <h3 className="text-base font-extrabold leading-tight text-sky-950 transition group-hover:text-sky-700">{item.label}</h3>
+                      <p className="mt-2 text-xs leading-5 text-slate-500">{item.description}</p>
+                      <p className="mt-3 text-xs font-semibold text-slate-400">{item.count} product systems</p>
+                      <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                        View systems <ArrowRight size={12} />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
-
-        {/* ── Disclaimer + related links ── */}
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
-              <p className="text-xs leading-6 text-amber-900">
-                Information is general only. Product selection must be confirmed against tile profile, colour match, substrate condition, and the current manufacturer technical data sheet. Roof work must comply with the WHS Regulation 2017 Part 4.5 — fall protection and edge protection must be in place before roof access. Do not rely on this reference as a substitute for a licensed roofing specialist.
-              </p>
-            </div>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  href: "/repair-systems/roofing-defects",
-                  label: "Back to Roofing Defects",
-                  title: "Browse all roofing defect subcategories",
-                },
-                {
-                  href: "/repair-systems/roofing-defects/flashing-failures",
-                  label: "Flashing Failures",
-                  title: "Step, counter and chimney flashing systems for pitched roofs",
-                },
-                {
-                  href: "/repair-systems/roofing-defects/box-gutter-failure",
-                  label: "Box Gutter Failure",
-                  title: "Colorbond and aluminium box gutter lining systems",
-                },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for roofing remediation",
-                },
-              ].map((card) => (
-                <a
-                  key={card.href}
-                  href={card.href}
-                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
-                >
-                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
-                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                    Open <ArrowRight size={11} />
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-
       </main>
 
       {/* ── Footer ── */}
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/repair-systems/roofing-defects" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
-            ← Roofing Defects
-          </a>
+          <a href="/repair-systems/roofing-defects" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition">← Roofing Defects</a>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
-            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">
-              A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.
-            </p>
+            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <a href="/about" className="hover:text-sky-700">About</a>
