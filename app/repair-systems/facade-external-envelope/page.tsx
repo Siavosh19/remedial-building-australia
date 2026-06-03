@@ -1,8 +1,41 @@
+import FacadeCategoryFilter from "./FacadeCategoryFilter";
+
 export const metadata = {
   title: "Facade & External Envelope — Repair Systems — Remedial Building Australia",
   description:
-    "Technical repair system reference for facade and external envelope defects in Australian Class 2 strata apartment buildings — render systems, brickwork, cladding, facade cracking, window perimeter failure and external coatings.",
+    "Technical repair system reference for facade and external envelope defects in Australian Class 2 strata apartment buildings — render systems, render repair and reinstallation, arris and render beads, salt attack remediation.",
 };
+
+const GROUPS = [
+  {
+    heading: "Render Repair Works",
+    cards: [
+      {
+        label: "Render repair, removal and reinstallation",
+        count: 10,
+        href: "/repair-systems/facade-external-envelope/render-repair-removal-reinstallation",
+        description:
+          "Two-coat PM render, sand cement render, fibre-reinforced, acrylic spray, EIFS, salt-resistant render, breathable render, bonding agents, salt-retardant treatment and saline primer systems.",
+      },
+      {
+        label: "Salt attack and salt-contaminated render",
+        count: 4,
+        href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
+        description:
+          "Salt-resistant renovating render, salt-retardant substrate treatments, breathable vapour-permeable render and saline-resistant primer systems for salt attack defects.",
+      },
+      {
+        label: "Arris angles and render beads",
+        count: 8,
+        href: "/repair-systems/facade-external-envelope/arris-angles-render-beads",
+        description:
+          "Aluminium, stainless steel and PVC arris angle beads, render stop beads, bellcast/drip beads, movement beads, reveal beads and mesh-wing render beads.",
+      },
+    ],
+  },
+];
+
+const TOTAL = GROUPS.reduce((n, g) => n + g.cards.length, 0);
 
 export default function FacadeExternalEnvelopePage() {
   return (
@@ -48,6 +81,8 @@ export default function FacadeExternalEnvelopePage() {
             </p>
           </div>
         </section>
+
+        <FacadeCategoryFilter groups={GROUPS} totalCategories={TOTAL} />
       </main>
 
       {/* ── Footer ── */}
