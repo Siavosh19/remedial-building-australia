@@ -39,22 +39,14 @@ export default function FacadeCategoryFilter({ groups, totalCategories }: { grou
 
   const totalHits = filteredGroups.reduce((n, g) => n + g.cards.length, 0);
   const isFiltering = q !== "" || activeGroup !== "All";
+  const multiGroup = groups.length > 1;
 
   return (
     <section className="px-8 py-14">
       <div className="mx-auto max-w-7xl">
 
-        {/* ── Section header ── */}
-        <div className="mb-8 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Repair System Groups</h2>
-            <p className="mt-1 text-sm text-slate-500">{totalCategories} product categories across {groups.length} repair system group{groups.length !== 1 ? "s" : ""} — select a subcategory to browse products and brand comparisons.</p>
-          </div>
-        </div>
-
-        {/* ── Search + group filter ── */}
-        {groups.length > 1 && (
+        {/* ── Search + group filter (only when multiple groups) ── */}
+        {multiGroup && (
           <div className="mb-8 space-y-4">
             <div className="relative max-w-lg">
               <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -111,39 +103,44 @@ export default function FacadeCategoryFilter({ groups, totalCategories }: { grou
             </button>
           </div>
         ) : (
-          <div className="space-y-10">
+          <div className="space-y-8">
             {filteredGroups.map((group) => (
               <div key={group.heading} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
                 {/* ── Parent card header ── */}
-                <div className="border-b border-slate-100 bg-slate-50 px-7 py-6">
-                  <div className="mb-3 h-0.5 w-8 rounded-full bg-red-700" />
-                  <h2 className="text-xl font-extrabold text-sky-950">{group.heading}</h2>
+                <div className="px-7 pt-7 pb-6">
+                  <div className="mb-4 flex items-start justify-between gap-4">
+                    <div className="h-0.5 w-8 rounded-full bg-red-700 mt-1 shrink-0" />
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] font-bold text-green-700 shrink-0">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-500" />Live
+                    </span>
+                  </div>
+                  <h2 className="text-xl font-extrabold leading-tight text-sky-950">{group.heading}</h2>
                   {group.summary && (
-                    <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">{group.summary}</p>
+                    <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">{group.summary}</p>
                   )}
-                  <p className="mt-3 text-xs font-semibold text-slate-400">{group.cards.length} defect subcategor{group.cards.length !== 1 ? "ies" : "y"}</p>
+                  <p className="mt-3 text-xs font-semibold text-slate-400">{group.cards.length} subcategor{group.cards.length !== 1 ? "ies" : "y"}</p>
                 </div>
 
                 {/* ── Subcategory cards grid ── */}
-                <div className="p-7">
-                  <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="border-t border-slate-100 bg-slate-50 px-7 py-6">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {group.cards.map((card) => (
                       <a
                         key={card.href}
                         href={card.href}
-                        className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
+                        className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
                       >
-                        <div className="mb-3 h-0.5 w-8 rounded-full bg-red-700" />
-                        <h3 className="text-base font-extrabold leading-tight text-sky-950 group-hover:text-sky-700 transition">
+                        <div className="mb-2.5 h-0.5 w-6 rounded-full bg-red-700" />
+                        <h3 className="text-sm font-extrabold leading-tight text-sky-950 group-hover:text-sky-700 transition">
                           {highlight(card.label, q)}
                         </h3>
                         {card.description && (
                           <p className="mt-2 text-xs leading-5 text-slate-500">{card.description}</p>
                         )}
-                        <p className="mt-3 text-xs font-semibold text-slate-400">{card.count} product categories</p>
-                        <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 group-hover:text-red-700 transition">
-                          View systems <ArrowRight size={12} />
+                        <p className="mt-2.5 text-xs font-semibold text-slate-400">{card.count} product categories</p>
+                        <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-sky-700 group-hover:text-red-700 transition">
+                          View systems <ArrowRight size={11} />
                         </div>
                       </a>
                     ))}
