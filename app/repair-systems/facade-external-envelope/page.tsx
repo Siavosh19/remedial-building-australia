@@ -32,14 +32,6 @@ const SUBCATEGORIES = [
     href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
   },
   {
-    label: "Arris, angle and edge replacement",
-    slug: "arris-angle-edge-replacement",
-    count: 3,
-    description: "Aluminium, stainless steel and PVC arris angle systems for replacement of damaged or missing render returns at external corners and edges.",
-    live: true,
-    href: "/repair-systems/facade-external-envelope/arris-angle-edge-replacement",
-  },
-  {
     label: "External coating and paint deterioration",
     slug: "external-coating-paint-deterioration",
     count: 9,
