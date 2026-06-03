@@ -31,14 +31,6 @@ const SUBCATEGORIES = [
     live: true,
     href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
   },
-  {
-    label: "External coating and paint deterioration",
-    slug: "external-coating-paint-deterioration",
-    count: 9,
-    description: "Alkali-resistant and rust-inhibiting primers, penetrating consolidants, exterior acrylic and elastomeric coatings, UV-resistant metal and timber enamels, silane/siloxane water repellents and biocide systems for external facade coating and paint defects.",
-    live: true,
-    href: "/repair-systems/facade-external-envelope/external-coating-paint-deterioration",
-  },
 ] as const;
 
 export default function FacadeExternalEnvelopePage() {
