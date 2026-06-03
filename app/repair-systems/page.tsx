@@ -1,4 +1,4 @@
-import { ArrowRight, Droplets, Layers, Home } from "lucide-react";
+import { ArrowRight, Droplets, Layers, Home, Building2 } from "lucide-react";
 
 export const metadata = {
   title: "Repair Systems — Remedial Building Australia",
@@ -23,6 +23,15 @@ const SYSTEMS = [
     description:
       "Polymer-modified and cementitious repair mortars, epoxy systems, bonding agents, corrosion inhibitors, crack injection and curing compounds.",
     icon: Layers,
+    live: true,
+  },
+  {
+    num: "03",
+    slug: "facade-external-envelope",
+    label: "Facade & External Envelope Repair Systems",
+    description:
+      "Render repair and installation systems, salt attack remediation, external coatings and primers, EIFS, crack-bridging coatings, silane/siloxane water repellents and PVDF cladding recoating.",
+    icon: Building2,
     live: true,
   },
   {
@@ -82,7 +91,7 @@ export default function RepairSystemsHubPage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-bold text-green-700 border border-green-200">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                3 systems live
+                4 systems live
               </span>
             </div>
           </div>
