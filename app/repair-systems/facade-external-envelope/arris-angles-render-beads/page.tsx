@@ -17,7 +17,7 @@ const ITEMS = [
     count: 4,
     description:
       "Aluminium arris angle and corner beads for render edge protection on external facades — standard duty, heavy duty and perforated flange types for masonry, render and AAC substrates.",
-    live: false,
+    live: true,
   },
   {
     label: "Stainless steel arris and corner angle beads",
@@ -25,7 +25,7 @@ const ITEMS = [
     count: 3,
     description:
       "Grade 316 and 304 stainless steel arris and corner beads for coastal and corrosive environments where aluminium or galvanised steel beads are not suitable.",
-    live: false,
+    live: true,
   },
   {
     label: "PVC arris and corner angle beads",
@@ -33,7 +33,7 @@ const ITEMS = [
     count: 3,
     description:
       "UV-stabilised PVC arris angle and corner beads — lightweight, corrosion-resistant alternative to metal beads — used in render systems on masonry and AAC substrates.",
-    live: false,
+    live: true,
   },
   {
     label: "Render stop beads",
@@ -41,7 +41,7 @@ const ITEMS = [
     count: 3,
     description:
       "Aluminium and PVC render stop and screed beads — define render termination lines at slab soffits, window heads, control joints and changes of substrate.",
-    live: false,
+    live: true,
   },
   {
     label: "Bellcast and drip beads",
@@ -49,7 +49,7 @@ const ITEMS = [
     count: 3,
     description:
       "Bellcast and drip profile beads for render at slab edges and window sills — form a bellcast or drip profile to direct water away from the facade substrate.",
-    live: false,
+    live: true,
   },
   {
     label: "Movement and expansion beads",
@@ -57,7 +57,7 @@ const ITEMS = [
     count: 3,
     description:
       "Movement joint and expansion beads for render systems — accommodate thermal and structural movement within the render plane at panel joints and substrate changes.",
-    live: false,
+    live: true,
   },
   {
     label: "Reveal beads",
@@ -65,7 +65,7 @@ const ITEMS = [
     count: 3,
     description:
       "Aluminium and PVC reveal beads for rendering window and door reveals — provide a clean render edge and drip profile at window and door perimeter reveals.",
-    live: false,
+    live: true,
   },
   {
     label: "Mesh-wing render beads",
@@ -73,7 +73,7 @@ const ITEMS = [
     count: 3,
     description:
       "Angle and stop beads with integral fibreglass mesh wings — allow the mesh to be embedded in the render base coat for improved corner and edge reinforcement.",
-    live: false,
+    live: true,
   },
 ] as const;
 

@@ -8,13 +8,18 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Aluminium"
+  | "Standard-duty"
+  | "Heavy-duty"
+  | "Perforated-flange"
+  | "External-corner"
+  | "Internal-angle"
   | "Masonry"
-  | "Concrete"
-  | "Coastal";
+  | "AAC"
+  | "Render"
+  | "Exterior"
+  | "Interior"
+  | "Galvanised";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +39,244 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
-    techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
+    fullLabel: "Trim-Tex / Rondo",
+    brandUrl: "https://www.rondo.com.au",
+    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    name: "Rondo Aluminium Corner Bead (Standard Duty)",
+    descriptionLine: "Standard duty aluminium arris corner bead — 25mm x 25mm or 35mm x 35mm flange — exterior and interior render corners on masonry, AAC, and concrete block substrates",
+    productType: "Standard duty aluminium arris corner bead",
+    filterTags: ["Aluminium", "Standard-duty", "External-corner", "Masonry", "AAC", "Render", "Exterior", "Interior"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Standard duty", cls: "bg-sky-100 text-sky-800" },
+      { label: "25 or 35mm flange", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Standard duty aluminium arris corner beads provide a clean, sharp edge protection at external render corners on masonry, AAC, and concrete block substrates. The perforated flanges embed in the render base coat to lock the bead in position. Standard duty aluminium beads (typically 0.5–0.6mm aluminium) are suitable for sheltered and semi-exposed facades. In coastal and high-exposure environments, consider stainless steel or PVC alternatives to avoid galvanic corrosion. Confirm bead dimensions, leg length, and material thickness with the supplier for each application. TODO: owner confirm — confirm Rondo aluminium corner bead specification, leg dimensions, and material grade.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Aluminium alloy — standard duty; Perforated flanges for render key",
+      "25mm or 35mm leg — confirm from supplier",
+      "Suitable for interior and sheltered exterior applications",
+      "Embed flanges fully in render base coat",
+      "Confirm material thickness — typically 0.5–0.6mm for standard duty",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Not suitable for coastal or high-corrosion environments — use stainless steel or PVC in those zones",
+      "Aluminium may suffer galvanic corrosion where in contact with dissimilar metals in wet conditions",
+      "Confirm flange width and leg dimension for specific render depth",
+      "TODO: owner confirm — Rondo aluminium bead specification and dimensions",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Rondo Building Services", url: "https://www.rondo.com.au" },
+      { name: "Plasterboard and render supply merchants nationally", url: "https://www.rondo.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "USG Boral",
+    brandUrl: "https://www.usgboral.com.au",
+    tdsUrl: "https://www.usgboral.com.au",
+    accentColor: "#92400e",
+    name: "USG Boral Aluminium Arris Bead (Standard / Heavy Duty)",
+    descriptionLine: "Aluminium arris corner bead — standard and heavy duty profiles — exterior and interior render — USG Boral distribution",
+    productType: "Aluminium arris corner bead — standard and heavy duty",
+    filterTags: ["Aluminium", "Standard-duty", "Heavy-duty", "External-corner", "Masonry", "Render", "Exterior", "Interior"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "Standard and heavy duty", cls: "bg-amber-100 text-amber-800" },
+      { label: "USG Boral", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "USG Boral supplies aluminium arris and corner beads in standard and heavy duty profiles for render edge protection at external corners. Heavy duty beads (typically 0.8–1.0mm aluminium) are more resistant to impact at high-traffic corners. Confirm available leg dimensions, duty rating, and material thickness with USG Boral. TODO: owner confirm — USG Boral aluminium arris bead specification, dimensions and current range.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "Aluminium — standard and heavy duty profiles",
+      "Perforated flanges for render key",
+      "Available in various leg lengths — confirm from supplier",
+      "Suitable for exterior and interior render",
+      "Confirm material thickness for duty classification",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — USG Boral aluminium arris bead specification and current range",
+      "Not for coastal environments — use stainless or PVC",
+      "Confirm leg length for render depth",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "USG Boral", url: "https://www.usgboral.com.au" },
+      { name: "Plasterboard and render supply merchants", url: "https://www.usgboral.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Unifix / Buildex",
+    brandUrl: "https://www.unifix.com.au",
+    tdsUrl: "https://www.unifix.com.au",
+    accentColor: "#0f766e",
+    name: "Unifix Aluminium Corner Bead (Perforated Flange)",
+    descriptionLine: "Aluminium arris corner bead — perforated flange — exterior and interior masonry and render — Unifix / Buildex national distribution",
+    productType: "Aluminium arris corner bead — perforated flange",
+    filterTags: ["Aluminium", "Perforated-flange", "External-corner", "Masonry", "Render", "Exterior", "Interior"],
+    techChips: [
+      { label: "Perforated flange", cls: "bg-teal-100 text-teal-800" },
+      { label: "Aluminium alloy", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Unifix / Buildex distributes aluminium corner beads with perforated flanges nationally. Confirm the specific product, leg dimensions, and material specification with Unifix / Buildex. TODO: owner confirm — Unifix/Buildex aluminium corner bead specification and dimensions.",
+    technicalProperties: [
+      "Perforated flanges for render key",
+      "Aluminium alloy — confirm grade",
+      "Exterior and interior masonry render",
+      "Confirm leg dimensions and material thickness from supplier",
+    ],
+    limitations: [
+      "TODO: owner confirm — Unifix/Buildex aluminium bead specification",
+      "Not suitable for coastal environments",
+    ],
+    procurementSources: [
+      { name: "Unifix", url: "https://www.unifix.com.au" },
+      { name: "Building trade merchants nationally", url: "https://www.unifix.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Beadex / Trade Supply",
+    brandUrl: "https://www.tradelink.com.au",
+    tdsUrl: "https://www.tradelink.com.au",
+    accentColor: "#1e40af",
+    name: "Trade-Supply Aluminium Arris Bead",
+    descriptionLine: "Trade-supply aluminium arris and corner beads — standard and heavy duty — 25–35mm leg — available through plasterboard and render merchants nationally",
+    productType: "Trade-supply aluminium arris corner bead",
+    filterTags: ["Aluminium", "Standard-duty", "Heavy-duty", "External-corner", "Masonry", "Render", "Exterior", "Interior", "Galvanised"],
+    techChips: [
+      { label: "Trade supply", cls: "bg-blue-100 text-blue-800" },
+      { label: "Standard and heavy duty", cls: "bg-slate-100 text-slate-700" },
+      { label: "National availability", cls: "bg-green-50 text-green-700" },
+      { label: "Confirm dimensions", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Aluminium arris and corner beads are widely available as standard stock items through plasterboard merchants, render suppliers, and building trade stores nationally. Confirm leg dimensions (25mm, 35mm, or custom), material thickness (standard 0.5mm, heavy duty 0.8mm+), and whether the supplier's product is suitable for external exposed application before purchasing. Galvanised steel variants are also available — confirm material type when ordering.",
+    technicalProperties: [
+      "Standard stock item — widely available nationally",
+      "Available in 25mm and 35mm leg profiles — confirm from merchant",
+      "Standard duty 0.5mm or heavy duty 0.8mm+ aluminium",
+      "Perforated flanges for render key",
+      "Interior and sheltered exterior use",
+    ],
+    limitations: [
+      "Quality varies between suppliers — confirm material thickness and alloy grade",
+      "Not suitable for coastal or high-exposure environments without stainless steel or PVC alternative",
+      "Confirm leg dimension for render depth",
+    ],
+    procurementSources: [
+      { name: "Tradelink — nationally", url: "https://www.tradelink.com.au" },
+      { name: "Plasterboard merchants and render suppliers nationally", url: "https://www.tradelink.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Aluminium", label: "Aluminium" },
+  { id: "Standard-duty", label: "Standard-duty" },
+  { id: "Heavy-duty", label: "Heavy-duty" },
+  { id: "Perforated-flange", label: "Perforated-flange" },
+  { id: "External-corner", label: "External-corner" },
+  { id: "Internal-angle", label: "Internal-angle" },
   { id: "Masonry", label: "Masonry" },
-  { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "AAC", label: "AAC" },
+  { id: "Render", label: "Render" },
+  { id: "Exterior", label: "Exterior" },
+  { id: "Interior", label: "Interior" },
+  { id: "Galvanised", label: "Galvanised" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  material: string;
+  flangeType: string;
+  legSize: string;
+  dutyRating: string;
+  suitableEnvironment: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rondo Aluminium Corner Bead (Standard Duty)",
+    brand: "Rondo",
+    material: "Aluminium alloy",
+    flangeType: "Perforated",
+    legSize: "25mm or 35mm — confirm",
+    dutyRating: "Standard duty",
+    suitableEnvironment: "Sheltered and semi-exposed — not coastal",
+    primaryUse: "Exterior and interior render corners — masonry, AAC, concrete block",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "USG Boral Aluminium Arris Bead",
+    brand: "USG Boral",
+    material: "Aluminium alloy",
+    flangeType: "Perforated",
+    legSize: "Confirm from USG Boral",
+    dutyRating: "Standard and heavy duty",
+    suitableEnvironment: "Exterior and interior — not coastal",
+    primaryUse: "Render edge protection at external corners",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Unifix Aluminium Corner Bead",
+    brand: "Unifix / Buildex",
+    material: "Aluminium alloy",
+    flangeType: "Perforated",
+    legSize: "Confirm from Unifix",
+    dutyRating: "Confirm from supplier",
+    suitableEnvironment: "Exterior and interior — not coastal",
+    primaryUse: "Masonry render corner protection — nationally distributed",
+  },
+  {
+    product: "Trade-Supply Aluminium Arris Bead",
+    brand: "Trade supply",
+    material: "Aluminium alloy / galvanised steel",
+    flangeType: "Perforated",
+    legSize: "25mm or 35mm",
+    dutyRating: "Standard (0.5mm) or heavy duty (0.8mm+)",
+    suitableEnvironment: "Interior and sheltered exterior — not coastal",
+    primaryUse: "General render corner protection — widely available",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "External facade render corners — protecting arris from impact and chipping",
+    "Window and door reveals — corner bead at head and jamb render terminations",
+    "Masonry wall corners — render edge protection at building external corners",
+    "Balcony and terrace wall corners — render protection at high-traffic corner locations",
+    "Internal render corners on exposed masonry blockwork",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Material — aluminium standard or heavy duty for sheltered environments; stainless steel for coastal and high-corrosion environments; PVC where metal beads are not suitable",
+    "Leg length — confirm leg length matches render depth (total render thickness including scratch and finish coat)",
+    "Duty rating — standard duty for sheltered applications, heavy duty for corners subject to impact",
+    "Flange type — perforated flange for render key, mesh wing where fibreglass mesh reinforcement is required at corner",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Aluminium beads are not suitable for coastal or highly corrosive environments — use grade 316 stainless steel in those applications",
+    "Do not install aluminium beads in contact with dissimilar metals in wet conditions (galvanic corrosion risk)",
+    "Leg length must suit the render depth — too long a leg will telegraph through the render finish",
+    "Cut ends must be clean to prevent snag during render application",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures (render to masonry requirements)",
+    "NCC Volume One — facade weatherproofing requirements",
+    "Manufacturer product guide — confirm material, duty rating, and leg dimensions",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Spalled or damaged arris beads at render corners — full removal and replacement",
+    "New render installation where beads are absent or corroded",
+    "Render cracking and delamination at external corners — remove and replace corner bead as part of render repair",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and block",
+    "AAC (autoclaved aerated concrete) — lightweight block",
+    "Concrete — external concrete facades",
+    "Existing render substrate (where full removal and replacement of render is included in scope)",
   ],
 };
 
@@ -345,9 +402,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +415,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function AluminiumArrisIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +424,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are aluminium arris and corner angle beads?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Aluminium arris and corner angle beads are extruded aluminium profiles installed at external render corners to protect the arris (the sharp edge where two render planes meet) from chipping, impact damage, and deterioration.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              They are embedded in the render base coat with perforated flanges that key into the render to lock the bead in position. Standard duty aluminium beads (0.5–0.6mm alloy) are used in sheltered and semi-exposed interior and exterior locations. Heavy duty beads (0.8mm+) are used at high-traffic corners subject to impact. In coastal and corrosive environments, aluminium beads are not suitable — grade 316 stainless steel or PVC alternatives should be specified.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +482,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function AluminiumArrisProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +536,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +550,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">4 products — 4 brands — aluminium arris and corner angle beads — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +696,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of aluminium arris and corner angle bead products. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -649,10 +706,11 @@ export function SaltRetardantTreatmentProductSection() {
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Flange type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Leg size</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Duty rating</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Suitable environment</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +719,11 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.material}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.flangeType}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.legSize}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.dutyRating}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.suitableEnvironment}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

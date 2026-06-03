@@ -8,13 +8,18 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Render-stop"
+  | "Screed-bead"
+  | "Aluminium"
+  | "PVC"
+  | "Edge-termination"
+  | "Control-joint"
   | "Masonry"
   | "Concrete"
-  | "Coastal";
+  | "Exterior"
+  | "Interior"
+  | "Slab-soffit"
+  | "Window-head";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +39,199 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
-    techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
+    fullLabel: "Rondo Building Services",
+    brandUrl: "https://www.rondo.com.au",
+    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    name: "Rondo Aluminium Render Stop Bead",
+    descriptionLine: "Aluminium render stop / screed bead — defines render termination line at slab soffits, window heads, control joints and substrate changes — exterior and interior facade",
+    productType: "Aluminium render stop and screed bead",
+    filterTags: ["Render-stop", "Screed-bead", "Aluminium", "Edge-termination", "Control-joint", "Masonry", "Concrete", "Exterior", "Interior", "Slab-soffit", "Window-head"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Aluminium render stop", cls: "bg-sky-100 text-sky-800" },
+      { label: "Screed guide", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Rondo aluminium render stop beads define the render termination line at horizontal and vertical edge conditions including slab soffits, window heads, panel joints, and changes of substrate. The bead provides a clean, straight edge to terminate render and can also serve as a screed guide to control render thickness. Confirm leg dimensions, flange width, and available profiles with Rondo. TODO: owner confirm — Rondo aluminium render stop bead specification, leg dimensions and profiles.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Aluminium render stop / screed bead",
+      "Defines render termination line",
+      "Suitable for slab soffits, window heads, panel joints, substrate changes",
+      "Can be used as screed guide for render thickness control",
+      "Exterior and interior applications",
+      "Confirm leg and flange dimensions from Rondo",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Not suitable for coastal environments — use stainless or PVC in corrosive zones",
+      "TODO: owner confirm — Rondo render stop bead specification and dimensions",
+      "Not a movement joint — do not use render stop bead at locations requiring movement capacity",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Rondo Building Services", url: "https://www.rondo.com.au" },
+      { name: "Render and plasterboard merchants nationally", url: "https://www.rondo.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "USG Boral / Beadex",
+    brandUrl: "https://www.usgboral.com.au",
+    tdsUrl: "https://www.usgboral.com.au",
+    accentColor: "#92400e",
+    name: "USG Boral Aluminium / PVC Render Stop Bead",
+    descriptionLine: "Aluminium or PVC render stop bead — exterior and interior render edge termination — USG Boral distribution",
+    productType: "Aluminium or PVC render stop bead — edge termination",
+    filterTags: ["Render-stop", "Aluminium", "PVC", "Edge-termination", "Masonry", "Concrete", "Exterior", "Interior"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "Aluminium or PVC", cls: "bg-amber-100 text-amber-800" },
+      { label: "Render stop / edge", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "USG Boral distributes aluminium and PVC render stop beads for render edge termination. Confirm material (aluminium or PVC), leg dimensions, and available profiles with USG Boral. In coastal environments specify PVC or stainless steel render stop beads. TODO: owner confirm — USG Boral render stop bead specification and available materials.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "Aluminium or PVC — confirm material for environment",
+      "Render stop / screed guide",
+      "Exterior and interior applications",
+      "Confirm leg and flange dimensions from USG Boral",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — USG Boral render stop bead specification and materials",
+      "Aluminium not suitable for coastal — specify PVC or stainless",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "USG Boral", url: "https://www.usgboral.com.au" },
+      { name: "Builders merchants nationally", url: "https://www.usgboral.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Trade Supply",
+    brandUrl: "https://www.tradelink.com.au",
+    tdsUrl: "https://www.tradelink.com.au",
+    accentColor: "#0f766e",
+    name: "Trade-Supply Render Stop / Screed Bead",
+    descriptionLine: "Trade-supply aluminium and PVC render stop and screed beads — various leg profiles — available through render and plasterboard merchants nationally",
+    productType: "Trade-supply render stop and screed bead",
+    filterTags: ["Render-stop", "Screed-bead", "Aluminium", "PVC", "Edge-termination", "Masonry", "Exterior", "Interior"],
+    techChips: [
+      { label: "Trade supply", cls: "bg-teal-100 text-teal-800" },
+      { label: "Aluminium or PVC", cls: "bg-slate-100 text-slate-700" },
+      { label: "Various profiles", cls: "bg-green-50 text-green-700" },
+      { label: "Confirm dimensions", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Render stop and screed beads are widely available as standard stock items through plasterboard merchants and render suppliers. Confirm material (aluminium or PVC), leg dimensions, and flange type when ordering for specific applications. In coastal environments, specify PVC render stop beads or stainless steel.",
+    technicalProperties: [
+      "Standard stock item — widely available",
+      "Aluminium or PVC (confirm material)",
+      "Various leg profiles",
+      "Interior and exterior applications",
+    ],
+    limitations: [
+      "Confirm material and UV stabilisation for exterior use",
+      "Aluminium not suitable for coastal — specify PVC",
+      "Confirm leg dimensions",
+    ],
+    procurementSources: [
+      { name: "Tradelink", url: "https://www.tradelink.com.au" },
+      { name: "Render and plasterboard merchants nationally", url: "https://www.tradelink.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Render-stop", label: "Render-stop" },
+  { id: "Screed-bead", label: "Screed-bead" },
+  { id: "Aluminium", label: "Aluminium" },
+  { id: "PVC", label: "PVC" },
+  { id: "Edge-termination", label: "Edge-termination" },
+  { id: "Control-joint", label: "Control-joint" },
   { id: "Masonry", label: "Masonry" },
   { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "Exterior", label: "Exterior" },
+  { id: "Interior", label: "Interior" },
+  { id: "Slab-soffit", label: "Slab-soffit" },
+  { id: "Window-head", label: "Window-head" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  material: string;
+  profile: string;
+  legSize: string;
+  screedGuide: string;
+  coastal: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rondo Aluminium Render Stop Bead",
+    brand: "Rondo Building Services",
+    material: "Aluminium",
+    profile: "Render stop / screed bead",
+    legSize: "Confirm from Rondo",
+    screedGuide: "Yes — confirm",
+    coastal: "Not suitable — use PVC or stainless",
+    primaryUse: "Render termination — slab soffits, window heads, panel joints",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "USG Boral Aluminium / PVC Render Stop Bead",
+    brand: "USG Boral / Beadex",
+    material: "Aluminium or PVC",
+    profile: "Render stop",
+    legSize: "Confirm from USG Boral",
+    screedGuide: "Confirm from supplier",
+    coastal: "PVC suitable — aluminium not",
+    primaryUse: "Render edge termination — exterior and interior",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Trade-Supply Render Stop / Screed Bead",
+    brand: "Trade supply",
+    material: "Aluminium or PVC",
+    profile: "Render stop / screed",
+    legSize: "Various — confirm from merchant",
+    screedGuide: "Confirm from supplier",
+    coastal: "PVC suitable — aluminium not",
+    primaryUse: "Render termination — widely available nationally",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Render termination at slab soffits — defines clean render edge at horizontal soffit/wall junction",
+    "Window and door head render termination — stop bead at top of render to window head",
+    "Render termination at substrate changes — junction between masonry render and other cladding types",
+    "Control joint termination — render stop bead installed on both sides of a control joint",
+    "Render thickness screed guide — used to control render depth across large facade areas",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Material — aluminium for sheltered environments; PVC for coastal or corrosive environments",
+    "Leg length — match to render depth",
+    "Flange type — confirm perforated flange for render key",
+    "Profile — confirm stop bead or screed bead profile is correct for the application",
+    "Installation — bead must be straight and plumb — use string line to align",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Render stop beads are edge termination profiles, not movement joints — do not use at locations requiring movement capacity",
+    "Correct alignment is critical — a crooked stop bead will show as a visible defect in the finished render",
+    "Not suitable as a substitute for a movement bead at expansion joints",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "Manufacturer product guide — leg dimensions and profiles",
+    "NCC Volume One — facade weatherproofing requirements",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Render reinstatement at slab soffit edges — stop bead installed as part of render replacement works",
+    "Window head render repair — stop bead replaced where original was corroded or missing",
+    "Full facade re-render — stop beads installed at all termination lines as part of new render system",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and block",
+    "AAC — lightweight block",
+    "Concrete — external facade panels",
+    "Render substrate — where re-rendering over existing substrate",
   ],
 };
 
@@ -345,9 +357,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +370,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function RenderStopBeadIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +379,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are render stop beads and screed beads?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Render stop beads (also called screed beads) are extruded aluminium or PVC profiles installed at the edges and termination lines of render to provide a clean, straight finish at junctions with soffits, window heads, control joints, and changes of substrate.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              Unlike corner beads which protect render at external corners, stop beads define where the render ends — providing a precise, sharp termination line rather than a feathered or cut edge. They also function as screed guides to control render depth during application. Render stop beads must be installed straight and level using a string line — a misaligned stop bead will create a visible defect in the finished render surface.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +437,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function RenderStopBeadProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +491,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +505,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">3 products — render stop beads and screed beads — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +651,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of render stop bead and screed bead products. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -649,10 +661,11 @@ export function SaltRetardantTreatmentProductSection() {
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Profile</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Leg size</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Screed guide</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Coastal</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +674,11 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.material}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.profile}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.legSize}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.screedGuide}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.coastal}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

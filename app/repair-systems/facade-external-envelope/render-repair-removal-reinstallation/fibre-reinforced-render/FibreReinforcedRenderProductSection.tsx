@@ -8,13 +8,17 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Fibre-reinforced"
+  | "Polypropylene"
+  | "Glass-fibre"
+  | "Two-coat"
+  | "Exterior"
   | "Masonry"
   | "Concrete"
-  | "Coastal";
+  | "Pre-bagged"
+  | "Crack-resistant"
+  | "Coastal"
+  | "AS-3700";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +38,256 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au",
+    accentColor: "#0369a1",
+    name: "Mapei Planitop XS + Polypropylene Fibre Admixture",
+    descriptionLine:
+      "Fibre-reinforced two-coat render — Mapei Planitop XS base coat with polypropylene fibre admixture + fine finish coat — exterior masonry and concrete facades with elevated crack risk",
+    productType: "Polypropylene fibre-reinforced cementitious render — exterior facade",
+    filterTags: ["Fibre-reinforced", "Polypropylene", "Two-coat", "Exterior", "Masonry", "Concrete", "Pre-bagged", "Crack-resistant", "AS-3700"],
+    techChips: [
+      { label: "Polypropylene fibres", cls: "bg-sky-100 text-sky-800" },
+      { label: "Two-coat system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Crack-resistant", cls: "bg-green-50 text-green-700" },
+      { label: "Exterior masonry", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Polypropylene fibre-reinforced render using Mapei Planitop XS as the base coat with discrete polypropylene fibres added to the mix to improve tensile resistance and reduce early-age plastic shrinkage cracking. Polypropylene fibres (typically at 0.5–1.0 kg/m³) are added to the Planitop XS mix at the time of batching. The fibre-reinforced base coat is applied at the standard scratch coat thickness and covered with a fine polymer-modified finish coat after curing. Confirm suitable fibre type, dosage rate, and mix compatibility with Mapei Australia technical before specifying. TODO: owner confirm — Mapei-compatible polypropylene fibre type, dosage, and approved system guide.",
+    technicalProperties: [
+      "Polypropylene fibres added to Planitop XS base coat — confirm dosage (typically 0.5–1.0 kg/m³) with Mapei technical",
+      "Improves tensile resistance and reduces plastic shrinkage cracking",
+      "Two-coat system — fibre-reinforced base + fine finish coat",
+      "Exterior and interior masonry and concrete substrates",
+      "Pre-bagged base coat — fibres added at mixing",
+      "Confirm AS 3700 compliance and coastal suitability with Mapei Australia",
+    ],
+    limitations: [
+      "Fibres are not a substitute for properly spaced control joints",
+      "Polypropylene fibres do not replace structural reinforcement for load-bearing render",
+      "Confirm fibre type and dosage — not all polypropylene fibres are compatible with all cementitious mixes",
+      "Finish coat surface quality depends on base coat preparation",
+      "TODO: owner confirm — Mapei fibre system specification and approved products",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
+      { name: "Bayset — national distribution", url: "https://www.bayset.com.au" },
+      { name: "Polypropylene fibre — confirm supplier with Mapei technical", url: "https://www.mapei.com/au" },
+    ],
+  },
+  {
+    fullLabel: "Rockcote / Saint-Gobain Weber",
+    brandUrl: "https://www.rockcote.com.au",
+    tdsUrl: "https://www.rockcote.com.au",
+    accentColor: "#b45309",
+    name: "Rockcote Primus Basecoat + Polypropylene Fibres",
+    descriptionLine:
+      "Fibre-reinforced render — Rockcote Primus Basecoat with polypropylene fibre admixture + Rockcote Finessa finish coat — exterior masonry facades with elevated shrinkage cracking risk",
+    productType: "Polypropylene fibre-reinforced two-coat render — exterior facade",
+    filterTags: ["Fibre-reinforced", "Polypropylene", "Two-coat", "Exterior", "Masonry", "Crack-resistant", "Pre-bagged", "AS-3700"],
+    techChips: [
+      { label: "Polypropylene fibres", cls: "bg-amber-100 text-amber-800" },
+      { label: "Primus + Finessa", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior masonry", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Rockcote Primus Basecoat with polypropylene fibre admixture as the base coat, finished with Rockcote Finessa Fine Render. The fibres are added to the Primus Basecoat at mixing to improve tensile resistance and reduce plastic shrinkage cracking in the base render. Confirm polypropylene fibre type, dosage, and approved system guide with Saint-Gobain Weber / Rockcote technical before specifying. TODO: owner confirm — Rockcote-approved polypropylene fibre system and dosage guidance.",
+    technicalProperties: [
+      "Fibre-reinforced Primus Basecoat — polypropylene fibres at confirmed dosage",
+      "Two-coat — fibre-reinforced base + Finessa finish coat",
+      "Exterior masonry — suitable for facade patch repair and full-sheet render",
+      "Primus Basecoat machine or hand apply",
+      "Pre-bagged — fibres added at mixing",
+      "Confirm fibre type and dosage with Rockcote technical",
+    ],
+    limitations: [
+      "Fibres do not replace control joints or structural reinforcement",
+      "Confirm fibre-to-mix compatibility with Rockcote technical",
+      "TODO: owner confirm — Rockcote-approved fibre system, dosage, and technical data",
+    ],
+    procurementSources: [
+      { name: "Rockcote / Saint-Gobain Weber", url: "https://www.rockcote.com.au" },
+      { name: "Polypropylene fibre — confirm with Rockcote technical", url: "https://www.rockcote.com.au" },
+    ],
+  },
+  {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
     tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
+    accentColor: "#166534",
+    name: "Sika SikaTop-122 Plus + SikaFibre AD12",
+    descriptionLine:
+      "Fibre-reinforced two-coat render — Sika SikaTop-122 Plus base coat with SikaFibre AD12 polypropylene fibre admixture + SikaTop-144 finish coat — exterior masonry and concrete facades",
+    productType: "Polypropylene fibre-reinforced PM render — exterior facade",
+    filterTags: ["Fibre-reinforced", "Polypropylene", "Two-coat", "Exterior", "Masonry", "Concrete", "Pre-bagged", "Crack-resistant", "Coastal", "AS-3700"],
     techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
+      { label: "SikaFibre AD12", cls: "bg-green-100 text-green-800" },
+      { label: "SikaTop system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Coastal suitable", cls: "bg-sky-50 text-sky-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
+      "Sika's fibre-reinforced render system pairs SikaTop-122 Plus (polymer-modified render base coat) with SikaFibre AD12 (polypropylene monofilament fibre admixture) to produce a fibre-reinforced scratch coat. SikaFibre AD12 is Sika's polypropylene fibre specifically designed for cementitious systems. Confirm current product availability, dosage rate, and TDS with Sika Australia technical before specifying. TODO: owner confirm — Sika fibre-reinforced render system, SikaFibre AD12 current availability and dosage guidance.",
     technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
+      "SikaTop-122 Plus base coat + SikaFibre AD12 polypropylene fibres",
+      "SikaTop-144 finish coat",
+      "Exterior and interior masonry and concrete",
+      "Pre-bagged Sika products",
+      "SikaFibre AD12 — confirm dosage from Sika TDS",
+      "Confirm coastal and high-exposure suitability with Sika Australia",
     ],
     limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
+      "SikaFibre AD12 dosage must be confirmed — over-dosing reduces workability",
+      "TODO: owner confirm — confirm SikaFibre AD12 availability and dosage with Sika Australia",
+      "Standard render fibres do not replace structural concrete reinforcement",
     ],
     procurementSources: [
       { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+      { name: "Sika national distribution — builders merchants", url: "https://aus.sika.com" },
     ],
   },
   {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
-    accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    fullLabel: "Fosroc Australia",
+    brandUrl: "https://www.fosroc.com/en-AU",
+    tdsUrl: "https://www.fosroc.com/en-AU",
+    accentColor: "#7c3aed",
+    name: "Fosroc Renderoc Classic + Polypropylene Fibre",
+    descriptionLine:
+      "Fibre-reinforced render — Fosroc Renderoc Classic base coat with polypropylene fibre admixture + Fosroc FC finish coat — exterior masonry and concrete facades with crack resistance requirement",
+    productType: "Polypropylene fibre-reinforced render — exterior facade",
+    filterTags: ["Fibre-reinforced", "Polypropylene", "Two-coat", "Exterior", "Masonry", "Concrete", "Crack-resistant", "AS-3700"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Fosroc Renderoc system", cls: "bg-violet-100 text-violet-800" },
+      { label: "Polypropylene fibres", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior masonry", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Fosroc Renderoc Classic with polypropylene fibre admixture used as the fibre-reinforced base coat, finished with Fosroc Renderoc FC (Fine Coat). Confirm polypropylene fibre type, dosage, and compatibility with Fosroc Renderoc Classic with Fosroc Australia technical before specifying. TODO: owner confirm — Fosroc-approved polypropylene fibre system and dosage guidance.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Renderoc Classic base coat + polypropylene fibres at confirmed dosage",
+      "Renderoc FC finish coat",
+      "Exterior and interior use",
+      "Pre-bagged Fosroc products",
+      "Confirm fibre type and dosage with Fosroc technical",
+      "Confirm coastal suitability",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "TODO: owner confirm — Fosroc fibre specification and approved system",
+      "Fibres do not replace control joints",
+      "Confirm current Fosroc product availability",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
-    techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
-    technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
-    ],
-    limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
-    ],
-    procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "Fosroc Australia", url: "https://www.fosroc.com/en-AU" },
+      { name: "Parchem — national Fosroc distribution", url: "https://www.parchem.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Fibre-reinforced", label: "Fibre-reinforced" },
+  { id: "Polypropylene", label: "Polypropylene" },
+  { id: "Glass-fibre", label: "Glass-fibre" },
+  { id: "Two-coat", label: "Two-coat system" },
+  { id: "Exterior", label: "Exterior" },
   { id: "Masonry", label: "Masonry" },
   { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "Pre-bagged", label: "Pre-bagged" },
+  { id: "Crack-resistant", label: "Crack-resistant" },
+  { id: "Coastal", label: "Coastal rated" },
+  { id: "AS-3700", label: "AS 3700" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  fibreType: string;
+  dosage: string;
+  baseCoat: string;
+  finishCoat: string;
+  crackResistance: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Planitop XS + PP Fibre",
+    brand: "Mapei",
+    fibreType: "Polypropylene (confirm type with Mapei)",
+    dosage: "0.5–1.0 kg/m³ (confirm with Mapei)",
+    baseCoat: "Mapei Planitop XS",
+    finishCoat: "Fine finish coat (confirm with Mapei)",
+    crackResistance: "Improved plastic shrinkage resistance",
+    primaryUse: "Exterior masonry and concrete facades with elevated crack risk",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "Primus Basecoat + PP Fibre + Finessa",
+    brand: "Rockcote / Saint-Gobain Weber",
+    fibreType: "Polypropylene (confirm type with Rockcote)",
+    dosage: "Confirm with Rockcote technical",
+    baseCoat: "Rockcote Primus Basecoat",
+    finishCoat: "Rockcote Finessa",
+    crackResistance: "Reduced plastic shrinkage cracking",
+    primaryUse: "Exterior masonry facade patch repair and full re-render",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "SikaTop-122 Plus + SikaFibre AD12",
+    brand: "Sika",
+    fibreType: "SikaFibre AD12 — polypropylene monofilament",
+    dosage: "Confirm from Sika TDS",
+    baseCoat: "SikaTop-122 Plus",
+    finishCoat: "SikaTop-144 (confirm AU availability)",
+    crackResistance: "Improved tensile resistance and crack distribution",
+    primaryUse: "Exterior masonry and concrete facades — coastal environments",
+  },
+  {
+    product: "Renderoc Classic + PP Fibre + Renderoc FC",
+    brand: "Fosroc / Parchem",
+    fibreType: "Polypropylene (confirm with Fosroc)",
+    dosage: "Confirm with Fosroc technical",
+    baseCoat: "Fosroc Renderoc Classic",
+    finishCoat: "Fosroc Renderoc FC",
+    crackResistance: "Improved crack resistance (confirm with Fosroc)",
+    primaryUse: "Exterior masonry and concrete facades with crack resistance requirement",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Facade render repair on substrates with elevated thermal and structural movement",
+    "Full re-render on facades with history of map cracking and shrinkage cracking",
+    "Base coat application over AAC and lightweight block substrates with high movement differential",
+    "Heritage facades requiring improved crack resistance without polymer-modified systems",
+    "Coastal facades where crack propagation increases chloride ingress risk",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Fibre type — polypropylene for crack control, glass fibre for tensile reinforcement",
+    "Dosage rate — confirm from manufacturer TDS — too little is ineffective, too much reduces workability",
+    "Substrate preparation — substrate must be sound and primed as required",
+    "Control joints — fibres reduce cracking but do not eliminate need for properly spaced control joints",
+    "Compatibility — confirm fibre-to-system compatibility with manufacturer technical before specifying",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Fibres are not structural reinforcement and do not replace properly designed control joint spacing",
+    "Fibre dosage must be confirmed — excessive dosage reduces workability and can impair render surface quality",
+    "Not a waterproofing system — fibre-reinforced render must be overcoated with a compatible coating system",
+    "Glass fibres must be alkali-resistant (AR glass) — standard glass fibres will degrade in cementitious environments",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "NCC Volume One — facade performance requirements",
+    "Manufacturer TDS — fibre dosage, mix design, and application guidance",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Map cracking and shrinkage cracking in existing render — where cause has been identified and controlled",
+    "Render reinstallation on facades with high thermal movement differential",
+    "Facades with history of hairline cracking propagating to full delamination",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and concrete block",
+    "Concrete — external concrete facade panels",
+    "AAC (autoclaved aerated concrete) — lightweight block — confirm primer requirement",
   ],
 };
 
@@ -345,9 +413,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +426,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function FibreReinforcedRenderIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,16 +435,16 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are fibre-reinforced render systems?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Fibre-reinforced render systems incorporate discrete polypropylene, glass, or steel fibres into the cementitious render mix to improve tensile strength, reduce plastic shrinkage cracking, and distribute crack propagation more evenly across the render body. Unlike conventional sand-cement or polymer-modified renders, fibre-reinforced systems use the fibres as a micro-reinforcement integral to the mortar matrix rather than as a surface reinforcement layer.
         </p>
         {expanded && (
           <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
+            The most common fibre type used in Australian facade render systems is polypropylene monofilament fibre, added at the time of mixing at dosages typically between 0.5 and 1.0 kg/m³. Alkali-resistant glass fibres are used in specialist systems requiring higher tensile capacity. Fibres do not replace control joints — they reduce crack width and distribution, but properly spaced movement joints must still be designed into the render system. Product selection must confirm fibre type, dosage rate, and compatibility with the cementitious system from the current manufacturer TDS.
           </p>
         )}
       </div>
@@ -425,7 +491,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function FibreReinforcedRenderProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +545,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +559,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">4 products — 4 brands — fibre-reinforced render systems — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +705,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of fibre-reinforced render systems. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -647,12 +713,13 @@ export function SaltRetardantTreatmentProductSection() {
           <table className="min-w-full text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product system</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Fibre type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Dosage</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Base coat</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Finish coat</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Crack resistance</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +728,11 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.fibreType}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.dosage}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.baseCoat}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.finishCoat}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.crackResistance}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

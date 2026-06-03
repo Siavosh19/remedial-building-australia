@@ -8,13 +8,17 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Bellcast"
+  | "Drip-profile"
+  | "Water-shedding"
+  | "Aluminium"
+  | "PVC"
+  | "Slab-edge"
+  | "Window-sill"
+  | "Exterior"
   | "Masonry"
   | "Concrete"
-  | "Coastal";
+  | "Render-termination";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +38,192 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
-    techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
+    fullLabel: "Rondo Building Services",
+    brandUrl: "https://www.rondo.com.au",
+    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    name: "Rondo Aluminium Bellcast / Drip Bead",
+    descriptionLine: "Aluminium bellcast and drip profile bead — forms bellcast or drip at slab edges and window sills — directs water away from facade substrate — exterior render",
+    productType: "Aluminium bellcast / drip profile bead — render termination",
+    filterTags: ["Bellcast", "Drip-profile", "Water-shedding", "Aluminium", "Slab-edge", "Window-sill", "Exterior", "Masonry", "Concrete", "Render-termination"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Aluminium bellcast", cls: "bg-sky-100 text-sky-800" },
+      { label: "Drip profile", cls: "bg-slate-100 text-slate-700" },
+      { label: "Slab edge and sill", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Rondo aluminium bellcast beads are used at slab edges, window sills, and any horizontal render surface to form a bellcast or drip profile that directs water away from the facade substrate below. The bead is embedded in the render with perforated flanges while the bellcast nose projects beyond the render plane to create the drip. Confirm profile dimensions, nose projection, and leg specification with Rondo. TODO: owner confirm — Rondo aluminium bellcast/drip bead specification and available profiles.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Aluminium bellcast nose with perforated flanges",
+      "Forms drip profile at slab edges, window sills, and horizontal render terminations",
+      "Directs water away from facade substrate",
+      "Confirm nose projection and leg dimensions from Rondo",
+      "Exterior use",
+      "Confirm material for coastal environments — consider PVC or stainless in marine zones",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Aluminium not suitable for coastal/marine environments — use PVC or stainless steel bellcast beads in corrosive zones",
+      "TODO: owner confirm — Rondo bellcast bead specification, profile dimensions and availability",
+      "Bellcast must project sufficiently beyond render face to create effective drip — confirm nose projection",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Rondo Building Services", url: "https://www.rondo.com.au" },
+      { name: "Render and plasterboard merchants nationally", url: "https://www.rondo.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "USG Boral / Beadex",
+    brandUrl: "https://www.usgboral.com.au",
+    tdsUrl: "https://www.usgboral.com.au",
+    accentColor: "#92400e",
+    name: "USG Boral Aluminium / PVC Drip Bead",
+    descriptionLine: "Aluminium or PVC drip bead — render termination with drip profile — slab edges, window sills and horizontal render surfaces — exterior facade",
+    productType: "Aluminium or PVC drip bead — horizontal render termination",
+    filterTags: ["Drip-profile", "Water-shedding", "Aluminium", "PVC", "Slab-edge", "Window-sill", "Exterior", "Render-termination"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "Aluminium or PVC", cls: "bg-amber-100 text-amber-800" },
+      { label: "Drip profile", cls: "bg-slate-100 text-slate-700" },
+      { label: "Slab edge / sill", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "USG Boral / Beadex distributes aluminium and PVC drip beads for render edge termination with a formed drip profile at horizontal surfaces. Confirm material (aluminium or PVC for coastal), profile dimensions, and available leg lengths with USG Boral. TODO: owner confirm — USG Boral drip bead specification, material options and dimensions.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "Aluminium or PVC — confirm material for environment",
+      "Drip profile at render termination",
+      "Slab edges, window sills and horizontal surfaces",
+      "Confirm nose projection and leg from USG Boral",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — USG Boral drip bead specification",
+      "Aluminium not suitable for coastal — use PVC",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "USG Boral", url: "https://www.usgboral.com.au" },
+      { name: "Builders merchants nationally", url: "https://www.usgboral.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Trade Supply",
+    brandUrl: "https://www.tradelink.com.au",
+    tdsUrl: "https://www.tradelink.com.au",
+    accentColor: "#0f766e",
+    name: "Trade-Supply Bellcast / Drip Bead (Aluminium or PVC)",
+    descriptionLine: "Trade-supply aluminium or PVC bellcast and drip beads — various profiles — render and plasterboard merchant supply nationally",
+    productType: "Trade-supply bellcast / drip profile bead",
+    filterTags: ["Bellcast", "Drip-profile", "Water-shedding", "Aluminium", "PVC", "Exterior", "Render-termination"],
+    techChips: [
+      { label: "Trade supply", cls: "bg-teal-100 text-teal-800" },
+      { label: "Aluminium or PVC", cls: "bg-slate-100 text-slate-700" },
+      { label: "Various profiles", cls: "bg-green-50 text-green-700" },
+      { label: "Confirm dimensions", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Bellcast and drip beads are available as standard stock items through render and plasterboard merchants nationally. Confirm material (aluminium or PVC), nose projection, leg dimension, and UV stabilisation (for PVC in exterior applications) when ordering. In coastal environments, specify PVC or stainless steel bellcast beads.",
+    technicalProperties: [
+      "Aluminium or PVC available",
+      "Standard stock at render merchants",
+      "Various nose projection and leg profiles",
+      "Confirm material and dimensions from supplier",
+    ],
+    limitations: [
+      "Confirm material for coastal environments — specify PVC or stainless",
+      "Confirm UV stabilisation for PVC in exterior exposed applications",
+      "Verify nose projection is adequate for effective drip",
+    ],
+    procurementSources: [
+      { name: "Tradelink", url: "https://www.tradelink.com.au" },
+      { name: "Render and plasterboard merchants nationally", url: "https://www.tradelink.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Bellcast", label: "Bellcast" },
+  { id: "Drip-profile", label: "Drip profile" },
+  { id: "Water-shedding", label: "Water shedding" },
+  { id: "Aluminium", label: "Aluminium" },
+  { id: "PVC", label: "PVC" },
+  { id: "Slab-edge", label: "Slab edge" },
+  { id: "Window-sill", label: "Window sill" },
+  { id: "Exterior", label: "Exterior" },
   { id: "Masonry", label: "Masonry" },
   { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "Render-termination", label: "Render termination" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  material: string;
+  noseProfile: string;
+  legSize: string;
+  coastal: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rondo Aluminium Bellcast / Drip Bead",
+    brand: "Rondo",
+    material: "Aluminium",
+    noseProfile: "Bellcast / drip — confirm from Rondo",
+    legSize: "Confirm from Rondo",
+    coastal: "Not suitable — use PVC or SS",
+    primaryUse: "Slab edges, window sills, horizontal render terminations",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "USG Boral Drip Bead",
+    brand: "USG Boral / Beadex",
+    material: "Aluminium or PVC",
+    noseProfile: "Drip profile — confirm from USG Boral",
+    legSize: "Confirm from USG Boral",
+    coastal: "PVC suitable — aluminium not suitable",
+    primaryUse: "Horizontal render terminations — slab edges and sills",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Trade-Supply Bellcast / Drip Bead",
+    brand: "Trade Supply",
+    material: "Aluminium or PVC",
+    noseProfile: "Various — confirm from supplier",
+    legSize: "Various — confirm from supplier",
+    coastal: "Specify PVC or SS for coastal",
+    primaryUse: "General render termination — slab edges, sills",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Slab edge render termination — bellcast bead at lower edge of render at each floor level to shed water",
+    "Window and door sill render — drip bead at sill soffit to direct water away from the wall below",
+    "Horizontal render terminations — any exposed horizontal render surface where water run-off is needed",
+    "Re-rendering of facades where original bellcast beads are missing or corroded",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Material — aluminium for sheltered environments; PVC or stainless for coastal",
+    "Nose projection — must project sufficiently beyond render face for an effective drip (typically minimum 10–15mm — confirm from manufacturer)",
+    "Leg length — match to render depth",
+    "Profile — bellcast (curved) versus sharp drip edge — confirm profile suits the architectural requirement",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Nose must project beyond the render face to create an effective drip — flush beads do not shed water effectively",
+    "Aluminium beads corrode in coastal environments — causing expansion, rust staining, and render delamination",
+    "Ensure bellcast bead is installed level — an uneven bellcast will allow water to run back against the facade",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "NCC Volume One — facade weatherproofing",
+    "Manufacturer product guide — confirm profile, leg dimensions and installation details",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Missing or corroded drip beads causing water ingress and render staining below slab edges",
+    "Render delamination below horizontal surfaces caused by water running back against the facade",
+    "Re-render works — bellcast beads installed at all slab edges and window sills as part of new render system",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and block at slab edges",
+    "Concrete — slab soffits and edges",
+    "AAC — lightweight block at window sills",
+    "Render substrate — where full removal and replacement of render is in scope",
   ],
 };
 
@@ -345,9 +349,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +362,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function BellcastDripBeadIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +371,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are bellcast and drip beads?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Bellcast and drip beads are extruded aluminium or PVC profiles installed at horizontal render terminations — particularly slab edges, window sills, and any exposed horizontal render surface — to form a drip profile that directs water away from the facade substrate and prevents water tracking back under the render edge.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              Without a properly formed drip, water running down a facade can track back against the wall at slab edges and sills, causing recurring dampness, staining, and render delamination below horizontal surfaces. Bellcast beads have a curved profile that tapers to a nose below the render plane; sharp-edge drip beads have a more angular profile. Both must project sufficiently beyond the render face to create an effective drip — a flush termination does not shed water effectively.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +429,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function BellcastDripBeadProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +483,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +497,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">3 products — bellcast and drip profile beads — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +643,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of bellcast and drip bead products. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -649,10 +653,10 @@ export function SaltRetardantTreatmentProductSection() {
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Nose profile</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Leg size</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Coastal</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +665,10 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.material}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.noseProfile}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.legSize}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.coastal}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

@@ -1,30 +1,51 @@
 import type { Metadata } from "next";
-import { AlertTriangle, ArrowRight } from "lucide-react";
+import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
 import { BreathableRenderIntroSection, BreathableRenderProductSection } from "./BreathableRenderProductSection";
 
 export const metadata: Metadata = {
-  title: "Breathable and Vapour-Permeable Render Systems — Salt Attack & Salt-Contaminated Render — Remedial Building Australia",
+  title: "Breathable & Vapour-Permeable Render Systems — Render Repair, Removal & Reinstallation — Remedial Building Australia",
   description:
-    "Technical product reference for breathable and vapour-permeable render systems — WTA-compliant renders with low sd value and high pore volume allowing moisture vapour to escape from the facade substrate without disrupting the render surface.",
+    "Technical product reference for breathable and vapour-permeable render systems with low sd values used in facade remediation on Australian masonry facades where moisture vapour release is required — Remmers, Parex, and Rockcote systems.",
 };
 
-const BASE = "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render";
+const ACTIVE_SLUG = "breathable-vapour-permeable-render";
+const BASE_RENDER = "/repair-systems/facade-external-envelope/render-repair-removal-reinstallation";
+const BASE_ARRIS = "/repair-systems/facade-external-envelope/arris-angles-render-beads";
+
 const SIBLING_GROUPS = [
   {
-    heading: "Salt Attack & Salt-Contaminated Render",
+    heading: "Render Repair, Removal & Reinstallation",
     tabs: [
+      { label: "Two-coat PM render", slug: "two-coat-polymer-modified-render" },
+      { label: "Two-coat sand cement", slug: "two-coat-sand-cement-render" },
+      { label: "Fibre-reinforced render", slug: "fibre-reinforced-render" },
+      { label: "Acrylic spray render", slug: "acrylic-spray-applied-render" },
+      { label: "EIFS render", slug: "eifs-render-systems" },
       { label: "Salt-resistant render", slug: "salt-resistant-renovating-render" },
-      { label: "Substrate treatment", slug: "salt-retardant-substrate-treatment" },
       { label: "Breathable render", slug: "breathable-vapour-permeable-render" },
-      { label: "Saline primer", slug: "saline-resistant-primer-slurry" },
+      { label: "Bonding agents", slug: "bonding-agent-primer-systems" },
+      { label: "Salt-retardant treatment", slug: "salt-retardant-substrate-treatment" },
+      { label: "Saline primer / slurry", slug: "saline-resistant-primer-slurry" },
     ],
-    base: BASE,
+    base: BASE_RENDER,
+  },
+  {
+    heading: "Arris & Render Beads",
+    tabs: [
+      { label: "Aluminium arris", slug: "aluminium-arris-corner-angle-beads" },
+      { label: "Stainless arris", slug: "stainless-steel-arris-corner-angle-beads" },
+      { label: "PVC arris", slug: "pvc-arris-corner-angle-beads" },
+      { label: "Render stop beads", slug: "render-stop-beads" },
+      { label: "Bellcast / drip beads", slug: "bellcast-drip-beads" },
+      { label: "Movement beads", slug: "movement-expansion-beads" },
+      { label: "Reveal beads", slug: "reveal-beads" },
+      { label: "Mesh-wing beads", slug: "mesh-wing-render-beads" },
+    ],
+    base: BASE_ARRIS,
   },
 ];
 
-const ACTIVE_SLUG = "breathable-vapour-permeable-render";
-
-export default function BreathableVapourPermeableRenderPage() {
+export default function BreathableRenderRRPage() {
   return (
     <div className="min-h-screen bg-slate-50">
 
@@ -60,25 +81,25 @@ export default function BreathableVapourPermeableRenderPage() {
               <span>/</span>
               <a href="/repair-systems/facade-external-envelope" className="hover:text-sky-700 transition">Facade &amp; External Envelope</a>
               <span>/</span>
-              <a href="/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render" className="hover:text-sky-700 transition">Salt Attack &amp; Salt-Contaminated Render</a>
+              <a href={BASE_RENDER} className="hover:text-sky-700 transition">Render repair, removal &amp; reinstallation</a>
               <span>/</span>
-              <span className="text-sky-950">Breathable render</span>
+              <span className="text-sky-950">Breathable &amp; vapour-permeable render systems</span>
             </nav>
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
                 <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                  Breathable and vapour-permeable render systems
+                  Breathable &amp; vapour-permeable render systems
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                  Technical product reference for breathable and vapour-permeable render systems — WTA-compliant renders with low sd value and high pore volume allowing moisture vapour to escape from the facade substrate without disrupting the render surface.
+                  Technical product reference for breathable and vapour-permeable render systems with low sd values used in facade remediation on Australian masonry facades where moisture vapour release through the render is required. Covers product classification, system selection, and brand comparisons.
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 {[
                   { label: "Products listed", value: "3" },
                   { label: "Brands covered", value: "3" },
-                  { label: "System type", value: "Vapour-permeable" },
+                  { label: "Type", value: "Vapour-permeable" },
                   { label: "Standards", value: "WTA / AS 3700" },
                 ].map((s) => (
                   <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
@@ -141,13 +162,14 @@ export default function BreathableVapourPermeableRenderPage() {
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
                   <AlertTriangle size={15} />
                 </div>
-                <h3 className="text-base font-extrabold text-amber-900">Do not confuse breathable/vapour-permeable renders with:</h3>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse breathable vapour-permeable render with:</h3>
               </div>
               <ul className="space-y-2.5">
                 {[
-                  "Salt-resistant renovating render (WTA sanierputz) — a more specific subset with both breathability AND controlled salt resistance — listed on the salt-resistant render page",
-                  "Elastomeric crack-bridging coatings — topcoat coatings applied over render to bridge hairline cracks — vapour-permeable coatings are a separate product class",
-                  "Standard polymer-modified render — these are not formulated for high vapour permeability and will trap moisture in damp substrates",
+                  "Standard PM render — low vapour permeability; standard polymer-modified renders have higher sd values and lower pore volumes that can trap moisture vapour behind the render surface",
+                  "Salt-resistant renovating render — different sd value and pore structure specification; salt-resistant renovating render prioritises salt crystallisation accommodation, not primarily vapour permeability",
+                  "Waterproof coatings — barrier coatings that are the opposite intent to breathable renders; applying a waterproof coating over a breathable render defeats the vapour permeability of the system",
+                  "Elastomeric crack-bridging coatings — applied over render as a topcoat; applying these over breathable render reduces the system sd value and can trap moisture vapour",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
@@ -166,30 +188,30 @@ export default function BreathableVapourPermeableRenderPage() {
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
               <p className="text-xs leading-6 text-amber-900">
-                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer TDS, project specification, substrate condition, exposure classification, and AS requirements. Products marked TODO: owner confirm require verification before specifying. Do not rely on this reference as a substitute for professional building or facade consultant advice.
+                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, substrate condition, exposure classification, AS 3700, NCC requirements, and applicator warranty conditions. Products marked TODO: owner confirm require verification before specifying. Do not rely on this reference as a substitute for professional engineering or facade consultant advice.
               </p>
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 {
                   href: "/repair-systems/facade-external-envelope",
-                  label: "Back to Facade & External Envelope",
-                  title: "Browse all facade and external envelope repair systems",
+                  label: "Facade & External Envelope",
+                  title: "Browse all facade defect subcategories",
                 },
                 {
-                  href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
-                  label: "Back to Salt Attack & Salt-Contaminated Render",
-                  title: "Browse all product categories for this defect",
+                  href: BASE_RENDER,
+                  label: "Render Repair, Removal & Reinstallation",
+                  title: "Browse all product categories for render repair and reinstallation",
                 },
                 {
                   href: "/defect-library/facade-external-envelope/render-cracking-delamination",
                   label: "Defect Library",
-                  title: "Render cracking & delamination — causes, inspection, methodology",
+                  title: "Render cracking and delamination — causes, inspection, methodology",
                 },
                 {
                   href: "/ai-scope-builder",
                   label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade salt attack remediation",
+                  title: "Generate a scope of works for facade render remediation",
                 },
               ].map((card) => (
                 <a
@@ -213,8 +235,8 @@ export default function BreathableVapourPermeableRenderPage() {
       {/* ── Footer ── */}
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
-            ← Salt Attack &amp; Salt-Contaminated Render
+          <a href={BASE_RENDER} className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
+            ← Render Repair, Removal &amp; Reinstallation
           </a>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">

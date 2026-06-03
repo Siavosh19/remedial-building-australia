@@ -8,13 +8,17 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "PVC"
+  | "UV-stabilised"
+  | "Lightweight"
+  | "External-corner"
   | "Masonry"
-  | "Concrete"
-  | "Coastal";
+  | "AAC"
+  | "Render"
+  | "Exterior"
+  | "Interior"
+  | "Corrosion-resistant"
+  | "Perforated-flange";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +38,200 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
-    techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
+    fullLabel: "Rondo Building Services",
+    brandUrl: "https://www.rondo.com.au",
+    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    name: "Rondo PVC Corner Bead (UV-stabilised)",
+    descriptionLine: "UV-stabilised PVC arris corner bead — lightweight, corrosion-resistant — exterior and interior render corners on masonry and AAC substrates",
+    productType: "UV-stabilised PVC arris corner bead",
+    filterTags: ["PVC", "UV-stabilised", "Lightweight", "External-corner", "Masonry", "AAC", "Render", "Exterior", "Interior", "Corrosion-resistant", "Perforated-flange"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "UV-stabilised PVC", cls: "bg-sky-100 text-sky-800" },
+      { label: "Corrosion-resistant", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "UV-stabilised PVC arris corner beads are a lightweight corrosion-resistant alternative to metal beads. They are suitable for use in all environments including coastal and corrosive zones. PVC beads do not corrode, making them suitable for applications where metal bead corrosion would be a risk. Confirm UV stabilisation grade, leg dimensions, and material thickness with Rondo for external UV-exposed applications. TODO: owner confirm — Rondo PVC arris bead specification, UV grade and leg dimensions.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "UV-stabilised PVC — corrosion-resistant",
+      "Perforated flanges for render key",
+      "Suitable for exterior and interior",
+      "All environments including coastal",
+      "Confirm leg dimensions from Rondo",
+      "Lightweight — easier to handle than metal",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Less impact-resistant than heavy duty metal beads — avoid at high-traffic corners",
+      "Confirm UV stabilisation grade for long-term exterior UV exposure",
+      "TODO: owner confirm — Rondo PVC arris bead specification and UV grade",
+      "PVC may soften slightly at very high surface temperatures",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Rondo Building Services", url: "https://www.rondo.com.au" },
+      { name: "Plasterboard and render merchants nationally", url: "https://www.rondo.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "USG Boral",
+    brandUrl: "https://www.usgboral.com.au",
+    tdsUrl: "https://www.usgboral.com.au",
+    accentColor: "#92400e",
+    name: "USG Boral PVC Arris Bead",
+    descriptionLine: "PVC arris corner bead — exterior and interior render — corrosion-resistant — USG Boral distribution",
+    productType: "PVC arris corner bead — all environments",
+    filterTags: ["PVC", "UV-stabilised", "Lightweight", "External-corner", "Masonry", "Render", "Exterior", "Interior"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "PVC", cls: "bg-amber-100 text-amber-800" },
+      { label: "USG Boral", cls: "bg-slate-100 text-slate-700" },
+      { label: "All environments", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "USG Boral supplies PVC arris and corner beads for render edge protection. Confirm the specific USG Boral PVC arris bead product, leg dimensions, and UV stabilisation specification with USG Boral. TODO: owner confirm — USG Boral PVC arris bead specification and dimensions.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "PVC — corrosion-resistant",
+      "Exterior and interior render",
+      "Confirm leg dimensions from USG Boral",
+      "Perforated flanges for render key",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — USG Boral PVC arris bead specification",
+      "Confirm UV stabilisation for exterior use",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "USG Boral", url: "https://www.usgboral.com.au" },
+      { name: "Builders merchants nationally", url: "https://www.usgboral.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Trade Supply",
+    brandUrl: "https://www.tradelink.com.au",
+    tdsUrl: "https://www.tradelink.com.au",
+    accentColor: "#0f766e",
+    name: "Trade-Supply PVC Corner and Arris Bead",
+    descriptionLine: "Trade-supply UV-stabilised PVC arris and corner beads — 25mm and 35mm leg — available through render and plasterboard merchants nationally",
+    productType: "Trade-supply PVC arris corner bead",
+    filterTags: ["PVC", "UV-stabilised", "Lightweight", "External-corner", "Masonry", "AAC", "Render", "Exterior", "Interior", "Corrosion-resistant"],
+    techChips: [
+      { label: "Trade supply", cls: "bg-teal-100 text-teal-800" },
+      { label: "UV-stabilised PVC", cls: "bg-slate-100 text-slate-700" },
+      { label: "25 and 35mm leg", cls: "bg-green-50 text-green-700" },
+      { label: "Confirm UV grade", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "PVC arris and corner beads are widely available as standard stock items through plasterboard merchants and render suppliers nationally. Confirm the UV stabilisation grade when purchasing for external exposed applications — not all trade-supply PVC beads are UV-stabilised to the same standard for long-term exterior use.",
+    technicalProperties: [
+      "Standard stock item — widely available",
+      "25mm and 35mm leg profiles",
+      "UV-stabilised PVC (confirm grade from supplier)",
+      "Corrosion-resistant — suitable for coastal environments",
+      "Interior and exterior",
+    ],
+    limitations: [
+      "Confirm UV stabilisation grade for exterior exposed applications",
+      "Less impact-resistant than metal heavy duty beads",
+      "Confirm leg dimensions for render depth",
+    ],
+    procurementSources: [
+      { name: "Tradelink", url: "https://www.tradelink.com.au" },
+      { name: "Plasterboard merchants and render suppliers nationally", url: "https://www.tradelink.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "PVC", label: "PVC" },
+  { id: "UV-stabilised", label: "UV-stabilised" },
+  { id: "Lightweight", label: "Lightweight" },
+  { id: "External-corner", label: "External-corner" },
   { id: "Masonry", label: "Masonry" },
-  { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "AAC", label: "AAC" },
+  { id: "Render", label: "Render" },
+  { id: "Exterior", label: "Exterior" },
+  { id: "Interior", label: "Interior" },
+  { id: "Corrosion-resistant", label: "Corrosion-resistant" },
+  { id: "Perforated-flange", label: "Perforated-flange" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  material: string;
+  uvStabilised: string;
+  legSize: string;
+  impactResistance: string;
+  suitableEnvironment: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rondo PVC Corner Bead (UV-stabilised)",
+    brand: "Rondo Building Services",
+    material: "UV-stabilised PVC",
+    uvStabilised: "Yes — confirm grade",
+    legSize: "Confirm from Rondo",
+    impactResistance: "Lower than metal heavy duty",
+    suitableEnvironment: "All environments including coastal",
+    primaryUse: "Exterior and interior render corners — corrosion-free",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "USG Boral PVC Arris Bead",
+    brand: "USG Boral",
+    material: "PVC",
+    uvStabilised: "Confirm from USG Boral",
+    legSize: "Confirm from USG Boral",
+    impactResistance: "Lower than metal heavy duty",
+    suitableEnvironment: "All environments",
+    primaryUse: "Exterior and interior render corner protection",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Trade-Supply PVC Corner and Arris Bead",
+    brand: "Trade supply",
+    material: "UV-stabilised PVC",
+    uvStabilised: "Confirm grade from supplier",
+    legSize: "25mm or 35mm",
+    impactResistance: "Lower than metal heavy duty",
+    suitableEnvironment: "All environments including coastal",
+    primaryUse: "Render corner protection — widely available nationally",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Coastal and marine facade render corners where metal bead corrosion is a risk",
+    "Interior render corners where lightweight handling is preferred",
+    "External render corners in all environments where corrosion resistance is required",
+    "Window and door reveals — PVC corner protection at reveal edges",
+    "Strata facades in coastal environments where replacement of corroded aluminium beads is required",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "UV stabilisation — confirm UV-stabilised grade for external exposed applications",
+    "Leg length — match to render depth",
+    "Impact resistance — PVC is less impact-resistant than metal heavy duty — avoid at high-traffic corners",
+    "Environment — PVC is suitable in all environments including coastal",
+    "Cost — PVC is generally lower cost than stainless steel",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Lower impact resistance than heavy duty metal beads",
+    "UV stabilisation must be confirmed for external exposed applications — some trade-supply PVC products have inadequate UV resistance for long-term exterior exposure",
+    "May soften slightly in very high surface temperatures (metal beads preferred at sun-exposed dark-coloured facades in hot climates)",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "NCC Volume One — facade weatherproofing",
+    "Manufacturer product guide — confirm UV stabilisation and leg dimensions",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Corroded aluminium bead replacement — PVC used as corrosion-resistant alternative",
+    "Render corner repair where new bead is specified",
+    "Coastal facade render reinstallation — PVC specified for all corner beads",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and block",
+    "AAC — lightweight block",
+    "Render substrate",
+    "Concrete — external facade panels",
   ],
 };
 
@@ -345,9 +357,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +370,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function PVCArrisIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +379,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are PVC arris and corner angle beads?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          UV-stabilised PVC arris and corner angle beads are a lightweight, corrosion-resistant alternative to aluminium and stainless steel render beads. Unlike metal beads, PVC does not corrode in coastal or corrosive environments, making it a cost-effective choice for coastal facades where stainless steel beads would otherwise be required.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              PVC beads are suitable for interior and exterior render in all environments, provided the correct UV-stabilised grade is specified for external exposed applications. They are generally less impact-resistant than heavy duty aluminium or stainless steel beads, so they are not the preferred specification at high-traffic corners subject to mechanical impact. Confirm UV stabilisation grade, leg dimensions, and perforated flange type with the supplier for each application.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +437,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function PVCArrisProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +491,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +505,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">3 products — PVC arris and corner angle beads — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +651,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of PVC arris and corner angle bead products. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -649,10 +661,11 @@ export function SaltRetardantTreatmentProductSection() {
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">UV stabilised</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Leg size</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Impact resistance</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Suitable environment</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +674,11 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.material}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.uvStabilised}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.legSize}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.impactResistance}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.suitableEnvironment}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

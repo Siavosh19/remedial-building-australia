@@ -8,13 +8,15 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Breathable"
+  | "Vapour-permeable"
+  | "WTA-classified"
+  | "Low-sd"
+  | "Exterior"
   | "Masonry"
-  | "Concrete"
-  | "Coastal";
+  | "Coastal"
+  | "Heritage"
+  | "AS-3700";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +36,189 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
-    techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
+    fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
     tdsUrl: "https://www.remmers.com.au",
     accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    name: "Remmers Feinputz SP (Breathable Finish Render)",
+    descriptionLine: "Vapour-permeable fine finish render — sd value <0.14m — exterior masonry facades requiring moisture vapour release — Remmers Australia",
+    productType: "Vapour-permeable fine finish render — low sd value — exterior masonry",
+    filterTags: ["Breathable", "Vapour-permeable", "WTA-classified", "Low-sd", "Exterior", "Masonry", "Coastal", "AS-3700"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Low sd value", cls: "bg-sky-100 text-sky-800" },
+      { label: "Vapour-permeable", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior masonry", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Remmers Feinputz SP is a vapour-permeable fine finish render with a low sd value (sd <0.14m — confirm from TDS) and high pore volume (>35% — confirm from TDS) designed for exterior masonry facades where moisture vapour release is required. It is used as the finish render in breathable render systems on salt-affected and heritage facades where trapping moisture vapour behind the render surface would cause delamination or damage. Confirm sd value, pore volume, WTA classification, and full system specification with Remmers Australia technical. TODO: owner confirm — Remmers Feinputz SP sd value, pore volume, WTA status and Australian availability.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Vapour-permeable finish render — low sd value (confirm <0.14m from TDS)",
+      "High pore volume (confirm >35% from TDS)",
+      "Suitable for exterior masonry where moisture vapour release is required",
+      "Apply over compatible Remmers base coat and substrate treatment",
+      "Confirm system sequence — primer, base coat, finish coat — with Remmers Australia",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Not a waterproofing system — breathable renders allow vapour transmission",
+      "Not suitable where moisture ingress source has not been treated",
+      "TODO: owner confirm — Remmers Feinputz SP specification, sd value, pore volume and WTA status in Australia",
+      "Confirm primer and base coat compatibility",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Remmers Australia", url: "https://www.remmers.com.au" },
+      { name: "Confirm local Remmers distributor", url: "https://www.remmers.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
+    fullLabel: "Parex (Alumasc)",
+    brandUrl: "https://www.parex.com.au",
+    tdsUrl: "https://www.parex.com.au",
     accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    name: "Parex Breathable Render System",
+    descriptionLine: "Breathable vapour-permeable render — exterior masonry facades where low sd value is required — Parex/Alumasc distribution Australia",
+    productType: "Breathable vapour-permeable render — exterior masonry",
+    filterTags: ["Breathable", "Vapour-permeable", "Exterior", "Masonry", "Heritage", "AS-3700"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "Breathable", cls: "bg-orange-100 text-orange-800" },
+      { label: "Low sd value", cls: "bg-slate-100 text-slate-700" },
+      { label: "Heritage compatible", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "Parex (distributed in Australia by Alumasc Building Products) supplies breathable render systems for exterior masonry facades. Confirm the specific Parex product for breathable vapour-permeable render application with Parex/Alumasc technical — the Parex range includes renders with varying sd values and pore volumes. TODO: owner confirm — specific Parex product for breathable vapour-permeable render, sd value, pore volume and Australian availability.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "Vapour-permeable render — confirm sd value from TDS with Parex/Alumasc",
+      "Exterior masonry facades",
+      "Apply over compatible primer and base coat — confirm with Parex",
+      "Confirm system sequence and inter-coat timing",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — specific Parex breathable render product, sd value and Australian availability",
+      "Confirm current Parex/Alumasc distribution nationally",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "Parex / Alumasc Building Products Australia", url: "https://www.parex.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Rockcote / Saint-Gobain Weber",
+    brandUrl: "https://www.rockcote.com.au",
+    tdsUrl: "https://www.rockcote.com.au",
+    accentColor: "#b45309",
+    name: "Rockcote Breathable Render System",
+    descriptionLine: "Breathable vapour-permeable render — exterior masonry facades — Saint-Gobain Weber Australia",
+    productType: "Breathable vapour-permeable render — exterior masonry facade",
+    filterTags: ["Breathable", "Vapour-permeable", "Exterior", "Masonry", "Coastal", "Heritage", "AS-3700"],
+    techChips: [
+      { label: "Breathable", cls: "bg-amber-100 text-amber-800" },
+      { label: "Vapour-permeable", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior masonry", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Rockcote / Saint-Gobain Weber supplies breathable render systems for exterior masonry facades where low sd value and vapour permeability are required. Confirm specific product in the Rockcote/Weber range for breathable vapour-permeable render with Saint-Gobain Weber technical. TODO: owner confirm — specific Rockcote/Weber breathable render product, sd value and TDS.",
+    technicalProperties: [
+      "Vapour-permeable render — confirm sd value from Rockcote TDS",
+      "Exterior masonry facades",
+      "Apply over compatible base coat",
+      "Confirm system sequence with Rockcote technical",
+    ],
+    limitations: [
+      "TODO: owner confirm — Rockcote breathable render product, sd value and current availability",
+      "Confirm WTA classification with Saint-Gobain Weber Australia",
+    ],
+    procurementSources: [
+      { name: "Rockcote / Saint-Gobain Weber", url: "https://www.rockcote.com.au" },
+      { name: "Trade distribution nationally", url: "https://www.rockcote.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Breathable", label: "Breathable" },
+  { id: "Vapour-permeable", label: "Vapour-permeable" },
+  { id: "WTA-classified", label: "WTA-classified" },
+  { id: "Low-sd", label: "Low sd value" },
+  { id: "Exterior", label: "Exterior" },
   { id: "Masonry", label: "Masonry" },
-  { id: "Concrete", label: "Concrete" },
   { id: "Coastal", label: "Coastal" },
+  { id: "Heritage", label: "Heritage" },
+  { id: "AS-3700", label: "AS 3700" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
+  sdValue: string;
+  poreVolume: string;
+  wtaClass: string;
   application: string;
-  compatibleRender: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Remmers Feinputz SP",
+    brand: "Remmers Australia",
+    sdValue: "Confirm <0.14m from TDS",
+    poreVolume: "Confirm >35% from TDS",
+    wtaClass: "WTA-classified (confirm AU status)",
+    application: "Over Remmers base coat and primer",
+    primaryUse: "Breathable finish render on salt-affected and heritage facades",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "Parex Breathable Render System",
+    brand: "Parex / Alumasc",
+    sdValue: "Confirm with Parex/Alumasc TDS",
+    poreVolume: "Confirm with Parex TDS",
+    wtaClass: "TODO: confirm with Parex/Alumasc",
+    application: "Over compatible Parex primer and base coat",
+    primaryUse: "Breathable render on exterior masonry and heritage facades",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Rockcote Breathable Render System",
+    brand: "Rockcote / Saint-Gobain Weber",
+    sdValue: "Confirm with Rockcote TDS",
+    poreVolume: "Confirm with Rockcote TDS",
+    wtaClass: "TODO: confirm with Rockcote",
+    application: "Over compatible Rockcote base coat",
+    primaryUse: "Breathable render on coastal and heritage exterior masonry",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Salt-affected exterior masonry facades where moisture vapour must be released through the render",
+    "Heritage masonry facades — lime mortar joints require breathable render to avoid moisture trapping",
+    "Post-salt-attack remediation where WTA render system is specified",
+    "Facades with known condensation or vapour drive from interior to exterior",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "sd value — confirm sd value <0.14m from TDS for vapour-permeable classification",
+    "Pore volume — confirm >35% by volume for WTA compliance",
+    "System sequence — confirm primer, base coat, and finish coat compatibility",
+    "Heritage context — confirm breathable render specification with conservation architect",
+    "Substrate treatment — salt-retardant substrate treatment is typically required before breathable render on salt-affected facades",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Not a waterproofing system — breathable renders allow moisture vapour transmission, they do not prevent liquid water ingress",
+    "Must be combined with appropriate waterproofing at penetrations, sills, and exposed horizontal surfaces",
+    "Do not apply standard elastomeric or low-permeability coatings over breathable render — this defeats the purpose of the system",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "WTA Merkblatt 2-9-04/D — European standard referenced in Australia for breathable and renovating render systems",
+    "AS 3700 — Masonry Structures",
+    "NCC Volume One — facade weatherproofing performance",
+    "Manufacturer TDS — sd value, pore volume, application guide",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Render blistering and delamination caused by trapped moisture vapour",
+    "Salt attack combined with vapour drive from interior",
+    "Heritage masonry facades where vapour-permeable render is required to maintain wall moisture balance",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Heritage masonry — brick with lime mortar joints",
+    "Masonry — brick and block contaminated with soluble salts",
+    "Concrete — external concrete facades where vapour permeability is required",
   ],
 };
 
@@ -345,9 +344,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +357,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function BreathableRenderIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +366,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are breathable vapour-permeable render systems?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Breathable vapour-permeable renders are cementitious render systems engineered with a high pore volume and low sd (vapour diffusion resistance) value that allows moisture vapour to migrate through the render body and escape from the facade surface without causing blistering, delamination, or efflorescence.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              They are distinct from standard polymer-modified renders, which have lower pore volumes and higher sd values that can trap moisture vapour behind the render surface. Breathable renders are classified under the WTA standard and are used in Australian facades where moisture vapour drive from the substrate or interior space would damage a standard render. They are not waterproofing systems and must be used with appropriate wet-area waterproofing at sills, penetrations, and exposed horizontal surfaces.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +424,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function BreathableRenderProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +478,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +492,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — breathable vapour-permeable render systems — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +638,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of breathable vapour-permeable render systems. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -647,12 +646,12 @@ export function SaltRetardantTreatmentProductSection() {
           <table className="min-w-full text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product system</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">sd value</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Pore volume</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">WTA class</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +660,10 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.sdValue}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.poreVolume}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.wtaClass}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.application}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

@@ -8,12 +8,16 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Acrylic"
+  | "Spray-applied"
+  | "Machine-applied"
+  | "Exterior"
+  | "AAC"
   | "Masonry"
-  | "Concrete"
+  | "Lightweight"
+  | "Pre-bagged"
+  | "Two-coat"
+  | "AS-3700"
   | "Coastal";
 
 type Product = {
@@ -34,192 +38,198 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
+    fullLabel: "Rockcote / Saint-Gobain Weber",
+    brandUrl: "https://www.rockcote.com.au",
+    tdsUrl: "https://www.rockcote.com.au",
+    accentColor: "#b45309",
+    name: "Rockcote Machine Render + Rockcote Finessa",
+    descriptionLine:
+      "Machine spray-applied render — Rockcote Machine Render (acrylic/cement, spray-applied base coat) + Rockcote Finessa fine finish coat — exterior AAC and masonry facades",
+    productType: "Acrylic/cement spray-applied render — exterior facade",
+    filterTags: ["Acrylic", "Spray-applied", "Machine-applied", "Exterior", "AAC", "Masonry", "Pre-bagged", "Two-coat", "AS-3700"],
     techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
-    accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
-    techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Machine spray", cls: "bg-amber-100 text-amber-800" },
+      { label: "Acrylic/cement", cls: "bg-slate-100 text-slate-700" },
+      { label: "AAC and masonry", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Rockcote's machine spray render system uses a pre-bagged acrylic/cement render applied by machine spray as the base coat. The finish coat (Finessa Fine Render) is applied by trowel or float to produce a smooth surface for coating. Machine spray application is suitable for large facade areas where spray equipment is available. Confirm product selection, equipment requirements, mix consistency, and application specifications with Rockcote/Saint-Gobain Weber technical before specifying. TODO: owner confirm — confirm specific Rockcote machine render product and TDS with Saint-Gobain Weber Australia.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Machine spray base coat — pre-bagged acrylic/cement render",
+      "Suitable over AAC, masonry, and concrete substrates",
+      "Large area spray application",
+      "Finessa fine finish coat applied after base coat",
+      "Confirm mix consistency, pump pressure, and nozzle specification with Rockcote",
+      "Confirm primer requirements for AAC and smooth substrates",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Requires spray equipment — not suitable for hand application",
+      "Confirm machine compatibility with Rockcote technical",
+      "TODO: owner confirm — Rockcote machine render product, TDS, and current availability",
+      "Overspray control required — adjacent surfaces must be protected",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Rockcote / Saint-Gobain Weber", url: "https://www.rockcote.com.au" },
+      { name: "Saint-Gobain Weber trade distribution nationally", url: "https://www.rockcote.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "Boral / USG Boral",
+    brandUrl: "https://www.boral.com.au",
+    tdsUrl: "https://www.boral.com.au",
+    accentColor: "#92400e",
+    name: "Boral Acrylic Render System",
+    descriptionLine:
+      "Acrylic spray-applied or hand-applied render — Boral acrylic/cement render system — exterior AAC and masonry facades",
+    productType: "Acrylic/cement render — spray or hand applied — exterior facade",
+    filterTags: ["Acrylic", "Spray-applied", "Exterior", "AAC", "Masonry", "Pre-bagged", "AS-3700"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "Acrylic/cement", cls: "bg-amber-100 text-amber-800" },
+      { label: "AAC and masonry", cls: "bg-slate-100 text-slate-700" },
+      { label: "Spray or hand apply", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "Boral produces acrylic render systems for exterior facade use on AAC and masonry substrates. Confirm the specific Boral product for acrylic spray-applied render with Boral technical — the Boral range includes render systems suitable for machine spray and hand application. TODO: owner confirm — confirm specific Boral acrylic render product, application method, and TDS with Boral Australia technical.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "Pre-bagged acrylic/cement render",
+      "Suitable for exterior AAC and masonry",
+      "Spray or hand apply (confirm method with Boral)",
+      "Confirm primer and substrate preparation requirements",
+      "Confirm DFT, inter-coat timing, and finish coat compatibility",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — specific Boral acrylic render product, TDS and current availability",
+      "Confirm machine spray suitability and equipment requirements",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "Boral Australia", url: "https://www.boral.com.au" },
+      { name: "Boral distribution — builders merchants nationally", url: "https://www.boral.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Weber / Saint-Gobain",
+    brandUrl: "https://www.rockcote.com.au",
+    tdsUrl: "https://www.rockcote.com.au",
+    accentColor: "#0f766e",
+    name: "Weber Render Systems (Spray-Applied)",
+    descriptionLine:
+      "Weber machine spray render — pre-bagged acrylic/cement render system for machine spray application — exterior masonry and AAC facades — Saint-Gobain Weber Australia",
+    productType: "Weber machine spray acrylic/cement render — exterior facade",
+    filterTags: ["Acrylic", "Spray-applied", "Machine-applied", "Exterior", "AAC", "Masonry", "Pre-bagged", "AS-3700"],
+    techChips: [
+      { label: "Weber spray render", cls: "bg-teal-100 text-teal-800" },
+      { label: "Machine spray", cls: "bg-slate-100 text-slate-700" },
+      { label: "AAC and masonry", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Saint-Gobain Weber Australia (trading as Rockcote/Weber) supplies machine spray render systems for facade application. Confirm the specific Weber product for spray-applied acrylic/cement render with Saint-Gobain Weber technical. TODO: owner confirm — Weber spray render product, TDS, and current range with Saint-Gobain Weber Australia technical before specifying.",
+    technicalProperties: [
+      "Pre-bagged acrylic/cement — machine spray",
+      "Suitable for exterior masonry and AAC",
+      "Confirm substrate preparation, primer, and inter-coat timing with Weber technical",
+      "Available through Saint-Gobain Weber trade distribution nationally",
+    ],
+    limitations: [
+      "TODO: owner confirm — Weber spray render product, current availability, and TDS",
+      "Requires spray equipment — confirm machine type and mix consistency with Weber technical",
+    ],
+    procurementSources: [
+      { name: "Saint-Gobain Weber / Rockcote Australia", url: "https://www.rockcote.com.au" },
+      { name: "Trade distribution nationally", url: "https://www.rockcote.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Acrylic", label: "Acrylic" },
+  { id: "Spray-applied", label: "Spray-applied" },
+  { id: "Machine-applied", label: "Machine-applied" },
+  { id: "Exterior", label: "Exterior" },
+  { id: "AAC", label: "AAC" },
   { id: "Masonry", label: "Masonry" },
-  { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "Lightweight", label: "Lightweight" },
+  { id: "Pre-bagged", label: "Pre-bagged" },
+  { id: "Two-coat", label: "Two-coat" },
+  { id: "AS-3700", label: "AS 3700" },
+  { id: "Coastal", label: "Coastal rated" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  applicationMethod: string;
+  suitableSubstrate: string;
+  finishCoat: string;
+  coastal: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rockcote Machine Render + Finessa",
+    brand: "Rockcote / Saint-Gobain Weber",
+    applicationMethod: "Machine spray (base) + trowel (finish)",
+    suitableSubstrate: "AAC, masonry, concrete",
+    finishCoat: "Rockcote Finessa",
+    coastal: "Confirm with Rockcote technical",
+    primaryUse: "Large facade re-render on AAC and masonry",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "Boral Acrylic Render System",
+    brand: "Boral / USG Boral",
+    applicationMethod: "Spray or hand apply (confirm with Boral)",
+    suitableSubstrate: "AAC and masonry",
+    finishCoat: "Confirm with Boral technical",
+    coastal: "Confirm with Boral technical",
+    primaryUse: "Exterior AAC and masonry facade render",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Weber Spray Render",
+    brand: "Weber / Saint-Gobain",
+    applicationMethod: "Machine spray",
+    suitableSubstrate: "Masonry and AAC",
+    finishCoat: "Confirm with Weber technical",
+    coastal: "Confirm with Weber technical",
+    primaryUse: "Commercial facade machine spray render on masonry and AAC",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Large facade re-render on AAC (autoclaved aerated concrete) lightweight construction buildings",
+    "Machine spray render for high-rise external facade works where hand application is impractical",
+    "Base coat application over masonry and concrete facades before fine finish render coat",
+    "Commercial building facade renovation works using machine spray equipment",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Machine equipment — confirm spray equipment type, pump capacity, and nozzle specification with manufacturer",
+    "Substrate — confirm product suitability for AAC, masonry, or concrete",
+    "Primer — AAC typically requires a specific primer before spray render — confirm with manufacturer",
+    "Inter-coat timing — confirm from TDS",
+    "Overspray management — adjacent surfaces and windows must be masked",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Not suitable for hand application — spray equipment required",
+    "Overspray risk — adjacent areas must be protected",
+    "Not a structural repair system — substrate must be sound before applying spray render",
+    "Confirm workability window — machine-mixed render must be applied promptly",
+    "Do not thin with excess water",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "NCC Volume One — facade performance",
+    "Manufacturer TDS — spray pressure, mix consistency, primer, inter-coat timing",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Full render removal and replacement on large AAC facade panels",
+    "Render reinstallation on lightweight construction buildings",
+    "Commercial facade resurfacing where machine spray application is specified",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "AAC — autoclaved aerated concrete lightweight block",
+    "Masonry — brick and concrete block",
+    "Concrete — external concrete facade panels (confirm primer requirement)",
   ],
 };
 
@@ -345,9 +355,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +368,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function AcrylicSprayRenderIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,16 +377,16 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are acrylic spray-applied render systems?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Acrylic spray-applied renders are pre-bagged factory-blended cement and acrylic polymer mixes designed for machine spray application over exterior facade substrates. Unlike trowel-applied polymer-modified renders, spray-applied systems are typically formulated with a specific consistency and acrylic content suited to pump delivery and spray application over large facade areas.
         </p>
         {expanded && (
           <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
+            They are most commonly used on AAC (autoclaved aerated concrete) lightweight block construction and masonry facades where large area coverage and consistent render thickness are required. Machine spray application offers significant productivity advantages over hand trowelling on high-rise and large commercial facades. Spray-applied render systems require compatible spray equipment, correct mix consistency, and appropriate substrate preparation including priming — confirm all requirements with the manufacturer TDS before specifying.
           </p>
         )}
       </div>
@@ -425,7 +433,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function AcrylicSprayRenderProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +487,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +501,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — acrylic spray-applied render systems — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +647,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of acrylic spray-applied render systems. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -647,12 +655,12 @@ export function SaltRetardantTreatmentProductSection() {
           <table className="min-w-full text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product system</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application method</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Suitable substrate</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Finish coat</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Coastal</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +669,10 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.applicationMethod}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.suitableSubstrate}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.finishCoat}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.coastal}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

@@ -25,7 +25,7 @@ const ITEMS = [
     count: 3,
     description:
       "Traditional two-coat sand-cement render systems — scratch coat and finish coat — for render repair and replacement on masonry and concrete facades.",
-    live: false,
+    live: true,
   },
   {
     label: "Fibre-reinforced render systems",
@@ -33,7 +33,7 @@ const ITEMS = [
     count: 4,
     description:
       "Polypropylene and glass-fibre reinforced render systems providing enhanced tensile resistance and crack distribution — for facades with elevated movement or cracking risk.",
-    live: false,
+    live: true,
   },
   {
     label: "Acrylic spray-applied render systems",
@@ -41,7 +41,7 @@ const ITEMS = [
     count: 3,
     description:
       "Factory-blended acrylic/cement renders applied by machine spray — typically to AAC and lightweight construction substrates — Rockcote, Weber and Boral systems.",
-    live: false,
+    live: true,
   },
   {
     label: "EIFS render systems",
@@ -49,7 +49,7 @@ const ITEMS = [
     count: 4,
     description:
       "External Insulation and Finish Systems (EIFS) incorporating EPS insulation board with mesh-reinforced polymer render finish — repair, replacement and partial patch systems.",
-    live: false,
+    live: true,
   },
   {
     label: "Salt-resistant renovating render systems",
@@ -57,7 +57,7 @@ const ITEMS = [
     count: 3,
     description:
       "Render systems specifically formulated with reduced portland cement content and specialist polymer admixtures to resist chloride and sulfate attack in coastal and salt-affected environments.",
-    live: false,
+    live: true,
   },
   {
     label: "Breathable / vapour-permeable render systems",
@@ -65,7 +65,7 @@ const ITEMS = [
     count: 3,
     description:
       "WTA-compliant vapour-permeable render systems — sd value <0.14m, high pore volume >35% — allows moisture vapour to escape without disrupting the render surface.",
-    live: false,
+    live: true,
   },
   {
     label: "Bonding agent and primer systems",
@@ -73,7 +73,7 @@ const ITEMS = [
     count: 4,
     description:
       "Acrylic, SBR and epoxy bonding agents and cementitious bonding slurries applied to substrate before render to improve adhesion on smooth, dense or low-absorption concrete and masonry.",
-    live: false,
+    live: true,
   },
   {
     label: "Salt-retardant substrate treatment systems",
@@ -81,7 +81,7 @@ const ITEMS = [
     count: 3,
     description:
       "Crystalline and penetrating silicate-based salt-retardant treatments applied to masonry and concrete to reduce capillary salt migration before re-rendering on salt-affected facades.",
-    live: false,
+    live: true,
   },
   {
     label: "Saline-resistant primer and slurry systems",
@@ -89,7 +89,7 @@ const ITEMS = [
     count: 3,
     description:
       "Cementitious bonding slurry and polymer primer systems formulated for salt-affected substrates — applied before salt-resistant or breathable render on coastal and contaminated facades.",
-    live: false,
+    live: true,
   },
 ] as const;
 

@@ -8,13 +8,18 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "EIFS"
+  | "EPS-insulation"
+  | "Mesh-reinforced"
+  | "Exterior"
+  | "Lightweight"
   | "Masonry"
   | "Concrete"
-  | "Coastal";
+  | "Pre-bagged"
+  | "Coastal"
+  | "AS-3700"
+  | "NCC"
+  | "Remediation";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +39,256 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
+    fullLabel: "Rockcote / Saint-Gobain Weber",
+    brandUrl: "https://www.rockcote.com.au",
+    tdsUrl: "https://www.rockcote.com.au",
+    accentColor: "#b45309",
+    name: "Rockcote EPS Render System",
+    descriptionLine:
+      "EIFS — EPS insulation board mechanically fixed to substrate + fibreglass mesh-reinforced polymer render base coat + fine finish coat — exterior facade — Rockcote / Saint-Gobain Weber",
+    productType: "EIFS — EPS insulation board + mesh-reinforced render — exterior facade",
+    filterTags: ["EIFS", "EPS-insulation", "Mesh-reinforced", "Exterior", "Masonry", "Concrete", "Lightweight", "Pre-bagged", "AS-3700"],
+    techChips: [
+      { label: "EPS insulation board", cls: "bg-amber-100 text-amber-800" },
+      { label: "Fibreglass mesh reinforced", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior facade", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Rockcote (Saint-Gobain Weber) EIFS system consists of EPS insulation board mechanically fixed or adhesively bonded to the facade substrate, followed by a polymer-modified render base coat applied over embedded fibreglass reinforcing mesh, and a fine finish coat. The system is used for remediation of EIFS facades where sections of EPS and render have failed or delaminated, and for full replacement of failed lightweight cladding systems. Confirm the specific Rockcote EIFS system, system guide, approved EPS type, mesh specification, adhesive, and render products with Saint-Gobain Weber / Rockcote technical before specifying. TODO: owner confirm — Rockcote EIFS system guide, approved products, and TDS.",
+    technicalProperties: [
+      "EPS insulation board — mechanically fixed and/or adhesively bonded",
+      "Fibreglass mesh embedded in base coat render",
+      "Polymer-modified base coat render over mesh",
+      "Fine finish coat over cured base",
+      "Suitable for exterior masonry and concrete substrates",
+      "Confirm system guide — EPS type, thickness, mechanical fixing pattern, mesh specification, adhesive and render — with Rockcote technical",
+    ],
+    limitations: [
+      "EIFS requires strict system compliance — do not mix components from different manufacturers without written approval",
+      "EPS board must be compatible specified type — confirm with Rockcote",
+      "Fibreglass mesh must be compatible with base coat render — confirm specification",
+      "TODO: owner confirm — complete Rockcote EIFS system guide, approved EPS, mesh, and render products",
+      "Not a DIY system — requires trained and experienced applicator",
+    ],
+    procurementSources: [
+      { name: "Rockcote / Saint-Gobain Weber Australia", url: "https://www.rockcote.com.au" },
+      { name: "Saint-Gobain Weber trade distribution", url: "https://www.rockcote.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au",
+    accentColor: "#0369a1",
+    name: "Mapei EIFS Remediation System",
+    descriptionLine:
+      "EIFS repair and replacement — Mapei adhesive mortar, EPS insulation board, fibreglass reinforcing mesh, base coat render and finish coat — exterior facade remediation",
+    productType: "EIFS — EPS + mesh-reinforced render — exterior facade remediation",
+    filterTags: ["EIFS", "EPS-insulation", "Mesh-reinforced", "Exterior", "Masonry", "Concrete", "Pre-bagged", "Remediation", "AS-3700"],
+    techChips: [
+      { label: "EPS insulation board", cls: "bg-sky-100 text-sky-800" },
+      { label: "Mapei system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Remediation", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Mapei supplies adhesives, base coat renders, and finish coat products compatible with EIFS remediation and replacement. Confirm specific Mapei products for the EIFS substrate adhesive, base coat over mesh, and finish coat with Mapei Australia technical. Mapei products used in EIFS systems include Mapetherm range (EPS adhesive mortars) and Planitop system for base coat application. TODO: owner confirm — Mapei EIFS system guide, approved products and TDS for Australian EIFS remediation.",
+    technicalProperties: [
+      "Mapei Mapetherm or equivalent adhesive mortar for EPS bonding",
+      "Fibreglass reinforcing mesh embedded in Mapei base coat",
+      "Fine finish coat over cured base",
+      "Confirm complete system guide with Mapei Australia",
+      "Suitable for exterior masonry and concrete substrates",
+    ],
+    limitations: [
+      "TODO: owner confirm — complete Mapei EIFS system, approved EPS, mesh, adhesive, base coat and finish coat with Mapei Australia technical",
+      "System compliance — do not mix Mapei components with other manufacturers without written approval",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
+      { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
+    ],
+  },
+  {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
     tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
+    accentColor: "#166534",
+    name: "Sika EIFS System (SikaCeram / Sika Facade)",
+    descriptionLine:
+      "EIFS facade system — Sika adhesive, EPS insulation board, fibreglass mesh, Sika base coat and finish render — exterior facade remediation and new installation",
+    productType: "EIFS — EPS + fibreglass mesh + Sika render — exterior facade",
+    filterTags: ["EIFS", "EPS-insulation", "Mesh-reinforced", "Exterior", "Concrete", "Masonry", "Pre-bagged", "Coastal", "Remediation"],
     techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
-    accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
-    techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Sika EIFS system", cls: "bg-green-100 text-green-800" },
+      { label: "EPS + mesh", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior facade", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Sika supplies EIFS systems including adhesive mortars, base coat renders, reinforcing mesh, and finish coat products. Confirm the specific Sika EIFS system guide, approved EPS type, fibreglass mesh specification, adhesive, base coat and finish coat with Sika Australia technical before specifying. TODO: owner confirm — Sika EIFS system guide and approved products for Australian EIFS facade remediation.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Sika adhesive mortar for EPS bonding",
+      "Fibreglass mesh embedded in Sika base coat",
+      "Sika finish coat",
+      "Complete system from one manufacturer",
+      "Confirm system guide with Sika Australia",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "TODO: owner confirm — complete Sika EIFS system and approved products with Sika Australia technical",
+      "System compliance required",
+      "Requires trained applicator",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Sika Australia", url: "https://aus.sika.com" },
+      { name: "Sika national distribution", url: "https://aus.sika.com" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "Sto Australia",
+    brandUrl: "https://www.sto.com/au",
+    tdsUrl: "https://www.sto.com/au",
+    accentColor: "#1e40af",
+    name: "Sto EIFS System (StoTherm / StoLevell)",
+    descriptionLine:
+      "EIFS facade system — Sto adhesive, EPS insulation board, Sto fibreglass reinforcing mesh, StoLevell base coat and StoSilco or StoTex finish coat — exterior facade",
+    productType: "EIFS — Sto EPS + mesh + base coat + finish — exterior facade",
+    filterTags: ["EIFS", "EPS-insulation", "Mesh-reinforced", "Exterior", "Masonry", "Concrete", "Pre-bagged", "Coastal", "NCC", "Remediation"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "StoTherm system", cls: "bg-blue-100 text-blue-800" },
+      { label: "EPS + Sto mesh", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior facade", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "Sto is a specialist EIFS manufacturer whose StoTherm system is commonly specified in Australian EIFS remediation and new installation projects. The StoTherm system includes EPS insulation board, Sto adhesive mortar, StoArmat base coat render applied over embedded Sto fibreglass reinforcing mesh, and Sto finish coats including StoSilco (silicone render) or StoTex. The Sto system is supported by technical representatives in Australia who can confirm system selection, EPS specification, and application guides. TODO: owner confirm — confirm Sto StoTherm system TDS, approved components, and applicator requirements with Sto Australia.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "StoTherm — EPS + StoArmat base coat + fibreglass mesh + Sto finish coat",
+      "Complete EIFS system with full technical support",
+      "Sto fibreglass mesh included in system specification",
+      "StoSilco or StoTex finish coat options",
+      "Suitable for exterior masonry, concrete, and steel stud framing substrates",
+      "Confirm EPS type, thickness, and mechanical fixing pattern with Sto Australia",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "Sto system must be installed by trained and Sto-approved applicator",
+      "TODO: owner confirm — complete StoTherm system specification, EPS type, mechanical fixing, and mesh specification with Sto Australia",
+      "Do not substitute Sto components with other manufacturers without written approval",
+      "Confirm NCC compliance and fire performance with Sto Australia",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "Sto Australia — technical representative and trade supply", url: "https://www.sto.com/au" },
+      { name: "Sto-approved applicators nationally", url: "https://www.sto.com/au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "EIFS", label: "EIFS" },
+  { id: "EPS-insulation", label: "EPS insulation" },
+  { id: "Mesh-reinforced", label: "Mesh-reinforced" },
+  { id: "Exterior", label: "Exterior" },
+  { id: "Lightweight", label: "Lightweight" },
   { id: "Masonry", label: "Masonry" },
   { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "Pre-bagged", label: "Pre-bagged" },
+  { id: "Coastal", label: "Coastal rated" },
+  { id: "AS-3700", label: "AS 3700" },
+  { id: "NCC", label: "NCC" },
+  { id: "Remediation", label: "Remediation" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  epsAdhesive: string;
+  meshType: string;
+  baseCoat: string;
+  finishCoat: string;
+  fireFaceRating: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rockcote EPS Render System",
+    brand: "Rockcote / Saint-Gobain Weber",
+    epsAdhesive: "Confirm with Rockcote technical",
+    meshType: "Fibreglass mesh (confirm spec with Rockcote)",
+    baseCoat: "Rockcote polymer-modified base coat",
+    finishCoat: "Rockcote fine finish coat",
+    fireFaceRating: "TODO: confirm fire rating with manufacturer",
+    primaryUse: "EIFS remediation and replacement on exterior masonry and concrete facades",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "Mapei EIFS Remediation System",
+    brand: "Mapei",
+    epsAdhesive: "Mapei Mapetherm (confirm current product)",
+    meshType: "Fibreglass mesh (confirm spec with Mapei)",
+    baseCoat: "Mapei Planitop system (confirm with Mapei)",
+    finishCoat: "Mapei fine finish coat (confirm with Mapei)",
+    fireFaceRating: "TODO: confirm fire rating with manufacturer",
+    primaryUse: "EIFS facade remediation — exterior masonry and concrete",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Sika EIFS System",
+    brand: "Sika",
+    epsAdhesive: "Sika adhesive mortar (confirm with Sika)",
+    meshType: "Fibreglass mesh (confirm spec with Sika)",
+    baseCoat: "Sika base coat (confirm with Sika)",
+    finishCoat: "Sika finish coat (confirm with Sika)",
+    fireFaceRating: "TODO: confirm fire rating with manufacturer",
+    primaryUse: "EIFS facade remediation and new installation — exterior",
+  },
+  {
+    product: "Sto StoTherm System",
+    brand: "Sto Australia",
+    epsAdhesive: "Sto adhesive mortar",
+    meshType: "Sto fibreglass reinforcing mesh",
+    baseCoat: "StoArmat base coat",
+    finishCoat: "StoSilco or StoTex",
+    fireFaceRating: "TODO: confirm fire rating with manufacturer",
+    primaryUse: "EIFS remediation and new installation — exterior masonry, concrete, steel stud framing",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Full EIFS facade replacement where EPS and render system has failed by delamination, water ingress, or impact damage",
+    "Partial EIFS panel replacement matching existing EPS thickness and render profile",
+    "EIFS installation on new construction or converted buildings where insulation and render system is specified",
+    "Facade re-rendering over new EPS insulation where thermal upgrade is included in remediation scope",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "System completeness — EIFS components (EPS, adhesive, mesh, base coat, finish coat) must be from the same approved system — do not mix components",
+    "EPS type and thickness — confirm with manufacturer based on thermal and structural requirements",
+    "Mechanical fixing — confirm fixing pattern, fastener type, and spacing from manufacturer system guide",
+    "Fire performance — confirm NCC-compliant fire performance of the complete system with the manufacturer",
+    "Applicator qualification — confirm manufacturer requires trained and approved applicator",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "EIFS is not suitable as a patch repair over deteriorated or failing render — substrate must be assessed and all failing material removed before EIFS installation",
+    "Fire performance — confirm NCC Volume One external wall fire spread requirements are met by the complete EIFS system",
+    "Do not use EIFS in areas subject to mechanical damage without protective mesh and impact-rated base coat",
+    "Penetrations and terminations require specialist detailing — confirm with manufacturer",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "NCC Volume One — external wall fire spread and weatherproofing performance requirements",
+    "AS 3700 — Masonry Structures (for masonry substrate works)",
+    "AS/NZS 1580 — coatings — application methods",
+    "Manufacturer EIFS system guide — critical for EPS type, fixing, mesh, base coat and finish coat specification",
+    "CodeMark or similar certification — confirm NCC compliance certification with EIFS manufacturer",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "EIFS facade delamination — EPS separation from substrate or base coat",
+    "EIFS render cracking and delamination over EPS insulation board",
+    "Failed lightweight facade cladding system requiring full removal and EIFS replacement",
+    "Thermal upgrade remediation — new EIFS over existing substrate where insulation is added to the scope",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and block — existing render must be fully removed before EIFS installation",
+    "Concrete — external concrete facade panels",
+    "Light gauge steel stud framing — confirm EIFS suitability and mechanical fixing method with manufacturer",
+    "Existing sound substrate — confirm surface preparation requirements with EIFS manufacturer",
   ],
 };
 
@@ -345,9 +414,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +427,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function EifsRenderIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,16 +436,16 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are EIFS render systems?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          EIFS (External Insulation and Finish Systems) are composite facade systems consisting of EPS (expanded polystyrene) insulation board mechanically fixed and/or adhesively bonded to the facade substrate, a polymer-modified render base coat applied over embedded alkali-resistant fibreglass reinforcing mesh, and a finish coat. They are used in Australian remediation works where the existing EIFS has failed, or where a new insulated render system is being installed over an existing substrate.
         </p>
         {expanded && (
           <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
+            EIFS should be treated as a complete system from a single manufacturer — EPS type, adhesive, base coat, mesh, and finish coat must all be from the approved system. Mixing components from different manufacturers without written approval may void system certification and create incompatibility risks. NCC fire performance requirements must be confirmed with the EIFS manufacturer, particularly in buildings that require compliance with external wall fire spread provisions. Applicator qualification is typically required — confirm with the manufacturer.
           </p>
         )}
       </div>
@@ -425,7 +492,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function EifsRenderProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +546,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +560,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">4 products — 4 brands — EIFS render systems — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +706,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of EIFS render systems. Confirm all product selections against the current manufacturer TDS before specifying. Fire face ratings must be confirmed with the EIFS manufacturer.
             </p>
           </div>
         </div>
@@ -647,12 +714,13 @@ export function SaltRetardantTreatmentProductSection() {
           <table className="min-w-full text-xs">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product system</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">EPS adhesive</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mesh type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Base coat</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Finish coat</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Fire face rating</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +729,11 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.epsAdhesive}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.meshType}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.baseCoat}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.finishCoat}</td>
+                  <td className="px-4 py-3 text-amber-700 font-semibold whitespace-nowrap text-[11px]">{row.fireFaceRating}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

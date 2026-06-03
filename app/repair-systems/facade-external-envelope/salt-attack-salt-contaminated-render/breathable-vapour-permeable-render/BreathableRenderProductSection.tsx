@@ -1,348 +1,675 @@
 "use client";
-import { useState } from "react";
-import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+
+import { useState, useRef } from "react";
+import {
+  CheckCircle, AlertTriangle, BookOpen, Layers, SquareStack,
+  Ruler, ExternalLink, ChevronDown, ChevronUp,
+  XCircle, ChevronLeft, ChevronRight, FileText,
+} from "lucide-react";
 
 type FilterTag =
-  | "Vapour-permeable"
+  | "WTA-classified"
   | "Breathable"
-  | "Lime-based"
+  | "Vapour-permeable"
+  | "Exterior"
   | "Masonry"
-  | "Heritage"
-  | "Salt-resistant"
-  | "Natural-hydraulic-lime"
-  | "Low-modulus";
+  | "Coastal"
+  | "AS-3700";
 
 type Product = {
-  fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string;
-  name: string; descriptionLine: string; productType: string;
-  filterTags: FilterTag[]; techChips: { label: string; cls: string }[];
-  systemDescription: string; technicalProperties: string[];
-  limitations: string[]; procurementSources: { name: string; url: string }[];
+  fullLabel: string;
+  brandUrl: string;
+  tdsUrl?: string;
+  accentColor: string;
+  name: string;
+  descriptionLine: string;
+  productType: string;
+  filterTags: FilterTag[];
+  techChips: { label: string; cls: string }[];
+  systemDescription: string;
+  technicalProperties: string[];
+  limitations: string[];
+  procurementSources: { name: string; url: string }[];
 };
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Mapei — Antolith NHL Breathable Render",
-    brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
-    accentColor: "#003087",
-    name: "Antolith NHL Breathable Render",
-    descriptionLine: "Natural hydraulic lime render system providing high vapour permeability and self-healing micro-crack behaviour for salt-affected masonry",
-    productType: "Natural hydraulic lime (NHL) render",
-    filterTags: ["Vapour-permeable", "Breathable", "Lime-based", "Masonry", "Heritage", "Salt-resistant", "Natural-hydraulic-lime", "Low-modulus"],
+    fullLabel: "Remmers (Australia)",
+    brandUrl: "https://www.remmers.com.au",
+    tdsUrl: "https://www.remmers.com.au",
+    accentColor: "#0369a1",
+    name: "Remmers Außenputz WTA",
+    descriptionLine: "WTA-classified vapour-permeable exterior render — high pore volume — low sd value — exterior masonry",
+    productType: "WTA-classified vapour-permeable exterior render",
+    filterTags: ["WTA-classified", "Breathable", "Vapour-permeable", "Exterior", "Masonry", "Coastal", "AS-3700"],
     techChips: [
-      { label: "NHL lime", cls: "bg-stone-100 text-stone-700" },
-      { label: "Vapour-permeable", cls: "bg-green-100 text-green-700" },
-      { label: "Heritage", cls: "bg-amber-100 text-amber-700" },
+      { label: "WTA-classified", cls: "bg-sky-100 text-sky-800" },
+      { label: "Breathable", cls: "bg-slate-100 text-slate-700" },
+      { label: "Low sd value", cls: "bg-green-50 text-green-700" },
+      { label: "High pore volume", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: owner confirm AU name", cls: "bg-amber-50 text-amber-700" },
     ],
-    systemDescription: "Mapei's NHL-based render system uses natural hydraulic lime as the primary binder, producing a vapour-permeable, low-modulus render that allows moisture to escape from the wall rather than trap it. The high sd-value (low vapour resistance) prevents salt concentration at the render-substrate interface, significantly reducing delamination and spalling compared to conventional cement renders on old masonry.",
+    systemDescription:
+      "Remmers supplies WTA-classified vapour-permeable render systems for facades where moisture vapour transmission from the substrate is critical. The specific product name should be confirmed with Remmers Australia — their range includes both renovating renders and lighter vapour-permeable exterior renders. TODO: owner confirm — Remmers exterior vapour-permeable render product name and specification for Australian market. Confirm sd value, pore volume and WTA classification with Remmers Australia technical before specifying.",
     technicalProperties: [
-      "Binder: natural hydraulic lime (NHL 3.5 or 5) — low modulus",
-      "Vapour permeability (sd-value): <0.5 m — highly breathable",
-      "Flexural strength: 1.5–3.5 MPa (accommodates thermal movement)",
-      "Water absorption: controlled — resists driving rain while breathing",
-      "Self-healing micro-cracks via lime carbonation",
+      "WTA-classified vapour-permeable render",
+      "High pore volume — allows moisture vapour to escape",
+      "Low sd value — confirm from current Remmers TDS",
+      "Exterior masonry use",
+      "Confirm minimum thickness, inter-coat timing and substrate pre-treatment with Remmers Australia",
     ],
     limitations: [
-      "Slower strength gain than OPC render — extended curing and protection required",
-      "Not appropriate for substrates requiring high compressive bond (structural applications)",
-      "Cost premium over OPC renders — justified on heritage and salt-affected buildings",
+      "TODO: owner confirm — Remmers product name for vapour-permeable exterior render in Australia",
+      "Not suitable over substrates with active water ingress under pressure",
+      "Confirm minimum pore volume and sd value from current TDS",
+      "Confirm system sequence with Remmers Australia",
     ],
     procurementSources: [
-      { name: "Mapei Australia — Distributor Search", url: "https://www.mapei.com/au" },
-      { name: "Lime & Stone Building Materials", url: "https://www.limeandstone.com.au" },
+      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
     ],
   },
   {
-    fullLabel: "Rockcote — Breathable Render System",
+    fullLabel: "Caparol Australia (DAW SE)",
+    brandUrl: "https://www.caparol.com.au",
+    tdsUrl: "https://www.caparol.com.au",
+    accentColor: "#7c2d12",
+    name: "Caparol Capagrund / RenoExpert",
+    descriptionLine: "Vapour-permeable render system for damp masonry facades — European specialist brand — Australian availability TODO confirm",
+    productType: "Vapour-permeable render system for damp masonry facades",
+    filterTags: ["Breathable", "Vapour-permeable", "Exterior", "Masonry"],
+    techChips: [
+      { label: "Vapour-permeable", cls: "bg-orange-100 text-orange-800" },
+      { label: "Damp masonry", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior use", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Caparol (DAW SE Australia) supplies vapour-permeable render and coating systems for moisture-affected masonry facades. TODO: owner confirm — Caparol vapour-permeable render product name and availability in Australia. Caparol is a major European manufacturer of breathable and vapour-permeable facades systems. Confirm current Australian product range, sd value, pore volume and system sequence with Caparol Australia before specifying.",
+    technicalProperties: [
+      "Vapour-permeable render for damp masonry",
+      "High moisture vapour transmission — low sd value (confirm from TDS)",
+      "Exterior use",
+      "TODO: owner confirm product name and specification",
+    ],
+    limitations: [
+      "TODO: owner confirm — Caparol vapour-permeable render product name and availability in Australia",
+      "Confirm sd value, pore volume, and WTA classification status with Caparol Australia",
+      "Confirm current distribution network in Australia",
+    ],
+    procurementSources: [
+      { name: "Caparol Australia (DAW SE) — confirm trade supply and availability", url: "https://www.caparol.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au/products",
-    accentColor: "#8B5E3C",
-    name: "Rockcote Breathable Render System",
-    descriptionLine: "Polymer-enhanced, vapour-permeable render formulated to allow moisture vapour transmission from masonry walls affected by salt and rising damp",
-    productType: "Polymer-modified breathable render",
-    filterTags: ["Vapour-permeable", "Breathable", "Salt-resistant", "Masonry", "Low-modulus", "Heritage", "Lime-based", "Natural-hydraulic-lime"],
+    tdsUrl: "https://www.rockcote.com.au",
+    accentColor: "#b45309",
+    name: "Rockcote Breathable Render",
+    descriptionLine: "Breathable polymer-modified render — exterior facade — vapour permeability rating to be confirmed from TDS",
+    productType: "Breathable polymer-modified render — exterior facade",
+    filterTags: ["Breathable", "Vapour-permeable", "Exterior", "Masonry", "AS-3700"],
     techChips: [
-      { label: "Breathable", cls: "bg-green-100 text-green-700" },
-      { label: "Polymer-modified", cls: "bg-blue-100 text-blue-700" },
-      { label: "Salt-resistant", cls: "bg-cyan-100 text-cyan-700" },
+      { label: "Breathable", cls: "bg-amber-100 text-amber-800" },
+      { label: "Polymer-modified", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior masonry", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
-    systemDescription: "Rockcote's breathable render system is formulated with a reduced OPC content and enhanced pore structure to achieve a high vapour transmission rate. The system is specified for masonry walls where trapped moisture is the primary driver of salt crystallisation damage. Applied as a two-coat system, it allows the wall assembly to dry towards the exterior without losing its resistance to driving rain.",
+    systemDescription:
+      "Rockcote (Saint-Gobain Weber) supplies polymer-modified render systems for exterior facades including renders with enhanced vapour permeability. TODO: owner confirm — confirm the current Rockcote or Weber product name and specification for breathable/vapour-permeable render application on damp or moisture-affected masonry facades. The Saint-Gobain Weber range includes various render systems with different vapour permeability ratings — confirm the sd value and pore volume of the selected product from the current TDS before specifying for moisture-critical applications.",
     technicalProperties: [
-      "System: two-coat — base coat + texture coat",
-      "Vapour transmission: high — sd-value <1.0 m",
-      "Application thickness: 10–18 mm total",
-      "Compressive strength: 8–15 MPa (controlled — not over-hard for old masonry)",
-      "Coverage: ~18–22 kg/m² total system",
+      "Polymer-modified render with vapour permeability",
+      "Pre-bagged — mixed with water",
+      "Exterior masonry use",
+      "Confirm sd value and pore volume from current TDS",
+      "TODO: owner confirm product name for breathable/vapour-permeable render in Rockcote/Weber range",
     ],
     limitations: [
-      "Should not be combined with impermeable paint or coating — defeats breathability purpose",
-      "Not recommended where wall is subject to direct hydrostatic pressure",
-      "Requires compatible breathable topcoat or lime wash if colour finish is required",
+      "TODO: owner confirm — exact Rockcote/Weber product name for vapour-permeable render",
+      "Confirm sd value meets project specification",
+      "Not all Rockcote/Weber renders are equally breathable — confirm from current TDS",
+      "Confirm system compatibility with substrate treatment and primer",
     ],
     procurementSources: [
-      { name: "Rockcote Australia — Distributor Search", url: "https://www.rockcote.com.au" },
-      { name: "Haymes Paint — Render Range", url: "https://www.haymespaint.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Sika — MonoTop Breathable Renovation Render",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions/products",
-    accentColor: "#cc0000",
-    name: "MonoTop Breathable Renovation Render",
-    descriptionLine: "Factory-blended renovation render with controlled porosity providing vapour permeability and salt tolerance for remediated masonry facades",
-    productType: "Pre-bagged renovation render (breathable)",
-    filterTags: ["Vapour-permeable", "Breathable", "Salt-resistant", "Masonry", "Low-modulus", "Heritage", "Lime-based", "Natural-hydraulic-lime"],
-    techChips: [
-      { label: "Pre-bagged", cls: "bg-red-100 text-red-700" },
-      { label: "Breathable", cls: "bg-green-100 text-green-700" },
-      { label: "Renovation", cls: "bg-stone-100 text-stone-700" },
-    ],
-    systemDescription: "Sika's MonoTop renovation render range includes grades formulated for breathable render applications on old, salt-affected masonry. The controlled porosity and low modulus design allows moisture vapour to pass through the render layer while resisting liquid water ingress. Suitable for use over substrate treatments as part of a complete salt-remediation system.",
-    technicalProperties: [
-      "Binder: blended cement and limestone with controlled porosity",
-      "Vapour permeability: high — suitable for heritage masonry",
-      "Application thickness: 8–20 mm per coat",
-      "Bond strength: >0.8 MPa to prepared masonry",
-      "Flexible — low stiffness reduces cracking on thermally active masonry",
-    ],
-    limitations: [
-      "Not suitable as a structural repair mortar — MonoTop structural grades are separate products",
-      "Requires salt-retardant pre-treatment for maximum service life",
-      "Dense cement-rich finishes applied over the top will reduce system breathability",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — Distributor Search", url: "https://aus.sika.com" },
-      { name: "Parchem Construction Supplies", url: "https://www.parchem.com.au" },
+      { name: "Rockcote / Saint-Gobain Weber — trade supply nationally", url: "https://www.rockcote.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Vapour-permeable", label: "Vapour-permeable" },
+  { id: "WTA-classified", label: "WTA-classified" },
   { id: "Breathable", label: "Breathable" },
-  { id: "Lime-based", label: "Lime-based" },
+  { id: "Vapour-permeable", label: "Vapour-permeable" },
+  { id: "Exterior", label: "Exterior" },
   { id: "Masonry", label: "Masonry" },
-  { id: "Heritage", label: "Heritage" },
-  { id: "Salt-resistant", label: "Salt-resistant" },
-  { id: "Natural-hydraulic-lime", label: "Natural hydraulic lime" },
-  { id: "Low-modulus", label: "Low modulus" },
+  { id: "Coastal", label: "Coastal" },
+  { id: "AS-3700", label: "AS 3700" },
 ];
 
-const COMPARISON_ROWS = [
-  { product: "Antolith NHL Breathable", brand: "Mapei", type: "Natural hydraulic lime", sdValue: "<0.5 m", flexStrength: "1.5–3.5 MPa", selfHealing: "Yes", keyFeature: "True NHL lime, heritage spec" },
-  { product: "Rockcote Breathable System", brand: "Rockcote", type: "Polymer-modified", sdValue: "<1.0 m", flexStrength: "Medium", selfHealing: "Limited", keyFeature: "Two-coat, rain-resistant" },
-  { product: "MonoTop Breathable", brand: "Sika", type: "Pre-bagged renovation", sdValue: "High", flexStrength: "Controlled low", selfHealing: "Limited", keyFeature: "Pre-bagged, flexible low modulus" },
+const SYSTEM_COMPARISON: {
+  product: string;
+  brand: string;
+  sdValue: string;
+  poreVolume: string;
+  wtaClass: string;
+  exterior: string;
+  primaryUse: string;
+}[] = [
+  {
+    product: "Remmers Außenputz WTA",
+    brand: "Remmers",
+    sdValue: "Confirm from current Remmers TDS",
+    poreVolume: "WTA minimum — confirm with Remmers AU",
+    wtaClass: "WTA-classified — confirm with Remmers AU",
+    exterior: "Yes — exterior masonry",
+    primaryUse: "Damp masonry facades where moisture vapour transmission is critical",
+  },
+  {
+    product: "Caparol Capagrund / RenoExpert",
+    brand: "Caparol / DAW SE",
+    sdValue: "Confirm from TDS with Caparol AU",
+    poreVolume: "Confirm from TDS with Caparol AU",
+    wtaClass: "TODO: confirm WTA status with Caparol AU",
+    exterior: "Yes — exterior use",
+    primaryUse: "Moisture-affected damp masonry facades — European specialist product",
+  },
+  {
+    product: "Rockcote Breathable Render",
+    brand: "Rockcote / Saint-Gobain Weber",
+    sdValue: "Confirm from TDS with Rockcote AU",
+    poreVolume: "Confirm from TDS with Weber AU",
+    wtaClass: "TODO: confirm WTA status with Weber AU",
+    exterior: "Yes — exterior masonry",
+    primaryUse: "Exterior masonry facades requiring vapour-permeable render",
+  },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Re-render of heritage masonry buildings where salt attack and rising damp are present",
-    "Breathable render coat over crystalline salt-retardant treatment",
-    "Facade renovation of old porous brick buildings requiring moisture management",
-    "Replacement of impermeable OPC render that trapped moisture and accelerated salt damage",
+    "Damp masonry facades where substrate moisture cannot be fully eliminated before re-rendering",
+    "Facades subject to condensation and moisture vapour build-up from interior",
+    "Post rising-damp treatment re-rendering where substrate moisture remains",
+    "Coastal masonry where salt and moisture ingress is ongoing at a low level",
   ],
   selectionCriteria: [
-    "Select NHL lime-based systems for authentic heritage repair on pre-1950s masonry",
-    "Polymer-modified breathable systems suited to modern masonry of medium permeability",
-    "System breathability (sd-value) should be lower than the substrate for correct vapour drive",
-    "Avoid high-strength cement renders over old soft brick — modulus mismatch drives delamination",
+    "Sd value — vapour diffusion resistance — lower is more breathable — confirm target sd value from project specification",
+    "Pore volume — confirm minimum for WTA classification where required",
+    "WTA classification — confirm where salt attack is also present",
+    "Substrate treatment compatibility — confirm render is compatible with salt-retardant treatment applied",
+    "Minimum thickness and application sequence — confirm from TDS",
   ],
   limitations: [
-    "Breathable renders must be paired with vapour-permeable coatings and paints — impermeable finishes negate the system",
-    "NHL lime renders have longer cure times and require extended protection from rain and frost",
-    "Where active rising damp is present, breathable render alone cannot stop moisture — source treatment is required",
-    "Site-mixed lime renders require skilled plasterers — pre-bagged systems reduce QC risk",
+    "Not suitable over substrates with active water ingress under hydraulic pressure",
+    "Breathable render will not compensate for unaddressed rising damp — treat moisture source first",
+    "All products are TODO: owner confirm",
+    "Do not apply non-breathable coatings or paints over breathable render — this defeats the purpose",
   ],
   standardsNotes: [
-    "EN 998-1 — Specification for mortar for masonry: classification of render and plaster mortars",
-    "AS 3700:2018 — Masonry Structures: render application requirements",
-    "ICOMOS Guidelines — use of lime in conservation of historic buildings",
-    "Heritage NSW / Heritage Victoria technical notes on lime render and mortars",
+    "WTA Merkblatt 2-9-04/D — European standard for renovating renders in damp masonry",
+    "AS 3700 — Masonry Structures",
+    "Manufacturer system guides — vapour permeability claims must be confirmed from current TDS",
   ],
   suitableDefects: [
-    "Salt attack on old porous brick masonry",
-    "Render failure caused by trapped moisture and crystallisation",
-    "Rising damp causing repeated render delamination",
-    "Heritage masonry facades requiring compatible, breathable repair render",
+    "Render failure on damp or moisture-affected masonry facades",
+    "Post rising-damp remediation re-render",
+    "Facades where standard render has blistered or delaminated due to moisture vapour pressure",
   ],
   typicalSubstrates: [
-    "Pre-1950s solid clay brick masonry (high porosity, soft brick)",
-    "Sandstone and limestone masonry",
-    "Calcium silicate brick",
-    "Old OPC render — must be removed before breathable system is applied",
+    "Masonry — brick and block with residual moisture content",
+    "Concrete facades with internal moisture vapour",
+    "Heritage masonry — confirm compatibility with lime-based systems",
   ],
 };
 
-function CollapsibleSources({ sources }: { sources: { name: string; url: string }[] }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Procurement Sources</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && <ul className="px-4 py-3 space-y-2 bg-white">{sources.map((s, i) => <li key={i}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline flex items-center gap-1">{s.name}<ExternalLink className="w-3 h-3" /></a></li>)}</ul>}
-    </div>
-  );
-}
+/* ── Collapsible helpers ── */
 
-function CollapsibleCardDetails({ product }: { product: Product }) {
-  const [open, setOpen] = useState(false);
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
   return (
-    <div className="mt-3 border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Technical Details</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && (
-        <div className="px-4 py-3 space-y-3 bg-white">
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">System Description</p><p className="text-sm text-gray-700">{product.systemDescription}</p></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Technical Properties</p><ul className="space-y-1">{product.technicalProperties.map((p, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-green-600 mt-0.5">•</span>{p}</li>)}</ul></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Limitations</p><ul className="space-y-1">{product.limitations.map((l, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-amber-500 mt-0.5">⚠</span>{l}</li>)}</ul></div>
-          <CollapsibleSources sources={product.procurementSources} />
-        </div>
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
       )}
     </div>
   );
 }
 
-function CollapsibleDescription({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-  const short = text.length > 120 ? text.slice(0, 120) + "…" : text;
-  if (text.length <= 120) return <p className="text-sm text-gray-600 mt-1">{text}</p>;
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="mt-1">
-      <p className="text-sm text-gray-600">{open ? text : short}</p>
-      <button onClick={() => setOpen(!open)} className="text-xs text-green-600 hover:underline mt-0.5">{open ? "Show less" : "Read more"}</button>
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
     </div>
   );
 }
 
 export function BreathableRenderIntroSection() {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-2">Breathable & Vapour-Permeable Render</h2>
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">
-        Breathable renders are specified where conventional dense cement renders have trapped moisture within masonry walls, accelerating salt crystallisation damage and delamination. By allowing moisture vapour to escape through the render layer, these systems prevent the salt concentration build-up at the render-substrate interface that drives spalling and efflorescence. Natural hydraulic lime (NHL) renders are the traditional choice for heritage buildings; polymer-modified breathable systems suit modern masonry.
-      </p>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[
-          { label: "Binder", value: "NHL / low-OPC" },
-          { label: "Vapour sd-value", value: "<0.5–1.0 m" },
-          { label: "Modulus", value: "Low (flexible)" },
-          { label: "Heritage rated", value: "Yes" },
-        ].map((s) => (
-          <div key={s.label} className="bg-green-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-green-600 font-medium mb-1">{s.label}</p>
-            <p className="text-sm font-bold text-green-900">{s.value}</p>
-          </div>
-        ))}
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are breathable/vapour-permeable renders?
+        </h3>
       </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Breathable and vapour-permeable renders are render systems with a high pore volume (typically &gt;25–35%) and low vapour diffusion resistance (sd value typically &lt;0.14m) that allow moisture vapour generated within the facade substrate to escape through the render body without causing blistering, delamination, or surface disruption. They are used on masonry facades where residual moisture in the substrate cannot be fully controlled — for example, where rising damp treatment has been applied but some moisture remains.
+        </p>
+        {expanded && (
+          <p>
+            The key properties are the sd value (vapour diffusion resistance — lower is more breathable) and the pore volume (higher is more accommodating of salt crystallisation). WTA-classified renovating renders are a specific subset of breathable renders — they meet the WTA Merkblatt criteria for both pore volume and capillary water uptake. Product selection must confirm sd value, pore volume, WTA classification where specified, and compatibility with the substrate treatment system used.
+          </p>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
     </div>
   );
 }
 
-function TechCard({ title, color, items }: { title: string; color: string; items: string[] }) {
-  const map: Record<string, { bg: string; border: string; head: string; dot: string }> = {
-    blue: { bg: "bg-blue-50", border: "border-blue-200", head: "text-blue-800", dot: "text-blue-500" },
-    green: { bg: "bg-green-50", border: "border-green-200", head: "text-green-800", dot: "text-green-500" },
-    amber: { bg: "bg-amber-50", border: "border-amber-200", head: "text-amber-800", dot: "text-amber-500" },
-    purple: { bg: "bg-purple-50", border: "border-purple-200", head: "text-purple-800", dot: "text-purple-500" },
-    red: { bg: "bg-red-50", border: "border-red-200", head: "text-red-800", dot: "text-red-500" },
-    gray: { bg: "bg-gray-50", border: "border-gray-200", head: "text-gray-800", dot: "text-gray-500" },
-  };
-  const c = map[color] ?? map.blue;
+function TechCard({
+  icon,
+  title,
+  items,
+  style,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  items: string[];
+  style: "bullet" | "check" | "warn";
+}) {
   return (
-    <div className={`${c.bg} border ${c.border} rounded-xl p-4`}>
-      <h4 className={`font-semibold text-sm mb-2 ${c.head}`}>{title}</h4>
-      <ul className="space-y-1">{items.map((it, i) => <li key={i} className="text-xs text-gray-700 flex gap-2"><span className={`${c.dot} mt-0.5 shrink-0`}>•</span>{it}</li>)}</ul>
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-950 text-white">
+          {icon}
+        </div>
+        <h3 className="text-sm font-extrabold text-sky-950">{title}</h3>
+      </div>
+      <ul className="space-y-2">
+        {items.map((item, i) => (
+          <li key={i} className="flex items-start gap-2.5 text-xs leading-5 text-slate-600">
+            {style === "check" && <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-600" />}
+            {style === "warn" && <AlertTriangle size={12} className="mt-0.5 shrink-0 text-amber-500" />}
+            {style === "bullet" && <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-600" />}
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export function BreathableRenderProductSection() {
-  const [activeFilter, setActiveFilter] = useState<FilterTag | "All">("All");
-  const [showComparison, setShowComparison] = useState(false);
-  const filtered = activeFilter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.filterTags.includes(activeFilter));
+  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const toggleFilter = (id: FilterTag) => {
+    setActiveFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const visibleProducts =
+    activeFilters.size === 0
+      ? PRODUCTS
+      : PRODUCTS.filter((p) =>
+          Array.from(activeFilters).every((f) => p.filterTags.includes(f))
+        );
+
+  const scroll = (dir: "left" | "right") => {
+    scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" });
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        {["All", ...FILTER_DEFS.map((f) => f.id)].map((f) => (
-          <button key={f} onClick={() => setActiveFilter(f as FilterTag | "All")}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeFilter === f ? "bg-green-600 text-white border-green-600" : "bg-white text-gray-600 border-gray-300 hover:border-green-400"}`}>
-            {f === "All" ? "All Products" : FILTER_DEFS.find((fd) => fd.id === f)?.label ?? f}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((product) => (
-          <div key={product.name} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1 min-w-0">
-                <a href={product.brandUrl} target="_blank" rel="noopener noreferrer"
-                  className="text-xs font-semibold uppercase tracking-wide hover:underline flex items-center gap-1"
-                  style={{ color: product.accentColor }}>
-                  {product.fullLabel.split(" — ")[0]}<ExternalLink className="w-3 h-3 shrink-0" />
-                </a>
-                <h3 className="text-sm font-bold text-gray-900 mt-0.5 leading-snug">{product.name}</h3>
-              </div>
-            </div>
-            <p className="text-xs text-gray-500 mb-2">{product.productType}</p>
-            <CollapsibleDescription text={product.descriptionLine} />
-            <div className="flex flex-wrap gap-1 mt-3">
-              {product.techChips.map((chip) => (
-                <span key={chip.label} className={`text-xs px-2 py-0.5 rounded-full font-medium ${chip.cls}`}>{chip.label}</span>
-              ))}
-            </div>
-            <CollapsibleCardDetails product={product} />
+    <>
+      {/* ── Technical Accordion ── */}
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setAccordionOpen((o) => !o)}
+          className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition hover:bg-slate-50"
+        >
+          <div>
+            <p className="text-base font-extrabold text-sky-950">System Technical Reference</p>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Applications, selection criteria, limitations, standards, suitable substrates
+            </p>
           </div>
-        ))}
-      </div>
-
-      <div>
-        <button onClick={() => setShowComparison(!showComparison)}
-          className="flex items-center gap-2 text-sm font-medium text-green-600 hover:text-green-800">
-          {showComparison ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          {showComparison ? "Hide" : "Show"} product comparison table
+          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
+            {accordionOpen ? (
+              <>Hide detail <ChevronUp size={14} /></>
+            ) : (
+              <>Show detail <ChevronDown size={14} /></>
+            )}
+          </div>
         </button>
-        {showComparison && (
-          <div className="mt-3 overflow-x-auto rounded-xl border border-gray-200">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-gray-50 text-gray-600 uppercase text-[11px]">
-                <tr>
-                  {["Product", "Brand", "Type", "sd-value", "Flex strength", "Self-healing", "Key feature"].map((h) => (
-                    <th key={h} className="px-3 py-2 font-semibold whitespace-nowrap">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {COMPARISON_ROWS.map((row, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="px-3 py-2 font-medium text-gray-900 whitespace-nowrap">{row.product}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.brand}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.type}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.sdValue}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.flexStrength}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.selfHealing}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.keyFeature}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {accordionOpen && (
+          <div className="border-t border-slate-100 px-7 pb-7 pt-6">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
+              <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
+              <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
+              <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
+            </div>
           </div>
         )}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <TechCard title="Typical Applications" color="blue" items={TECH_INFO.typicalApplications} />
-        <TechCard title="Selection Criteria" color="green" items={TECH_INFO.selectionCriteria} />
-        <TechCard title="Limitations" color="amber" items={TECH_INFO.limitations} />
-        <TechCard title="Standards & Notes" color="purple" items={TECH_INFO.standardsNotes} />
-        <TechCard title="Suitable Defects" color="red" items={TECH_INFO.suitableDefects} />
-        <TechCard title="Typical Substrates" color="gray" items={TECH_INFO.typicalSubstrates} />
+      {/* ── Product Reference ── */}
+      <div>
+        <div className="mb-5 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
+            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — breathable and vapour-permeable render systems only — scroll to view all</p>
+          </div>
+        </div>
+
+        {/* Filter chips */}
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
+          {FILTER_DEFS.map((f) => {
+            const active = activeFilters.has(f.id);
+            return (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => toggleFilter(f.id)}
+                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+                  active
+                    ? "border-sky-950 bg-sky-950 text-white"
+                    : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
+                }`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+          {activeFilters.size > 0 && (
+            <button
+              type="button"
+              onClick={() => setActiveFilters(new Set())}
+              className="text-xs text-slate-400 underline hover:text-slate-600"
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
+
+        {/* Nav row */}
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-xs font-semibold text-slate-400">
+            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — 3 visible, scroll for more
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => scroll("left")}
+              aria-label="Scroll left"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              aria-label="Scroll right"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable card row */}
+        <div
+          ref={scrollRef}
+          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
+        >
+          {visibleProducts.map((product) => (
+            <div
+              key={product.name}
+              className="flex-none"
+              style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}
+            >
+              <div
+                className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+                style={{ borderLeft: `4px solid ${product.accentColor}` }}
+              >
+                {/* Card header */}
+                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
+                      {product.fullLabel}
+                    </span>
+                    <div className="flex shrink-0 items-center gap-1">
+                      {product.tdsUrl && (
+                        <a
+                          href={product.tdsUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"
+                        >
+                          <FileText size={9} /> TDS
+                        </a>
+                      )}
+                      <a
+                        href={product.brandUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"
+                      >
+                        <ExternalLink size={9} /> Brand Site
+                      </a>
+                    </div>
+                  </div>
+                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                  </div>
+                  <CollapsibleCardDetails
+                    text={product.descriptionLine}
+                    chips={product.techChips}
+                  />
+                </div>
+
+                {/* System Description */}
+                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
+                  <CollapsibleDescription text={product.systemDescription} />
+                </div>
+
+                {/* Technical Properties & Limitations */}
+                <div className="space-y-3 px-5 py-4">
+                  <div>
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
+                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
+                  </div>
+                  <div>
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
+                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
+                  </div>
+                </div>
+
+                {/* Procurement Sources */}
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                  <CollapsibleSources sources={product.procurementSources} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* ── System Comparison ── */}
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">
+              Side-by-side comparison of breathable and vapour-permeable render systems. Confirm all product selections against the current manufacturer TDS before specifying.
+            </p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Sd value</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Pore volume</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">WTA class</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Exterior</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.sdValue}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.poreVolume}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.wtaClass}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.exterior}</td>
+                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 }

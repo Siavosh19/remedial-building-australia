@@ -8,13 +8,16 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Reveal-bead"
+  | "Window-reveal"
+  | "Door-reveal"
+  | "Aluminium"
+  | "PVC"
+  | "Drip-profile"
+  | "Exterior"
   | "Masonry"
-  | "Concrete"
-  | "Coastal";
+  | "Render-termination"
+  | "Edge-protection";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +37,188 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
-    techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
+    fullLabel: "Rondo Building Services",
+    brandUrl: "https://www.rondo.com.au",
+    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    name: "Rondo Aluminium Reveal Bead",
+    descriptionLine: "Aluminium reveal bead — rendering window and door reveals — provides clean render edge and drip profile at window and door perimeter reveals — exterior facade",
+    productType: "Aluminium reveal bead — window and door perimeter render",
+    filterTags: ["Reveal-bead", "Window-reveal", "Door-reveal", "Aluminium", "Exterior", "Masonry", "Render-termination", "Edge-protection"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Aluminium reveal bead", cls: "bg-sky-100 text-sky-800" },
+      { label: "Window and door reveals", cls: "bg-slate-100 text-slate-700" },
+      { label: "Clean render edge", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Rondo aluminium reveal beads are used when rendering window and door reveals to provide a clean render edge at the reveal-to-frame junction and a drip profile where needed. The bead is installed at the inside edge of the render reveal to give a precise render termination against the window frame or door frame surround. Confirm leg dimensions, profile, and available specifications with Rondo. TODO: owner confirm — Rondo aluminium reveal bead specification and dimensions.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Aluminium reveal bead — perforated flanges for render key",
+      "Used at window and door reveals for clean edge termination",
+      "Drip profile at reveal head and jamb where water shedding is required",
+      "Confirm leg dimensions, profile and frame clearance from Rondo",
+      "Exterior applications",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Aluminium not suitable for coastal environments — use PVC or stainless",
+      "TODO: owner confirm — Rondo reveal bead specification and dimensions",
+      "Ensure correct clearance from window/door frame — confirm with Rondo",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Rondo Building Services", url: "https://www.rondo.com.au" },
+      { name: "Render and plasterboard merchants nationally", url: "https://www.rondo.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "USG Boral / Beadex",
+    brandUrl: "https://www.usgboral.com.au",
+    tdsUrl: "https://www.usgboral.com.au",
+    accentColor: "#92400e",
+    name: "USG Boral Aluminium / PVC Reveal Bead",
+    descriptionLine: "Aluminium or PVC reveal bead — window and door reveal render termination — exterior facade",
+    productType: "Aluminium or PVC reveal bead — window/door render edge",
+    filterTags: ["Reveal-bead", "Window-reveal", "Door-reveal", "Aluminium", "PVC", "Exterior", "Masonry", "Render-termination"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "Aluminium or PVC", cls: "bg-amber-100 text-amber-800" },
+      { label: "Window and door reveals", cls: "bg-slate-100 text-slate-700" },
+      { label: "Render edge", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "USG Boral / Beadex distributes aluminium and PVC reveal beads for window and door reveal render termination. Confirm material, leg dimensions, and profile with USG Boral. TODO: owner confirm — USG Boral reveal bead specification, material options and dimensions.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "Aluminium or PVC",
+      "Window and door reveal render edge",
+      "Confirm leg and profile from USG Boral",
+      "Exterior applications",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — USG Boral reveal bead specification",
+      "Aluminium not suitable for coastal",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "USG Boral", url: "https://www.usgboral.com.au" },
+      { name: "Builders merchants nationally", url: "https://www.usgboral.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Trade Supply",
+    brandUrl: "https://www.tradelink.com.au",
+    tdsUrl: "https://www.tradelink.com.au",
+    accentColor: "#0f766e",
+    name: "Trade-Supply PVC / Aluminium Reveal Bead",
+    descriptionLine: "PVC and aluminium reveal beads — window and door reveal render edge — render and plasterboard merchant supply nationally",
+    productType: "Trade-supply reveal bead — window and door render",
+    filterTags: ["Reveal-bead", "Window-reveal", "Door-reveal", "Aluminium", "PVC", "Exterior", "Masonry"],
+    techChips: [
+      { label: "Trade supply", cls: "bg-teal-100 text-teal-800" },
+      { label: "PVC or aluminium", cls: "bg-slate-100 text-slate-700" },
+      { label: "Window reveals", cls: "bg-green-50 text-green-700" },
+      { label: "Confirm dimensions", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Reveal beads are available as standard stock items through render and plasterboard merchants nationally. Confirm material (aluminium or PVC for coastal), leg dimensions, and profile when ordering. Specify PVC or stainless in coastal environments.",
+    technicalProperties: [
+      "Trade supply — widely available",
+      "PVC or aluminium",
+      "Various leg profiles",
+      "Window and door reveals",
+    ],
+    limitations: [
+      "Confirm material for coastal environments",
+      "Confirm leg dimensions for reveal depth and render thickness",
+    ],
+    procurementSources: [
+      { name: "Tradelink", url: "https://www.tradelink.com.au" },
+      { name: "Render and plasterboard merchants nationally", url: "https://www.tradelink.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Reveal-bead", label: "Reveal bead" },
+  { id: "Window-reveal", label: "Window reveal" },
+  { id: "Door-reveal", label: "Door reveal" },
+  { id: "Aluminium", label: "Aluminium" },
+  { id: "PVC", label: "PVC" },
+  { id: "Drip-profile", label: "Drip profile" },
+  { id: "Exterior", label: "Exterior" },
   { id: "Masonry", label: "Masonry" },
-  { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "Render-termination", label: "Render termination" },
+  { id: "Edge-protection", label: "Edge protection" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  material: string;
+  profile: string;
+  legSize: string;
+  coastal: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rondo Aluminium Reveal Bead",
+    brand: "Rondo",
+    material: "Aluminium",
+    profile: "Confirm from Rondo",
+    legSize: "Confirm from Rondo",
+    coastal: "Not suitable — use PVC or SS",
+    primaryUse: "Window and door perimeter render reveals",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "USG Boral Reveal Bead",
+    brand: "USG Boral / Beadex",
+    material: "Aluminium or PVC",
+    profile: "Confirm from USG Boral",
+    legSize: "Confirm from USG Boral",
+    coastal: "PVC suitable — aluminium not suitable",
+    primaryUse: "Window and door reveal render edge",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Trade-Supply Reveal Bead",
+    brand: "Trade Supply",
+    material: "PVC or aluminium",
+    profile: "Various — confirm from supplier",
+    legSize: "Various — confirm from supplier",
+    coastal: "Specify PVC or SS for coastal",
+    primaryUse: "Window and door reveals — trade supply",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Window reveals — render edge bead at window jamb and head renders on external masonry facades",
+    "Door reveals — render edge at door surround perimeter",
+    "Render reinstatement at window and door reveals — installed as part of full re-render or partial repair at window surrounds",
+    "Coastal facades — PVC reveal beads specified at all window and door reveals where aluminium would corrode",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Material — aluminium for sheltered environments; PVC for coastal and corrosive",
+    "Profile — drip profile at head reveals for water shedding",
+    "Leg length — match to reveal render depth",
+    "Frame clearance — ensure adequate clearance from window frame to avoid cracking at frame junction",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Corroded reveal beads are a common defect on coastal strata buildings — replacement is typically required during render repair works",
+    "Inadequate frame clearance can cause render cracking at window perimeters as the frame moves thermally",
+    "In coastal environments, all reveal beads must be PVC or stainless — aluminium will corrode within 3–5 years",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "NCC Volume One — facade weatherproofing",
+    "Manufacturer product guide",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Corroded reveal beads causing render staining and delamination at window perimeters",
+    "Missing reveal beads — window reveal render without edge protection",
+    "Re-rendering works — reveal beads replaced at all window and door reveals",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and block at window surrounds",
+    "AAC — lightweight block reveals",
+    "Concrete — window surround render",
   ],
 };
 
@@ -345,9 +344,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +357,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function RevealBeadIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +366,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are reveal beads?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Reveal beads are extruded aluminium or PVC profiles installed at window and door reveal edges to provide a clean render termination and drip profile at the perimeter of window and door reveals on rendered masonry facades.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              Without reveal beads, the render edge at window perimeters is difficult to form cleanly and is vulnerable to impact chipping, cracking, and delamination. Reveal beads provide a precise edge guide during render application and protect the arris once the render is cured. On coastal facades, aluminium reveal beads should be replaced with PVC or grade 316 stainless steel during render repair works — aluminium corrosion at window perimeters is a very common defect in Australian coastal strata remediation.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +424,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function RevealBeadProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +478,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +492,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">3 products — reveal beads for window and door render — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +638,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of reveal bead products. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -649,10 +648,10 @@ export function SaltRetardantTreatmentProductSection() {
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Profile</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Leg size</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Coastal</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +660,10 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.material}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.profile}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.legSize}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.coastal}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

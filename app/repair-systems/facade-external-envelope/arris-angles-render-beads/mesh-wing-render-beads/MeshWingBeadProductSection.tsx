@@ -8,13 +8,19 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "Mesh-wing"
+  | "Fibreglass-mesh"
+  | "Aluminium"
+  | "PVC"
+  | "Corner-bead"
+  | "Stop-bead"
+  | "Exterior"
+  | "Interior"
   | "Masonry"
-  | "Concrete"
-  | "Coastal";
+  | "AAC"
+  | "Render"
+  | "Crack-resistant"
+  | "EIFS";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +40,204 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
-    techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
+    fullLabel: "Rondo Building Services",
+    brandUrl: "https://www.rondo.com.au",
+    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
+    name: "Rondo Mesh-Wing Corner / Stop Bead",
+    descriptionLine: "Aluminium or PVC angle and stop bead with integral fibreglass mesh wings — embed mesh in render base coat for improved corner and edge reinforcement — exterior and interior facade",
+    productType: "Mesh-wing render bead — corner and edge reinforcement",
+    filterTags: ["Mesh-wing", "Fibreglass-mesh", "Aluminium", "PVC", "Corner-bead", "Stop-bead", "Exterior", "Interior", "Masonry", "AAC", "Render", "Crack-resistant"],
     techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "Integral mesh wings", cls: "bg-sky-100 text-sky-800" },
+      { label: "Corner + edge reinforcement", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Rondo mesh-wing render beads are angle beads and stop beads with factory-attached alkali-resistant fibreglass mesh wings on each flange. The mesh wings are embedded in the render base coat at the time of application to provide reinforcement at render corners and edges — reducing stress cracking and improving impact resistance at these vulnerable locations. The mesh wing extends from the bead body approximately 50–100mm onto the render surface on each side. Confirm mesh wing width, bead profile, and available materials with Rondo. TODO: owner confirm — Rondo mesh-wing bead specification, mesh width and available profiles.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "Integral alkali-resistant fibreglass mesh wings — embedded in render base coat",
+      "Mesh wing extends approximately 50–100mm on each side of bead — confirm from Rondo",
+      "Available as corner bead and stop bead profiles",
+      "Exterior and interior masonry, AAC and concrete render",
+      "Mesh reduces stress cracking at render corners and edges",
+      "Confirm material (aluminium or PVC) and mesh grade for specific application",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Mesh wings must be fully embedded in render base coat — mesh must not be visible in finished render",
+      "TODO: owner confirm — Rondo mesh-wing bead specification, mesh width and profiles",
+      "Mesh wing requires sufficient render thickness over it — confirm minimum DFT for mesh coverage",
+      "Fibreglass mesh must be alkali-resistant (AR) grade — not standard glass fibre",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Rondo Building Services", url: "https://www.rondo.com.au" },
+      { name: "Render and plasterboard merchants nationally", url: "https://www.rondo.com.au" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "USG Boral / Beadex",
+    brandUrl: "https://www.usgboral.com.au",
+    tdsUrl: "https://www.usgboral.com.au",
+    accentColor: "#92400e",
+    name: "USG Boral Mesh-Wing Corner / Edge Bead",
+    descriptionLine: "Aluminium or PVC corner or edge bead with integral fibreglass mesh wings — render base coat reinforcement at corners and edge terminations — exterior facade",
+    productType: "Mesh-wing render bead — corner and edge reinforcement",
+    filterTags: ["Mesh-wing", "Fibreglass-mesh", "Aluminium", "PVC", "Corner-bead", "Exterior", "Masonry", "Render", "Crack-resistant"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "Mesh-wing", cls: "bg-amber-100 text-amber-800" },
+      { label: "Corner reinforcement", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior masonry", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "USG Boral / Beadex supplies mesh-wing render beads with integral fibreglass mesh wings for corner and edge reinforcement. Confirm bead profile, mesh wing width, and available materials with USG Boral. TODO: owner confirm — USG Boral mesh-wing bead specification and dimensions.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "Integral fibreglass mesh wings",
+      "Corner and stop bead profiles",
+      "Exterior render reinforcement",
+      "Confirm mesh width and material from USG Boral",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — USG Boral mesh-wing bead specification",
+      "Mesh must be fully embedded in render",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "USG Boral", url: "https://www.usgboral.com.au" },
+      { name: "Builders merchants nationally", url: "https://www.usgboral.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Trade Supply",
+    brandUrl: "https://www.tradelink.com.au",
+    tdsUrl: "https://www.tradelink.com.au",
+    accentColor: "#0f766e",
+    name: "Trade-Supply Mesh-Wing Render Bead (PVC / Aluminium)",
+    descriptionLine: "PVC and aluminium mesh-wing beads — integral fibreglass mesh for render reinforcement — render and plasterboard merchants nationally",
+    productType: "Trade-supply mesh-wing render bead",
+    filterTags: ["Mesh-wing", "Fibreglass-mesh", "PVC", "Aluminium", "Corner-bead", "Exterior", "Masonry", "AAC", "Render"],
+    techChips: [
+      { label: "Trade supply", cls: "bg-teal-100 text-teal-800" },
+      { label: "Mesh-wing", cls: "bg-slate-100 text-slate-700" },
+      { label: "Corner reinforcement", cls: "bg-green-50 text-green-700" },
+      { label: "Confirm mesh grade", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Mesh-wing render beads are available through specialist render suppliers and plasterboard merchants. Confirm that the fibreglass mesh is alkali-resistant (AR) grade before purchasing for use in cementitious render systems — standard glass fibre mesh is not suitable in alkaline cementitious environments.",
+    technicalProperties: [
+      "Trade supply — render specialists and merchants",
+      "PVC or aluminium bead body",
+      "Integral fibreglass mesh wings",
+      "Confirm AR (alkali-resistant) mesh grade for cementitious render",
+    ],
+    limitations: [
+      "Confirm AR mesh grade — not all trade-supply mesh-wing beads use alkali-resistant mesh",
+      "Mesh must be fully embedded in render base coat",
+      "Confirm mesh wing width for render panel coverage",
+    ],
+    procurementSources: [
+      { name: "Specialist render suppliers nationally", url: "https://www.tradelink.com.au" },
+      { name: "Tradelink", url: "https://www.tradelink.com.au" },
+      { name: "Plasterboard merchants", url: "https://www.tradelink.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "Mesh-wing", label: "Mesh wing" },
+  { id: "Fibreglass-mesh", label: "Fibreglass mesh" },
+  { id: "Aluminium", label: "Aluminium" },
+  { id: "PVC", label: "PVC" },
+  { id: "Corner-bead", label: "Corner bead" },
+  { id: "Stop-bead", label: "Stop bead" },
+  { id: "Exterior", label: "Exterior" },
+  { id: "Interior", label: "Interior" },
   { id: "Masonry", label: "Masonry" },
-  { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "AAC", label: "AAC" },
+  { id: "Render", label: "Render" },
+  { id: "Crack-resistant", label: "Crack resistant" },
+  { id: "EIFS", label: "EIFS" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  beadMaterial: string;
+  meshType: string;
+  meshWingWidth: string;
+  arGrade: string;
+  suitableApplication: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
-    brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    product: "Rondo Mesh-Wing Bead",
+    brand: "Rondo",
+    beadMaterial: "Aluminium or PVC",
+    meshType: "Fibreglass mesh",
+    meshWingWidth: "50–100mm each side — confirm from Rondo",
+    arGrade: "Confirm AR grade from Rondo",
+    suitableApplication: "Exterior and interior — masonry, AAC, concrete",
+    primaryUse: "Corner and edge reinforcement — render systems",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "USG Boral Mesh-Wing Bead",
+    brand: "USG Boral / Beadex",
+    beadMaterial: "Aluminium or PVC",
+    meshType: "Fibreglass mesh",
+    meshWingWidth: "Confirm from USG Boral",
+    arGrade: "Confirm AR grade from USG Boral",
+    suitableApplication: "Exterior masonry render",
+    primaryUse: "Corner and edge reinforcement",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Trade-Supply Mesh-Wing Bead",
+    brand: "Trade Supply",
+    beadMaterial: "PVC or aluminium",
+    meshType: "Fibreglass mesh — confirm AR grade",
+    meshWingWidth: "Confirm from supplier",
+    arGrade: "Confirm AR grade — not all trade supply",
+    suitableApplication: "Exterior masonry, AAC — confirm application",
+    primaryUse: "Corner reinforcement — trade supply",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Render corners on high-impact facades where standard corner beads have failed by delamination cracking",
+    "EIFS render reinforcement — mesh-wing beads at corners and edges where additional mesh reinforcement is required",
+    "Exterior render corners on AAC lightweight construction where render-to-AAC bonding is marginal",
+    "Re-rendering after full render removal — mesh-wing beads installed at all corners and terminations where crack risk is elevated",
+    "Window and door reveal corners — mesh-wing reveal beads for improved corner reinforcement",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Mesh type — must be alkali-resistant (AR) fibreglass for use in cementitious render systems",
+    "Mesh wing width — wider mesh wings provide more reinforcement coverage — typically 50–100mm each side",
+    "Render depth — sufficient render depth must be available to fully embed the mesh wing",
+    "Bead profile — corner bead, stop bead, or reveal bead with mesh — confirm profile for application",
+    "Material — aluminium or PVC bead body — confirm for environment",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Mesh must be fully embedded in render base coat — protruding mesh will telegraph through the finished render surface",
+    "Mesh must be alkali-resistant (AR) grade — standard glass fibre mesh will degrade rapidly in cementitious environments",
+    "Sufficient render depth required to cover mesh — minimum render thickness must cover the mesh wing completely",
+    "Not a substitute for correct render mix design and substrate preparation",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "NCC Volume One — facade performance",
+    "Manufacturer product guide — mesh specification, wing width and installation details",
+    "Fibreglass mesh specification — confirm AR (alkali-resistant) grade from supplier",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Render corner delamination and cracking — where mesh-wing beads provide additional reinforcement to prevent recurrence",
+    "Re-rendering on facades with a history of corner cracking and bead failure",
+    "EIFS corner reinforcement — where additional mesh integration at bead is required",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Masonry — brick and block",
+    "AAC — lightweight block",
+    "Concrete — external facade panels",
+    "Render substrate — where full removal and replacement with mesh-wing beads is specified",
   ],
 };
 
@@ -345,9 +363,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +376,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function MeshWingBeadIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +385,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are mesh-wing render beads?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Mesh-wing render beads are arris angle beads and stop beads with factory-attached alkali-resistant fibreglass mesh wings integrated into the bead flanges. The mesh wings extend from the bead body and are embedded in the render base coat during application, providing reinforcement at render corners and edges.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              Unlike standard perforated-flange arris beads that rely on the perforations for mechanical key into the render, mesh-wing beads provide additional tensile reinforcement at the most vulnerable parts of the render system — the corners and edge terminations where render cracking typically initiates. The fibreglass mesh must be alkali-resistant (AR) grade — standard glass fibre mesh rapidly degrades in alkaline cementitious environments. Mesh wings must be fully covered by the render base coat — protruding mesh will show through the finished surface.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +443,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function MeshWingBeadProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +497,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +511,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">3 products — mesh-wing render beads for corner and edge reinforcement — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +657,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of mesh-wing render bead products. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -649,10 +667,11 @@ export function SaltRetardantTreatmentProductSection() {
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Bead material</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mesh type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mesh wing width</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">AR grade</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Suitable application</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +680,11 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.beadMaterial}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.meshType}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.meshWingWidth}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.arGrade}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.suitableApplication}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}

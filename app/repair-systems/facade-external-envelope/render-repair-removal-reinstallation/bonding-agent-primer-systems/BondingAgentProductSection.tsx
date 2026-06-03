@@ -8,13 +8,18 @@ import {
 } from "lucide-react";
 
 type FilterTag =
-  | "Crystalline"
-  | "Silane-modified"
-  | "Salt-retardant"
-  | "Penetrating"
+  | "SBR"
+  | "Acrylic"
+  | "Epoxy"
+  | "Slurry"
+  | "Exterior"
+  | "Interior"
   | "Masonry"
   | "Concrete"
-  | "Coastal";
+  | "Smooth-substrate"
+  | "Dense-substrate"
+  | "Low-absorption"
+  | "Pre-bagged";
 
 type Product = {
   fullLabel: string;
@@ -34,192 +39,234 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au",
+    accentColor: "#0369a1",
+    name: "Mapei Planicrete AC (Acrylic Bonding Agent)",
+    descriptionLine: "Acrylic bonding agent and SBR admixture — applied to substrate before render application or added to render mix as polymer admixture — exterior and interior masonry and concrete substrates",
+    productType: "Acrylic bonding agent / SBR render admixture",
+    filterTags: ["Acrylic", "SBR", "Exterior", "Interior", "Masonry", "Concrete", "Smooth-substrate", "Low-absorption"],
+    techChips: [
+      { label: "Acrylic bonding agent", cls: "bg-sky-100 text-sky-800" },
+      { label: "SBR admixture", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior and interior", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Mapei Planicrete AC is an acrylic-based polymer admixture used as a bonding agent for cementitious renders and mortars. It can be applied to the substrate as a neat slurry brush coat before render application, or added to the render mix water as an admixture to improve polymer content and adhesion. It improves adhesion on dense, smooth, or low-absorption substrates such as smooth concrete and polished masonry where standard render adhesion without bonding agent may be insufficient. Confirm dilution ratio, application method, and compatibility with the render system with Mapei Australia technical. TODO: owner confirm — Mapei Planicrete AC specification, dilution ratios and application guide for render bonding.",
+    technicalProperties: [
+      "Acrylic polymer bonding agent and render admixture",
+      "Applied neat to substrate as brush-on slurry coat, or added to render mix water",
+      "Improves adhesion to dense and smooth substrates",
+      "Exterior and interior masonry and concrete",
+      "Pre-bagged / liquid concentrate — dilute as specified",
+      "Confirm dilution ratio and application method from Mapei TDS",
+    ],
+    limitations: [
+      "Do not allow bonding agent slurry coat to dry before applying render — render must be applied while bonding coat is still tacky",
+      "Confirm compatibility with specific render system — not all bonding agents are compatible with all renders",
+      "TODO: owner confirm — Mapei Planicrete AC specification and dilution ratio",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia", url: "https://www.mapei.com/au" },
+      { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
+    ],
+  },
+  {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
     tdsUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "Sika Sikacryl-621",
-    descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
-    productType: "Crystalline / silicate substrate treatment for salt-affected masonry",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete", "Coastal"],
+    accentColor: "#166534",
+    name: "SikaBond or SikaLatex (Bonding Agent / SBR Admixture)",
+    descriptionLine: "SBR latex bonding agent and render admixture — applied to substrate or added to render mix — improves adhesion to dense and smooth concrete and masonry substrates",
+    productType: "SBR bonding agent / latex render admixture",
+    filterTags: ["SBR", "Exterior", "Interior", "Masonry", "Concrete", "Smooth-substrate", "Dense-substrate", "Low-absorption"],
     techChips: [
-      { label: "Crystalline / silicate", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrating treatment", cls: "bg-slate-100 text-slate-700" },
-      { label: "Salt-retardant", cls: "bg-green-50 text-green-700" },
-      { label: "TODO: owner confirm product name", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — Sika Australia product name for crystalline or silicate substrate salt-retardant treatment. Sika supplies penetrating and crystalline treatments for concrete and masonry protection. Confirm the current Sika Australia product recommended for substrate pre-treatment before salt-resistant renovating render application on salt-affected facades. Applied by brush or spray to prepared substrate. Allow to cure before applying primer and render system. Confirm system compatibility with Sika Australia technical.",
-    technicalProperties: [
-      "Penetrating crystalline or silicate treatment — blocks capillary pores through crystal formation",
-      "Applied by brush or spray to dry or damp substrate",
-      "Reduces capillary transport of salt-laden moisture",
-      "Confirm application rate, cure time, and system sequence with Sika Australia",
-    ],
-    limitations: [
-      "TODO: owner confirm — exact Sika product name for salt-retardant substrate treatment before re-rendering",
-      "Not a waterproofing system under hydraulic pressure",
-      "Does not address moisture ingress from active water source",
-      "Confirm compatibility with subsequent primer and render system",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Remmers (Australia)",
-    brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
-    accentColor: "#0369a1",
-    name: "Remmers Sulfatex",
-    descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
-    productType: "Silane-modified substrate treatment for salt-affected masonry",
-    filterTags: ["Silane-modified", "Salt-retardant", "Penetrating", "Masonry", "Coastal"],
-    techChips: [
-      { label: "Silane-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "WTA render system part", cls: "bg-green-50 text-green-700" },
+      { label: "SBR latex", cls: "bg-green-100 text-green-800" },
+      { label: "Bonding agent", cls: "bg-slate-100 text-slate-700" },
+      { label: "Dense substrates", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Remmers Sulfatex is a silane-modified penetrating treatment for masonry substrates subject to sulfate and chloride salt attack — designed as part of the Remmers WTA renovating render system. Applied to prepared masonry substrate before primer and renovating render to reduce capillary moisture transport and salt migration. TODO: owner confirm — Remmers Sulfatex product name and specification for Australian market. Confirm current product designation and system sequence with Remmers Australia technical before specifying.",
+      "Sika supplies SBR latex bonding agents and render admixtures for improving adhesion of cementitious renders to dense, smooth, and low-absorption substrates. SikaLatex (or current equivalent) is a styrene-butadiene rubber latex used as a bonding slurry when brushed neat onto the substrate, or as a polymer admixture when added to the render mix water. Confirm the current Sika product for render bonding, dilution ratio, and compatibility with Sika render systems with Sika Australia technical. TODO: owner confirm — current Sika SBR bonding agent product name, dilution ratio and application guide.",
     technicalProperties: [
-      "Silane-modified penetrating treatment",
-      "Reduces capillary moisture transport in masonry",
-      "Part of the Remmers WTA renovating render system",
-      "Applied by brush or spray to prepared substrate",
-      "Confirm cure time and compatibility with Remmers renovating render system",
+      "SBR latex — bonding agent and render admixture",
+      "Applied as neat brush-on slurry or added to render mix water",
+      "Improves adhesion to dense and smooth concrete and masonry",
+      "Confirm dilution ratio and application method from Sika TDS",
+      "Compatible with Sika render systems — confirm with Sika technical",
     ],
     limitations: [
-      "TODO: owner confirm — Remmers Sulfatex product name and availability in Australia",
-      "Confirm system sequence with Remmers Australia technical",
-      "Not suitable for substrates under active hydraulic pressure",
-      "Does not substitute for waterproofing works where moisture intrusion is active",
+      "Apply render while bonding coat is still tacky — do not allow to dry",
+      "TODO: owner confirm — current Sika SBR bonding agent product name, specification and availability",
+      "Confirm compatibility with specific render system",
     ],
     procurementSources: [
-      { name: "Remmers (Australia) — trade supply", url: "https://www.remmers.com.au" },
-      { name: "Confirm local distributor", url: "https://www.remmers.com.au" },
+      { name: "Sika Australia", url: "https://aus.sika.com" },
+      { name: "Sika national distribution", url: "https://aus.sika.com" },
     ],
   },
   {
-    fullLabel: "Aquron Services Australia",
-    brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
-    accentColor: "#7c2d12",
-    name: "Aquron 2000",
-    descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",
-    productType: "Silicate crystalline concrete and masonry treatment",
-    filterTags: ["Crystalline", "Salt-retardant", "Penetrating", "Masonry", "Concrete"],
+    fullLabel: "Fosroc Australia",
+    brandUrl: "https://www.fosroc.com/en-AU",
+    tdsUrl: "https://www.fosroc.com/en-AU",
+    accentColor: "#7c3aed",
+    name: "Fosroc Renderoc Primer / Nitobond SBR",
+    descriptionLine: "SBR bonding slurry and primer — applied to substrate before Fosroc render application — improves adhesion to smooth and dense concrete and masonry substrates",
+    productType: "SBR bonding slurry and render primer — dense substrates",
+    filterTags: ["SBR", "Slurry", "Exterior", "Interior", "Masonry", "Concrete", "Smooth-substrate", "Dense-substrate"],
     techChips: [
-      { label: "Reactive silicate crystalline", cls: "bg-orange-100 text-orange-800" },
-      { label: "Penetrating", cls: "bg-slate-100 text-slate-700" },
-      { label: "Australian-supplied", cls: "bg-green-50 text-green-700" },
+      { label: "SBR bonding slurry", cls: "bg-violet-100 text-violet-800" },
+      { label: "Fosroc Nitobond", cls: "bg-slate-100 text-slate-700" },
+      { label: "Dense substrates", cls: "bg-green-50 text-green-700" },
       { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Aquron 2000 is an Australian-supplied reactive silicate crystalline treatment for concrete and masonry substrates. Applied by spray or brush — reacts with free calcium hydroxide in the substrate to form calcium silicate crystals that permanently seal capillary pores. Used as a substrate sealing treatment before render application on salt-affected and salt-contaminated substrates. Aquron Services Australia is a specialist supplier — confirm current product specification, recommended application rate and system compatibility with Aquron Services before specifying. TODO: owner confirm — confirm Aquron 2000 suitability as pre-render substrate treatment for salt-affected masonry facades.",
+      "Fosroc Nitobond SBR (or current equivalent) is a styrene-butadiene rubber latex used as a bonding agent for cementitious renders and repair mortars on smooth and dense substrates. It is applied as a brush-on bonding slurry to the substrate before Fosroc Renderoc render application to improve adhesion on concrete and masonry substrates where direct render adhesion is insufficient. Confirm current product name, dilution ratio, and compatibility with Fosroc render systems with Fosroc Australia. TODO: owner confirm — Fosroc Nitobond SBR current product name, specification and application guide.",
     technicalProperties: [
-      "Reactive silicate crystalline treatment",
-      "Permanently seals capillary pores by crystal formation",
-      "Australian-supplied through Aquron Services",
-      "Applied by spray or brush",
-      "Confirm compatibility with subsequent render system and primer with Aquron Services",
+      "SBR bonding agent applied as brush-on slurry to substrate",
+      "Improves render adhesion to smooth and dense concrete and masonry",
+      "Compatible with Fosroc Renderoc render systems — confirm with Fosroc technical",
+      "Confirm dilution ratio and application method from current Fosroc TDS",
     ],
     limitations: [
-      "TODO: owner confirm — suitability of Aquron 2000 as pre-render substrate treatment for salt-affected masonry in facade remediation context",
-      "Confirm system sequence and compatibility with render primer and renovating render system",
-      "Not a waterproofing membrane system",
-      "Confirm current product specification with Aquron Services Australia",
+      "TODO: owner confirm — Fosroc Nitobond SBR current product name and availability",
+      "Apply render while bonding slurry is still tacky",
+      "Confirm compatibility with specific render system",
     ],
     procurementSources: [
-      { name: "Aquron Services Australia — specialist supply", url: "https://www.aquron.com.au" },
+      { name: "Fosroc Australia", url: "https://www.fosroc.com/en-AU" },
+      { name: "Parchem — national Fosroc distribution", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Rockcote / Saint-Gobain Weber",
+    brandUrl: "https://www.rockcote.com.au",
+    tdsUrl: "https://www.rockcote.com.au",
+    accentColor: "#b45309",
+    name: "Rockcote Primer / Acrylic Bonding Agent",
+    descriptionLine: "Acrylic bonding agent and primer — applied to smooth or dense substrate before Rockcote render — improves adhesion on concrete, polished masonry, and low-absorption substrates",
+    productType: "Acrylic bonding agent and render primer",
+    filterTags: ["Acrylic", "Exterior", "Interior", "Masonry", "Concrete", "Smooth-substrate", "Low-absorption", "Pre-bagged"],
+    techChips: [
+      { label: "Acrylic bonding agent", cls: "bg-amber-100 text-amber-800" },
+      { label: "Rockcote system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Low-absorption substrates", cls: "bg-green-50 text-green-700" },
+      { label: "TODO: owner confirm", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Rockcote / Saint-Gobain Weber supplies acrylic bonding agents and primers compatible with the Rockcote render range. Confirm the specific Rockcote product for render bonding on smooth or low-absorption substrates with Saint-Gobain Weber / Rockcote technical. TODO: owner confirm — Rockcote bonding agent product, dilution ratio and application guide.",
+    technicalProperties: [
+      "Acrylic bonding agent and render primer",
+      "Apply to substrate before Rockcote render",
+      "Improves adhesion to smooth and low-absorption substrates",
+      "Confirm dilution ratio and application method from Rockcote TDS",
+    ],
+    limitations: [
+      "TODO: owner confirm — specific Rockcote bonding agent product and specification",
+      "Apply render while bonding coat is still tacky",
+    ],
+    procurementSources: [
+      { name: "Rockcote / Saint-Gobain Weber", url: "https://www.rockcote.com.au" },
+      { name: "Saint-Gobain Weber trade distribution", url: "https://www.rockcote.com.au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
-  { id: "Crystalline", label: "Crystalline" },
-  { id: "Silane-modified", label: "Silane-modified" },
-  { id: "Salt-retardant", label: "Salt-retardant" },
-  { id: "Penetrating", label: "Penetrating" },
+  { id: "SBR", label: "SBR" },
+  { id: "Acrylic", label: "Acrylic" },
+  { id: "Slurry", label: "Slurry" },
+  { id: "Exterior", label: "Exterior" },
+  { id: "Interior", label: "Interior" },
   { id: "Masonry", label: "Masonry" },
   { id: "Concrete", label: "Concrete" },
-  { id: "Coastal", label: "Coastal" },
+  { id: "Smooth-substrate", label: "Smooth substrate" },
+  { id: "Dense-substrate", label: "Dense substrate" },
+  { id: "Low-absorption", label: "Low absorption" },
+  { id: "Pre-bagged", label: "Pre-bagged" },
 ];
 
 const SYSTEM_COMPARISON: {
   product: string;
   brand: string;
-  treatmentType: string;
-  mechanism: string;
-  application: string;
-  compatibleRender: string;
+  bondingType: string;
+  applicationMethod: string;
+  substrateTypes: string;
+  mixWithRender: string;
   primaryUse: string;
 }[] = [
   {
-    product: "Sika Sikacryl-621",
+    product: "Mapei Planicrete AC",
+    brand: "Mapei Australia",
+    bondingType: "Acrylic polymer",
+    applicationMethod: "Brush-on slurry or render mix admixture",
+    substrateTypes: "Dense concrete, polished masonry",
+    mixWithRender: "Yes — can be added to mix water",
+    primaryUse: "Bonding agent on smooth / low-absorption substrates",
+  },
+  {
+    product: "SikaLatex / SikaBond",
     brand: "Sika Australia",
-    treatmentType: "Crystalline / silicate penetrating",
-    mechanism: "Crystal formation — blocks capillary pores",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Confirm with Sika AU",
-    primaryUse: "Substrate pre-treatment before salt-resistant renovating render on salt-affected facades",
+    bondingType: "SBR latex",
+    applicationMethod: "Brush-on slurry or render mix admixture",
+    substrateTypes: "Dense concrete, masonry",
+    mixWithRender: "Yes — can be added to mix water",
+    primaryUse: "SBR bonding agent on dense concrete and masonry",
   },
   {
-    product: "Remmers Sulfatex",
-    brand: "Remmers",
-    treatmentType: "Silane-modified penetrating",
-    mechanism: "Hydrophobic lining — reduces liquid water transport",
-    application: "Brush or spray to prepared substrate",
-    compatibleRender: "Remmers WTA renovating render system",
-    primaryUse: "Part of Remmers WTA system — substrate treatment before Remmers renovating render",
+    product: "Fosroc Nitobond SBR",
+    brand: "Fosroc / Parchem",
+    bondingType: "SBR latex",
+    applicationMethod: "Brush-on slurry to substrate",
+    substrateTypes: "Smooth concrete, dense masonry",
+    mixWithRender: "Confirm with Fosroc",
+    primaryUse: "Bonding primer before Fosroc Renderoc render systems",
   },
   {
-    product: "Aquron 2000",
-    brand: "Aquron Services AU",
-    treatmentType: "Reactive silicate crystalline",
-    mechanism: "Permanent crystal formation in capillary pores",
-    application: "Spray or brush",
-    compatibleRender: "Confirm with Aquron Services",
-    primaryUse: "Substrate sealing treatment before render on salt-contaminated concrete and masonry",
+    product: "Rockcote Primer / Acrylic Bonding Agent",
+    brand: "Rockcote / Saint-Gobain Weber",
+    bondingType: "Acrylic",
+    applicationMethod: "Brush-on to substrate",
+    substrateTypes: "Smooth concrete, polished masonry, low-absorption",
+    mixWithRender: "TODO: confirm with Rockcote",
+    primaryUse: "Bonding agent for Rockcote render systems",
   },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Substrate pre-treatment before renovating render on salt-affected masonry",
-    "Pre-treatment of concrete facades with chloride contamination before re-rendering",
-    "Treatment of masonry below-grade walls before rising-damp renovation render system",
-    "Substrate preparation on coastal strata facades before salt-resistant render application",
+    "Dense or smooth concrete substrates before render application — reduces risk of render delamination",
+    "Polished or low-absorption masonry surfaces before render",
+    "Render re-application over existing cured render substrate (confirm with manufacturer)",
+    "Polymer admixture addition to render mix where increased polymer content is required",
   ],
   selectionCriteria: [
-    "Treatment mechanism — crystalline (blocks pores) vs silane (hydrophobic lining) — confirm which is appropriate for substrate type and moisture source",
-    "System compatibility — confirm treatment is compatible with subsequent primer and render system",
-    "Cure time before render — confirm minimum time between treatment and primer application",
-    "Substrate moisture content at time of application",
-    "Confirm product suitability for masonry vs concrete substrates",
+    "Substrate type — confirm product for specific substrate (dense concrete, smooth masonry, AAC, existing render)",
+    "Application method — bonding slurry applied to substrate before render, or polymer added to render mix — confirm with manufacturer",
+    "Compatibility — bonding agent must be compatible with the selected render system",
+    "Application timing — apply render while bonding agent is still tacky",
   ],
   limitations: [
-    "Not a waterproofing system — does not address active hydraulic moisture ingress",
-    "Does not substitute for DPC injection or rising damp treatment where damp ingress is active",
-    "All products require TODO: owner confirm on Australian product names and specifications",
-    "Confirm system sequence with render manufacturer",
+    "Never allow bonding agent to dry before applying render — forming a film that prevents adhesion",
+    "Not a substitute for mechanical preparation — substrate must be clean, sound, and free from laitance, dust, and contamination",
+    "Not all bonding agents are compatible with all renders — confirm compatibility with manufacturer",
   ],
   standardsNotes: [
-    "AS 3700 — Masonry Structures — applicable to substrate preparation for render works on masonry",
-    "Manufacturer system guides — substrate treatment is part of a system — follow the render manufacturer's prescribed sequence",
-    "WTA Merkblatt 2-9-04/D — referenced in salt-resistant renovating render system specifications",
+    "AS 3700 — Masonry Structures",
+    "Manufacturer TDS — dilution, application, and compatibility guidance",
   ],
   suitableDefects: [
-    "Salt attack — substrate pre-treatment before renovating render to reduce ongoing salt migration",
-    "Salt-contaminated masonry before render repair works",
-    "Coastal facade substrates with chloride contamination",
+    "Render adhesion failure on dense or smooth substrates",
+    "Re-render on smooth concrete facades where render bonding without primer is insufficient",
+    "Polymer content enhancement in cementitious render for improved adhesion",
   ],
   typicalSubstrates: [
-    "Masonry — brick and block contaminated with salts",
-    "Concrete facades with chloride or sulfate contamination",
-    "Heritage masonry — confirm compatibility with lime-mortared heritage substrate",
+    "Dense smooth concrete — external facade concrete panels",
+    "Polished masonry — low absorption brick and block",
+    "Existing sound cured render (confirm compatibility)",
+    "AAC (autoclaved aerated concrete) — confirm specific primer for AAC with manufacturer",
   ],
 };
 
@@ -345,9 +392,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <p
-        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
-      >
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>
         {text}
       </p>
       <button
@@ -360,7 +405,7 @@ function CollapsibleDescription({ text }: { text: string }) {
   );
 }
 
-export function SaltRetardantTreatmentIntroSection() {
+export function BondingAgentIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
@@ -369,17 +414,19 @@ export function SaltRetardantTreatmentIntroSection() {
           <BookOpen size={15} />
         </div>
         <h3 className="text-base font-extrabold text-sky-950">
-          What are salt-retardant substrate treatments?
+          What are bonding agents and primer systems for render?
         </h3>
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Salt-retardant substrate treatments are penetrating or crystalline products applied to masonry and concrete substrates before renovating render application to reduce capillary salt migration through the substrate. They include silicate-based crystalline treatments (which react with free lime in the substrate to form insoluble calcium silicate crystals that block capillary pores) and silane/siloxane-based water-repellent treatments (which line the substrate pores with a hydrophobic layer to reduce liquid water transport while maintaining vapour permeability).
+          Bonding agents and render primers are polymer-based liquid admixtures applied to the substrate before render application to improve adhesion on dense, smooth, or low-absorption surfaces where direct render adhesion without a primer may be insufficient.
         </p>
         {expanded && (
-          <p>
-            These treatments do not waterproof the substrate — they reduce capillary transport of salt-laden moisture but do not address active hydraulic pressure or sustained water ingress. They are used as part of a system: substrate preparation → salt-retardant treatment → primer/bonding slurry → renovating render. Confirm the system sequence with the render system manufacturer before applying.
-          </p>
+          <>
+            <p>
+              They are typically acrylic or SBR (styrene-butadiene rubber) latex products applied as a thin brush-on slurry coat to the substrate. The render is applied while the bonding coat is still tacky — allowing render to dry before applying is a common error that creates a film layer and reduces adhesion. Some bonding agents can also be added to the render mix water as a polymer admixture to increase the polymer content of the render system. Product selection and dilution ratios must be confirmed with the manufacturer and matched to the specific render system being used.
+            </p>
+          </>
         )}
       </div>
       <button
@@ -425,7 +472,7 @@ function TechCard({
   );
 }
 
-export function SaltRetardantTreatmentProductSection() {
+export function BondingAgentProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -479,7 +526,7 @@ export function SaltRetardantTreatmentProductSection() {
               <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
               <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
               <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
-              <TechCard icon={<BookOpen size={15} />} title="Standards & Testing" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
               <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
               <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
@@ -493,7 +540,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — 3 brands — salt-retardant substrate treatment systems only — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">4 products — 4 brands — bonding agent and primer systems — scroll to view all</p>
           </div>
         </div>
 
@@ -639,7 +686,7 @@ export function SaltRetardantTreatmentProductSection() {
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
             <p className="mt-1 text-sm text-slate-500">
-              Side-by-side comparison of salt-retardant substrate treatment systems. Confirm all product selections against the current manufacturer TDS before specifying.
+              Side-by-side comparison of bonding agent and primer systems. Confirm all product selections against the current manufacturer TDS before specifying.
             </p>
           </div>
         </div>
@@ -649,10 +696,10 @@ export function SaltRetardantTreatmentProductSection() {
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Treatment type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compatible render</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Bonding type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application method</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Substrate types</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mix with render</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
               </tr>
             </thead>
@@ -661,10 +708,10 @@ export function SaltRetardantTreatmentProductSection() {
                 <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
                   <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
                   <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.treatmentType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.compatibleRender}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.bondingType}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.applicationMethod}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.substrateTypes}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.mixWithRender}</td>
                   <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
                 </tr>
               ))}
