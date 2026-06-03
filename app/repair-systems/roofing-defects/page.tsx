@@ -16,6 +16,14 @@ const SUBCATEGORIES = [
     href: "/repair-systems/roofing-defects/roof-leaks-pitched-tiled-roof",
   },
   {
+    label: "Roof leaks — metal sheet roof",
+    slug: "roof-leaks-metal-sheet-roof",
+    count: 9,
+    description: "Metal sheet replacement (Colorbond corrugated, Trimdek, Klip-Lok, Zincalume, zinc), ridge and barge cappings, anti-con blanket, roofing screws and sheet lap sealant systems for metal roof leaks.",
+    live: true,
+    href: "/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof",
+  },
+  {
     label: "Box gutter failure",
     slug: "box-gutter-failure",
     count: 3,
@@ -30,14 +38,6 @@ const SUBCATEGORIES = [
     description: "Step flashings, chimney lead flashings, penetration flashing collars and PU sealant systems for failed roof flashings on pitched roofs.",
     live: true,
     href: "/repair-systems/roofing-defects/flashing-failures",
-  },
-  {
-    label: "Poor falls and ponding — flat roofs",
-    slug: "poor-falls-ponding-flat-roofs",
-    count: 4,
-    description: "Polymer-modified lightweight screed, tapered insulation, drainage outlets and waterproofing membrane systems for poor falls and ponding water on flat roofs.",
-    live: true,
-    href: "/repair-systems/roofing-defects/poor-falls-ponding-flat-roofs",
   },
   {
     label: "Overflow issues",

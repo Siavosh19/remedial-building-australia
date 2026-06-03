@@ -1,91 +1,43 @@
 import type { Metadata } from "next";
 import { AlertTriangle, ArrowRight } from "lucide-react";
-import { DrainagePodiumOutletsScuppersProductSection, DrainagePodiumOutletsScuppersIntroSection } from "./DrainagePodiumOutletsScuppersProductSection";
+import {
+  MetalSheetColorbondCorrugatedProductSection,
+  MetalSheetColorbondCorrugatedIntroSection,
+} from "./MetalSheetColorbondCorrugatedProductSection";
 
 export const metadata: Metadata = {
-  title: "Drainage Outlets, Sumps & Scuppers — Flat Roofs, Balconies & Podiums — Waterproofing Systems — Remedial Building Australia",
+  title:
+    "Metal Sheet Replacement — Colorbond Corrugated — Roof Leaks Metal Sheet Roof — Remedial Building Australia",
   description:
-    "Technical product reference for flat roof, balcony and podium drainage outlets, sumps and scuppers — gravity and siphonic systems — Blucher, Geberit and HL Hutterer — for Australian Class 2 strata building remediation.",
+    "Technical product reference for Colorbond corrugated (Custom Orb) metal sheet roof replacement — Lysaght, Stramit and BlueScope Colorbond products, Class 3/4 screw systems and associated accessories for Australian Class 2 strata building metal roof remediation.",
 };
 
 const SIBLING_GROUPS = [
   {
-    heading: "Membrane Systems",
+    heading: "Metal Sheets",
     tabs: [
-      { label: "LQ PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
-      { label: "LQ acrylic", slug: "liquid-applied-membranes-acrylic" },
-      { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
-      { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
-      { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
-      { label: "HDPE (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
-      { label: "Single-ply ballasted", slug: "single-ply-membrane-systems-ballasted" },
-      { label: "TPO/FPO exposed", slug: "tpo-fpo-sheet-membranes-exposed" },
-      { label: "Hot melt asphalt", slug: "hot-melt-rubberised-asphalt-systems" },
+      { label: "Corrugated — Colorbond", slug: "metal-sheet-replacement-colorbond-corrugated" },
+      { label: "Trimdek", slug: "metal-sheet-replacement-trimdek" },
+      { label: "Klip-Lok", slug: "metal-sheet-replacement-klip-lok" },
+      { label: "Zincalume", slug: "metal-sheet-replacement-zincalume" },
+      { label: "Zinc (natural)", slug: "metal-sheet-replacement-zinc" },
     ],
   },
   {
-    heading: "Preparation",
+    heading: "Cappings & Accessories",
     tabs: [
-      { label: "Primers", slug: "primers-bonding-agents" },
-      { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
-      { label: "Tools", slug: "abrasives-blades-tools" },
-    ],
-  },
-  {
-    heading: "Screeds & Tile",
-    tabs: [
-      { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
-      { label: "Screed SL", slug: "screed-systems-self-levelling" },
-      { label: "Tile adhesive", slug: "tile-adhesive-systems" },
-      { label: "Tile sealants", slug: "tile-sealants-silicone-sanitary" },
-    ],
-  },
-  {
-    heading: "Drainage & Penetrations",
-    tabs: [
-      { label: "Puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
-      { label: "Linear drains", slug: "drainage-linear-grates-channel-drains" },
-      { label: "Penetration collars", slug: "penetration-collars" },
-      { label: "Podium outlets", slug: "drainage-podium-outlets-scuppers" },
-      { label: "Edge trims", slug: "gutter-lining-systems" },
-      { label: "Flashing compounds", slug: "flashing-compound-systems" },
-    ],
-  },
-  {
-    heading: "Prep & Fix",
-    tabs: [
-      { label: "Termination bars", slug: "membrane-termination-bars-accessories" },
-    ],
-  },
-  {
-    heading: "Joints & Movement",
-    tabs: [
-      { label: "Backer rod", slug: "backer-rod-bond-breaker-tape" },
-      { label: "Expansion joint covers", slug: "expansion-joint-cover-systems-trafficable" },
-    ],
-  },
-  {
-    heading: "Protection & Overburden",
-    tabs: [
-      { label: "Protection boards", slug: "protection-boards" },
-      { label: "Root resistant", slug: "root-resistant-membrane-systems" },
-      { label: "Tapered insulation", slug: "tapered-insulation-board-systems" },
-      { label: "Pedestals", slug: "pedestal-systems-adjustable-height" },
-      { label: "Drainage cells", slug: "drainage-cell-systems" },
-      { label: "Filter fabric", slug: "filter-fabric-systems" },
-      { label: "Ballast", slug: "ballast-systems" },
-      { label: "Vapour control layers", slug: "vapour-control-layers-warm-roof" },
-    ],
-  },
-  {
-    heading: "Testing & QA",
-    tabs: [
-      { label: "Flood test", slug: "flood-test-equipment" },
+      { label: "Ridge/barge cappings", slug: "ridge-barge-cappings-metal" },
+      { label: "Anti-con blanket", slug: "anti-con-blanket-metal-sheet" },
+      { label: "Roofing screws", slug: "roofing-screws-sealing-washers" },
+      { label: "Sheet sealants", slug: "sheet-lap-seam-sealants" },
     ],
   },
 ];
 
-export default function DrainagePodiumOutletsScuppersPage() {
+const ACTIVE_SLUG = "metal-sheet-replacement-colorbond-corrugated";
+const BASE_URL = "/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof";
+
+export default function MetalSheetColorbondCorrugatedPage() {
   return (
     <div className="min-h-screen bg-slate-50">
 
@@ -119,25 +71,28 @@ export default function DrainagePodiumOutletsScuppersPage() {
               <span>/</span>
               <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
               <span>/</span>
-              <a href="/repair-systems/waterproofing-water-ingress" className="hover:text-sky-700 transition">Waterproofing Systems</a>
+              <a href="/repair-systems/roofing-defects" className="hover:text-sky-700 transition">Roofing Defects</a>
               <span>/</span>
-              <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
+              <a href="/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof" className="hover:text-sky-700 transition">Roof Leaks — Metal Sheet Roof</a>
               <span>/</span>
-              <span className="text-sky-950">Drainage outlets, sumps &amp; scuppers</span>
+              <span className="text-sky-950">Colorbond corrugated sheet</span>
             </nav>
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Drainage</p>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 04 — Roofing Defects</p>
                 <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                  Drainage outlets, sumps &amp; scuppers — flat roofs, balconies &amp; podiums
+                  Colorbond corrugated sheet replacement systems
                 </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+                  Colorbond corrugated steel sheet (sold as Custom Orb by Lysaght and equivalent by Stramit and Stratco) is the most widely used metal roofing product in Australia, specified on both residential and Class 2 strata buildings for its durability, colour range and familiar sinusoidal profile. Sheet replacement requires matching the existing profile, pitch and fixing system and selecting a Colorbond colour consistent with the original or an approved variation under any applicable strata by-law or heritage requirement.
+                </p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 {[
-                  { label: "Min outlet size", value: "DN75" },
-                  { label: "AS/NZS standard", value: "3500.3" },
-                  { label: "Applications", value: "Flat roofs, balconies, podiums" },
-                  { label: "Strainer area", value: "≥4× pipe area" },
+                  { label: "Profile: Corrugated (Custom Orb)", value: "Corrugated" },
+                  { label: "BMT range", value: "0.42mm — 0.70mm" },
+                  { label: "AS standard", value: "AS 1562.1" },
+                  { label: "Substrate", value: "BlueScope Colorbond steel" },
                 ].map((s) => (
                   <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
                     <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
@@ -163,11 +118,11 @@ export default function DrainagePodiumOutletsScuppersPage() {
                   </div>
                   <div className="flex items-end">
                     {group.tabs.map((tab) => {
-                      const active = tab.slug === "drainage-podium-outlets-scuppers";
+                      const active = tab.slug === ACTIVE_SLUG;
                       return (
                         <a
                           key={tab.slug}
-                          href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
+                          href={`${BASE_URL}/${tab.slug}`}
                           className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
                             active
                               ? "border-red-700 text-sky-950"
@@ -186,10 +141,38 @@ export default function DrainagePodiumOutletsScuppersPage() {
         </div>
 
         {/* ── Content ── */}
-        <section className="px-8 py-12">
+        <section className="px-8 py-14">
           <div className="mx-auto max-w-7xl space-y-10">
-            <DrainagePodiumOutletsScuppersIntroSection />
-            <DrainagePodiumOutletsScuppersProductSection />
+
+            {/* Intro */}
+            <MetalSheetColorbondCorrugatedIntroSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse Colorbond corrugated sheet with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Trimdek (high-rib trapezoidal) — a different profile with a trapezoidal rib, different fixing system, and different span/loading tables. Not interchangeable with corrugated sheet.",
+                  "Klip-Lok (concealed fix) — completely different fixing mechanism using a concealed clip system, no through-fasteners in the field. Not interchangeable with corrugated sheet and requires a different substructure and installer competency.",
+                  "Zincalume corrugated — the same standard sinusoidal corrugated profile (76mm pitch, 762mm cover) but with an unpainted zinc-aluminium alloy substrate rather than a Colorbond painted finish. Not a like-for-like substitute where a painted finish is required.",
+                  "Uncoated galvanised iron (GI) sheet — older legacy corrugated product with a hot-dipped galvanised zinc coating, no paint finish. No longer used in new or replacement works in Australia. Do not specify or accept GI sheet as a replacement for Colorbond.",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Interactive: product grid + comparison */}
+            <MetalSheetColorbondCorrugatedProductSection />
+
           </div>
         </section>
 
@@ -199,30 +182,35 @@ export default function DrainagePodiumOutletsScuppersPage() {
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
               <p className="text-xs leading-6 text-amber-900">
-                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, substrate condition, exposure level, drainage catchment area, required AS/NZS 3500.3 calculations, NCC requirements, and applicator warranty conditions. Drainage outlet sizing must be confirmed by a hydraulic engineer. Do not rely on this reference as a substitute for professional engineering or waterproofing consultant advice.
+                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, substrate condition, roof pitch, wind classification, AS 1562.1 requirements, structural engineer sign-off, and installer warranty conditions. Do not rely on this reference as a substitute for professional engineering or roofing consultant advice. All items marked TODO must be verified by the site owner before this page is published.
               </p>
             </div>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  href: "/repair-systems/waterproofing-water-ingress",
-                  label: "Back to Waterproofing Systems",
-                  title: "Browse all waterproofing defect subcategories",
+                  href: "/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof/metal-sheet-replacement-trimdek",
+                  label: "In development",
+                  title: "Trimdek sheet replacement",
                 },
                 {
-                  href: "/repair-systems/balcony-waterproofing-failure",
-                  label: "Back to Balcony Waterproofing Failure",
-                  title: "Browse all product categories for this defect",
+                  href: "/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof/metal-sheet-replacement-klip-lok",
+                  label: "In development",
+                  title: "Klip-Lok sheet replacement",
                 },
                 {
-                  href: "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure",
-                  label: "Defect Library",
-                  title: "Balcony Waterproofing Failure — causes, inspection, methodology",
+                  href: "/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof/metal-sheet-replacement-zincalume",
+                  label: "In development",
+                  title: "Zincalume corrugated sheet replacement",
                 },
                 {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
+                  href: "/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof/metal-sheet-replacement-zinc",
+                  label: "In development",
+                  title: "Zinc (natural) sheet replacement",
+                },
+                {
+                  href: "/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof",
+                  label: "Back to defect",
+                  title: "Roof Leaks — Metal Sheet Roof",
                 },
               ].map((card) => (
                 <a
@@ -246,8 +234,11 @@ export default function DrainagePodiumOutletsScuppersPage() {
       {/* ── Footer ── */}
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/repair-systems/balcony-waterproofing-failure" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
-            ← Balcony, roof, planter box and podium waterproofing failure
+          <a
+            href="/repair-systems/roofing-defects/roof-leaks-metal-sheet-roof"
+            className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200"
+          >
+            ← Roof Leaks — Metal Sheet Roof
           </a>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
