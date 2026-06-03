@@ -1,42 +1,11 @@
-import FacadeCategoryFilter from "./FacadeCategoryFilter";
+import type { Metadata } from "next";
+import { ArrowRight } from "lucide-react";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Facade & External Envelope — Repair Systems — Remedial Building Australia",
   description:
     "Technical repair system reference for facade and external envelope defects in Australian Class 2 strata apartment buildings — render systems, render repair and reinstallation, arris and render beads, salt attack remediation.",
 };
-
-const GROUPS = [
-  {
-    heading: "Render Repair Systems",
-    summary: "Product systems for render repair, removal and reinstallation, salt attack remediation and facade edge bead reinstatement on Australian Class 2 strata and commercial buildings.",
-    cards: [
-      {
-        label: "Render repair, removal and reinstallation",
-        count: 10,
-        href: "/repair-systems/facade-external-envelope/render-repair-removal-reinstallation",
-        description:
-          "Two-coat PM render, sand cement render, fibre-reinforced, acrylic spray, EIFS, salt-resistant render, breathable render, bonding agents, salt-retardant treatment and saline primer systems.",
-      },
-      {
-        label: "Salt attack and salt-contaminated render",
-        count: 4,
-        href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
-        description:
-          "Salt-resistant renovating render, salt-retardant substrate treatments, breathable vapour-permeable render and saline-resistant primer systems for salt attack defects.",
-      },
-      {
-        label: "Arris angles and render beads",
-        count: 8,
-        href: "/repair-systems/facade-external-envelope/arris-angles-render-beads",
-        description:
-          "Aluminium, stainless steel and PVC arris angle beads, render stop beads, bellcast/drip beads, movement beads, reveal beads and mesh-wing render beads.",
-      },
-    ],
-  },
-];
-
-const TOTAL = GROUPS.reduce((n, g) => n + g.cards.length, 0);
 
 export default function FacadeExternalEnvelopePage() {
   return (
@@ -55,7 +24,7 @@ export default function FacadeExternalEnvelopePage() {
             <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap text-sky-950 underline underline-offset-4 decoration-red-700">Repair Systems</a>
             <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
           </nav>
           <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
@@ -63,6 +32,7 @@ export default function FacadeExternalEnvelopePage() {
       </header>
 
       <main>
+
         {/* ── Hero ── */}
         <section className="border-b border-slate-200 bg-white px-8 py-12">
           <div className="mx-auto max-w-7xl">
@@ -78,12 +48,43 @@ export default function FacadeExternalEnvelopePage() {
               Facade &amp; External Envelope
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              Technical repair system reference for facade and external envelope defects in Australian Class 2 strata — select a defect subcategory to view product categories, system information and brand equivalents.
+              Technical repair system reference for facade and external envelope defects in Australian Class 2 strata — select a repair system group to view product categories, system information and brand equivalents.
             </p>
           </div>
         </section>
 
-        <FacadeCategoryFilter groups={GROUPS} totalCategories={TOTAL} />
+        {/* ── Repair system group cards ── */}
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+              {/* Render Repair Systems */}
+              <a
+                href="/repair-systems/facade-external-envelope/render-repair-systems"
+                className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <div className="h-0.5 w-8 rounded-full bg-red-700" />
+                  <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2.5 py-0.5 text-[10px] font-bold text-green-700">
+                    <span className="h-1 w-1 rounded-full bg-green-500" />Live
+                  </span>
+                </div>
+                <h3 className="text-base font-extrabold leading-tight text-sky-950 transition group-hover:text-sky-700">
+                  Render Repair Systems
+                </h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500">
+                  Render repair, removal and reinstallation, salt attack and salt-contaminated render, arris angles and render beads — 22 product categories.
+                </p>
+                <p className="mt-3 text-xs font-semibold text-slate-400">3 subcategories</p>
+                <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                  View systems <ArrowRight size={12} />
+                </div>
+              </a>
+
+            </div>
+          </div>
+        </section>
+
       </main>
 
       {/* ── Footer ── */}
