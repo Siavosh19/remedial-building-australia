@@ -1,56 +1,61 @@
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
-import { RenderCrackingIntroSection, RenderCrackingProductSection } from "./RenderCrackingProductSection";
 
 export const metadata: Metadata = {
   title: "Render Cracking & Delamination — Facade Repair — Remedial Building Australia",
   description:
-    "Technical product reference for polymer-modified and fibre-reinforced render repair systems, EIFS repair, elastomeric coatings and bonding primers for render cracking and delamination defects on Class 2 strata facades in Australia.",
+    "Technical product reference for polymer-modified and fibre-reinforced render repair systems, EIFS repair, texture coating and bonding primer systems for render cracking and delamination defects on Class 2 strata facades in Australia.",
 };
 
-const SIBLING_GROUPS = [
-  {
-    heading: "Render Systems",
-    tabs: [
-      { label: "Render cracking", slug: "render-cracking-delamination" },
-      { label: "Render removal", slug: "render-removal-and-installation" },
-      { label: "Arris angles", slug: "arris-angle-edge-replacement" },
-    ],
-  },
-  {
-    heading: "Masonry",
-    tabs: [
-      { label: "Brickwork", slug: "brickwork-deterioration" },
-      { label: "Crack stitching", slug: "crack-stitching-masonry" },
-    ],
-  },
-  {
-    heading: "Cladding & Facade",
-    tabs: [
-      { label: "Cladding failure", slug: "cladding-failure" },
-      { label: "Facade cracking", slug: "facade-cracking" },
-    ],
-  },
-  {
-    heading: "Openings",
-    tabs: [
-      { label: "Window & door", slug: "window-door-perimeter-failure" },
-    ],
-  },
-  {
-    heading: "Joints & Coatings",
-    tabs: [
-      { label: "Failed sealants", slug: "failed-sealants-joints" },
-      { label: "External coatings", slug: "external-coating-paint-deterioration" },
-    ],
-  },
-];
+const BASE_URL = "/repair-systems/facade-external-envelope/render-cracking-delamination";
+const PARENT_URL = "/repair-systems/facade-external-envelope";
 
-export default function RenderCrackingDelamination() {
+const GROUPS = [
+  {
+    heading: "Render Repair Systems",
+    items: [
+      {
+        label: "Two-coat polymer-modified render systems",
+        slug: "two-coat-polymer-modified-render",
+        count: 3,
+        description: "Sika MonoTop, Weber and Rockcote polymer-modified cementitious render systems for scratch coat and finish coat re-render over concrete and masonry facades.",
+        live: true,
+      },
+      {
+        label: "Fibre-reinforced render systems",
+        slug: "fibre-reinforced-render",
+        count: 3,
+        description: "AR glass fibre-reinforced render systems for improved crack resistance on rendered facades — Parex, Rockcote and Sika fibre-modified systems.",
+        live: true,
+      },
+      {
+        label: "EIFS repair systems",
+        slug: "eifs-repair-systems",
+        count: 3,
+        description: "External insulation and finish system repair — Sto, Parex and Rockcote EPS-board, base coat, mesh and finish coat systems for EIFS defect repair.",
+        live: true,
+      },
+      {
+        label: "Texture coating systems",
+        slug: "texture-coating-systems",
+        count: 3,
+        description: "Dulux Acratex, Rockcote and Solver acrylic texture coating systems applied over cementitious base coats — fine, medium and coarse aggregate textures.",
+        live: true,
+      },
+      {
+        label: "Bonding agent and primer systems",
+        slug: "bonding-agent-primer-systems",
+        count: 3,
+        description: "Polymer bonding agents, epoxy interface primers and cementitious slurry bonding systems for improved adhesion of new render over existing substrates.",
+        live: true,
+      },
+    ],
+  },
+] as const;
+
+export default function RenderCrackingHubPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-
-      {/* ── Header ── */}
       <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
           <a href="/" className="flex shrink-0 items-center gap-3">
@@ -71,153 +76,82 @@ export default function RenderCrackingDelamination() {
       </header>
 
       <main>
-
-        {/* ── Hero ── */}
         <section className="border-b border-slate-200 bg-white px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
-              <a href="/" className="hover:text-sky-700 transition">Home</a>
-              <span>/</span>
-              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
-              <span>/</span>
-              <a href="/repair-systems/facade-external-envelope" className="hover:text-sky-700 transition">Facade &amp; External Envelope</a>
-              <span>/</span>
+              <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
+              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a><span>/</span>
+              <a href={PARENT_URL} className="hover:text-sky-700 transition">Facade &amp; External Envelope</a><span>/</span>
               <span className="text-sky-950">Render Cracking &amp; Delamination</span>
             </nav>
-            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                  Render Cracking &amp; Delamination
-                </h1>
-                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                  Technical product reference for polymer-modified and fibre-reinforced render repair systems, EIFS repair, elastomeric coatings and bonding primers for render cracking and delamination defects on Class 2 strata facades in Australia.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                {[
-                  { label: "Products listed", value: "6" },
-                  { label: "Brands available", value: "5" },
-                  { label: "System type", value: "Cementitious" },
-                  { label: "Standard", value: "AS 3700" },
-                ].map((s) => (
-                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
-                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
-                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
+            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+              Render cracking &amp; delamination — repair systems
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+              Technical product reference for render repair on Class 2 strata facades — select a product type to view polymer-modified systems, fibre-reinforced renders, EIFS repair, texture coatings and bonding primers.
+            </p>
           </div>
         </section>
 
-        {/* ── Sibling tabs ── */}
-        <div className="border-b border-slate-200 bg-white px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-stretch gap-0 overflow-x-auto">
-              {SIBLING_GROUPS.map((group, gi) => (
-                <div
-                  key={group.heading}
-                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
-                >
-                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
-                    {group.heading}
-                  </div>
-                  <div className="flex items-end">
-                    {group.tabs.map((tab) => {
-                      const active = tab.slug === "render-cracking-delamination";
-                      return (
-                        <a
-                          key={tab.slug}
-                          href={`/repair-systems/facade-external-envelope/${tab.slug}`}
-                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
-                            active
-                              ? "border-red-700 text-sky-950"
-                              : "border-transparent text-slate-500 hover:text-sky-900"
-                          }`}
-                        >
-                          {tab.label}
-                        </a>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Content ── */}
         <section className="px-8 py-14">
-          <div className="mx-auto max-w-7xl space-y-10">
-            <RenderCrackingIntroSection />
-            <RenderCrackingProductSection />
+          <div className="mx-auto max-w-7xl space-y-12">
+            {GROUPS.map((group) => (
+              <div key={group.heading}>
+                <div className="mb-6 flex items-start gap-3">
+                  <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+                  <h2 className="text-xs font-bold uppercase tracking-[0.22em] text-red-700">{group.heading}</h2>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.items.map((item) =>
+                    item.live ? (
+                      <a
+                        key={item.slug}
+                        href={`${BASE_URL}/${item.slug}`}
+                        className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
+                      >
+                        <div className="mb-3 flex items-center justify-between">
+                          <div className="h-0.5 w-8 rounded-full bg-red-700" />
+                          <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2.5 py-0.5 text-[10px] font-bold text-green-700">
+                            <span className="h-1 w-1 rounded-full bg-green-500" />Live
+                          </span>
+                        </div>
+                        <h3 className="text-base font-extrabold leading-tight text-sky-950 transition group-hover:text-sky-700">{item.label}</h3>
+                        <p className="mt-2 text-xs leading-5 text-slate-500">{item.description}</p>
+                        <p className="mt-3 text-xs font-semibold text-slate-400">{item.count} product systems</p>
+                        <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                          View systems <ArrowRight size={12} />
+                        </div>
+                      </a>
+                    ) : (
+                      <div key={item.slug} className="rounded-2xl border border-slate-100 bg-white p-6 opacity-50">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div className="h-0.5 w-8 rounded-full bg-slate-300" />
+                          <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-400">
+                            In development
+                          </span>
+                        </div>
+                        <h3 className="text-base font-extrabold leading-tight text-slate-600">{item.label}</h3>
+                        <p className="mt-2 text-xs leading-5 text-slate-400">{item.description}</p>
+                        <p className="mt-3 text-xs font-semibold text-slate-300">{item.count} product systems</p>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
-
-        {/* ── Disclaimer + related links ── */}
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
-          <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
-              <p className="text-xs leading-6 text-amber-900">
-                Information is general only. Render repair system selection must be confirmed against substrate type, existing render system, defect type, and the current manufacturer technical data sheet. Confirm compliance with AS 3700 and relevant NCC requirements. Do not rely on this reference as a substitute for professional facade or building consultant advice.
-              </p>
-            </div>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  href: "/repair-systems/facade-external-envelope",
-                  label: "Back to Facade Systems",
-                  title: "Browse all facade defect subcategories",
-                },
-                {
-                  href: "/repair-systems/facade-external-envelope/render-removal-and-installation",
-                  label: "Render Removal & Installation",
-                  title: "Sand cement, polymer-modified, acrylic and EIFS render systems",
-                },
-                {
-                  href: "/repair-systems/facade-external-envelope/brickwork-deterioration",
-                  label: "Brickwork Deterioration",
-                  title: "Repointing, cavity ties, lintels, flashing and water repellents",
-                },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade remediation",
-                },
-              ].map((card) => (
-                <a
-                  key={card.href}
-                  href={card.href}
-                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
-                >
-                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
-                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                    Open <ArrowRight size={11} />
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-
       </main>
 
-      {/* ── Footer ── */}
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/repair-systems/facade-external-envelope" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
-            ← Facade &amp; External Envelope
-          </a>
+          <a href={PARENT_URL} className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">← Facade &amp; External Envelope</a>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
-            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">
-              A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.
-            </p>
+            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <a href="/about" className="hover:text-sky-700">About</a>

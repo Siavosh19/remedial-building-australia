@@ -24,6 +24,14 @@ const SUBCATEGORIES = [
     href: "/repair-systems/facade-external-envelope/render-removal-and-installation",
   },
   {
+    label: "Salt attack and salt-contaminated render",
+    slug: "salt-attack-salt-contaminated-render",
+    count: 4,
+    description: "Salt-resistant renovating render, salt-retardant substrate treatments, breathable vapour-permeable render and saline-resistant primer systems for salt attack defects on Class 2 strata facades.",
+    live: true,
+    href: "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render",
+  },
+  {
     label: "Arris, angle and edge replacement",
     slug: "arris-angle-edge-replacement",
     count: 3,

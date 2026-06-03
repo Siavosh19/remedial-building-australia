@@ -2,51 +2,51 @@ import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Render Removal & Installation — Facade Repair — Remedial Building Australia",
+  title: "Salt Attack & Salt-Contaminated Render — Facade Repair — Remedial Building Australia",
   description:
-    "Technical product reference for sand cement, polymer-modified, acrylic spray-applied render systems and EIFS systems for full render removal and replacement on Class 2 strata facades in Australia.",
+    "Technical product reference for salt-resistant renovating render, salt-retardant substrate treatments, breathable vapour-permeable render and saline-resistant primer systems for salt attack and salt-contaminated render defects on Class 2 strata facades in Australia.",
 };
 
-const BASE_URL = "/repair-systems/facade-external-envelope/render-removal-and-installation";
+const BASE_URL = "/repair-systems/facade-external-envelope/salt-attack-salt-contaminated-render";
 const PARENT_URL = "/repair-systems/facade-external-envelope";
 
 const GROUPS = [
   {
-    heading: "Full Render Replacement Systems",
+    heading: "Salt Attack Repair Systems",
     items: [
       {
-        label: "Two-coat sand cement render systems",
-        slug: "two-coat-sand-cement-render",
+        label: "Salt-resistant / renovating render systems",
+        slug: "salt-resistant-renovating-render",
         count: 3,
-        description: "Traditional 1:4 OPC:sand scratch coat and float coat render systems — scratch coat 12–15mm, float coat 6–10mm, suitable for full render replacement on masonry and concrete.",
+        description: "Rockcote, Parex and Weber renovating render systems formulated to tolerate high salt environments — porous matrix allows salt migration without surface disruption, low soluble salt content.",
         live: true,
       },
       {
-        label: "Polymer-modified render systems — two-coat",
-        slug: "polymer-modified-render-two-coat",
+        label: "Salt-retardant substrate treatment systems",
+        slug: "salt-retardant-substrate-treatment",
         count: 3,
-        description: "Weber, Sika and Rockcote polymer-modified cementitious render systems for improved bond strength, reduced shrinkage cracking and extended service life on full render replacement projects.",
+        description: "Sika, Remmers and Aquron silicate-based crystalline and penetrating salt-retardant treatments applied to masonry and concrete substrates to reduce capillary salt migration before re-rendering.",
         live: true,
       },
       {
-        label: "Acrylic spray-applied render systems",
-        slug: "acrylic-spray-applied-render",
+        label: "Breathable / vapour-permeable render systems",
+        slug: "breathable-vapour-permeable-render",
         count: 3,
-        description: "Dulux Acratex, Solver and Taubmans spray-applied acrylic render systems — 4–6mm single or double coat, rapid application on large facade areas.",
+        description: "Caparol, Remmers and Rockcote WTA-compliant vapour-permeable render systems — sd value <0.14m, high pore volume >35%, allows moisture vapour to escape without disrupting the render surface.",
         live: true,
       },
       {
-        label: "EIFS systems",
-        slug: "eifs-systems",
+        label: "Saline-resistant primer / slurry systems",
+        slug: "saline-resistant-primer-slurry",
         count: 3,
-        description: "External insulation and finish system (EIFS) full installation — Sto, Parex and Rockcote EPS board, adhesive, base coat, fibre mesh and finish coat systems.",
+        description: "Cementitious bonding slurry and polymer primer systems for salt-affected substrates — SikaCem bonding slurry, Fosroc Nitobond and Dulux primer systems applied before salt-resistant render.",
         live: true,
       },
     ],
   },
 ] as const;
 
-export default function RenderRemovalHubPage() {
+export default function SaltAttackHubPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
@@ -75,14 +75,14 @@ export default function RenderRemovalHubPage() {
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
               <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a><span>/</span>
               <a href={PARENT_URL} className="hover:text-sky-700 transition">Facade &amp; External Envelope</a><span>/</span>
-              <span className="text-sky-950">Render Removal &amp; Installation</span>
+              <span className="text-sky-950">Salt Attack &amp; Salt-Contaminated Render</span>
             </nav>
             <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
             <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-              Render removal &amp; installation — repair systems
+              Salt attack &amp; salt-contaminated render — repair systems
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              Technical product reference for full render removal and replacement on Class 2 strata facades — select a product type to view sand cement, polymer-modified, spray-applied and EIFS render systems.
+              Technical product reference for salt attack remediation on Class 2 strata facades — select a product type to view salt-resistant renovating renders, substrate treatments, breathable render systems and bonding primers for salt-contaminated substrates. Note: where rising damp is the cause of salt attack, see the <a href="/repair-systems/rising-damp" className="underline hover:text-red-700">Rising Damp section</a> for DPC injection and damp-proof systems.
             </p>
           </div>
         </section>
@@ -133,6 +133,14 @@ export default function RenderRemovalHubPage() {
                 </div>
               </div>
             ))}
+
+            <div className="rounded-2xl border border-sky-200 bg-sky-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-sky-700">Related Systems</p>
+              <p className="text-xs leading-6 text-sky-900">
+                Where rising damp is the underlying cause of salt attack, render repair alone is not sufficient. See the{" "}
+                <a href="/repair-systems/rising-damp" className="font-bold underline hover:text-red-700">Rising Damp</a> section for DPC injection, silane cream, breathable render and renovating plaster systems that address the moisture source before re-rendering.
+              </p>
+            </div>
           </div>
         </section>
       </main>
