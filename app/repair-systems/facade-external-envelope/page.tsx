@@ -8,7 +8,8 @@ export const metadata = {
 
 const GROUPS = [
   {
-    heading: "Render Repair Works",
+    heading: "Render Repair Systems",
+    summary: "Product systems for render repair, removal and reinstallation, salt attack remediation and facade edge bead reinstatement on Australian Class 2 strata and commercial buildings.",
     cards: [
       {
         label: "Render repair, removal and reinstallation",
