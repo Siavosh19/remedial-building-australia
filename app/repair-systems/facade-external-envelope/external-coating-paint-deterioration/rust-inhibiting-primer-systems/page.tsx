@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { RustInhibitingPrimerIntroSection, RustInhibitingPrimerProductSection } from "./RustInhibitingPrimerProductSection";
 
 export const metadata: Metadata = {
@@ -88,7 +88,33 @@ export default function RustInhibitingPrimerPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><RustInhibitingPrimerIntroSection /><RustInhibitingPrimerProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><RustInhibitingPrimerIntroSection /><RustInhibitingPrimerProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse rust-inhibiting primer systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Alkali-resistant primers — alkali-resistant primers are formulated for concrete and render substrates at high pH; they provide no rust inhibition and should not be applied to ferrous metal",
+                  "UV-resistant enamel topcoats — enamel topcoats are applied over rust-inhibiting primer as the finish coat; the enamel topcoat alone without primer provides no corrosion protection on bare metal",
+                  "Zinc phosphate primer vs zinc-rich primer — these are distinct products: zinc phosphate primers contain 10–15% zinc and work by barrier and passivation; zinc-rich primers contain 75–85% metallic zinc and provide galvanic protection — they are not interchangeable",
+                  "Penetrating consolidant primers — consolidants penetrate and bind friable masonry/render substrates and have no role on metal facades; they provide no rust inhibition",
+                  "Epoxy primer vs alkyd primer — 2-pack epoxy primers and oil-based alkyd primers for metal differ in compatibility, overcoat window, and topcoat requirements; confirm primer type before specifying the topcoat system",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Surface preparation (abrasive blast or mechanical clean to AS 1627) is critical — no rust-inhibiting primer performs adequately over loose rust or mill scale. Confirm DFT, recoat interval and topcoat compatibility from the current manufacturer TDS. Not a substitute for professional advice.</p></div>

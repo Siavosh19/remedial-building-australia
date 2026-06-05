@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { ExteriorEnamelTimberIntroSection, ExteriorEnamelTimberProductSection } from "./ExteriorEnamelTimberProductSection";
 
 export const metadata: Metadata = {
@@ -74,7 +74,33 @@ export default function ExteriorEnamelTimberPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><ExteriorEnamelTimberIntroSection /><ExteriorEnamelTimberProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><ExteriorEnamelTimberIntroSection /><ExteriorEnamelTimberProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse exterior enamel systems for timber with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "UV-resistant enamel systems for metal — metal enamels are formulated for hard, dimensionally stable substrates; timber enamels must accommodate moisture-related wood movement and swelling — they are different product classes even when both are described as 'exterior enamel'",
+                  "Penetrating timber stains and oils — penetrating products absorb into the timber grain and do not form a surface film; they cannot be overcoated with enamel without full strip-back and will not provide the same opacity or film protection as an enamel system",
+                  "Exterior acrylic masonry wall paint — low-sheen exterior acrylic topcoats for concrete and render are not formulated for smooth trim timber; they lack the film hardness and gloss stability required for window frames and timber joinery",
+                  "Timber decking and floor coatings — decking coatings are formulated for horizontal traffic-bearing surfaces with non-slip properties and abrasion resistance; they are not suitable for vertical facade timber elements",
+                  "2-pack polyurethane or epoxy timber coatings — 2-pack systems are used for marine, commercial, or high-traffic timber; they are harder and less flexible than exterior acrylic enamels and may crack on residential facade timber that experiences thermal and moisture movement",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Timber must be sound, dry (moisture content &lt;18%) and free from rot before repainting. All bare timber must be primed before topcoating — acrylic enamel applied direct to bare timber will fail. Confirm primer and recoat requirements from the current manufacturer TDS. Not a substitute for professional advice.</p></div>

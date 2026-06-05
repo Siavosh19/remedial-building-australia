@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { UVResistantEnamelMetalIntroSection, UVResistantEnamelMetalProductSection } from "./UVResistantEnamelMetalProductSection";
 
 export const metadata: Metadata = {
@@ -74,7 +74,33 @@ export default function UVResistantEnamelMetalPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><UVResistantEnamelMetalIntroSection /><UVResistantEnamelMetalProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><UVResistantEnamelMetalIntroSection /><UVResistantEnamelMetalProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse UV-resistant enamel systems for metal with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Rust-inhibiting zinc primers — zinc phosphate and zinc-rich primers are the first coat applied to bare metal before enamel topcoat; the enamel topcoat alone over bare metal provides no corrosion protection — always apply primer first",
+                  "Exterior enamel systems for timber — timber enamels are formulated with greater flexibility to accommodate wood movement and swelling; applying a rigid metal enamel to timber joints and window frames can cause cracking and premature adhesion failure",
+                  "PVDF and fluoropolymer cladding systems — PVDF (Kynar 500) is a factory-applied fluoropolymer for aluminium curtain wall and ACP panels achieving AAMA 2605; site-applied or standard metal enamels are not equivalent and will not achieve 20-year weathering performance on cladding panels",
+                  "2-pack epoxy topcoats — 2-pack epoxy provides excellent adhesion and chemical resistance but is not UV stable outdoors; it yellows and chalks rapidly in exterior exposure — use for internal or below-ground metalwork only, not exterior facade elements",
+                  "Acrylic masonry paint on metal — standard exterior acrylic wall paints are not formulated for metal substrates; they lack the adhesion, hardness and corrosion resistance of metal enamels and will fail prematurely over bare or primed metal",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Enamel topcoat performance is entirely dependent on surface preparation and primer — metal must be prepared to the required cleanliness grade before priming. Confirm topcoat compatibility with primer and recoat interval from the current manufacturer TDS. Not a substitute for professional advice.</p></div>

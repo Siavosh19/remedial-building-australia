@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { BiocideSurfacePrepIntroSection, BiocideSurfacePrepProductSection } from "./BiocideSurfacePrepProductSection";
 
 export const metadata: Metadata = {
@@ -46,7 +46,33 @@ export default function BiocideSurfacePrepPage() {
           </div>
         </section>
         <div className="border-b border-slate-200 bg-white px-8"><div className="mx-auto max-w-7xl"><div className="flex items-stretch gap-0 overflow-x-auto">{SIBLING_GROUPS.map((group, gi) => (<div key={group.heading} className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}><div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">{group.heading}</div><div className="flex items-end">{group.tabs.map((tab) => { const active = tab.slug === ACTIVE_SLUG; return (<a key={tab.slug} href={`${BASE_URL}/${tab.slug}`} className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${active ? "border-red-700 text-sky-950" : "border-transparent text-slate-500 hover:text-sky-900"}`}>{tab.label}</a>); })}</div></div>))}</div></div></div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><BiocideSurfacePrepIntroSection /><BiocideSurfacePrepProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><BiocideSurfacePrepIntroSection /><BiocideSurfacePrepProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse biocide and surface preparation systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Alkali-resistant primers — the alkali primer is the first film-forming coat applied after the surface is washed, dried and treated; the biocide wash must be completed and washed off before primer application begins",
+                  "Penetrating consolidant primers — consolidants bind loose and friable substrate particles to provide a sound base for topcoat; they do not kill mould, algae or lichen and are not a substitute for pre-paint biocide treatment",
+                  "Household bleach or detergent washes — household bleach (sodium hypochlorite) at domestic concentrations is not a registered pre-paint biocide; it may partially kill surface growth but does not provide the dwell time or formulated active needed for coating preparation",
+                  "Mould-resistant paint additives — some topcoats contain in-can biocide additives that resist mould re-growth after painting; these are not a substitute for pre-paint biocide treatment of existing biological contamination",
+                  "Pressure washing alone — high-pressure washing removes loose biological material but does not kill residual spores or root systems embedded in porous substrates; biocide application after washing is required before repainting",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Biocide products must be handled in accordance with the Safety Data Sheet — use appropriate PPE. Biocide residue must be fully washed from the surface before painting. Confirm dilution rate, dwell time and washoff requirements from the current manufacturer TDS.</p></div>

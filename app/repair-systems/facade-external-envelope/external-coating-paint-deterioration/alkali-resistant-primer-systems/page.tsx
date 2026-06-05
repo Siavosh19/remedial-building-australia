@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { AlkaliResistantPrimerIntroSection, AlkaliResistantPrimerProductSection } from "./AlkaliResistantPrimerProductSection";
 
 export const metadata: Metadata = {
@@ -121,6 +121,31 @@ export default function AlkaliResistantPrimerPage() {
           <div className="mx-auto max-w-7xl space-y-10">
             <AlkaliResistantPrimerIntroSection />
             <AlkaliResistantPrimerProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse alkali-resistant primer systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Penetrating consolidant primers — low-viscosity consolidants penetrate to bind friable/chalky substrate particles; alkali-resistant primers are film-forming primers applied to sound fresh concrete or render — different purpose and product class",
+                  "Rust-inhibiting zinc primers — zinc phosphate and zinc-rich primers are formulated for ferrous metal, not concrete or render substrates — applying a metal primer to masonry provides no useful alkali resistance",
+                  "Biocide surface wash — biocide is a pre-paint treatment applied to kill mould and algae, washed off before priming — it is not a primer and does not replace the alkali-resistant coat",
+                  "Standard exterior PVA primers — standard PVA or acrylic sealers are not formulated to resist pH 12–13 from fresh concrete/render and will saponify — only use primers specifically rated for alkaline substrates",
+                  "Anti-carbonation topcoat systems — anti-carbonation coatings are applied as a topcoat to limit CO2 diffusion into concrete and are a different product class from the primer applied before any topcoat",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
           </div>
         </section>
 

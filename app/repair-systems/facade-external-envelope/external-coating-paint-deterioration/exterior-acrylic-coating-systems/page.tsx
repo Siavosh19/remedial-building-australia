@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { ExteriorAcrylicCoatingIntroSection, ExteriorAcrylicCoatingProductSection } from "./ExteriorAcrylicCoatingProductSection";
 
 export const metadata: Metadata = {
@@ -74,7 +74,38 @@ export default function ExteriorAcrylicCoatingPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><ExteriorAcrylicCoatingIntroSection /><ExteriorAcrylicCoatingProductSection /></div></section>
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl space-y-10">
+            <ExteriorAcrylicCoatingIntroSection />
+            <ExteriorAcrylicCoatingProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse exterior acrylic coating systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Elastomeric coating systems — thicker, high-build crack-bridging membranes formulated to bridge active hairline movement cracks — listed on the elastomeric coating systems page — different product class from standard two-coat acrylic topcoats",
+                  "Elastomeric crack-bridging coatings — highly flexible bridge coatings applied specifically over render and masonry with active fine cracking — listed on the elastomeric crack-bridging coating page",
+                  "Penetrating silane/siloxane water repellents — colourless, breathable water repellents that penetrate the substrate without forming a film or changing appearance — not a topcoat — listed on the penetrating silane/siloxane page",
+                  "PVDF and fluoropolymer recoating systems — specialist two-pack fluoropolymer coatings applied to aluminium cladding panels and metal facades — not suitable for render or masonry substrates — listed under cladding metal panel recoating",
+                  "Texture coatings — factory-blended acrylic/cement coatings containing aggregate, applied to produce a roughcast or textured finish — a different product class from smooth-finish acrylic topcoats",
+                  "Alkali-resistant primers — the first coat applied to fresh render and masonry to seal and prepare the substrate for topcoat — not a topcoat system — listed on the alkali-resistant primer systems page",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+        </section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Topcoat system must be compatible with the primer used — confirm with manufacturer TDS. Exterior acrylics require a minimum application temperature of 10°C and should not be applied in direct sun or on hot substrates. Not a substitute for professional advice.</p></div>

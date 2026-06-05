@@ -1,348 +1,550 @@
 "use client";
-import { useState } from "react";
-import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+
+import { useState, useRef } from "react";
+import {
+  CheckCircle, AlertTriangle, BookOpen, Layers, SquareStack,
+  Ruler, ExternalLink, ChevronDown, ChevronUp,
+  XCircle, ChevronLeft, ChevronRight, FileText,
+} from "lucide-react";
 
 type FilterTag =
   | "Rust-inhibiting"
-  | "Metal-primer"
-  | "Ferrous-metal"
-  | "Zinc-phosphate"
+  | "Primer"
+  | "Metal"
+  | "Steel"
+  | "Iron"
+  | "Zinc"
+  | "Coastal"
   | "Solvent-based"
   | "Water-based"
-  | "Anti-corrosion"
-  | "Structural-steel";
+  | "Etch-primer"
+  | "Zinc-phosphate";
 
 type Product = {
-  fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string;
-  name: string; descriptionLine: string; productType: string;
-  filterTags: FilterTag[]; techChips: { label: string; cls: string }[];
-  systemDescription: string; technicalProperties: string[];
-  limitations: string[]; procurementSources: { name: string; url: string }[];
+  fullLabel: string;
+  brandUrl: string;
+  tdsUrl?: string;
+  accentColor: string;
+  name: string;
+  descriptionLine: string;
+  productType: string;
+  filterTags: FilterTag[];
+  techChips: { label: string; cls: string }[];
+  systemDescription: string;
+  technicalProperties: string[];
+  limitations: string[];
+  procurementSources: { name: string; url: string }[];
 };
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Dulux — Dulux Metalshield Rust Inhibitor Primer",
+    fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/metal-primers",
+    tdsUrl: "https://www.dulux.com.au/products/trade/metal",
     accentColor: "#e2003a",
-    name: "Dulux Metalshield Rust Inhibitor Primer",
-    descriptionLine: "High-build rust-inhibiting primer for ferrous metal providing zinc phosphate anti-corrosion protection on structural steel and metal facade elements",
-    productType: "Zinc phosphate rust-inhibiting primer",
-    filterTags: ["Rust-inhibiting", "Metal-primer", "Ferrous-metal", "Zinc-phosphate", "Solvent-based", "Anti-corrosion", "Structural-steel", "Water-based"],
+    name: "Dulux Metalshield Rust & Metal Primer",
+    descriptionLine: "Rust-inhibiting primer for ferrous metal — steel lintels, balustrades, window frames and metal facade elements — zinc phosphate inhibitor — water-based — compatible with Dulux metal topcoat systems",
+    productType: "Rust-inhibiting acrylic primer — ferrous metal — exterior",
+    filterTags: ["Rust-inhibiting", "Primer", "Metal", "Steel", "Iron", "Zinc-phosphate", "Water-based", "Coastal"],
     techChips: [
-      { label: "Zinc phosphate", cls: "bg-gray-100 text-gray-700" },
-      { label: "Rust-inhibiting", cls: "bg-orange-100 text-orange-700" },
-      { label: "High-build", cls: "bg-blue-100 text-blue-700" },
+      { label: "Rust-inhibiting", cls: "bg-red-100 text-red-800" },
+      { label: "Zinc phosphate", cls: "bg-amber-100 text-amber-700" },
+      { label: "Water-based", cls: "bg-blue-100 text-blue-700" },
+      { label: "Ferrous metal", cls: "bg-slate-100 text-slate-700" },
     ],
-    systemDescription: "Dulux Metalshield is a zinc phosphate rust-inhibiting primer for ferrous metal substrates. It provides active corrosion inhibition via zinc phosphate pigmentation and forms a high-build primer film that fills minor surface imperfections. It is widely specified for structural steelwork, metal window frames, balustrades, and cladding fixings on building facades before topcoat application.",
+    systemDescription:
+      "Dulux Metalshield Rust & Metal Primer is a water-based rust-inhibiting primer for ferrous metal elements on facade and balcony structures — steel lintels, balustrade posts and rails, window frames, metal fascia and architectural metalwork. The zinc phosphate rust inhibitor passivates bare steel surfaces and provides a corrosion-resistant bond coat for the subsequent enamel or metal topcoat. Surface preparation is critical — all rust, mill scale, and contamination must be removed before priming (minimum St 2 hand tool cleaning, ideally Sa 2.5 abrasive blasting for severely corroded elements). The primer must be applied to clean, dry metal and topcoated within the manufacturer's overcoat window. Confirm the current DFT, coverage rate, surface preparation standard, and topcoat system compatibility from the current Dulux Metalshield TDS before specifying.",
     technicalProperties: [
-      "Active ingredient: zinc phosphate anti-corrosion pigment",
-      "DFT: 40–60 µm per coat",
-      "Coverage: ~10–12 m²/L at recommended DFT",
-      "Topcoat compatibility: compatible with alkyd, acrylic, and epoxy topcoats",
-      "Recoat time: 4–8 h",
+      "Rust inhibitor: zinc phosphate — passivates bare ferrous metal surface",
+      "Water-based — low VOC — can be used in occupied and enclosed areas",
+      "DFT: typically 25–40 µm — confirm from current Dulux TDS",
+      "Compatible with Dulux Metalshield enamel topcoat system",
+      "Requires clean, dry metal surface — remove all rust and mill scale before application",
+      "Confirm current coverage rate and overcoat window from Dulux TDS",
     ],
     limitations: [
-      "Substrate must be prepared to minimum Sa 2 (commercial blast) or St 3 (power tool clean) for best corrosion resistance",
-      "Not suitable for non-ferrous metals — use appropriate etching primer for aluminium or zinc",
-      "Zinc phosphate primers perform best when followed by a compatible barrier topcoat system",
+      "Requires thorough surface preparation — rust and mill scale must be removed before priming",
+      "Not suitable for non-ferrous metals — confirm suitability for aluminium, zinc, and galvanised steel",
+      "Not a rust converter — does not convert existing rust — remove before application",
+      "Must be topcoated within manufacturer's overcoat window",
     ],
     procurementSources: [
-      { name: "Dulux Trade — Metal Primers", url: "https://www.dulux.com.au" },
+      { name: "Dulux Trade — Product Finder", url: "https://www.dulux.com.au" },
+      { name: "Dulux Trade Centres — national", url: "https://www.dulux.com.au" },
       { name: "Bunnings Trade", url: "https://www.bunnings.com.au" },
     ],
   },
   {
-    fullLabel: "Wattyl — Wattyl Killrust Epoxy Primer",
+    fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en/wattyl-killrust",
-    accentColor: "#cc0000",
-    name: "Wattyl Killrust Epoxy Primer",
-    descriptionLine: "Two-component epoxy rust-inhibiting primer delivering superior corrosion resistance for structural steel and metal building components in aggressive environments",
-    productType: "Two-component epoxy rust-inhibiting primer",
-    filterTags: ["Rust-inhibiting", "Metal-primer", "Ferrous-metal", "Anti-corrosion", "Structural-steel", "Zinc-phosphate", "Solvent-based", "Water-based"],
+    tdsUrl: "https://www.wattyl.com.au/en_AU/products/metal",
+    accentColor: "#0369a1",
+    name: "Wattyl Killrust Primer",
+    descriptionLine: "Wattyl Killrust rust-inhibiting primer — Australia's most established metal primer range — rust-inhibiting formulation for ferrous metal facade elements — strong adhesion on prepared steel",
+    productType: "Rust-inhibiting primer — ferrous metal — Killrust system",
+    filterTags: ["Rust-inhibiting", "Primer", "Metal", "Steel", "Iron", "Zinc-phosphate", "Coastal"],
     techChips: [
-      { label: "Epoxy 2K", cls: "bg-red-100 text-red-700" },
-      { label: "Anti-corrosion", cls: "bg-orange-100 text-orange-700" },
-      { label: "Aggressive env.", cls: "bg-gray-100 text-gray-700" },
+      { label: "Killrust system", cls: "bg-sky-100 text-sky-800" },
+      { label: "Rust-inhibiting", cls: "bg-amber-100 text-amber-700" },
+      { label: "Ferrous metal", cls: "bg-slate-100 text-slate-700" },
+      { label: "Coastal rated", cls: "bg-green-100 text-green-700" },
     ],
-    systemDescription: "Wattyl Killrust Epoxy Primer is a two-component epoxy system providing superior corrosion inhibition on structural steelwork and metal facade components exposed to marine or industrial atmospheric environments. The crosslinked epoxy matrix forms an extremely hard, chemically resistant primer film that acts as a barrier coat before anti-corrosion topcoat systems.",
+    systemDescription:
+      "Wattyl Killrust Primer is part of Australia's most established rust-inhibiting paint range for steel and ferrous metal elements in architectural and industrial applications. Killrust products have a long history of use on steel facade elements, balustrades, gates, and metalwork in Australian residential and commercial buildings. The rust-inhibiting primer is formulated to provide excellent adhesion to properly prepared steel and acts as the corrosion-resistant bond coat for subsequent Killrust enamel topcoat application. Wattyl Killrust is widely available through Bunnings, trade paint centres and independent paint retailers nationally. Confirm the current product designation, coverage rate, surface preparation standard, and topcoat system from the current Wattyl Killrust TDS before specifying. Wattyl has both solvent-based and water-based versions in the Killrust range — confirm the appropriate product for the application.",
     technicalProperties: [
-      "Components: Part A (epoxy base) + Part B (polyamide hardener)",
-      "DFT: 50–75 µm per coat",
-      "Pot life: ~4 h at 23 °C",
-      "Hardness: high — fully crosslinked epoxy network",
-      "Topcoat requirement: UV-stable topcoat required (epoxy chalks in UV)",
+      "Rust-inhibiting formulation — well-proven Australian product on steel and ferrous metal",
+      "Available in solvent-based and water-based formulations — confirm appropriate product",
+      "Strong adhesion to clean, prepared ferrous metal",
+      "DFT and coverage: confirm from current Wattyl Killrust Primer TDS",
+      "Compatible with Wattyl Killrust enamel topcoat system",
+      "Suitable for coastal environments — confirm marine-grade suitability with Wattyl technical",
     ],
     limitations: [
-      "Two-component system — pot life must be observed; do not use mixed product past pot life",
-      "Epoxy chalks in UV exposure — must be overcoated with UV-stable topcoat",
-      "Not suitable for direct-to-substrate application over non-ferrous metals without etch primer",
+      "Requires thorough surface preparation — remove all rust, scale and contamination before priming",
+      "Confirm solvent-based vs water-based variant for the specific application",
+      "Must be topcoated with compatible Killrust system — confirm system compatibility",
+      "Coastal applications may require marine-grade variant — confirm with Wattyl technical",
     ],
     procurementSources: [
-      { name: "Wattyl — Killrust Range", url: "https://www.wattyl.com.au" },
-      { name: "Bunnings Trade", url: "https://www.bunnings.com.au" },
+      { name: "Wattyl Killrust — Product Range", url: "https://www.wattyl.com.au" },
+      { name: "Bunnings — national retail and trade", url: "https://www.bunnings.com.au" },
+      { name: "Wattyl Trade Centres — national", url: "https://www.wattyl.com.au" },
     ],
   },
   {
-    fullLabel: "Rust-Oleum — Rust-Oleum Professional Rust Inhibitor Primer",
-    brandUrl: "https://www.rustoleum.com.au",
-    tdsUrl: "https://www.rustoleum.com.au/products/professional",
-    accentColor: "#d4a017",
-    name: "Rust-Oleum Professional Rust Inhibitor Primer",
-    descriptionLine: "Oil-based rust-inhibiting primer for ferrous metals providing active rust prevention and excellent adhesion for exterior topcoat systems on building metalwork",
-    productType: "Oil-based rust-inhibiting primer",
-    filterTags: ["Rust-inhibiting", "Metal-primer", "Ferrous-metal", "Anti-corrosion", "Solvent-based", "Zinc-phosphate", "Structural-steel", "Water-based"],
+    fullLabel: "Haymes Paint Australia",
+    brandUrl: "https://www.haymespaint.com.au",
+    tdsUrl: "https://www.haymespaint.com.au/products/metal",
+    accentColor: "#7c3aed",
+    name: "Haymes Metal Guard Rust Inhibiting Primer",
+    descriptionLine: "Australian-made rust-inhibiting primer for steel and ferrous metal — zinc phosphate inhibitor — suitable for exterior metal facade elements, balustrades and steel window frames",
+    productType: "Rust-inhibiting primer — ferrous metal — Australian-made",
+    filterTags: ["Rust-inhibiting", "Primer", "Metal", "Steel", "Iron", "Zinc-phosphate", "Water-based"],
     techChips: [
-      { label: "Oil-based", cls: "bg-amber-100 text-amber-700" },
-      { label: "Rust-inhibiting", cls: "bg-orange-100 text-orange-700" },
-      { label: "Professional", cls: "bg-gray-100 text-gray-700" },
+      { label: "Australian-made", cls: "bg-purple-100 text-purple-800" },
+      { label: "Zinc phosphate", cls: "bg-amber-100 text-amber-700" },
+      { label: "Rust-inhibiting", cls: "bg-slate-100 text-slate-700" },
     ],
-    systemDescription: "Rust-Oleum Professional Primer provides oil-based rust-inhibiting protection for ferrous metal substrates on building facades, balustrades, structural steelwork, and metal fixings. The oil-based formulation provides excellent wetting of metal surfaces, even those with minor surface oxidation, delivering reliable adhesion and corrosion resistance as the base for full paint systems.",
+    systemDescription:
+      "Haymes Metal Guard Rust Inhibiting Primer is an Australian-manufactured rust-inhibiting primer for steel and ferrous metal elements. It incorporates a zinc phosphate rust inhibitor and is formulated to provide strong adhesion to prepared bare metal and sound existing coatings. Suitable for steel balustrades, window frames, lintels, and metal fascia on Class 2 strata and commercial buildings. Haymes has strong trade distribution in Victoria and southern Australia. Confirm the current product range, DFT, coverage rate, and topcoat compatibility from the current Haymes Metal Guard TDS before specifying.",
     technicalProperties: [
-      "Base: oil-modified alkyd resin",
-      "DFT: 35–50 µm per coat",
-      "Coverage: ~12–14 m²/L",
-      "Dry time (touch): 2–3 h",
-      "Dry time (recoat): 24 h",
+      "Zinc phosphate rust inhibitor — passivates and stabilises prepared steel surface",
+      "Australian-manufactured — tested for Australian exterior metal conditions",
+      "Water-based — low VOC — suitable for use in occupied environments",
+      "DFT and coverage: confirm from current Haymes TDS",
+      "Compatible with Haymes exterior enamel topcoat systems",
     ],
     limitations: [
-      "Longer recoat time compared to water-based alternatives — plan scheduling accordingly",
-      "Not suitable for surfaces with active rust scale — mechanically remove scale before application",
-      "Solvent-based — check local VOC compliance for interior or confined-space applications",
+      "Haymes distribution strongest in VIC and regional — confirm local availability",
+      "Requires clean, rust-free metal surface before application",
+      "Not suitable as a rust converter — remove active rust before priming",
+      "Topcoat within manufacturer's overcoat window",
     ],
     procurementSources: [
-      { name: "Rust-Oleum Australia", url: "https://www.rustoleum.com.au" },
-      { name: "Bunnings", url: "https://www.bunnings.com.au" },
+      { name: "Haymes Paint Trade — Where to Buy", url: "https://www.haymespaint.com.au" },
+      { name: "Haymes Trade Centres — VIC/NSW", url: "https://www.haymespaint.com.au" },
+      { name: "Independent paint retailers — confirm local availability", url: "https://www.haymespaint.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Taubmans Australia",
+    brandUrl: "https://www.taubmans.com.au",
+    tdsUrl: "https://www.taubmans.com.au/products/metal",
+    accentColor: "#b45309",
+    name: "Taubmans All Weather Metal Primer",
+    descriptionLine: "All-weather rust-inhibiting primer for ferrous metal facade elements — formulated for Australian conditions — wide availability through Bunnings and trade suppliers nationally",
+    productType: "Rust-inhibiting metal primer — exterior — all-weather",
+    filterTags: ["Rust-inhibiting", "Primer", "Metal", "Steel", "Iron", "Water-based", "Coastal"],
+    techChips: [
+      { label: "All-weather", cls: "bg-amber-100 text-amber-800" },
+      { label: "Rust-inhibiting", cls: "bg-amber-100 text-amber-700" },
+      { label: "Wide availability", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Taubmans All Weather Metal Primer is a rust-inhibiting primer for steel and ferrous metal elements with wide availability through Bunnings and national trade paint outlets. It provides a rust-inhibiting bond coat for subsequent exterior enamel topcoat application on metal facade elements including balustrade rails, window frames, lintels and metal fascia. Confirm the current product designation, DFT, surface preparation requirements, and topcoat compatibility from the current Taubmans TDS before specifying.",
+    technicalProperties: [
+      "Rust-inhibiting formulation — suitable for ferrous metal exterior facade elements",
+      "Wide national availability through Bunnings and trade outlets",
+      "Water-based — low VOC",
+      "Confirm DFT, coverage and overcoat window from current Taubmans TDS",
+      "Compatible with Taubmans All Weather exterior enamel topcoat",
+    ],
+    limitations: [
+      "Requires clean, rust-free metal before application",
+      "Confirm current product formulation from Taubmans before specifying",
+      "Not a standalone rust treatment — remove active rust before priming",
+    ],
+    procurementSources: [
+      { name: "Taubmans — Product Finder", url: "https://www.taubmans.com.au" },
+      { name: "Bunnings — national trade and retail", url: "https://www.bunnings.com.au" },
+      { name: "Inspirations Paint — stockist", url: "https://www.inspirationspaint.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Solver Paints Australia",
+    brandUrl: "https://www.solverpaints.com.au",
+    tdsUrl: "https://www.solverpaints.com.au/products/metal",
+    accentColor: "#059669",
+    name: "Solver Metal Primer",
+    descriptionLine: "Rust-inhibiting metal primer for steel and ferrous metal facade elements — compatible with Solver exterior enamel and metal topcoat systems",
+    productType: "Rust-inhibiting metal primer — ferrous metal — exterior",
+    filterTags: ["Rust-inhibiting", "Primer", "Metal", "Steel", "Iron", "Zinc-phosphate"],
+    techChips: [
+      { label: "Rust-inhibiting", cls: "bg-emerald-100 text-emerald-800" },
+      { label: "Metal primer", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ferrous metal", cls: "bg-amber-100 text-amber-700" },
+    ],
+    systemDescription:
+      "Solver Metal Primer is a rust-inhibiting primer for steel and ferrous metal elements in exterior facade applications. It provides a rust-resistant bond coat for Solver exterior enamel and metal coating systems on balustrades, window frames, lintels and other metal facade elements. Solver Paints is available through independent paint retailers and trade outlets in eastern Australia. Confirm the current product designation, DFT, and topcoat compatibility from the current Solver TDS before specifying.",
+    technicalProperties: [
+      "Rust-inhibiting formulation — suitable for prepared steel and ferrous metal",
+      "Compatible with Solver exterior metal and enamel topcoat systems",
+      "Confirm DFT and coverage from current Solver TDS",
+      "Available through independent trade paint retailers in eastern Australia",
+    ],
+    limitations: [
+      "Available primarily through independent trade retailers — confirm local availability",
+      "Requires clean, rust-free metal surface before application",
+      "Topcoat within manufacturer's specified overcoat window",
+    ],
+    procurementSources: [
+      { name: "Solver Paints — Product Finder", url: "https://www.solverpaints.com.au" },
+      { name: "Independent trade paint retailers — confirm local stock", url: "https://www.solverpaints.com.au" },
+    ],
+  },
+  {
+    fullLabel: "International Coatings (AkzoNobel)",
+    brandUrl: "https://www.international-pc.com/en-au",
+    tdsUrl: "https://www.international-pc.com/en-au/products",
+    accentColor: "#dc2626",
+    name: "International Intergard 269 Primer",
+    descriptionLine: "High-performance two-pack epoxy primer for steel and ferrous metal — commercial and industrial grade — superior corrosion resistance for coastal and aggressive environments",
+    productType: "Two-pack epoxy primer — high-performance — commercial and industrial metal",
+    filterTags: ["Rust-inhibiting", "Primer", "Metal", "Steel", "Iron", "Zinc", "Coastal", "Etch-primer"],
+    techChips: [
+      { label: "Epoxy primer", cls: "bg-red-100 text-red-800" },
+      { label: "Two-pack", cls: "bg-slate-100 text-slate-700" },
+      { label: "Coastal grade", cls: "bg-sky-100 text-sky-800" },
+      { label: "Commercial grade", cls: "bg-amber-100 text-amber-700" },
+    ],
+    systemDescription:
+      "International Intergard 269 is a high-performance two-pack epoxy primer by AkzoNobel for steel and ferrous metal in commercial and industrial applications. It provides superior corrosion resistance compared to single-component primers and is suitable for coastal, marine and aggressive atmospheric environments where standard single-pack primers have insufficient corrosion resistance. Used on steel facade elements of commercial buildings, Class 2 strata exposed metal works, and high-exposure coastal balustrades and structures. Two-pack epoxy system — requires specialist applicator — mixing ratio must be followed exactly. Confirm DFT, pot life, overcoat window and topcoat system compatibility from the current International TDS before specifying.",
+    technicalProperties: [
+      "Two-pack epoxy — superior corrosion resistance vs single-component primers",
+      "Suitable for coastal and marine environments — high atmospheric corrosion resistance",
+      "DFT: confirm from International TDS — typically higher build than single-pack primers",
+      "Specialist applicator required — two-pack mixing and application",
+      "Compatible with International protective topcoat systems",
+      "Confirm pot life, overcoat window and full system from International technical",
+    ],
+    limitations: [
+      "Two-pack system — requires specialist applicator — not for standard trade application",
+      "Pot life limited — mix only what can be applied within manufacturer's pot life",
+      "Higher cost than single-component primers — justify for high-exposure or commercial applications",
+      "Confirm topcoat compatibility — two-pack epoxy may require specific topcoat from same system",
+    ],
+    procurementSources: [
+      { name: "International Coatings — Australia", url: "https://www.international-pc.com/en-au" },
+      { name: "Parchem Construction Supplies — nationally", url: "https://www.parchem.com.au" },
+      { name: "Commercial coating suppliers — confirm local availability", url: "https://www.international-pc.com/en-au" },
     ],
   },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
   { id: "Rust-inhibiting", label: "Rust-inhibiting" },
-  { id: "Metal-primer", label: "Metal primer" },
-  { id: "Ferrous-metal", label: "Ferrous metal" },
-  { id: "Zinc-phosphate", label: "Zinc phosphate" },
+  { id: "Primer", label: "Primer" },
+  { id: "Metal", label: "Metal" },
+  { id: "Steel", label: "Steel" },
+  { id: "Iron", label: "Iron" },
+  { id: "Zinc", label: "Zinc" },
+  { id: "Coastal", label: "Coastal" },
   { id: "Solvent-based", label: "Solvent-based" },
   { id: "Water-based", label: "Water-based" },
-  { id: "Anti-corrosion", label: "Anti-corrosion" },
-  { id: "Structural-steel", label: "Structural steel" },
+  { id: "Etch-primer", label: "Etch primer" },
+  { id: "Zinc-phosphate", label: "Zinc phosphate" },
 ];
 
-const COMPARISON_ROWS = [
-  { product: "Dulux Metalshield Rust Inhibitor", brand: "Dulux", type: "Zinc phosphate", dft: "40–60 µm", recoat: "4–8 h", mechanism: "Zinc phosphate pigment", keyFeature: "High-build, single component" },
-  { product: "Wattyl Killrust Epoxy Primer", brand: "Wattyl", type: "2K epoxy", dft: "50–75 µm", recoat: "Depends on temp", mechanism: "Crosslinked epoxy barrier", keyFeature: "Maximum corrosion resistance" },
-  { product: "Rust-Oleum Professional Primer", brand: "Rust-Oleum", type: "Oil-based alkyd", dft: "35–50 µm", recoat: "24 h", mechanism: "Oil-based wetting + pigment", keyFeature: "Excellent metal wetting" },
+const SYSTEM_COMPARISON: {
+  product: string;
+  brand: string;
+  type: string;
+  binder: string;
+  rustInhibitor: string;
+  substrate: string;
+  coastal: string;
+  topcoatCompat: string;
+}[] = [
+  { product: "Metalshield Rust & Metal Primer", brand: "Dulux", type: "Single-pack", binder: "Acrylic", rustInhibitor: "Zinc phosphate", substrate: "Ferrous metal", coastal: "Yes", topcoatCompat: "Dulux Metalshield enamel" },
+  { product: "Killrust Primer", brand: "Wattyl", type: "Single-pack", binder: "Acrylic / alkyd", rustInhibitor: "Rust inhibitor", substrate: "Ferrous metal", coastal: "Yes — confirm marine grade", topcoatCompat: "Wattyl Killrust enamel" },
+  { product: "Metal Guard Primer", brand: "Haymes", type: "Single-pack", binder: "Acrylic", rustInhibitor: "Zinc phosphate", substrate: "Ferrous metal", coastal: "Confirm TDS", topcoatCompat: "Haymes enamel systems" },
+  { product: "All Weather Metal Primer", brand: "Taubmans", type: "Single-pack", binder: "Acrylic", rustInhibitor: "Rust inhibitor", substrate: "Ferrous metal", coastal: "Yes", topcoatCompat: "Taubmans enamel" },
+  { product: "Metal Primer", brand: "Solver", type: "Single-pack", binder: "Acrylic", rustInhibitor: "Rust inhibitor", substrate: "Ferrous metal", coastal: "Confirm TDS", topcoatCompat: "Solver metal systems" },
+  { product: "Intergard 269", brand: "International", type: "Two-pack epoxy", binder: "Epoxy", rustInhibitor: "Epoxy barrier", substrate: "Ferrous metal", coastal: "Yes — marine grade", topcoatCompat: "International protective topcoats" },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Structural steelwork on balconies, walkways, and facade support frames",
-    "Metal window and door frames before exterior repaint",
-    "Steel balustrades, handrails, and grilles",
-    "Metal cladding fixings and brackets before coating",
+    "Priming bare steel lintels, balustrade posts and handrails on Class 2 strata balconies before enamel topcoat",
+    "Priming steel window frames and aluminium window frames (confirm suitability) before exterior enamel",
+    "Priming metal fascia, gutters and architectural metalwork before exterior topcoat",
+    "Re-priming corroded metal facade elements after mechanical rust removal and surface preparation",
+    "Priming new galvanised steel after weathering (minimum 12 months) or acid etching",
   ],
   selectionCriteria: [
-    "Two-component epoxy primers for aggressive marine and industrial environments",
-    "Zinc phosphate single-component primers for normal to moderate exposure",
-    "Oil-based primers where surface is slightly oxidised and cannot be blasted",
-    "Check AS/NZS 2312 for corrosion category to guide primer selection",
+    "Remove all existing rust to bare metal before priming — rust-inhibiting primer does NOT convert or seal over active rust",
+    "Use minimum St 2 hand tool cleaning; Sa 2.5 abrasive blasting recommended for severely corroded elements in coastal environments",
+    "Select a marine-grade or two-pack epoxy primer for coastal (< 1 km from salt water) and tropical environments",
+    "Confirm primer compatibility with the intended topcoat — use same-brand system where possible for warranty coverage",
+    "For galvanised steel, specify etch primer — zinc phosphate primer may not adhere to galvanised surfaces without etching",
+    "For aluminium, specify an appropriate aluminium primer — standard steel primers may not adhere correctly",
   ],
   limitations: [
-    "All rust-inhibiting primers require proper surface preparation — no primer compensates for scale, grease, or weld spatter",
-    "Minimum surface cleanliness: Sa 2 (blast) or St 3 (power tool) for meaningful corrosion protection",
-    "Epoxy primers require UV-stable topcoat — exposed epoxy degrades rapidly in sunlight",
-    "Do not apply in rain or to wet metal — moisture trapping under primer leads to early failure",
+    "Rust-inhibiting primers are NOT rust converters — do not apply over active rust or loose scale",
+    "Do not apply to wet metal or in rain — surface moisture causes adhesion failure",
+    "Alkali-resistant primers are different products — do not use metal primers on concrete or render",
+    "Standard single-pack primers have limited service life in coastal marine environments — specify two-pack epoxy for high-exposure applications",
+    "Must be topcoated within manufacturer's overcoat window — long exposure of primer coat reduces adhesion of topcoat",
   ],
   standardsNotes: [
-    "AS/NZS 2312:2014 — Guide to the protection of structural steel against atmospheric corrosion",
-    "ISO 8501-1 — Surface preparation standards for steel (Sa 1, Sa 2, Sa 2½, Sa 3)",
-    "AS 3715 — Metal finishing — electroplating of zinc (relevant for galvanised substrates)",
-    "NATSPEC: Section 0332 — Metal painting and coating systems",
+    "AS 1627.4 — Metal finishing — preparation and pretreatment of surfaces — hand tool and power tool cleaning",
+    "AS 1627.9 — Abrasive blast cleaning — surface preparation standards (Sa 2.5 for most corrosion applications)",
+    "AS/NZS 2312.1 — Guide to the protection of structural steel against atmospheric corrosion using protective coatings",
+    "ISO 12944 — Corrosion protection of steel structures by protective paint systems",
+    "Manufacturer TDS — confirm DFT, surface preparation standard, coating interval and topcoat compatibility",
   ],
   suitableDefects: [
-    "Corrosion and rust staining on metal facade elements",
-    "Peeling paint on structural steelwork requiring full repaint",
-    "Metal fixings and brackets showing oxidation",
-    "Pre-treatment of new uncoated steel before installation",
+    "Corroded steel lintels and structural metal elements on masonry facades — after rust removal",
+    "Rusting balustrade posts, rails and handrails on Class 2 strata balconies",
+    "Corroded steel window frames with coating failure and active rust",
+    "New or replacement steel metalwork requiring factory or on-site priming before installation",
+    "Re-painting of existing metal facade elements where coating has failed and bare metal is exposed",
   ],
   typicalSubstrates: [
-    "Structural steel — hollow sections, plates, angles",
-    "Mild steel window and door frames",
-    "Cast iron components on heritage facades",
-    "Galvanised steel — requires wash primer or etch primer before rust-inhibiting coat",
+    "Ferrous metal — mild steel structural sections, sheet steel, tubular sections",
+    "Wrought and cast iron — confirm primer compatibility with specific substrate",
+    "Galvanised steel — requires etch primer or specific galv primer — confirm compatibility",
+    "NOT for aluminium without specific aluminium primer — standard steel rust primers may not adhere",
+    "NOT for timber, concrete or render — use the correct primer class for those substrates",
   ],
 };
 
-function CollapsibleSources({ sources }: { sources: { name: string; url: string }[] }) {
-  const [open, setOpen] = useState(false);
+function CollapsibleList({ items, icon, limit = 3 }: { items: string[]; icon: "check" | "x"; limit?: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Procurement Sources</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && <ul className="px-4 py-3 space-y-2 bg-white">{sources.map((s, i) => <li key={i}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline flex items-center gap-1">{s.name}<ExternalLink className="w-3 h-3" /></a></li>)}</ul>}
-    </div>
-  );
-}
-
-function CollapsibleCardDetails({ product }: { product: Product }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="mt-3 border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Technical Details</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && (
-        <div className="px-4 py-3 space-y-3 bg-white">
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">System Description</p><p className="text-sm text-gray-700">{product.systemDescription}</p></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Technical Properties</p><ul className="space-y-1">{product.technicalProperties.map((p, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-blue-600 mt-0.5">•</span>{p}</li>)}</ul></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Limitations</p><ul className="space-y-1">{product.limitations.map((l, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-amber-500 mt-0.5">⚠</span>{l}</li>)}</ul></div>
-          <CollapsibleSources sources={product.procurementSources} />
-        </div>
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" /> : <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button onClick={() => setExpanded((e) => !e)} className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600">
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
       )}
     </div>
   );
 }
 
-function CollapsibleDescription({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-  const short = text.length > 120 ? text.slice(0, 120) + "…" : text;
-  if (text.length <= 120) return <p className="text-sm text-gray-600 mt-1">{text}</p>;
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="mt-1">
-      <p className="text-sm text-gray-600">{open ? text : short}</p>
-      <button onClick={() => setOpen(!open)} className="text-xs text-blue-600 hover:underline mt-0.5">{open ? "Show less" : "Read more"}</button>
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button onClick={() => setExpanded((e) => !e)} className="text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide ↑" : "See more ↓"}</button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div key={src.name} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs">
+              {src.url ? <a href={src.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900">{src.name}<ExternalLink size={9} className="text-slate-300" /></a> : <span className="font-semibold text-slate-600">{src.name}</span>}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">Confirm suitability with the current manufacturer TDS before specifying or applying.</p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({ text, chips }: { text: string; chips: { label: string; cls: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (<><p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>{chips.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{chips.map((chip) => <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>{chip.label}</span>)}</div>}</>)}
+      <button onClick={() => setExpanded((e) => !e)} className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide details ↑" : "Show details ↓"}</button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p>
+      <button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button>
     </div>
   );
 }
 
 export function RustInhibitingPrimerIntroSection() {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-2">Rust-Inhibiting Primer Systems</h2>
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">
-        Rust-inhibiting primers are specified for ferrous metal elements on building facades — structural steelwork, metal frames, balustrades, and fixings — to prevent corrosion and provide adhesion for topcoat paint systems. They use active anti-corrosion pigments (zinc phosphate, zinc chromate-free alternatives) or barrier mechanisms (epoxy) to interrupt the corrosion cell. Substrate preparation to a defined cleanliness standard is the most critical factor in primer performance.
-      </p>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[
-          { label: "Substrate", value: "Ferrous metal" },
-          { label: "Mechanism", value: "Zinc phosphate / epoxy" },
-          { label: "DFT", value: "35–75 µm" },
-          { label: "Prep standard", value: "Sa 2 / St 3" },
-        ].map((s) => (
-          <div key={s.label} className="bg-orange-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-orange-600 font-medium mb-1">{s.label}</p>
-            <p className="text-sm font-bold text-orange-900">{s.value}</p>
-          </div>
-        ))}
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div>
+        <h3 className="text-base font-extrabold text-sky-950">What are rust-inhibiting primer systems?</h3>
       </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>Rust-inhibiting primers are the mandatory first coat on ferrous metal elements before any exterior enamel or protective topcoat. Bare steel begins to oxidise rapidly on contact with moisture and oxygen — without a rust-inhibiting primer, even premium exterior enamels will delaminate and fail within months as the corrosion product (rust) expands under the film. Zinc phosphate and epoxy-based inhibitors passivate the metal surface and provide a corrosion-resistant bond coat for the topcoat.</p>
+        {expanded && (<>
+          <p>Surface preparation is the most critical variable in metal coating performance — inadequate rust removal is the primary cause of premature failure of metal coatings on facade elements. At minimum, all rust and mill scale must be removed to St 2 standard (hand tool cleaning) before priming; for coastal or aggressive exposures, abrasive blast cleaning to Sa 2.5 is strongly recommended. The primer must be applied to clean, dry metal and topcoated within the manufacturer's specified overcoat window.</p>
+          <p>In coastal environments (within 1 km of salt water), standard single-component primers have limited service life. Specify two-pack epoxy primers and seek marine-grade system recommendations from the manufacturer. Galvanised steel and aluminium require specific primers (etch primer or aluminium primer) — standard steel rust-inhibiting primers may not adhere correctly to these substrates.</p>
+        </>)}
+      </div>
+      <button onClick={() => setExpanded((e) => !e)} className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900">{expanded ? "Read less ↑" : "Read more ↓"}</button>
     </div>
   );
 }
 
-function TechCard({ title, color, items }: { title: string; color: string; items: string[] }) {
-  const map: Record<string, { bg: string; border: string; head: string; dot: string }> = {
-    blue: { bg: "bg-blue-50", border: "border-blue-200", head: "text-blue-800", dot: "text-blue-500" },
-    green: { bg: "bg-green-50", border: "border-green-200", head: "text-green-800", dot: "text-green-500" },
-    amber: { bg: "bg-amber-50", border: "border-amber-200", head: "text-amber-800", dot: "text-amber-500" },
-    purple: { bg: "bg-purple-50", border: "border-purple-200", head: "text-purple-800", dot: "text-purple-500" },
-    red: { bg: "bg-red-50", border: "border-red-200", head: "text-red-800", dot: "text-red-500" },
-    gray: { bg: "bg-gray-50", border: "border-gray-200", head: "text-gray-800", dot: "text-gray-500" },
-  };
-  const c = map[color] ?? map.blue;
+function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title: string; items: string[]; style: "bullet" | "check" | "warn" }) {
   return (
-    <div className={`${c.bg} border ${c.border} rounded-xl p-4`}>
-      <h4 className={`font-semibold text-sm mb-2 ${c.head}`}>{title}</h4>
-      <ul className="space-y-1">{items.map((it, i) => <li key={i} className="text-xs text-gray-700 flex gap-2"><span className={`${c.dot} mt-0.5 shrink-0`}>•</span>{it}</li>)}</ul>
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-950 text-white">{icon}</div>
+        <h3 className="text-sm font-extrabold text-sky-950">{title}</h3>
+      </div>
+      <ul className="space-y-2">
+        {items.map((item, i) => (
+          <li key={i} className="flex items-start gap-2.5 text-xs leading-5 text-slate-600">
+            {style === "check" && <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-600" />}
+            {style === "warn" && <AlertTriangle size={12} className="mt-0.5 shrink-0 text-amber-500" />}
+            {style === "bullet" && <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-600" />}
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export function RustInhibitingPrimerProductSection() {
-  const [activeFilter, setActiveFilter] = useState<FilterTag | "All">("All");
-  const [showComparison, setShowComparison] = useState(false);
-  const filtered = activeFilter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.filterTags.includes(activeFilter));
+  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const toggleFilter = (id: FilterTag) => { setActiveFilters((prev) => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; }); };
+  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
+  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        {["All", ...FILTER_DEFS.map((f) => f.id)].map((f) => (
-          <button key={f} onClick={() => setActiveFilter(f as FilterTag | "All")}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeFilter === f ? "bg-orange-600 text-white border-orange-600" : "bg-white text-gray-600 border-gray-300 hover:border-orange-400"}`}>
-            {f === "All" ? "All Products" : FILTER_DEFS.find((fd) => fd.id === f)?.label ?? f}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((product) => (
-          <div key={product.name} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1 min-w-0">
-                <a href={product.brandUrl} target="_blank" rel="noopener noreferrer"
-                  className="text-xs font-semibold uppercase tracking-wide hover:underline flex items-center gap-1"
-                  style={{ color: product.accentColor }}>
-                  {product.fullLabel.split(" — ")[0]}<ExternalLink className="w-3 h-3 shrink-0" />
-                </a>
-                <h3 className="text-sm font-bold text-gray-900 mt-0.5 leading-snug">{product.name}</h3>
-              </div>
-            </div>
-            <p className="text-xs text-gray-500 mb-2">{product.productType}</p>
-            <CollapsibleDescription text={product.descriptionLine} />
-            <div className="flex flex-wrap gap-1 mt-3">
-              {product.techChips.map((chip) => (
-                <span key={chip.label} className={`text-xs px-2 py-0.5 rounded-full font-medium ${chip.cls}`}>{chip.label}</span>
-              ))}
-            </div>
-            <CollapsibleCardDetails product={product} />
-          </div>
-        ))}
+    <>
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <button type="button" onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition hover:bg-slate-50">
+          <div><p className="text-base font-extrabold text-sky-950">System Technical Reference</p><p className="mt-0.5 text-xs text-slate-500">Applications, selection criteria, limitations, standards, suitable substrates</p></div>
+          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">{accordionOpen ? <>Hide detail <ChevronUp size={14} /></> : <>Show detail <ChevronDown size={14} /></>}</div>
+        </button>
+        {accordionOpen && (<div className="border-t border-slate-100 px-7 pb-7 pt-6"><div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
+          <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
+          <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
+          <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
+          <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
+          <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
+        </div></div>)}
       </div>
 
       <div>
-        <button onClick={() => setShowComparison(!showComparison)}
-          className="flex items-center gap-2 text-sm font-medium text-orange-600 hover:text-orange-800">
-          {showComparison ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          {showComparison ? "Hide" : "Show"} product comparison table
-        </button>
-        {showComparison && (
-          <div className="mt-3 overflow-x-auto rounded-xl border border-gray-200">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-gray-50 text-gray-600 uppercase text-[11px]">
-                <tr>
-                  {["Product", "Brand", "Type", "DFT", "Recoat time", "Mechanism", "Key feature"].map((h) => (
-                    <th key={h} className="px-3 py-2 font-semibold whitespace-nowrap">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {COMPARISON_ROWS.map((row, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="px-3 py-2 font-medium text-gray-900 whitespace-nowrap">{row.product}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.brand}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.type}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.dft}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.recoat}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.mechanism}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.keyFeature}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="mb-5 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">6 products — 6 brands — rust-inhibiting primer systems — scroll to view all</p></div>
+        </div>
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
+          {FILTER_DEFS.map((f) => { const active = activeFilters.has(f.id); return (<button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>); })}
+          {activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}
+        </div>
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""}</span>
+          <div className="flex items-center gap-2">
+            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
+            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
           </div>
-        )}
+        </div>
+        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
+          {visibleProducts.map((product) => (
+            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
+              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
+                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
+                    <div className="flex shrink-0 items-center gap-1">
+                      {product.tdsUrl && <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>}
+                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
+                    </div>
+                  </div>
+                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
+                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
+                </div>
+                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
+                  <CollapsibleDescription text={product.systemDescription} />
+                </div>
+                <div className="space-y-3 px-5 py-4">
+                  <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div>
+                  <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div>
+                </div>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <TechCard title="Typical Applications" color="blue" items={TECH_INFO.typicalApplications} />
-        <TechCard title="Selection Criteria" color="green" items={TECH_INFO.selectionCriteria} />
-        <TechCard title="Limitations" color="amber" items={TECH_INFO.limitations} />
-        <TechCard title="Standards & Notes" color="purple" items={TECH_INFO.standardsNotes} />
-        <TechCard title="Suitable Defects" color="red" items={TECH_INFO.suitableDefects} />
-        <TechCard title="Typical Substrates" color="gray" items={TECH_INFO.typicalSubstrates} />
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div><h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2><p className="mt-1 text-sm text-slate-500">Side-by-side comparison of rust-inhibiting primer systems. Confirm all selections against current manufacturer TDS before specifying.</p></div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Binder</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Rust inhibitor</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Substrate</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Coastal</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Topcoat compatible</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.binder}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.rustInhibitor}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.substrate}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.coastal}</td>
+                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.topcoatCompat}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -4,8 +4,47 @@ import { ArrowRight } from "lucide-react";
 export const metadata: Metadata = {
   title: "Facade & External Envelope — Repair Systems — Remedial Building Australia",
   description:
-    "Technical repair system reference for facade and external envelope defects in Australian Class 2 strata apartment buildings — render systems, render repair and reinstallation, arris and render beads, salt attack remediation.",
+    "Technical repair system reference for facade and external envelope defects in Australian Class 2 strata apartment buildings — masonry, cladding, sealants, windows, coatings and render repair systems.",
 };
+
+const CARDS = [
+  {
+    label: "Render Repair Systems",
+    href: "/repair-systems/facade-external-envelope/render-repair-systems",
+    description: "Render repair, removal and reinstallation, salt attack and salt-contaminated render, arris angles and render beads — 18 product categories.",
+    count: 18,
+  },
+  {
+    label: "Masonry & Structural",
+    href: "/repair-systems/facade-external-envelope/masonry-structural",
+    description: "Repointing mortars, brick replacement, remedial cavity wall ties, lintel systems, cavity flashings, movement joint sealants, silane water repellents, masonry cleaning and crack stitching.",
+    count: 19,
+  },
+  {
+    label: "Cladding",
+    href: "/repair-systems/facade-external-envelope/cladding",
+    description: "Non-combustible cladding replacement, subframe and support systems, fixings and anchors, flashings, joint sealants and vapour-permeable wall wrap behind cladding.",
+    count: 23,
+  },
+  {
+    label: "Sealants, Joints & Cracks",
+    href: "/repair-systems/facade-external-envelope/sealants-joints-cracks",
+    description: "Polyurethane and silicone sealant systems, polysulfide sealants, backer rod, sealant primers and flexible crack filler systems for facade joints and non-structural cracking.",
+    count: 8,
+  },
+  {
+    label: "Windows, Doors & Penetrations",
+    href: "/repair-systems/facade-external-envelope/windows-doors-penetrations",
+    description: "Window and door perimeter sealants, head flashings, storm angles, subsill drainage, balcony door hob systems and waterproofing termination at threshold upstands.",
+    count: 12,
+  },
+  {
+    label: "Coatings",
+    href: "/repair-systems/facade-external-envelope/external-coating-paint-deterioration",
+    description: "Alkali-resistant primers, rust-inhibiting primers, exterior acrylic coatings, elastomeric coatings, silane/siloxane water repellents, biocide wash and PVDF metal panel re-coating.",
+    count: 11,
+  },
+];
 
 export default function FacadeExternalEnvelopePage() {
   return (
@@ -53,34 +92,32 @@ export default function FacadeExternalEnvelopePage() {
           </div>
         </section>
 
-        {/* ── Repair system group cards ── */}
+        {/* ── Parent category cards ── */}
         <section className="px-8 py-14">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-              {/* Render Repair Systems */}
-              <a
-                href="/repair-systems/facade-external-envelope/render-repair-systems"
-                className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
-              >
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="h-0.5 w-8 rounded-full bg-red-700" />
-                  <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2.5 py-0.5 text-[10px] font-bold text-green-700">
-                    <span className="h-1 w-1 rounded-full bg-green-500" />Live
-                  </span>
-                </div>
-                <h3 className="text-base font-extrabold leading-tight text-sky-950 transition group-hover:text-sky-700">
-                  Render Repair Systems
-                </h3>
-                <p className="mt-2 text-xs leading-5 text-slate-500">
-                  Render repair, removal and reinstallation, salt attack and salt-contaminated render, arris angles and render beads — 22 product categories.
-                </p>
-                <p className="mt-3 text-xs font-semibold text-slate-400">3 subcategories</p>
-                <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                  View systems <ArrowRight size={12} />
-                </div>
-              </a>
-
+              {CARDS.map((card) => (
+                <a
+                  key={card.href}
+                  href={card.href}
+                  className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-md"
+                >
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="h-0.5 w-8 rounded-full bg-red-700" />
+                    <span className="inline-flex items-center gap-1 rounded-full border border-green-200 bg-green-50 px-2.5 py-0.5 text-[10px] font-bold text-green-700">
+                      <span className="h-1 w-1 rounded-full bg-green-500" />Live
+                    </span>
+                  </div>
+                  <h3 className="text-base font-extrabold leading-tight text-sky-950 transition group-hover:text-sky-700">
+                    {card.label}
+                  </h3>
+                  <p className="mt-2 text-xs leading-5 text-slate-500">{card.description}</p>
+                  <p className="mt-3 text-xs font-semibold text-slate-400">{card.count} product categories</p>
+                  <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                    View systems <ArrowRight size={12} />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </section>

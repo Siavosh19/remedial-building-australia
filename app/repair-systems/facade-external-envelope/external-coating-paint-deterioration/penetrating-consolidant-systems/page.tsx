@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { PenetratingConsolidantIntroSection, PenetratingConsolidantProductSection } from "./PenetratingConsolidantProductSection";
 
 export const metadata: Metadata = {
@@ -46,7 +46,33 @@ export default function PenetratingConsolidantPage() {
           </div>
         </section>
         <div className="border-b border-slate-200 bg-white px-8"><div className="mx-auto max-w-7xl"><div className="flex items-stretch gap-0 overflow-x-auto">{SIBLING_GROUPS.map((group, gi) => (<div key={group.heading} className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}><div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">{group.heading}</div><div className="flex items-end">{group.tabs.map((tab) => { const active = tab.slug === ACTIVE_SLUG; return (<a key={tab.slug} href={`${BASE_URL}/${tab.slug}`} className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${active ? "border-red-700 text-sky-950" : "border-transparent text-slate-500 hover:text-sky-900"}`}>{tab.label}</a>); })}</div></div>))}</div></div></div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><PenetratingConsolidantIntroSection /><PenetratingConsolidantProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><PenetratingConsolidantIntroSection /><PenetratingConsolidantProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse penetrating consolidant systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Alkali-resistant primers — alkali primers are film-forming coats applied to sound fresh or alkaline substrates; consolidants penetrate deeply without forming a significant surface film and are used where the substrate is weak, friable or chalky — different indication",
+                  "Biocide surface washes — biocides kill mould and algae growth on the surface; consolidants bind loose substrate particles — they address different problems and are often used in sequence: biocide first, consolidant second on friable substrates",
+                  "Penetrating silane/siloxane water repellents — silane/siloxane repellents modify the surface chemistry of the substrate to repel water without consolidating loose particles; they are not interchangeable with consolidants for friable or chalky surfaces",
+                  "Waterproof sealers and surface coatings — sealers form a surface film that may prevent further topcoat adhesion; consolidants are specifically formulated to accept a subsequent primer or topcoat — confirm the product is listed as a consolidant/sealer primer, not a sealing finish",
+                  "Epoxy injection resins — epoxy crack injection fills and seals active structural cracks from within; consolidants are applied as a surface coat to bind loose substrate particles — a different repair approach entirely",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Apply consolidant at the manufacturer's specified rate — over-application can seal the surface and prevent topcoat adhesion. Confirm application rate, drying time and topcoat compatibility from the current manufacturer TDS. Not a substitute for professional advice.</p></div>

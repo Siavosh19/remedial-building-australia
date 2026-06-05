@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { ElastomericCrackBridgingIntroSection, ElastomericCrackBridgingProductSection } from "./ElastomericCrackBridgingProductSection";
 
 export const metadata: Metadata = {
@@ -74,7 +74,33 @@ export default function ElastomericCrackBridgingPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><ElastomericCrackBridgingIntroSection /><ElastomericCrackBridgingProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><ElastomericCrackBridgingIntroSection /><ElastomericCrackBridgingProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse elastomeric crack-bridging coating systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Standard elastomeric coating systems — regular elastomeric coatings are applied at 150–200µm DFT with elongation >200%; crack-bridging coatings are applied at 250–400µm with elongation >300% specifically for wider dormant cracking — listed on the elastomeric coating systems page",
+                  "Flexible joint sealants — sealants (polyurethane, silicone) are applied in beads into joints and expansion gaps; crack-bridging coatings are applied as a continuous film over the full facade surface — different products for different crack scenarios",
+                  "Liquid-applied waterproof membranes — membranes are designed for horizontal or buried applications (balconies, basements) with different primers, reinforcement, and detailing; vertical facade crack-bridging systems are not interchangeable with horizontal membrane systems",
+                  "Epoxy crack injection resins — crack injection fills and seals the body of the crack from within using low-viscosity epoxy; crack-bridging coatings span across the crack externally — both may be required in sequence for different crack conditions",
+                  "Render replacement — active structural cracking causing render delamination requires render replacement, not crack-bridging coating; crack-bridging coatings are appropriate only where cracking is dormant and the render substrate is sound and adhered",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Crack-bridging coatings do not prevent structural crack re-opening — active live cracking must be assessed and addressed structurally. Confirm minimum DFT, number of coats and crack-bridging capacity from the current manufacturer TDS. Not a substitute for professional advice.</p></div>

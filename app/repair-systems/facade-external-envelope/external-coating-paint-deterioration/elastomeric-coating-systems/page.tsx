@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { ElastomericCoatingIntroSection, ElastomericCoatingProductSection } from "./ElastomericCoatingProductSection";
 
 export const metadata: Metadata = {
@@ -74,7 +74,33 @@ export default function ElastomericCoatingPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><ElastomericCoatingIntroSection /><ElastomericCoatingProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><ElastomericCoatingIntroSection /><ElastomericCoatingProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse elastomeric coating systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Standard exterior acrylic topcoat systems — standard two-coat acrylics (e.g. Dulux Weathershield) are not elastomeric; they have insufficient elongation to bridge hairline movement cracks and will crack through — listed on the exterior acrylic coating systems page",
+                  "Elastomeric crack-bridging coatings — crack-bridging coatings are applied at even higher DFT (250–400µm vs 150–200µm) with higher elongation for wider dormant cracks; they are a more specialised product listed separately on the elastomeric crack-bridging coating page",
+                  "Liquid-applied waterproof membranes — liquid membranes are applied to horizontal or buried surfaces (balcony decks, planter boxes, below-slab) with specific primer and detailing requirements; facade elastomerics are different products for vertical exterior surfaces",
+                  "Anti-carbonation coatings — anti-carbonation specialist coatings are formulated to resist CO2 diffusion through the film to protect embedded steel reinforcement; standard elastomeric coatings provide some incidental protection but are not assessed or warranted for this purpose",
+                  "Texture coatings — factory-blended textured acrylic or cement coatings produce a roughcast or patterned finish and are a different product class from smooth-film high-build elastomeric systems",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Elastomeric coatings are not a substitute for structural crack repair — underlying structural movement must be addressed before coating. Confirm minimum DFT, recoat interval and primer compatibility from the current manufacturer TDS. Not a substitute for professional advice.</p></div>

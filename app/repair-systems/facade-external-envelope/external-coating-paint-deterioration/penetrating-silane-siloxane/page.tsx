@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { PenetratingSilaneSiloxaneIntroSection, PenetratingSilaneSiloxaneProductSection } from "./PenetratingSilaneSiloxaneProductSection";
 
 export const metadata: Metadata = {
@@ -74,7 +74,33 @@ export default function PenetratingSilaneSiloxanePage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><PenetratingSilaneSiloxaneIntroSection /><PenetratingSilaneSiloxaneProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><PenetratingSilaneSiloxaneIntroSection /><PenetratingSilaneSiloxaneProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse penetrating silane/siloxane water repellent systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Exterior acrylic topcoat systems — acrylic topcoats form a surface film that changes the appearance and colour of the facade; silane/siloxane repellents are colourless and invisible, penetrate without forming a surface film, and cannot substitute for a decorative or protective topcoat",
+                  "Penetrating consolidant primers — consolidants bind loose and friable substrate particles to create a sound base for painting; silane/siloxane repellents modify surface energy to repel water but do not consolidate weak substrates — different products for different conditions",
+                  "Elastomeric and crack-bridging coatings — elastomeric coatings are visible surface film systems providing crack-bridging and waterproofing; silane/siloxane treatments reduce capillary water absorption without bridging cracks — they are complementary, not interchangeable",
+                  "Acrylic surface sealers — solvent or water-based surface sealers form a film and change surface sheen; penetrating silane/siloxane products are specified precisely because they do not form a surface film or alter appearance — confirm the product penetrates rather than seals",
+                  "Anti-graffiti coatings — anti-graffiti products are surface treatments (sacrificial or permanent film) that prevent graffiti adhesion; silane/siloxane treatments repel water but do not resist graffiti adhesion — different purpose and product class",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Penetrating silane/siloxane treatments do not bridge cracks — structural cracks must be repaired before treatment. Substrate must be dry — do not apply to wet or damp substrates. Confirm active content, coverage rate and reapplication interval from the current manufacturer TDS. Not a substitute for professional advice.</p></div>

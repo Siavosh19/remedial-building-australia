@@ -1,120 +1,226 @@
 "use client";
-import { useState } from "react";
-import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+
+import { useState, useRef } from "react";
+import {
+  CheckCircle, AlertTriangle, BookOpen, Layers, SquareStack,
+  Ruler, ExternalLink, ChevronDown, ChevronUp,
+  XCircle, ChevronLeft, ChevronRight, FileText,
+} from "lucide-react";
 
 type FilterTag =
   | "Crack-bridging"
   | "Elastomeric"
   | "High-elongation"
-  | "Masonry"
+  | "Waterproof"
+  | "Active-crack"
+  | "Concrete"
   | "Render"
-  | "Waterproofing"
-  | "Movement-accommodation"
-  | "Exterior";
+  | "Masonry"
+  | "Water-based"
+  | "Coastal"
+  | "Reinforced"
+  | "Specialist";
 
 type Product = {
-  fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string;
-  name: string; descriptionLine: string; productType: string;
-  filterTags: FilterTag[]; techChips: { label: string; cls: string }[];
-  systemDescription: string; technicalProperties: string[];
-  limitations: string[]; procurementSources: { name: string; url: string }[];
+  fullLabel: string;
+  brandUrl: string;
+  tdsUrl?: string;
+  accentColor: string;
+  name: string;
+  descriptionLine: string;
+  productType: string;
+  filterTags: FilterTag[];
+  techChips: { label: string; cls: string }[];
+  systemDescription: string;
+  technicalProperties: string[];
+  limitations: string[];
+  procurementSources: { name: string; url: string }[];
 };
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Dulux — Dulux Acratex Maxfilm Crack-Bridging",
-    brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/acratex",
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    tdsUrl: "https://aus.sika.com/en/solutions_products/02/02a015/02a015sa01/sikagard-550-w-elastic.html",
     accentColor: "#e2003a",
-    name: "Dulux Acratex Maxfilm Crack-Bridging",
-    descriptionLine: "Ultra-high elongation elastomeric crack-bridging coating spanning active cracks up to 1.5 mm on render and masonry facades",
-    productType: "Ultra-high elongation crack-bridging coating",
-    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Masonry", "Render", "Waterproofing", "Movement-accommodation", "Exterior"],
+    name: "Sika Sikagard 550 W Elastic",
+    descriptionLine: "Specialist high-elongation elastomeric crack-bridging coating for concrete and masonry facades — Sika professional system for active crack accommodation, waterproofing and carbonation protection",
+    productType: "High-elongation elastomeric crack-bridging coating — Sika professional system",
+    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Concrete", "Masonry", "Water-based", "Coastal", "Specialist"],
     techChips: [
-      { label: "Crack-bridging", cls: "bg-red-100 text-red-700" },
-      { label: "1.5 mm cracks", cls: "bg-orange-100 text-orange-700" },
+      { label: "Sika professional", cls: "bg-red-100 text-red-800" },
       { label: "High elongation", cls: "bg-amber-100 text-amber-700" },
-    ],
-    systemDescription: "Dulux Acratex Maxfilm is an ultra-high elongation elastomeric coating formulated specifically for crack-bridging applications on rendered masonry facades. The system bridges active cracks up to 1.5 mm in width with repeated movement cycling, maintaining film integrity and water exclusion across the crack. Applied as a dedicated crack-bridging system rather than a general elastomeric topcoat, it is typically specified where render cracking is actively progressing or where thermal movement is significant.",
-    technicalProperties: [
-      "Elongation at break: >300% — ultra-high elongation grade",
-      "Crack bridging (dynamic): up to 1.5 mm width, repeated cycling",
-      "DFT: 0.8–1.5 mm minimum for full crack-bridging performance",
-      "Water resistance: EN 1062 Class W3",
-      "Application: brush, roller, or airless spray",
-    ],
-    limitations: [
-      "Wide or structural cracks (>1.5 mm) require repair before coating — not a structural repair system",
-      "Surface preparation including priming is mandatory for bond integrity under repeated crack movement",
-      "Cannot bridge cracks in substrate that is actively delaminating or hollow — repair first",
-    ],
-    procurementSources: [
-      { name: "Dulux Trade — Acratex Range", url: "https://www.dulux.com.au" },
-      { name: "Bunnings Trade", url: "https://www.bunnings.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Solver — Solver CrackShield Elastomeric System",
-    brandUrl: "https://www.solver.com.au",
-    tdsUrl: "https://www.solver.com.au/products/exterior-coatings",
-    accentColor: "#0057a8",
-    name: "Solver CrackShield Elastomeric System",
-    descriptionLine: "High-elongation elastomeric crack-bridging system for render and masonry facades where fine to moderate cracking requires dynamic movement accommodation",
-    productType: "High-elongation elastomeric crack-bridging system",
-    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Masonry", "Render", "Waterproofing", "Movement-accommodation", "Exterior"],
-    techChips: [
       { label: "Crack-bridging", cls: "bg-blue-100 text-blue-700" },
-      { label: "High-elongation", cls: "bg-sky-100 text-sky-700" },
-      { label: "Elastomeric", cls: "bg-indigo-100 text-indigo-700" },
+      { label: "Anti-carbonation", cls: "bg-green-100 text-green-700" },
     ],
-    systemDescription: "Solver CrackShield is a purpose-formulated crack-bridging elastomeric system providing dynamic movement accommodation for render and masonry facades with active fine-to-moderate cracking. The high elongation film spans the crack and returns to its original state after movement, maintaining weatherproofing integrity. Applied as a two-coat system at defined minimum DFT, it provides reliable crack-bridging under Australian climate conditions.",
+    systemDescription:
+      "Sika Sikagard 550 W Elastic is a specialist high-elongation elastomeric crack-bridging coating in the Sika professional facade protection range. It is specifically designed to bridge active and dynamic cracks in concrete and masonry facades — providing a continuous flexible waterproof membrane that accommodates crack movement over the service life without splitting or delaminating. Sikagard 550 W Elastic provides anti-carbonation protection, UV resistance, and is suitable for coastal environments. It is applied as part of a complete Sika system — including Sika primer, reinforcement fabric at crack locations, and Sikagard 550 W Elastic topcoat — to achieve the required crack-bridging performance class. It is primarily specified on commercial and multi-storey strata concrete and masonry facades where crack movement is an ongoing design consideration. Confirm current system specification, primer requirements, fabric reinforcement details, DFT, and performance class from the current Sika Sikagard 550 W Elastic TDS and Sika technical before specifying.",
     technicalProperties: [
-      "Elongation at break: >200–250%",
-      "Crack bridging: dynamic bridging of fine to moderate cracks",
-      "DFT: 0.6–1.2 mm (apply at minimum recommended thickness)",
-      "Water resistance: high — tested to EN 1062",
-      "UV stability: good — for Australian outdoor exposure",
+      "Very high elongation at break — designed to bridge active and dynamic cracks in concrete and masonry",
+      "Anti-carbonation protection — reduces CO₂ diffusion into concrete — relevant for reinforcement corrosion protection",
+      "Waterproof — continuous flexible waterproof membrane over the facade surface",
+      "UV-resistant and coastal rated — suitable for demanding Australian exterior exposures",
+      "System application — primer + fabric reinforcement at cracks + Sikagard 550 W Elastic — confirm from Sika technical",
+      "Confirm crack-bridging performance class and system specification from current Sika TDS before specifying",
     ],
     limitations: [
-      "Does not replace resin injection for structural crack repair — coating bridges but does not seal cracks structurally",
-      "For best performance on very active cracks, apply over glass fibre mesh reinforcing tape at crack lines",
-      "Not suitable for use on surfaces subject to standing or ponding water",
+      "Structural crack investigation required before application — confirm cause of cracking before specifying crack-bridging coating",
+      "System application mandatory — do not apply crack-bridging coating without primer and reinforcement fabric at active cracks",
+      "Not a structural repair system — crack-bridging coating does not restore structural capacity — specify engineer-designed repair first",
+      "Specialist product — confirm current system specification and performance class with Sika Australia technical before specifying",
     ],
     procurementSources: [
-      { name: "Solver Paints — Where to Buy", url: "https://www.solver.com.au" },
-      { name: "Mitre 10", url: "https://www.mitre10.com.au" },
+      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
+      { name: "Sika distributors — national building trade network", url: "https://aus.sika.com" },
+      { name: "Confirm local distributor with Sika Australia", url: "https://aus.sika.com" },
     ],
   },
   {
-    fullLabel: "Wattyl — Wattyl Weathermax Plus Crack-Bridge",
-    brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en/wattyl-exterior",
-    accentColor: "#cc0000",
-    name: "Wattyl Weathermax Plus Crack-Bridge",
-    descriptionLine: "Premium crack-bridging elastomeric coating providing dynamic movement accommodation and waterproofing on render and masonry facades",
-    productType: "Premium crack-bridging elastomeric coating",
-    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Masonry", "Render", "Waterproofing", "Movement-accommodation", "Exterior"],
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
+    accentColor: "#0369a1",
+    name: "Mapei Elastocolor W",
+    descriptionLine: "Elastomeric crack-bridging waterproof coating for concrete and masonry facades — Mapei specialist system with high elongation, anti-carbonation protection and UV resistance",
+    productType: "Elastomeric crack-bridging coating — Mapei specialist system — concrete and masonry",
+    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Concrete", "Masonry", "Water-based", "Coastal", "Specialist"],
     techChips: [
-      { label: "Premium grade", cls: "bg-red-100 text-red-700" },
-      { label: "Dynamic bridging", cls: "bg-orange-100 text-orange-700" },
-      { label: "Waterproofing", cls: "bg-blue-100 text-blue-700" },
+      { label: "Mapei specialist", cls: "bg-sky-100 text-sky-800" },
+      { label: "Crack-bridging", cls: "bg-amber-100 text-amber-700" },
+      { label: "Anti-carbonation", cls: "bg-green-100 text-green-700" },
+      { label: "Waterproof", cls: "bg-blue-100 text-blue-700" },
     ],
-    systemDescription: "Wattyl Weathermax Plus is the crack-bridging grade of the Weathermax elastomeric range, formulated for facades where repeated crack movement must be accommodated over the coating's service life. The ultra-flexible film spans active cracks under thermal cycling, preventing water ingress while providing a decorative finish. Particularly suitable for multi-storey residential and commercial facade renovation where crack-bridging performance is a key specification requirement.",
+    systemDescription:
+      "Mapei Elastocolor W is a specialist elastomeric crack-bridging waterproof coating for concrete and masonry facades in the Mapei professional remedial product range. It provides high elongation at break enabling the coating to bridge active cracks in the substrate — combined with waterproofing, UV resistance, anti-fungal properties, and anti-carbonation protection. Applied as part of a Mapei system — primer, reinforcement fabric at active crack locations, and Elastocolor W topcoat — it forms a continuous flexible waterproof membrane on the facade surface. It is primarily specified on concrete and masonry strata building facades where active crack movement is a design consideration alongside waterproofing and carbonation protection. Confirm current system specification, reinforcement fabric requirements, primer details, DFT, and performance class from the current Mapei Elastocolor W TDS and Mapei Australia technical before specifying.",
     technicalProperties: [
-      "Elongation at break: >250%",
-      "Dynamic crack-bridging: tested under repeated movement cycling",
-      "DFT: 0.8–1.5 mm",
-      "Coverage: 3–4 m²/L",
-      "Vapour permeable: moderate — check project vapour management requirements",
+      "High elongation at break — bridges active cracks in concrete and masonry facades",
+      "Anti-carbonation protection — reduces CO₂ diffusion — relevant for reinforcement corrosion protection in concrete",
+      "Waterproof — continuous flexible waterproof membrane — reduces water ingress through cracks and render",
+      "UV-resistant and anti-fungal — suitable for Australian exterior exposure including coastal environments",
+      "System application — primer + fabric reinforcement + Elastocolor W — confirm from Mapei technical",
+      "Confirm crack-bridging performance class and system from current Mapei TDS before specifying",
     ],
     limitations: [
-      "Cracks wider than 1.0 mm should be repaired and the coating applied with mesh reinforcement over the repaired line",
-      "Minimum substrate temperature 8 °C during application",
-      "Do not apply in direct sunlight on hot days — film surface may dry before adequate penetration bond",
+      "Structural crack investigation required before application — confirm cause of cracking with engineer before specifying",
+      "System application mandatory — primer and fabric reinforcement at active cracks required — not a direct-apply coating",
+      "Not a structural repair — crack-bridging membrane does not restore structural capacity",
+      "Confirm current system specification and TDS with Mapei Australia technical before specifying",
     ],
     procurementSources: [
-      { name: "Wattyl — Where to Buy", url: "https://www.wattyl.com.au" },
-      { name: "Bunnings", url: "https://www.bunnings.com.au" },
+      { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
+      { name: "Mapei distributors — national building trade network", url: "https://www.mapei.com/au" },
+      { name: "Confirm local availability with Mapei Australia", url: "https://www.mapei.com/au" },
+    ],
+  },
+  {
+    fullLabel: "Parchem Construction Supplies",
+    brandUrl: "https://www.parchem.com.au",
+    tdsUrl: "https://www.parchem.com.au/products",
+    accentColor: "#7c3aed",
+    name: "Parchem Nitocote EP402",
+    descriptionLine: "High-performance elastomeric waterproof facade coating with crack-bridging capability — Fosroc/Parchem specialist system for concrete and masonry facades with active crack movement",
+    productType: "High-performance elastomeric crack-bridging facade coating — Parchem/Fosroc system",
+    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Concrete", "Masonry", "Coastal", "Reinforced", "Specialist"],
+    techChips: [
+      { label: "Parchem specialist", cls: "bg-purple-100 text-purple-800" },
+      { label: "High-performance", cls: "bg-amber-100 text-amber-700" },
+      { label: "Crack-bridging", cls: "bg-blue-100 text-blue-700" },
+      { label: "Waterproof", cls: "bg-green-100 text-green-700" },
+    ],
+    systemDescription:
+      "Parchem Nitocote EP402 is a high-performance elastomeric waterproof facade coating with crack-bridging capability in the Parchem/Fosroc professional construction products range. It is a specialist product for concrete and masonry facades requiring a durable, flexible waterproof membrane with the capacity to bridge active cracks over the service life. Nitocote EP402 is applied as part of a Parchem system — including primer and reinforcement fabric at active crack locations — to achieve the required crack-bridging performance. It is particularly suited to commercial, multi-storey and industrial building facades in demanding coastal and high-UV Australian environments. Parchem has a strong national distribution network through trade supply to the remedial building contractor market. Confirm current product specification, system documentation, reinforcement fabric requirements, primer details, and DFT from the current Parchem Nitocote EP402 TDS and Parchem technical before specifying.",
+    technicalProperties: [
+      "High elongation at break — specialist crack-bridging capability for active cracks in concrete and masonry",
+      "Waterproof — flexible waterproof membrane suitable for facades with ongoing crack movement",
+      "UV-resistant — suitable for demanding Australian exterior exposures including coastal environments",
+      "System application — primer + fabric reinforcement at cracks + Nitocote EP402 — confirm from Parchem technical",
+      "Available through Parchem national trade supply network — strong remedial building market distribution",
+      "Confirm current product specification and performance class from Parchem TDS before specifying",
+    ],
+    limitations: [
+      "Structural investigation required before specification — confirm cause and rate of cracking with structural engineer",
+      "System application mandatory — do not apply without primer and fabric reinforcement at active crack locations",
+      "Not a structural repair system — membrane does not restore structural capacity of cracked concrete",
+      "Confirm current product name and system specification with Parchem Australia technical before specifying",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — national", url: "https://www.parchem.com.au" },
+      { name: "Parchem — trade supply to remedial contractors", url: "https://www.parchem.com.au" },
+      { name: "Confirm local branch with Parchem Australia", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Dulux Acratex Australia",
+    brandUrl: "https://www.dulux.com.au",
+    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
+    accentColor: "#b45309",
+    name: "Dulux Acratex Permaflex",
+    descriptionLine: "High-elongation elastomeric crack-bridging exterior coating for masonry and render facades — Dulux Acratex specialist system for facades with active crack movement and waterproofing requirements",
+    productType: "High-elongation elastomeric crack-bridging coating — Dulux Acratex system",
+    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Render", "Masonry", "Water-based", "Coastal", "Reinforced", "Specialist"],
+    techChips: [
+      { label: "Dulux Acratex", cls: "bg-amber-100 text-amber-800" },
+      { label: "High-elongation", cls: "bg-red-100 text-red-800" },
+      { label: "Crack-bridging", cls: "bg-blue-100 text-blue-700" },
+      { label: "Waterproof", cls: "bg-green-100 text-green-700" },
+    ],
+    systemDescription:
+      "Dulux Acratex Permaflex is a high-elongation elastomeric crack-bridging exterior coating in the Dulux Acratex specialist facade coating range. It is formulated for masonry and render facades where ongoing crack movement requires a coating system capable of accommodating the crack width change over the service life without the membrane splitting or losing waterproof continuity. Permaflex is applied as a system — Dulux Acratex Prep Coat primer, reinforcement fabric at active crack locations, and Permaflex topcoat — to achieve the required crack-bridging performance class. The Dulux Acratex range is the specialist facade coating product line within Dulux designed specifically for remedial and protective coating work on masonry facades across Australia, with wide trade availability nationally. Confirm current product specification, system documentation, and DFT from the current Dulux Acratex Permaflex TDS and Dulux Acratex technical before specifying.",
+    technicalProperties: [
+      "Very high elongation at break — designed for facades with active crack movement requiring ongoing accommodation",
+      "Crack-bridging system — applied with fabric reinforcement at active crack locations as part of the Acratex system",
+      "Waterproof — continuous flexible waterproof membrane over the entire facade surface",
+      "UV-resistant and suitable for coastal environments — confirm coastal grade performance from TDS",
+      "System application — Acratex Prep Coat + reinforcement fabric + Permaflex — confirm from Dulux Acratex technical",
+      "Wide national availability through Dulux Trade Centres and Dulux Acratex trade supply network",
+    ],
+    limitations: [
+      "Structural crack investigation required before specification — confirm cause of cracking with structural engineer",
+      "System application mandatory — primer and fabric reinforcement at active cracks required for full performance",
+      "Not a structural repair system — membrane does not restore structural capacity of cracked render or masonry",
+      "Confirm current product name, performance class, and system from current Dulux Acratex TDS before specifying",
+    ],
+    procurementSources: [
+      { name: "Dulux Acratex — trade supply", url: "https://www.dulux.com.au" },
+      { name: "Dulux Trade Centres — national", url: "https://www.dulux.com.au" },
+      { name: "Bunnings Trade — trade account", url: "https://www.bunnings.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au/products",
+    accentColor: "#059669",
+    name: "Ardex WPM 300 / Ardiflex",
+    descriptionLine: "Elastomeric waterproof crack-bridging membrane system for concrete and masonry facades — Ardex specialist remedial product range for facades with active cracking and moisture ingress",
+    productType: "Elastomeric waterproof crack-bridging membrane — Ardex specialist system",
+    filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Concrete", "Masonry", "Water-based", "Coastal", "Reinforced", "Specialist"],
+    techChips: [
+      { label: "Ardex specialist", cls: "bg-green-100 text-green-800" },
+      { label: "WPM system", cls: "bg-teal-100 text-teal-700" },
+      { label: "Crack-bridging", cls: "bg-blue-100 text-blue-700" },
+      { label: "Waterproof", cls: "bg-amber-100 text-amber-700" },
+    ],
+    systemDescription:
+      "Ardex WPM 300 (Waterproofing Membrane) and Ardiflex are specialist elastomeric waterproof crack-bridging membrane systems in the Ardex professional remedial product range for concrete and masonry facades with active cracking and moisture ingress. Ardex positions these products as part of complete facade waterproofing and protection systems for the remedial building market, providing high-elongation crack-bridging combined with waterproof membrane continuity over the full facade surface. Applied with Ardex primer and reinforcement fabric at active crack locations, the system provides a durable flexible waterproof barrier suitable for demanding coastal and high-UV Australian exposures. Ardex has a strong national distribution network through trade supply to remedial building contractors and waterproofing specialists. Confirm current product name, system specification, reinforcement details, and DFT from Ardex Australia technical and the current product TDS before specifying.",
+    technicalProperties: [
+      "Elastomeric waterproof membrane — high elongation crack-bridging performance for active cracks in concrete and masonry",
+      "Waterproof membrane system — suitable for facades with significant moisture ingress through cracking",
+      "UV-resistant — suitable for Australian exterior exposures including demanding coastal environments",
+      "System application — Ardex primer + reinforcement fabric + WPM 300/Ardiflex — confirm from Ardex technical",
+      "Strong Ardex national distribution — trade supply to remedial building and waterproofing contractors",
+      "Confirm current product name, system specification, and DFT from Ardex TDS before specifying",
+    ],
+    limitations: [
+      "Structural investigation required — confirm cause of cracking and structural adequacy before applying membrane",
+      "System application mandatory — primer and fabric reinforcement required — not a direct-apply product",
+      "Not a structural repair system — membrane does not restore structural capacity of cracked substrate",
+      "Confirm current product name and system — Ardex WPM range may be updated — confirm with Ardex technical",
+    ],
+    procurementSources: [
+      { name: "Ardex Australia — trade supply", url: "https://www.ardex.com.au" },
+      { name: "Ardex distributors — national remedial trade network", url: "https://www.ardex.com.au" },
+      { name: "Confirm local availability with Ardex Australia", url: "https://www.ardex.com.au" },
     ],
   },
 ];
@@ -122,213 +228,405 @@ const PRODUCTS: Product[] = [
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
   { id: "Crack-bridging", label: "Crack-bridging" },
   { id: "Elastomeric", label: "Elastomeric" },
-  { id: "High-elongation", label: "High elongation" },
-  { id: "Masonry", label: "Masonry" },
+  { id: "High-elongation", label: "High-elongation" },
+  { id: "Waterproof", label: "Waterproof" },
+  { id: "Active-crack", label: "Active crack" },
+  { id: "Concrete", label: "Concrete" },
   { id: "Render", label: "Render" },
-  { id: "Waterproofing", label: "Waterproofing" },
-  { id: "Movement-accommodation", label: "Movement accommodation" },
-  { id: "Exterior", label: "Exterior" },
+  { id: "Masonry", label: "Masonry" },
+  { id: "Water-based", label: "Water-based" },
+  { id: "Coastal", label: "Coastal rated" },
+  { id: "Reinforced", label: "Reinforced system" },
+  { id: "Specialist", label: "Specialist" },
 ];
 
-const COMPARISON_ROWS = [
-  { product: "Dulux Acratex Maxfilm", brand: "Dulux", type: "Ultra-high elongation", dft: "0.8–1.5 mm", elongation: ">300%", crackWidth: "Up to 1.5 mm", keyFeature: "Highest crack width tolerance" },
-  { product: "Solver CrackShield", brand: "Solver", type: "High elongation", dft: "0.6–1.2 mm", elongation: ">200–250%", crackWidth: "Fine–moderate", keyFeature: "Mesh reinforcement option" },
-  { product: "Wattyl Weathermax Plus", brand: "Wattyl", type: "Premium crack-bridging", dft: "0.8–1.5 mm", elongation: ">250%", crackWidth: "Up to 1.0 mm+", keyFeature: "Dynamic cycling tested" },
+const SYSTEM_COMPARISON: {
+  product: string;
+  brand: string;
+  elongation: string;
+  crackBridging: string;
+  antiCarb: string;
+  coastal: string;
+  system: string;
+  primaryUse: string;
+}[] = [
+  {
+    product: "Sikagard 550 W Elastic",
+    brand: "Sika",
+    elongation: "Very high",
+    crackBridging: "Yes — active cracks",
+    antiCarb: "Yes",
+    coastal: "Yes",
+    system: "Sika primer + fabric + topcoat",
+    primaryUse: "Sika professional — concrete facades — commercial and strata",
+  },
+  {
+    product: "Elastocolor W",
+    brand: "Mapei",
+    elongation: "Very high",
+    crackBridging: "Yes — active cracks",
+    antiCarb: "Yes",
+    coastal: "Yes",
+    system: "Mapei primer + fabric + topcoat",
+    primaryUse: "Mapei remedial — concrete and masonry — anti-carbonation",
+  },
+  {
+    product: "Nitocote EP402",
+    brand: "Parchem/Fosroc",
+    elongation: "High",
+    crackBridging: "Yes — active cracks",
+    antiCarb: "Confirm TDS",
+    coastal: "Yes",
+    system: "Parchem primer + fabric + topcoat",
+    primaryUse: "Parchem specialist — commercial and industrial facades — national",
+  },
+  {
+    product: "Acratex Permaflex",
+    brand: "Dulux",
+    elongation: "Very high",
+    crackBridging: "Yes — active cracks",
+    antiCarb: "Confirm TDS",
+    coastal: "Yes",
+    system: "Acratex Prep Coat + fabric + Permaflex",
+    primaryUse: "Dulux Acratex — masonry and render — wide national availability",
+  },
+  {
+    product: "WPM 300 / Ardiflex",
+    brand: "Ardex",
+    elongation: "High",
+    crackBridging: "Yes — active cracks",
+    antiCarb: "Confirm TDS",
+    coastal: "Yes",
+    system: "Ardex primer + fabric + WPM",
+    primaryUse: "Ardex specialist — waterproofing system — remedial contractors",
+  },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Render facades with active fine-to-moderate cracking requiring decorative waterproofing coating",
-    "Multi-storey residential facade renovation where crack bridging is a key specification requirement",
-    "Commercial facades subject to thermal movement and regular fine crack cycling",
-    "Over-render systems applied to new construction with potential settlement cracking",
+    "Crack-bridging membrane system on concrete and masonry facades where active crack movement is an ongoing design consideration",
+    "Waterproof and crack-bridging protection on multi-storey strata building facades with recurring crack formation",
+    "Anti-carbonation and waterproof protection on concrete facades where reinforcement corrosion is a design consideration",
+    "Remedial coating on facades where standard elastomeric coating DFT is insufficient to accommodate the crack width change",
+    "Specialist system application by remedial building contractors on commercial and Class 2 strata building facades",
   ],
   selectionCriteria: [
-    "Specify crack bridging width based on maximum expected crack width, not current crack width",
-    "For cracks >0.5 mm, reinforce with glass fibre mesh tape before coating application",
-    "Ultra-high elongation systems for facades with documented active crack movement",
-    "Confirm minimum DFT for specified crack-bridging grade — under-application negates crack-bridging performance",
+    "Specify crack-bridging coating system only after structural investigation — confirm cause of cracking and structural adequacy",
+    "Select crack-bridging system where crack width change over the annual thermal cycle exceeds what standard elastomeric coating can accommodate",
+    "Specify complete system — primer, fabric reinforcement at active cracks, and crack-bridging topcoat — never apply topcoat alone",
+    "Confirm performance class (crack-bridging class per AS 4548 or manufacturer classification) against the design requirement",
+    "Engage specialist facade or remedial engineer to specify the crack-bridging system for complex or multi-storey facades",
+    "Confirm anti-carbonation performance if specifying on concrete facades with reinforcement corrosion as a design consideration",
   ],
   limitations: [
-    "Crack-bridging coatings are not a substitute for structural crack repair on load-bearing elements",
-    "Wide cracks (>1.5 mm) require injection repair before any coating is specified",
-    "Coatings cannot bridge cracks that are still actively growing — cause must be identified and arrested",
-    "Over-application of thick elastomeric coatings may reduce substrate vapour permeability",
+    "Crack-bridging coatings do NOT restore structural capacity — structural investigation and repair must precede coating application",
+    "System application is mandatory — applying topcoat without primer and fabric reinforcement at active cracks will not achieve crack-bridging performance",
+    "Higher cost than standard elastomeric coating — specify only where crack movement exceeds standard elastomeric coating capability",
+    "Not suitable for cracks caused by structural deficiency — structural repair required before coating",
+    "Application requires experienced remedial building contractor — confirm installer competency before specifying",
   ],
   standardsNotes: [
-    "EN 1062 — characterisation and specification of liquid applied coatings for masonry, including crack-bridging performance",
-    "AS 4548 — long-life coatings for concrete and masonry",
-    "Technical guidance: CSIRO Building Technology File — specification of crack-bridging coatings",
-    "Manufacturer TDS and crack-bridging test report should be referenced in project specification",
+    "AS 4548 — Guide to long-life coatings for concrete and masonry — crack-bridging performance classification reference",
+    "AS 3600 — Concrete structures — confirms investigation requirements before coating actively cracked concrete",
+    "NATSPEC — Section 0233 — Exterior painting and protective coating specification",
+    "Manufacturer TDS — confirm crack-bridging performance class, system specification, and DFT before specifying",
+    "Engage a remedial or structural engineer to specify crack-bridging coating systems on multi-storey or complex facades",
   ],
   suitableDefects: [
-    "Fine to moderate render cracking with known thermal movement patterns",
-    "Render cracks causing water ingress staining and internal dampness",
-    "Facades previously treated with standard acrylic where crack-bridging upgrade is required",
-    "Post-structural repair coating to bridge repaired crack lines under movement",
+    "Active fine and hairline cracking in concrete and masonry facades — moisture ingress through actively moving cracks",
+    "Recurring crack formation on facades with significant thermal cycling — where standard elastomeric coating has failed to bridge",
+    "Concrete facades with carbonation-induced cracking requiring anti-carbonation crack-bridging membrane",
+    "Masonry and render facades with structural movement cracking — after structural investigation confirms coating is appropriate",
+    "Facades where previous elastomeric coating has split at crack locations due to insufficient elongation capacity",
   ],
   typicalSubstrates: [
-    "Cement render — new and existing, primed",
-    "Polymer-modified and EIFS render systems — confirm topcoat compatibility",
-    "Masonry block and brick facades",
-    "Concrete panel facades with fine surface cracking",
+    "Concrete panel facades — commercial and multi-storey strata — primary substrate for specialist crack-bridging systems",
+    "Cement render over masonry — facades with thermal cycling crack formation requiring high-elongation membrane",
+    "Brick and block masonry — crack-bridging system for facade walls with recurring mortar joint cracking",
+    "Precast concrete elements — confirm system suitability for precast substrate surface preparation",
+    "Existing sound elastomeric coating — confirm compatibility before applying new crack-bridging system over old",
   ],
 };
 
-function CollapsibleSources({ sources }: { sources: { name: string; url: string }[] }) {
-  const [open, setOpen] = useState(false);
+function CollapsibleList({ items, icon, limit = 3 }: { items: string[]; icon: "check" | "x"; limit?: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Procurement Sources</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && <ul className="px-4 py-3 space-y-2 bg-white">{sources.map((s, i) => <li key={i}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline flex items-center gap-1">{s.name}<ExternalLink className="w-3 h-3" /></a></li>)}</ul>}
-    </div>
-  );
-}
-
-function CollapsibleCardDetails({ product }: { product: Product }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="mt-3 border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Technical Details</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && (
-        <div className="px-4 py-3 space-y-3 bg-white">
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">System Description</p><p className="text-sm text-gray-700">{product.systemDescription}</p></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Technical Properties</p><ul className="space-y-1">{product.technicalProperties.map((p, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-blue-600 mt-0.5">•</span>{p}</li>)}</ul></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Limitations</p><ul className="space-y-1">{product.limitations.map((l, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-amber-500 mt-0.5">⚠</span>{l}</li>)}</ul></div>
-          <CollapsibleSources sources={product.procurementSources} />
-        </div>
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" /> : <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button onClick={() => setExpanded((e) => !e)} className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600">
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
       )}
     </div>
   );
 }
 
-function CollapsibleDescription({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-  const short = text.length > 120 ? text.slice(0, 120) + "…" : text;
-  if (text.length <= 120) return <p className="text-sm text-gray-600 mt-1">{text}</p>;
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="mt-1">
-      <p className="text-sm text-gray-600">{open ? text : short}</p>
-      <button onClick={() => setOpen(!open)} className="text-xs text-blue-600 hover:underline mt-0.5">{open ? "Show less" : "Read more"}</button>
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button onClick={() => setExpanded((e) => !e)} className="text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide ↑" : "See more ↓"}</button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div key={src.name} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs">
+              {src.url ? (
+                <a href={src.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900">{src.name}<ExternalLink size={9} className="text-slate-300" /></a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">Confirm suitability with the current manufacturer TDS before specifying or applying.</p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({ text, chips }: { text: string; chips: { label: string; cls: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (<span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>{chip.label}</span>))}
+            </div>
+          )}
+        </>
+      )}
+      <button onClick={() => setExpanded((e) => !e)} className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide details ↑" : "Show details ↓"}</button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p>
+      <button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button>
     </div>
   );
 }
 
 export function ElastomericCrackBridgingIntroSection() {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-2">Elastomeric Crack-Bridging Coating</h2>
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">
-        Crack-bridging elastomeric coatings are a distinct category from standard elastomeric topcoats — they are specifically engineered and tested to dynamically bridge active cracks under repeated thermal cycling. They are specified when facade render is actively cracking or has a documented history of recurring cracks that have not responded to fill-and-paint remediation. The coating spans the crack, returning to its original position after each movement cycle, maintaining the waterproofing barrier over the service life of the system.
-      </p>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[
-          { label: "Elongation", value: ">200–300%" },
-          { label: "Crack width", value: "Up to 1.5 mm" },
-          { label: "DFT minimum", value: "0.6–1.5 mm" },
-          { label: "Water class", value: "EN 1062 W3" },
-        ].map((s) => (
-          <div key={s.label} className="bg-amber-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-amber-600 font-medium mb-1">{s.label}</p>
-            <p className="text-sm font-bold text-amber-900">{s.value}</p>
-          </div>
-        ))}
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div>
+        <h3 className="text-base font-extrabold text-sky-950">What are elastomeric crack-bridging coating systems?</h3>
       </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Elastomeric crack-bridging coatings are specialist high-elongation membrane systems for concrete and masonry facades where active crack movement requires a coating capable of accommodating crack width change over the service life without splitting. They are significantly more sophisticated than standard elastomeric coatings and are applied as complete systems with primer, reinforcement fabric, and topcoat.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              The distinction between an elastomeric coating and a crack-bridging system is elongation at break and system design. Standard elastomeric coatings accommodate fine and hairline cracks in a quiescent or slow-moving state. Crack-bridging systems are engineered to bridge actively moving cracks — cracks where the width changes seasonally due to thermal cycling or structural movement — without the membrane splitting or losing waterproof continuity. The reinforcement fabric embedded in the membrane at active crack locations is a critical component of the system.
+            </p>
+            <p>
+              Crack-bridging coating systems are specialist products typically available through remedial building trade supply rather than general retail. They should be specified after a thorough structural investigation has confirmed the cause of cracking and established that structural repair alone is not sufficient — or that coating is the appropriate surface protection after structural repair. Engaging a remedial or facade engineer to specify the system is strongly recommended for multi-storey or complex facade applications.
+            </p>
+          </>
+        )}
+      </div>
+      <button onClick={() => setExpanded((e) => !e)} className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900">{expanded ? "Read less ↑" : "Read more ↓"}</button>
     </div>
   );
 }
 
-function TechCard({ title, color, items }: { title: string; color: string; items: string[] }) {
-  const map: Record<string, { bg: string; border: string; head: string; dot: string }> = {
-    blue: { bg: "bg-blue-50", border: "border-blue-200", head: "text-blue-800", dot: "text-blue-500" },
-    green: { bg: "bg-green-50", border: "border-green-200", head: "text-green-800", dot: "text-green-500" },
-    amber: { bg: "bg-amber-50", border: "border-amber-200", head: "text-amber-800", dot: "text-amber-500" },
-    purple: { bg: "bg-purple-50", border: "border-purple-200", head: "text-purple-800", dot: "text-purple-500" },
-    red: { bg: "bg-red-50", border: "border-red-200", head: "text-red-800", dot: "text-red-500" },
-    gray: { bg: "bg-gray-50", border: "border-gray-200", head: "text-gray-800", dot: "text-gray-500" },
-  };
-  const c = map[color] ?? map.blue;
+function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title: string; items: string[]; style: "bullet" | "check" | "warn" }) {
   return (
-    <div className={`${c.bg} border ${c.border} rounded-xl p-4`}>
-      <h4 className={`font-semibold text-sm mb-2 ${c.head}`}>{title}</h4>
-      <ul className="space-y-1">{items.map((it, i) => <li key={i} className="text-xs text-gray-700 flex gap-2"><span className={`${c.dot} mt-0.5 shrink-0`}>•</span>{it}</li>)}</ul>
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-950 text-white">{icon}</div>
+        <h3 className="text-sm font-extrabold text-sky-950">{title}</h3>
+      </div>
+      <ul className="space-y-2">
+        {items.map((item, i) => (
+          <li key={i} className="flex items-start gap-2.5 text-xs leading-5 text-slate-600">
+            {style === "check" && <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-600" />}
+            {style === "warn" && <AlertTriangle size={12} className="mt-0.5 shrink-0 text-amber-500" />}
+            {style === "bullet" && <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-600" />}
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export function ElastomericCrackBridgingProductSection() {
-  const [activeFilter, setActiveFilter] = useState<FilterTag | "All">("All");
-  const [showComparison, setShowComparison] = useState(false);
-  const filtered = activeFilter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.filterTags.includes(activeFilter));
+  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const toggleFilter = (id: FilterTag) => {
+    setActiveFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
+  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        {["All", ...FILTER_DEFS.map((f) => f.id)].map((f) => (
-          <button key={f} onClick={() => setActiveFilter(f as FilterTag | "All")}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeFilter === f ? "bg-amber-600 text-white border-amber-600" : "bg-white text-gray-600 border-gray-300 hover:border-amber-400"}`}>
-            {f === "All" ? "All Products" : FILTER_DEFS.find((fd) => fd.id === f)?.label ?? f}
-          </button>
-        ))}
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((product) => (
-          <div key={product.name} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1 min-w-0">
-                <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold uppercase tracking-wide hover:underline flex items-center gap-1" style={{ color: product.accentColor }}>
-                  {product.fullLabel.split(" — ")[0]}<ExternalLink className="w-3 h-3 shrink-0" />
-                </a>
-                <h3 className="text-sm font-bold text-gray-900 mt-0.5 leading-snug">{product.name}</h3>
-              </div>
-            </div>
-            <p className="text-xs text-gray-500 mb-2">{product.productType}</p>
-            <CollapsibleDescription text={product.descriptionLine} />
-            <div className="flex flex-wrap gap-1 mt-3">{product.techChips.map((chip) => <span key={chip.label} className={`text-xs px-2 py-0.5 rounded-full font-medium ${chip.cls}`}>{chip.label}</span>)}</div>
-            <CollapsibleCardDetails product={product} />
+    <>
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <button type="button" onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition hover:bg-slate-50">
+          <div>
+            <p className="text-base font-extrabold text-sky-950">System Technical Reference</p>
+            <p className="mt-0.5 text-xs text-slate-500">Applications, selection criteria, limitations, standards, suitable substrates</p>
           </div>
-        ))}
-      </div>
-      <div>
-        <button onClick={() => setShowComparison(!showComparison)} className="flex items-center gap-2 text-sm font-medium text-amber-600 hover:text-amber-800">
-          {showComparison ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          {showComparison ? "Hide" : "Show"} product comparison table
+          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
+            {accordionOpen ? <>Hide detail <ChevronUp size={14} /></> : <>Show detail <ChevronDown size={14} /></>}
+          </div>
         </button>
-        {showComparison && (
-          <div className="mt-3 overflow-x-auto rounded-xl border border-gray-200">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-gray-50 text-gray-600 uppercase text-[11px]">
-                <tr>{["Product", "Brand", "Type", "DFT", "Elongation", "Crack width", "Key feature"].map((h) => <th key={h} className="px-3 py-2 font-semibold whitespace-nowrap">{h}</th>)}</tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {COMPARISON_ROWS.map((row, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="px-3 py-2 font-medium text-gray-900 whitespace-nowrap">{row.product}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.brand}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.type}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.dft}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.elongation}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.crackWidth}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.keyFeature}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {accordionOpen && (
+          <div className="border-t border-slate-100 px-7 pb-7 pt-6">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
+              <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
+              <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
+              <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
+            </div>
           </div>
         )}
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <TechCard title="Typical Applications" color="blue" items={TECH_INFO.typicalApplications} />
-        <TechCard title="Selection Criteria" color="green" items={TECH_INFO.selectionCriteria} />
-        <TechCard title="Limitations" color="amber" items={TECH_INFO.limitations} />
-        <TechCard title="Standards & Notes" color="purple" items={TECH_INFO.standardsNotes} />
-        <TechCard title="Suitable Defects" color="red" items={TECH_INFO.suitableDefects} />
-        <TechCard title="Typical Substrates" color="gray" items={TECH_INFO.typicalSubstrates} />
+
+      <div>
+        <div className="mb-5 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
+            <p className="mt-1 text-sm text-slate-500">5 products — 5 brands — elastomeric crack-bridging coating systems — scroll to view all</p>
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
+          {FILTER_DEFS.map((f) => {
+            const active = activeFilters.has(f.id);
+            return (
+              <button key={f.id} type="button" onClick={() => toggleFilter(f.id)}
+                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>
+                {f.label}
+              </button>
+            );
+          })}
+          {activeFilters.size > 0 && (<button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>)}
+        </div>
+
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — 3 visible, scroll for more</span>
+          <div className="flex items-center gap-2">
+            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
+            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
+          </div>
+        </div>
+
+        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
+          {visibleProducts.map((product) => (
+            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
+              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
+                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
+                    <div className="flex shrink-0 items-center gap-1">
+                      {product.tdsUrl && (<a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>)}
+                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
+                    </div>
+                  </div>
+                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
+                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
+                </div>
+                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
+                  <CollapsibleDescription text={product.systemDescription} />
+                </div>
+                <div className="space-y-3 px-5 py-4">
+                  <div>
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
+                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
+                  </div>
+                  <div>
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
+                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
+                  </div>
+                </div>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                  <CollapsibleSources sources={product.procurementSources} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of elastomeric crack-bridging coating systems. Confirm all product selections against the current manufacturer TDS before specifying.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product system</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Elongation</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Crack-bridging</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Anti-carbonation</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Coastal</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">System</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.elongation}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.crackBridging}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.antiCarb}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.coastal}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.system}</td>
+                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 }

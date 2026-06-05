@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { CladdingRecoatingPVDFIntroSection, CladdingRecoatingPVDFProductSection } from "./CladdingRecoatingPVDFProductSection";
 
 export const metadata: Metadata = {
@@ -74,7 +74,33 @@ export default function CladdingRecoatingPVDFPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><CladdingRecoatingPVDFIntroSection /><CladdingRecoatingPVDFProductSection /></div></section>
+        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><CladdingRecoatingPVDFIntroSection /><CladdingRecoatingPVDFProductSection />
+
+            {/* Do not confuse warning */}
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse PVDF and fluoropolymer cladding recoating systems with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "UV-resistant enamel topcoats for metal — conventional solvent or water-based metal enamels are not fluoropolymer systems and will not achieve the 20-year colour retention and chalk resistance of PVDF; they are appropriate for balustrades and lintels, not aluminium curtain wall or ACP panels",
+                  "Standard polyester powder coating — polyester powder coat meets AAMA 2604 (5-year colour retention) at best; PVDF powder coat (Interpon D3020, Axalta Alesta PVDF) meets AAMA 2605 (10-year minimum) — specifying 'powder coat' without the PVDF qualifier will produce a shorter-life finish",
+                  "Anti-corrosion paint systems for steel — zinc-rich and epoxy primer systems for steel are not applicable to aluminium cladding; aluminium is corrosion-resistant but requires PVDF or powder coat for UV/aesthetic protection, not zinc-rich anti-corrosion paint",
+                  "Exterior acrylic or masonry coatings — acrylic masonry paint systems are not formulated for non-porous aluminium substrates and will not adhere to metal cladding panels without specialist adhesion primer",
+                  "Anodising — anodising is an electrochemical surface treatment applied to aluminium profiles at manufacture; it cannot be applied as a site or factory recoating process to existing cladding — specify PVDF or powder coat for recoating scenarios",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div></section>
         <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. PVDF recoating is a specialist application — standard paint contractors are not qualified for this work. Panels with delaminated PE cores or fire-safety compliance issues must be assessed separately. Confirm applicator licensing, surface preparation and warranty terms with the system manufacturer. Not a substitute for professional advice.</p></div>

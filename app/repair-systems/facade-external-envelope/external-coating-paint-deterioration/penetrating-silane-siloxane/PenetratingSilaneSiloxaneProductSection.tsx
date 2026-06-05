@@ -1,120 +1,263 @@
 "use client";
-import { useState } from "react";
-import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+
+import { useState, useRef } from "react";
+import {
+  CheckCircle, AlertTriangle, BookOpen, Layers, SquareStack,
+  Ruler, ExternalLink, ChevronDown, ChevronUp,
+  XCircle, ChevronLeft, ChevronRight, FileText,
+} from "lucide-react";
 
 type FilterTag =
   | "Silane"
   | "Siloxane"
-  | "Water-repellent"
   | "Penetrating"
-  | "Masonry"
+  | "Water-repellent"
+  | "Colourless"
   | "Concrete"
-  | "Invisible-finish"
-  | "Breathable";
+  | "Masonry"
+  | "Render"
+  | "Breathable"
+  | "Coastal"
+  | "Anti-carbonation"
+  | "Pre-coat";
 
 type Product = {
-  fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string;
-  name: string; descriptionLine: string; productType: string;
-  filterTags: FilterTag[]; techChips: { label: string; cls: string }[];
-  systemDescription: string; technicalProperties: string[];
-  limitations: string[]; procurementSources: { name: string; url: string }[];
+  fullLabel: string;
+  brandUrl: string;
+  tdsUrl?: string;
+  accentColor: string;
+  name: string;
+  descriptionLine: string;
+  productType: string;
+  filterTags: FilterTag[];
+  techChips: { label: string; cls: string }[];
+  systemDescription: string;
+  technicalProperties: string[];
+  limitations: string[];
+  procurementSources: { name: string; url: string }[];
 };
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Mapei — Antipluviol S Siloxane Water Repellent",
-    brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/product-detail/antipluviol-s",
-    accentColor: "#003087",
-    name: "Antipluviol S Siloxane Water Repellent",
-    descriptionLine: "Concentrated siloxane-based penetrating water repellent for masonry and concrete providing hydrophobic protection with no change to surface appearance",
-    productType: "Siloxane penetrating water repellent",
-    filterTags: ["Silane", "Siloxane", "Water-repellent", "Penetrating", "Masonry", "Concrete", "Invisible-finish", "Breathable"],
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    tdsUrl: "https://aus.sika.com/en/solutions_products/02/02a015/02a015sa01/sika-impregnation-h.html",
+    accentColor: "#e2003a",
+    name: "Sika Impregnation H",
+    descriptionLine: "Silane-siloxane penetrating water repellent for concrete and masonry — colourless, breathable, deep penetrating — professional remedial system for reducing water ingress and carbonation on building facades",
+    productType: "Silane-siloxane penetrating water repellent — Sika professional system",
+    filterTags: ["Silane", "Siloxane", "Penetrating", "Water-repellent", "Colourless", "Concrete", "Masonry", "Breathable", "Coastal", "Anti-carbonation"],
     techChips: [
-      { label: "Siloxane", cls: "bg-blue-100 text-blue-700" },
-      { label: "Invisible", cls: "bg-stone-100 text-stone-700" },
+      { label: "Sika professional", cls: "bg-red-100 text-red-800" },
+      { label: "Deep penetrating", cls: "bg-amber-100 text-amber-700" },
+      { label: "Colourless", cls: "bg-blue-100 text-blue-700" },
+      { label: "Anti-carbonation", cls: "bg-green-100 text-green-700" },
+    ],
+    systemDescription:
+      "Sika Impregnation H is a penetrating silane-siloxane water repellent for concrete and masonry facades in the Sika professional remedial product range. Applied by brush, roller or low-pressure spray to the dry facade surface, it penetrates deep into the substrate pore structure and reacts with the substrate minerals to form a hydrophobic lining within the pores — repelling liquid water ingress while remaining vapour permeable (breathable). It significantly reduces chloride ion penetration and carbonation rate — making it particularly suitable for coastal concrete facades where chloride-induced corrosion of reinforcement is a design consideration. Sika Impregnation H is colourless and does not alter the visual appearance of the treated surface. Available through Sika's national trade and contractor supply network. Confirm current product name, application rate, substrate requirements, and surface dryness conditions from the current Sika Impregnation H TDS before specifying.",
+    technicalProperties: [
+      "Silane-siloxane penetrating water repellent — deep penetration into concrete and masonry pore structure",
+      "Breathable — vapour permeable — does not trap moisture in the substrate",
+      "Colourless — does not alter the visual appearance of the treated facade surface",
+      "Reduces chloride ion penetration — anti-carbonation protection — suited to coastal concrete facades",
+      "Available through Sika national trade and contractor supply network",
+      "Confirm application rate, coverage, substrate dryness requirements from current Sika TDS before specifying",
+    ],
+    limitations: [
+      "Substrate must be dry before application — confirm substrate moisture content per TDS before applying",
+      "Does not bridge or seal cracks — specify crack sealant or repair system for cracked substrates before impregnation",
+      "Not a surface coating — does not provide colour or topcoat protection — specify over coating separately if required",
+      "Confirm current product name and TDS with Sika Australia — product range may be updated",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
+      { name: "Sika distributors — national trade network", url: "https://aus.sika.com" },
+      { name: "Confirm local distributor with Sika Australia", url: "https://aus.sika.com" },
+    ],
+  },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
+    accentColor: "#0369a1",
+    name: "Mapei Antipluviol W",
+    descriptionLine: "Siloxane water repellent impregnation for concrete, masonry and render — colourless breathable penetrating treatment — Mapei specialist product for facade water repellency and chloride protection",
+    productType: "Siloxane penetrating water repellent impregnation — Mapei specialist system",
+    filterTags: ["Siloxane", "Penetrating", "Water-repellent", "Colourless", "Concrete", "Masonry", "Render", "Breathable", "Coastal", "Anti-carbonation"],
+    techChips: [
+      { label: "Mapei specialist", cls: "bg-sky-100 text-sky-800" },
+      { label: "Breathable", cls: "bg-green-100 text-green-700" },
+      { label: "Colourless", cls: "bg-blue-100 text-blue-700" },
+      { label: "Water-repellent", cls: "bg-amber-100 text-amber-700" },
+    ],
+    systemDescription:
+      "Mapei Antipluviol W is a siloxane penetrating water repellent impregnation for concrete, masonry, and render facades in the Mapei professional product range. Applied to dry substrate surfaces, it penetrates into the pore structure and reacts to form a hydrophobic surface within the pores, reducing liquid water absorption while remaining breathable. It reduces chloride ion penetration and slows carbonation on concrete facades — particularly relevant for buildings in coastal environments where chloride ingress is a corrosion risk factor. Antipluviol W is colourless and does not change the visual appearance of the treated facade. It can be used on its own as a protective impregnation or as a pre-treatment prior to protective coating. Available through Mapei's national trade and contractor supply network. Confirm current product name, application method, coverage, and substrate requirements from the current Mapei Antipluviol W TDS before specifying.",
+    technicalProperties: [
+      "Siloxane penetrating water repellent — reduces water absorption in concrete, masonry and render",
+      "Breathable — vapour permeable — allows substrate to dry while repelling liquid water ingress",
+      "Colourless — does not alter visual appearance of the treated facade surface",
+      "Reduces chloride penetration and carbonation — relevant for coastal concrete facade protection",
+      "Can be used as pre-treatment prior to protective coating application — confirm system from Mapei technical",
+      "Confirm application rate, coverage, and substrate dryness from current Mapei Antipluviol W TDS",
+    ],
+    limitations: [
+      "Substrate must be dry — confirm moisture content per TDS before applying penetrating impregnation",
+      "Does not seal or bridge cracks — repair cracks before applying water repellent treatment",
+      "Not a topcoat — provides no colour or decorative finish — specify coating separately if required",
+      "Confirm current product name and system from Mapei Australia technical before specifying",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
+      { name: "Mapei distributors — national building trade network", url: "https://www.mapei.com/au" },
+      { name: "Confirm local availability with Mapei Australia", url: "https://www.mapei.com/au" },
+    ],
+  },
+  {
+    fullLabel: "Parchem Construction Supplies",
+    brandUrl: "https://www.parchem.com.au",
+    tdsUrl: "https://www.parchem.com.au/products",
+    accentColor: "#7c3aed",
+    name: "Parchem Nitocote Sealer 30",
+    descriptionLine: "Silane penetrating water repellent sealer for concrete and masonry facades — deep penetrating colourless treatment — Parchem/Fosroc specialist product for water repellency and chloride protection",
+    productType: "Silane penetrating sealer — concrete and masonry — Parchem/Fosroc specialist",
+    filterTags: ["Silane", "Penetrating", "Water-repellent", "Colourless", "Concrete", "Masonry", "Breathable", "Coastal", "Anti-carbonation"],
+    techChips: [
+      { label: "Parchem specialist", cls: "bg-purple-100 text-purple-800" },
+      { label: "Silane penetrating", cls: "bg-amber-100 text-amber-700" },
+      { label: "Colourless", cls: "bg-blue-100 text-blue-700" },
+      { label: "Chloride protection", cls: "bg-green-100 text-green-700" },
+    ],
+    systemDescription:
+      "Parchem Nitocote Sealer 30 is a silane penetrating water repellent sealer for concrete and masonry facades in the Parchem/Fosroc professional construction products range. It penetrates deep into the substrate pore structure and reacts to form a hydrophobic lining within the pores — significantly reducing water absorption and chloride ion penetration while remaining breathable. It is primarily specified for concrete and masonry facades on commercial, multi-storey, and strata buildings in coastal and high-humidity environments where chloride-induced reinforcement corrosion is a long-term durability consideration. Colourless — does not change the visual appearance of the treated surface. Parchem has strong national distribution through trade supply to the remedial building contractor market. Confirm current product name, application method, coverage, and substrate requirements from the current Parchem Nitocote Sealer 30 TDS before specifying.",
+    technicalProperties: [
+      "Deep penetrating silane water repellent — penetrates into concrete and masonry pore structure",
+      "Breathable — vapour permeable — substrate can dry while liquid water ingress is repelled",
+      "Colourless — does not change the visual appearance of the treated facade",
+      "Significantly reduces chloride ion penetration — anti-carbonation protection — suited to coastal concrete",
+      "Available through Parchem national trade supply — strong remedial building market distribution",
+      "Confirm application method, coverage rate, and substrate requirements from Parchem TDS before specifying",
+    ],
+    limitations: [
+      "Substrate must be dry at time of application — confirm moisture content per TDS",
+      "Does not fill or seal cracks — repair cracking before applying penetrating water repellent",
+      "Not a surface topcoat — no colour or decorative protection — specify coating over if required",
+      "Confirm current product name with Parchem Australia technical before specifying",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — national", url: "https://www.parchem.com.au" },
+      { name: "Parchem — trade supply to remedial contractors", url: "https://www.parchem.com.au" },
+      { name: "Confirm local branch with Parchem Australia", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Dry-Treat Australia",
+    brandUrl: "https://www.drytreat.com",
+    tdsUrl: "https://www.drytreat.com/products",
+    accentColor: "#b45309",
+    name: "Dry-Treat STAIN-PROOF Original",
+    descriptionLine: "Premium fluoropolymer impregnating sealer for concrete, masonry and stone — deep penetrating water and oil repellent — long-lasting protection for Australian building facades and paved surfaces",
+    productType: "Fluoropolymer penetrating impregnating sealer — concrete, masonry and stone",
+    filterTags: ["Penetrating", "Water-repellent", "Colourless", "Concrete", "Masonry", "Breathable", "Coastal"],
+    techChips: [
+      { label: "Fluoropolymer", cls: "bg-amber-100 text-amber-800" },
+      { label: "Water + oil repellent", cls: "bg-blue-100 text-blue-700" },
+      { label: "Deep penetrating", cls: "bg-green-100 text-green-700" },
+      { label: "Long-lasting", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Dry-Treat STAIN-PROOF Original is a premium fluoropolymer impregnating sealer for concrete, masonry, stone, and grout surfaces. Unlike silane-siloxane products which are organosilicon-based, STAIN-PROOF Original uses a fluoropolymer chemistry that provides both water and oil repellency deep within the substrate — making it particularly effective for surfaces exposed to both water ingress and oil or grease staining. It is breathable, colourless, and does not alter the visual appearance of the treated surface. Dry-Treat is an Australian company with a specialist focus on penetrating sealers and impregnating treatments for stone, concrete, masonry, and grout in both building facade and paving applications. STAIN-PROOF Original is positioned as a premium, long-lasting product with an extended service life compared to standard silane-siloxane products. Available through Dry-Treat's national trade and tile/stone supply network. Confirm current product name, application method, and substrate suitability from the current Dry-Treat STAIN-PROOF TDS before specifying.",
+    technicalProperties: [
+      "Fluoropolymer penetrating sealer — water and oil repellency within the substrate pore structure",
+      "Breathable — vapour permeable — does not trap moisture in treated substrates",
+      "Colourless — does not alter the appearance of treated concrete, masonry or stone",
+      "Premium long-lasting treatment — extended service life compared to standard silane-siloxane products",
+      "Australian company — specialist penetrating sealer range — national trade and tile/stone supply network",
+      "Confirm application method, coverage, and substrate suitability from current Dry-Treat TDS before specifying",
+    ],
+    limitations: [
+      "Premium pricing compared to standard silane-siloxane products — specify where water and oil repellency and long service life are required",
+      "Substrate must be dry and clean before application — confirm surface preparation from TDS",
+      "Does not seal cracks or fill defects — repair substrate before applying impregnating sealer",
+      "Confirm current product name and suitability for facade concrete and masonry from Dry-Treat technical",
+    ],
+    procurementSources: [
+      { name: "Dry-Treat Australia — trade supply", url: "https://www.drytreat.com" },
+      { name: "Tile and stone trade suppliers — national", url: "https://www.drytreat.com" },
+      { name: "Confirm local distributor with Dry-Treat Australia", url: "https://www.drytreat.com" },
+    ],
+  },
+  {
+    fullLabel: "Dulux / Dulux Acratex Australia",
+    brandUrl: "https://www.dulux.com.au",
+    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
+    accentColor: "#059669",
+    name: "Dulux Aquashield Exterior Concrete Sealer",
+    descriptionLine: "Penetrating water repellent sealer for concrete, render and masonry — colourless breathable treatment as pre-coat preparation or standalone facade water repellency system",
+    productType: "Penetrating concrete and masonry sealer — water repellent — Dulux system",
+    filterTags: ["Penetrating", "Water-repellent", "Colourless", "Concrete", "Masonry", "Render", "Breathable", "Pre-coat"],
+    techChips: [
+      { label: "Water repellent", cls: "bg-green-100 text-green-800" },
+      { label: "Colourless", cls: "bg-blue-100 text-blue-700" },
+      { label: "Pre-coat prep", cls: "bg-amber-100 text-amber-700" },
+      { label: "Breathable", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Dulux Aquashield Exterior Concrete Sealer is a penetrating water repellent sealer for concrete, render, and masonry surfaces in the Dulux exterior system. Applied to dry exterior surfaces, it penetrates into the substrate and forms a water-repellent treatment within the pore structure — reducing liquid water absorption while remaining vapour permeable. It can be used as a standalone water repellency treatment on concrete and render facades, or as a pre-coat preparation treatment before applying Dulux exterior coatings. Colourless — does not change the visual appearance of the treated surface. Dulux Aquashield is available through Dulux Trade Centres and trade retail channels nationally. Confirm current product name, application method, coverage rates, and substrate requirements from the current Dulux Aquashield product TDS before specifying. The Dulux Aquashield range includes products for different substrates — confirm the correct grade for concrete and render facade applications.",
+    technicalProperties: [
+      "Penetrating water repellent for concrete, render and masonry — reduces water absorption without film formation",
+      "Breathable — vapour permeable — does not trap moisture in the substrate",
+      "Colourless — does not alter visual appearance of treated facade surfaces",
+      "Can be used as standalone treatment or pre-coat preparation before Dulux exterior coating systems",
+      "Wide national availability through Dulux Trade Centres and trade retail",
+      "Confirm current product grade, application rate, and coverage from Dulux Aquashield TDS before specifying",
+    ],
+    limitations: [
+      "Substrate must be dry at time of application — moisture content requirements per TDS",
+      "Does not seal or bridge cracks — repair cracking before applying sealer",
+      "Confirm correct Aquashield product grade for concrete and render facade applications — range includes multiple grades",
+      "Touch-up or reapplication after a period of service may require full surface reapplication",
+    ],
+    procurementSources: [
+      { name: "Dulux Trade Centres — national", url: "https://www.dulux.com.au" },
+      { name: "Bunnings — trade and retail", url: "https://www.bunnings.com.au" },
+      { name: "Dulux Trade — Product Finder", url: "https://www.dulux.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au/products",
+    accentColor: "#dc2626",
+    name: "Ardex AR 990 Silane Siloxane Sealer",
+    descriptionLine: "Silane-siloxane penetrating water repellent for concrete and masonry — colourless breathable deep penetrating treatment — Ardex specialist product for water repellency and facade protection",
+    productType: "Silane-siloxane penetrating water repellent — Ardex specialist system",
+    filterTags: ["Silane", "Siloxane", "Penetrating", "Water-repellent", "Colourless", "Concrete", "Masonry", "Render", "Breathable", "Coastal", "Anti-carbonation"],
+    techChips: [
+      { label: "Ardex specialist", cls: "bg-red-100 text-red-800" },
+      { label: "Silane-siloxane", cls: "bg-amber-100 text-amber-700" },
+      { label: "Colourless", cls: "bg-blue-100 text-blue-700" },
       { label: "Breathable", cls: "bg-green-100 text-green-700" },
     ],
-    systemDescription: "Mapei Antipluviol S is a concentrated siloxane-based penetrating water repellent that reacts with the substrate to form a hydrophobic lining within the pore structure without blocking pores. Applied to masonry, brick, and concrete facades, it repels liquid water while maintaining full vapour permeability (breathing). The treatment is invisible — it does not change the surface appearance, making it ideal for heritage and exposed brick or stonework where surface films are unacceptable.",
+    systemDescription:
+      "Ardex AR 990 is a silane-siloxane penetrating water repellent for concrete and masonry facades in the Ardex specialist remedial product range. Applied to dry facade surfaces, it penetrates into the substrate pore structure and reacts to form a hydrophobic lining within the pores — reducing water absorption and chloride ion penetration while remaining breathable and colourless. It is suitable for concrete, masonry, and render facades on residential and commercial strata buildings where water repellency and anti-carbonation protection are required without altering the visual appearance of the facade. Ardex has a strong national distribution network through trade supply to the remedial building and waterproofing contractor market. Confirm current product name, application method, coverage, and substrate requirements from the current Ardex AR 990 product TDS and Ardex Australia technical before specifying.",
     technicalProperties: [
-      "Active agent: modified polydimethylsiloxane",
-      "Coverage: 3–6 m²/L on porous masonry (varies with absorption)",
-      "Water absorption reduction: >80% (RILEM tube test)",
-      "Vapour permeability: >80% retained after treatment",
-      "Depth of penetration: 5–15 mm depending on porosity",
+      "Silane-siloxane penetrating water repellent — deep penetration into concrete and masonry pore structure",
+      "Breathable — vapour permeable — substrate can dry while liquid water ingress is repelled",
+      "Colourless — does not change the visual appearance of treated concrete, masonry or render",
+      "Reduces chloride penetration and carbonation rate — suited to coastal and high-humidity exposures",
+      "Ardex specialist remedial product — strong national trade supply distribution",
+      "Confirm application method, coverage rate, and substrate requirements from Ardex AR 990 TDS",
     ],
     limitations: [
-      "Not a film-forming product — will not bridge cracks or provide positive waterproofing against hydrostatic pressure",
-      "Not effective on dense, low-porosity substrates where penetration is negligible",
-      "Requires reapplication every 5–10 years in aggressive exposure conditions",
+      "Substrate must be dry at time of application — confirm moisture content requirements from TDS",
+      "Does not bridge or seal cracks — repair cracking before applying penetrating water repellent",
+      "Not a surface topcoat — no decorative or colour protection — specify coating over if required",
+      "Confirm current product name with Ardex Australia technical — product range may be updated",
     ],
     procurementSources: [
-      { name: "Mapei Australia — Distributor Search", url: "https://www.mapei.com/au" },
-      { name: "Parchem Construction Supplies", url: "https://www.parchem.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Sika — SikaPenetrex Silane-Siloxane Impregnation",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions/products/sikapentrex.html",
-    accentColor: "#cc0000",
-    name: "SikaPenetrex Silane-Siloxane Impregnation",
-    descriptionLine: "Silane-siloxane penetrating water repellent providing deep substrate penetration and long-term hydrophobic protection on masonry and concrete facades",
-    productType: "Silane-siloxane blend penetrating impregnation",
-    filterTags: ["Silane", "Siloxane", "Water-repellent", "Penetrating", "Masonry", "Concrete", "Invisible-finish", "Breathable"],
-    techChips: [
-      { label: "Silane-siloxane blend", cls: "bg-red-100 text-red-700" },
-      { label: "Deep penetration", cls: "bg-orange-100 text-orange-700" },
-      { label: "Invisible", cls: "bg-stone-100 text-stone-700" },
-    ],
-    systemDescription: "SikaPenetrex combines silane and siloxane technology to deliver both deep substrate penetration (via the smaller silane molecule) and an effective hydrophobic lining (via the larger siloxane network). The blended chemistry provides broader protection coverage than either technology alone. Suitable for brick, block, concrete, and natural stone facades where invisible water repellency with maintained vapour permeability is required.",
-    technicalProperties: [
-      "Active blend: silane + siloxane combination",
-      "Penetration depth: 10–25 mm (silane component penetrates deepest)",
-      "Water absorption reduction: >90%",
-      "Vapour permeability: maintained — breathable treatment",
-      "Coverage: 4–8 m²/L depending on substrate",
-    ],
-    limitations: [
-      "Effectiveness reduced on glazed brick, very dense concrete, or substrate with existing hydrophobic coating",
-      "Apply on dry substrate — moisture in pores competes with penetration",
-      "Solvent-borne grades available for particularly dense substrates — check product range",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — Distributor Search", url: "https://aus.sika.com" },
-      { name: "Parchem Construction Supplies", url: "https://www.parchem.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Fosroc — Nitofill Impregnation Silane Treatment",
-    brandUrl: "https://www.fosroc.com/en-au",
-    tdsUrl: "https://www.fosroc.com/en-au/products/concrete-repair-and-protection/sealers-and-coatings",
-    accentColor: "#e87722",
-    name: "Nitofill Impregnation Silane Treatment",
-    descriptionLine: "Monomeric silane penetrating impregnation providing the deepest available penetration depth and long-term chloride exclusion for concrete and masonry facades",
-    productType: "Monomeric silane penetrating impregnation",
-    filterTags: ["Silane", "Siloxane", "Water-repellent", "Penetrating", "Masonry", "Concrete", "Invisible-finish", "Breathable"],
-    techChips: [
-      { label: "Monomeric silane", cls: "bg-orange-100 text-orange-700" },
-      { label: "Deep penetration", cls: "bg-red-100 text-red-700" },
-      { label: "Chloride exclusion", cls: "bg-blue-100 text-blue-700" },
-    ],
-    systemDescription: "Fosroc Nitofill Impregnation is a monomeric isooctyltriethoxysilane treatment providing maximum penetration depth compared to siloxane products. The small monomer diffuses deeply into concrete and masonry pore networks, polymerising in situ to form a hydrophobic lining that resists chloride ion ingress. It is particularly specified for coastal and marine environments where chloride exclusion from reinforced concrete is a primary objective.",
-    technicalProperties: [
-      "Active agent: monomeric isooctyltriethoxysilane",
-      "Penetration depth: up to 30 mm on porous concrete",
-      "Chloride resistance: significantly reduces chloride diffusion",
-      "Water absorption: >90% reduction",
-      "Vapour transmission: >85% retained",
-    ],
-    limitations: [
-      "Monomeric silanes are reactive and require dry, warm substrate conditions for optimum cure",
-      "Coverage rates vary significantly with concrete porosity — test panel recommended before large-scale application",
-      "Solvent-borne product — PPE and ventilation required; check VOC compliance",
-    ],
-    procurementSources: [
-      { name: "Fosroc Australia — Contact/Distributor", url: "https://www.fosroc.com/en-au" },
-      { name: "Parchem Construction Supplies", url: "https://www.parchem.com.au" },
+      { name: "Ardex Australia — trade supply", url: "https://www.ardex.com.au" },
+      { name: "Ardex distributors — national remedial trade network", url: "https://www.ardex.com.au" },
+      { name: "Confirm local availability with Ardex Australia", url: "https://www.ardex.com.au" },
     ],
   },
 ];
@@ -122,213 +265,326 @@ const PRODUCTS: Product[] = [
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
   { id: "Silane", label: "Silane" },
   { id: "Siloxane", label: "Siloxane" },
-  { id: "Water-repellent", label: "Water-repellent" },
   { id: "Penetrating", label: "Penetrating" },
-  { id: "Masonry", label: "Masonry" },
+  { id: "Water-repellent", label: "Water-repellent" },
+  { id: "Colourless", label: "Colourless" },
   { id: "Concrete", label: "Concrete" },
-  { id: "Invisible-finish", label: "Invisible finish" },
+  { id: "Masonry", label: "Masonry" },
+  { id: "Render", label: "Render" },
   { id: "Breathable", label: "Breathable" },
+  { id: "Coastal", label: "Coastal" },
+  { id: "Anti-carbonation", label: "Anti-carbonation" },
+  { id: "Pre-coat", label: "Pre-coat" },
 ];
 
-const COMPARISON_ROWS = [
-  { product: "Mapei Antipluviol S", brand: "Mapei", type: "Siloxane", penetration: "5–15 mm", waterReduction: ">80%", vapourPerm: ">80% retained", keyFeature: "Breathable, invisible, masonry" },
-  { product: "Sika SikaPenetrex", brand: "Sika", type: "Silane-siloxane blend", penetration: "10–25 mm", waterReduction: ">90%", vapourPerm: "Maintained", keyFeature: "Dual chemistry, broad coverage" },
-  { product: "Fosroc Nitofill Impregnation", brand: "Fosroc", type: "Monomeric silane", penetration: "Up to 30 mm", waterReduction: ">90%", vapourPerm: ">85% retained", keyFeature: "Maximum penetration, chloride exclusion" },
+const SYSTEM_COMPARISON: {
+  product: string;
+  brand: string;
+  chemistry: string;
+  colourless: string;
+  breathable: string;
+  antiCarb: string;
+  coastal: string;
+  primaryUse: string;
+}[] = [
+  { product: "Impregnation H", brand: "Sika", chemistry: "Silane-siloxane", colourless: "Yes", breathable: "Yes", antiCarb: "Yes", coastal: "Yes", primaryUse: "Sika professional — concrete facades — chloride protection" },
+  { product: "Antipluviol W", brand: "Mapei", chemistry: "Siloxane", colourless: "Yes", breathable: "Yes", antiCarb: "Yes", coastal: "Yes", primaryUse: "Mapei specialist — concrete, masonry and render — anti-carbonation" },
+  { product: "Nitocote Sealer 30", brand: "Parchem/Fosroc", chemistry: "Silane", colourless: "Yes", breathable: "Yes", antiCarb: "Yes", coastal: "Yes", primaryUse: "Parchem specialist — commercial and strata — chloride protection" },
+  { product: "STAIN-PROOF Original", brand: "Dry-Treat", chemistry: "Fluoropolymer", colourless: "Yes", breathable: "Yes", antiCarb: "Confirm TDS", coastal: "Yes", primaryUse: "Premium — water and oil repellent — long-lasting — Australian specialist" },
+  { product: "Aquashield Concrete Sealer", brand: "Dulux", chemistry: "Penetrating sealer", colourless: "Yes", breathable: "Yes", antiCarb: "Confirm TDS", coastal: "Confirm TDS", primaryUse: "Dulux system — standalone or pre-coat — wide national availability" },
+  { product: "AR 990 Silane Siloxane", brand: "Ardex", chemistry: "Silane-siloxane", colourless: "Yes", breathable: "Yes", antiCarb: "Yes", coastal: "Yes", primaryUse: "Ardex specialist remedial — concrete and masonry — national" },
 ];
 
 const TECH_INFO = {
   typicalApplications: [
-    "Invisible water repellent treatment on exposed brick, stone, or fair-faced concrete facades",
-    "Chloride exclusion treatment on reinforced concrete facades in coastal environments",
-    "Protection of heritage and sandstone buildings without altering surface appearance",
-    "Post-repair impregnation on concrete structures after patching and reinstatement",
+    "Water repellency treatment on concrete and masonry facades to reduce water ingress without altering visual appearance",
+    "Chloride protection on coastal concrete building facades — reduces chloride ion penetration and carbonation",
+    "Pre-coat treatment on porous masonry and render before protective coating to improve system durability",
+    "Anti-carbonation protection on concrete panel facades to protect reinforcement from CO₂-induced corrosion",
+    "Water repellency treatment on heritage and exposed masonry where surface coating would alter the visual appearance",
   ],
   selectionCriteria: [
-    "Siloxane products for general masonry and render water-repellent treatment",
-    "Silane-siloxane blends for broader coverage and dual-mechanism performance",
-    "Monomeric silane for reinforced concrete where chloride exclusion is the primary objective",
-    "Confirm substrate porosity — dense, low-absorption surfaces will not allow meaningful penetration",
+    "Select silane-siloxane where both deep penetration and broad-spectrum water repellency are required",
+    "Select silane where the substrate has small pore structure (dense concrete) — silane molecules are smaller and penetrate deeper",
+    "Select siloxane or silane-siloxane blend for porous masonry, brick and render substrates",
+    "Select fluoropolymer product (Dry-Treat) where oil repellency is also required alongside water repellency",
+    "Always apply to a dry substrate — confirm moisture content from TDS before application",
+    "Repair all cracks before applying penetrating water repellent — penetrating sealers do not bridge or seal cracks",
   ],
   limitations: [
-    "Penetrating treatments are not film-forming — they do not seal cracks or provide positive waterproofing",
-    "Service life is 5–15 years depending on exposure — schedule for periodic reapplication",
-    "Previously applied films, paints, or coatings must be removed before penetrating treatments can work",
-    "Treatments cannot be verified visually — water bead test (RILEM tube) is the only reliable performance check",
+    "Penetrating water repellents do NOT seal or bridge cracks — crack repair must precede application",
+    "Substrate must be dry at time of application — penetrating sealers applied to wet substrates will not bond correctly",
+    "Not a substitute for structural waterproofing — do not specify as the sole waterproofing system for below-ground or wet areas",
+    "Not a surface coating — provides no decorative finish, colour, or UV protection — specify coating separately if required",
+    "Service life is limited — retreatment will be required over the building lifecycle — confirm expected service life from TDS",
   ],
   standardsNotes: [
-    "EN 1504-2 — Products and systems for the protection and repair of concrete structures: surface protection systems",
-    "ASTM C1202 / C1763 — water and chloride penetration resistance testing of concrete",
-    "AS 3600 — Concrete structures: durability requirements for concrete in various exposure classifications",
-    "Manufacturer TDS specifies application conditions, coverage, and test data for substrate-specific performance",
+    "AS 4548 — Guide to long-life coatings for concrete and masonry — relevant for penetrating sealer specification",
+    "AS 3600 — Concrete structures — durability provisions — chloride and carbonation protection reference",
+    "NATSPEC — Section 0233 — Exterior painting and protective coating specification",
+    "Manufacturer TDS — confirm application rate, coverage, substrate moisture content, and service life before specifying",
+    "Engage a remedial or structural engineer to confirm the appropriate protection system for concrete facades with corrosion risk",
   ],
   suitableDefects: [
-    "Water ingress through porous masonry and brick without visible cracking",
-    "Chloride contamination and corrosion risk in coastal exposed concrete",
-    "Rising damp management — combined with other treatment for moisture management",
-    "Heritage masonry facades requiring water repellency without surface film application",
+    "Moisture ingress through porous render and masonry facades — water absorption reducing with penetrating water repellent treatment",
+    "Carbonation-affected concrete facades where anti-carbonation protection is required to slow further carbonation depth",
+    "Coastal concrete facades with chloride exposure risk — silane-siloxane impregnation as first line of protection",
+    "Porous masonry and render facades where surface coating is not appropriate — heritage or architectural concrete",
+    "Concrete and masonry facades with recurring moisture staining from rain absorption — water repellency treatment",
   ],
   typicalSubstrates: [
-    "Porous clay brick — common and heritage stock",
-    "Natural stone — sandstone, limestone, granite",
-    "Concrete — reinforced and unreinforced (porous grade)",
-    "Fair-faced concrete block (CMU) masonry",
+    "Concrete — dense and porous — commercial and strata building facade panels — silane or silane-siloxane penetrant",
+    "Brick masonry — porous fired clay brick — siloxane or silane-siloxane penetrant for water repellency",
+    "Cement render — porous render on masonry backgrounds — penetrating water repellent pre-coat or standalone treatment",
+    "Stone and sandstone masonry — heritage and exposed stone facades — confirm product suitability with manufacturer",
+    "Concrete block masonry — medium porosity — silane-siloxane penetrant for water repellency and chloride protection",
   ],
 };
 
-function CollapsibleSources({ sources }: { sources: { name: string; url: string }[] }) {
-  const [open, setOpen] = useState(false);
+function CollapsibleList({ items, icon, limit = 3 }: { items: string[]; icon: "check" | "x"; limit?: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Procurement Sources</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && <ul className="px-4 py-3 space-y-2 bg-white">{sources.map((s, i) => <li key={i}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline flex items-center gap-1">{s.name}<ExternalLink className="w-3 h-3" /></a></li>)}</ul>}
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" /> : <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (<button onClick={() => setExpanded((e) => !e)} className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Show less ↑" : `+${extra} more ↓`}</button>)}
     </div>
   );
 }
 
-function CollapsibleCardDetails({ product }: { product: Product }) {
-  const [open, setOpen] = useState(false);
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="mt-3 border border-gray-200 rounded-lg overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-gray-600 hover:text-gray-800 font-medium text-sm">
-        <span className="text-gray-800">Technical Details</span>{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-      </button>
-      {open && (
-        <div className="px-4 py-3 space-y-3 bg-white">
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">System Description</p><p className="text-sm text-gray-700">{product.systemDescription}</p></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Technical Properties</p><ul className="space-y-1">{product.technicalProperties.map((p, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-blue-600 mt-0.5">•</span>{p}</li>)}</ul></div>
-          <div><p className="text-xs font-semibold text-gray-500 uppercase mb-1">Limitations</p><ul className="space-y-1">{product.limitations.map((l, i) => <li key={i} className="text-sm text-gray-700 flex gap-2"><span className="text-amber-500 mt-0.5">⚠</span>{l}</li>)}</ul></div>
-          <CollapsibleSources sources={product.procurementSources} />
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button onClick={() => setExpanded((e) => !e)} className="text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide ↑" : "See more ↓"}</button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div key={src.name} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs">
+              {src.url ? <a href={src.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900">{src.name}<ExternalLink size={9} className="text-slate-300" /></a> : <span className="font-semibold text-slate-600">{src.name}</span>}
+            </div>
+          ))}
         </div>
       )}
+      <p className="mt-2 text-[10px] italic text-slate-400">Confirm suitability with the current manufacturer TDS before specifying or applying.</p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({ text, chips }: { text: string; chips: { label: string; cls: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (<><p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>{chips.length > 0 && (<div className="mt-2 flex flex-wrap gap-1.5">{chips.map((chip) => (<span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>{chip.label}</span>))}</div>)}</>)}
+      <button onClick={() => setExpanded((e) => !e)} className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide details ↑" : "Show details ↓"}</button>
     </div>
   );
 }
 
 function CollapsibleDescription({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-  const short = text.length > 120 ? text.slice(0, 120) + "…" : text;
-  if (text.length <= 120) return <p className="text-sm text-gray-600 mt-1">{text}</p>;
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="mt-1">
-      <p className="text-sm text-gray-600">{open ? text : short}</p>
-      <button onClick={() => setOpen(!open)} className="text-xs text-blue-600 hover:underline mt-0.5">{open ? "Show less" : "Read more"}</button>
+    <div>
+      <p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p>
+      <button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button>
     </div>
   );
 }
 
 export function PenetratingSilaneSiloxaneIntroSection() {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-2">Penetrating Silane & Siloxane Water Repellents</h2>
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">
-        Penetrating silane and siloxane treatments impregnate the pore structure of masonry and concrete, lining pores with a hydrophobic layer that repels liquid water while allowing water vapour to pass freely through the substrate. Unlike surface coatings, they leave no visible film and do not alter the surface appearance — making them the only acceptable water-repellent treatment for exposed brick, stone, and fair-faced concrete. They are also the primary tool for chloride exclusion protection on reinforced concrete facades in coastal environments.
-      </p>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[
-          { label: "Type", value: "Silane / siloxane" },
-          { label: "Penetration", value: "5–30 mm" },
-          { label: "Water reduction", value: ">80–90%" },
-          { label: "Surface finish", value: "Invisible" },
-        ].map((s) => (
-          <div key={s.label} className="bg-sky-50 rounded-xl p-3 text-center">
-            <p className="text-xs text-sky-600 font-medium mb-1">{s.label}</p>
-            <p className="text-sm font-bold text-sky-900">{s.value}</p>
-          </div>
-        ))}
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div>
+        <h3 className="text-base font-extrabold text-sky-950">What are penetrating silane-siloxane systems?</h3>
       </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Penetrating silane-siloxane water repellents are invisible, breathable treatments applied to concrete and masonry facades that penetrate into the substrate pore structure and chemically bond to form a hydrophobic lining within the pores. They significantly reduce liquid water absorption while remaining vapour permeable — allowing the substrate to breathe — and do not alter the visual appearance of the treated surface.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              The key distinction from surface coatings is that penetrating water repellents work within the substrate rather than forming a film on the surface. This makes them suitable for facades where surface coatings would be inappropriate — heritage masonry, architectural concrete, exposed brick — and for substrates where breathability is essential to avoid moisture entrapment. They also provide anti-carbonation protection and reduce chloride ion penetration, making them particularly valuable on coastal concrete facades where chloride-induced corrosion of reinforcement is a durability concern.
+            </p>
+            <p>
+              The three main chemistry types are: silane (smaller molecule, deeper penetration, better for dense concrete), siloxane (larger molecule, better for porous masonry and brick), and silane-siloxane blends (compromise between penetration depth and broad substrate suitability). Fluoropolymer-based penetrating sealers (e.g. Dry-Treat) provide both water and oil repellency. All require dry substrate at time of application and do not bridge or seal cracks — crack repair must precede application.
+            </p>
+          </>
+        )}
+      </div>
+      <button onClick={() => setExpanded((e) => !e)} className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900">{expanded ? "Read less ↑" : "Read more ↓"}</button>
     </div>
   );
 }
 
-function TechCard({ title, color, items }: { title: string; color: string; items: string[] }) {
-  const map: Record<string, { bg: string; border: string; head: string; dot: string }> = {
-    blue: { bg: "bg-blue-50", border: "border-blue-200", head: "text-blue-800", dot: "text-blue-500" },
-    green: { bg: "bg-green-50", border: "border-green-200", head: "text-green-800", dot: "text-green-500" },
-    amber: { bg: "bg-amber-50", border: "border-amber-200", head: "text-amber-800", dot: "text-amber-500" },
-    purple: { bg: "bg-purple-50", border: "border-purple-200", head: "text-purple-800", dot: "text-purple-500" },
-    red: { bg: "bg-red-50", border: "border-red-200", head: "text-red-800", dot: "text-red-500" },
-    gray: { bg: "bg-gray-50", border: "border-gray-200", head: "text-gray-800", dot: "text-gray-500" },
-  };
-  const c = map[color] ?? map.blue;
+function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title: string; items: string[]; style: "bullet" | "check" | "warn" }) {
   return (
-    <div className={`${c.bg} border ${c.border} rounded-xl p-4`}>
-      <h4 className={`font-semibold text-sm mb-2 ${c.head}`}>{title}</h4>
-      <ul className="space-y-1">{items.map((it, i) => <li key={i} className="text-xs text-gray-700 flex gap-2"><span className={`${c.dot} mt-0.5 shrink-0`}>•</span>{it}</li>)}</ul>
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-950 text-white">{icon}</div>
+        <h3 className="text-sm font-extrabold text-sky-950">{title}</h3>
+      </div>
+      <ul className="space-y-2">
+        {items.map((item, i) => (
+          <li key={i} className="flex items-start gap-2.5 text-xs leading-5 text-slate-600">
+            {style === "check" && <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-600" />}
+            {style === "warn" && <AlertTriangle size={12} className="mt-0.5 shrink-0 text-amber-500" />}
+            {style === "bullet" && <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-red-600" />}
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export function PenetratingSilaneSiloxaneProductSection() {
-  const [activeFilter, setActiveFilter] = useState<FilterTag | "All">("All");
-  const [showComparison, setShowComparison] = useState(false);
-  const filtered = activeFilter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.filterTags.includes(activeFilter));
+  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const toggleFilter = (id: FilterTag) => {
+    setActiveFilters((prev) => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  };
+
+  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
+  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        {["All", ...FILTER_DEFS.map((f) => f.id)].map((f) => (
-          <button key={f} onClick={() => setActiveFilter(f as FilterTag | "All")}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeFilter === f ? "bg-sky-600 text-white border-sky-600" : "bg-white text-gray-600 border-gray-300 hover:border-sky-400"}`}>
-            {f === "All" ? "All Products" : FILTER_DEFS.find((fd) => fd.id === f)?.label ?? f}
-          </button>
-        ))}
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((product) => (
-          <div key={product.name} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1 min-w-0">
-                <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold uppercase tracking-wide hover:underline flex items-center gap-1" style={{ color: product.accentColor }}>
-                  {product.fullLabel.split(" — ")[0]}<ExternalLink className="w-3 h-3 shrink-0" />
-                </a>
-                <h3 className="text-sm font-bold text-gray-900 mt-0.5 leading-snug">{product.name}</h3>
-              </div>
-            </div>
-            <p className="text-xs text-gray-500 mb-2">{product.productType}</p>
-            <CollapsibleDescription text={product.descriptionLine} />
-            <div className="flex flex-wrap gap-1 mt-3">{product.techChips.map((chip) => <span key={chip.label} className={`text-xs px-2 py-0.5 rounded-full font-medium ${chip.cls}`}>{chip.label}</span>)}</div>
-            <CollapsibleCardDetails product={product} />
+    <>
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <button type="button" onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition hover:bg-slate-50">
+          <div>
+            <p className="text-base font-extrabold text-sky-950">System Technical Reference</p>
+            <p className="mt-0.5 text-xs text-slate-500">Applications, selection criteria, limitations, standards, suitable substrates</p>
           </div>
-        ))}
-      </div>
-      <div>
-        <button onClick={() => setShowComparison(!showComparison)} className="flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-sky-800">
-          {showComparison ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          {showComparison ? "Hide" : "Show"} product comparison table
+          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
+            {accordionOpen ? <>Hide detail <ChevronUp size={14} /></> : <>Show detail <ChevronDown size={14} /></>}
+          </div>
         </button>
-        {showComparison && (
-          <div className="mt-3 overflow-x-auto rounded-xl border border-gray-200">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-gray-50 text-gray-600 uppercase text-[11px]">
-                <tr>{["Product", "Brand", "Type", "Penetration", "Water reduction", "Vapour perm.", "Key feature"].map((h) => <th key={h} className="px-3 py-2 font-semibold whitespace-nowrap">{h}</th>)}</tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {COMPARISON_ROWS.map((row, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="px-3 py-2 font-medium text-gray-900 whitespace-nowrap">{row.product}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.brand}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.type}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.penetration}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.waterReduction}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.vapourPerm}</td>
-                    <td className="px-3 py-2 text-gray-600">{row.keyFeature}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {accordionOpen && (
+          <div className="border-t border-slate-100 px-7 pb-7 pt-6">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
+              <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
+              <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
+              <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
+            </div>
           </div>
         )}
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <TechCard title="Typical Applications" color="blue" items={TECH_INFO.typicalApplications} />
-        <TechCard title="Selection Criteria" color="green" items={TECH_INFO.selectionCriteria} />
-        <TechCard title="Limitations" color="amber" items={TECH_INFO.limitations} />
-        <TechCard title="Standards & Notes" color="purple" items={TECH_INFO.standardsNotes} />
-        <TechCard title="Suitable Defects" color="red" items={TECH_INFO.suitableDefects} />
-        <TechCard title="Typical Substrates" color="gray" items={TECH_INFO.typicalSubstrates} />
+
+      <div>
+        <div className="mb-5 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
+            <p className="mt-1 text-sm text-slate-500">6 products — 6 brands — penetrating silane-siloxane systems — scroll to view all</p>
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
+          {FILTER_DEFS.map((f) => {
+            const active = activeFilters.has(f.id);
+            return (<button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>);
+          })}
+          {activeFilters.size > 0 && (<button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>)}
+        </div>
+
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — 3 visible, scroll for more</span>
+          <div className="flex items-center gap-2">
+            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
+            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
+          </div>
+        </div>
+
+        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
+          {visibleProducts.map((product) => (
+            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
+              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
+                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
+                    <div className="flex shrink-0 items-center gap-1">
+                      {product.tdsUrl && (<a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>)}
+                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
+                    </div>
+                  </div>
+                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
+                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
+                </div>
+                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
+                  <CollapsibleDescription text={product.systemDescription} />
+                </div>
+                <div className="space-y-3 px-5 py-4">
+                  <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div>
+                  <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div>
+                </div>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of penetrating silane-siloxane systems. Confirm all selections against the current manufacturer TDS before specifying.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product system</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Chemistry</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Colourless</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Breathable</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Anti-carbonation</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Coastal</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Primary use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.brand}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.chemistry}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.colourless}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.breathable}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.antiCarb}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.coastal}</td>
+                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.primaryUse}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 }
