@@ -34,6 +34,9 @@ export default function DirectoryLoginPage() {
     <div className="min-h-screen bg-slate-50 text-slate-900">
     <div className="mx-auto max-w-5xl px-6 py-10">
     <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
+      <div className="mb-6">
+        <Link href="/" className="text-sm text-slate-500 hover:text-slate-800">← Back to home</Link>
+      </div>
       <h1 className="text-3xl font-extrabold text-slate-950">Directory login</h1>
       <p className="mt-3 text-slate-600">Sign in with your account email and password.</p>
 
