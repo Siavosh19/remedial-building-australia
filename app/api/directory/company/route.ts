@@ -41,58 +41,117 @@ export async function POST(request: NextRequest) {
 
   const confidence_score = 10 + 15 + (website ? 10 : 0); // ABN +10, Phone +15, Website +10
 
-  await prisma.company.create({
-    data: {
-      slug: `${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}-${Date.now()}`,
-      name: companyName,
-      abn,
-      website: website || null,
-      phone,
-      email: businessEmail,
-      description,
-      main_category_id: mainCategoryId,
-      status: "draft",
-      profile_status: "basic",
-      confidence_score,
+  // Check if a scraped (unclaimed) company already exists with matching email or name
+  const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const scraped = await prisma.company.findFirst({
+    where: {
       is_claimed: false,
-      is_featured: false,
-      locations: {
-        create: {
-          address: suburb,
-          suburb,
-          city: suburb,
-          state: state as LocationState,
-          postcode,
+      users: { none: {} },
+      OR: [
+        { email: businessEmail },
+        { name: { equals: companyName, mode: "insensitive" } },
+      ],
+    },
+    include: { admin_review_queue: { take: 1 } },
+  });
+
+  if (scraped) {
+    // Claim the existing scraped record
+    await prisma.$transaction(async (tx) => {
+      await tx.company.update({
+        where: { id: scraped.id },
+        data: {
+          is_claimed: true,
+          abn: abn || scraped.abn || null,
+          phone: phone || scraped.phone || null,
+          website: website || scraped.website || null,
+          email: businessEmail,
+          description: description || scraped.description || null,
+          main_category_id: mainCategoryId || scraped.main_category_id,
+          status: "draft",
         },
-      },
-      users: {
-        create: {
+      });
+      await tx.companyUser.create({
+        data: {
+          company_id: scraped.id,
           user_id: user.id,
           role: "owner",
           is_primary: true,
           invited_at: new Date(),
           accepted_at: new Date(),
         },
-      },
-      lead_subscriptions: {
-        create: {
-          is_active: false,
-          plan: "free",
-          categories_subscribed: [],
-          states_subscribed: [],
-          max_leads_per_month: 0,
-          leads_received_this_month: 0,
+      });
+      if (!scraped.admin_review_queue.length) {
+        await tx.adminReviewQueue.create({
+          data: {
+            company_id: scraped.id,
+            status: "discovered",
+            source: "directory signup (claimed existing)",
+            notes: "Existing scraped listing claimed by owner via signup.",
+          },
+        });
+      } else {
+        await tx.adminReviewQueue.update({
+          where: { id: scraped.admin_review_queue[0].id },
+          data: { status: "discovered", source: "directory signup (claimed existing)", notes: "Claimed by owner via signup." },
+        });
+      }
+    });
+  } else {
+    // Create new company — user is the owner so mark claimed immediately
+    await prisma.company.create({
+      data: {
+        slug: `${normalise(companyName)}-${Date.now()}`,
+        name: companyName,
+        abn,
+        website: website || null,
+        phone,
+        email: businessEmail,
+        description,
+        main_category_id: mainCategoryId,
+        status: "draft",
+        profile_status: "basic",
+        confidence_score,
+        is_claimed: true,
+        is_featured: false,
+        locations: {
+          create: {
+            address: suburb,
+            suburb,
+            city: suburb,
+            state: state as LocationState,
+            postcode,
+          },
+        },
+        users: {
+          create: {
+            user_id: user.id,
+            role: "owner",
+            is_primary: true,
+            invited_at: new Date(),
+            accepted_at: new Date(),
+          },
+        },
+        lead_subscriptions: {
+          create: {
+            is_active: false,
+            plan: "free",
+            categories_subscribed: [],
+            states_subscribed: [],
+            max_leads_per_month: 0,
+            leads_received_this_month: 0,
+          },
+        },
+        admin_review_queue: {
+          create: {
+            status: "discovered",
+            source: "directory signup",
+            notes: "New directory listing submitted for review.",
+          },
         },
       },
-      admin_review_queue: {
-        create: {
-          status: "discovered",
-          source: "directory signup",
-          notes: "New directory listing submitted for review.",
-        },
-      },
-    },
-  });
+    });
+  }
 
   // Notify admin of new signup — fire and forget
   const category = await prisma.category.findUnique({ where: { id: mainCategoryId }, select: { name: true } });

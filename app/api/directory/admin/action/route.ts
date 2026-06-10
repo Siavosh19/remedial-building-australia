@@ -90,7 +90,11 @@ export async function POST(request: NextRequest) {
     if (companyStatus) {
       await tx.company.update({
         where: { id: queueItem.company_id },
-        data: { status: companyStatus },
+        data: {
+          status: companyStatus,
+          // Ensure claimed flag is set on approval — owner submitted so they are the claimer
+          ...(companyStatus === "published" ? { is_claimed: true } : {}),
+        },
       });
     }
   });
