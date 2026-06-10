@@ -36,10 +36,11 @@ const coreServices: CoreService[] = [
     ],
   },
   {
-    title: "Materials & Products",
-    text: "Technical product database with applications, compatible substrates, coverage rates and linked defects.",
+    title: "Materials & Products Index",
+    text: "Search products and materials used across existing repair system pages, grouped by brand, material type, application, and linked repair system.",
     image: "/Images/Material%20and%20tools.jpg",
-    href: "/materials-products",
+    href: "/materials-products-index",
+    badge: "Now Live",
   },
   {
     title: "AI Scope Builder",
@@ -48,7 +49,7 @@ const coreServices: CoreService[] = [
     href: "/ai-scope-builder",
     badge: "Live",
     quickLinks: [
-      { label: "New Scope",        href: "/ai-scope-builder/new",      available: true },
+      { label: "New Scope",        href: "/ai-scope-builder",      available: true },
       { label: "Saved Projects",   href: "/ai-scope-builder/projects", available: true },
     ],
   },
@@ -169,8 +170,8 @@ export default function RemedialBuildingAustraliaHome() {
           .from("industry_news")
           .select("title, slug, category, summary, source_name, published_date, source_url")
           .eq("status", "published")
-          .order("created_at", { ascending: false })
           .order("published_date", { ascending: false, nullsFirst: false })
+          .order("created_at", { ascending: false })
           .limit(15);
 
         if (!error && data && data.length > 0) {

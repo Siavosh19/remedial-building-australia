@@ -33,10 +33,10 @@ const POLYMER_PRODUCTS: Product[] = [
     tdsUrl: "https://ardexaustralia.com/product/ardex-x-77-microtec/",
     accentColor: "#0369a1",
     name: "ARDEX X 77 Microtec",
-    descriptionLine: "Highly flexible polymer-modified tile adhesive — Class 2 deformable — microfibre reinforced — large format porcelain and stone on external balconies and terraces over ARDEX membrane systems",
-    productType: "Polymer-modified tile adhesive — Class 2 deformable — microfibre reinforced",
+    descriptionLine: "Highly flexible polymer-modified tile adhesive — microfibre reinforced — large format porcelain and stone on external balconies and terraces over ARDEX membrane systems — TODO: confirm AS/NZS 4992 Class 2 deformable classification with ARDEX Australia",
+    productType: "Polymer-modified tile adhesive — microfibre reinforced — TODO: confirm AS/NZS 4992 Class 2 deformable",
     techChips: [
-      { label: "Class 2 deformable", cls: "bg-green-100 text-green-800" },
+      { label: "TODO: confirm AS/NZS 4992 Class 2", cls: "bg-amber-100 text-amber-800" },
       { label: "Microfibre reinforced", cls: "bg-sky-100 text-sky-800" },
       { label: "Large format tile", cls: "bg-slate-100 text-slate-700" },
       { label: "External balcony", cls: "bg-slate-100 text-slate-700" },
@@ -49,11 +49,11 @@ In balcony waterproofing remediation, ARDEX X 77 Microtec is the standard specif
 
 Microfibre reinforcement improves adhesive flexibility and reduces the risk of adhesive cracking under the thermal movement of external exposed tile installations. Applied with a notched trowel — confirm notch size with ARDEX technical for the tile format and substrate condition. Back-buttering of large format tiles (>600mm dimension) is recommended for full bed coverage.`,
     technicalProperties: [
-      "AS/NZS 4992 Class 2 deformable — suitable for large format tiles on external substrates",
-      "Microfibre reinforced — improved flexibility under thermal movement",
-      "Single-component — mix with water only",
-      "Suitable for porcelain, ceramic, natural stone, and large format tile formats",
-      "Confirmed for external balcony and terrace applications over cured ARDEX membrane systems",
+      "TODO: owner confirm — ARDEX Australia TDS references ISO E/T adhesive classes; AS/NZS 4992 Class 2 deformable classification cannot be confirmed from the fetched ARDEX Australia product page — confirm AS/NZS 4992 Class 2 classification with ARDEX Australia before publishing",
+      "Microfibre reinforced — improved flexibility under thermal movement — confirmed from ARDEX Australia product page",
+      "Single-component — mix with water only — confirmed",
+      "Suitable for porcelain, ceramic, natural stone, and large format tile formats — confirmed",
+      "Confirmed for external balcony and terrace applications over cured ARDEX membrane systems — confirmed",
       "Extended open time — confirm with ARDEX technical for large balcony applications",
     ],
     limitations: [
@@ -77,10 +77,10 @@ Microfibre reinforcement improves adhesive flexibility and reduces the risk of a
     tdsUrl: "https://ardexaustralia.com/product/ardex-x-78-microtec/",
     accentColor: "#0284c7",
     name: "ARDEX X 78 Microtec",
-    descriptionLine: "Rapid-setting highly flexible polymer-modified tile adhesive — Class 2 deformable — microfibre reinforced — large format tiles on external balconies and terraces where faster trafficking is required",
-    productType: "Polymer-modified tile adhesive — Class 2 deformable — rapid setting",
+    descriptionLine: "Rapid-setting highly flexible polymer-modified tile adhesive — microfibre reinforced — large format tiles on external balconies and terraces where faster trafficking is required — TODO: confirm AS/NZS 4992 Class 2 deformable classification with ARDEX Australia",
+    productType: "Polymer-modified tile adhesive — rapid setting — TODO: confirm AS/NZS 4992 Class 2 deformable",
     techChips: [
-      { label: "Class 2 deformable", cls: "bg-green-100 text-green-800" },
+      { label: "TODO: confirm AS/NZS 4992 Class 2", cls: "bg-amber-100 text-amber-800" },
       { label: "Rapid setting", cls: "bg-red-100 text-red-800" },
       { label: "Microfibre reinforced", cls: "bg-sky-100 text-sky-800" },
       { label: "Large format tile", cls: "bg-slate-100 text-slate-700" },
@@ -91,7 +91,7 @@ Microfibre reinforcement improves adhesive flexibility and reduces the risk of a
 
 The product shares the same application method, classification, and membrane compatibility as X 77 Microtec — the key difference is setting speed. Confirm the open time with ARDEX technical for the tile format and ambient conditions before using X 78 on large balcony areas where the faster open time may limit the working area per mix. Back-buttering and 95% contact coverage requirements are identical to X 77.`,
     technicalProperties: [
-      "AS/NZS 4992 Class 2 deformable — large format tiles on external substrates",
+      "TODO: confirm AS/NZS 4992 Class 2 deformable classification with ARDEX Australia — AU TDS references ISO E/T classes not AS/NZS 4992",
       "Rapid setting — earlier grouting and trafficking than X 77 Microtec",
       "Microfibre reinforced — improved flexibility under thermal movement",
       "Single-component — mix with water only",
@@ -192,26 +192,28 @@ In balcony waterproofing remediation, Keraflex Maxi S1 is specified where the pr
     brandUrl: "https://www.bostik.com/au",
     tdsUrl: "https://www.bostik.com/au",
     accentColor: "#7c3aed",
-    name: "Bostik UltraSet SuperFlex",
-    descriptionLine: "Highly flexible Class 2 polymer-modified tile adhesive — large format tile on external balconies and terraces — confirm membrane compatibility with both Bostik and membrane manufacturer before applying",
-    productType: "Polymer-modified tile adhesive — Class 2 deformable — broad distribution",
+    name: "Bostik UltraSet SuperFlex — TODO: owner confirm — 'UltraSet SuperFlex' not found in the current Bostik Australia tile adhesive range; Bostik AU tile adhesives include Excelflex, Ultra Mastik, Conflex, and Evoflex — confirm correct current Australian product name before publishing",
+    descriptionLine: "TODO: owner confirm product name — 'Bostik UltraSet SuperFlex' not confirmed in AU Bostik tile adhesive range; confirm correct current product and update all specifications — highly flexible polymer-modified tile adhesive claimed for external balconies and terraces",
+    productType: "TODO: owner confirm product name — Polymer-modified tile adhesive — Class 2 deformable claimed — broad distribution",
     techChips: [
-      { label: "Class 2 deformable", cls: "bg-green-100 text-green-800" },
+      { label: "TODO: confirm product name — Class 2 deformable claimed", cls: "bg-amber-100 text-amber-800" },
       { label: "Large format tile", cls: "bg-slate-100 text-slate-700" },
       { label: "External balcony", cls: "bg-slate-100 text-slate-700" },
       { label: "Confirm membrane compatibility", cls: "bg-amber-100 text-amber-800" },
       { label: "Broad AU distribution", cls: "bg-sky-50 text-sky-700" },
       { label: "Single component", cls: "bg-amber-50 text-amber-700" },
     ],
-    systemDescription: `Bostik UltraSet SuperFlex is Bostik Australia's highly flexible Class 2 deformable polymer-modified tile adhesive for large format porcelain, ceramic, and natural stone tile fixing on external balconies, terraces, and wet areas. Bostik is a widely distributed adhesive brand in Australian trade supply, making UltraSet SuperFlex accessible where ARDEX and Mapei system products are not available or where the project is not tied to a single-brand system specification.
+    systemDescription: `TODO: owner confirm product name — 'Bostik UltraSet SuperFlex' not found in the current Bostik Australia tile adhesive range (Excelflex, Ultra Mastik, Conflex, Evoflex). All specifications below are unverified until the correct Australian product name is confirmed.
+
+Bostik UltraSet SuperFlex is described as Bostik Australia's highly flexible Class 2 deformable polymer-modified tile adhesive for large format porcelain, ceramic, and natural stone tile fixing on external balconies, terraces, and wet areas. Bostik is a widely distributed adhesive brand in Australian trade supply, making UltraSet SuperFlex accessible where ARDEX and Mapei system products are not available or where the project is not tied to a single-brand system specification.
 
 Where Bostik adhesive is being specified over an ARDEX or Mapei membrane, membrane compatibility must be confirmed with both the adhesive manufacturer (Bostik) and the membrane manufacturer before applying. Cross-brand adhesive-to-membrane combinations are not always covered by either manufacturer's system warranty — confirm in writing before applying.`,
     technicalProperties: [
-      "AS/NZS 4992 Class 2 deformable — large format tiles on external substrates",
-      "Single-component — mix with water only",
-      "Suitable for porcelain, ceramic, and natural stone",
-      "External balcony and terrace confirmed",
-      "Available through broad trade distribution in Australia",
+      "TODO: owner confirm — AS/NZS 4992 Class 2 deformable claimed but product name 'Bostik UltraSet SuperFlex' not confirmed in the current AU Bostik range — confirm correct product before publishing",
+      "Single-component — mix with water only — confirm with Bostik AU for selected product",
+      "Suitable for porcelain, ceramic, and natural stone — confirm for selected product",
+      "External balcony and terrace — confirm for selected product",
+      "Confirm product name and availability through Bostik Australia before specifying",
     ],
     limitations: [
       "Confirm membrane compatibility with both Bostik and the membrane manufacturer before applying over any waterproofing membrane system — cross-brand compatibility is not guaranteed",
@@ -358,34 +360,37 @@ const GROUT_PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://ardexaustralia.com/product/ardex-fj-flex-joint/",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-fg-8/",
     accentColor: "#0369a1",
-    name: "ARDEX Flex Joint (FJ)",
-    descriptionLine: "Flexible sanded cement-based grout — 2–15mm joint width — external balcony and terrace — UV stable pigments — ARDEX system compatible",
-    productType: "Flexible sanded cement-based grout — 2–15mm — UV stable — external",
+    name: "ARDEX FG 8 — Flexible Coloured Grout for Tile Joints 1 to 8 mm Wide",
+    descriptionLine: "TODO: owner confirm — the product previously named 'ARDEX Flex Joint (FJ)' does not exist in the ARDEX Australia range; the Australian flexible grout products are ARDEX FG 8 (1–8mm) and ARDEX WJ 50 (2–50mm) — confirm which product is correct for this card and update name, joint width range, and all claims accordingly",
+    productType: "TODO: owner confirm product name — ARDEX FG 8 (1–8mm) is the confirmed Australian flexible grout — verify if WJ 50 (2–50mm) should also be listed",
     techChips: [
+      { label: "TODO: confirm product name — FG 8 not FJ", cls: "bg-amber-100 text-amber-800" },
+      { label: "1–8mm joint width (FG 8 confirmed)", cls: "bg-sky-50 text-sky-700" },
       { label: "Polymer-modified cement grout", cls: "bg-slate-100 text-slate-700" },
-      { label: "2–15mm joint width", cls: "bg-sky-50 text-sky-700" },
-      { label: "UV stable pigments", cls: "bg-green-50 text-green-700" },
-      { label: "External balcony", cls: "bg-slate-100 text-slate-700" },
+      { label: "External — internal and external", cls: "bg-slate-100 text-slate-700" },
       { label: "ARDEX system compatible", cls: "bg-green-100 text-green-800" },
       { label: "Multiple colours", cls: "bg-amber-50 text-amber-700" },
     ],
-    systemDescription: `ARDEX Flex Joint (FJ) is a flexible, polymer-modified sanded cement-based grout for external balcony and terrace tile joints from 2mm to 15mm width. The polymer modification improves flexibility compared to standard cement grouts, reducing the risk of grout cracking under the thermal movement of external exposed tiled surfaces. UV-stable pigments resist colour fade under outdoor sun exposure. Available in a range of colours.
+    systemDescription: `TODO: owner confirm — the product name "ARDEX Flex Joint (FJ)" used in this card does not match any product in the current ARDEX Australia grout range. The Australian ARDEX cement-based grout products confirmed on the ARDEX Australia website are:
 
-In balcony waterproofing remediation, ARDEX FJ is specified as the standard grout for external balcony tile joints where a cement-based grout is appropriate and the joint width is within the 2–15mm range. Applied after tile adhesive has fully cured. Do not grout movement joint positions — leave these clear for flexible sealant.`,
+• ARDEX FG 8 — Flexible Coloured Grout for Tile Joints 1 to 8 mm Wide (polymer-modified, mould resistant, water repellent, internal and external, available in 1.5kg, 5kg, 20kg)
+• ARDEX WJ 50 — Non-Shrink Coloured Wide Joint Grout 2 to 50mm (internal and external, 20kg bag)
+
+The previously stated "2–15mm" joint width range does not correspond to either of these products. Owner must confirm: (1) which product should be listed here, (2) whether it is FG 8 (1–8mm), WJ 50 (2–50mm), or both, (3) whether UV-stable pigment claims are confirmed for the selected product.
+
+Once confirmed, the card should be updated with the correct product name, TDS URL, joint width range, and all associated claims.`,
     technicalProperties: [
-      "Flexible polymer-modified cement-based sanded grout",
-      "Joint width: 2–15mm",
-      "UV-stable pigments — colour fast under external sun exposure",
-      "Suitable for external balcony and terrace tile joints",
-      "ARDEX system compatible — used in ARDEX tile adhesive system specifications",
-      "Multiple colour options — confirm colour range with ARDEX Australia",
+      "TODO: owner confirm product — ARDEX FG 8 confirmed: polymer-modified flexible cement grout, 1–8mm joint width, internal and external, mould resistant, water repellent",
+      "TODO: owner confirm UV-stable pigments claim for selected ARDEX grout product",
+      "ARDEX FG 8 available in 1.5kg, 5kg, and 20kg — confirm colour range with ARDEX Australia",
+      "ARDEX WJ 50 available for 2–50mm joints if wider joints are required — confirm from ARDEX Australia TDS",
     ],
     limitations: [
       "Not for movement joints — movement joints must be filled with flexible sealant after grouting",
       "Cement-based — permeable — not a waterproofing product — the membrane below is the waterproofing layer",
-      "Lighter colours may be susceptible to staining on external balconies — consider mid-tone colours for external use",
+      "TODO: owner confirm correct product name before publishing — 'ARDEX FJ Flex Joint' does not appear in the current ARDEX Australia range",
       "Confirm current product name, joint width range, and colour range with ARDEX Australia before specifying",
     ],
     procurementSources: [
@@ -398,9 +403,9 @@ In balcony waterproofing remediation, ARDEX FJ is specified as the standard grou
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/ultracolor-plus-fa",
+    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/ultracolor-plus",
     accentColor: "#16a34a",
-    name: "Mapei Ultracolor Plus FA",
+    name: "Mapei Ultracolor Plus",
     descriptionLine: "Fast-setting stain-resistant sanded cement grout — 2–20mm joint width — DropEffect stain resistance technology — external balcony and terrace — Mapei system compatible",
     productType: "Fast-setting sanded cement grout — 2–20mm — DropEffect — BioBlock",
     techChips: [
@@ -411,9 +416,9 @@ In balcony waterproofing remediation, ARDEX FJ is specified as the standard grou
       { label: "UV stable pigments", cls: "bg-slate-100 text-slate-700" },
       { label: "Mapei system compatible", cls: "bg-sky-100 text-sky-800" },
     ],
-    systemDescription: `Mapei Ultracolor Plus FA is Mapei's fast-setting, wide-joint sanded cement grout with DropEffect technology — a surface treatment that provides improved stain resistance compared to standard cement grouts. Joint width 2–20mm. Fast setting allows earlier trafficking of the tiled surface after grouting. UV-stable pigments and BioBlock technology resist mould and mildew growth in the grout joint — relevant for external balcony conditions where organic matter and moisture are persistent.
+    systemDescription: `Mapei Ultracolor Plus is Mapei's fast-setting, wide-joint sanded cement grout with DropEffect technology — a surface treatment that provides improved stain resistance compared to standard cement grouts. Joint width 2–20mm. Fast setting allows earlier trafficking of the tiled surface after grouting. UV-stable pigments and BioBlock technology resist mould and mildew growth in the grout joint — relevant for external balcony conditions where organic matter and moisture are persistent.
 
-In balcony waterproofing remediation, Ultracolor Plus FA is specified as the standard Mapei grout for external balcony tile joints. The stain resistance of DropEffect technology makes it a more practical specification than standard cement grout on external balconies subject to outdoor use and organic staining. Available in a wide colour range.`,
+In balcony waterproofing remediation, Ultracolor Plus is specified as the standard Mapei grout for external balcony tile joints. The stain resistance of DropEffect technology makes it a more practical specification than standard cement grout on external balconies subject to outdoor use and organic staining. Available in a wide colour range. Note: the product is sold as "Ultracolor Plus" in Australia (not "Ultracolor Plus FA" which is the US market name).`,
     technicalProperties: [
       "Fast-setting polymer-modified sanded cement grout",
       "Joint width: 2–20mm — suitable for standard and wider tile joints on external balconies",
@@ -449,18 +454,18 @@ const COMPARISON_ROWS: {
   overMembraneConfirmed: string;
   keyRestriction: string;
 }[] = [
-  { product: "ARDEX X 77 Microtec", brand: "ARDEX", type: "Polymer-modified adhesive", classification: "Class 2 deformable", largeFormat: true, overMembraneConfirmed: "Yes — ARDEX membrane systems", keyRestriction: "Confirm ARDEX membrane system compatibility — movement joints mandatory" },
-  { product: "ARDEX X 78 Microtec", brand: "ARDEX", type: "Polymer-modified adhesive — rapid set", classification: "Class 2 deformable", largeFormat: true, overMembraneConfirmed: "Yes — ARDEX membrane systems", keyRestriction: "Shorter open time — confirm batch size for large areas" },
+  { product: "ARDEX X 77 Microtec", brand: "ARDEX", type: "Polymer-modified adhesive", classification: "TODO: confirm AS/NZS 4992 Class 2 with ARDEX AU — AU TDS references ISO E/T classes", largeFormat: true, overMembraneConfirmed: "Yes — ARDEX membrane systems", keyRestriction: "Confirm ARDEX membrane system compatibility — movement joints mandatory" },
+  { product: "ARDEX X 78 Microtec", brand: "ARDEX", type: "Polymer-modified adhesive — rapid set", classification: "TODO: confirm AS/NZS 4992 Class 2 with ARDEX AU", largeFormat: true, overMembraneConfirmed: "Yes — ARDEX membrane systems", keyRestriction: "Shorter open time — confirm batch size for large areas" },
   { product: "Mapei Ultraflex 2", brand: "Mapei", type: "Polymer-modified adhesive", classification: "Class 2 deformable", largeFormat: true, overMembraneConfirmed: "Yes — Mapei membrane systems", keyRestriction: "Confirm Mapei membrane system compatibility — movement joints mandatory" },
   { product: "Mapei Keraflex Maxi S1", brand: "Mapei", type: "Polymer-modified adhesive — anti-slump", classification: "S1 deformable", largeFormat: true, overMembraneConfirmed: "Yes — Mapei membrane systems", keyRestriction: "Anti-slump — horizontal and vertical applications" },
-  { product: "Bostik UltraSet SuperFlex", brand: "Bostik", type: "Polymer-modified adhesive", classification: "Class 2 deformable", largeFormat: true, overMembraneConfirmed: "Confirm with membrane manufacturer", keyRestriction: "Cross-brand membrane compatibility must be confirmed in writing" },
+  { product: "TODO: owner confirm — 'Bostik UltraSet SuperFlex' not found in AU Bostik range; confirm correct product from Excelflex, Ultra Mastik, Conflex, Evoflex", brand: "Bostik", type: "Polymer-modified adhesive — confirm product name", classification: "TODO: confirm — Class 2 deformable claimed but product name unverified", largeFormat: true, overMembraneConfirmed: "Confirm with membrane manufacturer", keyRestriction: "Product name unverified — confirm with Bostik AU before specifying — cross-brand membrane compatibility must also be confirmed in writing" },
   { product: "ARDEX WA", brand: "ARDEX", type: "Two-part epoxy adhesive and grout", classification: "Epoxy — confirm AS/NZS class", largeFormat: true, overMembraneConfirmed: "Yes — ARDEX membrane systems", keyRestriction: "Not routine residential — two-part mixing — movement joints mandatory" },
   { product: "Mapei Kerapoxy CQ", brand: "Mapei", type: "Two-part epoxy adhesive and grout", classification: "Epoxy — confirm AS/NZS class", largeFormat: true, overMembraneConfirmed: "Yes — Mapei membrane systems", keyRestriction: "Not routine residential — chemical resistance focus — movement joints mandatory" },
   { product: "Mapei Kerapoxy Design", brand: "Mapei", type: "Two-part epoxy adhesive and grout — decorative", classification: "Epoxy — confirm AS/NZS class", largeFormat: true, overMembraneConfirmed: "Yes — Mapei membrane systems", keyRestriction: "Decorative and stain resistance focus — not for industrial chemical exposure" },
-  { product: "ARDEX FJ Flex Joint", brand: "ARDEX", type: "Flexible sanded cement grout", classification: "Confirm with ARDEX TDS", largeFormat: null, overMembraneConfirmed: "N/A — grout only", keyRestriction: "2–15mm joint — not for movement joints — permeable" },
-  { product: "Mapei Ultracolor Plus FA", brand: "Mapei", type: "Fast-setting sanded cement grout", classification: "Confirm with Mapei TDS", largeFormat: null, overMembraneConfirmed: "N/A — grout only", keyRestriction: "2–20mm joint — DropEffect stain resistance — not for movement joints — permeable" },
+  { product: "TODO: owner confirm — 'ARDEX FJ Flex Joint' not found in AU range — likely ARDEX FG 8 (1–8mm) or WJ 50 (2–50mm)", brand: "ARDEX", type: "Flexible sanded cement grout — confirm product name", classification: "Confirm with ARDEX TDS", largeFormat: null, overMembraneConfirmed: "N/A — grout only", keyRestriction: "TODO: confirm joint width range — FG 8 is 1–8mm; WJ 50 is 2–50mm — '2–15mm' range not confirmed" },
+  { product: "Mapei Ultracolor Plus", brand: "Mapei", type: "Fast-setting sanded cement grout", classification: "Confirm with Mapei TDS", largeFormat: null, overMembraneConfirmed: "N/A — grout only", keyRestriction: "2–20mm joint — DropEffect stain resistance — not for movement joints — permeable" },
   { product: "ARDEX WA (dual use)", brand: "ARDEX", type: "Epoxy adhesive and grout combined", classification: "Epoxy", largeFormat: null, overMembraneConfirmed: "Yes — ARDEX membrane systems", keyRestriction: "See epoxy section — no separate grout required when used as adhesive" },
-  { product: "Mapei Kerapoxy CQ (dual use)", brand: "Mapei", type: "Epoxy adhesive and grout combined", classification: "Epoxy", largeFormat: null, overMembraneConfirmed: "Yes — Mapei membrane systems", keyRestriction: "See epoxy section — no separate grout required when used as adhesive" },
+  { product: "Mapei Kerapoxy CQ (dual use)", brand: "Mapei", type: "Epoxy adhesive and grout combined", classification: "Epoxy — confirm AS/NZS class", largeFormat: null, overMembraneConfirmed: "Yes — Mapei membrane systems", keyRestriction: "See epoxy section — no separate grout required when used as adhesive" },
 ];
 
 // ─── Tech accordion data ───────────────────────────────────────────────────────
@@ -514,6 +519,183 @@ const TECH_INFO = {
 };
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
+
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function TileAdhesiveIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are tile adhesive and grout systems — balcony over-membrane?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Tile adhesive systems are the materials used to bond ceramic, porcelain, stone, and other tile formats to the cured waterproofing membrane surface on balconies and terraces. In a correctly sequenced balcony waterproofing system, the tile adhesive is the last structural layer before the tile — applied over the cured and flood-tested membrane, it bonds the tile to the system and transfers foot traffic loads back to the concrete substrate below.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              In balcony and terrace applications, tile adhesive selection is governed by three factors: compatibility with the specific waterproofing membrane below, flexibility sufficient to accommodate the thermal movement of an external exposed substrate, and compliance with AS/NZS 4992 for the tile format and fixing method being used. External balcony applications impose more demanding conditions than internal wet areas — higher UV exposure, greater thermal cycling, and the risk of prolonged water contact beneath the tile all require a correctly specified, membrane-compatible adhesive system.
+            </p>
+            <p>
+              Grout systems fill the joints between tiles and complete the tiled surface. In external balcony applications, grout selection must account for joint width, tile format, exposure conditions, and movement joint layout. Sanded cement-based grouts and epoxy grouts each have specific applications and limitations in external balcony use. Movement joints must be incorporated into the tile layout at all perimeters, changes of plane, and at regular field intervals — grout is never used to fill movement joints.
+            </p>
+            <p>
+              This page covers three product categories: polymer-modified tile adhesive systems, epoxy tile adhesive systems, and grout systems including sanded cement-based and epoxy grout.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 
 function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title: string; items: string[]; style: "bullet" | "check" | "warn" }) {
   return (

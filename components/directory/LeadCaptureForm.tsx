@@ -33,6 +33,7 @@ const FIELD_BASE =
 export default function LeadCaptureForm({
   categories,
   companyName,
+  companySlug,
   triggerLabel = "Request a Quote",
   triggerClassName,
 }: Props) {
@@ -110,6 +111,8 @@ export default function LeadCaptureForm({
           description: form.description.trim(),
           urgency: form.urgency,
           budgetRange: form.budgetRange || null,
+          companyName: companyName ?? null,
+          companySlug: companySlug ?? null,
         }),
       });
       if (!res.ok) {

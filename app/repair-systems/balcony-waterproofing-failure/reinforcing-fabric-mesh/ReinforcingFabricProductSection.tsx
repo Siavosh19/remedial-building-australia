@@ -139,26 +139,27 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/mapetex-sel",
     accentColor: "#0369a1",
     name: "Mapei Mapetex Sel",
-    descriptionLine: "Non-woven polyester reinforcing fabric — embedded in Mapei liquid-applied and cementitious membrane systems at junctions and corners — alternative to Mapenet 150 for specific Mapei membrane applications — confirm system specification before use",
-    productType: "Non-woven polyester reinforcing fabric — Mapei membrane systems",
+    descriptionLine: "Non-woven macro-holed polypropylene reinforcing fabric — 80 g/m² — 1 m wide × 25 m rolls — embedded in Mapei liquid-applied and cementitious membrane systems at junctions and corners — alternative to Mapenet 150 for specific Mapei membrane applications — confirm system specification before use",
+    productType: "Non-woven macro-holed polypropylene reinforcing fabric — Mapei membrane systems",
     filterTags: ["Non-woven-polyester", "Junction-reinforcement", "Mapei-membrane-compatible", "Mapelastic-systems", "Internal-external-corners", "Wall-to-floor", "Penetration-reinforcement", "Liquid-applied-membrane"],
     techChips: [
-      { label: "Non-woven polyester", cls: "bg-sky-100 text-sky-800" },
-      { label: "Mapei liquid-applied and cementitious", cls: "bg-slate-100 text-slate-700" },
-      { label: "Embedded between membrane coats", cls: "bg-green-50 text-green-700" },
+      { label: "Non-woven polypropylene", cls: "bg-sky-100 text-sky-800" },
+      { label: "80 g/m² — macro-holed", cls: "bg-slate-100 text-slate-700" },
+      { label: "1 m × 25 m roll", cls: "bg-green-50 text-green-700" },
       { label: "Alternative to Mapenet 150 for specific systems", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Mapei Mapetex Sel is a non-woven polyester reinforcing fabric used as junction reinforcement in specific Mapei waterproofing membrane systems. It is referenced alongside Mapenet 150 in Mapei system specifications — for example, Mapelastic Smart is specified with either Mapetex Sel or Mapenet 150 depending on the application detail and system being used. Non-woven polyester fabric provides a different reinforcement profile to fibreglass mesh — it absorbs membrane into its fibre structure rather than relying on mesh apertures for membrane penetration.\n\nConfirm with the current Mapei system specification and with Mapei technical which reinforcing fabric — Mapenet 150 or Mapetex Sel — is specified for the specific Mapei membrane being applied on the project before specifying. Do not substitute one fabric for the other without confirmation from Mapei technical.",
+      "Mapei Mapetex Sel is a non-woven macro-holed polypropylene reinforcing fabric (not polyester) used as junction reinforcement in specific Mapei waterproofing membrane systems. It is supplied in 1 m wide × 25 m long rolls and weighs 80 g/m². It is referenced alongside Mapenet 150 in Mapei system specifications — for example, Mapelastic Smart is specified with either Mapetex Sel or Mapenet 150 depending on the application detail and system being used. Non-woven polypropylene fabric provides a different reinforcement profile to fibreglass mesh — it absorbs membrane into its fibre structure through macro holes rather than relying on mesh apertures for membrane penetration.\n\nConfirm with the current Mapei system specification and with Mapei technical which reinforcing fabric — Mapenet 150 or Mapetex Sel — is specified for the specific Mapei membrane being applied on the project before specifying. Do not substitute one fabric for the other without confirmation from Mapei technical.",
     technicalProperties: [
-      "Non-woven polyester reinforcing fabric",
+      "Non-woven macro-holed polypropylene reinforcing fabric — 80 g/m² — 0.6 mm thickness",
+      "1 m wide × 25 m long rolls — cut to required junction width",
       "Compatible with Mapei liquid-applied and cementitious membrane systems — confirm specific membrane with Mapei technical",
       "Used at junctions, corners, and around penetrations — embedded between membrane coats",
       "Referenced in Mapelastic Smart and other Mapei system specifications as an alternative to Mapenet 150 for specific applications",
     ],
     limitations: [
       "Confirm with Mapei Australia which reinforcing fabric (Mapenet 150 or Mapetex Sel) is specified for the specific membrane system being applied — do not assume they are interchangeable",
-      "Confirm current product availability, roll dimensions, and specification with Mapei Australia before specifying",
+      "Confirm current product availability and specification with Mapei Australia before specifying",
     ],
     procurementSources: [
       { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
@@ -295,10 +296,10 @@ const SYSTEM_COMPARISON: {
   {
     product: "Mapei Mapetex Sel",
     brand: "Mapei Australia",
-    material: "Non-woven polyester",
+    material: "Non-woven macro-holed polypropylene — 80 g/m²",
     membraneSystem: "Mapei liquid-applied and cementitious systems — confirm specific membrane",
     applicationMethod: "Embedded between membrane coats",
-    widthFormat: "Confirm roll dimensions with Mapei Australia",
+    widthFormat: "1 m wide × 25 m long roll — cut to required width",
     keyRestriction: "Confirm with Mapei technical which fabric is specified — not universally interchangeable with Mapenet 150",
   },
   {
@@ -365,6 +366,180 @@ const TECH_INFO = {
     "Membrane manufacturer system specifications — confirm hold points and inspection requirements for junction reinforcement with the manufacturer before commencing works",
   ],
 };
+
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function ReinforcingFabricIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are reinforcing fabric and mesh — waterproofing?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Reinforcing fabric and mesh are materials embedded into the wet waterproofing membrane at junctions, corners, changes of plane, cracks, and around penetrations during membrane application. Their function is to build membrane thickness and continuity at locations where the substrate geometry creates stress concentrations — internal and external corners, wall-to-floor junctions, construction joints, and pipe and drain penetrations. At these locations, a single coat of liquid-applied membrane is insufficient without reinforcement — the fabric or mesh carries the membrane across the junction and prevents cracking, splitting, and delamination under the thermal movement and substrate deflection that all external balcony and terrace slabs experience.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              In liquid-applied membrane systems, the reinforcing fabric is embedded between coats — a first coat of membrane is applied to the junction, the fabric is pressed into the wet membrane so it is fully saturated from below, and a second coat is applied over the top to fully encapsulate the fabric. The result is a reinforced membrane layer at the junction that is significantly thicker and more crack-resistant than the field membrane alone. Reinforcing fabric used in this way is a mandatory component of all compliant liquid-applied membrane systems on external balconies — it is not optional and its omission is a common cause of membrane failure at junctions.
+            </p>
+            <p>
+              Different fabric types — woven polyester, non-woven polyester, fibreglass mesh, and self-adhesive bandage tape — suit different membrane systems and junction types. The correct fabric type must be specified to match the membrane system being applied. Each membrane manufacturer specifies which reinforcing fabric is approved for use in their system.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 
 function TechCard({
   icon,
@@ -569,78 +744,41 @@ export function ReinforcingFabricProductSection() {
                     </div>
                   </div>
                   <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-500">{product.descriptionLine}</p>
-                </div>
-
-                {/* Tech spec chips */}
-                <div className="flex flex-wrap gap-1.5 border-b border-slate-100 bg-white px-5 py-3">
-                  {product.techChips.map((chip) => (
-                    <span
-                      key={chip.label}
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}
-                    >
-                      {chip.label}
-                    </span>
-                  ))}
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                    {product.techChips.filter((c) => c.label.toLowerCase().includes("warranty")).map((chip) => (
+                      <span key={chip.label} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                        {chip.label}
+                      </span>
+                    ))}
+                  </div>
+                  <CollapsibleCardDetails
+                    text={product.descriptionLine}
+                    chips={product.techChips.filter((c) => !c.label.toLowerCase().includes("warranty"))}
+                  />
                 </div>
 
                 {/* System Description */}
                 <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <p className="text-xs leading-6 text-slate-700 whitespace-pre-line">{product.systemDescription}</p>
+                  <CollapsibleDescription text={product.systemDescription} />
                 </div>
 
                 {/* Technical Properties & Limitations */}
                 <div className="space-y-3 px-5 py-4">
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <ul className="space-y-1.5">
-                      {product.technicalProperties.map((prop, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
-                          {prop}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
                   </div>
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <ul className="space-y-1.5">
-                      {product.limitations.map((lim, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
-                          {lim}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
                   </div>
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-4">
-                  <p className="mb-3 text-[10px] uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
-                  <div className="space-y-2">
-                    {product.procurementSources.map((src) => (
-                      <div
-                        key={src.name}
-                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs"
-                      >
-                        <a
-                          href={src.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
-                        >
-                          {src.name}
-                          <ExternalLink size={9} className="text-slate-300" />
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="mt-3 text-[10px] italic text-slate-400">
-                    Confirm suitability with the current manufacturer TDS before specifying or applying.
-                  </p>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                  <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>
             </div>

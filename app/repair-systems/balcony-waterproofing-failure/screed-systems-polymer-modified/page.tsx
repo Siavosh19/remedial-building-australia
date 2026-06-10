@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
-import { ScreedProductSection } from "./ScreedProductSection";
+import { ScreedProductSection, ScreedIntroSection } from "./ScreedProductSection";
 
 export const metadata: Metadata = {
   title: "Polymer-Modified Screed Systems — Balcony Waterproofing Repair — Remedial Building Australia",
@@ -8,35 +8,81 @@ export const metadata: Metadata = {
     "Technical product reference for polymer-modified screed systems used in balcony and terrace waterproofing remediation on Australian Class 2 strata apartment buildings — falls correction, screed position, membrane compatibility, bonding systems, thickness ranges, and brand comparisons.",
 };
 
-const SIBLING_TABS = [
-  { label: "Liquid applied — PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
-  { label: "Liquid applied — acrylic", slug: "liquid-applied-membranes-acrylic" },
-  { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
-  { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
-  { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
-  { label: "Primers", slug: "primers-bonding-agents" },
-  { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
-  { label: "Screed SL", slug: "screed-systems-self-levelling" },
-  { label: "Drainage puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
-  { label: "Drainage linear", slug: "drainage-linear-grates-channel-drains" },
-  { label: "Penetration collars", slug: "penetration-collars" },
-  { label: "Protection boards", slug: "protection-boards" },
-  { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
-  { label: "Flood test", slug: "flood-test-equipment" },
-  { label: "Tile adhesive", slug: "tile-adhesive-systems" },
-  { label: "Tools", slug: "abrasives-blades-tools" },
-  { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
-  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
-  { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
-  { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
-  { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
-  { label: "Pedestal systems (podiums)", slug: "pedestal-systems-adjustable-height" },
-  { label: "Drainage cells (planter boxes)", slug: "drainage-cell-systems" },
-  { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
-  { label: "Ballast systems (roofs)", slug: "ballast-systems" },
-  { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining (roofs)", slug: "gutter-lining-systems" },
-  { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
+const SIBLING_GROUPS = [
+  {
+    heading: "Membrane Systems",
+    tabs: [
+      { label: "LQ PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
+      { label: "LQ acrylic", slug: "liquid-applied-membranes-acrylic" },
+      { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
+      { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
+      { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
+      { label: "HDPE (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+      { label: "Single-ply ballasted", slug: "single-ply-membrane-systems-ballasted" },
+      { label: "TPO/FPO exposed", slug: "tpo-fpo-sheet-membranes-exposed" },
+      { label: "Hot melt asphalt", slug: "hot-melt-rubberised-asphalt-systems" },
+    ],
+  },
+  {
+    heading: "Preparation",
+    tabs: [
+      { label: "Primers", slug: "primers-bonding-agents" },
+      { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
+      { label: "Tools", slug: "abrasives-blades-tools" },
+    ],
+  },
+  {
+    heading: "Screeds & Tile",
+    tabs: [
+      { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
+      { label: "Screed SL", slug: "screed-systems-self-levelling" },
+      { label: "Tile adhesive", slug: "tile-adhesive-systems" },
+      { label: "Tile sealants", slug: "tile-sealants-silicone-sanitary" },
+    ],
+  },
+  {
+    heading: "Drainage & Penetrations",
+    tabs: [
+      { label: "Puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
+      { label: "Linear drains", slug: "drainage-linear-grates-channel-drains" },
+      { label: "Penetration collars", slug: "penetration-collars" },
+      { label: "Podium outlets", slug: "drainage-podium-outlets-scuppers" },
+      { label: "Edge trims", slug: "gutter-lining-systems" },
+      { label: "Flashing compounds", slug: "flashing-compound-systems" },
+    ],
+  },
+  {
+    heading: "Prep & Fix",
+    tabs: [
+      { label: "Termination bars", slug: "membrane-termination-bars-accessories" },
+    ],
+  },
+  {
+    heading: "Joints & Movement",
+    tabs: [
+      { label: "Backer rod", slug: "backer-rod-bond-breaker-tape" },
+      { label: "Expansion joint covers", slug: "expansion-joint-cover-systems-trafficable" },
+    ],
+  },
+  {
+    heading: "Protection & Overburden",
+    tabs: [
+      { label: "Protection boards", slug: "protection-boards" },
+      { label: "Root resistant", slug: "root-resistant-membrane-systems" },
+      { label: "Tapered insulation", slug: "tapered-insulation-board-systems" },
+      { label: "Pedestals", slug: "pedestal-systems-adjustable-height" },
+      { label: "Drainage cells", slug: "drainage-cell-systems" },
+      { label: "Filter fabric", slug: "filter-fabric-systems" },
+      { label: "Ballast", slug: "ballast-systems" },
+      { label: "Vapour control layers", slug: "vapour-control-layers-warm-roof" },
+    ],
+  },
+  {
+    heading: "Testing & QA",
+    tabs: [
+      { label: "Flood test", slug: "flood-test-equipment" },
+    ],
+  },
 ];
 
 export default function ScreedSystemsPolymerModifiedPage() {
@@ -106,26 +152,38 @@ export default function ScreedSystemsPolymerModifiedPage() {
           </div>
         </section>
 
-        {/* ── Sibling tabs ── */}
+                {/* ── Sibling tabs ── */}
         <div className="border-b border-slate-200 bg-white px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="flex items-end gap-0 overflow-x-auto">
-              {SIBLING_TABS.map((tab) => {
-                const active = tab.slug === "screed-systems-polymer-modified";
-                return (
-                  <a
-                    key={tab.slug}
-                    href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
-                    className={`relative shrink-0 border-b-2 px-5 py-4 text-sm font-bold whitespace-nowrap transition ${
-                      active
-                        ? "border-red-700 text-sky-950"
-                        : "border-transparent text-slate-500 hover:text-sky-900"
-                    }`}
-                  >
-                    {tab.label}
-                  </a>
-                );
-              })}
+            <div className="flex items-stretch gap-0 overflow-x-auto">
+              {SIBLING_GROUPS.map((group, gi) => (
+                <div
+                  key={group.heading}
+                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
+                >
+                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
+                    {group.heading}
+                  </div>
+                  <div className="flex items-end">
+                    {group.tabs.map((tab) => {
+                      const active = tab.slug === "screed-systems-polymer-modified";
+                      return (
+                        <a
+                          key={tab.slug}
+                          href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
+                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
+                            active
+                              ? "border-red-700 text-sky-950"
+                              : "border-transparent text-slate-500 hover:text-sky-900"
+                          }`}
+                        >
+                          {tab.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -135,36 +193,8 @@ export default function ScreedSystemsPolymerModifiedPage() {
           <div className="mx-auto max-w-7xl space-y-10">
 
             {/* What are they */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-              <div className="mb-4 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
-                  <BookOpen size={15} />
-                </div>
-                <h3 className="text-base font-extrabold text-sky-950">What are polymer-modified screed systems — balcony waterproofing?</h3>
-              </div>
-              <div className="space-y-4 text-sm leading-7 text-slate-600">
-                <p>
-                  Polymer-modified screeds are cement-based levelling and falls-correction materials gauged with a polymer admixture — either factory pre-blended (bagged rapid-set screeds such as ARDEX A 38 or Mapei Mapecem Pronto) or site-batched with a polymer liquid admixture added to a sand-cement mix (such as ARDEX Abacrete or ARDEX WPM 405 admixture). The polymer modification improves adhesion to the substrate, reduces shrinkage cracking, and increases the water resistance of the screed layer itself.
-                </p>
-                <p>
-                  In balcony and terrace waterproofing remediation on Class 2 strata buildings, screeds serve one of two distinct system positions:
-                </p>
-                <ul className="space-y-2 pl-1">
-                  {[
-                    { label: "Pre-membrane screed (falls correction screed)", body: "Applied directly to the structural slab before the waterproofing membrane. Purpose is to correct falls to drains, fill substrate voids, or reinstate a sound substrate for membrane application. Must cure and be dry before primer and membrane are applied above." },
-                    { label: "Over-membrane protection screed (bed screed)", body: "Applied over a cured waterproofing membrane as a protection and tile bed layer. The screed protects the membrane from tile adhesive cure shrinkage, point loads, and differential movement. Must be specified with the membrane manufacturer — some membranes require a protection board before the screed, not direct bonding." },
-                  ].map((item) => (
-                    <li key={item.label} className="flex items-start gap-3">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-600" />
-                      <span><strong className="font-bold text-sky-950">{item.label}</strong> — {item.body}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p>
-                  Product selection must confirm: screed position (pre- or over-membrane), minimum and maximum application thickness, compressive strength, whether the product is suitable for external exposure, whether polymer admixture is factory pre-blended or site-added, primer requirements, tile-over time, movement joint requirements, and maximum bay size.
-                </p>
-              </div>
-            </div>
+            <ScreedIntroSection />
+
 
             {/* Interactive: accordion + product grid + system comparison */}
             <ScreedProductSection />
@@ -251,7 +281,7 @@ export default function ScreedSystemsPolymerModifiedPage() {
                   title: "Balcony Waterproofing Failure — causes, inspection, methodology",
                 },
                 {
-                  href: "/ai-scope-builder/new",
+                  href: "/ai-scope-builder",
                   label: "AI Scope Builder",
                   title: "Generate a scope of works for balcony waterproofing remediation",
                 },

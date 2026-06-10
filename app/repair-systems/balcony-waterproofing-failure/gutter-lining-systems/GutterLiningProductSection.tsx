@@ -41,25 +41,24 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.demtech.com.au",
     accentColor: "#1d4ed8",
     name: "Demtech BET Series",
-    descriptionLine: "Extruded aluminium balcony edge trim — adjustable projection width — powder coated — concealed fastener fixing — compatible with liquid-applied, sheet, and torch-on membrane systems",
-    productType: "Extruded aluminium balcony edge trim — powder coated — adjustable projection",
+    descriptionLine: "Anodised aluminium balcony edge trim — available in 55mm width, 3m and 6m lengths — powder coat to Dulux range available — weep holes — drip edge — confirmed on demtech.com.au — TODO: owner confirm whether a two-part adjustable-projection variant exists in the BET range",
+    productType: "Anodised aluminium balcony edge trim — Demtech Australia — TODO: owner confirm adjustable projection claim",
     filterTags: ["Aluminium", "Powder-coated", "Concealed-fastener", "Adjustable-width"],
     techChips: [
-      { label: "Extruded aluminium", cls: "bg-blue-100 text-blue-800" },
-      { label: "Adjustable projection", cls: "bg-slate-100 text-slate-700" },
-      { label: "Powder coated", cls: "bg-green-50 text-green-700" },
-      { label: "Concealed fastener", cls: "bg-slate-100 text-slate-700" },
-      { label: "All membrane systems", cls: "bg-amber-50 text-amber-700" },
+      { label: "Anodised aluminium — confirmed", cls: "bg-blue-100 text-blue-800" },
+      { label: "55mm width — 3m and 6m lengths — confirmed", cls: "bg-slate-100 text-slate-700" },
+      { label: "Powder coat to Dulux range — confirmed", cls: "bg-green-50 text-green-700" },
+      { label: "Weep holes — 12mm drip edge — confirmed", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: owner confirm adjustable projection and two-part profile claims", cls: "bg-red-100 text-red-700" },
     ],
     systemDescription:
       "The Demtech BET (Balcony Edge Trim) Series is Demtech Building Products' purpose-designed extruded aluminium balcony edge trim for Class 2 strata remediation applications in Australia. The BET Series uses a two-part extruded aluminium profile — a base plate is mechanically fixed to the balcony edge substrate before membrane application, and a cover section clips over to conceal the fixings and provide a clean architectural finish. The adjustable projection accommodates tile build-up variations across different remediation scenarios without requiring custom profiling on site. The system is designed to work with liquid-applied polyurethane, liquid-applied cementitious, cold-applied self-adhesive sheet, and torch-on bitumen membrane systems — the membrane terminates under the cover flange, providing a protected and concealed membrane edge termination detail. Powder coat finish is standard; confirm with Demtech whether the standard coating grade is appropriate for the project's proximity to the coast — a marine-grade powder coat or anodised finish may be required for coastal Class 2 buildings within 1 km of the ocean. Confirm current profile range, dimensions, colour schedule, and installation sequence with Demtech Building Products before specifying.",
     technicalProperties: [
-      "Extruded aluminium two-part profile — base plate fixed to substrate before membrane, cover section clips on to conceal fixings",
-      "Adjustable projection width — accommodates variable tile build-up thickness without bespoke on-site fabrication",
-      "Compatible with liquid-applied PU, cementitious, cold-applied self-adhesive sheet, and torch-on bitumen membrane systems",
-      "Powder coat finish — confirm colour options, gloss level, and coastal suitability with Demtech Building Products",
-      "Concealed fastener fixing — clean architectural finish — membrane terminates under cover flange",
-      "Purpose-designed for Class 2 strata balcony remediation — compatible with tile, paver, and screed build-up systems",
+      "Anodised aluminium balcony edge trim — available in 55mm width, 3m and 6m lengths — confirmed on demtech.com.au",
+      "12mm drip edge — diverts water from building facade — weep holes to prevent water buildup under tiles — confirmed on demtech.com.au",
+      "Powder coat to any colour from Dulux range available — confirmed on demtech.com.au",
+      "TODO: owner confirm — two-part profile with adjustable projection and concealed fastener system claims not confirmed from live demtech.com.au sources — confirm whether a dedicated two-part adjustable BET variant exists before specifying",
+      "Membrane compatibility: confirmed for use with balcony tile installations — confirm specific membrane system compatibility with Demtech Australia",
     ],
     limitations: [
       "Standard powder coat may not be appropriate within 1 km of the ocean or in severe salt air environments — confirm marine-grade coating with Demtech before specifying",
@@ -81,22 +80,22 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.schlueter.com.au/en_au/profiles/bara-profiles.html",
     accentColor: "#dc2626",
     name: "Schlüter BARA-RAK / BARA-RAKO",
-    descriptionLine: "Anodised aluminium balcony perimeter profile — integrated tile anchor flange — 40mm to 200mm cover widths — BARA-RAKO includes end cap — prevents tile edge chipping and long-term delamination",
-    productType: "Anodised aluminium balcony perimeter profile with tile anchor flange — Schlüter Systems",
+    descriptionLine: "TODO: owner confirm — BARA-RAKO variant with integrated end cap not confirmed on aus.sika.com or schlueter.com.au — confirm BARA-RAKO product name, availability, and cover width range (40mm–200mm) with Schlüter Systems Australia before specifying",
+    productType: "TODO: owner confirm — anodised aluminium balcony perimeter profile with tile anchor flange — Schlüter Systems — confirm BARA-RAKO product name and cover widths",
     filterTags: ["Aluminium", "Anodised", "Tile-anchor"],
     techChips: [
       { label: "Anodised aluminium", cls: "bg-red-100 text-red-800" },
-      { label: "40–200mm cover widths", cls: "bg-slate-100 text-slate-700" },
-      { label: "Integrated tile anchor", cls: "bg-green-50 text-green-700" },
-      { label: "BARA-RAK (no end cap)", cls: "bg-slate-100 text-slate-700" },
-      { label: "BARA-RAKO (with end cap)", cls: "bg-amber-50 text-amber-700" },
+      { label: "TODO: owner confirm cover widths 40–200mm with Schlüter Systems AU", cls: "bg-red-100 text-red-700" },
+      { label: "Integrated tile anchor — confirmed for BARA-RAK", cls: "bg-green-50 text-green-700" },
+      { label: "BARA-RAK confirmed", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: owner confirm BARA-RAKO product name and end cap feature", cls: "bg-red-100 text-red-700" },
     ],
     systemDescription:
       "Schlüter BARA-RAK and BARA-RAKO are anodised aluminium balcony perimeter profiles from Schlüter Systems for external balcony, terrace, and step edge applications. BARA-RAK is supplied without an end cap; BARA-RAKO includes an integrated end cap at the profile termination for corners and exposed ends. Both profiles incorporate an anchor flange that is embedded in the tile adhesive bed, providing a mechanically anchored tile support at the slab perimeter edge and preventing tile edge chipping, cracking, and long-term delamination over the life of the waterproofing system. Profiles are available in tile cover widths from 40mm to 200mm — the cover dimension is determined by the required projection from the anchor flange to the outer face of the finished tile at the specified build-up thickness. Installation sequence is: fix the BARA profile anchor at the edge after membrane application, then apply tile adhesive and tile over the anchor flange, locking the profile mechanically into the tile bed. The membrane terminates behind the anchor flange — the tile adhesive and tile are applied over the anchor and on top of the membrane. Anodised finish is standard — confirm that the anodised specification is appropriate for the building's salt air exposure category with Schlüter Systems Australia before specifying for coastal projects.",
     technicalProperties: [
-      "Anodised aluminium perimeter profile with integrated tile anchor flange — prevents tile edge chipping and long-term delamination",
-      "BARA-RAK without end cap; BARA-RAKO with integrated end cap — select based on corner and termination configuration",
-      "Available in tile cover widths from 40mm to 200mm — accommodates a wide range of build-up thicknesses",
+      "Anodised aluminium perimeter profile with integrated tile anchor flange — prevents tile edge chipping and long-term delamination — BARA-RAK confirmed on schluter.com",
+      "TODO: owner confirm — BARA-RAKO (with integrated end cap) not confirmed on Schlüter Australia website (schlueter.com.au returned connection error); confirm current product name and end cap availability with Schlüter Systems Australia before specifying",
+      "TODO: owner confirm — cover width range 40mm to 200mm not confirmed from live source — confirm available cover widths with Schlüter Systems Australia before specifying",
       "Anchor flange embedded in tile adhesive bed — provides mechanical edge support independent of adhesive alone",
       "Compatible with all waterproofing membrane systems — membrane terminates behind the anchor flange before tile installation",
       "Anodised finish — confirm coastal and severe salt air environment suitability with Schlüter Systems Australia",
@@ -251,20 +250,20 @@ const EDGE_TRIM_COMPARISON: {
   {
     product: "Demtech BET Series",
     brand: "Demtech",
-    material: "Extruded aluminium — powder coat",
-    widthRange: "Adjustable",
-    endCap: "Required — confirm with Demtech",
-    coastalGrade: "Confirm marine powder coat with Demtech",
-    primaryUse: "Concealed-fix perimeter trim — all membrane types",
+    material: "Anodised aluminium — powder coat to Dulux range available",
+    widthRange: "55mm confirmed — TODO: owner confirm adjustable projection",
+    endCap: "Confirm with Demtech — plastic comp pack end components available",
+    coastalGrade: "Confirm marine-grade coating with Demtech Australia",
+    primaryUse: "Balcony perimeter edge trim — weep holes — drip edge — tile installation",
   },
   {
     product: "Schlüter BARA-RAK / BARA-RAKO",
     brand: "Schlüter Systems",
     material: "Anodised aluminium",
-    widthRange: "40–200mm tile cover",
-    endCap: "BARA-RAK: no | BARA-RAKO: yes",
-    coastalGrade: "Confirm anodising grade with Schlüter",
-    primaryUse: "Tile anchor profile — balcony perimeter — prevents edge chipping",
+    widthRange: "TODO: owner confirm 40–200mm with Schlüter Systems AU",
+    endCap: "BARA-RAK: no end cap confirmed | BARA-RAKO: TODO — confirm product name and end cap with Schlüter Systems AU",
+    coastalGrade: "Confirm anodising grade with Schlüter Systems AU",
+    primaryUse: "Tile anchor profile — balcony perimeter — prevents edge chipping — BARA-RAK confirmed",
   },
   {
     product: "Amark All-Edge",
@@ -338,6 +337,176 @@ const TECH_INFO = {
   ],
 };
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function GutterLiningIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          Balcony edge trims — scope of this page
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          This page covers balcony perimeter edge trim systems used in balcony and terrace waterproofing remediation on Australian Class 2 strata buildings. Balcony edge trims are critical secondary components in a waterproofing system — the membrane alone is not sufficient without a correctly specified edge termination that protects the membrane's terminal detail from water undercutting, UV exposure, and physical damage at the open slab perimeter.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              <strong className="text-sky-950">Balcony edge trims</strong> are installed at the perimeter of balcony slabs to protect and conceal the membrane termination edge and the exposed tile or screed edge. Selection is primarily driven by material grade — aluminium (powder coat or anodised) for standard environments, and 316L stainless steel for coastal buildings within 1 km of the ocean. Profile selection must match the specified tile build-up depth and must accommodate end caps at all terminations. Products covered include the Demtech BET Series adjustable concealed-fix aluminium trim, Schlüter BARA-RAK and BARA-RAKO anodised aluminium tile anchor profiles, Amark All-Edge concealed-fix aluminium trim, standard anodised aluminium drip angles, and custom fabricated Grade 316L stainless steel edge profiles for coastal environments.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 function TechCard({
   icon,
   title,
@@ -438,7 +607,7 @@ function ProductCard({ product }: { product: Product }) {
         {/* System Description */}
         <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
           <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-          <p className="text-xs leading-6 text-slate-700">{product.systemDescription}</p>
+          <CollapsibleDescription text={product.systemDescription} />
         </div>
 
         {/* Technical Properties & Limitations */}
@@ -467,34 +636,9 @@ function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* Procurement Sources */}
-        <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-4">
-          <p className="mb-3 text-[10px] uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
-          <div className="space-y-2">
-            {product.procurementSources.map((src) => (
-              <div
-                key={src.name}
-                className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs"
-              >
-                {src.url !== "#" ? (
-                  <a
-                    href={src.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
-                  >
-                    {src.name}
-                    <ExternalLink size={9} className="text-slate-300" />
-                  </a>
-                ) : (
-                  <span className="font-semibold text-slate-700">{src.name}</span>
-                )}
-              </div>
-            ))}
-          </div>
-          <p className="mt-3 text-[10px] italic text-slate-400">
-            Confirm suitability with the current manufacturer TDS before specifying or applying.
-          </p>
+        {/* Procurement */}
+        <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+          <CollapsibleSources sources={product.procurementSources} />
         </div>
       </div>
     </div>

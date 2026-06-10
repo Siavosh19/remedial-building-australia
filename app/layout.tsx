@@ -16,6 +16,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Remedial Building Australia",
   description: "Technical defect database and remedial building knowledge platform for Australian Class 2 buildings",
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=2", sizes: "any" },
+      { url: "/icon.png?v=2", type: "image/png", sizes: "512x512" },
+    ],
+    apple: { url: "/apple-touch-icon.png?v=2", sizes: "180x180", type: "image/png" },
+  },
   other: {
     copyright: "Arasep Projects Pty Ltd ABN 20 675 874 003",
     rights: "All content copyright Arasep Projects Pty Ltd. All rights reserved.",

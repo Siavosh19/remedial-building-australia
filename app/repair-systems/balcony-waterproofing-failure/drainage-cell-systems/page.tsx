@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
-import { DrainageCellProductSection } from "./DrainageCellProductSection";
+import { DrainageCellProductSection, DrainageCellIntroSection } from "./DrainageCellProductSection";
 
 export const metadata: Metadata = {
   title: "Drainage Cell Systems — Planter Boxes and Podiums — Balcony Waterproofing — Remedial Building Australia",
@@ -8,35 +8,81 @@ export const metadata: Metadata = {
     "Technical product reference for drainage cell systems used in planter box, green roof, and podium slab waterproofing remediation on Australian Class 2 strata apartment buildings — modular polypropylene drainage cells, void ratio, compressive strength, water retention cups, passive irrigation, drainage cell depth selection, filter fabric pairing, and brand comparisons.",
 };
 
-const SIBLING_TABS = [
-  { label: "Liquid applied — PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
-  { label: "Liquid applied — acrylic", slug: "liquid-applied-membranes-acrylic" },
-  { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
-  { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
-  { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
-  { label: "Primers", slug: "primers-bonding-agents" },
-  { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
-  { label: "Screed SL", slug: "screed-systems-self-levelling" },
-  { label: "Drainage puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
-  { label: "Drainage linear", slug: "drainage-linear-grates-channel-drains" },
-  { label: "Penetration collars", slug: "penetration-collars" },
-  { label: "Protection boards", slug: "protection-boards" },
-  { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
-  { label: "Flood test", slug: "flood-test-equipment" },
-  { label: "Tile adhesive", slug: "tile-adhesive-systems" },
-  { label: "Tools", slug: "abrasives-blades-tools" },
-  { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
-  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
-  { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
-  { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
-  { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
-  { label: "Pedestal systems (podiums)", slug: "pedestal-systems-adjustable-height" },
-  { label: "Drainage cells (planter boxes)", slug: "drainage-cell-systems" },
-  { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
-  { label: "Ballast systems (roofs)", slug: "ballast-systems" },
-  { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Balcony edge trims", slug: "gutter-lining-systems" },
-  { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
+const SIBLING_GROUPS = [
+  {
+    heading: "Membrane Systems",
+    tabs: [
+      { label: "LQ PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
+      { label: "LQ acrylic", slug: "liquid-applied-membranes-acrylic" },
+      { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
+      { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
+      { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
+      { label: "HDPE (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+      { label: "Single-ply ballasted", slug: "single-ply-membrane-systems-ballasted" },
+      { label: "TPO/FPO exposed", slug: "tpo-fpo-sheet-membranes-exposed" },
+      { label: "Hot melt asphalt", slug: "hot-melt-rubberised-asphalt-systems" },
+    ],
+  },
+  {
+    heading: "Preparation",
+    tabs: [
+      { label: "Primers", slug: "primers-bonding-agents" },
+      { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
+      { label: "Tools", slug: "abrasives-blades-tools" },
+    ],
+  },
+  {
+    heading: "Screeds & Tile",
+    tabs: [
+      { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
+      { label: "Screed SL", slug: "screed-systems-self-levelling" },
+      { label: "Tile adhesive", slug: "tile-adhesive-systems" },
+      { label: "Tile sealants", slug: "tile-sealants-silicone-sanitary" },
+    ],
+  },
+  {
+    heading: "Drainage & Penetrations",
+    tabs: [
+      { label: "Puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
+      { label: "Linear drains", slug: "drainage-linear-grates-channel-drains" },
+      { label: "Penetration collars", slug: "penetration-collars" },
+      { label: "Podium outlets", slug: "drainage-podium-outlets-scuppers" },
+      { label: "Edge trims", slug: "gutter-lining-systems" },
+      { label: "Flashing compounds", slug: "flashing-compound-systems" },
+    ],
+  },
+  {
+    heading: "Prep & Fix",
+    tabs: [
+      { label: "Termination bars", slug: "membrane-termination-bars-accessories" },
+    ],
+  },
+  {
+    heading: "Joints & Movement",
+    tabs: [
+      { label: "Backer rod", slug: "backer-rod-bond-breaker-tape" },
+      { label: "Expansion joint covers", slug: "expansion-joint-cover-systems-trafficable" },
+    ],
+  },
+  {
+    heading: "Protection & Overburden",
+    tabs: [
+      { label: "Protection boards", slug: "protection-boards" },
+      { label: "Root resistant", slug: "root-resistant-membrane-systems" },
+      { label: "Tapered insulation", slug: "tapered-insulation-board-systems" },
+      { label: "Pedestals", slug: "pedestal-systems-adjustable-height" },
+      { label: "Drainage cells", slug: "drainage-cell-systems" },
+      { label: "Filter fabric", slug: "filter-fabric-systems" },
+      { label: "Ballast", slug: "ballast-systems" },
+      { label: "Vapour control layers", slug: "vapour-control-layers-warm-roof" },
+    ],
+  },
+  {
+    heading: "Testing & QA",
+    tabs: [
+      { label: "Flood test", slug: "flood-test-equipment" },
+    ],
+  },
 ];
 
 export default function DrainageCellSystemsPage() {
@@ -106,26 +152,38 @@ export default function DrainageCellSystemsPage() {
           </div>
         </section>
 
-        {/* ── Sibling tabs ── */}
+                {/* ── Sibling tabs ── */}
         <div className="border-b border-slate-200 bg-white px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="flex items-end gap-0 overflow-x-auto">
-              {SIBLING_TABS.map((tab) => {
-                const active = tab.slug === "drainage-cell-systems";
-                return (
-                  <a
-                    key={tab.slug}
-                    href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
-                    className={`relative shrink-0 border-b-2 px-5 py-4 text-sm font-bold whitespace-nowrap transition ${
-                      active
-                        ? "border-red-700 text-sky-950"
-                        : "border-transparent text-slate-500 hover:text-sky-900"
-                    }`}
-                  >
-                    {tab.label}
-                  </a>
-                );
-              })}
+            <div className="flex items-stretch gap-0 overflow-x-auto">
+              {SIBLING_GROUPS.map((group, gi) => (
+                <div
+                  key={group.heading}
+                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
+                >
+                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
+                    {group.heading}
+                  </div>
+                  <div className="flex items-end">
+                    {group.tabs.map((tab) => {
+                      const active = tab.slug === "drainage-cell-systems";
+                      return (
+                        <a
+                          key={tab.slug}
+                          href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
+                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
+                            active
+                              ? "border-red-700 text-sky-950"
+                              : "border-transparent text-slate-500 hover:text-sky-900"
+                          }`}
+                        >
+                          {tab.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -135,25 +193,8 @@ export default function DrainageCellSystemsPage() {
           <div className="mx-auto max-w-7xl space-y-10">
 
             {/* Intro card */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-              <div className="mb-4 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
-                  <BookOpen size={15} />
-                </div>
-                <h3 className="text-base font-extrabold text-sky-950">What are drainage cell systems — planter boxes and podiums?</h3>
-              </div>
-              <div className="space-y-4 text-sm leading-7 text-slate-600">
-                <p>
-                  Drainage cell systems are modular, interlocking polypropylene panels placed between the waterproofing membrane and the growing medium in planter boxes, green roofs, and landscaped podium slabs. Their primary function is to create a permanent, non-clogging subsurface drainage void above the membrane — allowing excess water from irrigation and rainfall to flow laterally through the void to the drainage outlets, while the growing medium above retains only the moisture required for plant health. Without a drainage void, waterlogged growing medium sits directly on the membrane surface, promotes membrane degradation, prevents root aeration, and prevents excess water from reaching the outlet — all of which contribute to planter box failure and membrane damage over time.
-                </p>
-                <p>
-                  Drainage cells replace the traditional coarse aggregate drainage layer used in conventional planter box construction. A 30mm drainage cell provides approximately the same drainage capacity as 150mm of coarse gravel aggregate, while adding only 2% of the gravel's weight to the structural slab — a critical advantage on podium slabs and roof decks where dead load is constrained. The reduced drainage layer depth also allows greater growing medium depth within the same overall planter box height, expanding the range of plants and tree species that can be used above the membrane.
-                </p>
-                <p>
-                  Drainage cells are available in 20mm, 30mm, and 50mm depths — selected based on the required drainage flow rate, the growing medium depth, the loading conditions above, and the available build-up height within the planter box. Many drainage cell formats incorporate small water retention cups in the base of each cell — these cups retain a small volume of water below the drainage void level, creating a perched water table that provides passive irrigation to the growing medium during dry periods without retaining standing water on the membrane surface.
-                </p>
-              </div>
-            </div>
+            <DrainageCellIntroSection />
+
 
             {/* Interactive: accordion + product grid + comparison table */}
             <DrainageCellProductSection />

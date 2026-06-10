@@ -82,14 +82,14 @@ Walkable after 2–3 hours at 20°C. Ready for tiling, waterproofing, or coating
     tdsUrl: "https://ardexaustralia.com/product/ardex-lq-92/",
     accentColor: "#f97316",
     name: "ARDEX LQ 92",
-    descriptionLine: "Cement-based self-levelling undertile levelling compound — feather edge to 25mm — external use only with waterproofing membrane and tile finish above — not a standalone external surface",
-    productType: "External confirmed — cement-based undertile levelling compound — with membrane and tile system above",
+    descriptionLine: "Cement-based self-levelling undertile levelling compound — feather edge to 25mm — external use confirmed (not subject to freeze/thaw) — TODO: owner confirm whether ARDEX technically mandates membrane and tile finish above for external use or whether that is a system specification requirement",
+    productType: "External confirmed — cement-based undertile levelling compound — confirm membrane and tile system requirement with ARDEX technical",
     techChips: [
-      { label: "External — with membrane + tile above", cls: "bg-green-100 text-green-800" },
+      { label: "External confirmed (not freeze/thaw)", cls: "bg-green-100 text-green-800" },
       { label: "Feather edge to 25mm", cls: "bg-slate-100 text-slate-700" },
       { label: "Pre-membrane substrate prep", cls: "bg-sky-50 text-sky-700" },
-      { label: "Membrane and tile mandatory above", cls: "bg-amber-100 text-amber-800" },
-      { label: "Not an exposed surface", cls: "bg-red-50 text-red-700" },
+      { label: "TODO: confirm membrane+tile-above mandate", cls: "bg-amber-100 text-amber-800" },
+      { label: "Not for vinyl coverings", cls: "bg-red-50 text-red-700" },
     ],
     systemDescription: `ARDEX LQ 92 is a cement-based self-levelling and self-smoothing compound for levelling uneven concrete floors prior to tiling. In external balcony applications, ARDEX specifically confirms that LQ 92 MUST be protected with a waterproofing membrane and tile finish installed above it — it cannot be used as an exposed external surface and is not a standalone external levelling compound in the same sense as ARDEX K 301.
 
@@ -107,11 +107,11 @@ Applied as a pourable, free-flowing self-smoothing compound. Suitable for concre
       "Confirmed for external use when full system (membrane + tile) is applied above",
     ],
     limitations: [
-      "External use requires waterproofing membrane and tile finish above — LQ 92 alone is not an external wear surface — do not leave exposed",
+      "External use confirmed BUT not subject to freeze/thaw conditions — confirmed from ARDEX Australia product page",
+      "TODO: owner confirm — whether ARDEX technical mandates waterproofing membrane and tile finish above LQ 92 for external balcony use, or whether LQ 92 can be used as an exposed wear surface externally (the ARDEX product page does not explicitly state that membrane+tile above is mandatory)",
       "Not a falls correction screed — cannot reliably create drainage falls — use ARDEX A 38 or A 48 where significant falls correction is required",
       "Must not be applied over a waterproofing membrane — pre-membrane substrate preparation only",
       "Not recommended under vinyl floor coverings",
-      "Do not confuse with ARDEX K 301 — K 301 can be left as an exposed external surface — LQ 92 cannot",
       "Confirm primer type and curing time with ARDEX technical before applying membrane above",
       "Confirm current product specification with ARDEX Australia before specifying",
     ],
@@ -226,12 +226,12 @@ const SYSTEM_COMPARISON: {
   {
     product: "LQ 92",
     brand: "ARDEX",
-    externalConfirmed: "Yes — with membrane and tile above only",
+    externalConfirmed: "Yes — not subject to freeze/thaw — TODO: confirm membrane+tile above mandate",
     isExternal: true,
     applicationRange: "Feather edge to 25mm",
     fallsPossible: "No",
-    systemPosition: "Pre-membrane substrate prep — must have membrane and tile above",
-    keyRestriction: "Not an exposed external surface — membrane and tiles mandatory above",
+    systemPosition: "Pre-membrane substrate prep — confirm with ARDEX technical if membrane+tile above is mandatory",
+    keyRestriction: "Not for freeze/thaw conditions — not recommended under vinyl — confirm external system requirements with ARDEX",
   },
   {
     product: "K 15 Microtec",
@@ -283,6 +283,177 @@ const TECH_INFO = {
     "Confirm falls adequacy by level survey before specifying product type — if the slab already has adequate fall and only surface smoothing is needed, a self-levelling compound is appropriate",
   ],
 };
+
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function SLScreedIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are self-levelling screed systems — balcony waterproofing?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Self-levelling screeds are cementitious compounds that, when mixed with water, flow under gravity to produce a smooth, flat, or lightly graded surface without the compaction and hand-finishing required by traditional sand-cement screeds. They are applied by pour, trowel, or pump, and are primarily used to prepare concrete substrates for the application of waterproofing membranes, tile adhesives, and floor coverings.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              In balcony and terrace waterproofing remediation, self-levelling screeds have a specific and limited role: substrate preparation prior to membrane application. They are used to smooth damaged, rough, or uneven concrete surfaces before the waterproofing membrane is applied, and in some products to fill depressions and achieve a minimal fall to drainage where the existing slab is close to the required level.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 
 function TechCard({
   icon,
@@ -377,25 +548,11 @@ function ProductCard({ product }: { product: Product }) {
       <div className="space-y-3 px-5 py-4">
         <div>
           <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-          <ul className="space-y-1.5">
-            {product.technicalProperties.map((prop, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
-                {prop}
-              </li>
-            ))}
-          </ul>
+          <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
         </div>
         <div>
           <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-          <ul className="space-y-1.5">
-            {product.limitations.map((lim, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
-                {lim}
-              </li>
-            ))}
-          </ul>
+          <CollapsibleList items={product.limitations} icon="x" limit={3} />
         </div>
       </div>
 

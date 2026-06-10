@@ -17,27 +17,126 @@ const PROFILE_STATUS_RANK: Record<string, number> = {
   basic: 0,
 };
 
-type CompanyRow = {
-  id: number;
-  slug: string;
-  name: string;
-  description: string | null;
-  phone: string | null;
-  profile_status: string;
-  confidence_score: number;
-  is_featured: boolean;
-  is_claimed: boolean;
-  main_category: { id: number; name: string; slug: string } | null;
-  locations: Array<{
-    suburb: string | null;
-    state: string;
-    postcode: string;
+// ─── Location scoring ─────────────────────────────────────────────────────────
+// Returns 0–500. Higher = closer/better location match.
+// Does NOT override keyword/category relevance — those are handled by WHERE clause.
+
+function locationScore(
+  distKm: number | null,
+  loc: {
     services_nationwide: boolean;
     services_statewide: boolean;
-  }>;
-  licences: Array<{ status: string }>;
-  distance_km?: number | null;
-};
+    state: string;
+    suburb: string | null;
+    postcode: string | null;
+    service_radius_km: number | null;
+  } | null,
+  searchSuburb: string,
+  searchPostcode: string,
+  searchState: string,
+): number {
+  if (!loc) return 10;
+
+  // Exact suburb match (works even when business has no coordinates)
+  if (searchSuburb && loc.suburb && loc.suburb.toLowerCase() === searchSuburb.toLowerCase()) {
+    return 500;
+  }
+
+  // Exact postcode match (works even when business has no coordinates)
+  if (searchPostcode && loc.postcode && loc.postcode === searchPostcode) {
+    return 450;
+  }
+
+  const radius = loc.service_radius_km ?? 50;
+
+  if (distKm !== null) {
+    if (distKm <= 5)  return 450;
+    if (distKm <= 10) return 400;
+    if (distKm <= 25) return 350;
+    if (distKm <= 50) return 300;
+    if (distKm <= radius) return 250;
+    if (distKm <= 150) {
+      return loc.state === searchState ? 200 : 130;
+    }
+    if (loc.services_statewide && loc.state === searchState) return 150;
+    if (loc.state === searchState) return 100;
+    if (loc.services_nationwide) return 60;
+    return 20;
+  }
+
+  // No lat/lng — fall back to service coverage flags
+  if (loc.services_nationwide) return 60;
+  if (loc.services_statewide && loc.state === searchState) return 150;
+  if (loc.state === searchState) return 80;
+  return 20;
+}
+
+function trustBoost(row: {
+  is_featured: boolean;
+  confidence_score: number;
+  is_claimed: boolean;
+  profile_status: string;
+}): number {
+  return (
+    (row.is_featured ? 30 : 0) +
+    row.confidence_score * 0.2 +
+    (row.is_claimed ? 10 : 0) +
+    (PROFILE_STATUS_RANK[row.profile_status] ?? 0) * 3
+  );
+}
+
+// ─── Synonym expansion ────────────────────────────────────────────────────────
+
+const STOPWORDS = new Set([
+  "building", "buildings", "service", "services", "management", "australia",
+  "australian", "company", "companies", "group", "pty", "ltd", "the", "and",
+  "for", "with", "our", "all", "new", "south", "wales", "victoria", "queensland",
+]);
+
+const SYNONYM_GROUPS: string[][] = [
+  ["consultant", "consultants", "consulting", "advisory", "adviser", "advisor", "surveyor", "surveying"],
+  ["inspector", "inspection", "inspections", "assessment", "assessor"],
+  ["cleaner", "cleaners", "cleaning", "washing", "hygiene"],
+  ["waterproof", "waterproofing", "membrane", "membranes", "tanking"],
+  ["seal", "sealing", "sealant", "sealants", "caulk", "caulking"],
+  ["concrete", "concreting", "spalling", "carbonation"],
+  ["remedial", "remediation", "restoration"],
+  ["repair", "repairs"],
+  ["engineer", "engineers", "engineering"],
+  ["painter", "painters", "painting", "coating", "coatings", "recoating"],
+  ["balcony", "balconies"],
+  ["roof", "roofing", "roofer", "roofers"],
+  ["plumber", "plumbers", "plumbing", "drainage", "drain"],
+  ["facade", "cladding"],
+  ["strata"],
+  ["defect", "defects", "defective"],
+  ["fire safety", "fire protection"],
+  ["electrical", "electrician", "electricians"],
+  ["scaffold", "scaffolding"],
+  ["render", "rendering"],
+  ["tiling", "tiles", "tile", "tiler", "tilers"],
+  ["timber", "carpentry", "carpenter"],
+  ["structural", "structure"],
+];
+
+function expandQuery(q: string): string[] {
+  const qLower = q.toLowerCase().trim();
+  const terms = new Set<string>([qLower]);
+
+  const words = qLower.split(/\s+/).filter((w) => w.length >= 3 && !STOPWORDS.has(w));
+  for (const word of words) {
+    terms.add(word);
+    for (const group of SYNONYM_GROUPS) {
+      if (group.some((syn) => syn === word || syn.includes(word) || word.includes(syn))) {
+        group.forEach((syn) => terms.add(syn));
+      }
+    }
+  }
+
+  return Array.from(terms);
+}
+
+// ─── WHERE builder ─────────────────────────────────────────────────────────────
 
 function buildWhere(params: {
   q: string;
@@ -48,26 +147,26 @@ function buildWhere(params: {
   featured: boolean;
   licenceVerified: boolean;
   claimed: boolean;
-  radiusMode: "statewide" | "nationwide" | "km";
-  locationState: string;
+  hasCoords: boolean;
 }): Prisma.CompanyWhereInput {
-  const { q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, radiusMode, locationState } = params;
+  const { q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, hasCoords } = params;
 
   const where: Prisma.CompanyWhereInput = { status: "published" };
   const AND: Prisma.CompanyWhereInput[] = [];
 
-  // ── Keyword search ──────────────────────────────────────────────────
+  // ── Keyword search — with synonym expansion ─────────────────────────────────
   if (q) {
+    const terms = expandQuery(q);
     AND.push({
-      OR: [
-        { name: { contains: q, mode: "insensitive" } },
-        { description: { contains: q, mode: "insensitive" } },
-        { main_category: { name: { contains: q, mode: "insensitive" } } },
+      OR: terms.flatMap((term) => [
+        { name: { contains: term, mode: "insensitive" } },
+        { description: { contains: term, mode: "insensitive" } },
+        { main_category: { name: { contains: term, mode: "insensitive" } } },
         {
           company_categories: {
             some: {
               is_approved: true,
-              category: { name: { contains: q, mode: "insensitive" } },
+              category: { name: { contains: term, mode: "insensitive" } },
             },
           },
         },
@@ -76,17 +175,17 @@ function buildWhere(params: {
             some: {
               is_approved: true,
               tag: {
-                name: { contains: q, mode: "insensitive" },
+                name: { contains: term, mode: "insensitive" },
                 tag_type: { in: ["service", "defect", "repair_system"] },
               },
             },
           },
         },
-      ],
+      ]),
     });
   }
 
-  // ── Category filter ─────────────────────────────────────────────────
+  // ── Category filter ─────────────────────────────────────────────────────────
   if (category) {
     AND.push({
       OR: [
@@ -97,32 +196,35 @@ function buildWhere(params: {
     });
   }
 
-  // ── Location filters — always combined into a single locations.some ──
-  // Suburb + state together (suburb selection from autocomplete)
-  const validDropdownState = VALID_STATES.find((s) => s === stateFilter.toUpperCase());
-
-  if (suburb && validDropdownState) {
-    // Single location record must satisfy both suburb AND state
-    AND.push({
-      locations: {
-        some: {
-          suburb: { contains: suburb, mode: "insensitive" },
-          state: validDropdownState,
+  // ── Location filters — only when NOT using coordinate-based ranking ─────────
+  // When hasCoords=true, location sorting is done by scoring, not hard WHERE filters.
+  // State-only searches still use a hard filter.
+  if (!hasCoords) {
+    const validDropdownState = VALID_STATES.find((s) => s === stateFilter.toUpperCase());
+    if (suburb && validDropdownState) {
+      AND.push({
+        locations: {
+          some: {
+            suburb: { contains: suburb, mode: "insensitive" },
+            state: validDropdownState,
+          },
         },
-      },
-    });
-  } else if (suburb) {
-    AND.push({ locations: { some: { suburb: { contains: suburb, mode: "insensitive" } } } });
-  } else if (validDropdownState) {
-    AND.push({ locations: { some: { state: validDropdownState } } });
+      });
+    } else if (suburb) {
+      AND.push({ locations: { some: { suburb: { contains: suburb, mode: "insensitive" } } } });
+    } else if (validDropdownState) {
+      AND.push({ locations: { some: { state: validDropdownState } } });
+    }
+    if (postcode) {
+      AND.push({ locations: { some: { postcode } } });
+    }
+  } else {
+    // When coords present, still optionally filter by state to keep result set manageable
+    // Only apply if there's a state hint but no specific suburb/postcode
+    // (suburb/postcode searches need broader results for nearest-first ranking)
   }
 
-  // ── Postcode filter — exact match ───────────────────────────────────
-  if (postcode) {
-    AND.push({ locations: { some: { postcode } } });
-  }
-
-  // ── Verification badge filters ──────────────────────────────────────
+  // ── Verification filters ────────────────────────────────────────────────────
   if (featured) AND.push({ is_featured: true });
   if (claimed) AND.push({ is_claimed: true });
   if (licenceVerified) AND.push({ licences: { some: { status: "verified" } } });
@@ -130,6 +232,8 @@ function buildWhere(params: {
   if (AND.length > 0) where.AND = AND;
   return where;
 }
+
+// ─── SELECT shape ──────────────────────────────────────────────────────────────
 
 const COMPANY_SELECT = {
   id: true,
@@ -157,69 +261,46 @@ const COMPANY_SELECT = {
     take: 1,
     select: { status: true },
   },
+  company_tags: {
+    where: { is_approved: true },
+    take: 5,
+    select: { tag: { select: { name: true, tag_type: true } } },
+  },
 } satisfies Prisma.CompanySelect;
 
-function sortRank(c: {
-  is_featured: boolean;
-  confidence_score: number;
-  is_claimed: boolean;
-  profile_status: string;
-  distance_km?: number | null;
-}) {
-  return {
-    featured: c.is_featured ? 1 : 0,
-    confidence: c.confidence_score,
-    distance: c.distance_km ?? Infinity,
-    claimed: c.is_claimed ? 1 : 0,
-    statusRank: PROFILE_STATUS_RANK[c.profile_status] ?? 0,
-  };
-}
-
-function compareCompanies(
-  a: ReturnType<typeof sortRank>,
-  b: ReturnType<typeof sortRank>
-): number {
-  if (a.featured !== b.featured) return b.featured - a.featured;
-  if (a.confidence !== b.confidence) return b.confidence - a.confidence;
-  if (a.distance !== b.distance) return a.distance - b.distance;
-  if (a.claimed !== b.claimed) return b.claimed - a.claimed;
-  return b.statusRank - a.statusRank;
-}
+// ─── Handler ───────────────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
 
-  const q = sp.get("q")?.trim() ?? "";
-  const lat = parseFloat(sp.get("lat") ?? "");
-  const lng = parseFloat(sp.get("lng") ?? "");
-  const radiusParam = sp.get("radius") ?? "25";
-  const locationState = sp.get("locationState") ?? "";
-  const category = sp.get("category")?.trim() ?? "";
+  const q           = sp.get("q")?.trim() ?? "";
+  const lat         = parseFloat(sp.get("lat") ?? "");
+  const lng         = parseFloat(sp.get("lng") ?? "");
+  const locationState = sp.get("locationState")?.trim() ?? "";
+  const category    = sp.get("category")?.trim() ?? "";
   const stateFilter = sp.get("state")?.trim() ?? "";
-  const suburb = sp.get("suburb")?.trim() ?? "";
-  const postcode = sp.get("postcode")?.trim() ?? "";
-  const featured = sp.get("featured") === "true";
+  const suburb      = sp.get("suburb")?.trim() ?? "";
+  const postcode    = sp.get("postcode")?.trim() ?? "";
+  const featured    = sp.get("featured") === "true";
   const licenceVerified = sp.get("licenceVerified") === "true";
-  const claimed = sp.get("claimed") === "true";
-  const page = Math.max(1, parseInt(sp.get("page") ?? "1") || 1);
-  const offset = (page - 1) * PAGE_SIZE;
+  const claimed     = sp.get("claimed") === "true";
+  const page        = Math.max(1, parseInt(sp.get("page") ?? "1") || 1);
+  const offset      = (page - 1) * PAGE_SIZE;
 
   const hasCoords = !isNaN(lat) && !isNaN(lng);
-  const radiusKm = ["statewide", "nationwide"].includes(radiusParam)
-    ? null
-    : parseInt(radiusParam) || 25;
-  const radiusMode: "statewide" | "nationwide" | "km" =
-    radiusParam === "statewide"
-      ? "statewide"
-      : radiusParam === "nationwide"
-      ? "nationwide"
-      : "km";
 
-  const where = buildWhere({ q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, radiusMode, locationState });
+  // Determine search state for scoring (prefer explicit locationState over stateFilter)
+  const searchState = locationState || stateFilter;
+
+  const where = buildWhere({
+    q, category, stateFilter, suburb, postcode,
+    featured, licenceVerified, claimed,
+    hasCoords,
+  });
 
   try {
-    // ── No location or nationwide: pure Prisma ────────────────────────
-    if (!hasCoords || radiusMode === "nationwide") {
+    // ── No location coords: pure Prisma with simple sort ──────────────────────
+    if (!hasCoords) {
       const [total, rows] = await Promise.all([
         prisma.company.count({ where }),
         prisma.company.findMany({
@@ -241,12 +322,13 @@ export async function GET(request: NextRequest) {
         page,
         pageSize: PAGE_SIZE,
         totalPages: Math.ceil(total / PAGE_SIZE),
+        isLocalFallback: false,
       });
     }
 
-    // ── Location + km radius: fetch IDs, Haversine, sort, paginate ────
+    // ── Coordinate-based distance + scoring path ──────────────────────────────
 
-    // Step 1: Get all matching company IDs + sort fields
+    // Step 1: All keyword/category-matching companies (no location hard filter)
     const matchingRows = await prisma.company.findMany({
       where,
       select: {
@@ -257,19 +339,32 @@ export async function GET(request: NextRequest) {
         profile_status: true,
         locations: {
           take: 1,
-          select: { services_nationwide: true, services_statewide: true, state: true },
+          select: {
+            suburb: true,
+            postcode: true,
+            state: true,
+            services_nationwide: true,
+            services_statewide: true,
+            service_radius_km: true,
+          },
         },
       },
     });
 
     if (matchingRows.length === 0) {
-      return NextResponse.json({ companies: [], total: 0, page, pageSize: PAGE_SIZE, totalPages: 0 });
+      return NextResponse.json({
+        companies: [],
+        total: 0,
+        page,
+        pageSize: PAGE_SIZE,
+        totalPages: 0,
+        isLocalFallback: false,
+      });
     }
 
-    const ids = matchingRows.map((r) => r.id);
-
-    // Step 2: Haversine for all matching IDs
+    // Step 2: Haversine distances for companies that have coordinates
     type DistRow = { company_id: number; distance_km: number };
+    const ids = matchingRows.map((r) => r.id);
 
     const distRows = await prisma.$queryRaw<DistRow[]>(
       Prisma.sql`
@@ -287,55 +382,50 @@ export async function GET(request: NextRequest) {
       `
     );
 
-    // Normalize numeric cast (Postgres may return string for computed columns)
     const distMap = new Map<number, number>(
       distRows.map((r) => [Number(r.company_id), Number(r.distance_km)])
     );
 
-    // Step 3: Merge distance into matching rows, apply radius filter
-    type SortableRow = {
+    // Step 3: Score every company — no hard radius cutoff
+    type ScoredRow = {
       id: number;
       is_featured: boolean;
       confidence_score: number;
       is_claimed: boolean;
       profile_status: string;
       distance_km: number | null;
+      locScore: number;
+      totalScore: number;
     };
 
-    const sortable: SortableRow[] = [];
+    const scored: ScoredRow[] = matchingRows.map((row) => {
+      const loc = row.locations[0] ?? null;
+      const distKm = distMap.get(row.id) ?? null;
+      const locScoreVal = locationScore(distKm, loc ? { ...loc, suburb: loc.suburb ?? null, postcode: loc.postcode ?? null } : null, suburb, postcode, searchState);
+      const total = locScoreVal + trustBoost(row);
+      return { ...row, distance_km: distKm, locScore: locScoreVal, totalScore: total };
+    });
 
-    for (const row of matchingRows) {
-      const loc = row.locations[0];
-      const dist = distMap.get(row.id) ?? null;
+    // Step 4: Sort by totalScore descending
+    scored.sort((a, b) => b.totalScore - a.totalScore);
 
-      if (dist !== null) {
-        // Has coordinates — apply radius filter
-        if (radiusKm !== null && dist > radiusKm) continue;
-        sortable.push({ ...row, distance_km: dist });
-      } else {
-        // No coordinates — include if services nationwide or statewide + state matches
-        if (loc?.services_nationwide) {
-          sortable.push({ ...row, distance_km: null });
-        } else if (loc?.services_statewide) {
-          const locStateCode = VALID_STATES.find((s) => s === loc.state);
-          const geocodedState = VALID_STATES.find((s) => s === locationState.toUpperCase());
-          if (locStateCode && geocodedState && locStateCode === geocodedState) {
-            sortable.push({ ...row, distance_km: null });
-          }
-        }
-        // else: exclude (can't determine proximity)
-      }
-    }
+    // Determine if top results are all "fallback" (no local businesses found)
+    const topLocScore = scored[0]?.locScore ?? 0;
+    const isLocalFallback = suburb !== "" && topLocScore < 200;
 
-    // Step 4: Sort by spec ranking
-    sortable.sort((a, b) => compareCompanies(sortRank(a), sortRank(b)));
-
-    const total = sortable.length;
-    const pageSlice = sortable.slice(offset, offset + PAGE_SIZE);
+    const totalCount = scored.length;
+    const pageSlice = scored.slice(offset, offset + PAGE_SIZE);
     const pageIds = pageSlice.map((r) => r.id);
 
     if (pageIds.length === 0) {
-      return NextResponse.json({ companies: [], total, page, pageSize: PAGE_SIZE, totalPages: Math.ceil(total / PAGE_SIZE) });
+      return NextResponse.json({
+        companies: [],
+        total: totalCount,
+        page,
+        pageSize: PAGE_SIZE,
+        totalPages: Math.ceil(totalCount / PAGE_SIZE),
+        isLocalFallback,
+      });
     }
 
     // Step 5: Fetch full data for page IDs
@@ -344,22 +434,30 @@ export async function GET(request: NextRequest) {
       select: COMPANY_SELECT,
     });
 
-    // Step 6: Re-order to match sorted order and attach distance
-    const distanceByPage = new Map(pageSlice.map((r) => [r.id, r.distance_km]));
-    const companies: (CompanyRow & { distance_km: number | null })[] = pageIds.map((id) => {
+    // Step 6: Re-order + attach distance
+    const distByPage = new Map(pageSlice.map((r) => [r.id, r.distance_km]));
+    const companies = pageIds.map((id) => {
       const row = fullRows.find((r) => r.id === id)!;
-      return { ...row, distance_km: distanceByPage.get(id) ?? null };
+      return { ...row, distance_km: distByPage.get(id) ?? null };
     });
 
     return NextResponse.json({
       companies,
-      total,
+      total: totalCount,
       page,
       pageSize: PAGE_SIZE,
-      totalPages: Math.ceil(total / PAGE_SIZE),
+      totalPages: Math.ceil(totalCount / PAGE_SIZE),
+      isLocalFallback,
     });
   } catch (err) {
     console.error("Directory search error:", err);
-    return NextResponse.json({ companies: [], total: 0, page, pageSize: PAGE_SIZE, totalPages: 0 });
+    return NextResponse.json({
+      companies: [],
+      total: 0,
+      page,
+      pageSize: PAGE_SIZE,
+      totalPages: 0,
+      isLocalFallback: false,
+    });
   }
 }

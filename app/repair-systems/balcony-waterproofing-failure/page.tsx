@@ -16,6 +16,8 @@ const GROUPS = [
       { label: "Sheet membranes — cold-applied self-adhered", count: 4, slug: "sheet-membranes-cold-applied" },
       { label: "Cementitious flexible membranes", count: 6, slug: "cementitious-flexible-membranes" },
       { label: "HDPE sheet membrane systems (roofs and podiums)", count: 5, slug: "hdpe-sheet-membrane-systems" },
+      { label: "Single-ply ballasted membrane systems (roofs and podiums)", count: 6, slug: "single-ply-membrane-systems-ballasted" },
+      { label: "TPO/FPO sheet membranes (exposed roofs and decks)", count: 2, slug: "tpo-fpo-sheet-membranes-exposed" },
       { label: "Hot melt rubberised asphalt systems (roofs and podiums)", count: 4, slug: "hot-melt-rubberised-asphalt-systems" },
     ],
   },
@@ -25,6 +27,7 @@ const GROUPS = [
       { label: "Primers and bonding agents", count: 8, slug: "primers-bonding-agents" },
       { label: "Reinforcing fabric and mesh", count: 5, slug: "reinforcing-fabric-mesh" },
       { label: "Abrasives, blades and tools", count: 11, slug: "abrasives-blades-tools" },
+      { label: "Membrane termination bars and accessories", count: 3, slug: "membrane-termination-bars-accessories" },
     ],
   },
   {
@@ -33,6 +36,7 @@ const GROUPS = [
       { label: "Screed systems — polymer-modified", count: 7, slug: "screed-systems-polymer-modified" },
       { label: "Screed systems — self-levelling", count: 4, slug: "screed-systems-self-levelling" },
       { label: "Tile adhesive systems", count: 10, slug: "tile-adhesive-systems" },
+      { label: "Tile sealants — silicone and sanitary", count: 3, slug: "tile-sealants-silicone-sanitary" },
     ],
   },
   {
@@ -47,15 +51,23 @@ const GROUPS = [
     ],
   },
   {
+    heading: "Joints & Movement",
+    categories: [
+      { label: "Backer rod and bond breaker tape", count: 3, slug: "backer-rod-bond-breaker-tape" },
+      { label: "Expansion joint cover systems — trafficable (balconies and podiums)", count: 3, slug: "expansion-joint-cover-systems-trafficable" },
+    ],
+  },
+  {
     heading: "Protection & Overburden",
     categories: [
       { label: "Protection boards", count: 6, slug: "protection-boards" },
       { label: "Root resistant membrane systems — polyolefin and HDPE (planter boxes and podiums)", count: 6, slug: "root-resistant-membrane-systems" },
-      { label: "Tapered insulation board systems — PIR / XPS / mineral wool (roofs and podiums)", count: 6, slug: "tapered-insulation-board-systems" },
+      { label: "Tapered and flat roof insulation boards — PIR / XPS / mineral wool (roofs and podiums)", count: 6, slug: "tapered-insulation-board-systems" },
       { label: "Pedestal systems — adjustable height (podiums)", count: 5, slug: "pedestal-systems-adjustable-height" },
       { label: "Drainage cell systems (planter boxes)", count: 0, slug: "drainage-cell-systems" },
       { label: "Filter fabric systems (planter boxes)", count: 0, slug: "filter-fabric-systems" },
       { label: "Ballast systems (roofs)", count: 0, slug: "ballast-systems" },
+      { label: "Vapour control layers — warm roof (balconies and podiums)", count: 3, slug: "vapour-control-layers-warm-roof" },
     ],
   },
   {

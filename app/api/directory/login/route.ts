@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
 
   const email = String(body.email ?? "").trim().toLowerCase();
   const password = String(body.password ?? "");
+  const rememberMe = body.rememberMe !== false;
 
   if (!email || !EMAIL_RE.test(email)) return NextResponse.json({ error: "A valid email address is required." }, { status: 400 });
   if (!password) return NextResponse.json({ error: "Password is required." }, { status: 400 });
@@ -23,6 +24,6 @@ export async function POST(request: NextRequest) {
 
   const sessionToken = createSessionToken(user.id);
   const response = NextResponse.json({ success: true });
-  response.cookies.set(createDirectorySessionCookie(sessionToken));
+  response.cookies.set(createDirectorySessionCookie(sessionToken, rememberMe));
   return response;
 }

@@ -31,6 +31,7 @@ type CompanyResult = {
     services_statewide?: boolean;
   }>;
   licences: Array<{ status: string }>;
+  company_tags?: Array<{ tag: { name: string; tag_type: string } }>;
 };
 
 type LocationSuggestion = {
@@ -39,8 +40,11 @@ type LocationSuggestion = {
   stateCode: string;
   suburb?: string;
   postcode?: string;
+  lat?: number;
+  lng?: number;
 };
 
+type Coords = { lat: number; lng: number } | null;
 type SelectedLocation = LocationSuggestion | null;
 
 interface Props {
@@ -48,106 +52,165 @@ interface Props {
   initialCompanies: CompanyResult[];
 }
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
+// ─── Company row ─────────────────────────────────────────────────────────────
 
-function VerificationBadge({
-  status,
-  isFeatured,
-  isLicenceVerified,
-  isClaimed,
-}: {
-  status: string;
-  isFeatured: boolean;
-  isLicenceVerified: boolean;
-  isClaimed: boolean;
-}) {
-  if (isFeatured)
-    return <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">Featured</span>;
-  if (isLicenceVerified || status === "licence_verified")
-    return <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">Licence Verified ✓</span>;
-  if (status === "practitioner_verified")
-    return <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">Practitioner Verified ✓</span>;
-  if (status === "business_verified" || status === "contact_verified")
-    return <span className="rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-bold text-sky-800">Verified</span>;
-  if (isClaimed)
-    return <span className="rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-bold text-indigo-800">Claimed</span>;
-  return null;
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0] ?? "")
+    .join("")
+    .toUpperCase();
 }
 
 function DistanceBadge({ distanceKm }: { distanceKm: number }) {
-  const label = distanceKm < 1 ? "< 1 km" : distanceKm < 10 ? `${distanceKm.toFixed(1)} km` : `${Math.round(distanceKm)} km`;
+  const label =
+    distanceKm < 1
+      ? "< 1 km"
+      : distanceKm < 10
+      ? `${distanceKm.toFixed(1)} km`
+      : `${Math.round(distanceKm)} km`;
   return (
-    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
+    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500">
       {label} away
     </span>
   );
 }
 
-function CompanyCard({ company }: { company: CompanyResult }) {
+function CompanyRow({ company }: { company: CompanyResult }) {
   const location = company.locations[0];
-  const isLicenceVerified = company.licences.length > 0;
-  const showPhone = company.profile_status !== "basic" && company.phone;
-  const locationParts = [location?.suburb, location?.state, location?.postcode].filter(Boolean);
+  const locationParts = [location?.suburb, location?.state].filter(Boolean);
+  const isVerified =
+    company.licences.length > 0 ||
+    ["business_verified", "contact_verified", "licence_verified", "practitioner_verified"].includes(
+      company.profile_status
+    );
+  const abbr = initials(company.name);
+  const tags = company.company_tags ?? [];
 
   return (
     <div
-      className={`flex flex-col rounded-3xl border bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-xl ${
-        company.is_featured ? "border-amber-300 ring-1 ring-amber-100" : "border-slate-200"
+      className={`flex gap-4 border-b border-slate-100 bg-white px-6 py-5 last:border-0 transition-colors hover:bg-slate-50/70 ${
+        company.is_featured ? "border-l-4 border-l-amber-400" : ""
       }`}
     >
-      <div className="flex flex-1 flex-col p-7">
-        <div className="flex flex-wrap items-center gap-2">
+      {/* Logo / initials */}
+      <div
+        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-sm font-extrabold ${
+          company.is_featured
+            ? "bg-amber-100 text-amber-800"
+            : "bg-sky-100 text-sky-800"
+        }`}
+      >
+        {abbr || "?"}
+      </div>
+
+      {/* Main content */}
+      <div className="min-w-0 flex-1">
+        {/* Badges */}
+        <div className="mb-1 flex flex-wrap items-center gap-1.5">
           {company.main_category && (
-            <span className="rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-bold text-sky-800">
+            <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-800">
               {company.main_category.name}
             </span>
           )}
-          <VerificationBadge
-            status={company.profile_status}
-            isFeatured={company.is_featured}
-            isLicenceVerified={isLicenceVerified}
-            isClaimed={company.is_claimed}
-          />
+          {company.is_featured && (
+            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">
+              ★ Featured
+            </span>
+          )}
+          {isVerified && (
+            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">
+              Business Verified ✓
+            </span>
+          )}
+          {company.is_claimed && !isVerified && !company.is_featured && (
+            <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-bold text-indigo-700">
+              Claimed Profile ✓
+            </span>
+          )}
           {company.distance_km != null && (
             <DistanceBadge distanceKm={company.distance_km} />
           )}
         </div>
 
-        <h3 className="mt-4 text-xl font-bold leading-tight text-sky-950">{company.name}</h3>
+        {/* Name */}
+        <h3 className="text-base font-bold leading-tight text-sky-950">
+          {company.name}
+        </h3>
 
+        {/* Location */}
         {locationParts.length > 0 && (
-          <p className="mt-1 text-sm text-slate-500">{locationParts.join(", ")}</p>
+          <p className="mt-0.5 text-xs text-slate-500">
+            {locationParts.join(", ")}
+          </p>
         )}
 
-        {company.description ? (
-          <p className="mt-4 line-clamp-2 flex-1 text-sm leading-6 text-slate-600">
+        {/* Description */}
+        {company.description && (
+          <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-slate-600">
             {company.description}
           </p>
-        ) : (
-          <div className="flex-1" />
         )}
 
-        {showPhone && (
-          <a href={`tel:${company.phone}`} className="mt-4 text-sm font-semibold text-slate-700 hover:text-sky-700">
-            {company.phone}
-          </a>
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-1">
+            {tags.slice(0, 5).map((t) => (
+              <span
+                key={t.tag.name}
+                className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-600"
+              >
+                {t.tag.name}
+              </span>
+            ))}
+          </div>
         )}
+      </div>
 
-        <div className="mt-5 border-t border-slate-100 pt-4">
+      {/* Right: reviews + action buttons */}
+      <div className="flex shrink-0 flex-col items-end justify-between gap-3 pl-2">
+        <p className="text-xs text-slate-400">No reviews yet</p>
+        <div className="flex flex-col items-end gap-2">
           <a
             href={`/directory/company/${company.slug}`}
-            className="text-sm font-bold text-sky-700 transition hover:text-red-700"
+            className="whitespace-nowrap rounded-xl bg-sky-950 px-4 py-2 text-xs font-semibold text-white transition hover:bg-sky-800"
           >
             View Profile →
           </a>
+          {company.is_claimed ? (
+            <a
+              href={`/directory/company/${company.slug}`}
+              className="whitespace-nowrap rounded-xl border border-sky-300 bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-800 transition hover:bg-sky-100"
+            >
+              Request Quote
+            </a>
+          ) : (
+            <a
+              href={`/directory/claim/${company.slug}`}
+              className="whitespace-nowrap rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+            >
+              Claim Profile
+            </a>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function SkeletonCard() {
-  return <div className="h-56 animate-pulse rounded-3xl border border-slate-200 bg-slate-200" />;
+function SkeletonRow() {
+  return (
+    <div className="flex gap-4 border-b border-slate-100 bg-white px-6 py-5">
+      <div className="h-12 w-12 animate-pulse rounded-xl bg-slate-200" />
+      <div className="flex-1 space-y-2.5">
+        <div className="h-3 w-24 animate-pulse rounded bg-slate-200" />
+        <div className="h-4 w-56 animate-pulse rounded bg-slate-200" />
+        <div className="h-3 w-32 animate-pulse rounded bg-slate-200" />
+        <div className="h-3 w-full animate-pulse rounded bg-slate-200" />
+      </div>
+    </div>
+  );
 }
 
 function Pagination({
@@ -168,7 +231,7 @@ function Pagination({
   const to = Math.min(page * pageSize, total);
 
   return (
-    <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+    <div className="mt-6 flex flex-wrap items-center justify-between gap-4 px-2">
       <p className="text-sm text-slate-500">
         Showing {from}–{to} of {total} results
       </p>
@@ -208,11 +271,9 @@ function CategorySelector({
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [expandedId, setExpandedId] = useState<number | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   const parents = categories.filter((c) => !c.parent_id);
-  const children = categories.filter((c) => !!c.parent_id);
 
   const filteredParents = search.trim()
     ? parents.filter((p) => p.name.toLowerCase().includes(search.toLowerCase().trim()))
@@ -224,9 +285,7 @@ function CategorySelector({
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -268,7 +327,7 @@ function CategorySelector({
               <input
                 type="text"
                 value={search}
-                onChange={(e) => { setSearch(e.target.value); setExpandedId(null); }}
+                onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search categories…"
                 className="min-w-0 flex-1 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none"
                 autoFocus
@@ -292,60 +351,18 @@ function CategorySelector({
               <p className="px-4 py-3 text-sm text-slate-400">No categories found</p>
             )}
 
-            {filteredParents.map((parent) => {
-              const subs = children.filter((c) => c.parent_id === parent.id);
-              const isExpanded = expandedId === parent.id;
-              const isSelected = value === parent.slug;
-
-              return (
-                <div key={parent.id}>
-                  <div className="flex items-center gap-1 pr-2">
-                    <button
-                      type="button"
-                      onClick={() => select(parent.slug)}
-                      className={`flex-1 px-4 py-2 text-left text-sm font-semibold transition hover:bg-slate-50 ${
-                        isSelected ? "text-sky-700" : "text-slate-800"
-                      }`}
-                    >
-                      {parent.name}
-                    </button>
-                    {subs.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => setExpandedId(isExpanded ? null : parent.id)}
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
-                      >
-                        <svg
-                          width={12} height={12} viewBox="0 0 12 12" fill="currentColor"
-                          className={`transition-transform duration-150 ${isExpanded ? "rotate-90" : ""}`}
-                        >
-                          <path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth={1.5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-
-                  {isExpanded && (
-                    <div className="ml-4 mb-1 border-l-2 border-sky-100">
-                      {subs.map((sub) => (
-                        <button
-                          key={sub.id}
-                          type="button"
-                          onClick={() => select(sub.slug)}
-                          className={`w-full px-3 py-1.5 text-left text-xs transition hover:bg-sky-50 ${
-                            value === sub.slug
-                              ? "font-bold text-sky-700"
-                              : "font-medium text-slate-600 hover:text-sky-700"
-                          }`}
-                        >
-                          • {sub.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {filteredParents.map((parent) => (
+              <button
+                key={parent.id}
+                type="button"
+                onClick={() => select(parent.slug)}
+                className={`w-full px-4 py-2 text-left text-sm font-semibold transition hover:bg-slate-50 ${
+                  value === parent.slug ? "text-sky-700" : "text-slate-800"
+                }`}
+              >
+                {parent.name}
+              </button>
+            ))}
           </div>
         </div>
       )}
@@ -385,9 +402,7 @@ function LocationAutocomplete({
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -425,7 +440,7 @@ function LocationAutocomplete({
 
   if (selectedLocation) {
     return (
-      <div className="flex items-center gap-2.5 rounded-2xl border border-sky-300 bg-sky-50 px-4 py-3">
+      <div className="flex items-center gap-2.5 rounded-xl border border-sky-300 bg-sky-50 px-4 py-2.5">
         <span className="text-base">{TYPE_ICONS[selectedLocation.type]}</span>
         <div className="min-w-0 flex-1">
           <span className="block text-[10px] font-bold uppercase tracking-wider text-sky-500">
@@ -457,8 +472,8 @@ function LocationAutocomplete({
         type="text"
         value={inputVal}
         onChange={(e) => handleInput(e.target.value)}
-        placeholder="State, suburb or postcode…"
-        className="w-full rounded-2xl border border-slate-300 bg-slate-50 py-3 pl-10 pr-10 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
+        placeholder="Suburb, postcode or state…"
+        className="w-full rounded-xl border border-slate-300 bg-slate-50 py-2.5 pl-10 pr-10 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
         autoComplete="off"
       />
       {fetching && (
@@ -500,45 +515,54 @@ function LocationAutocomplete({
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function DirectoryListing({ categories, initialCompanies }: Props) {
-  const [q, setQ] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return new URLSearchParams(window.location.search).get("q") ?? "";
-  });
+  // qInput = what the user is typing; q = applied to search (on Enter/button)
+  const [qInput, setQInput] = useState(() =>
+    typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("q") ?? ""
+  );
+  const [q, setQ] = useState(qInput);
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>(null);
-  const [category, setCategory] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return new URLSearchParams(window.location.search).get("category") ?? "";
-  });
+  const [coords, setCoords] = useState<Coords>(null);
+  const [category, setCategory] = useState(() =>
+    typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("category") ?? ""
+  );
   const [featured, setFeatured] = useState(false);
-  const [licenceVerified, setLicenceVerified] = useState(false);
-  const [claimed, setClaimed] = useState(false);
   const [page, setPage] = useState(1);
 
   const [companies, setCompanies] = useState<CompanyResult[]>(initialCompanies);
   const [total, setTotal] = useState(initialCompanies.length);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [isLocalFallback, setIsLocalFallback] = useState(false);
 
-  const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const geocodeAbortRef = useRef<AbortController | null>(null);
 
-  const hasFilters = Boolean(q || selectedLocation || category || featured || licenceVerified || claimed);
+  const hasFilters = Boolean(q || qInput || selectedLocation || category || featured);
 
-  // ── Fetch results ───────────────────────────────────────────────────
   const fetchResults = useCallback(
     async (params: {
       q: string;
       selectedLocation: SelectedLocation;
+      coords: Coords;
       category: string;
       featured: boolean;
-      licenceVerified: boolean;
-      claimed: boolean;
       page: number;
     }) => {
       setLoading(true);
       const sp = new URLSearchParams();
       if (params.q) sp.set("q", params.q);
 
-      if (params.selectedLocation) {
+      if (params.coords) {
+        // Coordinate-based ranking
+        sp.set("lat", String(params.coords.lat));
+        sp.set("lng", String(params.coords.lng));
+        if (params.selectedLocation?.stateCode) {
+          sp.set("locationState", params.selectedLocation.stateCode);
+        }
+        // Also pass suburb/postcode for exact-match bonus scoring
+        if (params.selectedLocation?.suburb) sp.set("suburb", params.selectedLocation.suburb);
+        if (params.selectedLocation?.postcode) sp.set("postcode", params.selectedLocation.postcode);
+      } else if (params.selectedLocation) {
+        // Fallback: no coords — use hard location filter
         const loc = params.selectedLocation;
         if (loc.type === "state") {
           sp.set("state", loc.stateCode);
@@ -552,8 +576,6 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
 
       if (params.category) sp.set("category", params.category);
       if (params.featured) sp.set("featured", "true");
-      if (params.licenceVerified) sp.set("licenceVerified", "true");
-      if (params.claimed) sp.set("claimed", "true");
       sp.set("page", String(params.page));
 
       try {
@@ -562,6 +584,7 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
         setCompanies(data.companies ?? []);
         setTotal(data.total ?? 0);
         setTotalPages(data.totalPages ?? 1);
+        setIsLocalFallback(data.isLocalFallback ?? false);
       } catch {
         // keep current results on error
       } finally {
@@ -571,98 +594,142 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
     []
   );
 
-  // Reset page when filters change
+  // Re-run search when explicit filters change (category, featured, page, coords)
+  // Does NOT watch qInput — keyword requires Enter or button click
   useEffect(() => {
-    setPage(1);
-  }, [q, selectedLocation, category, featured, licenceVerified, claimed]);
+    fetchResults({ q, selectedLocation, coords, category, featured, page });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, featured, coords, page]);
 
-  // Trigger search on filter or page change
-  useEffect(() => {
-    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
-    const delay = q ? 350 : 0;
-    searchDebounceRef.current = setTimeout(() => {
-      fetchResults({ q, selectedLocation, category, featured, licenceVerified, claimed, page });
-    }, delay);
-    return () => {
-      if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
-    };
-  }, [q, selectedLocation, category, featured, licenceVerified, claimed, page, fetchResults]);
+  function applySearch() {
+    setQ(qInput);
+    setPage(1);
+    fetchResults({ q: qInput, selectedLocation, coords, category, featured, page: 1 });
+  }
+
+  function handleLocationSelect(loc: LocationSuggestion) {
+    setSelectedLocation(loc);
+    setCoords(null);
+    setIsLocalFallback(false);
+
+    if (loc.type === "state") {
+      // State selection — no coords needed, use state filter
+      setPage(1);
+      fetchResults({ q, selectedLocation: loc, coords: null, category, featured, page: 1 });
+      return;
+    }
+
+    // Suburb or postcode — resolve coordinates
+    if (loc.lat != null && loc.lng != null) {
+      const resolved: Coords = { lat: loc.lat, lng: loc.lng };
+      setCoords(resolved);
+      // fetchResults triggered by coords useEffect
+    } else {
+      // Geocode via Nominatim as fallback
+      if (geocodeAbortRef.current) geocodeAbortRef.current.abort();
+      const ctrl = new AbortController();
+      geocodeAbortRef.current = ctrl;
+      const query = loc.suburb ? `${loc.suburb} ${loc.stateCode}` : `${loc.postcode ?? ""} ${loc.stateCode}`;
+      fetch(`/api/directory/geocode?q=${encodeURIComponent(query)}`, { signal: ctrl.signal })
+        .then((r) => r.json())
+        .then((data) => {
+          if (data?.lat && data?.lng) {
+            setCoords({ lat: data.lat, lng: data.lng });
+            // fetchResults triggered by coords useEffect
+          } else {
+            // Geocode failed — search with state filter only
+            setPage(1);
+            fetchResults({ q, selectedLocation: loc, coords: null, category, featured, page: 1 });
+          }
+        })
+        .catch(() => {
+          // Aborted or failed — search without coords
+          setPage(1);
+          fetchResults({ q, selectedLocation: loc, coords: null, category, featured, page: 1 });
+        });
+    }
+  }
+
+  function handleLocationClear() {
+    setSelectedLocation(null);
+    setCoords(null);
+    setIsLocalFallback(false);
+    setPage(1);
+    fetchResults({ q, selectedLocation: null, coords: null, category, featured, page: 1 });
+  }
 
   function clearFilters() {
+    setQInput("");
     setQ("");
     setSelectedLocation(null);
+    setCoords(null);
     setCategory("");
     setFeatured(false);
-    setLicenceVerified(false);
-    setClaimed(false);
     setPage(1);
+    setIsLocalFallback(false);
+    fetchResults({ q: "", selectedLocation: null, coords: null, category: "", featured: false, page: 1 });
   }
 
   return (
     <>
-      {/* ── Search + filters ────────────────────────────────────────── */}
+      {/* ── Search + filters ─────────────────────────────────────────────── */}
       <div className="sticky top-[73px] z-40 border-b border-slate-200 bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-6 py-5">
-
-          {/* Row 1: keyword + location autocomplete */}
-          <div className="grid gap-3 md:grid-cols-[1fr_1fr]">
-            {/* Keyword search */}
+        <div className="mx-auto max-w-7xl px-6 py-4">
+          {/* Row 1: keyword + location + search button */}
+          <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+            {/* Keyword */}
             <div className="relative">
               <svg
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
-                aria-hidden
+                width={15} height={15} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden
               >
                 <circle cx={11} cy={11} r={8} />
                 <path d="m21 21-4.35-4.35" />
               </svg>
               <input
                 type="text"
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Search by company, service or defect type…"
-                className="w-full rounded-2xl border border-slate-300 bg-slate-50 py-3 pl-10 pr-4 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
+                value={qInput}
+                onChange={(e) => setQInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") applySearch(); }}
+                placeholder="Company, service or defect type…"
+                className="w-full rounded-xl border border-slate-300 bg-slate-50 py-2.5 pl-10 pr-4 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
               />
             </div>
 
-            {/* Location autocomplete */}
+            {/* Location */}
             <LocationAutocomplete
               selectedLocation={selectedLocation}
-              onSelect={(loc) => setSelectedLocation(loc)}
-              onClear={() => setSelectedLocation(null)}
+              onSelect={handleLocationSelect}
+              onClear={handleLocationClear}
             />
+
+            {/* Search button */}
+            <button
+              type="button"
+              onClick={applySearch}
+              className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
+            >
+              Search
+            </button>
           </div>
 
-          {/* Row 2: category + verification toggles */}
+          {/* Row 2: category (hidden for now) + Featured toggle + clear */}
           <div className="mt-3 flex flex-wrap items-center gap-2.5">
-            <CategorySelector
-              categories={categories}
-              value={category}
-              onChange={setCategory}
-            />
+            <div className="hidden">
+              <CategorySelector categories={categories} value={category} onChange={setCategory} />
+            </div>
 
-            <div className="mx-0.5 h-6 w-px bg-slate-200" aria-hidden />
-
-            {(
-              [
-                { label: "Featured", active: featured, toggle: () => setFeatured((v) => !v) },
-                { label: "Licence Verified", active: licenceVerified, toggle: () => setLicenceVerified((v) => !v) },
-                { label: "Claimed Profile", active: claimed, toggle: () => setClaimed((v) => !v) },
-              ] as const
-            ).map(({ label, active, toggle }) => (
-              <button
-                key={label}
-                onClick={toggle}
-                className={`rounded-xl border px-3.5 py-2 text-sm font-semibold transition ${
-                  active
-                    ? "border-sky-600 bg-sky-50 text-sky-800"
-                    : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:bg-slate-50"
-                }`}
-              >
-                {active && <span className="mr-1 text-sky-600">✓</span>}
-                {label}
-              </button>
-            ))}
+            <button
+              onClick={() => { setFeatured((v) => !v); }}
+              className={`rounded-xl border px-3.5 py-2 text-sm font-semibold transition ${
+                featured
+                  ? "border-amber-500 bg-amber-50 text-amber-800"
+                  : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:bg-slate-50"
+              }`}
+            >
+              {featured && <span className="mr-1 text-amber-500">✓</span>}
+              Featured
+            </button>
 
             {hasFilters && (
               <button
@@ -676,19 +743,26 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
         </div>
       </div>
 
-      {/* ── Results ─────────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-7xl px-6 py-10">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-sm font-semibold text-slate-600">
-            {loading
-              ? "Searching…"
-              : `${total} ${total === 1 ? "company" : "companies"} found`}
-            {selectedLocation && !loading && total > 0 && (
-              <span className="ml-1 font-normal text-slate-400">
-                in {selectedLocation.label}
-              </span>
+      {/* ── Results ──────────────────────────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-6 py-8">
+
+        {/* Results meta bar */}
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-slate-600">
+              {loading
+                ? "Searching…"
+                : `${total} ${total === 1 ? "business" : "businesses"} found`}
+              {selectedLocation && !loading && total > 0 && (
+                <span className="ml-1 font-normal text-slate-400">near {selectedLocation.label.split(",")[0]}</span>
+              )}
+            </p>
+            {isLocalFallback && !loading && selectedLocation && (
+              <p className="mt-1 text-xs text-amber-700">
+                No local businesses found. Showing relevant businesses that service your area.
+              </p>
             )}
-          </p>
+          </div>
           <a
             href="/directory/signup"
             className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
@@ -697,13 +771,30 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
           </a>
         </div>
 
+        {/* Claim banner */}
+        <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-bold text-sky-950">Own a business listed here?</p>
+            <p className="mt-0.5 text-sm text-slate-600">
+              Claim your profile to manage your details, showcase your expertise and receive enquiries from potential clients.
+            </p>
+          </div>
+          <a
+            href="/directory/signup"
+            className="shrink-0 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 sm:whitespace-nowrap"
+          >
+            Claim Your Profile
+          </a>
+        </div>
+
+        {/* Results list */}
         {loading ? (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)}
           </div>
         ) : companies.length === 0 ? (
-          <div className="rounded-3xl border border-slate-200 bg-white px-10 py-20 text-center shadow-sm">
-            <p className="text-lg font-bold text-sky-950">No companies found</p>
+          <div className="rounded-2xl border border-slate-200 bg-white px-10 py-20 text-center shadow-sm">
+            <p className="text-lg font-bold text-sky-950">No businesses found</p>
             <p className="mt-2 text-sm text-slate-500">
               {hasFilters
                 ? "Try adjusting your search or clearing your filters."
@@ -730,9 +821,9 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
           </div>
         ) : (
           <>
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
               {companies.map((company) => (
-                <CompanyCard key={company.id} company={company} />
+                <CompanyRow key={company.id} company={company} />
               ))}
             </div>
             <Pagination

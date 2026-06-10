@@ -94,20 +94,20 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://ardexaustralia.com/product/ardex-wpm-117/",
     accentColor: "#f97316",
     name: "ARDEX WPM 117",
-    descriptionLine: "Self-adhesive SBS/APP bituminous sheet — peel and stick — no open flame — base layer for multi-layer systems or standalone cold-applied waterproofing",
-    productType: "SBS/APP self-adhesive bituminous sheet — cold-applied peel and stick",
+    descriptionLine: "Self-adhesive SBS bituminous sheet — peel and stick — no open flame — base layer for multi-layer systems or standalone cold-applied waterproofing",
+    productType: "SBS self-adhesive bituminous sheet — cold-applied peel and stick",
     filterTags: ["Self-adhered", "Cold-applied", "No-open-flame", "Bituminous", "Multi-layer", "Balcony-terrace", "Primer-required", "AS-4654"],
     techChips: [
       { label: "Self-adhered", cls: "bg-orange-100 text-orange-800" },
       { label: "Peel and stick", cls: "bg-slate-100 text-slate-700" },
       { label: "No open flame", cls: "bg-green-50 text-green-700" },
-      { label: "SBS/APP bituminous", cls: "bg-slate-100 text-slate-700" },
+      { label: "SBS bituminous", cls: "bg-slate-100 text-slate-700" },
       { label: "Multi-layer base layer", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "ARDEX WPM 117 (Shelterstick) is a self-adhesive bituminous sheet membrane that is cold-applied without any heat or flame. It is the only product in the ARDEX modified bitumen range that requires no torch or hot-air gun at any stage — the membrane is unrolled, aligned, and pressed into place after removing the silicone release film, using a pressure roller to ensure full contact at laps, corners, and edges. This makes WPM 117 appropriate wherever torch-on application must be avoided: on heat-sensitive substrates including timber, insulation panels, PVC, and existing painted surfaces, and in areas where open flame is prohibited. WPM 117 is a 2mm SBS/APP hybrid bituminous membrane — the underside is SBS-modified for the self-adhesive layer, and the top surface is APP-modified. Fibreglass reinforced. Complies with AS 4654.1. Roll size 1m × 15m. WPM 117 serves two distinct roles: as a standalone cold-applied base layer for balcony and terrace waterproofing on heat-sensitive substrates, and as a self-adhesive underlay base sheet in multi-layer systems — the top surface can be activated by heat from a subsequently torched-on cap sheet such as WPM 185, allowing a torch-on cap to be applied over WPM 117 without the torch flame contacting the sensitive substrate below. Self-seals on contact if accidentally punctured by nails or fasteners during subsequent installation work.",
+      "ARDEX WPM 117 (Shelterstick) is a self-adhesive bituminous sheet membrane that is cold-applied without any heat or flame. It is the only product in the ARDEX modified bitumen range that requires no torch or hot-air gun at any stage — the membrane is unrolled, aligned, and pressed into place after removing the silicone release film, using a pressure roller to ensure full contact at laps, corners, and edges. This makes WPM 117 appropriate wherever torch-on application must be avoided: on heat-sensitive substrates including timber, insulation panels, PVC, and existing painted surfaces, and in areas where open flame is prohibited. WPM 117 is a 2mm SBS-modified bituminous membrane — fibreglass reinforced — with a factory-applied SBS self-adhesive layer on the underside. Complies with AS 4654.1. Roll size 1m × 15m. WPM 117 serves two distinct roles: as a standalone cold-applied base layer for balcony and terrace waterproofing on heat-sensitive substrates, and as a self-adhesive underlay base sheet in multi-layer systems — the top surface can be activated by heat from a subsequently torched-on cap sheet such as WPM 185, allowing a torch-on cap to be applied over WPM 117 without the torch flame contacting the sensitive substrate below. Self-seals on contact if accidentally punctured by nails or fasteners during subsequent installation work.",
     technicalProperties: [
-      "2mm SBS/APP hybrid bituminous membrane — SBS self-adhesive lower surface, APP top surface — fibreglass reinforcement",
+      "2mm SBS-modified bituminous membrane — fibreglass reinforced — factory SBS self-adhesive lower surface — complies with AS 4654.1",
       "Cold-applied peel-and-stick — no open flame or hot-air gun required at any stage",
       "Self-seals on contact if punctured by nails or fasteners during subsequent installation work",
       "Top surface can be activated by a subsequently applied torch-on cap sheet — allows use as a heat-sensitive base in multi-layer systems",
@@ -264,12 +264,12 @@ const SYSTEM_COMPARISON: {
     primaryUse: "Under-tile / screed — balcony and wet area",
   },
   {
-    systemType: "SBS/APP self-adhesive bitumen — peel and stick",
+    systemType: "SBS self-adhesive bitumen — peel and stick",
     product: "WPM 117",
     brand: "ARDEX",
     applicationMethod: "Cold-applied peel and stick",
     seamMethod: "Pressure roller — no welding",
-    faceSurface: "APP film top / SBS adhesive base",
+    faceSurface: "SBS modified — fibreglass reinforced",
     tileDirect: "No — cap sheet or cover required",
     uvStable: "No — protected only",
     primaryUse: "Base layer in multi-layer system / heat-sensitive substrates",
@@ -343,6 +343,186 @@ const TECH_INFO = {
     "Wet-wall linings (VillaBoard, Aquachek, Scyon Secura) — for internal wet area applications — confirm fix, gap detailing, and primer requirements",
   ],
 };
+
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function ColdAppliedIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are heat-welded and cold-applied self-adhered sheet membranes?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          This category covers two related but distinct types of sheet-applied waterproofing membrane used in balcony, terrace, and wet area remediation:
+        </p>
+        {expanded && (
+          <>
+            <p>
+              <strong className="font-bold text-sky-950">Heat-welded sheet membranes</strong> — factory-manufactured sheets that are cold-laid (unrolled without heat or flame) but have their laps and seams welded using a hot-air gun or heat-welding machine after installation. No open flame is required. Seams are mechanically fused rather than pressure-bonded. The result is a consistent-thickness membrane with factory-quality seam integrity across the field.
+            </p>
+            <p>
+              <strong className="font-bold text-sky-950">Cold-applied self-adhered membranes</strong> — peel-and-stick sheet membranes with a factory-applied pressure-sensitive adhesive backing. No heat, torch, or hot-air gun is required at any stage of installation. The membrane bonds to the primed substrate on contact. Laps are pressure-bonded with a roller. Instant waterproof seal — no cure time before tiling or screed in most systems.
+            </p>
+            <p>
+              Both types eliminate the open-flame fire risk of torch-on bitumen systems, making them suitable for occupied strata buildings, combustible substrates, timber-framed balconies, areas near insulation or PVC services, and any location where a hot-works permit cannot be obtained or where building management prohibits naked flame.
+            </p>
+            <p>
+              Product selection must consider substrate type, primer compatibility, minimum application temperature, lap seam method, penetration detailing, UV exposure, whether the system is under-tile or exposed, and compatibility with the finish system above the membrane.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 
 function TechCard({
   icon,
@@ -547,78 +727,41 @@ export function ColdAppliedProductSection() {
                     </div>
                   </div>
                   <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-500">{product.descriptionLine}</p>
-                </div>
-
-                {/* Tech spec chips */}
-                <div className="flex flex-wrap gap-1.5 border-b border-slate-100 bg-white px-5 py-3">
-                  {product.techChips.map((chip) => (
-                    <span
-                      key={chip.label}
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}
-                    >
-                      {chip.label}
-                    </span>
-                  ))}
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                    {product.techChips.filter((c) => c.label.toLowerCase().includes("warranty")).map((chip) => (
+                      <span key={chip.label} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                        {chip.label}
+                      </span>
+                    ))}
+                  </div>
+                  <CollapsibleCardDetails
+                    text={product.descriptionLine}
+                    chips={product.techChips.filter((c) => !c.label.toLowerCase().includes("warranty"))}
+                  />
                 </div>
 
                 {/* System Description */}
                 <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <p className="text-xs leading-6 text-slate-700">{product.systemDescription}</p>
+                  <CollapsibleDescription text={product.systemDescription} />
                 </div>
 
                 {/* Technical Properties & Limitations */}
                 <div className="space-y-3 px-5 py-4">
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <ul className="space-y-1.5">
-                      {product.technicalProperties.map((prop, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
-                          {prop}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
                   </div>
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <ul className="space-y-1.5">
-                      {product.limitations.map((lim, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
-                          {lim}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
                   </div>
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-4">
-                  <p className="mb-3 text-[10px] uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
-                  <div className="space-y-2">
-                    {product.procurementSources.map((src) => (
-                      <div
-                        key={src.name}
-                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs"
-                      >
-                        <a
-                          href={src.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
-                        >
-                          {src.name}
-                          <ExternalLink size={9} className="text-slate-300" />
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="mt-3 text-[10px] italic text-slate-400">
-                    Confirm suitability with the current manufacturer TDS before specifying or applying.
-                  </p>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                  <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>
             </div>

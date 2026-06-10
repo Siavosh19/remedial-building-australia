@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type { LocationState } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { matchAndDeliverLead } from "@/lib/directory-leads";
-import { sendLeadConfirmationEmail } from "@/lib/directory-email";
+import { sendLeadConfirmationEmail, sendAdminLeadEmail } from "@/lib/directory-email";
 
 const STATES: LocationState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 const VALID_URGENCY = ["emergency", "within_week", "within_month", "planning"] as const;
@@ -22,6 +22,8 @@ export async function POST(request: NextRequest) {
   const description = String(body.description ?? "").trim();
   const urgency = String(body.urgency ?? "") as typeof VALID_URGENCY[number];
   const budgetRange = body.budgetRange ? String(body.budgetRange) : null;
+  const companyName = body.companyName ? String(body.companyName).trim() : null;
+  const companySlug = body.companySlug ? String(body.companySlug).trim() : null;
 
   if (!fullName) return NextResponse.json({ error: "Full name is required." }, { status: 400 });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: "Valid email required." }, { status: 400 });
@@ -58,8 +60,22 @@ export async function POST(request: NextRequest) {
   // Fire-and-forget matching — don't block the response
   matchAndDeliverLead(lead.id).catch(() => {});
 
-  // Send confirmation email
+  // Send confirmation email to submitter
   await sendLeadConfirmationEmail(fullName, email).catch(() => {});
+
+  // Notify admin
+  if (companyName && companySlug) {
+    await sendAdminLeadEmail(
+      companyName,
+      companySlug,
+      fullName,
+      email,
+      phone,
+      category.name,
+      description,
+      new Date().toLocaleString("en-AU", { timeZone: "Australia/Sydney", dateStyle: "medium", timeStyle: "short" }),
+    ).catch(() => {});
+  }
 
   return NextResponse.json({ success: true });
 }

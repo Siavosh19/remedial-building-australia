@@ -25,7 +25,8 @@ type FilterTag =
   | "Facade-wall"
   | "Roof-deck"
   | "AS-3740"
-  | "AS-4858";
+  | "AS-4858"
+  | "AS-4654";
 
 type Product = {
   fullLabel: string;
@@ -47,21 +48,22 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-wpm-909/",
     accentColor: "#f97316",
     name: "ARDEX WPM 909",
-    descriptionLine: "Water-based single-component acrylic membrane — exposed pedestrian trafficable use",
+    descriptionLine: "Water-based single-component acrylic membrane — exposed pedestrian trafficable use — AS 4654 certified — 15 L drum",
     productType: "Acrylic — trafficable / exposed",
-    filterTags: ["Acrylic", "Water-based", "1C", "Exposed", "Trafficable", "UV-stable", "Balcony-terrace"],
+    filterTags: ["Acrylic", "Water-based", "1C", "Exposed", "Trafficable", "UV-stable", "Balcony-terrace", "AS-4654"],
     techChips: [
       { label: "Acrylic", cls: "bg-sky-100 text-sky-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
       { label: "Water-based", cls: "bg-slate-100 text-slate-700" },
       { label: "Trafficable — pedestrian", cls: "bg-green-50 text-green-700" },
       { label: "UV stable", cls: "bg-amber-50 text-amber-700" },
+      { label: "AS 4654 — 15 L drum", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "ARDEX WPM 909 is a water-based single-component acrylic waterproofing membrane designed for exposed pedestrian trafficable balcony, terrace, and deck surfaces. Unlike under-tile SBR systems, WPM 909 is formulated for direct exposure — UV resistance, anti-slip surface texture, abrasion resistance, and cleanability are key differentiators. Apply by roller in multiple coats on primed, prepared concrete or substrate. The finish coat provides the trafficable and weatherproof surface without a tile or screed overlay. Confirm primer selection, application rate, number of coats, and anti-slip grade requirements with ARDEX technical before specifying.",
+      "ARDEX WPM 909 is a water-based single-component acrylic waterproofing membrane designed for exposed pedestrian trafficable balcony, terrace, and deck surfaces. Unlike under-tile SBR systems, WPM 909 is formulated for direct exposure — UV resistance, anti-slip surface texture, abrasion resistance, and cleanability are key differentiators. It is AS 4654 certified and is supplied in 15 L drums. Coverage is approximately 8–9 m² per drum (two coats). Apply by roller in multiple coats on primed, prepared concrete or substrate. The finish coat provides the trafficable and weatherproof surface without a tile or screed overlay. Confirm primer selection, application rate, number of coats, and anti-slip grade requirements with ARDEX technical before specifying.",
     technicalProperties: [
       "UV-resistant acrylic formulation — designed for prolonged direct sun and weather exposure on horizontal surfaces",
       "Trafficable pedestrian finish — anti-slip surface — no tile or screed overlay required",
@@ -122,24 +124,25 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Crommelin",
     brandUrl: "https://crommelin.com.au",
-    tdsUrl: "https://crommelin.com.au",
+    tdsUrl: "https://crommelin.com.au/products/wetite/",
     accentColor: "#0d9488",
     name: "Crommelin Wetite",
-    descriptionLine: "Single-component SBR polymer waterproofing membrane — under-tile and wet area use",
-    productType: "SBR polymer — under-tile / wet area",
-    filterTags: ["SBR", "Water-based", "1C", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace", "AS-3740"],
+    descriptionLine: "Single-component SBR polymer waterproofing membrane — Class III AS 4858 — AS 4654 external — under-tile and wet area — 15 L pail",
+    productType: "SBR polymer — Class III AS 4858 — under-tile / wet area",
+    filterTags: ["SBR", "Water-based", "1C", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace", "AS-3740", "AS-4858", "AS-4654"],
     techChips: [
       { label: "SBR polymer", cls: "bg-teal-100 text-teal-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
       { label: "Water-based", cls: "bg-slate-100 text-slate-700" },
-      { label: "Under-tile / wet area", cls: "bg-slate-100 text-slate-700" },
+      { label: "Class III — AS 4858", cls: "bg-amber-50 text-amber-700" },
+      { label: "AS 4654 external", cls: "bg-slate-100 text-slate-700" },
       { label: "AS 3740", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
       "Crommelin Wetite is a single-component SBR (styrene-butadiene rubber) polymer waterproofing membrane widely used in Australian residential wet area and under-tile balcony applications. It is applied by brush or roller in two coats directly to primed substrates, with reinforcing bandage embedded at all corners, coves, penetrations, and wall-to-floor junctions. Wetite is a covered membrane system — it is designed to be overlaid with tiles, screed, or a protective topping. It is not formulated as an exposed or trafficable finish. The SBR chemistry provides good adhesion to standard substrates and flexibility adequate for residential-grade wet area and light balcony applications.",
     technicalProperties: [
       "SBR polymer chemistry — reliable adhesion to concrete, masonry, and fibre cement substrates with correct primer",
-      "Complies with AS 3740 for domestic wet area waterproofing when correctly applied at specified DFT",
+      "Complies with AS 4858 Class III, AS 3740, and AS 4654 — available in 15 L pail — recoat 2–4 hours — tile-over from 4 hours",
       "Widely available nationally — familiar product with established application trade knowledge",
       "Water-based — safe for use in enclosed bathroom and wet area environments",
       "Suitable for use under ceramic and porcelain tile systems after full cure with compatible tile adhesive",
@@ -160,23 +163,23 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Crommelin",
     brandUrl: "https://crommelin.com.au",
-    tdsUrl: "https://crommelin.com.au",
+    tdsUrl: "https://crommelin.com.au/products/wetite-rapid/",
     accentColor: "#0d9488",
     name: "Crommelin Wetite Rapid",
-    descriptionLine: "Water-based SBR polymer membrane — rapid dry — faster tile-over times",
-    productType: "SBR polymer — rapid dry — under-tile / wet area",
-    filterTags: ["SBR", "Water-based", "1C", "Rapid-dry", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace"],
+    descriptionLine: "Water-based SBR polymer membrane — Class III AS 4858 — rapid dry 1–2 hrs recoat — tile-over 4 hrs — 15 L pail",
+    productType: "SBR polymer — Class III AS 4858 — rapid dry — under-tile / wet area",
+    filterTags: ["SBR", "Water-based", "1C", "Rapid-dry", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace", "AS-3740", "AS-4858", "AS-4654"],
     techChips: [
       { label: "SBR polymer", cls: "bg-teal-100 text-teal-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
-      { label: "Rapid dry", cls: "bg-green-50 text-green-700" },
-      { label: "Under-tile / wet area", cls: "bg-slate-100 text-slate-700" },
-      { label: "Water-based", cls: "bg-slate-100 text-slate-700" },
+      { label: "Rapid dry — 1–2 hr recoat", cls: "bg-green-50 text-green-700" },
+      { label: "Class III — AS 4858", cls: "bg-amber-50 text-amber-700" },
+      { label: "AS 4654 — 15 L pail", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
       "Crommelin Wetite Rapid is the rapid-dry version of Crommelin Wetite — formulated to reduce drying time between coats and accelerate the time to tile. The principal advantage over standard Wetite is programme efficiency: faster recoat windows and a reduced wait before tile adhesive can be applied. It is the same class of product — a single-component SBR polymer under-tile and wet area membrane — applied in the same manner. It is a covered system: it must be overlaid with tiles, screed, or an approved protective topping. Do not select Wetite Rapid where the programme does not benefit from faster dry times — standard Wetite provides the same performance at a lower cost where time is not critical.",
     technicalProperties: [
-      "Rapid dry — significantly faster recoat and tile-over times compared to standard Wetite — reduces installation programme",
+      "Rapid dry — 1–2 hour recoat — tile-over from 4 hours — significantly faster than standard Wetite — Class III AS 4858, AS 3740, AS 4654 compliant",
       "SBR polymer chemistry — same adhesion characteristics as standard Wetite on primed concrete and masonry substrates",
       "Water-based — low odour — safe for enclosed wet area and balcony environments",
       "One-component — no site mixing — same straightforward application as standard Wetite",
@@ -383,6 +386,162 @@ const TECH_INFO = {
   ],
 };
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function AcrylicIntroSection() {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are liquid-applied acrylic and water-based membranes?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Liquid-applied acrylic and water-based membranes are flexible waterproofing products applied by roller, brush, or spray to form a seamless membrane layer on primed substrates. This group includes pure acrylic membranes, acrylic protective and weatherproof coatings, SBR (styrene-butadiene rubber) polymer membranes, and related water-based systems. They are widely used in Australian residential construction for wet area and under-tile waterproofing, and in certain formulations for exposed wall, facade, roof, and pedestrian deck applications. Not every product in this group is suitable for the same use — exposure conditions, finish type, trafficability, and substrate condition each determine which product is appropriate.
+        </p>
+      </div>
+    </div>
+  );
+}
 function TechCard({
   icon,
   title,
@@ -586,75 +745,41 @@ export function AcrylicProductSection() {
                     </div>
                   </div>
                   <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-500">{product.descriptionLine}</p>
-                </div>
-
-                {/* Tech spec chips */}
-                <div className="flex flex-wrap gap-1.5 border-b border-slate-100 bg-white px-5 py-3">
-                  {product.techChips.map((chip) => (
-                    <span
-                      key={chip.label}
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}
-                    >
-                      {chip.label}
-                    </span>
-                  ))}
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                    {product.techChips.filter((c) => c.label.toLowerCase().includes("warranty")).map((chip) => (
+                      <span key={chip.label} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                        {chip.label}
+                      </span>
+                    ))}
+                  </div>
+                  <CollapsibleCardDetails
+                    text={product.descriptionLine}
+                    chips={product.techChips.filter((c) => !c.label.toLowerCase().includes("warranty"))}
+                  />
                 </div>
 
                 {/* System Description */}
                 <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <p className="text-xs leading-6 text-slate-700">{product.systemDescription}</p>
+                  <CollapsibleDescription text={product.systemDescription} />
                 </div>
 
                 {/* Technical Properties & Limitations */}
                 <div className="space-y-3 px-5 py-4">
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <ul className="space-y-1.5">
-                      {product.technicalProperties.map((prop, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
-                          {prop}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
                   </div>
                   <div>
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <ul className="space-y-1.5">
-                      {product.limitations.map((lim, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
-                          <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
-                          {lim}
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
                   </div>
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-4">
-                  <p className="mb-3 text-[10px] uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
-                  <div className="space-y-2">
-                    {product.procurementSources.map((src) => (
-                      <div
-                        key={src.name}
-                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs"
-                      >
-                        <a
-                          href={src.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
-                        >
-                          {src.name}
-                          <ExternalLink size={9} className="text-slate-300" />
-                        </a>
-                      </div>
-                    ))}
-                  </div>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                  <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>
             </div>

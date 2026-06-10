@@ -1,41 +1,88 @@
 import type { Metadata } from "next";
-import { Clock, ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
+import { DrainagePodiumOutletsScuppersProductSection, DrainagePodiumOutletsScuppersIntroSection } from "./DrainagePodiumOutletsScuppersProductSection";
 
 export const metadata: Metadata = {
-  title: "Podium Outlets and Scuppers — Drainage Systems — Balcony and Podium Waterproofing — Remedial Building Australia",
+  title: "Drainage Outlets, Sumps & Scuppers — Flat Roofs, Balconies & Podiums — Waterproofing Systems — Remedial Building Australia",
   description:
-    "Technical product reference for drainage systems — podium outlets and scuppers used in balcony, roof deck, planter box and podium waterproofing remediation in Australian Class 2 strata buildings. Content coming soon.",
+    "Technical product reference for flat roof, balcony and podium drainage outlets, sumps and scuppers — gravity and siphonic systems — Blucher, Geberit and HL Hutterer — for Australian Class 2 strata building remediation.",
 };
 
-const SIBLING_TABS = [
-  { label: "Liquid applied — PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
-  { label: "Liquid applied — acrylic", slug: "liquid-applied-membranes-acrylic" },
-  { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
-  { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
-  { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
-  { label: "Primers", slug: "primers-bonding-agents" },
-  { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
-  { label: "Screed SL", slug: "screed-systems-self-levelling" },
-  { label: "Drainage puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
-  { label: "Drainage linear", slug: "drainage-linear-grates-channel-drains" },
-  { label: "Penetration collars", slug: "penetration-collars" },
-  { label: "Protection boards", slug: "protection-boards" },
-  { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
-  { label: "Flood test", slug: "flood-test-equipment" },
-  { label: "Tile adhesive", slug: "tile-adhesive-systems" },
-  { label: "Tools", slug: "abrasives-blades-tools" },
-  { label: "HDPE sheet membranes (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
-  { label: "Single-ply membranes (ballasted)", slug: "single-ply-membrane-systems-ballasted" },
-  { label: "Hot melt asphalt (roofs/podiums)", slug: "hot-melt-rubberised-asphalt-systems" },
-  { label: "Root resistant membranes (planters/podiums)", slug: "root-resistant-membrane-systems" },
-  { label: "Tapered insulation (roofs/podiums)", slug: "tapered-insulation-board-systems" },
-  { label: "Pedestal systems (podiums)", slug: "pedestal-systems-adjustable-height" },
-  { label: "Drainage cells (planter boxes)", slug: "drainage-cell-systems" },
-  { label: "Filter fabric (planter boxes)", slug: "filter-fabric-systems" },
-  { label: "Ballast systems (roofs)", slug: "ballast-systems" },
-  { label: "Podium outlets & scuppers", slug: "drainage-podium-outlets-scuppers" },
-  { label: "Gutter lining (roofs)", slug: "gutter-lining-systems" },
-  { label: "Flashing compounds (roofs)", slug: "flashing-compound-systems" },
+const SIBLING_GROUPS = [
+  {
+    heading: "Membrane Systems",
+    tabs: [
+      { label: "LQ PU & hybrid", slug: "liquid-applied-membranes-polyurethane" },
+      { label: "LQ acrylic", slug: "liquid-applied-membranes-acrylic" },
+      { label: "Torch-on sheet", slug: "sheet-membranes-torch-on" },
+      { label: "Cold-applied sheet", slug: "sheet-membranes-cold-applied" },
+      { label: "Cementitious flexible", slug: "cementitious-flexible-membranes" },
+      { label: "HDPE (roofs/podiums)", slug: "hdpe-sheet-membrane-systems" },
+      { label: "Single-ply ballasted", slug: "single-ply-membrane-systems-ballasted" },
+      { label: "TPO/FPO exposed", slug: "tpo-fpo-sheet-membranes-exposed" },
+      { label: "Hot melt asphalt", slug: "hot-melt-rubberised-asphalt-systems" },
+    ],
+  },
+  {
+    heading: "Preparation",
+    tabs: [
+      { label: "Primers", slug: "primers-bonding-agents" },
+      { label: "Reinforcing fabric", slug: "reinforcing-fabric-mesh" },
+      { label: "Tools", slug: "abrasives-blades-tools" },
+    ],
+  },
+  {
+    heading: "Screeds & Tile",
+    tabs: [
+      { label: "Screed polymer", slug: "screed-systems-polymer-modified" },
+      { label: "Screed SL", slug: "screed-systems-self-levelling" },
+      { label: "Tile adhesive", slug: "tile-adhesive-systems" },
+      { label: "Tile sealants", slug: "tile-sealants-silicone-sanitary" },
+    ],
+  },
+  {
+    heading: "Drainage & Penetrations",
+    tabs: [
+      { label: "Puddle flanges", slug: "drainage-puddle-flanges-floor-wastes" },
+      { label: "Linear drains", slug: "drainage-linear-grates-channel-drains" },
+      { label: "Penetration collars", slug: "penetration-collars" },
+      { label: "Podium outlets", slug: "drainage-podium-outlets-scuppers" },
+      { label: "Edge trims", slug: "gutter-lining-systems" },
+      { label: "Flashing compounds", slug: "flashing-compound-systems" },
+    ],
+  },
+  {
+    heading: "Prep & Fix",
+    tabs: [
+      { label: "Termination bars", slug: "membrane-termination-bars-accessories" },
+    ],
+  },
+  {
+    heading: "Joints & Movement",
+    tabs: [
+      { label: "Backer rod", slug: "backer-rod-bond-breaker-tape" },
+      { label: "Expansion joint covers", slug: "expansion-joint-cover-systems-trafficable" },
+    ],
+  },
+  {
+    heading: "Protection & Overburden",
+    tabs: [
+      { label: "Protection boards", slug: "protection-boards" },
+      { label: "Root resistant", slug: "root-resistant-membrane-systems" },
+      { label: "Tapered insulation", slug: "tapered-insulation-board-systems" },
+      { label: "Pedestals", slug: "pedestal-systems-adjustable-height" },
+      { label: "Drainage cells", slug: "drainage-cell-systems" },
+      { label: "Filter fabric", slug: "filter-fabric-systems" },
+      { label: "Ballast", slug: "ballast-systems" },
+      { label: "Vapour control layers", slug: "vapour-control-layers-warm-roof" },
+    ],
+  },
+  {
+    heading: "Testing & QA",
+    tabs: [
+      { label: "Flood test", slug: "flood-test-equipment" },
+    ],
+  },
 ];
 
 export default function DrainagePodiumOutletsScuppersPage() {
@@ -76,13 +123,28 @@ export default function DrainagePodiumOutletsScuppersPage() {
               <span>/</span>
               <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
               <span>/</span>
-              <span className="text-sky-950">Drainage systems — podium outlets and scuppers (podiums)</span>
+              <span className="text-sky-950">Drainage outlets, sumps &amp; scuppers</span>
             </nav>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Drainage</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
-                Drainage systems — podium outlets and scuppers (podiums)
-              </h1>
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Drainage</p>
+                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                  Drainage outlets, sumps &amp; scuppers — flat roofs, balconies &amp; podiums
+                </h1>
+              </div>
+              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                {[
+                  { label: "Min outlet size", value: "DN75" },
+                  { label: "AS/NZS standard", value: "3500.3" },
+                  { label: "Applications", value: "Flat roofs, balconies, podiums" },
+                  { label: "Strainer area", value: "≥4× pipe area" },
+                ].map((s) => (
+                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
+                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -90,44 +152,91 @@ export default function DrainagePodiumOutletsScuppersPage() {
         {/* ── Sibling tabs ── */}
         <div className="border-b border-slate-200 bg-white px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="flex items-end gap-0 overflow-x-auto">
-              {SIBLING_TABS.map((tab) => {
-                const active = tab.slug === "drainage-podium-outlets-scuppers";
-                return (
-                  <a
-                    key={tab.slug}
-                    href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
-                    className={`relative shrink-0 border-b-2 px-5 py-4 text-sm font-bold whitespace-nowrap transition ${
-                      active
-                        ? "border-red-700 text-sky-950"
-                        : "border-transparent text-slate-500 hover:text-sky-900"
-                    }`}
-                  >
-                    {tab.label}
-                  </a>
-                );
-              })}
+            <div className="flex items-stretch gap-0 overflow-x-auto">
+              {SIBLING_GROUPS.map((group, gi) => (
+                <div
+                  key={group.heading}
+                  className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}
+                >
+                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">
+                    {group.heading}
+                  </div>
+                  <div className="flex items-end">
+                    {group.tabs.map((tab) => {
+                      const active = tab.slug === "drainage-podium-outlets-scuppers";
+                      return (
+                        <a
+                          key={tab.slug}
+                          href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
+                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
+                            active
+                              ? "border-red-700 text-sky-950"
+                              : "border-transparent text-slate-500 hover:text-sky-900"
+                          }`}
+                        >
+                          {tab.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* ── Coming soon ── */}
-        <section className="px-8 py-20">
+        {/* ── Content ── */}
+        <section className="px-8 py-12">
+          <div className="mx-auto max-w-7xl space-y-10">
+            <DrainagePodiumOutletsScuppersIntroSection />
+            <DrainagePodiumOutletsScuppersProductSection />
+          </div>
+        </section>
+
+        {/* ── Disclaimer + related links ── */}
+        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
           <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 shadow-sm text-center">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-950 text-white">
-                <Clock size={22} />
-              </div>
-              <h2 className="text-xl font-extrabold text-sky-950">Content coming soon</h2>
-              <p className="mt-3 max-w-lg mx-auto text-sm leading-7 text-slate-500">
-                Technical product reference, system comparisons and brand equivalents for drainage systems — podium outlets and scuppers (podiums) will be published here. Check back soon.
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
+              <p className="text-xs leading-6 text-amber-900">
+                This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet, project specification, substrate condition, exposure level, drainage catchment area, required AS/NZS 3500.3 calculations, NCC requirements, and applicator warranty conditions. Drainage outlet sizing must be confirmed by a hydraulic engineer. Do not rely on this reference as a substitute for professional engineering or waterproofing consultant advice.
               </p>
-              <a
-                href="/repair-systems/balcony-waterproofing-failure"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-900 transition"
-              >
-                Back to all categories <ArrowRight size={14} />
-              </a>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  href: "/repair-systems/waterproofing-water-ingress",
+                  label: "Back to Waterproofing Systems",
+                  title: "Browse all waterproofing defect subcategories",
+                },
+                {
+                  href: "/repair-systems/balcony-waterproofing-failure",
+                  label: "Back to Balcony Waterproofing Failure",
+                  title: "Browse all product categories for this defect",
+                },
+                {
+                  href: "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure",
+                  label: "Defect Library",
+                  title: "Balcony Waterproofing Failure — causes, inspection, methodology",
+                },
+                {
+                  href: "/ai-scope-builder",
+                  label: "AI Scope Builder",
+                  title: "Generate a scope of works for balcony waterproofing remediation",
+                },
+              ].map((card) => (
+                <a
+                  key={card.href}
+                  href={card.href}
+                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md"
+                >
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
+                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
+                    Open <ArrowRight size={11} />
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </section>

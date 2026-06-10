@@ -155,17 +155,16 @@ const PRODUCTS: Product[] = [
       { label: "PVC sheet — fleece backing", cls: "bg-teal-100 text-teal-800" },
       { label: "FLL certified — root resistance", cls: "bg-green-100 text-green-800" },
       { label: "Under-tile compatible", cls: "bg-slate-100 text-slate-700" },
-      { label: "2mm — NATA certified", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: owner confirm — Projex now uses 'FG LLV' for 2mm fleece-backed and 'FG LL' for 1.5mm non-fleece — confirm correct variant, thickness, and roll size", cls: "bg-red-100 text-red-700" },
       { label: "AS 4654.1 / AS 4858", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Cosmofin FG is the Projex Group's second FLL-certified root-resistant PVC sheet membrane, distinct from Wolfin IB in that it is supplied with a fleece backing that allows tile adhesive to bond directly to the membrane surface — making Cosmofin FG LL suitable for under-tile balcony and terrace applications as well as planter box and green roof use. Like Wolfin, Cosmofin achieves root resistance through the material properties of the PVC compound (FLL tested and certified) rather than through a chemical inhibitor. Hot-air welded at seams. Pre-made factory corner pieces and drain outlets are supplied in the same PVC material as the membrane, ensuring full system compatibility.\n\nIn planter box and podium slab applications on Australian strata buildings, Cosmofin is used where the project requires a root-resistant sheet membrane that is also compatible with a tiled finish above — for example, a tiled podium courtyard over a planted basement or car park where the single membrane must address both root resistance below the growing medium and tile compatibility in the tiled areas.\n\nRoll size: 1.65m × 15m, 2mm thick including fleece. NATA certified. AS 4654.1:2012 compliant (Cosmofin FG). Cosmofin FG LL also complies with AS 4858 for internal and wet area applications.",
+      "Cosmofin FG is the Projex Group's second FLL-certified root-resistant PVC sheet membrane, distinct from Wolfin IB in that it is supplied with a fleece backing that allows tile adhesive to bond directly to the membrane surface — making Cosmofin FG LL suitable for under-tile balcony and terrace applications as well as planter box and green roof use. Like Wolfin, Cosmofin achieves root resistance through the material properties of the PVC compound (FLL tested and certified) rather than through a chemical inhibitor. Hot-air welded at seams. Pre-made factory corner pieces and drain outlets are supplied in the same PVC material as the membrane, ensuring full system compatibility.\n\nIn planter box and podium slab applications on Australian strata buildings, Cosmofin is used where the project requires a root-resistant sheet membrane that is also compatible with a tiled finish above — for example, a tiled podium courtyard over a planted basement or car park where the single membrane must address both root resistance below the growing medium and tile compatibility in the tiled areas.\n\nTODO: owner confirm — Projex Group product page now distinguishes 'Cosmofin FG LLV' (fleece-backed, 1.5mm, 1.65m × 15m) from 'Cosmofin FG LL' (non-fleece, 1.5mm, 1.65m × 20m). The previous specification of '2mm thick including fleece, 1.65m × 15m' appears to match the LLV variant. Confirm current product variant name, thickness, and roll dimensions with Projex Group before specifying. NATA certified. Cosmofin FG LL and LLV comply with AS 4654.1:2012 — confirmed on projex.com.au. Cosmofin FG LL also complies with AS 4858 for internal and wet area applications.",
     technicalProperties: [
-      "Reinforced PVC sheet membrane — fleece backing — 2mm thick including fleece",
-      "FLL certified for root penetration resistance — material root resistance",
-      "Roll size: 1.65m × 15m",
-      "AS 4654.1:2012 compliant (FG) — AS 4858 compliant (FG LL)",
-      "NATA certified",
+      "TODO: owner confirm — Projex Group product page (projex.com.au/products/cosmofin/) now lists 'Cosmofin FG LLV' as the fleece-backed variant (1.5mm, 1.65m × 15m) and 'Cosmofin FG LL' as the non-fleece variant (1.5mm, 1.65m × 20m) — confirm which variant is the under-tile root-resistant product before specifying",
+      "FLL certified for root penetration resistance — material root resistance — confirmed on projex.com.au",
+      "Roll size: 1.65m × 15m (fleece-backed LLV) or 1.65m × 20m (non-fleece FG LL) — TODO: owner confirm correct variant",
+      "AS 4654.1:2012 compliant (FG LL / LLV) — AS 4858 compliant (FG LL) — confirmed on projex.com.au — NATA certified",
       "Fleece backing: tile adhesive can be bonded to membrane surface — compatible with selected tile adhesive systems",
       "Hot-air welded seams — factory pre-made corner pieces and drain outlets in matching PVC",
       "Suitable for: planter boxes, retaining walls, podium slabs, under-tile balcony and terrace applications",
@@ -265,11 +264,11 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco Australia",
     brandUrl: "https://www.tremco.com.au",
-    tdsUrl: "https://www.tremco.com.au/products/roofing",
+    tdsUrl: "https://www.tremco.com.au/products/tremproof-torch-anti-root",
     accentColor: "#be123c",
-    name: "Torch-on SBS with Anti-Root Cap Sheet (TREMproof)",
-    descriptionLine: "SBS-modified bitumen anti-root cap sheet for torch-on modified bitumen systems — applied as the top layer of a torch-on system — podium slabs, green roofs, and planter boxes — hot-work permit required — confirm current Tremco anti-root cap sheet specification before specifying",
-    productType: "Torch-on SBS modified bitumen — anti-root cap sheet — Tremco Australia",
+    name: "Tremco TREMproof Torch Anti-Root — Torch-on Anti-Root SBS Cap Sheet",
+    descriptionLine: "TREMproof Torch Anti-Root — torch-on SBS-modified bitumen anti-root cap sheet — confirmed on tremco.com.au — applied as the top layer of a torch-on system — podium slabs, green roofs, and planter boxes — hot-work permit required",
+    productType: "Torch-on SBS modified bitumen anti-root cap sheet — Tremco Australia — confirmed product",
     filterTags: ["Torch-on", "SBS-modified-bitumen", "Anti-root-cap", "Planter-box", "Green-roof", "Podium-slab", "Hot-work-required"],
     techChips: [
       { label: "Torch-on SBS modified bitumen", cls: "bg-rose-100 text-rose-800" },
@@ -428,9 +427,9 @@ const SYSTEM_COMPARISON: {
     keyRestriction: "Confirm Australian availability — confirm root resistance certification against specific plant species — flameless application only",
   },
   {
-    product: "Torch-on Anti-Root Cap Sheet",
+    product: "TREMproof Torch Anti-Root",
     brand: "Tremco Australia",
-    type: "Torch-on SBS modified bitumen — two-layer system",
+    type: "Torch-on SBS modified bitumen anti-root cap sheet — confirmed product on tremco.com.au",
     mechanism: "Anti-root SBS cap sheet formulation",
     fll: "Confirm FLL or independent certification with Tremco",
     application: "Torch-applied — hot-work permit required",
@@ -439,6 +438,179 @@ const SYSTEM_COMPARISON: {
   },
 ];
 
+/* ── Collapsible helpers ── */
+
+function CollapsibleList({
+  items,
+  icon,
+  limit = 3,
+}: {
+  items: string[];
+  icon: "check" | "x";
+  limit?: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, limit);
+  const extra = items.length - limit;
+  return (
+    <div>
+      <ul className="space-y-1.5">
+        {visible.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">
+            {icon === "check" ? (
+              <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" />
+            ) : (
+              <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />
+            )}
+            {item}
+          </li>
+        ))}
+      </ul>
+      {items.length > limit && (
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Show less ↑" : `+${extra} more ↓`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p>
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          className="text-[9px] font-bold text-slate-400 hover:text-slate-600"
+        >
+          {expanded ? "Hide ↑" : "See more ↓"}
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-2 space-y-1.5">
+          {sources.map((src) => (
+            <div
+              key={src.name}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs"
+            >
+              {src.url ? (
+                <a
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  {src.name}
+                  <ExternalLink size={9} className="text-slate-300" />
+                </a>
+              ) : (
+                <span className="font-semibold text-slate-600">{src.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="mt-2 text-[10px] italic text-slate-400">
+        Confirm suitability with the current manufacturer TDS before specifying or applying.
+      </p>
+    </div>
+  );
+}
+
+function CollapsibleCardDetails({
+  text,
+  chips,
+}: {
+  text: string;
+  chips: { label: string; cls: string }[];
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      {expanded && (
+        <>
+          <p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>
+          {chips.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600"
+      >
+        {expanded ? "Hide details ↑" : "Show details ↓"}
+      </button>
+    </div>
+  );
+}
+
+function CollapsibleDescription({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div>
+      <p
+        className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}
+      >
+        {text}
+      </p>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Show less ↑" : "Show more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function RootResistantIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white">
+          <BookOpen size={15} />
+        </div>
+        <h3 className="text-base font-extrabold text-sky-950">
+          What are root resistant membrane systems — planter boxes and podiums?
+        </h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Root resistant membrane systems are waterproofing membranes specifically designed and tested to resist penetration by plant roots over the life of a planter box or green roof installation. Standard waterproofing membranes — whether liquid-applied polyurethane, torch-on modified bitumen, or PVC single-ply — are not designed to resist root penetration. Plant roots, particularly from woody shrubs, trees, and aggressive species such as bamboo and some ornamental grasses, exert significant mechanical pressure and produce organic acids and enzymes that can penetrate and degrade a standard membrane over time, leading to water ingress through the structural podium slab or roof deck below. Root resistant membranes address this by providing either a physical barrier through a dense, root-impenetrable material (typically weldable polypropylene or PVC), a chemical barrier through a root inhibitor compound (typically Preventol B2) incorporated into the membrane, or a combination of both mechanisms.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              The definitive performance standard for root resistance is the FLL Guideline — published by the German Forschungsgesellschaft Landschaftsentwicklung Landschaftsbau (FLL) — which defines a standardised test protocol for root and rhizome penetration resistance. Products that carry FLL root resistance certification have been independently tested and confirmed to resist root penetration through the membrane under the FLL test conditions. In the Australian market, FLL certification is the primary basis for specifying a membrane as root resistant. Products without FLL certification should not be specified as root resistant waterproofing in planter box or green roof applications regardless of manufacturer claims. The AS 4654 series covers waterproofing of wet areas including roofs, but FLL certification specifically addresses root resistance and remains the relevant standard for this application.
+            </p>
+            <p>
+              Root resistant membranes are one layer in a complete planter box or podium slab waterproofing system. The complete system above a structural concrete slab includes, in order from slab upward: the waterproofing membrane (root resistant), a protection board or drainage mat, a drainage cell or aggregate drainage layer, a geotextile filter fabric layer, and then growing medium and planting. The root resistant membrane is never left exposed and must be covered by a protection course immediately after application or installation — UV exposure and foot traffic will degrade any waterproofing membrane, including root resistant types, if left unprotected. Drainage design, outlet sizing, and filter fabric selection must be coordinated with the landscape architect to ensure the planter box system performs as a whole.
+            </p>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900"
+      >
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
 export function RootResistantProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -604,11 +776,7 @@ export function RootResistantProductSection() {
                 {/* System Description */}
                 <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
                   <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <div className="space-y-3">
-                    {product.systemDescription.split("\n\n").map((para, i) => (
-                      <p key={i} className="text-xs leading-6 text-slate-700">{para}</p>
-                    ))}
-                  </div>
+                  <CollapsibleDescription text={product.systemDescription} />
                 </div>
 
                 {/* Properties & Limitations */}

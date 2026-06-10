@@ -71,7 +71,7 @@ export async function getCurrentDirectoryUser() {
   return user;
 }
 
-export function createDirectorySessionCookie(token: string) {
+export function createDirectorySessionCookie(token: string, rememberMe = true) {
   return {
     name: COOKIE_NAME,
     value: token,
@@ -79,7 +79,7 @@ export function createDirectorySessionCookie(token: string) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax" as const,
     path: "/",
-    maxAge: COOKIE_MAX_AGE,
+    ...(rememberMe ? { maxAge: 60 * 60 * 24 * 30 } : {}),
   };
 }
 
