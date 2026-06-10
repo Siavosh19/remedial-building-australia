@@ -88,6 +88,9 @@ export default function DirectorySignupPage() {
 
           {step === "type" ? (
             <>
+              <div className="mb-6">
+                <Link href="/" className="text-sm text-slate-500 hover:text-slate-800">← Back to home</Link>
+              </div>
               <h1 className="text-3xl font-extrabold text-slate-950">Create your account</h1>
               <p className="mt-3 text-slate-600">Choose the account type that matches how you want to use the platform.</p>
 
