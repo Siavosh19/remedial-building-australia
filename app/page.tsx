@@ -36,10 +36,11 @@ const coreServices: CoreService[] = [
     ],
   },
   {
-    title: "Materials & Products",
-    text: "Technical product database with applications, compatible substrates, coverage rates and linked defects.",
+    title: "Materials & Products Index",
+    text: "Search products and materials used across existing repair system pages, grouped by brand, material type, application, and linked repair system.",
     image: "/Images/Material%20and%20tools.jpg",
-    href: "/materials-products",
+    href: "/materials-products-index",
+    badge: "Now Live",
   },
   {
     title: "AI Scope Builder",

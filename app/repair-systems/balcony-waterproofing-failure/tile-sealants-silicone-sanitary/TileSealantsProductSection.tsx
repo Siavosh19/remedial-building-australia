@@ -82,20 +82,19 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.tremcosealants.com.au",
     accentColor: "#22c55e",
     name: "Tremco Spectrem 1",
-    descriptionLine: "One-part neutral-cure silicone sealant — wet area movement joints, sanitary and window applications",
-    productType: "Neutral-cure silicone",
-    filterTags: ["Silicone", "Sanitary", "Neutral-cure", "Wet-area", "Movement-joint", "Internal", "White", "Colourless", "Floor-wall-junction", "1C"],
+    descriptionLine: "TODO: owner confirm — Spectrem 1 is moisture-cure silicone (not neutral-cure) per Tremco TDS; neutral-cure equivalent in Tremco range is Spectrem 2 — confirm correct product and designation for Australian wet area sanitary use before publishing",
+    productType: "TODO: owner confirm — moisture-cure silicone (not neutral-cure) — confirm product designation",
+    filterTags: ["Silicone", "Wet-area", "Movement-joint", "Internal", "White", "Colourless", "Floor-wall-junction", "1C"],
     techChips: [
-      { label: "Neutral-cure silicone", cls: "bg-sky-100 text-sky-800" },
+      { label: "TODO: confirm cure type — moisture-cure, not neutral-cure", cls: "bg-amber-100 text-amber-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
-      { label: "Sanitary grade", cls: "bg-green-50 text-green-700" },
       { label: "Wet area / movement joint", cls: "bg-slate-100 text-slate-700" },
       { label: "AS 3740", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Tremco Spectrem 1 is a one-component neutral-cure silicone sealant used for movement joints in wet areas, bathrooms, sanitary applications and glazing. Neutral-cure chemistry is non-corrosive and suitable for use against metals, aluminium, anodised and polished surfaces, and most substrates without primer. Used at internal angles, floor-wall junctions and around sanitaryware and fixtures in Class 2 strata wet area remediation.\n\n// TODO: Confirm whether Spectrem 1 is still the current active product designation in the Tremco CPG Australia range — product names subject to periodic revision.",
+      "TODO: owner confirm — Tremco Spectrem 1 is confirmed by the Tremco TDS as a single-component MOISTURE-CURE silicone sealant, not neutral-cure. Neutral-cure in the Tremco range is Spectrem 2. This card was incorrectly labelled neutral-cure. The product should be re-evaluated: if neutral-cure sanitary silicone is required for this card, confirm whether the correct Tremco product is Spectrem 2 (neutral-cure) or another Tremco CPG Australia product. Also confirm that Spectrem 1/2 is the current active product designation in the Tremco CPG Australia range — confirm with Tremco CPG Australia before publishing.",
     technicalProperties: [
-      "Neutral-cure silicone — non-corrosive — suitable for use on metals, anodised aluminium, and most building substrates",
+      "TODO: owner confirm — moisture-cure silicone (not neutral-cure) — confirm whether product is suitable for use against anodised aluminium and metals without primer (neutral-cure is non-corrosive; moisture-cure may not be suitable for all metal substrates)",
       "Sanitary-grade formulation — mould-resistance properties suitable for continuously wet bathroom and kitchen environments",
       "One-component — no mixing required",
       // TODO: confirm elongation at break and movement accommodation from current Tremco TDS
@@ -154,9 +153,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.mapei.com/au",
     tdsUrl: "https://www.mapei.com/au",
     accentColor: "#3b82f6",
-    name: "Mapei Mapesil T",
-    descriptionLine: "One-component neutral-cure silicone sealant — sanitary wet area movement joints, tiled internal angles and floor-wall junctions",
-    productType: "Neutral-cure silicone",
+    name: "Mapei Mapesil T — TODO: owner confirm — current Australian Mapei silicone is Mapesil LM (neutral-cure) or Mapesil AC (acetoxy); Mapesil T appears to be a US product — confirm correct Australian product name before publishing",
+    descriptionLine: "TODO: owner confirm product name — neutral-cure silicone for sanitary wet area movement joints, tiled internal angles and floor-wall junctions — Australian Mapei range has Mapesil LM (neutral-cure) and Mapesil AC (acetoxy) — confirm which is the correct product for this card",
+    productType: "TODO: owner confirm — Mapesil T is US product; Australian equivalent is Mapesil LM (neutral-cure, BioBlock) — confirm with Mapei Australia",
     filterTags: ["Silicone", "Sanitary", "Neutral-cure", "Wet-area", "Movement-joint", "Internal", "White", "Floor-wall-junction", "1C"],
     techChips: [
       { label: "Neutral-cure silicone", cls: "bg-sky-100 text-sky-800" },
@@ -205,7 +204,7 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 
 const BRAND_EQUIV: { system: string; sika: string; tremco: string; bostik: string; mapei: string }[] = [
   { system: "PU sealant — 1C moisture-cure — wet area / balcony", sika: "Sikaflex-11 FC+", tremco: "—", bostik: "Seal-N-Flex 1", mapei: "—" },
-  { system: "Neutral-cure silicone — sanitary / wet area", sika: "—", tremco: "Spectrem 1", bostik: "—", mapei: "Mapesil T" },
+  { system: "Neutral-cure silicone — sanitary / wet area", sika: "—", tremco: "TODO: owner confirm — Spectrem 2 (neutral-cure) not Spectrem 1 (moisture-cure)", bostik: "—", mapei: "TODO: owner confirm — Mapesil T is US product; Australian equivalent is Mapesil LM (neutral-cure, BioBlock)" },
 ];
 
 const SYSTEM_COMPARISON: {
@@ -224,12 +223,12 @@ const SYSTEM_COMPARISON: {
   {
     product: "Tremco Spectrem 1",
     brand: "Tremco",
-    chemistry: "Neutral-cure silicone",
-    cureType: "Condensation-cure (1C)",
-    mouldResistance: "Sanitary grade",
-    paintable: "No",
-    metalAlSafe: "Yes",
-    primaryUse: "Sanitary wet area / glazing / internal angles",
+    chemistry: "TODO: owner confirm — moisture-cure silicone (not neutral-cure) per Tremco TDS",
+    cureType: "Moisture-cure (1C) — not condensation/neutral-cure",
+    mouldResistance: "TODO: owner confirm",
+    paintable: "Yes (confirm with Tremco)",
+    metalAlSafe: "TODO: owner confirm — moisture-cure silicone may corrode some metals",
+    primaryUse: "TODO: owner confirm — glazing, curtain wall, expansion joints (not sanitary wet area) — confirm correct product for this page",
   },
   {
     product: "Bostik Seal-N-Flex 1",
@@ -242,14 +241,14 @@ const SYSTEM_COMPARISON: {
     primaryUse: "Wet area / balcony movement joint",
   },
   {
-    product: "Mapei Mapesil T",
+    product: "TODO: owner confirm — Mapesil T is US product; AU products are Mapesil LM (neutral-cure) and Mapesil AC (acetoxy)",
     brand: "Mapei",
-    chemistry: "Neutral-cure silicone",
-    cureType: "Condensation-cure (1C)",
-    mouldResistance: "Sanitary grade",
+    chemistry: "TODO: confirm — Mapesil LM is neutral-cure; Mapesil AC is acetoxy (acid-cure)",
+    cureType: "Condensation-cure (1C) — confirm for correct AU product",
+    mouldResistance: "Mapesil LM: BioBlock (mould resistant) — confirm for selected product",
     paintable: "No",
-    metalAlSafe: "Yes",
-    primaryUse: "Sanitary wet area / tiled internal angles",
+    metalAlSafe: "Mapesil LM: Yes (neutral-cure, safe on metals) — Mapesil AC: NOT safe on metals",
+    primaryUse: "TODO: confirm — Mapesil LM: sanitary wet area / tiled internal angles / stone; Mapesil AC: ceramic tiles in wet areas only",
   },
 ];
 

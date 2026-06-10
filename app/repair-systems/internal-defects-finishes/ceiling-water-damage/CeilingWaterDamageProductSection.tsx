@@ -40,8 +40,8 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.dulux.com.au",
     tdsUrl: "https://www.dulux.com.au",
     accentColor: "#ef4444",
-    name: "Dulux Aquanamel Water-Based Primer Sealer",
-    descriptionLine: "Water-based primer sealer for sealing water stains and tannin bleed on plasterboard ceilings before top-coat repainting",
+    name: "Dulux 1Step Prep Water Based Primer, Sealer & Undercoat",
+    descriptionLine: "Water-based primer, sealer and undercoat with stain-blocking for tannin and water stains on plasterboard ceilings before top-coat repainting",
     productType: "Water-based primer sealer — stain blocking for water-damaged ceilings",
     filterTags: ["Primer", "Stain-blocking", "Water-based", "Ceiling", "Interior", "Plasterboard"],
     techChips: [
@@ -52,7 +52,7 @@ const PRODUCTS: Product[] = [
       { label: "Water-based", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Dulux Aquanamel Water-Based Primer Sealer is a water-based primer sealer designed for sealing water stains, tannin bleed, and smoke stains on interior ceiling and wall surfaces before repainting. Applied by roller or brush to plasterboard and previously painted ceilings following water damage repair. Provides a sealed, uniform base for subsequent topcoat application and prevents stain bleed-through that occurs when water-damaged surfaces are repainted without a stain-blocking primer.\n\nApplied to ceilings that have been confirmed dry following rectification of the source of water ingress. Confirm current product designation and availability with Dulux Australia — product names and formulations are subject to periodic revision.",
+      "Dulux 1Step Prep Water Based Primer, Sealer & Undercoat is a water-based primer sealer designed for sealing water stains, tannin bleed, and smoke stains on interior ceiling and wall surfaces before repainting. Applied by roller or brush to plasterboard and previously painted ceilings following water damage repair. Provides a sealed, uniform base for subsequent topcoat application and prevents stain bleed-through that occurs when water-damaged surfaces are repainted without a stain-blocking primer. Features mould-resistant formulation.\n\nApplied to ceilings that have been confirmed dry following rectification of the source of water ingress. Confirm current product designation and availability with Dulux Australia — product names and formulations are subject to periodic revision.",
     technicalProperties: [
       "Water-based formulation — low VOC — suitable for interior ceiling application with low odour",
       "Stain-blocking properties — seals water stains, tannin bleed and smoke marks on plasterboard ceilings before repainting",
@@ -78,8 +78,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.taubmans.com.au",
     tdsUrl: "https://www.taubmans.com.au",
     accentColor: "#3b82f6",
-    name: "Taubmans Moisture Shield Interior Paint",
-    descriptionLine: "Premium interior paint with built-in mould inhibitor for water-damaged ceilings and wet area walls — resists mould regrowth in high-humidity environments",
+    name: "TODO: owner confirm — Taubmans Moisture Shield Interior Paint",
+    descriptionLine:
+      "TODO: owner confirm — product name could not be verified on the current Taubmans Australia website. Taubmans moisture-resistant interior ceiling/wall paint — confirm current product name with Taubmans before specifying",
     productType: "Mould-inhibiting interior ceiling and wall paint",
     filterTags: ["Paint", "Mould-resistant", "Water-based", "Ceiling", "Interior", "Low-sheen"],
     techChips: [
@@ -90,7 +91,7 @@ const PRODUCTS: Product[] = [
       { label: "Mould inhibitor", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Taubmans Moisture Shield Interior Paint is a premium water-based interior paint formulated with a built-in mould inhibitor for application on ceilings and walls in wet-area-adjacent rooms and high-humidity environments. Designed for use on water-damaged ceilings following source rectification, drying and priming — provides an ongoing mould-resistant finish that resists regrowth of mould and mildew in bathrooms, laundries, kitchens and ceilings above wet areas.\n\nApply over a suitable primer-sealer following water damage repair to plasterboard ceilings. Available in white and a range of standard ceiling colours — confirm current colour range, sheen level options, and product designation with Taubmans before specifying.",
+      "TODO: owner confirm — the product name 'Taubmans Moisture Shield Interior Paint' could not be verified on the current Taubmans Australia website. Taubmans does offer interior paints for high-humidity environments — confirm the current correct product name and specification with Taubmans Australia before specifying. A premium water-based interior paint formulated with a built-in mould inhibitor for application on ceilings and walls in wet-area-adjacent rooms and high-humidity environments.\n\nApply over a suitable primer-sealer following water damage repair to plasterboard ceilings. Confirm current colour range, sheen level options, and product designation with Taubmans before specifying.",
     technicalProperties: [
       "Built-in mould inhibitor — active mould resistance for interior ceiling and wall applications in high-humidity environments",
       "Water-based formulation — low odour, low VOC — suitable for occupied residential buildings",
@@ -125,8 +126,8 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; dulux: string; taubmans: string }[] = [
-  { system: "Water stain primer/sealer", dulux: "Aquanamel Primer Sealer", taubmans: "—" },
-  { system: "Mould-resistant ceiling paint", dulux: "—", taubmans: "Moisture Shield" },
+  { system: "Water stain primer/sealer", dulux: "1Step Prep Primer Sealer", taubmans: "—" },
+  { system: "Mould-resistant ceiling paint", dulux: "—", taubmans: "TODO: confirm product name" },
 ];
 
 const SYSTEM_COMPARISON: {
@@ -139,16 +140,16 @@ const SYSTEM_COMPARISON: {
   primaryUse: string;
 }[] = [
   {
-    product: "Aquanamel Primer Sealer",
+    product: "1Step Prep Water Based Primer Sealer",
     brand: "Dulux",
     type: "Primer sealer",
-    mouldResist: "Standard",
+    mouldResist: "Mould resistant formulation",
     coats: "1–2 coats primer",
     substrate: "Plasterboard, previously painted",
     primaryUse: "Stain-blocking primer — water stains and tannin bleed before topcoat",
   },
   {
-    product: "Moisture Shield Interior Paint",
+    product: "TODO: confirm — Taubmans mould-resistant interior paint",
     brand: "Taubmans",
     type: "Interior topcoat",
     mouldResist: "Active inhibitor",

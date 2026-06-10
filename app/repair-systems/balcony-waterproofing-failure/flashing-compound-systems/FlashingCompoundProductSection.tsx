@@ -134,7 +134,7 @@ const PRODUCTS: Product[] = [
     section: "liquid-compound",
     fullLabel: "Soprema Australia",
     brandUrl: "https://soprema.com.au",
-    tdsUrl: "https://soprema.com.au/product/alsan-flashing-jardin-1657/",
+    tdsUrl: "https://www.bayset.com.au/p/soprema-alsan-flashing-jardin/",
     accentColor: "#16a34a",
     name: "Soprema Alsan Flashing Jardin",
     descriptionLine: "Single-component PU-bitumen resin with anti-root and rhizome-resistance properties — for waterproofing upstands, planter box walls, and roof edge details on green roofs and planted podium applications where root penetration at the vertical face is a risk",
@@ -148,7 +148,7 @@ const PRODUCTS: Product[] = [
       { label: "Vertical upstand face", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Soprema Alsan Flashing Jardin is the root and rhizome-resistant variant of the Alsan Flashing family — a single-component, ready-to-use bitumen-polyurethane resin specifically formulated for waterproofing upstands, planters, roof edges, and difficult detail areas on green roofs and planted podium applications where root and rhizome penetration resistance is required at the vertical face as well as the horizontal membrane.\n\nOn green roof and podium planter applications, the FLL-certified horizontal membrane (Wolfin, Cosmofin, or Soprema Colphene 3000) provides root resistance across the floor of the planter. However, the vertical upstand faces — planter box walls, parapet bases, and step junctions — require a root-resistant flashing compound to maintain the integrity of the root barrier system at the detail. Alsan Flashing Jardin addresses this vertical face root resistance requirement.\n\nApplied by brush or roller in 2–3 coats with reinforcing fleece at angles and changes of plane. Confirmed at soprema.com.au Australian product pages. Confirm current product availability, pricing, and lead times with Soprema Australia before specifying.",
+      "Soprema Alsan Flashing Jardin is the root and rhizome-resistant variant of the Alsan Flashing family — a single-component, ready-to-use bitumen-polyurethane resin specifically formulated for waterproofing upstands, planters, roof edges, and difficult detail areas on green roofs and planted podium applications where root and rhizome penetration resistance is required at the vertical face as well as the horizontal membrane.\n\nOn green roof and podium planter applications, the FLL-certified horizontal membrane (Wolfin, Cosmofin, or Soprema Colphene 3000) provides root resistance across the floor of the planter. However, the vertical upstand faces — planter box walls, parapet bases, and step junctions — require a root-resistant flashing compound to maintain the integrity of the root barrier system at the detail. Alsan Flashing Jardin addresses this vertical face root resistance requirement.\n\nApplied by brush or roller in 2–3 coats with reinforcing fleece at angles and changes of plane. Confirmed available in Australia through Bayset (bayset.com.au) as a 15kg drum, grey finish. The soprema.com.au product URL returned 404 at time of this verification — confirm current product availability, pricing, and lead times directly with Soprema Australia or Bayset before specifying.",
     technicalProperties: [
       "Single-component PU-bitumen liquid resin — anti-root and anti-rhizome penetration properties",
       "Applied by brush or roller in 2–3 coats — reinforcing fleece required at all angles and changes of plane",

@@ -52,7 +52,7 @@ const PRODUCTS: Product[] = [
       { label: "Heritage compatible", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "The Austral Terracotta Airbrick is a louvred terracotta vent unit designed to fit the standard Australian 230×76mm brick course opening, providing passive cross-ventilation to domestic subfloor spaces. Terracotta construction is non-corrosive, UV-stable and visually compatible with heritage and standard brick veneer buildings. The louvred face allows free passage of air while providing protection against vermin and water splash-back from the adjacent ground.\n\nAirbricks are installed at foundation wall level, typically one per 6 lineal metres of external wall in accordance with NCC and AS 1684 minimum ventilation requirements. Blocked or missing airbricks are a primary cause of subfloor moisture accumulation and mould growth in suspended timber floor buildings. Confirm current product range and availability with Austral Bricks before specifying.",
+      "The Austral Terracotta Airbrick is a louvred terracotta vent unit designed to fit the standard Australian 230×76mm brick course opening, providing passive cross-ventilation to domestic subfloor spaces. Terracotta construction is non-corrosive, UV-stable and visually compatible with heritage and standard brick veneer buildings. The louvred face allows free passage of air while providing protection against vermin and water splash-back from the adjacent ground.\n\nAirbricks are installed at foundation wall level at spacings that must achieve the minimum aggregate ventilation opening area required by NCC Housing Provisions Part 6.2 for the applicable climate zone. Blocked or missing airbricks are a primary cause of subfloor moisture accumulation and mould growth in suspended timber floor buildings. Confirm current product range and availability with Austral Bricks before specifying.",
     technicalProperties: [
       "Terracotta construction — non-corrosive, UV-stable and suitable for exposed subfloor base course installations",
       "Standard 230×76mm brick course size — fits standard Australian brick veneer foundation wall openings without cutting or adapters",
@@ -77,9 +77,9 @@ const PRODUCTS: Product[] = [
     fullLabel: "Ventis",
     brandUrl: "https://www.ventis.com.au",
     accentColor: "#3b82f6",
-    name: "Ventis Aluminium Subfloor Louvre Vent",
+    name: "TODO: owner confirm — aluminium subfloor louvre vent (supplier/brand name TBC)",
     descriptionLine:
-      "Pressed aluminium subfloor ventilation louvre in standard brick course sizes — corrosion-resistant, available in mill or powder-coated finish",
+      "TODO: owner confirm — 'Ventis' appears to be a ventilation system supplier, not a standalone brick-course louvre vent brand. Pressed aluminium subfloor ventilation louvre in standard brick course sizes — corrosion-resistant, available in mill or powder-coated finish — confirm correct supplier and product name",
     productType: "Pressed aluminium subfloor ventilation louvre",
     filterTags: ["Subfloor", "Louvre", "Aluminium", "Passive"],
     techChips: [
@@ -113,9 +113,9 @@ const PRODUCTS: Product[] = [
     fullLabel: "Fantech",
     brandUrl: "https://www.fantech.com.au",
     accentColor: "#22c55e",
-    name: "Fantech SVF150 Subfloor Ventilation Fan",
+    name: "TODO: owner confirm — Fantech subfloor ventilation fan (current AU model name)",
     descriptionLine:
-      "150mm mechanical centrifugal fan for active subfloor ventilation — draws moist air from under-floor space, installs in existing vent opening or new penetration",
+      "TODO: owner confirm — 'Fantech SVF150' could not be confirmed as a current Fantech Australia product. The current Fantech 150mm mixed-flow inline fan is the TD-500/150SIL — confirm the correct subfloor ventilation fan model with Fantech Australia before specifying",
     productType: "150mm mechanical subfloor ventilation fan",
     filterTags: ["Subfloor", "Mechanical", "Fan", "Subfloor-fan", "Mould-control"],
     techChips: [
@@ -125,7 +125,7 @@ const PRODUCTS: Product[] = [
       { label: "Mould control", cls: "bg-green-50 text-green-700" },
     ],
     systemDescription:
-      "The Fantech SVF150 is a 150mm centrifugal mechanical fan designed for active subfloor ventilation where passive airbrick ventilation alone is insufficient to achieve adequate air changes. The fan draws moist air from the subfloor space and exhausts it to the exterior, creating negative pressure that draws fresh air through passive inlet vents on the opposite side of the subfloor. Suitable for installation in an existing 150mm vent opening in the foundation wall or through a new penetration cored through the perimeter wall.\n\nMechanical subfloor ventilation is specified where subfloor geometry prevents adequate cross-ventilation by passive means — including enclosed or partially enclosed subfloor spaces, split-level configurations, or where mould growth is active. The SVF150 is typically timer-controlled or humidity-sensor-controlled to run during peak moisture accumulation periods. Confirm current product specifications, wiring requirements and control options with Fantech before specifying.",
+      "TODO: owner confirm model name — Fantech offers 150mm mixed-flow inline fans for subfloor ventilation (current AU model: TD-500/150SIL per Fantech website). A 150mm mechanical fan designed for active subfloor ventilation where passive airbrick ventilation alone is insufficient to achieve adequate air changes. The fan draws moist air from the subfloor space and exhausts it to the exterior, creating negative pressure that draws fresh air through passive inlet vents on the opposite side of the subfloor. Suitable for installation in an existing 150mm vent opening in the foundation wall or through a new penetration cored through the perimeter wall.\n\nMechanical subfloor ventilation is specified where subfloor geometry prevents adequate cross-ventilation by passive means — including enclosed or partially enclosed subfloor spaces, split-level configurations, or where mould growth is active. Confirm current product specifications, model name, wiring requirements and control options with Fantech before specifying.",
     technicalProperties: [
       "150mm centrifugal fan — provides active mechanical ventilation to subfloor spaces that cannot achieve adequate air changes by passive means",
       "Installs in standard 150mm subfloor vent opening or new core-drilled penetration — minimal structural impact on foundation wall",
@@ -163,8 +163,8 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 
 const BRAND_EQUIV: { system: string; austral: string; ventis: string; fantech: string }[] = [
   { system: "Terracotta airbrick (passive)", austral: "Terracotta Airbrick", ventis: "—", fantech: "—" },
-  { system: "Aluminium louvre vent (passive)", austral: "—", ventis: "Subfloor Louvre", fantech: "—" },
-  { system: "Mechanical subfloor fan", austral: "—", ventis: "—", fantech: "SVF150" },
+  { system: "Aluminium louvre vent (passive)", austral: "—", ventis: "TODO: confirm product name", fantech: "—" },
+  { system: "Mechanical subfloor fan", austral: "—", ventis: "—", fantech: "TODO: confirm model name" },
 ];
 
 const SYSTEM_COMPARISON: {
@@ -195,9 +195,9 @@ const SYSTEM_COMPARISON: {
     primaryUse: "Subfloor ventilation — replacement and new — coastal and standard environments",
   },
   {
-    product: "Fantech SVF150 Subfloor Ventilation Fan",
+    product: "TODO: confirm — Fantech 150mm subfloor fan (model name TBC)",
     brand: "Fantech",
-    type: "Centrifugal fan",
+    type: "Mixed-flow fan",
     material: "Polymer / metal",
     ventMode: "Mechanical (active)",
     sizeStandard: "150mm vent opening",
@@ -217,7 +217,7 @@ const TECH_INFO = {
     "Select terracotta airbrick where visual compatibility with heritage or standard brick veneer is required and passive ventilation is adequate",
     "Select aluminium louvre vent where corrosion resistance is required, particularly in coastal environments within 500m of saltwater",
     "Select mechanical fan where subfloor geometry prevents adequate passive cross-ventilation or where active mould remediation is required",
-    "Confirm free area per vent unit against NCC minimum — one vent opening per 6 lineal metres of external wall is the minimum benchmark",
+    "Confirm free area per vent unit against NCC minimum — NCC Housing Provisions Part 6.2 specifies minimum aggregate opening area (mm²/m of wall) varying by climate zone — confirm the applicable zone requirement",
     "Always address moisture source (plumbing leaks, rising damp, groundwater) before relying on ventilation to resolve moisture issues",
   ],
   limitations: [
@@ -228,8 +228,8 @@ const TECH_INFO = {
     "Fan installation requires licensed electrical work — include in cost plan",
   ],
   standardsNotes: [
-    "NCC (National Construction Code) — Section J and Volume Two — minimum subfloor ventilation requirements for Class 2 and Class 1 buildings",
-    "AS 1684 — Residential Timber-Framed Construction — subfloor ventilation requirements including minimum vent opening size and spacing",
+    "NCC Housing Provisions Part 6.2 — minimum aggregate subfloor ventilation opening area by climate zone (2,000–6,000 mm²/m of external wall) — applicable to Class 1 and Class 2 buildings with suspended floors",
+    "AS 1684 — Residential Timber-Framed Construction — subfloor ventilation and durability requirements for timber-framed construction",
     "AS/NZS 1668.2 — The Use of Ventilation and Airconditioning in Buildings — mechanical ventilation requirements where passive is insufficient",
     "Local council requirements may impose additional subfloor ventilation obligations in high-moisture or flood-affected areas — confirm with certifier",
   ],
@@ -379,7 +379,7 @@ export function SubfloorVentilationIntroSection() {
           Passive airbricks and louvre vents rely entirely on wind-driven cross-ventilation and are adequate where the subfloor space is open and unobstructed and the number of openings meets NCC minimums. Mechanical subfloor fans are required where passive ventilation cannot achieve adequate air changes — typically in enclosed, compartmentalised, or L-shaped subfloor spaces, or where active mould remediation is necessary. Mechanical fans draw moist air from the subfloor and exhaust it to the exterior, creating negative pressure that draws fresh air through passive inlet vents on opposing walls.
         </p>
         <p>
-          NCC Volume Two and AS 1684 set minimum requirements for subfloor ventilation openings — a minimum of one vent opening per 6 lineal metres of external wall is a commonly referenced benchmark. Free area per vent unit must be checked against the manufacturer specification to confirm compliance. Where passive ventilation is inadequate, a mechanical engineer or licensed building consultant should determine the required number of mechanical fans, their placement, and the minimum passive inlet free area required to support the fan airflow.
+          NCC Housing Provisions Part 6.2 sets minimum aggregate subfloor ventilation opening area requirements per metre of external wall, varying by climatic zone (2,000 to 6,000 mm²/m). Free area per vent unit must be checked against the manufacturer specification to confirm compliance with the applicable zone requirement. Where passive ventilation is inadequate, a mechanical engineer or licensed building consultant should determine the required number of mechanical fans, their placement, and the minimum passive inlet free area required to support the fan airflow.
         </p>
         <div className="mt-2 rounded-xl border border-slate-100 bg-slate-50 px-5 py-4">
           <p className="mb-2 text-xs font-bold text-slate-700">Do not confuse with:</p>
@@ -646,7 +646,7 @@ export function SubfloorVentilationProductSection() {
         </div>
         <ul className="space-y-2">
           {[
-            "Minimum subfloor ventilation free area must comply with NCC — one vent opening per 6 lineal metres of external wall is a minimum benchmark — confirm free area per unit against manufacturer data before specifying",
+            "Minimum subfloor ventilation free area must comply with NCC Housing Provisions Part 6.2 — minimum aggregate opening area varies by climate zone (2,000 to 6,000 mm²/m of wall) — confirm free area per unit against manufacturer data and the applicable zone requirement before specifying",
             "Mechanical fans are required where passive ventilation alone cannot achieve adequate cross-ventilation — for example, in enclosed subfloor spaces, L-shaped configurations, or where internal subfloor walls obstruct airflow",
             "Always address the source of moisture (plumbing leaks, rising damp, groundwater) before installing additional ventilation — fans alone will not resolve moisture entry from leaks and may accelerate corrosion of affected framing",
           ].map((item) => (

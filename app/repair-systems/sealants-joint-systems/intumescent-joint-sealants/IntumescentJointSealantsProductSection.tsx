@@ -41,31 +41,30 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.hilti.com.au",
     accentColor: "#D2000F",
     name: "Hilti CP 601S",
-    descriptionLine: "Intumescent acrylic firestop sealant — pipe, cable and duct penetrations through fire-rated walls and floors",
-    productType: "Intumescent acrylic sealant",
-    filterTags: ["Intumescent", "Fire-rated", "Penetration-seal", "Pipe-penetration", "Cable-penetration", "Duct-penetration", "FRL-rated", "Water-based", "AS1530"],
+    descriptionLine: "TODO: owner confirm — Hilti CP 601S not found on current Hilti Australia product listing — verify current product name before specifying",
+    productType: "Intumescent elastomeric firestop sealant",
+    filterTags: ["Intumescent", "Fire-rated", "Penetration-seal", "Pipe-penetration", "Cable-penetration", "FRL-rated", "AS1530"],
     techChips: [
-      { label: "Intumescent acrylic", cls: "bg-red-100 text-red-800" },
+      { label: "Intumescent elastomeric", cls: "bg-red-100 text-red-800" },
       { label: "FRL rated", cls: "bg-amber-100 text-amber-800" },
-      { label: "Water-based", cls: "bg-sky-50 text-sky-700" },
       { label: "Paintable", cls: "bg-slate-100 text-slate-700" },
-      { label: "AS 1530.4 tested", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm AU availability", cls: "bg-red-100 text-red-800" },
     ],
     systemDescription:
-      "Hilti CP 601S is a water-based intumescent acrylic firestop sealant used for sealing around cable, pipe and small duct penetrations through fire-rated walls and floors in Australian Class 2 and commercial buildings. On exposure to fire it expands to seal the void and prevent fire, smoke and toxic gas spread. The FRL and applicable substrate/service combinations must be confirmed from the Hilti LABC (Local Authority Building Certificate) or third-party test report listing. All installations must comply with NCC Section C and be certified by a qualified passive fire protection installer.",
+      "TODO: owner confirm — Hilti CP 601S is described in older documentation as an elastomeric (silicone-based, not acrylic) intumescent firestop sealant. However, CP 601S does not appear on the current Hilti Australia sealants product listing (hilti.com.au). The current Hilti Australia firestop sealant range includes CP 611A (intumescent, water-based), CP 606 (acrylic fire caulk) and CFS-SP SIL (silicone joint sealant spray). Confirm with Hilti Australia whether CP 601S is available or whether a current replacement product should be specified before using this card.",
     technicalProperties: [
-      "Intumescent expansion on fire exposure seals pipe and cable penetrations",
-      "Water-based acrylic formulation — water cleanup before cure",
-      "FRL ratings available for tested combinations only",
-      "Paintable after cure for aesthetic finish",
-      "Suitable for combustible pipe (PE/PP/PVC) where tested combinations exist",
+      "TODO: owner confirm — CP 601S not found on current Hilti Australia product listing — verify availability",
+      "Described in international documentation as elastomeric (silicone-based) intumescent sealant — not acrylic",
+      "FRL ratings available for tested combinations only — confirm from current Hilti LABC",
+      "Paintable after cure confirmed in historical documentation",
+      "Suitable for metallic pipe penetrations per historical documentation — confirm current testing",
     ],
     limitations: [
+      "TODO: owner confirm — product availability on Hilti Australia site not confirmed — may be discontinued or renamed",
       "FRL only applies to tested substrate/penetration combinations — never extrapolate",
-      "Not suitable for large ductwork without separate duct collar system",
       "Must be installed by qualified passive fire protection contractor",
-      "Minimum annular space requirements apply",
-      "Confirm current LABC certificate before specifying",
+      "Minimum annular space requirements apply — confirm from current LABC certificate",
+      "Confirm current LABC certificate and product availability with Hilti Australia before specifying",
     ],
     procurementSources: [
       { name: "Hilti Australia — hilti.com.au — trade supply", url: "https://www.hilti.com.au" },
@@ -111,35 +110,36 @@ const PRODUCTS: Product[] = [
     fullLabel: "Bostik",
     brandUrl: "https://www.bostik.com/au",
     accentColor: "#E63946",
-    name: "Bostik FireFlex Firestop Sealant",
-    descriptionLine: "Intumescent acrylic firestop sealant — pipe and cable penetrations and perimeter joint sealing",
-    productType: "Intumescent acrylic sealant",
-    filterTags: ["Intumescent", "Fire-rated", "Penetration-seal", "Pipe-penetration", "Cable-penetration", "Linear-joint", "FRL-rated", "Water-based"],
+    name: "Bostik Fireban One",
+    descriptionLine: "Fire-rated intumescent polyurethane sealant — linear joints in fire-rated wall and floor assemblies — Australian manufactured",
+    productType: "Intumescent polyurethane sealant",
+    filterTags: ["Intumescent", "Fire-rated", "Linear-joint", "FRL-rated", "AS1530"],
     techChips: [
-      { label: "Intumescent acrylic", cls: "bg-purple-100 text-purple-800" },
+      { label: "Intumescent PU", cls: "bg-purple-100 text-purple-800" },
       { label: "FRL rated", cls: "bg-amber-100 text-amber-800" },
-      { label: "Pipe & cable", cls: "bg-slate-100 text-slate-700" },
-      { label: "Perimeter joint", cls: "bg-slate-100 text-slate-700" },
+      { label: "Paintable", cls: "bg-slate-100 text-slate-700" },
+      { label: "±25% movement", cls: "bg-slate-100 text-slate-700" },
+      { label: "AS 1530.4 tested", cls: "bg-red-50 text-red-700" },
     ],
     systemDescription:
-      "Bostik FireFlex is a water-based intumescent acrylic firestop sealant for sealing pipe, cable and conduit penetrations through fire-rated wall and floor assemblies, and for perimeter joint sealing in fire-rated construction. Used in Australian Class 2 and commercial building passive fire protection work where an affordable tested sealant solution is required. FRL and applicable combinations must be confirmed from Bostik's LABC or test certification — do not substitute services or substrates without re-confirming certification.",
+      "Bostik Fireban One is a fire-rated intumescent one-component polyurethane sealant, Australian manufactured, used for sealing linear joints in fire-rated concrete, masonry, plasterboard and fibre cement wall and floor assemblies in Class 2 and commercial buildings. Fire resistance up to 4 hours. Joint movement capability ±25% of original width. Paintable to match surrounding surfaces after cure. Tested to AS 1530.4. Note: Bostik Fireban One is designed for linear joint sealing, not primarily for pipe/cable penetrations — for pipe and cable penetrations through fire-rated elements, confirm the correct Bostik product and tested assembly with Bostik Australia before specifying.",
     technicalProperties: [
-      "Intumescent acrylic chemistry",
-      "Water-based and low VOC",
-      "Paintable after cure",
-      "Tested to AS 1530.4 for applicable combinations",
-      "Suitable for perimeter and head-of-wall joints where tested",
+      "Intumescent polyurethane — one-component — Australian manufactured",
+      "Fire resistance up to 4 hours — joint movement capability ±25% — AS 1530.4 tested",
+      "Paintable after cure — suitable for colour-matched joint sealing in visible locations",
+      "Non-staining, fungal resistant, weather and UV resistant",
+      "Suitable for concrete, masonry, plasterboard and fibre cement substrates",
     ],
     limitations: [
-      "FRL valid for tested combinations only",
-      "Minimum annular space requirements apply",
-      "Qualified passive fire installer required",
+      "FRL valid for tested combinations only — confirm LABC or test report for exact assembly before specifying",
+      "Primarily for linear joint sealing — confirm suitability for pipe/cable penetrations separately",
+      "Qualified passive fire installer required for installation in fire-rated elements",
       "Confirm current LABC certification before specifying",
-      "Pot-life limited after container opened",
+      "Confirm current product specification and availability with Bostik Australia before specifying",
     ],
     procurementSources: [
-      { name: "Bostik Australia — bostik.com/au", url: "https://www.bostik.com/au" },
-      { name: "Passive fire protection distributors", url: "https://www.bostik.com/au" },
+      { name: "Bostik Australia — bostik.com/australia", url: "https://www.bostik.com/australia" },
+      { name: "Passive fire protection and building trade distributors", url: "https://www.bostik.com/australia" },
     ],
   },
 ];
@@ -154,10 +154,10 @@ const FILTER_DEFS: { id: FilterTag | "All"; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { application: string; hilti: string; threeM: string; bostik: string }[] = [
-  { application: "Pipe penetrations", hilti: "CP 601S", threeM: "CP 25WB+", bostik: "FireFlex" },
-  { application: "Cable penetrations", hilti: "CP 601S", threeM: "CP 25WB+", bostik: "FireFlex" },
-  { application: "Perimeter/linear joints", hilti: "—", threeM: "CP 25WB+", bostik: "FireFlex" },
-  { application: "Paintable after cure", hilti: "CP 601S", threeM: "—", bostik: "FireFlex" },
+  { application: "Pipe penetrations", hilti: "CP 601S (TODO: confirm AU avail.)", threeM: "CP 25WB+", bostik: "Confirm with Bostik AU" },
+  { application: "Cable penetrations", hilti: "CP 601S (TODO: confirm AU avail.)", threeM: "CP 25WB+", bostik: "Confirm with Bostik AU" },
+  { application: "Perimeter/linear joints", hilti: "—", threeM: "CP 25WB+", bostik: "Fireban One" },
+  { application: "Paintable after cure", hilti: "TODO: confirm", threeM: "—", bostik: "Fireban One" },
 ];
 
 type SystemComparisonRow = {
@@ -168,13 +168,14 @@ type SystemComparisonRow = {
 };
 
 const SYSTEM_COMPARISON: SystemComparisonRow[] = [
-  { property: "Type", hilti: "Intumescent acrylic", threeM: "Intumescent acrylic", bostik: "Intumescent acrylic" },
-  { property: "Water-based", hilti: "Yes", threeM: "Yes", bostik: "Yes" },
-  { property: "Paintable", hilti: "Yes", threeM: "—", bostik: "Yes" },
-  { property: "Linear joint use", hilti: "—", threeM: "Yes", bostik: "Yes" },
-  { property: "Pipe penetration", hilti: "Yes", threeM: "Yes", bostik: "Yes" },
-  { property: "Cable penetration", hilti: "Yes", threeM: "Yes", bostik: "Yes" },
-  { property: "AS 1530.4 tested", hilti: "Yes", threeM: "Yes", bostik: "Yes" },
+  { property: "Type", hilti: "Intumescent elastomeric (silicone-based)", threeM: "Intumescent acrylic", bostik: "Intumescent PU" },
+  { property: "Water-based", hilti: "No (solvent/silicone-based)", threeM: "Yes", bostik: "No (1C PU)" },
+  { property: "Paintable", hilti: "Yes (historical)", threeM: "—", bostik: "Yes" },
+  { property: "Linear joint use", hilti: "—", threeM: "Yes", bostik: "Yes (primary use)" },
+  { property: "Pipe penetration", hilti: "Yes (confirm AU avail.)", threeM: "Yes", bostik: "Confirm with Bostik AU" },
+  { property: "Cable penetration", hilti: "Yes (confirm AU avail.)", threeM: "Yes", bostik: "Confirm with Bostik AU" },
+  { property: "AS 1530.4 tested", hilti: "Confirm current LABC", threeM: "Yes", bostik: "Yes" },
+  { property: "AU product status", hilti: "TODO: confirm availability", threeM: "Current", bostik: "Current (Fireban One)" },
 ];
 
 const TECH_INFO = {
@@ -683,9 +684,9 @@ export function IntumescentJointSealantsProductSection() {
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">
                   Property
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#D2000F" }}>Hilti CP 601S</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#D2000F" }}>Hilti CP 601S (TODO: confirm)</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#FF0000" }}>3M CP 25WB+</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#E63946" }}>Bostik FireFlex</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#E63946" }}>Bostik Fireban One</th>
               </tr>
             </thead>
             <tbody>

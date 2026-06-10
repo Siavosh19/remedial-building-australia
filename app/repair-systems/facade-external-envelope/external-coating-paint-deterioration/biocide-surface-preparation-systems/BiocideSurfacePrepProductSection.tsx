@@ -41,9 +41,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.dulux.com.au",
     tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#e2003a",
-    name: "Dulux Weathershield Mould & Mildew Cleaner",
+    name: "TODO: owner confirm — Dulux Weathershield Mould & Mildew Cleaner (exact current AU product name unconfirmed — could not confirm a dedicated 'Weathershield Mould & Mildew Cleaner' product on dulux.com.au at time of verification — Dulux AU surface preparation guidance references generic bleach solution or Sugar Soap for pre-paint cleaning — confirm whether a dedicated Dulux biocide surface wash product exists in the current AU range with Dulux technical)",
     descriptionLine: "Concentrated biocide surface wash for exterior masonry and render — kills mould, mildew and algae before repainting — widely available nationally",
-    productType: "Biocide pre-paint surface wash — masonry and render",
+    productType: "TODO: owner confirm — Biocide pre-paint surface wash — masonry and render (product name unconfirmed — see name field)",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Dilutable", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Mould kill", cls: "bg-red-100 text-red-800" },
@@ -115,9 +115,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.taubmans.com.au",
     tdsUrl: "https://www.taubmans.com.au/products",
     accentColor: "#7c3aed",
-    name: "Taubmans Mould Killer",
-    descriptionLine: "Concentrated mould, mildew and algae surface treatment for exterior facades — dilutable biocide wash as mandatory pre-paint preparation before exterior recoating",
-    productType: "Concentrated biocide surface wash — exterior pre-paint prep",
+    name: "TODO: owner confirm — Taubmans Mould Killer (CRITICAL: the current Taubmans mould product appears to be 'Taubmans Advanced Adhesion & Mould Blocker' which is a PRIMER/PREPCOAT that is applied and LEFT ON — it is NOT a biocide rinse-off wash — the card describes a concentrated dilutable wash product, which does not match the current product type — confirm with Taubmans technical whether a separate biocide rinse-off wash product exists in the current Taubmans AU range)",
+    descriptionLine: "TODO: owner confirm — Concentrated mould, mildew and algae surface treatment for exterior facades — dilutable biocide wash as mandatory pre-paint preparation before exterior recoating (product type may differ from current Taubmans AU product — see name field)",
+    productType: "TODO: owner confirm — Concentrated biocide surface wash — exterior pre-paint prep (current Taubmans mould product may be a primer/prepcoat, not a rinse-off wash — confirm product type with Taubmans technical)",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Dilutable", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Concentrated", cls: "bg-purple-100 text-purple-800" },
@@ -126,7 +126,7 @@ const PRODUCTS: Product[] = [
       { label: "Pre-paint", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Taubmans Mould Killer is a concentrated biocide product for killing mould, mildew, and algae on exterior facades as part of the surface preparation process before repainting. Diluted with water per the TDS instructions and applied to affected surfaces by brush or spray, it kills biological growth present on masonry, render, and existing painted surfaces. After the dwell period the surface is rinsed and allowed to dry before priming and recoating. Taubmans Mould Killer is part of the Taubmans surface preparation system and is compatible with Taubmans exterior primer and topcoat systems including Taubmans Endure Exterior. Confirm current dilution ratio, dwell time, surface rinsing requirements, and PPE from the Taubmans Mould Killer TDS before use on a remedial facade project.",
+      "TODO: owner confirm — CRITICAL PRODUCT TYPE MISMATCH. The current Taubmans mould product found on taubmans.com.au at time of verification is 'Taubmans Advanced Adhesion & Mould Blocker' — this is a PRIMER/PREPCOAT that is applied to the surface and LEFT ON as the primer coat. It is NOT a concentrated biocide wash that is rinsed off. The card as written describes a rinse-off biocide wash product which does not match the current product type. If a rinse-off biocide wash is required for pre-paint surface preparation, a different product (e.g. Wattyl Kill Mould, or a generic biocide wash) must be specified instead. Confirm with Taubmans technical whether a separate pre-paint biocide wash product exists in the current Taubmans AU range before retaining this product on the card.",
     technicalProperties: [
       "Concentrated formula — dilute per TDS before application to exterior masonry and render surfaces",
       "Kills mould, mildew and algae — mandatory pre-paint biocide step for biologically affected facades",
@@ -152,9 +152,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.haymespaint.com.au",
     tdsUrl: "https://www.haymespaint.com.au/products",
     accentColor: "#b45309",
-    name: "Haymes Mould Wash",
+    name: "TODO: owner confirm — Haymes Mould Wash (exact current AU product name unconfirmed — could not confirm a product named 'Haymes Mould Wash' on haymespaint.com.au at time of verification — confirm current biocide surface wash product name in the Haymes range with Haymes technical)",
     descriptionLine: "Australian-made biocide surface wash for mould and algae treatment on exterior facades — part of the Haymes surface preparation system ahead of exterior topcoat repainting",
-    productType: "Biocide surface wash — exterior masonry and render — Australian-made",
+    productType: "TODO: owner confirm — Biocide surface wash — exterior masonry and render — Australian-made (product name unconfirmed — see name field)",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Dilutable", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Australian-made", cls: "bg-amber-100 text-amber-800" },
@@ -188,9 +188,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.mapei.com/au",
     tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#059669",
-    name: "Mapei Mapecide",
+    name: "TODO: owner confirm — Mapei Mapecide (WRONG PRODUCT NAME — 'Mapecide' not found on mapei.com/au at time of verification — the Mapei AU biocide/mould product found is 'Mapei Ultracare Mould Remover' (tile and surface product) — confirm whether 'Mapecide' exists in the current Mapei AU range or whether the correct product for facade biocide preparation is a different Mapei product — confirm with Mapei Australia technical)",
     descriptionLine: "Professional-grade biocidal wash for mould, algae, moss and lichen on exterior masonry, render and concrete — specialist remedial product for building restoration and facade repainting preparation",
-    productType: "Professional biocidal wash — exterior masonry and concrete surfaces",
+    productType: "TODO: owner confirm — Professional biocidal wash — exterior masonry and concrete surfaces (product name 'Mapecide' not confirmed on Mapei AU — see name field)",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Chlorine-based", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Professional grade", cls: "bg-green-100 text-green-800" },
@@ -199,7 +199,7 @@ const PRODUCTS: Product[] = [
       { label: "Dilutable", cls: "bg-blue-100 text-blue-700" },
     ],
     systemDescription:
-      "Mapei Mapecide is a professional-grade biocidal wash for killing mould, algae, moss, and lichen on exterior masonry, concrete, render, and stone surfaces. It is primarily positioned as a specialist remedial and restoration product, making it particularly well suited to the facade restoration and strata remediation market where heavy or persistent biological contamination — including lichen and moss growth — must be treated before facade repainting or protective coating application. Mapecide is applied by brush or spray, left to dwell to kill and penetrate biological growth, then rinsed off before surface preparation and coating application proceed. As part of the Mapei system, Mapecide works upstream of Mapei's exterior coating and waterproofing systems. Confirm dilution ratios, dwell time, and safety requirements from the current Mapei Mapecide TDS before specifying on a remedial project.",
+      "TODO: owner confirm — 'Mapecide' could not be confirmed as a current product on mapei.com/au as of verification date. The product name on this card requires verification with Mapei Australia technical. Mapei does supply professional biocidal products for facade preparation in some markets — if a Mapei biocide product is available in Australia it would be well suited to the facade restoration and strata remediation market where heavy or persistent biological contamination must be treated before facade repainting. Confirm the correct current Australian product name and TDS with Mapei Australia technical before retaining or using this card.",
     technicalProperties: [
       "Professional-grade biocidal wash — kills mould, algae, moss and lichen on masonry, render and concrete",
       "Suitable for heavy and persistent biological contamination on facades requiring remedial restoration",

@@ -25,7 +25,8 @@ type FilterTag =
   | "Facade-wall"
   | "Roof-deck"
   | "AS-3740"
-  | "AS-4858";
+  | "AS-4858"
+  | "AS-4654";
 
 type Product = {
   fullLabel: string;
@@ -47,21 +48,22 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-wpm-909/",
     accentColor: "#f97316",
     name: "ARDEX WPM 909",
-    descriptionLine: "Water-based single-component acrylic membrane — exposed pedestrian trafficable use",
+    descriptionLine: "Water-based single-component acrylic membrane — exposed pedestrian trafficable use — AS 4654 certified — 15 L drum",
     productType: "Acrylic — trafficable / exposed",
-    filterTags: ["Acrylic", "Water-based", "1C", "Exposed", "Trafficable", "UV-stable", "Balcony-terrace"],
+    filterTags: ["Acrylic", "Water-based", "1C", "Exposed", "Trafficable", "UV-stable", "Balcony-terrace", "AS-4654"],
     techChips: [
       { label: "Acrylic", cls: "bg-sky-100 text-sky-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
       { label: "Water-based", cls: "bg-slate-100 text-slate-700" },
       { label: "Trafficable — pedestrian", cls: "bg-green-50 text-green-700" },
       { label: "UV stable", cls: "bg-amber-50 text-amber-700" },
+      { label: "AS 4654 — 15 L drum", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "ARDEX WPM 909 is a water-based single-component acrylic waterproofing membrane designed for exposed pedestrian trafficable balcony, terrace, and deck surfaces. Unlike under-tile SBR systems, WPM 909 is formulated for direct exposure — UV resistance, anti-slip surface texture, abrasion resistance, and cleanability are key differentiators. Apply by roller in multiple coats on primed, prepared concrete or substrate. The finish coat provides the trafficable and weatherproof surface without a tile or screed overlay. Confirm primer selection, application rate, number of coats, and anti-slip grade requirements with ARDEX technical before specifying.",
+      "ARDEX WPM 909 is a water-based single-component acrylic waterproofing membrane designed for exposed pedestrian trafficable balcony, terrace, and deck surfaces. Unlike under-tile SBR systems, WPM 909 is formulated for direct exposure — UV resistance, anti-slip surface texture, abrasion resistance, and cleanability are key differentiators. It is AS 4654 certified and is supplied in 15 L drums. Coverage is approximately 8–9 m² per drum (two coats). Apply by roller in multiple coats on primed, prepared concrete or substrate. The finish coat provides the trafficable and weatherproof surface without a tile or screed overlay. Confirm primer selection, application rate, number of coats, and anti-slip grade requirements with ARDEX technical before specifying.",
     technicalProperties: [
       "UV-resistant acrylic formulation — designed for prolonged direct sun and weather exposure on horizontal surfaces",
       "Trafficable pedestrian finish — anti-slip surface — no tile or screed overlay required",
@@ -122,24 +124,25 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Crommelin",
     brandUrl: "https://crommelin.com.au",
-    tdsUrl: "https://crommelin.com.au",
+    tdsUrl: "https://crommelin.com.au/products/wetite/",
     accentColor: "#0d9488",
     name: "Crommelin Wetite",
-    descriptionLine: "Single-component SBR polymer waterproofing membrane — under-tile and wet area use",
-    productType: "SBR polymer — under-tile / wet area",
-    filterTags: ["SBR", "Water-based", "1C", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace", "AS-3740"],
+    descriptionLine: "Single-component SBR polymer waterproofing membrane — Class III AS 4858 — AS 4654 external — under-tile and wet area — 15 L pail",
+    productType: "SBR polymer — Class III AS 4858 — under-tile / wet area",
+    filterTags: ["SBR", "Water-based", "1C", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace", "AS-3740", "AS-4858", "AS-4654"],
     techChips: [
       { label: "SBR polymer", cls: "bg-teal-100 text-teal-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
       { label: "Water-based", cls: "bg-slate-100 text-slate-700" },
-      { label: "Under-tile / wet area", cls: "bg-slate-100 text-slate-700" },
+      { label: "Class III — AS 4858", cls: "bg-amber-50 text-amber-700" },
+      { label: "AS 4654 external", cls: "bg-slate-100 text-slate-700" },
       { label: "AS 3740", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
       "Crommelin Wetite is a single-component SBR (styrene-butadiene rubber) polymer waterproofing membrane widely used in Australian residential wet area and under-tile balcony applications. It is applied by brush or roller in two coats directly to primed substrates, with reinforcing bandage embedded at all corners, coves, penetrations, and wall-to-floor junctions. Wetite is a covered membrane system — it is designed to be overlaid with tiles, screed, or a protective topping. It is not formulated as an exposed or trafficable finish. The SBR chemistry provides good adhesion to standard substrates and flexibility adequate for residential-grade wet area and light balcony applications.",
     technicalProperties: [
       "SBR polymer chemistry — reliable adhesion to concrete, masonry, and fibre cement substrates with correct primer",
-      "Complies with AS 3740 for domestic wet area waterproofing when correctly applied at specified DFT",
+      "Complies with AS 4858 Class III, AS 3740, and AS 4654 — available in 15 L pail — recoat 2–4 hours — tile-over from 4 hours",
       "Widely available nationally — familiar product with established application trade knowledge",
       "Water-based — safe for use in enclosed bathroom and wet area environments",
       "Suitable for use under ceramic and porcelain tile systems after full cure with compatible tile adhesive",
@@ -160,23 +163,23 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Crommelin",
     brandUrl: "https://crommelin.com.au",
-    tdsUrl: "https://crommelin.com.au",
+    tdsUrl: "https://crommelin.com.au/products/wetite-rapid/",
     accentColor: "#0d9488",
     name: "Crommelin Wetite Rapid",
-    descriptionLine: "Water-based SBR polymer membrane — rapid dry — faster tile-over times",
-    productType: "SBR polymer — rapid dry — under-tile / wet area",
-    filterTags: ["SBR", "Water-based", "1C", "Rapid-dry", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace"],
+    descriptionLine: "Water-based SBR polymer membrane — Class III AS 4858 — rapid dry 1–2 hrs recoat — tile-over 4 hrs — 15 L pail",
+    productType: "SBR polymer — Class III AS 4858 — rapid dry — under-tile / wet area",
+    filterTags: ["SBR", "Water-based", "1C", "Rapid-dry", "Undertile", "Wet-area", "Covered-system", "Balcony-terrace", "AS-3740", "AS-4858", "AS-4654"],
     techChips: [
       { label: "SBR polymer", cls: "bg-teal-100 text-teal-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
-      { label: "Rapid dry", cls: "bg-green-50 text-green-700" },
-      { label: "Under-tile / wet area", cls: "bg-slate-100 text-slate-700" },
-      { label: "Water-based", cls: "bg-slate-100 text-slate-700" },
+      { label: "Rapid dry — 1–2 hr recoat", cls: "bg-green-50 text-green-700" },
+      { label: "Class III — AS 4858", cls: "bg-amber-50 text-amber-700" },
+      { label: "AS 4654 — 15 L pail", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
       "Crommelin Wetite Rapid is the rapid-dry version of Crommelin Wetite — formulated to reduce drying time between coats and accelerate the time to tile. The principal advantage over standard Wetite is programme efficiency: faster recoat windows and a reduced wait before tile adhesive can be applied. It is the same class of product — a single-component SBR polymer under-tile and wet area membrane — applied in the same manner. It is a covered system: it must be overlaid with tiles, screed, or an approved protective topping. Do not select Wetite Rapid where the programme does not benefit from faster dry times — standard Wetite provides the same performance at a lower cost where time is not critical.",
     technicalProperties: [
-      "Rapid dry — significantly faster recoat and tile-over times compared to standard Wetite — reduces installation programme",
+      "Rapid dry — 1–2 hour recoat — tile-over from 4 hours — significantly faster than standard Wetite — Class III AS 4858, AS 3740, AS 4654 compliant",
       "SBR polymer chemistry — same adhesion characteristics as standard Wetite on primed concrete and masonry substrates",
       "Water-based — low odour — safe for enclosed wet area and balcony environments",
       "One-component — no site mixing — same straightforward application as standard Wetite",

@@ -56,8 +56,8 @@ const PRODUCTS: Product[] = [
       "Smooth face — suitable for fully bonded installation with ARDEX WA 98 or loose-laid with edge restraint",
       "Excellent resistance to heat, sunlight, ozone, and atmospheric pollution — suitable for all Australian climatic zones",
       "Excellent gas impermeability — confirmed resistant to geothermal gas including hydrogen sulphide and methane",
-      "Flexible at low temperatures — suitable for cold climate zones including alpine and southern Australian applications",
-      "Available in dove grey or black — roll size 1.4m × 20m — 53 kg per roll",
+      "Service temperature range: -30°C to +80°C — confirmed on Australian trade product page (thewaterproofingshop.com.au)",
+      "Available in dove grey or black — roll size 1.4m × 20m — 53 kg per roll — source: ardexaustralia.com",
     ],
     limitations: [
       "ARDEX WA 98 contact adhesive must NOT be applied over areas that will be heat-welded — adhesive-contaminated seam zones cannot be welded and seam will fail",

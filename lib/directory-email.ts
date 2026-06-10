@@ -119,6 +119,36 @@ export async function sendCompanyStatusEmail(ownerName: string, ownerEmail: stri
   await sendEmail(subject, ownerEmail, html, text);
 }
 
+export async function sendAdminLeadEmail(
+  companyName: string,
+  companySlug: string,
+  submitterName: string,
+  submitterEmail: string,
+  submitterPhone: string,
+  projectType: string,
+  description: string,
+  submittedAt: string,
+) {
+  const profileUrl = `${SITE_URL}/directory/company/${encodeURIComponent(companySlug)}`;
+  const html = emailWrapper(
+    "New Quote Request",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A new quote request has been submitted via the directory.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">Business</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(companyName)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Profile URL</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;"><a href="${profileUrl}" style="color:#0369a1;">${profileUrl}</a></td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">From</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(submitterName)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Email</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(submitterEmail)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Phone</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(submitterPhone)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Project Type</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(projectType)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;vertical-align:top;">Message</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(description)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Submitted</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(submittedAt)}</td></tr>
+     </table>
+     <p style="margin:0;"><a href="${profileUrl}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">View Profile →</a></p>`
+  );
+  const text = `New quote request for ${companyName}\nProfile: ${profileUrl}\n\nFrom: ${submitterName}\nEmail: ${submitterEmail}\nPhone: ${submitterPhone}\nProject type: ${projectType}\nMessage: ${description}\nSubmitted: ${submittedAt}`;
+  await sendEmail(`New Quote Request — ${companyName}`, "info@remedialbuildingaustralia.com.au", html, text);
+}
+
 export async function sendLeadNotificationEmail(
   companyEmail: string,
   categoryName: string,

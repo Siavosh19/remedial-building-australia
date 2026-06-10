@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export default function DirectoryLoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(true);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +17,7 @@ export default function DirectoryLoginPage() {
     const response = await fetch("/api/directory/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, rememberMe }),
     });
     const result = await response.json();
     setLoading(false);
@@ -57,6 +58,16 @@ export default function DirectoryLoginPage() {
             className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
             required
           />
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+            className="h-4 w-4 rounded border-slate-300 accent-sky-950"
+          />
+          <span className="text-sm text-slate-600">Stay signed in for 30 days</span>
         </label>
 
         {status ? (

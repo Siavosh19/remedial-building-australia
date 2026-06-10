@@ -139,26 +139,27 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/mapetex-sel",
     accentColor: "#0369a1",
     name: "Mapei Mapetex Sel",
-    descriptionLine: "Non-woven polyester reinforcing fabric — embedded in Mapei liquid-applied and cementitious membrane systems at junctions and corners — alternative to Mapenet 150 for specific Mapei membrane applications — confirm system specification before use",
-    productType: "Non-woven polyester reinforcing fabric — Mapei membrane systems",
+    descriptionLine: "Non-woven macro-holed polypropylene reinforcing fabric — 80 g/m² — 1 m wide × 25 m rolls — embedded in Mapei liquid-applied and cementitious membrane systems at junctions and corners — alternative to Mapenet 150 for specific Mapei membrane applications — confirm system specification before use",
+    productType: "Non-woven macro-holed polypropylene reinforcing fabric — Mapei membrane systems",
     filterTags: ["Non-woven-polyester", "Junction-reinforcement", "Mapei-membrane-compatible", "Mapelastic-systems", "Internal-external-corners", "Wall-to-floor", "Penetration-reinforcement", "Liquid-applied-membrane"],
     techChips: [
-      { label: "Non-woven polyester", cls: "bg-sky-100 text-sky-800" },
-      { label: "Mapei liquid-applied and cementitious", cls: "bg-slate-100 text-slate-700" },
-      { label: "Embedded between membrane coats", cls: "bg-green-50 text-green-700" },
+      { label: "Non-woven polypropylene", cls: "bg-sky-100 text-sky-800" },
+      { label: "80 g/m² — macro-holed", cls: "bg-slate-100 text-slate-700" },
+      { label: "1 m × 25 m roll", cls: "bg-green-50 text-green-700" },
       { label: "Alternative to Mapenet 150 for specific systems", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Mapei Mapetex Sel is a non-woven polyester reinforcing fabric used as junction reinforcement in specific Mapei waterproofing membrane systems. It is referenced alongside Mapenet 150 in Mapei system specifications — for example, Mapelastic Smart is specified with either Mapetex Sel or Mapenet 150 depending on the application detail and system being used. Non-woven polyester fabric provides a different reinforcement profile to fibreglass mesh — it absorbs membrane into its fibre structure rather than relying on mesh apertures for membrane penetration.\n\nConfirm with the current Mapei system specification and with Mapei technical which reinforcing fabric — Mapenet 150 or Mapetex Sel — is specified for the specific Mapei membrane being applied on the project before specifying. Do not substitute one fabric for the other without confirmation from Mapei technical.",
+      "Mapei Mapetex Sel is a non-woven macro-holed polypropylene reinforcing fabric (not polyester) used as junction reinforcement in specific Mapei waterproofing membrane systems. It is supplied in 1 m wide × 25 m long rolls and weighs 80 g/m². It is referenced alongside Mapenet 150 in Mapei system specifications — for example, Mapelastic Smart is specified with either Mapetex Sel or Mapenet 150 depending on the application detail and system being used. Non-woven polypropylene fabric provides a different reinforcement profile to fibreglass mesh — it absorbs membrane into its fibre structure through macro holes rather than relying on mesh apertures for membrane penetration.\n\nConfirm with the current Mapei system specification and with Mapei technical which reinforcing fabric — Mapenet 150 or Mapetex Sel — is specified for the specific Mapei membrane being applied on the project before specifying. Do not substitute one fabric for the other without confirmation from Mapei technical.",
     technicalProperties: [
-      "Non-woven polyester reinforcing fabric",
+      "Non-woven macro-holed polypropylene reinforcing fabric — 80 g/m² — 0.6 mm thickness",
+      "1 m wide × 25 m long rolls — cut to required junction width",
       "Compatible with Mapei liquid-applied and cementitious membrane systems — confirm specific membrane with Mapei technical",
       "Used at junctions, corners, and around penetrations — embedded between membrane coats",
       "Referenced in Mapelastic Smart and other Mapei system specifications as an alternative to Mapenet 150 for specific applications",
     ],
     limitations: [
       "Confirm with Mapei Australia which reinforcing fabric (Mapenet 150 or Mapetex Sel) is specified for the specific membrane system being applied — do not assume they are interchangeable",
-      "Confirm current product availability, roll dimensions, and specification with Mapei Australia before specifying",
+      "Confirm current product availability and specification with Mapei Australia before specifying",
     ],
     procurementSources: [
       { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
@@ -295,10 +296,10 @@ const SYSTEM_COMPARISON: {
   {
     product: "Mapei Mapetex Sel",
     brand: "Mapei Australia",
-    material: "Non-woven polyester",
+    material: "Non-woven macro-holed polypropylene — 80 g/m²",
     membraneSystem: "Mapei liquid-applied and cementitious systems — confirm specific membrane",
     applicationMethod: "Embedded between membrane coats",
-    widthFormat: "Confirm roll dimensions with Mapei Australia",
+    widthFormat: "1 m wide × 25 m long roll — cut to required width",
     keyRestriction: "Confirm with Mapei technical which fabric is specified — not universally interchangeable with Mapenet 150",
   },
   {

@@ -117,9 +117,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.haymespaint.com.au",
     tdsUrl: "https://www.haymespaint.com.au/products/exterior",
     accentColor: "#7c3aed",
-    name: "Haymes Extreme Shield Exterior Acrylic",
-    descriptionLine: "Australian-made premium acrylic exterior topcoat with weatherguard technology — strong UV, mould and algae resistance for masonry and render facades — independently tested for Australian conditions",
-    productType: "Premium acrylic exterior topcoat — masonry and render — Australian-made",
+    name: "TODO: owner confirm — Haymes Extreme Shield Exterior Acrylic (WRONG PRODUCT NAME — 'Extreme Shield' is not an active Haymes exterior acrylic product — the correct current Haymes exterior acrylic is 'Exterior Solashield®' available in Low Sheen, Matt, Satin, and Gloss finishes — confirm correct product name is 'Haymes Exterior Solashield' and update this card with current Haymes TDS data)",
+    descriptionLine: "TODO: owner confirm — Australian-made premium acrylic exterior topcoat with weatherguard technology — strong UV, mould and algae resistance for masonry and render facades — independently tested for Australian conditions (product name incorrect — correct Haymes exterior acrylic is 'Exterior Solashield®' — see name field)",
+    productType: "TODO: owner confirm — Premium acrylic exterior topcoat — masonry and render — Australian-made (product name unconfirmed — correct name appears to be 'Haymes Exterior Solashield' — see name field)",
     filterTags: ["Acrylic", "Two-coat", "Exterior-topcoat", "Masonry", "Render", "UV-resistant", "Water-based", "Weatherproof", "Anti-fungal"],
     techChips: [
       { label: "Australian-made", cls: "bg-purple-100 text-purple-800" },
@@ -128,14 +128,14 @@ const PRODUCTS: Product[] = [
       { label: "Premium acrylic", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Haymes Extreme Shield is an Australian-manufactured premium exterior acrylic coating designed for masonry and render facades. It incorporates Haymes's Weatherguard Technology — a combination of UV-absorbing additives, fungicide, and algaecide package — to provide enhanced resistance to the combined weathering stresses of UV radiation, moisture, and biological growth that characterise Australian exterior facade conditions. Extreme Shield is particularly popular in Victoria and southern Australia where Haymes has strong trade distribution. Applied as a two-coat system over a compatible Haymes exterior primer or alkali-resistant primer on cement render. Haymes provides technical data and colour matching services through their national trade network. Confirm current primer specification, DFT requirements, and product compatibility from the current Haymes Extreme Shield TDS before specifying.",
+      "TODO: owner confirm — WRONG PRODUCT NAME. 'Haymes Extreme Shield' is not a current Haymes product. The correct current Haymes exterior acrylic is 'Exterior Solashield®' (haymespaint.com.au) — available in Low Sheen, Matt, Satin, and Gloss finishes. This card should be updated to reference 'Haymes Exterior Solashield' and the technical data (DFT, coverage, primer requirements, VOC, anti-fungal properties) should be sourced from the current Haymes Exterior Solashield TDS. Haymes is an Australian manufacturer with strong trade distribution in Victoria and regional Australia. Confirm current primer specification, DFT requirements, and product compatibility from the current Haymes Exterior Solashield TDS before specifying.",
     technicalProperties: [
-      "Binder: premium acrylic with Weatherguard Technology — UV absorbers + fungicide + algaecide package",
-      "Strong resistance to mould and algae growth in humid exposures — suitable for shaded and coastal facades",
+      "TODO: owner confirm — product name incorrect — current Haymes exterior acrylic is 'Exterior Solashield®' not 'Extreme Shield' — update all technical data below from current Haymes Exterior Solashield TDS",
+      "Strong resistance to mould and algae growth in humid exposures — confirm anti-fungal specification from current Haymes Exterior Solashield TDS",
       "Australian-manufactured and independently tested for Australian exterior conditions",
-      "DFT: confirm from current TDS — apply at manufacturer's recommended spread rate per coat",
+      "DFT: confirm from current Haymes Exterior Solashield TDS — apply at manufacturer's recommended spread rate per coat",
       "Wide colour range — Haymes national tinting service — custom colour matching available",
-      "Confirm primer requirements from current Haymes TDS — alkali-resistant primer required on new render",
+      "Confirm primer requirements from current Haymes Exterior Solashield TDS — alkali-resistant primer required on new render",
     ],
     limitations: [
       "Not a crack-bridging coating — specify elastomeric system where active crack movement is present",
@@ -167,9 +167,9 @@ const PRODUCTS: Product[] = [
     systemDescription:
       "Jotun Jotashield Extreme is a premium exterior acrylic topcoat with Jotun's ColourGuard and DirtGuard technologies — ColourGuard provides enhanced UV stability and chalk resistance, while DirtGuard reduces the accumulation of atmospheric dirt and pollutants on the facade surface. It is particularly well suited to commercial, high-rise, and prominent strata facades where colour retention over a long repaint cycle is critical. Jotun has a strong commercial market presence in Australia through trade supply channels. Applied as a two-coat system over a compatible Jotun exterior primer or alkali-resistant primer on cement render. Confirm primer specification, DFT requirements, and current product formulation from the current Jotun Jotashield Extreme TDS before specifying. Confirm current Australian product range with Jotun Australia as formulations may vary from international catalogues.",
     technicalProperties: [
-      "Binder: premium acrylic with ColourGuard (UV/chalk resistance) and DirtGuard (self-cleaning) technologies",
-      "Exceptional UV stability — suited to high-UV commercial facades and long repaint cycles",
-      "DirtGuard reduces atmospheric dirt accumulation — reduced maintenance cleaning requirement",
+      "TODO: owner confirm — 'ColourGuard' and 'DirtGuard' technology claims not confirmed from a current AU-specific Jotun TDS at time of verification — Jotashield Extreme exists globally but Australian product positioning and technology claims may differ — confirm current AU product formulation, ColourGuard/DirtGuard applicability, and all technical data with Jotun Australia",
+      "Exceptional UV stability — suited to high-UV commercial facades and long repaint cycles — confirm from current AU TDS",
+      "TODO: owner confirm — DirtGuard (self-cleaning/dirt resistance) technology: not confirmed from AU-specific Jotun TDS — confirm whether DirtGuard is a current feature of the AU Jotashield Extreme formulation with Jotun Australia technical",
       "DFT: confirm from current Jotun TDS — typically two coats at manufacturer's recommended spread rate",
       "Suitable for coastal and marine environments — confirm coastal grade suitability with Jotun Australia",
       "Confirm current Australian product designation and primer from Jotun Australia technical",

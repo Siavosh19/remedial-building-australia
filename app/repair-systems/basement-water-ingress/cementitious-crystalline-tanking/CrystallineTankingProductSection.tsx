@@ -52,7 +52,7 @@ const PRODUCTS: Product[] = [
       "Crystalline waterproofing — active chemicals penetrate concrete capillary matrix — waterproofing becomes part of concrete",
       "Suitable for positive-side and negative-side application — critical for strata basements where positive face is inaccessible",
       "Autogenous healing — crystalline growth can self-seal cracks up to approximately 0.4mm under water pressure",
-      "Suitable for water-retaining structures — non-toxic — potable water contact approval from APVMA (confirm current status)",
+      "Suitable for water-retaining structures — non-toxic — TODO: owner confirm — APVMA governs pesticides/veterinary medicines, not building waterproofing; correct Australian potable water contact standard for building products is AS/NZS 4020 — verify current approval with Xypex Australia",
       "Becomes permanently integrated with concrete — cannot delaminate or blister like membrane systems",
       "AS 3600 Concrete Structures — complement to structural concrete; confirm engineering approval for use in structural elements",
       "Coverage approximately 0.8 kg/m² per coat for slurry application — confirm current coverage with Xypex Australia",
@@ -64,7 +64,7 @@ const PRODUCTS: Product[] = [
       "Not suitable for moving joints, control joints, or construction joints that continue to move — use polyurethane sealant or injection in moving joints",
       "Does not replace surface preparation — concrete must be cleaned, laitance removed, and surface opened by grinding or high-pressure water blasting before application",
       "Wet cure required after application — keep damp for 3 days minimum after each coat — do not allow to dry out during curing",
-      "Confirm current APVMA potable water approval status with Xypex Australia before specifying for water storage tanks",
+      "TODO: owner confirm — APVMA governs pesticides/veterinary medicines, not building waterproofing products; verify potable water contact approval (refer AS/NZS 4020) with Xypex Australia before specifying for water storage tanks",
     ],
     procurementSources: [
       { name: "Xypex Australia — direct supply", url: "https://www.xypex.com.au" },
@@ -229,7 +229,7 @@ const TECH_INFO = {
   standardsNotes: [
     "AS 3600 Concrete Structures — crystalline waterproofing is a concrete protection and repair system — engineer must confirm suitability for structural elements",
     "NCC Volume One — below-grade waterproofing performance requirements — crystalline tanking must achieve the required performance outcome",
-    "APVMA — Australian Pesticides and Veterinary Medicines Authority — potable water contact approval — confirm current registration with Xypex Australia and Penetron Australia",
+    "TODO: owner confirm — APVMA governs pesticides/veterinary medicines, not building waterproofing products; correct potable water contact standard for building products in Australia is AS/NZS 4020 — verify current approval status with Xypex Australia and Penetron Australia",
     "BS 8102 Code of practice for protection of below ground structures against water from the ground — useful reference for negative-side tanking design philosophy",
   ],
   suitableDefects: [

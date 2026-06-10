@@ -67,7 +67,7 @@ const SCREED_PRODUCTS: Product[] = [
       "Polymer additive (Abacrete or WPM 405) in bonding slurry and gauging water — mandatory for external and wet environment use",
       "Bonded: minimum approximately 15mm — Unbonded: minimum 35mm, preferably 40mm — confirm from current ARDEX TDS",
       "Dimensionally stable — internal and external use — large balcony, terrace, and podium areas",
-      "Walk on: approximately 3 hours — tile over: approximately 8 hours",
+      "Walk on and tile over: approximately 8 hours — confirm from current ARDEX A 38 TDS",
       "Only ARDEX-approved engineered screed for over-membrane unbonded topping over liquid-applied membranes",
       "Bay size: maximum approximately 40m² for bonded applications — saw cuts required for larger areas",
     ],
@@ -152,7 +152,7 @@ const SCREED_PRODUCTS: Product[] = [
       "Residual moisture at 24 hours: less than 2%",
       "Bonded: 10–50mm — Floating: 35–70mm with polyethylene sheet",
       "Bonding slurry: Planicrete or Planicrete SP — must be applied wet before screed",
-      "Green Star compliant — contributes to Green Star credits",
+      "TODO: owner confirm — Green Star compliance claim not confirmed from current Mapei Australia TDS; confirm with Mapei Australia before publishing",
     ],
     limitations: [
       "Do not mix with other binders or aggregates — water only — do not add Topcem, cement, lime, or gypsum",

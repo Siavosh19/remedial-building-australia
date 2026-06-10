@@ -56,7 +56,7 @@ const PRODUCTS: Product[] = [
       "WTA 2-9-04 compliant — renovating plaster standard — enlarged pore structure accommodates salt crystallisation without surface failure",
       "Vapour-permeable (breathable) — wall continues to dry through the plaster layer during the drying-out period",
       "High salt tolerance — formulated to resist hygroscopic salts including nitrates, chlorides and sulphates present in rising damp walls",
-      "Two-coat system: SP I undercoat (6–10mm) + SP II finish coat (10–15mm) — total system thickness confirms to WTA minimum requirements",
+      "Two-coat system: SP I undercoat (6–10mm) + SP II finish coat (10–15mm) — total system thickness conforms to WTA minimum requirements",
       "Internal application — for replastering ground-floor masonry walls after DPC injection treatment",
       "Coordinated Remmers system — SP plasters designed to be used in conjunction with Remmers Kiesol or Kiesol C injection",
     ],

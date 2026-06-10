@@ -44,8 +44,8 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.fantech.com.au",
     tdsUrl: "https://www.fantech.com.au",
     accentColor: "#ef4444",
-    name: "Fantech DVA150 Inline Duct Fan",
-    descriptionLine: "150mm inline centrifugal duct fan for kitchen range hood and bathroom exhaust systems — suits longer duct runs with higher static pressure",
+    name: "TODO: owner confirm — Fantech 150mm inline duct fan (current AU model name)",
+    descriptionLine: "TODO: owner confirm — 'Fantech DVA150' could not be confirmed as a current Fantech Australia product. Current Fantech 150mm inline fans include the TD-500/150SIL and WhisperJet 150 series — confirm the correct model name with Fantech before specifying",
     productType: "150mm inline centrifugal duct fan — kitchen and bathroom exhaust",
     filterTags: ["Exhaust-fan", "Inline", "Centrifugal", "Duct-fan", "150mm"],
     techChips: [
@@ -56,7 +56,7 @@ const PRODUCTS: Product[] = [
       { label: "AS 1668.2", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "The Fantech DVA150 is a 150mm inline centrifugal duct fan designed for kitchen range hood exhaust and bathroom exhaust systems in residential and multi-unit buildings where duct runs are long or have multiple bends that generate significant static pressure. Inline centrifugal fans are installed within the duct run — typically in the ceiling plenum or plant room — rather than at the ceiling or wall face. This placement allows the fan to draw air through the full duct run length, making it suitable for strata apartment bathroom and kitchen exhaust systems where the common exhaust riser may be several floors away from the apartment.\n\nThe DVA150 is suitable for replacement of failed or undersized inline fans in existing Class 2 strata exhaust systems. Confirm duct diameter, external static pressure, and required airflow against AS 1668.2 requirements before specifying. An accessible maintenance point or access panel must be provided in the ceiling or duct run adjacent to the installed fan.",
+      "TODO: owner confirm model name — A 150mm inline duct fan designed for kitchen range hood exhaust and bathroom exhaust systems in residential and multi-unit buildings where duct runs are long or have multiple bends that generate significant static pressure. Inline fans are installed within the duct run — typically in the ceiling plenum or plant room — rather than at the ceiling or wall face. This placement allows the fan to draw air through the full duct run length, making it suitable for strata apartment bathroom and kitchen exhaust systems where the common exhaust riser may be several floors away from the apartment.\n\nConfirm duct diameter, external static pressure, and required airflow against AS 1668.2 requirements before specifying. Confirm current product model name with Fantech Australia. An accessible maintenance point or access panel must be provided in the ceiling or duct run adjacent to the installed fan.",
     technicalProperties: [
       "150mm duct connection — centrifugal impeller — suits long duct runs with higher external static pressure than axial fans can overcome",
       "Inline installation within duct run — fan is not visible at the ceiling or wall face — suitable for kitchen range hood and bathroom exhaust in strata apartments",
@@ -68,7 +68,7 @@ const PRODUCTS: Product[] = [
       "Inline installation requires access for maintenance — an access panel in the ceiling or adjacent duct run is mandatory",
       "Centrifugal fans are larger and heavier than axial fans — confirm structural support and space available in the ceiling plenum before specifying",
       "Not suitable for direct wall or ceiling face exhaust without ductwork — inline fan must be connected to a full duct system",
-      "Confirm duct diameter and external static pressure against Fantech DVA150 performance curve before specifying — undersizing will result in non-compliance with AS 1668.2 airflow requirements",
+      "Confirm duct diameter and external static pressure against current Fantech inline fan performance data before specifying — undersizing will result in non-compliance with AS 1668.2 airflow requirements",
       "Confirm current product specification and compliance with Fantech before specifying",
     ],
     procurementSources: [
@@ -82,27 +82,27 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.manrose.com.au",
     accentColor: "#3b82f6",
     name: "Manrose CF100 Ceiling Exhaust Fan",
-    descriptionLine: "100mm axial ceiling-mounted exhaust fan with adjustable timer for bathroom and toilet exhaust — low profile, quiet operation, backdraft shutter",
-    productType: "100mm ceiling-mounted axial exhaust fan for bathrooms",
-    filterTags: ["Exhaust-fan", "Ceiling-mounted", "Axial", "100mm", "Backdraft-shutter"],
+    descriptionLine: "100mm centrifugal ceiling-mounted exhaust fan with adjustable timer for bathroom and toilet exhaust — quiet operation, backdraft shutter, 25 L/s extract rate",
+    productType: "100mm ceiling-mounted centrifugal exhaust fan for bathrooms",
+    filterTags: ["Exhaust-fan", "Ceiling-mounted", "Centrifugal", "100mm", "Backdraft-shutter"],
     techChips: [
-      { label: "Ceiling-mounted axial", cls: "bg-sky-100 text-sky-800" },
+      { label: "Ceiling-mounted centrifugal", cls: "bg-sky-100 text-sky-800" },
       { label: "100mm duct", cls: "bg-slate-100 text-slate-700" },
       { label: "Backdraft shutter", cls: "bg-slate-100 text-slate-700" },
       { label: "Adjustable timer", cls: "bg-green-50 text-green-700" },
       { label: "AS 1668.2", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "The Manrose CF100 is a 100mm axial ceiling-mounted exhaust fan for bathroom and toilet exhaust in residential and multi-unit buildings. Axial ceiling fans are the most common replacement exhaust fan in Class 2 strata bathroom remediation — they are installed in the ceiling face, visible from below, and connect to a 100mm flexible or rigid duct run in the ceiling plenum. The CF100 includes an integral backdraft shutter to prevent reverse airflow and odour migration from the common exhaust duct when the fan is not running — essential in strata apartment buildings with common exhaust risers.\n\nThe CF100 includes an adjustable overrun timer that keeps the fan running for a set period after the light is switched off — improving moisture extraction in bathrooms and reducing condensation on surfaces. Quiet operation is a primary consideration in strata apartment bathroom fans — confirm the sound power level of the selected model against acceptable noise levels for the project.",
+      "The Manrose CF100 is a 100mm centrifugal ceiling-mounted exhaust fan for bathroom and toilet exhaust in residential and multi-unit buildings. The centrifugal design allows it to move air over longer duct runs than axial fans, providing maximum performance even against pressures from long duct lengths and resistance by grilles. The fan is installed in the ceiling face, visible from below, and connects to a 100mm flexible or rigid duct run in the ceiling plenum. Extract rate is 90 m³/hr (25 L/s). The CF100 includes an integral backdraft shutter (spring-operated non-return flap) to prevent reverse airflow and odour migration from the common exhaust duct when the fan is not running — essential in strata apartment buildings with common exhaust risers.\n\nThe CF100T variant includes an adjustable overrun timer that keeps the fan running for a set period after the light is switched off — improving moisture extraction in bathrooms and reducing condensation on surfaces. Noise level is 42 dB(A) at 3m. Confirm the selected CF100 variant (standard, timer, humidity) against the project requirements.",
     technicalProperties: [
-      "100mm axial ceiling-mounted fan — compact low-profile unit — installs in standard ceiling opening — visible from below in bathroom or toilet",
-      "Integral backdraft shutter — prevents reverse airflow through the exhaust duct when fan is off — essential in strata common exhaust riser systems",
-      "Adjustable overrun timer — fan continues to run after light is switched off — improves moisture extraction and reduces condensation",
-      "Quiet operation — confirm sound power level (dB(A)) from current Manrose data sheet for the selected model",
+      "100mm centrifugal ceiling-mounted fan — 90 m³/hr (25 L/s) extract rate — installs in standard ceiling opening — visible from below in bathroom or toilet",
+      "Integral backdraft shutter (spring-operated non-return flap) — prevents reverse airflow through the exhaust duct when fan is off — essential in strata common exhaust riser systems",
+      "Adjustable overrun timer (CF100T variant) — fan continues to run after light is switched off — improves moisture extraction and reduces condensation",
+      "42 dB(A) at 3m — centrifugal design provides powerful yet quiet and vibration-free operation",
       "Hardwired 240V connection — installation requires a licensed electrician — timer and switching configuration to be confirmed with electrical contractor",
     ],
     limitations: [
-      "Axial fan — limited static pressure capability — suitable only for short duct runs with minimal bends — not suitable for long duct runs to a remote riser",
+      "Centrifugal fan — designed to move air over longer duct runs than axial fans, but still confirm duct run length and static pressure against Manrose CF100 performance data before specifying",
       "100mm duct diameter — confirm existing duct diameter before specifying — reducing duct diameter from an existing larger duct will increase static pressure and reduce airflow",
       "Ceiling-mounted — installation requires cutting or enlarging an opening in the ceiling — confirm ceiling type and structural framing before proceeding",
       "Overrun timer wiring configuration must be confirmed with the electrical contractor — timer function depends on switching arrangement",
@@ -119,8 +119,8 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.clipsal.com",
     tdsUrl: "https://www.clipsal.com",
     accentColor: "#22c55e",
-    name: "Clipsal Airflow GX Wall Exhaust Fan",
-    descriptionLine: "Wall-mounted axial exhaust fan with integral backdraft shutter — suitable for direct wall exhaust without ductwork where wall exhaust is possible",
+    name: "TODO: owner confirm — Clipsal Airflow wall exhaust fan (current AU model name)",
+    descriptionLine: "TODO: owner confirm — 'Clipsal Airflow GX' could not be confirmed as a current Clipsal Australia model. Clipsal does offer wall-mounted Airflow exhaust fans in Australia — confirm the correct current model name with Clipsal before specifying",
     productType: "Wall-mounted exhaust fan with backdraft shutter",
     filterTags: ["Exhaust-fan", "Wall-mounted", "Axial", "Backdraft-shutter", "100mm"],
     techChips: [
@@ -131,7 +131,7 @@ const PRODUCTS: Product[] = [
       { label: "AS 1668.2", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "The Clipsal Airflow GX is a wall-mounted axial exhaust fan with an integral backdraft shutter for direct wall exhaust in bathrooms, toilets, and laundries where the external wall allows direct exhaust without ductwork. Wall-mounted exhaust fans are installed through an external wall opening and exhaust directly to the outside — eliminating the duct run and static pressure limitations of ceiling fans connected to a common exhaust riser. This makes wall-mounted fans suitable where the bathroom or toilet has direct access to an external wall.\n\nIn Class 2 strata apartment buildings, wall-mounted exhaust fans are less common than ceiling fans — most apartments do not have a bathroom with direct access to an external wall. However, in ground-floor units, corner units, or where the bathroom abuts an external wall, a wall-mounted fan is an effective and simple solution. The integral backdraft shutter prevents reverse airflow and wind-driven rain ingress when the fan is not operating.",
+      "TODO: owner confirm model name — A Clipsal Airflow wall-mounted exhaust fan with an integral backdraft shutter for direct wall exhaust in bathrooms, toilets, and laundries where the external wall allows direct exhaust without ductwork. Wall-mounted exhaust fans are installed through an external wall opening and exhaust directly to the outside — eliminating the duct run and static pressure limitations of ceiling fans connected to a common exhaust riser. This makes wall-mounted fans suitable where the bathroom or toilet has direct access to an external wall.\n\nIn Class 2 strata apartment buildings, wall-mounted exhaust fans are less common than ceiling fans — most apartments do not have a bathroom with direct access to an external wall. However, in ground-floor units, corner units, or where the bathroom abuts an external wall, a wall-mounted fan is an effective and simple solution. The integral backdraft shutter prevents reverse airflow and wind-driven rain ingress when the fan is not operating. Confirm current model name and specifications with Clipsal before specifying.",
     technicalProperties: [
       "Wall-mounted axial exhaust — installs through external wall — no ductwork required — direct exhaust to outside",
       "Integral backdraft shutter — prevents reverse airflow and wind ingress when fan is not operating",
@@ -208,9 +208,9 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; fantech: string; manrose: string; clipsal: string }[] = [
-  { system: "Inline centrifugal duct fan", fantech: "DVA150", manrose: "—", clipsal: "—" },
-  { system: "Ceiling axial exhaust fan", fantech: "—", manrose: "CF100", clipsal: "—" },
-  { system: "Wall-mounted exhaust fan", fantech: "—", manrose: "—", clipsal: "Airflow GX" },
+  { system: "Inline duct fan (150mm)", fantech: "TODO: confirm model name", manrose: "—", clipsal: "—" },
+  { system: "Ceiling centrifugal exhaust fan", fantech: "—", manrose: "CF100", clipsal: "—" },
+  { system: "Wall-mounted exhaust fan", fantech: "—", manrose: "—", clipsal: "TODO: confirm model name" },
   { system: "Acoustic attenuation duct", fantech: "Acoustic Duct", manrose: "—", clipsal: "—" },
 ];
 
@@ -224,9 +224,9 @@ const SYSTEM_COMPARISON: {
   primaryUse: string;
 }[] = [
   {
-    product: "Fantech DVA150",
+    product: "TODO: confirm — Fantech 150mm inline fan (model TBC)",
     brand: "Fantech",
-    type: "Inline centrifugal",
+    type: "Inline (confirm type with TDS)",
     diameterMm: "150mm",
     maxPressurePa: "High (confirm TDS)",
     ductRequired: "Yes — inline duct install",
@@ -235,14 +235,14 @@ const SYSTEM_COMPARISON: {
   {
     product: "Manrose CF100",
     brand: "Manrose",
-    type: "Ceiling axial",
+    type: "Ceiling centrifugal",
     diameterMm: "100mm",
-    maxPressurePa: "Low–medium (confirm TDS)",
-    ductRequired: "Yes — short ceiling duct",
+    maxPressurePa: "Medium-high — 90 m³/hr (25 L/s)",
+    ductRequired: "Yes — ceiling duct to riser",
     primaryUse: "Bathroom / toilet ceiling exhaust",
   },
   {
-    product: "Clipsal Airflow GX",
+    product: "TODO: confirm — Clipsal Airflow wall fan (model TBC)",
     brand: "Clipsal",
     type: "Wall-mounted axial",
     diameterMm: "100mm",
@@ -270,14 +270,14 @@ const TECH_INFO = {
     "Wall-mounted exhaust fan installation where the bathroom has direct access to an external wall",
   ],
   selectionCriteria: [
-    "Select inline centrifugal fan for duct runs exceeding 3–4m or with multiple bends — axial fans cannot overcome the higher static pressure of long runs",
-    "Select ceiling axial fan for short duct runs in bathrooms with direct access to a nearby riser or roof exhaust point",
+    "Select inline fan for duct runs exceeding 3–4m or with multiple bends — axial fans cannot overcome the higher static pressure of long runs",
+    "Select ceiling centrifugal fan (e.g. Manrose CF100) for runs up to medium length where a ceiling-face installation is required — centrifugal type handles more static pressure than axial",
     "Select wall-mounted axial fan only where the bathroom has direct access to an external wall — wall penetration approval required in strata buildings",
     "Specify acoustic duct wherever the exhaust duct passes through or adjacent to shared walls, bedroom walls, or noise-sensitive spaces",
     "Confirm minimum airflow against AS 1668.2 — bathrooms and toilets require a minimum of 25 L/s — confirm with mechanical engineer",
   ],
   limitations: [
-    "Axial fans cannot overcome high static pressure in long duct runs — undersized or incorrect fan type will result in insufficient airflow and non-compliance",
+    "Axial fans cannot overcome high static pressure in long duct runs — use centrifugal or inline fans for ducted runs to a remote riser — undersized or incorrect fan type will result in insufficient airflow and non-compliance",
     "All hardwired exhaust fan installations require a licensed electrician — not DIY",
     "Inline fans must be accessible for maintenance — access panels in the ceiling or duct run are mandatory",
     "Wall penetrations through strata building external walls require OC approval — confirm before specifying",
@@ -433,7 +433,7 @@ export function MechanicalExhaustIntroSection() {
           Mechanical exhaust fans in Class 2 strata apartment buildings fail for several reasons: motor burnout from age or continuous running, bearing failure causing noise and reduced airflow, duct blockage from lint, dust and debris accumulation, and inadequate airflow for the actual duct run length — where a fan specified for a short run is installed on a long run to a common exhaust riser, resulting in insufficient extraction. These failures lead to excess moisture, condensation, mould growth, and non-compliance with AS 1668.2 ventilation requirements.
         </p>
         <p>
-          Fan type selection is critical to performance. Inline centrifugal fans are required for long duct runs — typically those exceeding 3–4 metres or with multiple bends — because centrifugal impellers develop significantly higher static pressure than axial fans, allowing them to overcome duct friction over longer runs. Axial ceiling-mounted and wall-mounted fans are suitable for short, direct runs to a nearby riser or external wall. Installing an axial fan on a long run is a common cause of inadequate airflow that cannot be resolved by replacing the fan with another axial model — the fan type must be changed.
+          Fan type selection is critical to performance. Inline fans and centrifugal ceiling fans are suitable for longer duct runs because they develop higher static pressure than axial fans, allowing them to overcome duct friction over longer runs. Axial wall-mounted fans are suitable for direct-to-wall exhaust only. Installing an axial fan on a long ducted run to a remote riser is a common cause of inadequate airflow — the fan type must be matched to the duct run length and static pressure of the installed system.
         </p>
         <p>
           Acoustic duct is used to manage noise transmission in exhaust systems where the duct run passes through or adjacent to shared walls, bedroom walls, and ceiling plenums in strata buildings. Standard flexible duct transmits exhaust fan motor noise and airborne sound from adjacent apartments — internally lined acoustic duct with mineral wool or foam lining attenuates this noise and is specified as part of an exhaust fan replacement or upgrade where noise complaints are part of the defect history.

@@ -44,32 +44,32 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.wacker.com/en/au",
     tdsUrl: "https://www.wacker.com/en/au",
     accentColor: "#003d7a",
-    name: "Wacker Silres BS 45",
-    descriptionLine: "Oligomeric isobutyltriethoxysilane — deep-penetrating solvent-based silane sealer for concrete and masonry",
-    productType: "Penetrating silane sealer — solvent-based",
+    name: "Wacker Silres BS 290 — Solvent-Based Silane/Siloxane Penetrating Water Repellent",
+    descriptionLine: "TODO: owner confirm — card previously listed 'Wacker Silres BS 45' but BS 45 is a water-dilutable paint binder emulsion, not a penetrating masonry sealer. Wacker's penetrating sealer range is the BS 290 / BS 1001 series. Verify the correct AU Wacker penetrating sealer product name with Wacker Chemie Australia before publishing.",
+    productType: "Penetrating silane/siloxane water repellent — solvent-based",
     filterTags: ["Silane", "Solvent-based", "Penetrating", "Concrete", "Masonry", "Brick", "Deep-penetration", "Colourless", "External", "1C"],
     techChips: [
-      { label: "Oligomeric silane", cls: "bg-sky-100 text-sky-800" },
+      { label: "TODO: confirm product name", cls: "bg-red-100 text-red-800" },
       { label: "Solvent-based", cls: "bg-amber-50 text-amber-700" },
-      { label: "Deep penetration", cls: "bg-green-50 text-green-700" },
+      { label: "Penetrating sealer", cls: "bg-green-50 text-green-700" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Wacker Silres BS 45 is an oligomeric isobutyltriethoxysilane — the industry reference standard for penetrating silane sealers for concrete and masonry. The oligomeric silane chemistry provides deeper penetration into dense concrete and masonry substrates than monomeric silanes, as the longer chain molecules reduce evaporation loss during penetration and increase the reaction volume within the pore structure.\n\nBS 45 is applied by brush, roller or low-pressure spray to clean, dry concrete or masonry surfaces. The silane penetrates into the pore structure and reacts with the substrate alkalinity and ambient humidity to produce a hydrophobic silicone resin lining within the pores. The treatment is completely colourless and vapour-permeable — it does not form a surface film, does not change the appearance of the substrate, and allows the substrate to breathe.\n\nIn penetrating damp remediation, Wacker Silres BS 45 is specified for concrete elements below and at DPC level to reduce moisture ingress through the fabric of the structure — particularly on solid concrete wall panels, concrete block construction, and below-ground wall faces where a membrane is not appropriate. Wacker Chemie has an established presence in Australia with technical support available through their Australian office. Confirm current product specification and application requirements with Wacker Australia before specifying.",
+      "TODO: owner confirm — this card previously listed Wacker Silres BS 45, described as an 'oligomeric isobutyltriethoxysilane solvent-based silane sealer'. However, Wacker Silres BS 45 is a water-dilutable solventless emulsion binder used in silicone resin paints and plasters — it is NOT a penetrating masonry sealer. The correct Wacker penetrating sealer products for concrete and masonry hydrophobisation are from the SILRES BS 290 and BS 1001 series. SILRES BS 290 is a solventless silane/siloxane concentrate and BS 1001 is a water-thinnable silane/siloxane emulsion. The correct product name and specification for the Australian market must be confirmed with Wacker Chemie Australia before this card can be published.",
     technicalProperties: [
-      "Oligomeric isobutyltriethoxysilane — longer chain silane — deeper penetration into concrete and dense masonry than monomeric silanes",
-      "Solvent-based — low viscosity — high substrate penetration — suitable for dense concrete and closely bonded masonry",
+      "TODO: owner confirm — all technical claims for this card must be reverified with the correct Wacker penetrating sealer product (BS 290 series or as confirmed by Wacker AU)",
+      "Penetrating silane/siloxane — chemically bonds within substrate pores — cannot peel or flake",
       "Completely colourless — no visible surface film — does not change substrate appearance",
-      "Vapour-permeable — the substrate continues to breathe after treatment — moisture vapour can escape outward",
-      "Chemically bonds within substrate pores — not a surface coating — cannot peel or flake",
-      "Reduces chloride ion ingress — extends service life of reinforced concrete elements in marine or carbonation-affected environments",
+      "Vapour-permeable — the substrate continues to breathe after treatment",
+      "Chemically bonds within substrate pores — provides hydrophobic protection against rain-driven moisture",
+      "Reduces chloride ion ingress — relevant for reinforced concrete elements in marine or carbonation-affected environments",
     ],
     limitations: [
+      "TODO: owner confirm — all technical claims must be reverified once the correct Wacker AU product is confirmed",
       "Substrate must be clean, dry and free of laitance, oils, coatings or previous sealers before application",
-      "Not suitable for substrates with active water ingress or positive-side hydrostatic pressure — silane penetration is blocked by surface moisture",
-      "Not a waterproofing membrane — provides water repellency, not waterproofing — not suitable as the sole moisture management measure for severe water ingress",
-      "Solvent-based — requires PPE and adequate ventilation — check current SDS before use on occupied or enclosed sites",
-      "Re-treatment interval depends on exposure — confirm expected service life and maintenance interval with Wacker Australia for the specific exposure condition",
+      "Not suitable for substrates with active water ingress or positive-side hydrostatic pressure",
+      "Not a waterproofing membrane — provides water repellency only — not suitable as the sole measure for severe water ingress",
+      "Re-treatment interval depends on exposure — confirm expected service life with Wacker Australia",
       "Confirm current product specification, application rate and technical support with Wacker Chemie Australia before specifying",
     ],
     procurementSources: [
@@ -95,11 +95,11 @@ const PRODUCTS: Product[] = [
     systemDescription:
       "Remmers Funcosil SL is a solvent-based oligomeric silane penetrating sealer from the Remmers Funcosil range — one of the most established facade and masonry protection product lines in the Australian remedial building market. Funcosil SL penetrates deeply into the pore structure of masonry and concrete substrates and reacts in place to form a chemically bonded hydrophobic lining within the pores, significantly reducing water absorption without forming a surface film.\n\nThe Funcosil SL is part of Remmers' WTA-referenced penetrating damp and facade protection system and is commonly specified for external masonry facades, brick veneer panels, concrete elements and masonry walls affected by penetrating damp where the source of moisture is rain-driven ingress through the pore structure and mortar joints. Remmers Australia provides technical documentation, application support and system warranties through their Australian representative network.\n\nConfirm the current Funcosil SL product specification, application rate for the specific substrate, and system documentation with Remmers Australia before specifying. The Funcosil range includes multiple product variants — confirm the correct product for the specific substrate porosity and exposure condition.",
     technicalProperties: [
-      "Solvent-based oligomeric silane — deep penetration into masonry and concrete — reduces water absorption without forming a surface film",
-      "WTA-referenced product — Remmers Funcosil range is documented under WTA guidelines for penetrating damp and facade protection",
+      "Solvent-based oligomeric silane/siloxane blend with ~7% active ingredient by mass — deep penetration into masonry — reduces water absorption without forming a surface film",
+      "Remmers Funcosil system — documented in Remmers facade protection system literature; TODO: owner confirm — 'WTA-referenced' claim could not be confirmed from live sources. Verify with Remmers Australia before publishing.",
       "Chemically bonds within the substrate pore structure — permanent hydrophobic treatment — cannot peel, flake or delaminate",
       "Colourless and vapour-permeable — no change to substrate appearance — substrate continues to breathe after treatment",
-      "Suitable for brick, sandstone, calcium silicate, concrete block and dense concrete — confirm specific substrate suitability with Remmers technical",
+      "Suitable for brick, sandstone, calcium silicate, concrete block and dense concrete — coverage 0.2–1.5 L/m² depending on substrate porosity; confirm specific substrate suitability with Remmers technical",
       "Remmers Australia technical support — national representative network — system documentation available",
     ],
     limitations: [
@@ -169,8 +169,8 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; wacker: string; remmers: string; evonik: string }[] = [
-  { system: "Silane sealer — concrete and dense masonry", wacker: "Silres BS 45", remmers: "Funcosil SL", evonik: "Protectosil BHN" },
-  { system: "Silane sealer — brick and sandstone masonry", wacker: "Silres BS 45", remmers: "Funcosil SL", evonik: "Protectosil BHN" },
+  { system: "Silane sealer — concrete and dense masonry", wacker: "TODO: confirm (BS 290 series?)", remmers: "Funcosil SL", evonik: "Protectosil BHN" },
+  { system: "Silane sealer — brick and sandstone masonry", wacker: "TODO: confirm (BS 290 series?)", remmers: "Funcosil SL", evonik: "Protectosil BHN" },
 ];
 
 const TECH_INFO = {

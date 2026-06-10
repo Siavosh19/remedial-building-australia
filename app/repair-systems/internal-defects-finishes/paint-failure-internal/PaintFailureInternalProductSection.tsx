@@ -41,9 +41,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.dulux.com.au",
     tdsUrl: "https://www.dulux.com.au/products/dulux-acra-prep-alkali-resistant-primer",
     accentColor: "#ef4444",
-    name: "Dulux Acra-Prep Alkali Resistant Primer",
+    name: "TODO: owner confirm — Dulux alkali-resistant primer (current AU product name)",
     descriptionLine:
-      "Water-based alkali-resistant primer for sealing new masonry, plasterboard and render surfaces before interior topcoat application — prevents alkali bleed-through",
+      "TODO: owner confirm — 'Dulux Acra-Prep Alkali Resistant Primer' could not be confirmed as a current Dulux Australia interior primer product. The current equivalent may be Dulux 1Step Prep or Dulux Professional Acrylic Primer — confirm correct current product name with Dulux Australia before specifying",
     productType: "Alkali-resistant primer for new and repaint applications",
     filterTags: ["Primer", "Alkali-resistant", "Water-based", "Interior", "Masonry", "Plasterboard"],
     techChips: [
@@ -54,7 +54,7 @@ const PRODUCTS: Product[] = [
       { label: "AS/NZS 1580", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Dulux Acra-Prep Alkali Resistant Primer is a water-based primer formulated to seal new masonry, concrete, plasterboard and render surfaces before the application of interior topcoats. The alkali-resistant formulation prevents alkali salts present in new cement-based substrates from bleeding through and discolouring or lifting the topcoat. Applied by brush, roller or spray as a single coat to bare or sanded substrate before full topcoat application.\n\nEssential first coat on all new or repaired plasterboard, render, and masonry in internal repainting projects within Class 2 strata apartments. Confirm current product designation and coverage rate with Dulux technical before specifying.",
+      "TODO: owner confirm — product name 'Dulux Acra-Prep Alkali Resistant Primer' could not be confirmed as a current Dulux Australia product on the au.dulux.com website. A water-based alkali-resistant primer formulated to seal new masonry, concrete, plasterboard and render surfaces before the application of interior topcoats. The alkali-resistant formulation prevents alkali salts present in new cement-based substrates from bleeding through and discolouring or lifting the topcoat. Applied by brush, roller or spray as a single coat to bare or sanded substrate before full topcoat application.\n\nConfirm current product designation and coverage rate with Dulux technical before specifying — the correct current Australian product name must be verified.",
     technicalProperties: [
       "Water-based alkali-resistant formulation — prevents alkali bleed-through on new cement-based and masonry substrates",
       "Suitable for new plasterboard, plaster, render and masonry — broad substrate coverage for internal remediation",
@@ -80,9 +80,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.taubmans.com.au",
     tdsUrl: "https://www.taubmans.com.au/products/taubmans-3-in-1-ceiling-and-wall",
     accentColor: "#3b82f6",
-    name: "Taubmans 3 in 1 Interior Ceiling Paint",
+    name: "TODO: owner confirm — Taubmans interior ceiling paint (current AU product name)",
     descriptionLine:
-      "Premium water-based acrylic interior paint for ceilings and walls — covers stains, resists moisture and mould, suitable for repainting over existing interior paint",
+      "TODO: owner confirm — 'Taubmans 3 in 1 Interior Ceiling Paint' could not be confirmed as a current product. The Taubmans '3 in 1' is a prep/primer product (Taubmans 3 in 1 Prep) not a ceiling topcoat. Confirm correct interior ceiling paint product name with Taubmans Australia before specifying",
     productType: "Premium low-sheen interior ceiling and wall acrylic",
     filterTags: ["Paint", "Acrylic", "Water-based", "Interior", "Low-sheen", "Topcoat"],
     techChips: [
@@ -93,7 +93,7 @@ const PRODUCTS: Product[] = [
       { label: "AS/NZS 1580", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Taubmans 3 in 1 Interior Ceiling Paint is a premium water-based acrylic interior paint formulated for ceilings and walls. The 3-in-1 designation refers to combined primer, sealer and topcoat capability for repainting over sound, sealed existing paint — on new or bare substrate an alkali-resistant primer undercoat should be applied first. Stain-covering properties make it suitable for cosmetic repainting over minor ceiling marks.\n\nDesigned for interior strata apartment ceiling and wall repainting where mould resistance, low-sheen finish and ease of application are priorities. Confirm current product specification and whether a separate primer is required for the specific substrate condition before applying.",
+      "TODO: owner confirm — the name 'Taubmans 3 in 1 Interior Ceiling Paint' appears to confuse the Taubmans 3 in 1 Prep product (a primer/sealer/undercoat) with a separate interior ceiling paint topcoat. Confirm the correct Taubmans interior ceiling paint product name with Taubmans Australia. A premium water-based acrylic interior paint formulated for ceilings and walls in strata apartments where mould resistance, low-sheen finish and ease of application are priorities.\n\nConfirm current product specification and whether a separate primer is required for the specific substrate condition before applying.",
     technicalProperties: [
       "Premium water-based acrylic formulation — low-sheen interior finish — suitable for ceilings and walls in strata apartments",
       "Stain-covering properties — hides minor surface marks and discolouration on well-prepared, primed surfaces",
@@ -130,8 +130,8 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; dulux: string; taubmans: string }[] = [
-  { system: "Alkali-resistant primer", dulux: "Acra-Prep AR Primer", taubmans: "—" },
-  { system: "Interior acrylic topcoat", dulux: "—", taubmans: "3 in 1 Interior" },
+  { system: "Alkali-resistant primer", dulux: "TODO: confirm current product name", taubmans: "—" },
+  { system: "Interior acrylic topcoat", dulux: "—", taubmans: "TODO: confirm current product name" },
 ];
 
 const SYSTEM_COMPARISON: {
@@ -144,7 +144,7 @@ const SYSTEM_COMPARISON: {
   primaryUse: string;
 }[] = [
   {
-    product: "Dulux Acra-Prep AR Primer",
+    product: "TODO: confirm — Dulux alkali-resistant interior primer",
     brand: "Dulux",
     type: "Alkali-resistant primer",
     coats: "1 coat",
@@ -153,7 +153,7 @@ const SYSTEM_COMPARISON: {
     primaryUse: "Prime bare / new substrate before interior topcoat",
   },
   {
-    product: "Taubmans 3 in 1 Interior",
+    product: "TODO: confirm — Taubmans interior ceiling topcoat",
     brand: "Taubmans",
     type: "Water-based acrylic topcoat",
     coats: "Min. 2 coats",

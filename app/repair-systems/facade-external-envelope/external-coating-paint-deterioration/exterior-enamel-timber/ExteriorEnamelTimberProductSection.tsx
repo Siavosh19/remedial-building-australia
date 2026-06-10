@@ -152,9 +152,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.haymespaint.com.au",
     tdsUrl: "https://www.haymespaint.com.au/products",
     accentColor: "#b45309",
-    name: "Haymes Ultra Trim Exterior Gloss",
+    name: "TODO: owner confirm — Haymes Ultra Trim Exterior Gloss (product name may be incorrect — the current Haymes trim product is 'Ultratrim® Acrylic' (available in Semi Gloss and High Gloss — NOT a specific 'Exterior Gloss' grade) — 'Ultra Trim Exterior Gloss' is not confirmed as the exact current Haymes product name — confirm correct current product name with Haymes technical and confirm whether Ultratrim® Acrylic is water-based and exterior-rated)",
     descriptionLine: "Australian-made premium exterior gloss enamel for timber trim — UV-resistant hard gloss finish for doors, window frames and exterior timber elements — Haymes exterior system",
-    productType: "Premium exterior gloss enamel — timber trim — Australian-made",
+    productType: "TODO: owner confirm — Premium exterior gloss enamel — timber trim — Australian-made (product name unconfirmed — current Haymes trim product appears to be 'Ultratrim® Acrylic' — see name field)",
     filterTags: ["Enamel", "Timber", "Exterior", "Gloss", "UV-resistant", "Water-based", "Trim", "Door", "Window-frame"],
     techChips: [
       { label: "Australian-made", cls: "bg-amber-100 text-amber-800" },
@@ -162,13 +162,13 @@ const PRODUCTS: Product[] = [
       { label: "Hard gloss", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Haymes Ultra Trim Exterior Gloss is an Australian-manufactured premium exterior gloss enamel for timber trim on building facades. It provides a hard, durable UV-resistant gloss finish on exterior timber elements including doors, window frames, fascias, and architraves. Applied as part of the Haymes exterior painting system over Haymes exterior timber primer and undercoat, it delivers a premium finish with strong adhesion and colour retention suited to Australian exterior conditions. Haymes is an Australian paint manufacturer with strong trade distribution in Victoria and regional Australia. Confirm current product name, primer and undercoat specification, DFT, and system from the current Haymes Ultra Trim TDS before specifying on a remedial project.",
+      "TODO: owner confirm — Product name not confirmed as 'Ultra Trim Exterior Gloss'. The current Haymes trim product appears to be 'Ultratrim® Acrylic' (Semi Gloss and High Gloss variants) — water-based, interior and exterior, non-yellowing, with Global GreenTag certification. This card should be updated to reference the correct current product name. Confirm the exact current product name, whether it is exterior-rated for facade trim, and obtain all technical data (DFT, coverage, primer requirements) from the current Haymes Ultratrim TDS before specifying on a remedial project. Haymes is an Australian paint manufacturer with strong trade distribution in Victoria and regional Australia.",
     technicalProperties: [
-      "Australian-manufactured premium exterior gloss enamel — part of the Haymes exterior system",
-      "UV-resistant hard gloss finish — suitable for exterior timber trim in Australian exterior conditions",
-      "Applied over Haymes exterior primer and undercoat on bare timber surfaces",
-      "Suitable for timber doors, window frames, fascias, and exterior architraves",
-      "Confirm primer specification, DFT, and coverage from current Haymes Ultra Trim TDS",
+      "TODO: owner confirm — product name: current Haymes trim product is 'Ultratrim® Acrylic' (Semi Gloss and High Gloss) — confirm correct product name before specifying",
+      "TODO: owner confirm — UV-resistant hard gloss finish: Ultratrim® Acrylic confirmed as water-based, non-yellowing, exterior-rated — confirm UV resistance claims from current Haymes Ultratrim TDS",
+      "Applied over Haymes exterior primer and undercoat on bare timber surfaces — confirm primer specification from current Haymes TDS",
+      "Suitable for timber doors, window frames, fascias, and exterior architraves — confirm from current TDS",
+      "Confirm primer specification, DFT, and coverage from current Haymes Ultratrim® Acrylic TDS",
       "Haymes distribution strongest in Victoria and regional Australia — confirm national availability",
     ],
     limitations: [

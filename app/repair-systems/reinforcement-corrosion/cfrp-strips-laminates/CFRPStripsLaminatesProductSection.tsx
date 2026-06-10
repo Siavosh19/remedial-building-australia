@@ -1,0 +1,441 @@
+"use client";
+
+import { useState, useRef } from "react";
+import {
+  Layers, SquareStack, Ruler, ExternalLink,
+  ChevronDown, ChevronUp, ChevronLeft, ChevronRight, FileText, BookOpen,
+} from "lucide-react";
+import {
+  CollapsibleList, CollapsibleDescription, CollapsibleSources,
+  CollapsibleCardDetails, TechCard,
+  CheckCircle, AlertTriangle,
+} from "../../_components/ProductPageShared";
+
+type FilterTag =
+  | "Pultruded-strip"
+  | "Woven-fabric"
+  | "EB-bonded"
+  | "NSM"
+  | "Flexural"
+  | "Shear"
+  | "Beam"
+  | "Slab"
+  | "Column";
+
+type Product = {
+  fullLabel: string;
+  brandUrl: string;
+  tdsUrl?: string;
+  accentColor: string;
+  name: string;
+  descriptionLine: string;
+  productType: string;
+  filterTags: FilterTag[];
+  techChips: { label: string; cls: string }[];
+  systemDescription: string;
+  technicalProperties: string[];
+  limitations: string[];
+  procurementSources: { name: string; url: string }[];
+};
+
+const PRODUCTS: Product[] = [
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#0369a1",
+    name: "Sika CarboDur S",
+    descriptionLine: "Pultruded CFRP strip — TODO: owner confirm — 165 GPa tensile modulus (unverifiable from live Sika AU source) — bonded to concrete beam or slab soffit for flexural strengthening — Sika Australia nationally",
+    productType: "Pultruded CFRP laminate strip — externally bonded (EB)",
+    filterTags: ["Pultruded-strip", "EB-bonded", "Flexural", "Beam", "Slab"],
+    techChips: [
+      { label: "TODO: owner confirm — 165 GPa (live Sika AU unverifiable)", cls: "bg-sky-100 text-sky-800" },
+      { label: "Externally bonded to soffit", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sikadur-30 bonding paste", cls: "bg-amber-50 text-amber-700" },
+      { label: "Sika Australia nationally", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Sika CarboDur S is a pultruded carbon fibre reinforced polymer (CFRP) laminate strip with a standard tensile modulus of 165 GPa, used for flexural strengthening of reinforced concrete beams and slabs by the externally bonded (EB) technique. The CFRP strip is bonded to the tension face (soffit) of the beam or slab using Sikadur-30 two-component epoxy structural adhesive — both the concrete surface and the strip are prepared, Sikadur-30 applied, and the strip pressed and held until the adhesive cures. Strengthening design must be carried out by a structural engineer using accepted design methods (ACI 440.2R, ISIS Canada, or Sika's design software). Strips are cut to length and width on site. Sika CarboDur is the market-leading CFRP strip product in Australia — available through Sika Australia distributors nationally.",
+    technicalProperties: [
+      "Pultruded CFRP strip — TODO: owner confirm — 165 GPa tensile modulus (could not verify from live Sika AU TDS; Sika AU is a JS SPA returning 404 on product pages)",
+      "Externally bonded (EB) to concrete soffit using Sikadur-30",
+      "Multiple widths and thicknesses available — cut to length on site",
+      "Sika Australia — trade supply nationally",
+    ],
+    limitations: [
+      "Structural design by a qualified structural engineer is mandatory — do not specify strip dimensions or number from manufacturers' generic tables without site-specific design",
+      "Concrete substrate must be prepared to minimum CSP 3 and pull-off tested before bonding — poor surface preparation is the leading cause of CFRP strengthening system failure",
+      "CFRP strip is ineffective if the concrete-to-strip interface fails before the CFRP reaches its design strain — concrete surface preparation is critical",
+      "Not suitable for sagging, distorted, or vibration-affected surfaces during the adhesive cure period — the bond must cure undisturbed",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — national trade supply", url: "https://aus.sika.com" },
+    ],
+  },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#dc2626",
+    name: "Mapei Mapewrap C Uni-Ax",
+    descriptionLine: "Unidirectional woven CFRP fabric — TODO: owner confirm — 240 GPa (unverifiable from live Mapei AU source — Cloudflare blocked) — applied with epoxy laminating resin for flexural or shear strengthening of beams, slabs, and columns",
+    productType: "Unidirectional woven CFRP fabric — wet lay-up",
+    filterTags: ["Woven-fabric", "EB-bonded", "Flexural", "Shear", "Beam", "Slab", "Column"],
+    techChips: [
+      { label: "Unidirectional CFRP fabric", cls: "bg-red-100 text-red-900" },
+      { label: "TODO: owner confirm — 240 GPa (Mapei AU unverifiable — Cloudflare blocked)", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei Adesilex PG1 resin", cls: "bg-amber-50 text-amber-700" },
+      { label: "Mapei Australia — national supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Mapei Mapewrap C Uni-Ax is a high-modulus unidirectional carbon fibre fabric used for flexural and shear strengthening of concrete beams, columns, slabs, and walls. Applied by the wet lay-up technique — the CFRP fabric is saturated in-situ with Mapei Adesilex PG1 epoxy impregnating resin and applied to the prepared concrete surface. Suitable for complex geometries and curved or non-planar surfaces where pultruded strips cannot be used. Also used for full confinement wrapping of columns for ductility enhancement. Higher tensile modulus (240 GPa) than standard pultruded strips. Design by the structural engineer to ACI 440.2R or equivalent; Mapei provides design assistance on request. Available through Mapei Australia trade supply nationally.",
+    technicalProperties: [
+      "Unidirectional CFRP fabric — TODO: owner confirm — 240 GPa tensile modulus (could not verify from live Mapei AU site; Cloudflare blocking automated access) — wet lay-up",
+      "Applied with Mapei Adesilex PG1 epoxy impregnating resin",
+      "Suitable for curved and complex geometry — columns, soffits, walls",
+      "Mapei Australia — national trade supply",
+    ],
+    limitations: [
+      "Wet lay-up requires specialist applicator — saturation and void-free application are critical to performance",
+      "Fabric is lightweight and difficult to handle on overhead soffit applications without experienced installers",
+      "Do not specify fabric strengthening without structural design by a qualified engineer — ACI 440.2R design is required",
+      "Confirm fabric grade and fibre orientation from the Mapei TDS — unidirectional fabric must be oriented in the correct structural direction",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — national trade supply", url: "https://www.mapei.com/au" },
+    ],
+  },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#15803d",
+    name: "Fosroc Nitowrap CF",
+    descriptionLine: "Carbon fibre wrap (CF) — CFRP fabric — applied with epoxy resin — flexural and shear strengthening of beams, slabs, columns — Parchem national supply",
+    productType: "CFRP fibre fabric wrap — wet lay-up",
+    filterTags: ["Woven-fabric", "EB-bonded", "Flexural", "Shear", "Beam", "Column"],
+    techChips: [
+      { label: "CFRP fabric wrap", cls: "bg-green-100 text-green-900" },
+      { label: "Wet lay-up with epoxy resin", cls: "bg-slate-100 text-slate-700" },
+      { label: "Flexural + shear strengthening", cls: "bg-amber-50 text-amber-700" },
+      { label: "Parchem — nationally available", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Fosroc Nitowrap CF is a carbon fibre reinforced polymer (CFRP) fabric wrap product applied by wet lay-up with Fosroc Nitowrap EP epoxy laminating resin for flexural and shear strengthening of reinforced concrete beams, slabs, and columns. The CFRP fabric is cut to size, the concrete surface prepared, Nitowrap EP resin applied, and the fabric saturated and pressed to the substrate. Used for the same strengthening applications as Mapei Mapewrap C Uni-Ax — the main distinction is that Nitowrap CF is part of the Fosroc/Parchem system and should be used with Nitowrap EP resin. Available through Parchem Construction Supplies (DuluxGroup) nationally. Confirm current fibre specification, tensile modulus, and compatible resin from the current Parchem TDS — confirm system certification and third-party test data before specifying.",
+    technicalProperties: [
+      "CFRP fabric — wet lay-up with Fosroc Nitowrap EP epoxy resin",
+      "Flexural and shear strengthening of beams, slabs, and columns",
+      "Part of the Fosroc Nitowrap system — use with Nitowrap EP resin only",
+      "Parchem — DuluxGroup — national trade supply",
+    ],
+    limitations: [
+      "Must be installed with Fosroc Nitowrap EP resin — do not substitute resin without Fosroc/Parchem confirmation",
+      "Confirm current fibre modulus and test data from Parchem TDS — do not assume equivalence with other CFRP fabric products",
+      "Structural design by qualified engineer is mandatory before installation",
+      "Wet lay-up requires experienced specialist applicator — void formation under the fabric compromises load transfer",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
+    ],
+  },
+];
+
+const FILTER_DEFS: { id: FilterTag; label: string }[] = [
+  { id: "Pultruded-strip", label: "Pultruded strip" },
+  { id: "Woven-fabric", label: "Woven fabric" },
+  { id: "EB-bonded", label: "EB bonded" },
+  { id: "NSM", label: "NSM" },
+  { id: "Flexural", label: "Flexural" },
+  { id: "Shear", label: "Shear" },
+  { id: "Beam", label: "Beam" },
+  { id: "Slab", label: "Slab" },
+  { id: "Column", label: "Column" },
+];
+
+const SYSTEM_COMPARISON = [
+  {
+    product: "Sika CarboDur S",
+    form: "Pultruded strip",
+    modulus: "TODO: owner confirm — 165 GPa (live Sika AU unverifiable)",
+    application: "Externally bonded with Sikadur-30",
+    geometry: "Planar soffits and beams",
+    design: "ACI 440.2R / Sika design software",
+  },
+  {
+    product: "Mapei Mapewrap C Uni-Ax",
+    form: "Woven fabric",
+    modulus: "TODO: owner confirm — 240 GPa (live Mapei AU unverifiable)",
+    application: "Wet lay-up with Adesilex PG1",
+    geometry: "Curved, columns, soffits",
+    design: "ACI 440.2R / Mapei design assist",
+  },
+  {
+    product: "Fosroc Nitowrap CF",
+    form: "CFRP fabric",
+    modulus: "Confirm from TDS",
+    application: "Wet lay-up with Nitowrap EP",
+    geometry: "Beams, columns, soffits",
+    design: "Engineer design — confirm TDS data",
+  },
+];
+
+const TECH_INFO = {
+  typicalApplications: [
+    "Flexural strengthening of under-designed or damaged concrete beams and slabs — CFRP strip or fabric bonded to the tension soffit",
+    "Shear strengthening of beams and walls — CFRP fabric applied in U-wrap or full wrap configuration",
+    "Column ductility enhancement and axial confinement — full CFRP fabric wrap around columns for seismic upgrade",
+    "Post-earthquake repair and structural upgrade — CFRP strengthening restores or increases structural capacity without significant additional dead load",
+    "Strengthening of existing slabs and beams to carry additional loads from building change-of-use or floor loading increase",
+    "CFRP near-surface mounted (NSM) — strips or rods in sawn grooves — for applications where the external bonded technique is not appropriate",
+  ],
+  selectionCriteria: [
+    "Pultruded strips (Sika CarboDur S) for planar surfaces — beams and flat slab soffits — where the strip can be pressed flat and the adhesive can cure without voids",
+    "Woven fabric (Mapei Mapewrap C Uni-Ax, Fosroc Nitowrap CF) for curved surfaces, columns, and applications requiring full-width coverage or wrapping",
+    "Select the CFRP product paired with the compatible resin in the same manufacturer's system — CarboDur S with Sikadur-30, Mapewrap with Adesilex PG1, Nitowrap CF with Nitowrap EP",
+    "Tensile modulus — 165 GPa (standard pultruded strip) vs 240 GPa (high-modulus fabric) — the design engineer specifies based on the strain limitation in the design",
+    "Confirm the structural engineer's design specifies the CFRP dimensions, thickness, number of layers, and orientation — do not install without a design",
+    "Consider access and installation geometry — pultruded strips require a flat substrate; fabric can be applied to irregular surfaces by an experienced installer",
+  ],
+  limitations: [
+    "CFRP strengthening design must be carried out by a qualified structural engineer — no self-design",
+    "Bond to concrete is critical — pull-off testing of the concrete surface before bonding is standard practice; minimum pull-off strength is typically 1.5 MPa or better",
+    "CFRP strips and fabric are sensitive to impact damage — protect with a cementitious or epoxy coating or in embedded slots (NSM) if impact exposure is a risk",
+    "External CFRP is not suitable for elements exposed to fire without fire protection — confirm with the engineer for fire-rated assemblies",
+    "Elongation at failure of CFRP is low — bond failure mode (concrete peel-off or interface failure) governs design rather than tensile fracture",
+    "Do not install in wet or cold conditions — confirm minimum ambient temperature, substrate temperature, and maximum relative humidity from the resin TDS",
+  ],
+  standardsNotes: [
+    "ACI 440.2R — Guide for the Design and Construction of Externally Bonded FRP Systems for Strengthening Concrete Structures — the primary design reference used by Australian structural engineers for CFRP strengthening",
+    "AS 3600 — Concrete Structures — the structural engineer must confirm that the CFRP-strengthened element meets AS 3600 requirements for the new load case",
+    "ISIS Canada Design Manual — alternative design reference used by some Australian engineers for FRP strengthening",
+    "EN 1504-4 — Structural bonding — referenced for the structural adhesive performance requirements when used as part of an EN 1504 repair system",
+    "Manufacturer qualification testing — Sika, Mapei, Fosroc — confirm current third-party test data for the specific CFRP product and resin system",
+  ],
+  suitableDefects: [
+    "Under-designed or over-loaded concrete beams and slabs requiring flexural capacity increase",
+    "Damaged beams and slabs where rebar section loss has reduced the structural capacity below the required load",
+    "Columns requiring ductility enhancement for seismic upgrade",
+    "Structural elements being upgraded for change-of-use where the existing reinforcement is insufficient for the new loads",
+  ],
+  typicalSubstrates: [
+    "In-situ reinforced concrete beams and slabs — standard substrate for EB CFRP strengthening",
+    "Precast concrete beams and slabs — same surface preparation and design requirements as in-situ",
+    "Concrete columns — full-wrap CFRP confinement for ductility enhancement",
+    "Concrete walls — CFRP shear strengthening",
+  ],
+};
+
+export function CFRPStripsLaminatesIntroSection() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div>
+        <h3 className="text-base font-extrabold text-sky-950">CFRP strips and laminates for structural strengthening of reinforced concrete</h3>
+      </div>
+      <div className="space-y-4 text-sm leading-7 text-slate-600">
+        <p>
+          Carbon fibre reinforced polymer (CFRP) strips and fabric laminates are bonded to the external surface of concrete beams, slabs, and columns to increase their flexural capacity, shear strength, or confinement. The two main forms are pultruded strips (bonded to beam/slab soffits) and woven fabric (applied by wet lay-up for columns and curved surfaces). All structural strengthening requires design by a qualified structural engineer.
+        </p>
+        {expanded && (
+          <>
+            <p>
+              CFRP strengthening is increasingly used in Australian remedial building and structural upgrade work — as an alternative to section enlargement or replacement — due to its high strength-to-weight ratio, corrosion resistance, and low dead load addition. In reinforcement corrosion repair, CFRP is specified where rebar section loss has reduced structural capacity and the engineer determines that CFRP strengthening can restore or increase the element's load capacity without full demolition and rebuild. The three most widely used systems in Australia are Sika CarboDur (pultruded strip), Mapei Mapewrap (woven fabric), and Fosroc Nitowrap (woven fabric).
+            </p>
+          </>
+        )}
+      </div>
+      <button onClick={() => setExpanded((e) => !e)} className="mt-4 text-xs font-bold text-sky-700 hover:text-sky-900">
+        {expanded ? "Read less ↑" : "Read more ↓"}
+      </button>
+    </div>
+  );
+}
+
+export function CFRPStripsLaminatesProductSection() {
+  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const toggleFilter = (id: FilterTag) => {
+    setActiveFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const visibleProducts = activeFilters.size === 0
+    ? PRODUCTS
+    : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
+
+  const scroll = (dir: "left" | "right") => {
+    scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" });
+  };
+
+  return (
+    <>
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setAccordionOpen((o) => !o)}
+          className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition hover:bg-slate-50"
+        >
+          <div>
+            <p className="text-base font-extrabold text-sky-950">System Technical Reference</p>
+            <p className="mt-0.5 text-xs text-slate-500">Applications, selection criteria, limitations, standards, suitable substrates</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
+            {accordionOpen ? (<>Hide detail <ChevronUp size={14} /></>) : (<>Show detail <ChevronDown size={14} /></>)}
+          </div>
+        </button>
+        {accordionOpen && (
+          <div className="border-t border-slate-100 px-7 pb-7 pt-6">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
+              <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
+              <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
+              <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <div className="mb-5 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
+            <p className="mt-1 text-sm text-slate-500">3 products — CFRP strips and laminates for structural strengthening — scroll to view all</p>
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
+          {FILTER_DEFS.map((f) => {
+            const active = activeFilters.has(f.id);
+            return (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => toggleFilter(f.id)}
+                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
+                }`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+          {activeFilters.size > 0 && (
+            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
+              Clear filters
+            </button>
+          )}
+        </div>
+
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-xs font-semibold text-slate-400">
+            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
+          </span>
+          <div className="flex items-center gap-2">
+            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
+              <ChevronLeft size={16} />
+            </button>
+            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={scrollRef}
+          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
+        >
+          {visibleProducts.map((product) => (
+            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
+              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
+                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
+                      {product.fullLabel}
+                    </span>
+                    <div className="flex shrink-0 items-center gap-1">
+                      {product.tdsUrl && (
+                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
+                          <FileText size={9} /> TDS
+                        </a>
+                      )}
+                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
+                        <ExternalLink size={9} /> Brand Site
+                      </a>
+                    </div>
+                  </div>
+                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
+                  </div>
+                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
+                </div>
+                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
+                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
+                  <CollapsibleDescription text={product.systemDescription} />
+                </div>
+                <div className="space-y-3 px-5 py-4">
+                  <div>
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
+                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
+                  </div>
+                  <div>
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
+                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
+                  </div>
+                </div>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                  <CollapsibleSources sources={product.procurementSources} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="mb-6 flex items-start gap-3">
+          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
+          <div>
+            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
+            <p className="mt-1 text-sm text-slate-500">CFRP strip and laminate systems for structural strengthening. All CFRP strengthening requires structural engineering design to ACI 440.2R or equivalent before installation.</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="min-w-full text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50">
+                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Form</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Tensile modulus</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Geometry</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Design method</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SYSTEM_COMPARISON.map((row, i) => (
+                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.form}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.modulus}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.application}</td>
+                  <td className="px-4 py-3 text-slate-600">{row.geometry}</td>
+                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.design}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  );
+}

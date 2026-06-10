@@ -1,0 +1,2896 @@
+[Fri Jun  5 16:53:13 AEST 2026] Starting scraper...
+◇ injected env (25) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+[06:53:22] Starting: 3624 combos (29 parents, 8 cities)
+[06:53:22] Resuming: 57 combos already done, 1010 businesses collected
+[06:53:24] 
+── Remedial Consultants | Adelaide
+[06:53:24]    Query: "Remedial Consultants Adelaide SA Australia"
+[06:54:16]    Found 47 place URLs
+[06:55:15]    [1011] · IROS AUSTRALIA - Adelaide Branch — Klemzig SA
+[06:56:01]    [1012] · Magryn & Associates Pty Ltd — Somerton Park SA
+[06:56:52]    [1013] ✉ TMK Consulting Engineers — Adelaide SA
+[06:57:35]    [1014] · Adelaide Building Consulting — Kent Town SA
+[06:58:21]    [1015] ✉ gama consulting — Kent Town SA
+[06:59:11]    [1016] ✉ JBS&G Australia Pty Ltd — Adelaide SA
+[07:00:00]    [1017] ✉ Innovis - Structural & Civil Engineering Consultancy — Adelaide SA
+[07:00:49]    [1018] ✉ Dynamic Recovery Remedial Therapy — Seaton SA
+[07:01:31]    [1019] · SA Radiation — Thebarton SA
+[07:02:37]    [1020] · Tierra Environment — Daw Park SA
+[07:03:24]    [1021] ✉ Tetra Tech Coffey — Adelaide SA
+[07:04:18]    [1022] 📋 Trinamic Consultants — Adelaide SA
+[07:05:03]    [1023] ✉ TU2 Physio & Remedial Massage — Campbelltown SA
+[07:05:52]    [1024] ✉ Resonate Consultants — Adelaide SA
+[07:06:44]    [1025] ✉ KB Consulting Engineers — Adelaide SA
+[07:07:41]    [1026] 📋 Sproutt — Norwood SA
+[07:08:44]    [1027] · Ennovo — North Adelaide SA
+[07:09:34]    [1028] ✉ LBW co — Norwood SA
+[07:10:24]    [1029] 📋 Greencap Safety & Risk Management Adelaide — Adelaide SA
+[07:11:13]    [1030] ✉ BlueSphere Environmental Pty Ltd — Cumberland Park SA
+[07:12:10]    [1031] · Universal Hazmat Solutions — Findon SA
+[07:12:57]    [1032] · Golder / WSP — Adelaide SA
+[07:13:46]    [1033] ✉ Ziltek Pty Ltd — Edwardstown SA
+[07:14:30]    [1034] · Structural Restoration Services — Glynde SA
+[07:15:18]    [1035] · Davies Consulting — Adelaide SA
+[07:16:15]    [1036] ✉ Therapia Sports & Spine — Adelaide SA
+[07:17:11]    [1037] 📋 Epic Environmental Adelaide — Adelaide SA
+[07:18:02]    [1038] ✉ Physio Physique — Allenby Gardens SA
+[07:18:58]    [1039] ✉ BHM Geotechnical Pty Ltd — Adelaide SA
+[07:19:46]    [1040] ✉ Supple Clinic - Be Smart Get Supple — Renown Park SA
+[07:20:41]    [1041] ✉ Biophilia Health — Adelaide SA
+[07:21:41]    [1042] ✉ Human.Kind Physiotherapy & Clinical Psychology — Adelaide SA
+[07:22:46]    [1043] · Alpha Allied Health —  SA
+[07:23:49]    [1044] · Wakefield Sports + Exercise Medicine Clinic — Adelaide SA
+[07:24:42]    [1045] ✉ Australian Environmental Auditors — Adelaide SA
+[07:25:23]    [1046] · PCI Consulting Services | VECTRA — Adelaide SA
+[07:26:26]    [1047] ✉ Eco Environmental — Adelaide SA
+[07:27:15]    [1048] ✉ Healing Arts Studio — Adelaide SA
+[07:27:58]    [1049] · Healthful Wellness Hub — Glenelg SA
+[07:28:47]    [1050] ✉ Ayur Health: Ayurveda Wellness Centre — Hillcrest SA
+[07:29:26]    [1051] · DT Physical Therapy - Natural Holistic Therapeutic Altern. Medicine Wholebody Relaxation/Remedial/Physio/Chiro/Massage — Croydon Park SA
+[07:30:25]    [1052] 📋 KP Austruct Consulting Engineers — Findon SA
+[07:31:13]    [1053] ✉ GP Structural Services —  SA
+[07:32:05]    [1054] ✉ Urathane Solutions Pty Ltd — Kent Town SA
+[07:32:49]    [1055] · Lymph Movement Studio — Parkside SA
+[07:33:49]    [1056] ✉ Kleinfelder — Adelaide SA
+[07:34:42]    [1057] ✉ Genesis Consulting Engineers —  SA
+[07:34:45]    Done: 47 new businesses
+[07:34:51] 
+── Remedial Consultants | Hobart
+[07:34:51]    Query: "Remedial Consultants Hobart TAS Australia"
+[07:35:46]    Found 57 place URLs
+[07:36:25]    [1058] · HED Consulting — Hobart TAS
+[07:37:24]    [1059] · Equinox Education & Migration Consultant — Hobart TAS
+[07:38:09]    [1060] ✉ Enviro-Tech Consultants Pty. Ltd. — South Hobart TAS
+[07:38:53]    [1061] ✉ Burbury Consulting — Hobart TAS
+[07:39:35]    [1062] · Dan Winter Remedial Massage Therapist — Hobart TAS
+[07:40:22]    [1063] ✉ Resonance Consulting — Hobart TAS
+[07:40:40]    [1064] · Eclectic Consulting — Hobart TAS
+[07:41:18]    [1065] · GE Consulting Engineers — Battery Point TAS
+[07:42:05]    [1066] ✉ MouldTas - Healthy Homes Tasmania — Derwent Park TAS
+[07:43:13]    [1067] · LMRS Pty Ltd — North Hobart TAS
+[07:43:55]    [1068] · Participate Tasmania — South Hobart TAS
+[07:44:44]    [1069] ✉ SPR Conditioning — Hobart TAS
+[07:45:26]    [1070] · Hutchings Spurr — South Hobart TAS
+[07:45:46]    [1071] ✉ Neuro Wellbeing Centre (MS Plus) — Hobart — Hobart TAS
+[07:46:39]    [1072] ✉ HSR Consulting Pty Ltd (SGC Safety) — Huntingfield TAS
+[07:47:43]    [1073] ✉ Catalyst Strength & Physique Coaching — North Hobart TAS
+[07:48:35]    [1074] ✉ Body Stillness — Sandy Bay TAS
+[07:49:22]    [1075] · Integral Consulting Engineers — Hobart TAS
+[07:50:06]    [1076] · Move Body Mind Life — Hobart TAS
+[07:51:02]    [1077] ✉ BodyTech - Matt Jensen — Hobart TAS
+[07:51:52]    [1078] ✉ Statewide Geotechnics — Moonah TAS
+[07:52:32]    [1079] · PS Monalisa King – Physical Specialist, Hobart — Oakdowns TAS
+[07:53:25]    [1080] ✉ Leap Health Salamanca — Battery Point TAS
+[07:53:45]    [1081] ✉ Optimum Health Solutions - Mornington — Mornington TAS
+[07:54:33]    [1082] ✉ Electrodry Mould Removal Hobart — Hobart TAS
+[07:55:17]    [1083] · Véronique Tabor — Acton Park TAS
+[07:55:34]    [1084] ✉ Care Assess - South — Rosny Park TAS
+[07:56:21]    [1085] ✉ Elevate Injury Management — Sandy Bay TAS
+[07:57:10]    [1086] ✉ Raw Strength Tasmania — Moonah TAS
+[07:58:14]    [1087] · DoDay Personal Training — Hobart TAS
+[07:58:52]    [1088] · All Body Coaching — Hobart TAS
+[07:59:47]    [1089] 📋 Bellerive Health Hub - Medical and Allied Health Centre — Bellerive TAS
+[08:00:40]    [1090] 📋 Leviathan Strength Gym — Moonah TAS
+[08:01:27]    [1091] ✉ Leap Health Kingston — Kingston TAS
+[08:02:15]    [1092] ✉ Forge Strength and Performance Coaching — North Hobart TAS
+[08:03:01]    [1093] ✉ Precisely Chiropractic — North Hobart TAS
+[08:03:59]    [1094] ✉ WGA | Wallbridge Gilbert Aztec — Hobart TAS
+[08:04:49]    [1095] 📋 Sealed Solutions —  TAS
+[08:05:28]    [1096] · Bushland Management Tasmania —  TAS
+[08:06:16]    [1097] 📋 Mould Testing by SUSTOMi Spaces —  TAS
+[08:07:07]    [1098] 📋 BPSM Architects — Battery Point TAS
+[08:07:50]    [1099] · Exergaming Australia — New Town TAS
+[08:08:41]    [1100] ✉ Urban Initiatives — Hobart TAS
+[08:09:45]    [1101] · Catalyst Strength — North Hobart TAS
+[08:10:27]    [1102] · Transformed — Bellerive TAS
+[08:10:46]    [1103] ✉ Optimum Health Solutions - Moonah — Moonah TAS
+[08:11:31]    [1104] · Training Buddies —  TAS
+[08:12:17]    [1105] · Nick's Strength & Fitness Personal Training — Moonah TAS
+[08:13:09]    [1106] 📋 Programmed Skilled Workforce — Moonah TAS
+[08:13:58]    [1107] ✉ Leap Health Rosny Park — Bellerive TAS
+[08:14:44]    [1108] ✉ Steamatic Hobart - Fire, Flood, Water Damage Restoration — Moonah TAS
+[08:15:22]    [1109] · Inside Out Wellness Co. — Hobart TAS
+[08:16:15]    [1110] 📋 Coach Ella PT — Moonah TAS
+[08:17:02]    [1111] ✉ Petterwood Orthopaedics — Battery Point TAS
+[08:17:54]    [1112] 📋 Planet Max Hobart — Hobart TAS
+[08:18:34]    [1113] · Gary Tello Personal Training — Hobart TAS
+[08:19:34]    [1114] 📋 Waterproofing and Remedial Services —  TAS
+[08:19:38]    Done: 57 new businesses
+[08:19:41] 
+── Remedial Consultants | Canberra
+[08:19:41]    Query: "Remedial Consultants Canberra ACT Australia"
+[08:20:31]    Found 50 place URLs
+[08:21:30]    [1115] · Peak Consulting — Queanbeyan NSW
+[08:22:31]    [1116] 📋 RD Consulting — Canberra ACT
+[08:23:19]    [1117] 📋 Kendall Consulting Engineers — Fyshwick ACT
+[08:24:23]    [1118] · IROS Australia - Canberra Branch — Gungahlin ACT
+[08:25:10]    [1119] ✉ Projects Assured — Braddon ACT
+[08:26:13]    [1120] · Robson Environmental — Fyshwick ACT
+[08:27:04]    [1121] 📋 RPS — Griffith ACT
+[08:28:06]    [1122] ✉ Ansary Consulting Engineers — Canberra ACT
+[08:28:53]    [1123] ✉ ACT Consulting Engineers — Braddon ACT
+[08:29:39]    [1124] ✉ Remicon — Dickson ACT
+[08:30:23]    [1125] · JRA Services Consulting — Fyshwick ACT
+[08:31:06]    [1126] · Dream Australia Education Services — Watson ACT
+[08:31:57]    [1127] 📋 Capital Building Remediation — Fyshwick ACT
+[08:32:51]    [1128] 📋 Tetra Tech Coffey — Griffith ACT
+[08:33:42]    [1129] 📋 Canberra Consulting — Canberra ACT
+[08:34:30]    [1130] ✉ Lancaster & Dickenson Consulting Pty Ltd — Mitchell ACT
+[08:35:23]    [1131] ✉ Reason Group — Canberra ACT
+[08:36:15]    [1132] ✉ RSM Australia — Deakin ACT
+[08:37:24]    [1133] ✉ ACT Remedial Therapy Massage — Forrest ACT
+[08:38:12]    [1134] ✉ Fitness & Wellbeing Physiology — Griffith ACT
+[08:39:06]    [1135] ✉ Rehabilitation Specialists — Fyshwick ACT
+[08:39:57]    [1136] ✉ Civion Construction — Beard ACT
+[08:40:45]    [1137] ✉ HorizonOne Recruitment Pty Ltd — Braddon ACT
+[08:41:48]    [1138] · ACOR Consultants Pty Ltd — Fyshwick ACT
+[08:42:34]    [1139] ✉ CBR Massage — Lyneham ACT
+[08:42:54]    [1140] ✉ Canberra Soft Tissue Therapy — Mitchell ACT
+[08:43:39]    [1141] ✉ Macquarie Consulting — Fyshwick ACT
+[08:44:43]    [1142] · Capital Clinic Physiotherapy — Canberra ACT
+[08:45:38]    [1143] ✉ TAGRO Engineering Consultants — Barton ACT
+[08:46:26]    [1144] ✉ Southside Physio Woden — Phillip ACT
+[08:47:28]    [1145] · Chinese Treatment Centre - Acupuncture Canberra — Turner ACT
+[08:48:07]    [1146] · Therapy Masters — Queanbeyan East NSW
+[08:49:10]    [1147] ✉ Adero Law — Canberra ACT
+[08:49:57]    [1148] · Rehab Management Deakin — Deakin ACT
+[08:50:45]    [1149] ✉ Northside Massage and Nutrition — Lyneham ACT
+[08:51:33]    [1150] · JFS Engineers: Façade Consulting Engineers — Queanbeyan NSW
+[08:52:22]    [1151] ✉ Longevity Exercise Physiology and Personal Training - Casey — Casey ACT
+[08:53:26]    [1152] · Prensa — Belconnen ACT
+[08:54:14]    [1153] ✉ Fundamental Health — Kambah ACT
+[08:54:56]    [1154] · CBR Cyber — Forrest ACT
+[08:55:49]    [1155] ✉ CM Formwork Canberra — Queanbeyan West NSW
+[08:56:45]    [1156] 📋 IT Alliance Australia Pty Ltd — Barton ACT
+[08:57:36]    [1157] 📋 Trusted Realtors Canberra — Belconnen ACT
+[08:58:22]    [1158] ✉ Resonate Mind Body — Deakin ACT
+[08:59:21]    [1159] 📋 Greencap — Gungahlin ACT
+[09:00:10]    [1160] ✉ Greencap Safety & Risk Management Canberra —  ACT
+[09:01:04]    [1161] ✉ emeseye — Symonston ACT
+[09:01:59]    [1162] ✉ Duratec — Fyshwick ACT
+[09:02:55]    [1163] ✉ Torrens Physiotherapy — Torrens ACT
+[09:03:52]    [1164] ✉ Unique Project Group — Fyshwick ACT
+[09:04:01]    Done: 50 new businesses
+[09:04:06] 
+── Remedial Consultants | Darwin
+[09:04:06]    Query: "Remedial Consultants Darwin NT Australia"
+[09:04:06]    Resetting Maps browser context...
+[09:05:01]    Found 33 place URLs
+[09:05:44]    [1165] · AGILE CONSULTING ENGINEERS — Darwin City NT
+[09:06:43]    [1166] ✉ ADG Engineers (Aust) Pty Ltd — Darwin City NT
+[09:07:22]    [1167] · M Gabriel Consulting Engineers — Nightcliff NT
+[09:08:11]    [1168] ✉ Structural Engineering Consultants Australia Pty Ltd — Berrimah NT
+[09:09:04]    [1169] ✉ The BelRose Group — Darwin City NT
+[09:09:50]    [1170] ✉ Greencap Safety & Risk Management Darwin — Darwin City NT
+[09:10:54]    [1171] · Construction Sciences Darwin — East Arm NT
+[09:11:41]    [1172] ✉ Stantec — Darwin City NT
+[09:12:20]    [1173] · Byrne Consultants — Winnellie NT
+[09:13:10]    [1174] ✉ Moraitis Consulting Pty Ltd — Darwin City NT
+[09:13:50]    [1175] · N.T. Consulting Engineers — Coolalinga NT
+[09:14:34]    [1176] ✉ Douglas Partners Darwin — Coconut Grove NT
+[09:15:28]    [1177] ✉ Tetra Tech Coffey — Darwin City NT
+[09:16:13]    [1178] · Darwin Building Consultants — Darwin City NT
+[09:17:04]    [1179] ✉ Rise Project Consulting — Rapid Creek NT
+[09:17:46]    [1180] · Territory Environmental —  NT
+[09:18:35]    [1181] ✉ Precision Group NT — Berrimah NT
+[09:19:35]    [1182] · ACOR Consultants Pty Ltd — Darwin City NT
+[09:20:18]    [1183] · Eurofins Environmental Testing Australia - Darwin — Darwin City NT
+[09:20:59]    [1184] · NTBS CONSULTING ENGINEERS PTY LTD — Stuart Park NT
+[09:21:55]    [1185] · Nuflow Darwin | Top End — Berrimah NT
+[09:22:49]    [1186] ✉ DAC Enterprises — Yarrawonga NT
+[09:23:37]    [1187] ✉ Mould Consultancy —  NT
+[09:24:41]    [1188] ✉ Perrott Engineering — East Arm NT
+[09:25:28]    [1189] ✉ Steamatic Darwin — Stuart Park NT
+[09:26:17]    [1190] · Advanced Body Image and Spa Lotus — Berrimah NT
+[09:27:07]    [1191] ✉ Goodline — East Arm NT
+[09:27:59]    [1192] 📋 Veolia NT — East Arm NT
+[09:28:57]    [1193] ✉ NTEX - Demolition Recycling & Remediation — Girraween NT
+[09:29:46]    [1194] ✉ Dermo Direct —  NT
+[09:30:44]    [1195] · Insight Chiropractic — Parap NT
+[09:31:34]    [1196] 📋 Cleanaway Holtze Solid Waste Depot — Holtze NT
+[09:32:39]    [1197] · Everett Consulting NT Pty Ltd —  NT
+[09:32:46]    Done: 33 new businesses
+[09:32:50] 
+── Building Consultants | Sydney
+[09:32:50]    Query: "Building Consultants Sydney NSW Australia"
+[09:33:44]    Found 44 place URLs
+[09:34:27]    [1198] ✉ Effective Building & Consultancy Sydney — Sydney NSW
+[09:35:21]    [1199] ✉ Awesim Building Consultants — Sydney NSW
+[09:36:09]    [1200] ✉ SJN Building Consultants Pty Ltd — Bondi Junction NSW
+[09:36:58]    [1201] ✉ Metro Building Consultancy Pty Ltd — Sydney NSW
+[09:37:54]    [1202] · Construction Consultants — Rydalmere NSW
+[09:38:51]    [1203] ✉ Building Consultancy group — Miranda NSW
+[09:39:40]    [1204] ✉ Consultants & Contractors — Summer Hill NSW
+[09:40:28]    [1205] ✉ Building and Construction, Research and Consulting (BCRC) Pty Ltd — Lane Cove West NSW
+[09:41:12]    [1206] ✉ Codex Building Consultants Pty Ltd — North Sydney NSW
+[09:42:00]    [1207] ✉ East Coast Approvals Group Pty Ltd. — Sydney NSW
+[09:42:56]    [1208] ✉ Inner West Building Inspections Sydney — Sydney NSW
+[09:43:44]    [1209] ✉ FutureCert — Sydney NSW
+[09:44:36]    [1210] ✉ Steve Watson & Partners — Sydney NSW
+[09:45:28]    [1211] ✉ MJ Sydney Building Construction — Sydney NSW
+[09:46:18]    [1212] ✉ Incert — Barangaroo NSW
+[09:47:08]    [1213] ✉ The Australian Society of Building Consultants —  NSW
+[09:47:57]    [1214] ✉ Advance Building Approvals Pty Ltd — Sydney NSW
+[09:48:41]    [1215] · Sydney Building Diagnostics — Dural NSW
+[09:49:30]    [1216] 📋 BSE Sydney | Building Services Engineers — North Sydney NSW
+[09:50:18]    [1217] ✉ EBS Consultants — Revesby NSW
+[10:25:33]    [1218] · ABC Building Inspections —  NSW
+[10:42:01]    [1219] ✉ The Construction Adviser — Hurstville NSW
+[10:59:25]    [1220] 📋 Rapid Building Inspections Sydney — Darlinghurst NSW
+[11:15:01]    [1221] ✉ BUILDING CERTIFICATES AUSTRALIA — Surry Hills NSW
+[11:15:08]   DB error: 
+Invalid `prisma.directoryLead.upsert()` invocation in
+/Users/siasepehrara/remed
+[11:47:20]    [1222] ✉ Building & Energy Consultants Australia — Peakhurst Heights NSW
+[12:08:19]    [1223] ✉ Linesight - Construction Consultants Sydney — Sydney NSW
+[12:24:11]    [1224] ✉ NSW Master Building Inspectors — Bondi Junction NSW
+[12:41:32]    [1225] ✉ House Energy Certified — Sydney NSW
+[12:52:39]    [1226] ✉ Sydney Building Approvals Centre — Prestons NSW
+[13:09:01]    [1227] · Building Code of Australia Consultants — Brookvale NSW
+[13:25:45]    [1228] ✉ City Plan Services Pty Ltd — Sydney NSW
+[13:41:43]    [1229] 📋 NSW Building Certifiers — Glebe NSW
+[13:53:50]    [1230] ✉ WSce — Sydney NSW
+[14:07:54]    [1231] ✉ iSPECT Building Inspections — Ultimo NSW
+[14:12:23]    [1232] ✉ DBS Consulting — Sydney NSW
+[14:13:18]    [1233] ✉ A1 Building Consultants Australia —  NSW
+[14:14:09]    [1234] ✉ Building Defects — Lane Cove NSW
+[14:15:08]    [1235] 📋 Boston Consulting Group — Sydney NSW
+[14:16:14]    [1236] ✉ Base Services Group (NSW) — Sydney NSW
+[14:17:18]    [1237] · New Edge Consultancy Services - Sydney — Sydney NSW
+[14:18:01]    [1238] · Beca — Sydney NSW
+[14:18:06]    Done: 41 new businesses
+[14:24:36] 
+── Building Consultants | Melbourne
+[14:24:36]    Query: "Building Consultants Melbourne VIC Australia"
+[14:25:29]    Found 36 place URLs
+[14:42:07]    [1239] ✉ ASA Building Consultants Pty Ltd — Carnegie VIC
+[14:59:31]    [1240] ✉ MA Building Consultants — Melbourne VIC
+[15:17:05]    [1241] ✉ BW&A National Building Consultants — Fitzroy VIC
+[15:33:31]    [1242] ✉ IWH Building Surveyors & Consultants — North Melbourne VIC
+[16:07:04]    [1243] · Singh Consulting Pty Ltd — Melbourne VIC
+[16:26:46]    [1244] · Building Consultants — Pascoe Vale South VIC
+[16:45:01]    [1245] ✉ Conti Group Building Consultants - Melbourne — Doncaster VIC
+[17:00:47]    [1246] ✉ Fitout Permits — Melbourne VIC
+[17:18:16]    [1247] · Assa Building Surveyors Pty Ltd — Coburg VIC
+[17:27:55]    [1248] ✉ Prime Building Surveyors — South Melbourne VIC
+[17:43:16]    [1249] · Mel Building Inspections — Melbourne VIC
+[17:59:32]    [1250] 📋 Rapid Building Inspections Melbourne — Melbourne VIC
+[18:18:01]    [1251] ✉ Builde Permits & Inspections — St Kilda VIC
+[18:29:00]    [1252] ✉ Bullas Building Consultants — Mooroolbark VIC
+[18:44:34]    [1253] 📋 BSE Melbourne | Building Services Engineers — Melbourne VIC
+[19:02:53]    [1254] ✉ iSPECT Building Inspections - Melbourne — Melbourne VIC
+[19:18:23]    [1255] ✉ Aus Building Inspections Melbourne — Melbourne VIC
+[19:30:04]    [1256] ✉ Altez Building Inspections — South Melbourne VIC
+[20:03:12]    [1257] ✉ BSP Melbourne Co — Essendon VIC
+[20:18:54]    [1258] ✉ Melbourne Structures Pty Ltd — West Footscray VIC
+[20:31:00]    [1259] 📋 Draftee — Melbourne VIC
+[20:47:44]    [1260] ✉ ATR Building Consulting — Hawthorn East VIC
+[20:57:33]    [1261] ✉ SilverPoint Building Designers & Planning Consultants — Camberwell VIC
+[21:31:36]    [1262] ✉ Prorox Building Group — Kew VIC
+[21:49:13]    [1263] ✉ Element Building Surveyors — Docklands VIC
+[22:05:13]    [1264] ✉ Codus PTY LTD — Melbourne VIC
+[22:20:56]    [1265] ✉ Krneta — Cremorne VIC
+[22:32:42]    [1266] ✉ Buildspect — Mitcham VIC
+[22:51:03]    [1267] ✉ Vic Permits Building Surveyors — Ravenhall VIC
+[23:07:56]    [1268] ✉ Luxcorp Building Surveyors Pty Ltd — Ringwood East VIC
+[23:33:39]    [1269] ✉ Dev & Co Building Surveyors — Broadmeadows VIC
+[23:50:38]    [1270] · TREND Building Surveyors — Derrimut VIC
+[00:01:07]    [1271] · ICHECK BUILDING SURVEYORS & CONSULTANTS — Clayton South VIC
+[00:01:18]   DB error: 
+Invalid `prisma.directoryLead.upsert()` invocation in
+/Users/siasepehrara/remed
+[00:34:30]    [1272] · Google Maps can't reach the internet —  VIC
+[00:34:30]   DB error: 
+Invalid `prisma.directoryLead.upsert()` invocation in
+/Users/siasepehrara/remed
+[00:34:31]    Done: 34 new businesses
+[00:34:36] 
+── Building Consultants | Brisbane
+[00:34:36]    Query: "Building Consultants Brisbane QLD Australia"
+[01:25:43]    Found 0 place URLs
+[01:25:43] 
+── Building Consultants | Adelaide
+[01:25:43]    Query: "Building Consultants Adelaide SA Australia"
+[01:35:43]    Found 0 place URLs
+[01:35:43] 
+── Building Consultants | Hobart
+[01:35:43]    Query: "Building Consultants Hobart TAS Australia"
+[01:54:13]    Found 0 place URLs
+[01:54:13] 
+── Building Consultants | Canberra
+[01:54:13]    Query: "Building Consultants Canberra ACT Australia"
+[02:10:46]    Found 0 place URLs
+[02:10:46] 
+── Building Consultants | Darwin
+[02:10:46]    Query: "Building Consultants Darwin NT Australia"
+[02:36:30]    Found 0 place URLs
+[02:36:30]    5 consecutive empty searches — pausing 30s...
+[02:53:16] 
+── Strata Remedial Consultants | Sydney
+[02:53:16]    Query: "Strata Remedial Consultants Sydney NSW Australia"
+[03:26:23]    Found 0 place URLs
+[03:26:23] 
+── Strata Remedial Consultants | Melbourne
+[03:26:23]    Query: "Strata Remedial Consultants Melbourne VIC Australia"
+[03:49:37]    Found 0 place URLs
+[03:49:37] 
+── Strata Remedial Consultants | Brisbane
+[03:49:37]    Query: "Strata Remedial Consultants Brisbane QLD Australia"
+[04:07:35]    Found 0 place URLs
+[04:07:35] 
+── Strata Remedial Consultants | Adelaide
+[04:07:35]    Query: "Strata Remedial Consultants Adelaide SA Australia"
+[04:38:30]    Found 0 place URLs
+[04:38:30] 
+── Strata Remedial Consultants | Hobart
+[04:38:30]    Query: "Strata Remedial Consultants Hobart TAS Australia"
+[04:40:38]    Found 0 place URLs
+[04:40:39]    5 consecutive empty searches — pausing 30s...
+[04:41:24] 
+── Strata Remedial Consultants | Canberra
+[04:41:24]    Query: "Strata Remedial Consultants Canberra ACT Australia"
+[05:00:38]    Found 0 place URLs
+[05:00:38] 
+── Strata Remedial Consultants | Darwin
+[05:00:38]    Query: "Strata Remedial Consultants Darwin NT Australia"
+[05:04:13]    Found 0 place URLs
+[05:04:13] 
+── Dilapidation Consultants | Sydney
+[05:04:13]    Query: "Dilapidation Consultants Sydney NSW Australia"
+[05:09:40]    Found 0 place URLs
+[05:09:40] 
+── Dilapidation Consultants | Melbourne
+[05:09:40]    Query: "Dilapidation Consultants Melbourne VIC Australia"
+[05:11:47]    Found 0 place URLs
+[05:11:47] 
+── Dilapidation Consultants | Brisbane
+[05:11:47]    Query: "Dilapidation Consultants Brisbane QLD Australia"
+[05:31:05]    Found 0 place URLs
+[05:31:05]    5 consecutive empty searches — pausing 30s...
+[06:12:56] 
+── Dilapidation Consultants | Adelaide
+[06:12:56]    Query: "Dilapidation Consultants Adelaide SA Australia"
+[06:33:16]    Found 0 place URLs
+[06:33:16] 
+── Dilapidation Consultants | Hobart
+[06:33:16]    Query: "Dilapidation Consultants Hobart TAS Australia"
+[06:40:07]    Found 0 place URLs
+[06:40:07] 
+── Dilapidation Consultants | Canberra
+[06:40:07]    Query: "Dilapidation Consultants Canberra ACT Australia"
+[07:06:25]    Found 0 place URLs
+[07:06:25] 
+── Dilapidation Consultants | Darwin
+[07:06:25]    Query: "Dilapidation Consultants Darwin NT Australia"
+[07:24:50]    Found 0 place URLs
+[07:24:51] 
+── Forensic Building Consultants | Sydney
+[07:24:51]    Query: "Forensic Building Consultants Sydney NSW Australia"
+[07:37:49]    Found 0 place URLs
+[07:37:49]    5 consecutive empty searches — pausing 30s...
+[07:41:08] 
+── Forensic Building Consultants | Melbourne
+[07:41:08]    Query: "Forensic Building Consultants Melbourne VIC Australia"
+[08:15:33]    Found 0 place URLs
+[08:15:33] 
+── Forensic Building Consultants | Brisbane
+[08:15:33]    Query: "Forensic Building Consultants Brisbane QLD Australia"
+[08:42:09]    Found 0 place URLs
+[08:42:09] 
+── Forensic Building Consultants | Adelaide
+[08:42:09]    Query: "Forensic Building Consultants Adelaide SA Australia"
+[08:47:19]    Found 0 place URLs
+[08:47:20] 
+── Forensic Building Consultants | Hobart
+[08:47:20]    Query: "Forensic Building Consultants Hobart TAS Australia"
+[08:55:59]    Found 0 place URLs
+[08:55:59] 
+── Forensic Building Consultants | Canberra
+[08:55:59]    Query: "Forensic Building Consultants Canberra ACT Australia"
+[09:25:56]    Found 0 place URLs
+[09:25:56]    5 consecutive empty searches — pausing 30s...
+[10:17:25] 
+── Forensic Building Consultants | Darwin
+[10:17:25]    Query: "Forensic Building Consultants Darwin NT Australia"
+[11:01:23]    Found 0 place URLs
+[11:01:23] 
+── Defects Consultants | Sydney
+[11:01:23]    Query: "Defects Consultants Sydney NSW Australia"
+[11:19:14]    Found 0 place URLs
+[11:19:14] 
+── Defects Consultants | Melbourne
+[11:19:14]    Query: "Defects Consultants Melbourne VIC Australia"
+[11:19:14]    Resetting Maps browser context...
+[11:19:20]    Found 0 place URLs
+[11:19:20] 
+── Defects Consultants | Brisbane
+[11:19:20]    Query: "Defects Consultants Brisbane QLD Australia"
+[11:19:20]    Found 0 place URLs
+[11:19:20] 
+── Defects Consultants | Adelaide
+[11:19:20]    Query: "Defects Consultants Adelaide SA Australia"
+[11:19:21]    Found 0 place URLs
+[11:19:21]    5 consecutive empty searches — pausing 30s...
+[11:23:20] 
+── Defects Consultants | Hobart
+[11:23:20]    Query: "Defects Consultants Hobart TAS Australia"
+[11:23:20]    Found 0 place URLs
+[11:23:20] 
+── Defects Consultants | Canberra
+[11:23:20]    Query: "Defects Consultants Canberra ACT Australia"
+[11:23:20]    Found 0 place URLs
+[11:23:20] 
+── Defects Consultants | Darwin
+[11:23:20]    Query: "Defects Consultants Darwin NT Australia"
+[11:23:20]    Found 0 place URLs
+[11:23:20] 
+── Asset Management Consultants | Sydney
+[11:23:20]    Query: "Asset Management Consultants Sydney NSW Australia"
+[11:23:20]    Found 0 place URLs
+[11:23:20] 
+── Asset Management Consultants | Melbourne
+[11:23:20]    Query: "Asset Management Consultants Melbourne VIC Australia"
+[11:23:20]    Found 0 place URLs
+[11:23:20]    5 consecutive empty searches — pausing 30s...
+[11:27:18] 
+── Asset Management Consultants | Brisbane
+[11:27:18]    Query: "Asset Management Consultants Brisbane QLD Australia"
+[11:27:18]    Found 0 place URLs
+[11:27:18] 
+── Asset Management Consultants | Adelaide
+[11:27:18]    Query: "Asset Management Consultants Adelaide SA Australia"
+[11:27:18]    Found 0 place URLs
+[11:27:18] 
+── Asset Management Consultants | Hobart
+[11:27:18]    Query: "Asset Management Consultants Hobart TAS Australia"
+[11:27:18]    Found 0 place URLs
+[11:27:18] 
+── Asset Management Consultants | Canberra
+[11:27:18]    Query: "Asset Management Consultants Canberra ACT Australia"
+[11:27:18]    Found 0 place URLs
+[11:27:18] 
+── Asset Management Consultants | Darwin
+[11:27:18]    Query: "Asset Management Consultants Darwin NT Australia"
+[11:27:18]    Found 0 place URLs
+[11:27:18]    5 consecutive empty searches — pausing 30s...
+[11:29:44] 
+── Facilities Management Consultants | Sydney
+[11:29:44]    Query: "Facilities Management Consultants Sydney NSW Australia"
+[11:29:44]    Found 0 place URLs
+[11:29:44] 
+── Facilities Management Consultants | Melbourne
+[11:29:44]    Query: "Facilities Management Consultants Melbourne VIC Australia"
+[11:29:44]    Found 0 place URLs
+[11:29:44] 
+── Facilities Management Consultants | Brisbane
+[11:29:44]    Query: "Facilities Management Consultants Brisbane QLD Australia"
+[11:29:44]    Found 0 place URLs
+[11:29:44] 
+── Facilities Management Consultants | Adelaide
+[11:29:44]    Query: "Facilities Management Consultants Adelaide SA Australia"
+[11:29:44]    Found 0 place URLs
+[11:29:44] 
+── Facilities Management Consultants | Hobart
+[11:29:44]    Query: "Facilities Management Consultants Hobart TAS Australia"
+[11:29:44]    Found 0 place URLs
+[11:29:44]    5 consecutive empty searches — pausing 30s...
+[12:18:33] 
+── Facilities Management Consultants | Canberra
+[12:18:33]    Query: "Facilities Management Consultants Canberra ACT Australia"
+[12:18:33]    Found 0 place URLs
+[12:18:33] 
+── Facilities Management Consultants | Darwin
+[12:18:33]    Query: "Facilities Management Consultants Darwin NT Australia"
+[12:18:33]    Found 0 place URLs
+[12:18:33] 
+── Building Managers | Sydney
+[12:18:33]    Query: "Building Managers Sydney NSW Australia"
+[12:18:33]    Found 0 place URLs
+[12:18:33] 
+── Building Managers | Melbourne
+[12:18:33]    Query: "Building Managers Melbourne VIC Australia"
+[12:18:33]    Found 0 place URLs
+[12:18:33] 
+── Building Managers | Brisbane
+[12:18:33]    Query: "Building Managers Brisbane QLD Australia"
+[12:18:33]    Found 0 place URLs
+[12:18:33]    5 consecutive empty searches — pausing 30s...
+[12:25:10] 
+── Building Managers | Adelaide
+[12:25:10]    Query: "Building Managers Adelaide SA Australia"
+[12:25:10]    Found 0 place URLs
+[12:25:10] 
+── Building Managers | Hobart
+[12:25:10]    Query: "Building Managers Hobart TAS Australia"
+[12:25:10]    Found 0 place URLs
+[12:25:10] 
+── Building Managers | Canberra
+[12:25:10]    Query: "Building Managers Canberra ACT Australia"
+[12:25:10]    Found 0 place URLs
+[12:25:10] 
+── Building Managers | Darwin
+[12:25:10]    Query: "Building Managers Darwin NT Australia"
+[12:25:11]    Found 0 place URLs
+[12:25:11] 
+── Owners Corporation Managers | Sydney
+[12:25:11]    Query: "Owners Corporation Managers Sydney NSW Australia"
+[12:25:11]    Found 0 place URLs
+[12:25:11]    5 consecutive empty searches — pausing 30s...
+[12:41:28] 
+── Owners Corporation Managers | Melbourne
+[12:41:28]    Query: "Owners Corporation Managers Melbourne VIC Australia"
+[12:41:28]    Found 0 place URLs
+[12:41:28] 
+── Owners Corporation Managers | Brisbane
+[12:41:28]    Query: "Owners Corporation Managers Brisbane QLD Australia"
+[12:41:28]    Found 0 place URLs
+[12:41:28] 
+── Owners Corporation Managers | Adelaide
+[12:41:28]    Query: "Owners Corporation Managers Adelaide SA Australia"
+[12:41:28]    Resetting Maps browser context...
+[12:46:16]    Found 0 place URLs
+[12:46:16] 
+── Owners Corporation Managers | Hobart
+[12:46:16]    Query: "Owners Corporation Managers Hobart TAS Australia"
+[12:46:16]    Found 0 place URLs
+[12:46:16] 
+── Owners Corporation Managers | Canberra
+[12:46:16]    Query: "Owners Corporation Managers Canberra ACT Australia"
+[12:46:16]    Found 0 place URLs
+[12:46:16]    5 consecutive empty searches — pausing 30s...
+[12:57:35] 
+── Owners Corporation Managers | Darwin
+[12:57:35]    Query: "Owners Corporation Managers Darwin NT Australia"
+[12:57:35]    Found 0 place URLs
+[12:57:35] 
+── Strata Managers | Sydney
+[12:57:35]    Query: "Strata Managers Sydney NSW Australia"
+[12:57:35]    Found 0 place URLs
+[12:57:35] 
+── Strata Managers | Melbourne
+[12:57:35]    Query: "Strata Managers Melbourne VIC Australia"
+[12:57:35]    Found 0 place URLs
+[12:57:35] 
+── Strata Managers | Brisbane
+[12:57:35]    Query: "Strata Managers Brisbane QLD Australia"
+[12:57:35]    Found 0 place URLs
+[12:57:35] 
+── Strata Managers | Adelaide
+[12:57:35]    Query: "Strata Managers Adelaide SA Australia"
+[12:57:35]    Found 0 place URLs
+[12:57:35]    5 consecutive empty searches — pausing 30s...
+[13:47:16] 
+── Strata Managers | Hobart
+[13:47:16]    Query: "Strata Managers Hobart TAS Australia"
+[13:47:16]    Found 0 place URLs
+[13:47:16] 
+── Strata Managers | Canberra
+[13:47:16]    Query: "Strata Managers Canberra ACT Australia"
+[13:47:16]    Found 0 place URLs
+[13:47:16] 
+── Strata Managers | Darwin
+[13:47:16]    Query: "Strata Managers Darwin NT Australia"
+[13:47:16]    Found 0 place URLs
+[13:47:16] 
+── Community Association Managers | Sydney
+[13:47:16]    Query: "Community Association Managers Sydney NSW Australia"
+[13:47:16]    Found 0 place URLs
+[13:47:16] 
+── Community Association Managers | Melbourne
+[13:47:16]    Query: "Community Association Managers Melbourne VIC Australia"
+[13:47:16]    Found 0 place URLs
+[13:47:16]    5 consecutive empty searches — pausing 30s...
+[14:26:01] 
+── Community Association Managers | Brisbane
+[14:26:01]    Query: "Community Association Managers Brisbane QLD Australia"
+[14:26:01]    Found 0 place URLs
+[14:26:01] 
+── Community Association Managers | Adelaide
+[14:26:01]    Query: "Community Association Managers Adelaide SA Australia"
+[14:26:01]    Found 0 place URLs
+[14:26:01] 
+── Community Association Managers | Hobart
+[14:26:01]    Query: "Community Association Managers Hobart TAS Australia"
+[14:26:01]    Found 0 place URLs
+[14:26:01] 
+── Community Association Managers | Canberra
+[14:26:01]    Query: "Community Association Managers Canberra ACT Australia"
+[14:26:01]    Found 0 place URLs
+[14:26:01] 
+── Community Association Managers | Darwin
+[14:26:01]    Query: "Community Association Managers Darwin NT Australia"
+[14:26:01]    Found 0 place URLs
+[14:26:01]    5 consecutive empty searches — pausing 30s...
+[15:21:55] 
+── NCC / BCA Compliance Consultants | Sydney
+[15:21:55]    Query: "NCC / BCA Compliance Consultants Sydney NSW Australia"
+[15:21:55]    Found 0 place URLs
+[15:21:55] 
+── NCC / BCA Compliance Consultants | Melbourne
+[15:21:55]    Query: "NCC / BCA Compliance Consultants Melbourne VIC Australia"
+[15:21:55]    Found 0 place URLs
+[15:21:55] 
+── NCC / BCA Compliance Consultants | Brisbane
+[15:21:55]    Query: "NCC / BCA Compliance Consultants Brisbane QLD Australia"
+[15:21:55]    Found 0 place URLs
+[15:21:55] 
+── NCC / BCA Compliance Consultants | Adelaide
+[15:21:55]    Query: "NCC / BCA Compliance Consultants Adelaide SA Australia"
+[15:21:55]    Found 0 place URLs
+[15:21:55] 
+── NCC / BCA Compliance Consultants | Hobart
+[15:21:55]    Query: "NCC / BCA Compliance Consultants Hobart TAS Australia"
+[15:21:55]    Found 0 place URLs
+[15:21:55]    5 consecutive empty searches — pausing 30s...
+[16:01:14] 
+── NCC / BCA Compliance Consultants | Canberra
+[16:01:14]    Query: "NCC / BCA Compliance Consultants Canberra ACT Australia"
+[16:01:14]    Found 0 place URLs
+[16:01:14] 
+── NCC / BCA Compliance Consultants | Darwin
+[16:01:14]    Query: "NCC / BCA Compliance Consultants Darwin NT Australia"
+[16:01:14]    Found 0 place URLs
+[16:01:14] 
+── Accessibility Consultants (DDA) | Sydney
+[16:01:14]    Query: "Accessibility Consultants (DDA) Sydney NSW Australia"
+[16:01:14]    Found 0 place URLs
+[16:01:14] 
+── Accessibility Consultants (DDA) | Melbourne
+[16:01:14]    Query: "Accessibility Consultants (DDA) Melbourne VIC Australia"
+[16:01:14]    Found 0 place URLs
+[16:01:14] 
+── Accessibility Consultants (DDA) | Brisbane
+[16:01:14]    Query: "Accessibility Consultants (DDA) Brisbane QLD Australia"
+[16:01:14]    Found 0 place URLs
+[16:01:14]    5 consecutive empty searches — pausing 30s...
+[16:02:18] 
+── Accessibility Consultants (DDA) | Adelaide
+[16:02:18]    Query: "Accessibility Consultants (DDA) Adelaide SA Australia"
+[16:02:18]    Found 0 place URLs
+[16:02:18] 
+── Accessibility Consultants (DDA) | Hobart
+[16:02:18]    Query: "Accessibility Consultants (DDA) Hobart TAS Australia"
+[16:02:18]    Found 0 place URLs
+[16:02:18] 
+── Accessibility Consultants (DDA) | Canberra
+[16:02:18]    Query: "Accessibility Consultants (DDA) Canberra ACT Australia"
+[16:02:18]    Resetting Maps browser context...
+[16:02:25]    Found 0 place URLs
+[16:02:25] 
+── Accessibility Consultants (DDA) | Darwin
+[16:02:25]    Query: "Accessibility Consultants (DDA) Darwin NT Australia"
+[16:02:25]    Found 0 place URLs
+[16:02:25] 
+── Heritage Consultants | Sydney
+[16:02:25]    Query: "Heritage Consultants Sydney NSW Australia"
+[16:02:25]    Found 0 place URLs
+[16:02:25]    5 consecutive empty searches — pausing 30s...
+[17:26:03] 
+── Heritage Consultants | Melbourne
+[17:26:03]    Query: "Heritage Consultants Melbourne VIC Australia"
+[17:26:03]    Found 0 place URLs
+[17:26:04] 
+── Heritage Consultants | Brisbane
+[17:26:04]    Query: "Heritage Consultants Brisbane QLD Australia"
+[17:26:04]    Found 0 place URLs
+[17:26:04] 
+── Heritage Consultants | Adelaide
+[17:26:04]    Query: "Heritage Consultants Adelaide SA Australia"
+[17:26:04]    Found 0 place URLs
+[17:26:04] 
+── Heritage Consultants | Hobart
+[17:26:04]    Query: "Heritage Consultants Hobart TAS Australia"
+[17:26:04]    Found 0 place URLs
+[17:26:04] 
+── Heritage Consultants | Canberra
+[17:26:04]    Query: "Heritage Consultants Canberra ACT Australia"
+[17:26:04]    Found 0 place URLs
+[17:26:04]    5 consecutive empty searches — pausing 30s...
+[18:39:40] 
+── Heritage Consultants | Darwin
+[18:39:40]    Query: "Heritage Consultants Darwin NT Australia"
+[18:39:40]    Found 0 place URLs
+[18:39:40] 
+── Sustainability Consultants | Sydney
+[18:39:40]    Query: "Sustainability Consultants Sydney NSW Australia"
+[18:39:40]    Found 0 place URLs
+[18:39:41] 
+── Sustainability Consultants | Melbourne
+[18:39:41]    Query: "Sustainability Consultants Melbourne VIC Australia"
+[18:39:41]    Found 0 place URLs
+[18:39:41] 
+── Sustainability Consultants | Brisbane
+[18:39:41]    Query: "Sustainability Consultants Brisbane QLD Australia"
+[18:39:41]    Found 0 place URLs
+[18:39:41] 
+── Sustainability Consultants | Adelaide
+[18:39:41]    Query: "Sustainability Consultants Adelaide SA Australia"
+[18:39:41]    Found 0 place URLs
+[18:39:41]    5 consecutive empty searches — pausing 30s...
+[19:53:29] 
+── Sustainability Consultants | Hobart
+[19:53:29]    Query: "Sustainability Consultants Hobart TAS Australia"
+[19:53:29]    Found 0 place URLs
+[19:53:29] 
+── Sustainability Consultants | Canberra
+[19:53:29]    Query: "Sustainability Consultants Canberra ACT Australia"
+[19:53:29]    Found 0 place URLs
+[19:53:29] 
+── Sustainability Consultants | Darwin
+[19:53:29]    Query: "Sustainability Consultants Darwin NT Australia"
+[19:53:29]    Found 0 place URLs
+[19:53:29] 
+── Energy Efficiency Consultants | Sydney
+[19:53:29]    Query: "Energy Efficiency Consultants Sydney NSW Australia"
+[19:53:29]    Found 0 place URLs
+[19:53:29] 
+── Energy Efficiency Consultants | Melbourne
+[19:53:29]    Query: "Energy Efficiency Consultants Melbourne VIC Australia"
+[19:53:29]    Found 0 place URLs
+[19:53:29]    5 consecutive empty searches — pausing 30s...
+[21:11:10] 
+── Energy Efficiency Consultants | Brisbane
+[21:11:10]    Query: "Energy Efficiency Consultants Brisbane QLD Australia"
+[21:11:10]    Found 0 place URLs
+[21:11:10] 
+── Energy Efficiency Consultants | Adelaide
+[21:11:10]    Query: "Energy Efficiency Consultants Adelaide SA Australia"
+[21:11:10]    Found 0 place URLs
+[21:11:10] 
+── Energy Efficiency Consultants | Hobart
+[21:11:10]    Query: "Energy Efficiency Consultants Hobart TAS Australia"
+[21:11:10]    Found 0 place URLs
+[21:11:10] 
+── Energy Efficiency Consultants | Canberra
+[21:11:10]    Query: "Energy Efficiency Consultants Canberra ACT Australia"
+[21:11:10]    Found 0 place URLs
+[21:11:10] 
+── Energy Efficiency Consultants | Darwin
+[21:11:10]    Query: "Energy Efficiency Consultants Darwin NT Australia"
+[21:11:10]    Found 0 place URLs
+[21:11:10]    5 consecutive empty searches — pausing 30s...
+[22:30:14] 
+── NatHERS Assessors | Sydney
+[22:30:14]    Query: "NatHERS Assessors Sydney NSW Australia"
+[22:30:14]    Found 0 place URLs
+[22:30:14] 
+── NatHERS Assessors | Melbourne
+[22:30:14]    Query: "NatHERS Assessors Melbourne VIC Australia"
+[22:30:14]    Found 0 place URLs
+[22:30:14] 
+── NatHERS Assessors | Brisbane
+[22:30:14]    Query: "NatHERS Assessors Brisbane QLD Australia"
+[22:30:14]    Found 0 place URLs
+[22:30:14] 
+── NatHERS Assessors | Adelaide
+[22:30:14]    Query: "NatHERS Assessors Adelaide SA Australia"
+[22:30:14]    Found 0 place URLs
+[22:30:14] 
+── NatHERS Assessors | Hobart
+[22:30:14]    Query: "NatHERS Assessors Hobart TAS Australia"
+[22:30:14]    Found 0 place URLs
+[22:30:14]    5 consecutive empty searches — pausing 30s...
+[22:52:22] 
+── NatHERS Assessors | Canberra
+[22:52:22]    Query: "NatHERS Assessors Canberra ACT Australia"
+[22:52:22]    Found 0 place URLs
+[22:52:22] 
+── NatHERS Assessors | Darwin
+[22:52:22]    Query: "NatHERS Assessors Darwin NT Australia"
+[22:52:22]    Found 0 place URLs
+[22:52:22] 
+── NABERS Assessors | Sydney
+[22:52:22]    Query: "NABERS Assessors Sydney NSW Australia"
+[22:52:22]    Resetting Maps browser context...
+[22:52:28]    Found 0 place URLs
+[22:52:28] 
+── NABERS Assessors | Melbourne
+[22:52:28]    Query: "NABERS Assessors Melbourne VIC Australia"
+[22:52:28]    Found 0 place URLs
+[22:52:28] 
+── NABERS Assessors | Brisbane
+[22:52:28]    Query: "NABERS Assessors Brisbane QLD Australia"
+[22:52:28]    Found 0 place URLs
+[22:52:28]    5 consecutive empty searches — pausing 30s...
+[22:55:21] 
+── NABERS Assessors | Adelaide
+[22:55:21]    Query: "NABERS Assessors Adelaide SA Australia"
+[22:55:21]    Found 0 place URLs
+[22:55:21] 
+── NABERS Assessors | Hobart
+[22:55:21]    Query: "NABERS Assessors Hobart TAS Australia"
+[22:55:21]    Found 0 place URLs
+[22:55:21] 
+── NABERS Assessors | Canberra
+[22:55:21]    Query: "NABERS Assessors Canberra ACT Australia"
+[22:55:21]    Found 0 place URLs
+[22:55:21] 
+── NABERS Assessors | Darwin
+[22:55:21]    Query: "NABERS Assessors Darwin NT Australia"
+[22:55:21]    Found 0 place URLs
+[22:55:21] 
+── Green Star Consultants | Sydney
+[22:55:21]    Query: "Green Star Consultants Sydney NSW Australia"
+[22:55:21]    Found 0 place URLs
+[22:55:21]    5 consecutive empty searches — pausing 30s...
+[23:31:23] 
+── Green Star Consultants | Melbourne
+[23:31:23]    Query: "Green Star Consultants Melbourne VIC Australia"
+[23:31:23]    Found 0 place URLs
+[23:31:23] 
+── Green Star Consultants | Brisbane
+[23:31:23]    Query: "Green Star Consultants Brisbane QLD Australia"
+[23:31:23]    Found 0 place URLs
+[23:31:23] 
+── Green Star Consultants | Adelaide
+[23:31:23]    Query: "Green Star Consultants Adelaide SA Australia"
+[23:31:23]    Found 0 place URLs
+[23:31:23] 
+── Green Star Consultants | Hobart
+[23:31:23]    Query: "Green Star Consultants Hobart TAS Australia"
+[23:31:24]    Found 0 place URLs
+[23:31:24] 
+── Green Star Consultants | Canberra
+[23:31:24]    Query: "Green Star Consultants Canberra ACT Australia"
+[23:31:24]    Found 0 place URLs
+[23:31:24]    5 consecutive empty searches — pausing 30s...
+[23:33:37] 
+── Green Star Consultants | Darwin
+[23:33:37]    Query: "Green Star Consultants Darwin NT Australia"
+[23:33:37]    Found 0 place URLs
+[23:33:37] 
+── BASIX Consultants | Sydney
+[23:33:37]    Query: "BASIX Consultants Sydney NSW Australia"
+[23:33:37]    Found 0 place URLs
+[23:33:37] 
+── BASIX Consultants | Melbourne
+[23:33:37]    Query: "BASIX Consultants Melbourne VIC Australia"
+[23:33:37]    Found 0 place URLs
+[23:33:37] 
+── BASIX Consultants | Brisbane
+[23:33:37]    Query: "BASIX Consultants Brisbane QLD Australia"
+[23:33:37]    Found 0 place URLs
+[23:33:37] 
+── BASIX Consultants | Adelaide
+[23:33:37]    Query: "BASIX Consultants Adelaide SA Australia"
+[23:33:37]    Found 0 place URLs
+[23:33:37]    5 consecutive empty searches — pausing 30s...
+[23:58:23] 
+── BASIX Consultants | Hobart
+[23:58:23]    Query: "BASIX Consultants Hobart TAS Australia"
+[23:58:23]    Found 0 place URLs
+[23:58:23] 
+── BASIX Consultants | Canberra
+[23:58:23]    Query: "BASIX Consultants Canberra ACT Australia"
+[23:58:23]    Found 0 place URLs
+[23:58:23] 
+── BASIX Consultants | Darwin
+[23:58:23]    Query: "BASIX Consultants Darwin NT Australia"
+[23:58:23]    Found 0 place URLs
+[23:58:23] 
+── Expert Witnesses (Building) | Sydney
+[23:58:23]    Query: "Expert Witnesses (Building) Sydney NSW Australia"
+[23:58:23]    Found 0 place URLs
+[23:58:24] 
+── Expert Witnesses (Building) | Melbourne
+[23:58:24]    Query: "Expert Witnesses (Building) Melbourne VIC Australia"
+[23:58:24]    Found 0 place URLs
+[23:58:24]    5 consecutive empty searches — pausing 30s...
+[00:10:49] 
+── Expert Witnesses (Building) | Brisbane
+[00:10:49]    Query: "Expert Witnesses (Building) Brisbane QLD Australia"
+[00:10:49]    Found 0 place URLs
+[00:10:49] 
+── Expert Witnesses (Building) | Adelaide
+[00:10:49]    Query: "Expert Witnesses (Building) Adelaide SA Australia"
+[00:10:49]    Found 0 place URLs
+[00:10:49] 
+── Expert Witnesses (Building) | Hobart
+[00:10:49]    Query: "Expert Witnesses (Building) Hobart TAS Australia"
+[00:10:49]    Found 0 place URLs
+[00:10:49] 
+── Expert Witnesses (Building) | Canberra
+[00:10:49]    Query: "Expert Witnesses (Building) Canberra ACT Australia"
+[00:10:49]    Found 0 place URLs
+[00:10:49] 
+── Expert Witnesses (Building) | Darwin
+[00:10:49]    Query: "Expert Witnesses (Building) Darwin NT Australia"
+[00:10:49]    Found 0 place URLs
+[00:10:49]    5 consecutive empty searches — pausing 30s...
+[00:12:13] 
+── Dispute Resolution Consultants | Sydney
+[00:12:13]    Query: "Dispute Resolution Consultants Sydney NSW Australia"
+[00:12:13]    Found 0 place URLs
+[00:12:13] 
+── Dispute Resolution Consultants | Melbourne
+[00:12:13]    Query: "Dispute Resolution Consultants Melbourne VIC Australia"
+[00:12:13]    Found 0 place URLs
+[00:12:13] 
+── Dispute Resolution Consultants | Brisbane
+[00:12:13]    Query: "Dispute Resolution Consultants Brisbane QLD Australia"
+[00:12:13]    Resetting Maps browser context...
+[00:30:13]    Found 0 place URLs
+[00:30:13] 
+── Dispute Resolution Consultants | Adelaide
+[00:30:13]    Query: "Dispute Resolution Consultants Adelaide SA Australia"
+[00:30:13]    Found 0 place URLs
+[00:30:13] 
+── Dispute Resolution Consultants | Hobart
+[00:30:13]    Query: "Dispute Resolution Consultants Hobart TAS Australia"
+[00:30:13]    Found 0 place URLs
+[00:30:13]    5 consecutive empty searches — pausing 30s...
+[00:44:40] 
+── Dispute Resolution Consultants | Canberra
+[00:44:40]    Query: "Dispute Resolution Consultants Canberra ACT Australia"
+[00:44:40]    Found 0 place URLs
+[00:44:40] 
+── Dispute Resolution Consultants | Darwin
+[00:44:40]    Query: "Dispute Resolution Consultants Darwin NT Australia"
+[00:44:40]    Found 0 place URLs
+[00:44:40] 
+── Quantity Surveyors | Sydney
+[00:44:40]    Query: "Quantity Surveyors Sydney NSW Australia"
+[00:44:40]    Found 0 place URLs
+[00:44:40] 
+── Quantity Surveyors | Melbourne
+[00:44:40]    Query: "Quantity Surveyors Melbourne VIC Australia"
+[00:44:40]    Found 0 place URLs
+[00:44:40] 
+── Quantity Surveyors | Brisbane
+[00:44:40]    Query: "Quantity Surveyors Brisbane QLD Australia"
+[00:44:40]    Found 0 place URLs
+[00:44:40]    5 consecutive empty searches — pausing 30s...
+[01:13:44] 
+── Quantity Surveyors | Adelaide
+[01:13:44]    Query: "Quantity Surveyors Adelaide SA Australia"
+[01:13:44]    Found 0 place URLs
+[01:13:44] 
+── Quantity Surveyors | Hobart
+[01:13:44]    Query: "Quantity Surveyors Hobart TAS Australia"
+[01:13:44]    Found 0 place URLs
+[01:13:44] 
+── Quantity Surveyors | Canberra
+[01:13:44]    Query: "Quantity Surveyors Canberra ACT Australia"
+[01:13:44]    Found 0 place URLs
+[01:13:44] 
+── Quantity Surveyors | Darwin
+[01:13:44]    Query: "Quantity Surveyors Darwin NT Australia"
+[01:13:44]    Found 0 place URLs
+[01:13:44] 
+── Project Managers | Sydney
+[01:13:44]    Query: "Project Managers Sydney NSW Australia"
+[01:13:44]    Found 0 place URLs
+[01:13:44]    5 consecutive empty searches — pausing 30s...
+[02:29:52] 
+── Project Managers | Melbourne
+[02:29:52]    Query: "Project Managers Melbourne VIC Australia"
+[02:29:52]    Found 0 place URLs
+[02:29:52] 
+── Project Managers | Brisbane
+[02:29:52]    Query: "Project Managers Brisbane QLD Australia"
+[02:29:52]    Found 0 place URLs
+[02:29:52] 
+── Project Managers | Adelaide
+[02:29:52]    Query: "Project Managers Adelaide SA Australia"
+[02:29:52]    Found 0 place URLs
+[02:29:52] 
+── Project Managers | Hobart
+[02:29:52]    Query: "Project Managers Hobart TAS Australia"
+[02:29:52]    Found 0 place URLs
+[02:29:52] 
+── Project Managers | Canberra
+[02:29:52]    Query: "Project Managers Canberra ACT Australia"
+[02:29:52]    Found 0 place URLs
+[02:29:52]    5 consecutive empty searches — pausing 30s...
+[03:02:07] 
+── Project Managers | Darwin
+[03:02:07]    Query: "Project Managers Darwin NT Australia"
+[03:02:07]    Found 0 place URLs
+[03:02:07] 
+── Construction Managers | Sydney
+[03:02:07]    Query: "Construction Managers Sydney NSW Australia"
+[03:02:07]    Found 0 place URLs
+[03:02:07] 
+── Construction Managers | Melbourne
+[03:02:07]    Query: "Construction Managers Melbourne VIC Australia"
+[03:02:07]    Found 0 place URLs
+[03:02:07] 
+── Construction Managers | Brisbane
+[03:02:07]    Query: "Construction Managers Brisbane QLD Australia"
+[03:02:07]    Found 0 place URLs
+[03:02:07] 
+── Construction Managers | Adelaide
+[03:02:07]    Query: "Construction Managers Adelaide SA Australia"
+[03:02:07]    Found 0 place URLs
+[03:02:07]    5 consecutive empty searches — pausing 30s...
+[03:04:01] 
+── Construction Managers | Hobart
+[03:04:01]    Query: "Construction Managers Hobart TAS Australia"
+[03:04:01]    Found 0 place URLs
+[03:04:01] 
+── Construction Managers | Canberra
+[03:04:01]    Query: "Construction Managers Canberra ACT Australia"
+[03:04:01]    Found 0 place URLs
+[03:04:01] 
+── Construction Managers | Darwin
+[03:04:01]    Query: "Construction Managers Darwin NT Australia"
+[03:04:01]    Found 0 place URLs
+[03:04:01] 
+── Development Managers | Sydney
+[03:04:01]    Query: "Development Managers Sydney NSW Australia"
+[03:04:01]    Found 0 place URLs
+[03:04:01] 
+── Development Managers | Melbourne
+[03:04:01]    Query: "Development Managers Melbourne VIC Australia"
+[03:04:01]    Found 0 place URLs
+[03:04:01]    5 consecutive empty searches — pausing 30s...
+[03:05:08] 
+── Development Managers | Brisbane
+[03:05:08]    Query: "Development Managers Brisbane QLD Australia"
+[03:05:08]    Found 0 place URLs
+[03:05:08] 
+── Development Managers | Adelaide
+[03:05:08]    Query: "Development Managers Adelaide SA Australia"
+[03:05:08]    Found 0 place URLs
+[03:05:08] 
+── Development Managers | Hobart
+[03:05:08]    Query: "Development Managers Hobart TAS Australia"
+[03:05:08]    Resetting Maps browser context...
+[03:07:04]    Found 0 place URLs
+[03:07:04] 
+── Development Managers | Canberra
+[03:07:04]    Query: "Development Managers Canberra ACT Australia"
+[03:07:04]    Found 0 place URLs
+[03:07:04] 
+── Development Managers | Darwin
+[03:07:04]    Query: "Development Managers Darwin NT Australia"
+[03:07:04]    Found 0 place URLs
+[03:07:04]    5 consecutive empty searches — pausing 30s...
+[03:08:09] 
+── Development Consultants | Sydney
+[03:08:09]    Query: "Development Consultants Sydney NSW Australia"
+[03:08:09]    Found 0 place URLs
+[03:08:09] 
+── Development Consultants | Melbourne
+[03:08:09]    Query: "Development Consultants Melbourne VIC Australia"
+[03:08:09]    Found 0 place URLs
+[03:08:09] 
+── Development Consultants | Brisbane
+[03:08:09]    Query: "Development Consultants Brisbane QLD Australia"
+[03:08:09]    Found 0 place URLs
+[03:08:09] 
+── Development Consultants | Adelaide
+[03:08:09]    Query: "Development Consultants Adelaide SA Australia"
+[03:08:09]    Found 0 place URLs
+[03:08:09] 
+── Development Consultants | Hobart
+[03:08:09]    Query: "Development Consultants Hobart TAS Australia"
+[03:08:09]    Found 0 place URLs
+[03:08:09]    5 consecutive empty searches — pausing 30s...
+[03:09:44] 
+── Development Consultants | Canberra
+[03:09:44]    Query: "Development Consultants Canberra ACT Australia"
+[03:09:44]    Found 0 place URLs
+[03:09:44] 
+── Development Consultants | Darwin
+[03:09:44]    Query: "Development Consultants Darwin NT Australia"
+[03:09:44]    Found 0 place URLs
+[03:09:44] 
+── Structural Engineers | Sydney
+[03:09:44]    Query: "Structural Engineers Sydney NSW Australia"
+[03:09:44]    Found 0 place URLs
+[03:09:44] 
+── Structural Engineers | Melbourne
+[03:09:44]    Query: "Structural Engineers Melbourne VIC Australia"
+[03:09:44]    Found 0 place URLs
+[03:09:44] 
+── Structural Engineers | Brisbane
+[03:09:44]    Query: "Structural Engineers Brisbane QLD Australia"
+[03:09:44]    Found 0 place URLs
+[03:09:44]    5 consecutive empty searches — pausing 30s...
+[03:15:08] 
+── Structural Engineers | Adelaide
+[03:15:08]    Query: "Structural Engineers Adelaide SA Australia"
+[03:15:08]    Found 0 place URLs
+[03:15:08] 
+── Structural Engineers | Hobart
+[03:15:08]    Query: "Structural Engineers Hobart TAS Australia"
+[03:15:08]    Found 0 place URLs
+[03:15:08] 
+── Structural Engineers | Canberra
+[03:15:08]    Query: "Structural Engineers Canberra ACT Australia"
+[03:15:08]    Found 0 place URLs
+[03:15:08] 
+── Structural Engineers | Darwin
+[03:15:08]    Query: "Structural Engineers Darwin NT Australia"
+[03:15:08]    Found 0 place URLs
+[03:15:08] 
+── Civil Engineers | Sydney
+[03:15:08]    Query: "Civil Engineers Sydney NSW Australia"
+[03:15:08]    Found 0 place URLs
+[03:15:08]    5 consecutive empty searches — pausing 30s...
+[03:15:53] 
+── Civil Engineers | Melbourne
+[03:15:53]    Query: "Civil Engineers Melbourne VIC Australia"
+[03:15:53]    Found 0 place URLs
+[03:15:53] 
+── Civil Engineers | Brisbane
+[03:15:53]    Query: "Civil Engineers Brisbane QLD Australia"
+[03:15:53]    Found 0 place URLs
+[03:15:53] 
+── Civil Engineers | Adelaide
+[03:15:53]    Query: "Civil Engineers Adelaide SA Australia"
+[03:15:53]    Found 0 place URLs
+[03:15:53] 
+── Civil Engineers | Hobart
+[03:15:53]    Query: "Civil Engineers Hobart TAS Australia"
+[03:15:53]    Found 0 place URLs
+[03:15:53] 
+── Civil Engineers | Canberra
+[03:15:53]    Query: "Civil Engineers Canberra ACT Australia"
+[03:15:53]    Found 0 place URLs
+[03:15:53]    5 consecutive empty searches — pausing 30s...
+[03:44:03] 
+── Civil Engineers | Darwin
+[03:44:03]    Query: "Civil Engineers Darwin NT Australia"
+[03:44:03]    Found 0 place URLs
+[03:44:03] 
+── Facade Engineers | Sydney
+[03:44:03]    Query: "Facade Engineers Sydney NSW Australia"
+[03:44:03]    Found 0 place URLs
+[03:44:03] 
+── Facade Engineers | Melbourne
+[03:44:03]    Query: "Facade Engineers Melbourne VIC Australia"
+[03:44:03]    Found 0 place URLs
+[03:44:03] 
+── Facade Engineers | Brisbane
+[03:44:03]    Query: "Facade Engineers Brisbane QLD Australia"
+[03:44:03]    Found 0 place URLs
+[03:44:03] 
+── Facade Engineers | Adelaide
+[03:44:03]    Query: "Facade Engineers Adelaide SA Australia"
+[03:44:03]    Found 0 place URLs
+[03:44:03]    5 consecutive empty searches — pausing 30s...
+[03:45:32] 
+── Facade Engineers | Hobart
+[03:45:32]    Query: "Facade Engineers Hobart TAS Australia"
+[03:45:33]    Found 0 place URLs
+[03:45:33] 
+── Facade Engineers | Canberra
+[03:45:33]    Query: "Facade Engineers Canberra ACT Australia"
+[03:45:33]    Found 0 place URLs
+[03:45:33] 
+── Facade Engineers | Darwin
+[03:45:33]    Query: "Facade Engineers Darwin NT Australia"
+[03:45:33]    Resetting Maps browser context...
+[03:53:59]    Found 0 place URLs
+[03:53:59] 
+── Geotechnical Engineers | Sydney
+[03:53:59]    Query: "Geotechnical Engineers Sydney NSW Australia"
+[03:53:59]    Found 0 place URLs
+[03:53:59] 
+── Geotechnical Engineers | Melbourne
+[03:53:59]    Query: "Geotechnical Engineers Melbourne VIC Australia"
+[03:53:59]    Found 0 place URLs
+[03:53:59]    5 consecutive empty searches — pausing 30s...
+[03:56:00] 
+── Geotechnical Engineers | Brisbane
+[03:56:00]    Query: "Geotechnical Engineers Brisbane QLD Australia"
+[03:56:00]    Found 0 place URLs
+[03:56:00] 
+── Geotechnical Engineers | Adelaide
+[03:56:00]    Query: "Geotechnical Engineers Adelaide SA Australia"
+[03:56:00]    Found 0 place URLs
+[03:56:00] 
+── Geotechnical Engineers | Hobart
+[03:56:00]    Query: "Geotechnical Engineers Hobart TAS Australia"
+[03:56:00]    Found 0 place URLs
+[03:56:00] 
+── Geotechnical Engineers | Canberra
+[03:56:00]    Query: "Geotechnical Engineers Canberra ACT Australia"
+[03:56:00]    Found 0 place URLs
+[03:56:00] 
+── Geotechnical Engineers | Darwin
+[03:56:00]    Query: "Geotechnical Engineers Darwin NT Australia"
+[03:56:00]    Found 0 place URLs
+[03:56:00]    5 consecutive empty searches — pausing 30s...
+[03:57:03] 
+── Environmental Engineers | Sydney
+[03:57:03]    Query: "Environmental Engineers Sydney NSW Australia"
+[03:57:03]    Found 0 place URLs
+[03:57:03] 
+── Environmental Engineers | Melbourne
+[03:57:03]    Query: "Environmental Engineers Melbourne VIC Australia"
+[03:57:03]    Found 0 place URLs
+[03:57:03] 
+── Environmental Engineers | Brisbane
+[03:57:03]    Query: "Environmental Engineers Brisbane QLD Australia"
+[03:57:03]    Found 0 place URLs
+[03:57:03] 
+── Environmental Engineers | Adelaide
+[03:57:03]    Query: "Environmental Engineers Adelaide SA Australia"
+[03:57:03]    Found 0 place URLs
+[03:57:03] 
+── Environmental Engineers | Hobart
+[03:57:03]    Query: "Environmental Engineers Hobart TAS Australia"
+[03:57:03]    Found 0 place URLs
+[03:57:03]    5 consecutive empty searches — pausing 30s...
+[03:58:37] 
+── Environmental Engineers | Canberra
+[03:58:37]    Query: "Environmental Engineers Canberra ACT Australia"
+[03:58:37]    Found 0 place URLs
+[03:58:37] 
+── Environmental Engineers | Darwin
+[03:58:37]    Query: "Environmental Engineers Darwin NT Australia"
+[03:58:37]    Found 0 place URLs
+[03:58:37] 
+── Hydraulic Engineers | Sydney
+[03:58:37]    Query: "Hydraulic Engineers Sydney NSW Australia"
+[03:58:37]    Found 0 place URLs
+[03:58:37] 
+── Hydraulic Engineers | Melbourne
+[03:58:37]    Query: "Hydraulic Engineers Melbourne VIC Australia"
+[03:58:37]    Found 0 place URLs
+[03:58:37] 
+── Hydraulic Engineers | Brisbane
+[03:58:37]    Query: "Hydraulic Engineers Brisbane QLD Australia"
+[03:58:37]    Found 0 place URLs
+[03:58:37]    5 consecutive empty searches — pausing 30s...
+[04:10:51] 
+── Hydraulic Engineers | Adelaide
+[04:10:51]    Query: "Hydraulic Engineers Adelaide SA Australia"
+[04:10:51]    Found 0 place URLs
+[04:10:51] 
+── Hydraulic Engineers | Hobart
+[04:10:51]    Query: "Hydraulic Engineers Hobart TAS Australia"
+[04:10:51]    Found 0 place URLs
+[04:10:51] 
+── Hydraulic Engineers | Canberra
+[04:10:51]    Query: "Hydraulic Engineers Canberra ACT Australia"
+[04:10:51]    Found 0 place URLs
+[04:10:51] 
+── Hydraulic Engineers | Darwin
+[04:10:51]    Query: "Hydraulic Engineers Darwin NT Australia"
+[04:10:51]    Found 0 place URLs
+[04:10:51] 
+── Mechanical Engineers | Sydney
+[04:10:51]    Query: "Mechanical Engineers Sydney NSW Australia"
+[04:10:51]    Found 0 place URLs
+[04:10:51]    5 consecutive empty searches — pausing 30s...
+[04:40:34] 
+── Mechanical Engineers | Melbourne
+[04:40:34]    Query: "Mechanical Engineers Melbourne VIC Australia"
+[04:40:34]    Found 0 place URLs
+[04:40:34] 
+── Mechanical Engineers | Brisbane
+[04:40:34]    Query: "Mechanical Engineers Brisbane QLD Australia"
+[04:40:34]    Found 0 place URLs
+[04:40:34] 
+── Mechanical Engineers | Adelaide
+[04:40:34]    Query: "Mechanical Engineers Adelaide SA Australia"
+[04:40:34]    Found 0 place URLs
+[04:40:34] 
+── Mechanical Engineers | Hobart
+[04:40:34]    Query: "Mechanical Engineers Hobart TAS Australia"
+[04:40:34]    Found 0 place URLs
+[04:40:34] 
+── Mechanical Engineers | Canberra
+[04:40:34]    Query: "Mechanical Engineers Canberra ACT Australia"
+[04:40:34]    Found 0 place URLs
+[04:40:34]    5 consecutive empty searches — pausing 30s...
+[04:49:08] 
+── Mechanical Engineers | Darwin
+[04:49:08]    Query: "Mechanical Engineers Darwin NT Australia"
+[04:49:08]    Found 0 place URLs
+[04:49:09] 
+── Electrical Engineers | Sydney
+[04:49:09]    Query: "Electrical Engineers Sydney NSW Australia"
+[04:49:09]    Found 0 place URLs
+[04:49:09] 
+── Electrical Engineers | Melbourne
+[04:49:09]    Query: "Electrical Engineers Melbourne VIC Australia"
+[04:49:09]    Resetting Maps browser context...
+[04:49:17]    Found 0 place URLs
+[04:49:17] 
+── Electrical Engineers | Brisbane
+[04:49:17]    Query: "Electrical Engineers Brisbane QLD Australia"
+[04:49:17]    Found 0 place URLs
+[04:49:17] 
+── Electrical Engineers | Adelaide
+[04:49:17]    Query: "Electrical Engineers Adelaide SA Australia"
+[04:49:17]    Found 0 place URLs
+[04:49:17]    5 consecutive empty searches — pausing 30s...
+[05:34:07] 
+── Electrical Engineers | Hobart
+[05:34:07]    Query: "Electrical Engineers Hobart TAS Australia"
+[05:34:07]    Found 0 place URLs
+[05:34:07] 
+── Electrical Engineers | Canberra
+[05:34:07]    Query: "Electrical Engineers Canberra ACT Australia"
+[05:34:07]    Found 0 place URLs
+[05:34:07] 
+── Electrical Engineers | Darwin
+[05:34:07]    Query: "Electrical Engineers Darwin NT Australia"
+[05:34:07]    Found 0 place URLs
+[05:34:07] 
+── Fire Engineers | Sydney
+[05:34:07]    Query: "Fire Engineers Sydney NSW Australia"
+[05:34:07]    Found 0 place URLs
+[05:34:07] 
+── Fire Engineers | Melbourne
+[05:34:07]    Query: "Fire Engineers Melbourne VIC Australia"
+[05:34:07]    Found 0 place URLs
+[05:34:07]    5 consecutive empty searches — pausing 30s...
+[06:22:21] 
+── Fire Engineers | Brisbane
+[06:22:21]    Query: "Fire Engineers Brisbane QLD Australia"
+[06:22:21]    Found 0 place URLs
+[06:22:21] 
+── Fire Engineers | Adelaide
+[06:22:21]    Query: "Fire Engineers Adelaide SA Australia"
+[06:22:21]    Found 0 place URLs
+[06:22:21] 
+── Fire Engineers | Hobart
+[06:22:21]    Query: "Fire Engineers Hobart TAS Australia"
+[06:22:21]    Found 0 place URLs
+[06:22:21] 
+── Fire Engineers | Canberra
+[06:22:21]    Query: "Fire Engineers Canberra ACT Australia"
+[06:22:21]    Found 0 place URLs
+[06:22:21] 
+── Fire Engineers | Darwin
+[06:22:21]    Query: "Fire Engineers Darwin NT Australia"
+[06:22:21]    Found 0 place URLs
+[06:22:21]    5 consecutive empty searches — pausing 30s...
+[06:24:16] 
+── Acoustic Engineers | Sydney
+[06:24:16]    Query: "Acoustic Engineers Sydney NSW Australia"
+[06:24:16]    Found 0 place URLs
+[06:24:16] 
+── Acoustic Engineers | Melbourne
+[06:24:16]    Query: "Acoustic Engineers Melbourne VIC Australia"
+[06:24:16]    Found 0 place URLs
+[06:24:16] 
+── Acoustic Engineers | Brisbane
+[06:24:16]    Query: "Acoustic Engineers Brisbane QLD Australia"
+[06:24:16]    Found 0 place URLs
+[06:24:16] 
+── Acoustic Engineers | Adelaide
+[06:24:16]    Query: "Acoustic Engineers Adelaide SA Australia"
+[06:24:16]    Found 0 place URLs
+[06:24:16] 
+── Acoustic Engineers | Hobart
+[06:24:16]    Query: "Acoustic Engineers Hobart TAS Australia"
+[06:24:16]    Found 0 place URLs
+[06:24:16]    5 consecutive empty searches — pausing 30s...
+[06:25:31] 
+── Acoustic Engineers | Canberra
+[06:25:31]    Query: "Acoustic Engineers Canberra ACT Australia"
+[06:25:31]    Found 0 place URLs
+[06:25:31] 
+── Acoustic Engineers | Darwin
+[06:25:31]    Query: "Acoustic Engineers Darwin NT Australia"
+[06:25:31]    Found 0 place URLs
+[06:25:31] 
+── Wind Engineers | Sydney
+[06:25:31]    Query: "Wind Engineers Sydney NSW Australia"
+[06:25:31]    Found 0 place URLs
+[06:25:31] 
+── Wind Engineers | Melbourne
+[06:25:31]    Query: "Wind Engineers Melbourne VIC Australia"
+[06:25:31]    Found 0 place URLs
+[06:25:31] 
+── Wind Engineers | Brisbane
+[06:25:31]    Query: "Wind Engineers Brisbane QLD Australia"
+[06:25:31]    Found 0 place URLs
+[06:25:31]    5 consecutive empty searches — pausing 30s...
+[06:39:21] 
+── Wind Engineers | Adelaide
+[06:39:21]    Query: "Wind Engineers Adelaide SA Australia"
+[06:39:21]    Found 0 place URLs
+[06:39:21] 
+── Wind Engineers | Hobart
+[06:39:21]    Query: "Wind Engineers Hobart TAS Australia"
+[06:39:21]    Found 0 place URLs
+[06:39:21] 
+── Wind Engineers | Canberra
+[06:39:21]    Query: "Wind Engineers Canberra ACT Australia"
+[06:39:21]    Found 0 place URLs
+[06:39:21] 
+── Wind Engineers | Darwin
+[06:39:21]    Query: "Wind Engineers Darwin NT Australia"
+[06:39:21]    Found 0 place URLs
+[06:39:21] 
+── Traffic Engineers | Sydney
+[06:39:21]    Query: "Traffic Engineers Sydney NSW Australia"
+[06:39:21]    Found 0 place URLs
+[06:39:21]    5 consecutive empty searches — pausing 30s...
+[07:03:02] 
+── Traffic Engineers | Melbourne
+[07:03:02]    Query: "Traffic Engineers Melbourne VIC Australia"
+[07:03:02]    Found 0 place URLs
+[07:03:02] 
+── Traffic Engineers | Brisbane
+[07:03:02]    Query: "Traffic Engineers Brisbane QLD Australia"
+[07:03:02]    Found 0 place URLs
+[07:03:02] 
+── Traffic Engineers | Adelaide
+[07:03:02]    Query: "Traffic Engineers Adelaide SA Australia"
+[07:03:02]    Resetting Maps browser context...
+[07:03:08]    Found 0 place URLs
+[07:03:08] 
+── Traffic Engineers | Hobart
+[07:03:08]    Query: "Traffic Engineers Hobart TAS Australia"
+[07:03:08]    Found 0 place URLs
+[07:03:08] 
+── Traffic Engineers | Canberra
+[07:03:08]    Query: "Traffic Engineers Canberra ACT Australia"
+[07:03:08]    Found 0 place URLs
+[07:03:08]    5 consecutive empty searches — pausing 30s...
+[07:12:56] 
+── Traffic Engineers | Darwin
+[07:12:56]    Query: "Traffic Engineers Darwin NT Australia"
+[07:12:56]    Found 0 place URLs
+[07:12:56] 
+── Corrosion Engineers | Sydney
+[07:12:56]    Query: "Corrosion Engineers Sydney NSW Australia"
+[07:12:56]    Found 0 place URLs
+[07:12:56] 
+── Corrosion Engineers | Melbourne
+[07:12:56]    Query: "Corrosion Engineers Melbourne VIC Australia"
+[07:12:56]    Found 0 place URLs
+[07:12:56] 
+── Corrosion Engineers | Brisbane
+[07:12:56]    Query: "Corrosion Engineers Brisbane QLD Australia"
+[07:12:56]    Found 0 place URLs
+[07:12:56] 
+── Corrosion Engineers | Adelaide
+[07:12:56]    Query: "Corrosion Engineers Adelaide SA Australia"
+[07:12:56]    Found 0 place URLs
+[07:12:56]    5 consecutive empty searches — pausing 30s...
+[07:16:40] 
+── Corrosion Engineers | Hobart
+[07:16:40]    Query: "Corrosion Engineers Hobart TAS Australia"
+[07:16:40]    Found 0 place URLs
+[07:16:40] 
+── Corrosion Engineers | Canberra
+[07:16:40]    Query: "Corrosion Engineers Canberra ACT Australia"
+[07:16:40]    Found 0 place URLs
+[07:16:40] 
+── Corrosion Engineers | Darwin
+[07:16:40]    Query: "Corrosion Engineers Darwin NT Australia"
+[07:16:40]    Found 0 place URLs
+[07:16:40] 
+── Materials Engineers | Sydney
+[07:16:40]    Query: "Materials Engineers Sydney NSW Australia"
+[07:16:40]    Found 0 place URLs
+[07:16:40] 
+── Materials Engineers | Melbourne
+[07:16:40]    Query: "Materials Engineers Melbourne VIC Australia"
+[07:16:40]    Found 0 place URLs
+[07:16:40]    5 consecutive empty searches — pausing 30s...
+[07:23:17] 
+── Materials Engineers | Brisbane
+[07:23:17]    Query: "Materials Engineers Brisbane QLD Australia"
+[07:23:17]    Found 0 place URLs
+[07:23:17] 
+── Materials Engineers | Adelaide
+[07:23:17]    Query: "Materials Engineers Adelaide SA Australia"
+[07:23:17]    Found 0 place URLs
+[07:23:17] 
+── Materials Engineers | Hobart
+[07:23:17]    Query: "Materials Engineers Hobart TAS Australia"
+[07:23:17]    Found 0 place URLs
+[07:23:17] 
+── Materials Engineers | Canberra
+[07:23:17]    Query: "Materials Engineers Canberra ACT Australia"
+[07:23:17]    Found 0 place URLs
+[07:23:17] 
+── Materials Engineers | Darwin
+[07:23:17]    Query: "Materials Engineers Darwin NT Australia"
+[07:23:17]    Found 0 place URLs
+[07:23:17]    5 consecutive empty searches — pausing 30s...
+[07:30:50] 
+── Forensic Engineers | Sydney
+[07:30:50]    Query: "Forensic Engineers Sydney NSW Australia"
+[07:30:50]    Found 0 place URLs
+[07:30:50] 
+── Forensic Engineers | Melbourne
+[07:30:50]    Query: "Forensic Engineers Melbourne VIC Australia"
+[07:30:50]    Found 0 place URLs
+[07:30:50] 
+── Forensic Engineers | Brisbane
+[07:30:50]    Query: "Forensic Engineers Brisbane QLD Australia"
+[07:30:50]    Found 0 place URLs
+[07:30:50] 
+── Forensic Engineers | Adelaide
+[07:30:50]    Query: "Forensic Engineers Adelaide SA Australia"
+[07:30:50]    Found 0 place URLs
+[07:30:50] 
+── Forensic Engineers | Hobart
+[07:30:50]    Query: "Forensic Engineers Hobart TAS Australia"
+[07:30:50]    Found 0 place URLs
+[07:30:50]    5 consecutive empty searches — pausing 30s...
+[07:46:45] 
+── Forensic Engineers | Canberra
+[07:46:45]    Query: "Forensic Engineers Canberra ACT Australia"
+[07:46:45]    Found 0 place URLs
+[07:46:45] 
+── Forensic Engineers | Darwin
+[07:46:45]    Query: "Forensic Engineers Darwin NT Australia"
+[07:46:45]    Found 0 place URLs
+[07:46:45] 
+── Sustainability Engineers | Sydney
+[07:46:45]    Query: "Sustainability Engineers Sydney NSW Australia"
+[07:46:45]    Found 0 place URLs
+[07:46:45] 
+── Sustainability Engineers | Melbourne
+[07:46:45]    Query: "Sustainability Engineers Melbourne VIC Australia"
+[07:46:45]    Found 0 place URLs
+[07:46:45] 
+── Sustainability Engineers | Brisbane
+[07:46:45]    Query: "Sustainability Engineers Brisbane QLD Australia"
+[07:46:45]    Found 0 place URLs
+[07:46:45]    5 consecutive empty searches — pausing 30s...
+[07:48:28] 
+── Sustainability Engineers | Adelaide
+[07:48:28]    Query: "Sustainability Engineers Adelaide SA Australia"
+[07:48:28]    Found 0 place URLs
+[07:48:28] 
+── Sustainability Engineers | Hobart
+[07:48:28]    Query: "Sustainability Engineers Hobart TAS Australia"
+[07:48:28]    Found 0 place URLs
+[07:48:28] 
+── Sustainability Engineers | Canberra
+[07:48:28]    Query: "Sustainability Engineers Canberra ACT Australia"
+[07:48:28]    Resetting Maps browser context...
+[07:48:33]    Found 0 place URLs
+[07:48:33] 
+── Sustainability Engineers | Darwin
+[07:48:33]    Query: "Sustainability Engineers Darwin NT Australia"
+[07:48:33]    Found 0 place URLs
+[07:48:33] 
+── Building Services Engineers | Sydney
+[07:48:33]    Query: "Building Services Engineers Sydney NSW Australia"
+[07:48:33]    Found 0 place URLs
+[07:48:33]    5 consecutive empty searches — pausing 30s...
+[07:52:33] 
+── Building Services Engineers | Melbourne
+[07:52:33]    Query: "Building Services Engineers Melbourne VIC Australia"
+[07:52:33]    Found 0 place URLs
+[07:52:33] 
+── Building Services Engineers | Brisbane
+[07:52:33]    Query: "Building Services Engineers Brisbane QLD Australia"
+[07:52:33]    Found 0 place URLs
+[07:52:33] 
+── Building Services Engineers | Adelaide
+[07:52:33]    Query: "Building Services Engineers Adelaide SA Australia"
+[07:52:33]    Found 0 place URLs
+[07:52:33] 
+── Building Services Engineers | Hobart
+[07:52:33]    Query: "Building Services Engineers Hobart TAS Australia"
+[07:52:33]    Found 0 place URLs
+[07:52:33] 
+── Building Services Engineers | Canberra
+[07:52:33]    Query: "Building Services Engineers Canberra ACT Australia"
+[07:52:33]    Found 0 place URLs
+[07:52:33]    5 consecutive empty searches — pausing 30s...
+[08:02:29] 
+── Building Services Engineers | Darwin
+[08:02:29]    Query: "Building Services Engineers Darwin NT Australia"
+[08:02:29]    Found 0 place URLs
+[08:02:29] 
+── Vertical Transport Engineers | Sydney
+[08:02:29]    Query: "Vertical Transport Engineers Sydney NSW Australia"
+[08:02:29]    Found 0 place URLs
+[08:02:29] 
+── Vertical Transport Engineers | Melbourne
+[08:02:29]    Query: "Vertical Transport Engineers Melbourne VIC Australia"
+[08:02:29]    Found 0 place URLs
+[08:02:29] 
+── Vertical Transport Engineers | Brisbane
+[08:02:29]    Query: "Vertical Transport Engineers Brisbane QLD Australia"
+[08:02:29]    Found 0 place URLs
+[08:02:29] 
+── Vertical Transport Engineers | Adelaide
+[08:02:29]    Query: "Vertical Transport Engineers Adelaide SA Australia"
+[08:02:29]    Found 0 place URLs
+[08:02:29]    5 consecutive empty searches — pausing 30s...
+[08:05:49] 
+── Vertical Transport Engineers | Hobart
+[08:05:49]    Query: "Vertical Transport Engineers Hobart TAS Australia"
+[08:05:49]    Found 0 place URLs
+[08:05:49] 
+── Vertical Transport Engineers | Canberra
+[08:05:49]    Query: "Vertical Transport Engineers Canberra ACT Australia"
+[08:05:49]    Found 0 place URLs
+[08:05:49] 
+── Vertical Transport Engineers | Darwin
+[08:05:49]    Query: "Vertical Transport Engineers Darwin NT Australia"
+[08:05:49]    Found 0 place URLs
+[08:05:49] 
+── Telecommunications Engineers | Sydney
+[08:05:49]    Query: "Telecommunications Engineers Sydney NSW Australia"
+[08:05:49]    Found 0 place URLs
+[08:05:49] 
+── Telecommunications Engineers | Melbourne
+[08:05:49]    Query: "Telecommunications Engineers Melbourne VIC Australia"
+[08:05:49]    Found 0 place URLs
+[08:05:49]    5 consecutive empty searches — pausing 30s...
+[08:45:36] 
+── Telecommunications Engineers | Brisbane
+[08:45:36]    Query: "Telecommunications Engineers Brisbane QLD Australia"
+[08:45:36]    Found 0 place URLs
+[08:45:36] 
+── Telecommunications Engineers | Adelaide
+[08:45:36]    Query: "Telecommunications Engineers Adelaide SA Australia"
+[08:45:36]    Found 0 place URLs
+[08:45:36] 
+── Telecommunications Engineers | Hobart
+[08:45:36]    Query: "Telecommunications Engineers Hobart TAS Australia"
+[08:45:36]    Found 0 place URLs
+[08:45:36] 
+── Telecommunications Engineers | Canberra
+[08:45:36]    Query: "Telecommunications Engineers Canberra ACT Australia"
+[08:45:36]    Found 0 place URLs
+[08:45:36] 
+── Telecommunications Engineers | Darwin
+[08:45:36]    Query: "Telecommunications Engineers Darwin NT Australia"
+[08:45:36]    Found 0 place URLs
+[08:45:36]    5 consecutive empty searches — pausing 30s...
+[08:47:38] 
+── DBP Design Practitioner - Class 1 | Sydney
+[08:47:38]    Query: "DBP Design Practitioner - Class 1 Sydney NSW Australia"
+[08:47:38]    Found 0 place URLs
+[08:47:38] 
+── DBP Design Practitioner - Class 1 | Melbourne
+[08:47:38]    Query: "DBP Design Practitioner - Class 1 Melbourne VIC Australia"
+[08:47:38]    Found 0 place URLs
+[08:47:38] 
+── DBP Design Practitioner - Class 1 | Brisbane
+[08:47:38]    Query: "DBP Design Practitioner - Class 1 Brisbane QLD Australia"
+[08:47:38]    Found 0 place URLs
+[08:47:38] 
+── DBP Design Practitioner - Class 1 | Adelaide
+[08:47:38]    Query: "DBP Design Practitioner - Class 1 Adelaide SA Australia"
+[08:47:38]    Found 0 place URLs
+[08:47:38] 
+── DBP Design Practitioner - Class 1 | Hobart
+[08:47:38]    Query: "DBP Design Practitioner - Class 1 Hobart TAS Australia"
+[08:47:38]    Found 0 place URLs
+[08:47:38]    5 consecutive empty searches — pausing 30s...
+[08:56:04] 
+── DBP Design Practitioner - Class 1 | Canberra
+[08:56:04]    Query: "DBP Design Practitioner - Class 1 Canberra ACT Australia"
+[08:56:04]    Found 0 place URLs
+[08:56:04] 
+── DBP Design Practitioner - Class 1 | Darwin
+[08:56:04]    Query: "DBP Design Practitioner - Class 1 Darwin NT Australia"
+[08:56:04]    Found 0 place URLs
+[08:56:04] 
+── DBP Design Practitioner - Class 2 | Sydney
+[08:56:04]    Query: "DBP Design Practitioner - Class 2 Sydney NSW Australia"
+[08:56:04]    Resetting Maps browser context...
+[08:56:10]    Found 0 place URLs
+[08:56:10] 
+── DBP Design Practitioner - Class 2 | Melbourne
+[08:56:10]    Query: "DBP Design Practitioner - Class 2 Melbourne VIC Australia"
+[08:56:10]    Found 0 place URLs
+[08:56:10] 
+── DBP Design Practitioner - Class 2 | Brisbane
+[08:56:10]    Query: "DBP Design Practitioner - Class 2 Brisbane QLD Australia"
+[08:56:10]    Found 0 place URLs
+[08:56:11]    5 consecutive empty searches — pausing 30s...
+[08:57:43] 
+── DBP Design Practitioner - Class 2 | Adelaide
+[08:57:43]    Query: "DBP Design Practitioner - Class 2 Adelaide SA Australia"
+[08:57:43]    Found 0 place URLs
+[08:57:43] 
+── DBP Design Practitioner - Class 2 | Hobart
+[08:57:43]    Query: "DBP Design Practitioner - Class 2 Hobart TAS Australia"
+[08:57:43]    Found 0 place URLs
+[08:57:43] 
+── DBP Design Practitioner - Class 2 | Canberra
+[08:57:43]    Query: "DBP Design Practitioner - Class 2 Canberra ACT Australia"
+[08:57:43]    Found 0 place URLs
+[08:57:43] 
+── DBP Design Practitioner - Class 2 | Darwin
+[08:57:43]    Query: "DBP Design Practitioner - Class 2 Darwin NT Australia"
+[08:57:43]    Found 0 place URLs
+[08:57:43] 
+── DBP Design Practitioner - Facade | Sydney
+[08:57:43]    Query: "DBP Design Practitioner - Facade Sydney NSW Australia"
+[08:57:43]    Found 0 place URLs
+[08:57:43]    5 consecutive empty searches — pausing 30s...
+[09:36:15] 
+── DBP Design Practitioner - Facade | Melbourne
+[09:36:15]    Query: "DBP Design Practitioner - Facade Melbourne VIC Australia"
+[09:36:15]    Found 0 place URLs
+[09:36:15] 
+── DBP Design Practitioner - Facade | Brisbane
+[09:36:15]    Query: "DBP Design Practitioner - Facade Brisbane QLD Australia"
+[09:36:15]    Found 0 place URLs
+[09:36:15] 
+── DBP Design Practitioner - Facade | Adelaide
+[09:36:15]    Query: "DBP Design Practitioner - Facade Adelaide SA Australia"
+[09:36:15]    Found 0 place URLs
+[09:36:15] 
+── DBP Design Practitioner - Facade | Hobart
+[09:36:15]    Query: "DBP Design Practitioner - Facade Hobart TAS Australia"
+[09:36:15]    Found 0 place URLs
+[09:36:15] 
+── DBP Design Practitioner - Facade | Canberra
+[09:36:15]    Query: "DBP Design Practitioner - Facade Canberra ACT Australia"
+[09:36:15]    Found 0 place URLs
+[09:36:15]    5 consecutive empty searches — pausing 30s...
+[09:36:51] 
+── DBP Design Practitioner - Facade | Darwin
+[09:36:51]    Query: "DBP Design Practitioner - Facade Darwin NT Australia"
+[09:36:51]    Found 0 place URLs
+[09:36:51] 
+── DBP Design Practitioner - Structural | Sydney
+[09:36:51]    Query: "DBP Design Practitioner - Structural Sydney NSW Australia"
+[09:36:51]    Found 0 place URLs
+[09:36:51] 
+── DBP Design Practitioner - Structural | Melbourne
+[09:36:51]    Query: "DBP Design Practitioner - Structural Melbourne VIC Australia"
+[09:36:51]    Found 0 place URLs
+[09:36:51] 
+── DBP Design Practitioner - Structural | Brisbane
+[09:36:51]    Query: "DBP Design Practitioner - Structural Brisbane QLD Australia"
+[09:36:51]    Found 0 place URLs
+[09:36:51] 
+── DBP Design Practitioner - Structural | Adelaide
+[09:36:51]    Query: "DBP Design Practitioner - Structural Adelaide SA Australia"
+[09:36:51]    Found 0 place URLs
+[09:36:51]    5 consecutive empty searches — pausing 30s...
+[10:38:56] 
+── DBP Design Practitioner - Structural | Hobart
+[10:38:56]    Query: "DBP Design Practitioner - Structural Hobart TAS Australia"
+[10:38:56]    Found 0 place URLs
+[10:38:56] 
+── DBP Design Practitioner - Structural | Canberra
+[10:38:56]    Query: "DBP Design Practitioner - Structural Canberra ACT Australia"
+[10:38:56]    Found 0 place URLs
+[10:38:56] 
+── DBP Design Practitioner - Structural | Darwin
+[10:38:56]    Query: "DBP Design Practitioner - Structural Darwin NT Australia"
+[10:38:56]    Found 0 place URLs
+[10:38:56] 
+── DBP Design Practitioner - Mechanical | Sydney
+[10:38:56]    Query: "DBP Design Practitioner - Mechanical Sydney NSW Australia"
+[10:38:56]    Found 0 place URLs
+[10:38:56] 
+── DBP Design Practitioner - Mechanical | Melbourne
+[10:38:56]    Query: "DBP Design Practitioner - Mechanical Melbourne VIC Australia"
+[10:38:56]    Found 0 place URLs
+[10:38:56]    5 consecutive empty searches — pausing 30s...
+[10:47:02] 
+── DBP Design Practitioner - Mechanical | Brisbane
+[10:47:02]    Query: "DBP Design Practitioner - Mechanical Brisbane QLD Australia"
+[10:47:02]    Found 0 place URLs
+[10:47:02] 
+── DBP Design Practitioner - Mechanical | Adelaide
+[10:47:02]    Query: "DBP Design Practitioner - Mechanical Adelaide SA Australia"
+[10:47:02]    Found 0 place URLs
+[10:47:02] 
+── DBP Design Practitioner - Mechanical | Hobart
+[10:47:02]    Query: "DBP Design Practitioner - Mechanical Hobart TAS Australia"
+[10:47:02]    Found 0 place URLs
+[10:47:02] 
+── DBP Design Practitioner - Mechanical | Canberra
+[10:47:02]    Query: "DBP Design Practitioner - Mechanical Canberra ACT Australia"
+[10:47:02]    Found 0 place URLs
+[10:47:02] 
+── DBP Design Practitioner - Mechanical | Darwin
+[10:47:02]    Query: "DBP Design Practitioner - Mechanical Darwin NT Australia"
+[10:47:02]    Found 0 place URLs
+[10:47:02]    5 consecutive empty searches — pausing 30s...
+[10:49:17] 
+── DBP Design Practitioner - Electrical | Sydney
+[10:49:17]    Query: "DBP Design Practitioner - Electrical Sydney NSW Australia"
+[10:49:17]    Found 0 place URLs
+[10:49:17] 
+── DBP Design Practitioner - Electrical | Melbourne
+[10:49:17]    Query: "DBP Design Practitioner - Electrical Melbourne VIC Australia"
+[10:49:17]    Found 0 place URLs
+[10:49:17] 
+── DBP Design Practitioner - Electrical | Brisbane
+[10:49:17]    Query: "DBP Design Practitioner - Electrical Brisbane QLD Australia"
+[10:49:17]    Resetting Maps browser context...
+[10:49:23]    Found 0 place URLs
+[10:49:23] 
+── DBP Design Practitioner - Electrical | Adelaide
+[10:49:23]    Query: "DBP Design Practitioner - Electrical Adelaide SA Australia"
+[10:49:23]    Found 0 place URLs
+[10:49:23] 
+── DBP Design Practitioner - Electrical | Hobart
+[10:49:23]    Query: "DBP Design Practitioner - Electrical Hobart TAS Australia"
+[10:49:23]    Found 0 place URLs
+[10:49:23]    5 consecutive empty searches — pausing 30s...
+[11:38:55] 
+── DBP Design Practitioner - Electrical | Canberra
+[11:38:55]    Query: "DBP Design Practitioner - Electrical Canberra ACT Australia"
+[11:38:55]    Found 0 place URLs
+[11:38:55] 
+── DBP Design Practitioner - Electrical | Darwin
+[11:38:55]    Query: "DBP Design Practitioner - Electrical Darwin NT Australia"
+[11:38:55]    Found 0 place URLs
+[11:38:55] 
+── DBP Design Practitioner - Fire Safety | Sydney
+[11:38:55]    Query: "DBP Design Practitioner - Fire Safety Sydney NSW Australia"
+[11:38:55]    Found 0 place URLs
+[11:38:55] 
+── DBP Design Practitioner - Fire Safety | Melbourne
+[11:38:55]    Query: "DBP Design Practitioner - Fire Safety Melbourne VIC Australia"
+[11:38:55]    Found 0 place URLs
+[11:38:55] 
+── DBP Design Practitioner - Fire Safety | Brisbane
+[11:38:55]    Query: "DBP Design Practitioner - Fire Safety Brisbane QLD Australia"
+[11:38:55]    Found 0 place URLs
+[11:38:55]    5 consecutive empty searches — pausing 30s...
+[12:58:09] 
+── DBP Design Practitioner - Fire Safety | Adelaide
+[12:58:09]    Query: "DBP Design Practitioner - Fire Safety Adelaide SA Australia"
+[12:58:09]    Found 0 place URLs
+[12:58:09] 
+── DBP Design Practitioner - Fire Safety | Hobart
+[12:58:09]    Query: "DBP Design Practitioner - Fire Safety Hobart TAS Australia"
+[12:58:09]    Found 0 place URLs
+[12:58:09] 
+── DBP Design Practitioner - Fire Safety | Canberra
+[12:58:09]    Query: "DBP Design Practitioner - Fire Safety Canberra ACT Australia"
+[12:58:09]    Found 0 place URLs
+[12:58:09] 
+── DBP Design Practitioner - Fire Safety | Darwin
+[12:58:09]    Query: "DBP Design Practitioner - Fire Safety Darwin NT Australia"
+[12:58:09]    Found 0 place URLs
+[12:58:09] 
+── DBP Design Practitioner - Waterproofing | Sydney
+[12:58:09]    Query: "DBP Design Practitioner - Waterproofing Sydney NSW Australia"
+[12:58:09]    Found 0 place URLs
+[12:58:09]    5 consecutive empty searches — pausing 30s...
+[13:57:04] 
+── DBP Design Practitioner - Waterproofing | Melbourne
+[13:57:04]    Query: "DBP Design Practitioner - Waterproofing Melbourne VIC Australia"
+[13:57:04]    Found 0 place URLs
+[13:57:04] 
+── DBP Design Practitioner - Waterproofing | Brisbane
+[13:57:04]    Query: "DBP Design Practitioner - Waterproofing Brisbane QLD Australia"
+[13:57:04]    Found 0 place URLs
+[13:57:04] 
+── DBP Design Practitioner - Waterproofing | Perth
+[13:57:04]    Query: "DBP Design Practitioner - Waterproofing Perth WA Australia"
+[13:57:04]    Found 0 place URLs
+[13:57:04] 
+── DBP Design Practitioner - Waterproofing | Adelaide
+[13:57:04]    Query: "DBP Design Practitioner - Waterproofing Adelaide SA Australia"
+[13:57:04]    Found 0 place URLs
+[13:57:04] 
+── DBP Design Practitioner - Waterproofing | Hobart
+[13:57:04]    Query: "DBP Design Practitioner - Waterproofing Hobart TAS Australia"
+[13:57:04]    Found 0 place URLs
+[13:57:04]    5 consecutive empty searches — pausing 30s...
+[14:10:28] 
+── DBP Design Practitioner - Waterproofing | Canberra
+[14:10:28]    Query: "DBP Design Practitioner - Waterproofing Canberra ACT Australia"
+[14:10:28]    Found 0 place URLs
+[14:10:28] 
+── DBP Design Practitioner - Waterproofing | Darwin
+[14:10:28]    Query: "DBP Design Practitioner - Waterproofing Darwin NT Australia"
+[14:10:28]    Found 0 place URLs
+[14:10:28] 
+── DBP Building Practitioner - Class 1 | Sydney
+[14:10:28]    Query: "DBP Building Practitioner - Class 1 Sydney NSW Australia"
+[14:10:28]    Found 0 place URLs
+[14:10:28] 
+── DBP Building Practitioner - Class 1 | Melbourne
+[14:10:28]    Query: "DBP Building Practitioner - Class 1 Melbourne VIC Australia"
+[14:10:28]    Found 0 place URLs
+[14:10:28] 
+── DBP Building Practitioner - Class 1 | Brisbane
+[14:10:28]    Query: "DBP Building Practitioner - Class 1 Brisbane QLD Australia"
+[14:10:28]    Found 0 place URLs
+[14:10:28]    5 consecutive empty searches — pausing 30s...
+[15:11:39] 
+── DBP Building Practitioner - Class 1 | Perth
+[15:11:39]    Query: "DBP Building Practitioner - Class 1 Perth WA Australia"
+[15:11:39]    Found 0 place URLs
+[15:11:39] 
+── DBP Building Practitioner - Class 1 | Adelaide
+[15:11:39]    Query: "DBP Building Practitioner - Class 1 Adelaide SA Australia"
+[15:11:39]    Found 0 place URLs
+[15:11:39] 
+── DBP Building Practitioner - Class 1 | Hobart
+[15:11:39]    Query: "DBP Building Practitioner - Class 1 Hobart TAS Australia"
+[15:11:39]    Found 0 place URLs
+[15:11:39] 
+── DBP Building Practitioner - Class 1 | Canberra
+[15:11:39]    Query: "DBP Building Practitioner - Class 1 Canberra ACT Australia"
+[15:11:39]    Found 0 place URLs
+[15:11:39] 
+── DBP Building Practitioner - Class 1 | Darwin
+[15:11:39]    Query: "DBP Building Practitioner - Class 1 Darwin NT Australia"
+[15:11:39]    Found 0 place URLs
+[15:11:39]    5 consecutive empty searches — pausing 30s...
+[16:02:22] 
+── DBP Building Practitioner - Class 2 | Sydney
+[16:02:22]    Query: "DBP Building Practitioner - Class 2 Sydney NSW Australia"
+[16:02:22]    Found 0 place URLs
+[16:02:22] 
+── DBP Building Practitioner - Class 2 | Melbourne
+[16:02:22]    Query: "DBP Building Practitioner - Class 2 Melbourne VIC Australia"
+[16:02:22]    Found 0 place URLs
+[16:02:22] 
+── DBP Building Practitioner - Class 2 | Brisbane
+[16:02:22]    Query: "DBP Building Practitioner - Class 2 Brisbane QLD Australia"
+[16:02:22]    Resetting Maps browser context...
+[16:12:36]    Found 0 place URLs
+[16:12:36] 
+── DBP Building Practitioner - Class 2 | Perth
+[16:12:36]    Query: "DBP Building Practitioner - Class 2 Perth WA Australia"
+[16:12:36]    Found 0 place URLs
+[16:12:36] 
+── DBP Building Practitioner - Class 2 | Adelaide
+[16:12:36]    Query: "DBP Building Practitioner - Class 2 Adelaide SA Australia"
+[16:12:36]    Found 0 place URLs
+[16:12:36]    5 consecutive empty searches — pausing 30s...
+[17:13:46] 
+── DBP Building Practitioner - Class 2 | Hobart
+[17:13:46]    Query: "DBP Building Practitioner - Class 2 Hobart TAS Australia"
+[17:13:46]    Found 0 place URLs
+[17:13:46] 
+── DBP Building Practitioner - Class 2 | Canberra
+[17:13:46]    Query: "DBP Building Practitioner - Class 2 Canberra ACT Australia"
+[17:13:46]    Found 0 place URLs
+[17:13:46] 
+── DBP Building Practitioner - Class 2 | Darwin
+[17:13:46]    Query: "DBP Building Practitioner - Class 2 Darwin NT Australia"
+[17:13:46]    Found 0 place URLs
+[17:13:46] 
+── DBP Building Practitioner - Facade | Sydney
+[17:13:46]    Query: "DBP Building Practitioner - Facade Sydney NSW Australia"
+[17:13:46]    Found 0 place URLs
+[17:13:46] 
+── DBP Building Practitioner - Facade | Melbourne
+[17:13:46]    Query: "DBP Building Practitioner - Facade Melbourne VIC Australia"
+[17:13:46]    Found 0 place URLs
+[17:13:46]    5 consecutive empty searches — pausing 30s...
+[18:14:49] 
+── DBP Building Practitioner - Facade | Brisbane
+[18:14:49]    Query: "DBP Building Practitioner - Facade Brisbane QLD Australia"
+[18:14:49]    Found 0 place URLs
+[18:14:49] 
+── DBP Building Practitioner - Facade | Perth
+[18:14:49]    Query: "DBP Building Practitioner - Facade Perth WA Australia"
+[18:14:49]    Found 0 place URLs
+[18:14:49] 
+── DBP Building Practitioner - Facade | Adelaide
+[18:14:49]    Query: "DBP Building Practitioner - Facade Adelaide SA Australia"
+[18:14:49]    Found 0 place URLs
+[18:14:49] 
+── DBP Building Practitioner - Facade | Hobart
+[18:14:49]    Query: "DBP Building Practitioner - Facade Hobart TAS Australia"
+[18:14:49]    Found 0 place URLs
+[18:14:49] 
+── DBP Building Practitioner - Facade | Canberra
+[18:14:49]    Query: "DBP Building Practitioner - Facade Canberra ACT Australia"
+[18:14:49]    Found 0 place URLs
+[18:14:49]    5 consecutive empty searches — pausing 30s...
+[19:31:35] 
+── DBP Building Practitioner - Facade | Darwin
+[19:31:35]    Query: "DBP Building Practitioner - Facade Darwin NT Australia"
+[19:31:35]    Found 0 place URLs
+[19:31:35] 
+── DBP Building Practitioner - Structural | Sydney
+[19:31:35]    Query: "DBP Building Practitioner - Structural Sydney NSW Australia"
+[19:31:35]    Found 0 place URLs
+[19:31:35] 
+── DBP Building Practitioner - Structural | Melbourne
+[19:31:35]    Query: "DBP Building Practitioner - Structural Melbourne VIC Australia"
+[19:31:35]    Found 0 place URLs
+[19:31:35] 
+── DBP Building Practitioner - Structural | Brisbane
+[19:31:35]    Query: "DBP Building Practitioner - Structural Brisbane QLD Australia"
+[19:31:35]    Found 0 place URLs
+[19:31:35] 
+── DBP Building Practitioner - Structural | Perth
+[19:31:35]    Query: "DBP Building Practitioner - Structural Perth WA Australia"
+[19:31:35]    Found 0 place URLs
+[19:31:35]    5 consecutive empty searches — pausing 30s...
+[20:50:45] 
+── DBP Building Practitioner - Structural | Adelaide
+[20:50:45]    Query: "DBP Building Practitioner - Structural Adelaide SA Australia"
+[20:50:45]    Found 0 place URLs
+[20:50:45] 
+── DBP Building Practitioner - Structural | Hobart
+[20:50:45]    Query: "DBP Building Practitioner - Structural Hobart TAS Australia"
+[20:50:45]    Found 0 place URLs
+[20:50:45] 
+── DBP Building Practitioner - Structural | Canberra
+[20:50:45]    Query: "DBP Building Practitioner - Structural Canberra ACT Australia"
+[20:50:45]    Found 0 place URLs
+[20:50:45] 
+── DBP Building Practitioner - Structural | Darwin
+[20:50:45]    Query: "DBP Building Practitioner - Structural Darwin NT Australia"
+[20:50:45]    Found 0 place URLs
+[21:06:45] 
+── Building Surveyors | Sydney
+[21:06:45]    Query: "Building Surveyors Sydney NSW Australia"
+[21:06:45]    Found 0 place URLs
+[21:06:45]    5 consecutive empty searches — pausing 30s...
+[21:18:02] 
+── Building Surveyors | Melbourne
+[21:18:02]    Query: "Building Surveyors Melbourne VIC Australia"
+[21:18:02]    Found 0 place URLs
+[21:18:02] 
+── Building Surveyors | Brisbane
+[21:18:02]    Query: "Building Surveyors Brisbane QLD Australia"
+[21:18:02]    Found 0 place URLs
+[21:18:02] 
+── Building Surveyors | Perth
+[21:18:02]    Query: "Building Surveyors Perth WA Australia"
+[21:18:02]    Found 0 place URLs
+[21:18:02] 
+── Building Surveyors | Adelaide
+[21:18:02]    Query: "Building Surveyors Adelaide SA Australia"
+[21:18:02]    Found 0 place URLs
+[21:18:02] 
+── Building Surveyors | Hobart
+[21:18:02]    Query: "Building Surveyors Hobart TAS Australia"
+[21:18:02]    Found 0 place URLs
+[21:18:02]    5 consecutive empty searches — pausing 30s...
+[21:32:04] 
+── Building Surveyors | Canberra
+[21:32:04]    Query: "Building Surveyors Canberra ACT Australia"
+[21:32:04]    Found 0 place URLs
+[21:32:04] 
+── Building Surveyors | Darwin
+[21:32:04]    Query: "Building Surveyors Darwin NT Australia"
+[21:32:04]    Found 0 place URLs
+[21:32:04] 
+── Principal Certifiers (PCA) | Sydney
+[21:32:04]    Query: "Principal Certifiers (PCA) Sydney NSW Australia"
+[21:32:04]    Resetting Maps browser context...
+[21:32:10]    Found 0 place URLs
+[21:32:10] 
+── Principal Certifiers (PCA) | Melbourne
+[21:32:10]    Query: "Principal Certifiers (PCA) Melbourne VIC Australia"
+[21:32:10]    Found 0 place URLs
+[21:32:10] 
+── Principal Certifiers (PCA) | Brisbane
+[21:32:10]    Query: "Principal Certifiers (PCA) Brisbane QLD Australia"
+[21:32:10]    Found 0 place URLs
+[21:32:10]    5 consecutive empty searches — pausing 30s...
+[21:33:48] 
+── Principal Certifiers (PCA) | Perth
+[21:33:48]    Query: "Principal Certifiers (PCA) Perth WA Australia"
+[21:33:48]    Found 0 place URLs
+[21:33:48] 
+── Principal Certifiers (PCA) | Adelaide
+[21:33:48]    Query: "Principal Certifiers (PCA) Adelaide SA Australia"
+[21:33:48]    Found 0 place URLs
+[21:33:48] 
+── Principal Certifiers (PCA) | Hobart
+[21:33:48]    Query: "Principal Certifiers (PCA) Hobart TAS Australia"
+[21:33:48]    Found 0 place URLs
+[21:33:48] 
+── Principal Certifiers (PCA) | Canberra
+[21:33:48]    Query: "Principal Certifiers (PCA) Canberra ACT Australia"
+[21:33:48]    Found 0 place URLs
+[21:33:48] 
+── Principal Certifiers (PCA) | Darwin
+[21:33:48]    Query: "Principal Certifiers (PCA) Darwin NT Australia"
+[21:33:48]    Found 0 place URLs
+[21:33:48]    5 consecutive empty searches — pausing 30s...
+[21:56:48] 
+── Construction Certificate Certifiers | Sydney
+[21:56:48]    Query: "Construction Certificate Certifiers Sydney NSW Australia"
+[21:56:48]    Found 0 place URLs
+[21:56:48] 
+── Construction Certificate Certifiers | Melbourne
+[21:56:48]    Query: "Construction Certificate Certifiers Melbourne VIC Australia"
+[21:56:48]    Found 0 place URLs
+[21:56:48] 
+── Construction Certificate Certifiers | Brisbane
+[21:56:48]    Query: "Construction Certificate Certifiers Brisbane QLD Australia"
+[21:56:48]    Found 0 place URLs
+[21:56:48] 
+── Construction Certificate Certifiers | Perth
+[21:56:48]    Query: "Construction Certificate Certifiers Perth WA Australia"
+[21:56:48]    Found 0 place URLs
+[21:56:48] 
+── Construction Certificate Certifiers | Adelaide
+[21:56:48]    Query: "Construction Certificate Certifiers Adelaide SA Australia"
+[21:56:48]    Found 0 place URLs
+[21:56:48]    5 consecutive empty searches — pausing 30s...
+[22:12:25] 
+── Construction Certificate Certifiers | Hobart
+[22:12:25]    Query: "Construction Certificate Certifiers Hobart TAS Australia"
+[22:12:25]    Found 0 place URLs
+[22:12:25] 
+── Construction Certificate Certifiers | Canberra
+[22:12:25]    Query: "Construction Certificate Certifiers Canberra ACT Australia"
+[22:12:25]    Found 0 place URLs
+[22:12:25] 
+── Construction Certificate Certifiers | Darwin
+[22:12:25]    Query: "Construction Certificate Certifiers Darwin NT Australia"
+[22:12:25]    Found 0 place URLs
+[22:12:25] 
+── Occupation Certificate Certifiers | Sydney
+[22:12:25]    Query: "Occupation Certificate Certifiers Sydney NSW Australia"
+[22:12:25]    Found 0 place URLs
+[22:12:25] 
+── Occupation Certificate Certifiers | Melbourne
+[22:12:25]    Query: "Occupation Certificate Certifiers Melbourne VIC Australia"
+[22:12:25]    Found 0 place URLs
+[22:12:25]    5 consecutive empty searches — pausing 30s...
+[22:13:25] 
+── Occupation Certificate Certifiers | Brisbane
+[22:13:25]    Query: "Occupation Certificate Certifiers Brisbane QLD Australia"
+[22:13:25]    Found 0 place URLs
+[22:13:25] 
+── Occupation Certificate Certifiers | Perth
+[22:13:25]    Query: "Occupation Certificate Certifiers Perth WA Australia"
+[22:13:25]    Found 0 place URLs
+[22:13:25] 
+── Occupation Certificate Certifiers | Adelaide
+[22:13:25]    Query: "Occupation Certificate Certifiers Adelaide SA Australia"
+[22:13:25]    Found 0 place URLs
+[22:13:25] 
+── Occupation Certificate Certifiers | Hobart
+[22:13:25]    Query: "Occupation Certificate Certifiers Hobart TAS Australia"
+[22:13:25]    Found 0 place URLs
+[22:13:25] 
+── Occupation Certificate Certifiers | Canberra
+[22:13:25]    Query: "Occupation Certificate Certifiers Canberra ACT Australia"
+[22:13:25]    Found 0 place URLs
+[22:13:25]    5 consecutive empty searches — pausing 30s...
+[22:24:14] 
+── Occupation Certificate Certifiers | Darwin
+[22:24:14]    Query: "Occupation Certificate Certifiers Darwin NT Australia"
+[22:24:14]    Found 0 place URLs
+[22:24:14] 
+── Complying Development Certifiers | Sydney
+[22:24:14]    Query: "Complying Development Certifiers Sydney NSW Australia"
+[22:24:14]    Found 0 place URLs
+[22:24:14] 
+── Complying Development Certifiers | Melbourne
+[22:24:14]    Query: "Complying Development Certifiers Melbourne VIC Australia"
+[22:24:14]    Found 0 place URLs
+[22:24:14] 
+── Complying Development Certifiers | Brisbane
+[22:24:14]    Query: "Complying Development Certifiers Brisbane QLD Australia"
+[22:24:14]    Found 0 place URLs
+[22:24:14] 
+── Complying Development Certifiers | Perth
+[22:24:14]    Query: "Complying Development Certifiers Perth WA Australia"
+[22:24:14]    Found 0 place URLs
+[22:24:14]    5 consecutive empty searches — pausing 30s...
+[22:25:42] 
+── Complying Development Certifiers | Adelaide
+[22:25:42]    Query: "Complying Development Certifiers Adelaide SA Australia"
+[22:25:42]    Found 0 place URLs
+[22:25:42] 
+── Complying Development Certifiers | Hobart
+[22:25:42]    Query: "Complying Development Certifiers Hobart TAS Australia"
+[22:25:42]    Found 0 place URLs
+[22:25:42] 
+── Complying Development Certifiers | Canberra
+[22:25:42]    Query: "Complying Development Certifiers Canberra ACT Australia"
+[22:25:42]    Resetting Maps browser context...
+[22:25:48]    Found 0 place URLs
+[22:25:48] 
+── Complying Development Certifiers | Darwin
+[22:25:48]    Query: "Complying Development Certifiers Darwin NT Australia"
+[22:25:48]    Found 0 place URLs
+[22:25:48] 
+── Building Inspectors | Sydney
+[22:25:48]    Query: "Building Inspectors Sydney NSW Australia"
+[22:25:48]    Found 0 place URLs
+[22:25:48]    5 consecutive empty searches — pausing 30s...
+[22:35:06] 
+── Building Inspectors | Melbourne
+[22:35:06]    Query: "Building Inspectors Melbourne VIC Australia"
+[22:35:06]    Found 0 place URLs
+[22:35:06] 
+── Building Inspectors | Brisbane
+[22:35:06]    Query: "Building Inspectors Brisbane QLD Australia"
+[22:35:06]    Found 0 place URLs
+[22:35:06] 
+── Building Inspectors | Perth
+[22:35:06]    Query: "Building Inspectors Perth WA Australia"
+[22:35:06]    Found 0 place URLs
+[22:35:06] 
+── Building Inspectors | Adelaide
+[22:35:06]    Query: "Building Inspectors Adelaide SA Australia"
+[22:35:06]    Found 0 place URLs
+[22:35:06] 
+── Building Inspectors | Hobart
+[22:35:06]    Query: "Building Inspectors Hobart TAS Australia"
+[22:35:06]    Found 0 place URLs
+[22:35:06]    5 consecutive empty searches — pausing 30s...
+[22:36:20] 
+── Building Inspectors | Canberra
+[22:36:20]    Query: "Building Inspectors Canberra ACT Australia"
+[22:36:20]    Found 0 place URLs
+[22:36:20] 
+── Building Inspectors | Darwin
+[22:36:20]    Query: "Building Inspectors Darwin NT Australia"
+[22:36:20]    Found 0 place URLs
+[22:36:20] 
+── Swimming Pool Inspectors | Sydney
+[22:36:20]    Query: "Swimming Pool Inspectors Sydney NSW Australia"
+[22:36:20]    Found 0 place URLs
+[22:36:20] 
+── Swimming Pool Inspectors | Melbourne
+[22:36:20]    Query: "Swimming Pool Inspectors Melbourne VIC Australia"
+[22:36:20]    Found 0 place URLs
+[22:36:20] 
+── Swimming Pool Inspectors | Brisbane
+[22:36:20]    Query: "Swimming Pool Inspectors Brisbane QLD Australia"
+[22:36:20]    Found 0 place URLs
+[22:36:20]    5 consecutive empty searches — pausing 30s...
+[22:42:07] 
+── Swimming Pool Inspectors | Perth
+[22:42:07]    Query: "Swimming Pool Inspectors Perth WA Australia"
+[22:42:07]    Found 0 place URLs
+[22:42:07] 
+── Swimming Pool Inspectors | Adelaide
+[22:42:07]    Query: "Swimming Pool Inspectors Adelaide SA Australia"
+[22:42:07]    Found 0 place URLs
+[22:42:07] 
+── Swimming Pool Inspectors | Hobart
+[22:42:07]    Query: "Swimming Pool Inspectors Hobart TAS Australia"
+[22:42:07]    Found 0 place URLs
+[22:42:07] 
+── Swimming Pool Inspectors | Canberra
+[22:42:07]    Query: "Swimming Pool Inspectors Canberra ACT Australia"
+[22:42:07]    Found 0 place URLs
+[22:42:07] 
+── Swimming Pool Inspectors | Darwin
+[22:42:07]    Query: "Swimming Pool Inspectors Darwin NT Australia"
+[22:42:07]    Found 0 place URLs
+[22:42:07]    5 consecutive empty searches — pausing 30s...
+[22:43:43] 
+── Plumbing Inspectors | Sydney
+[22:43:43]    Query: "Plumbing Inspectors Sydney NSW Australia"
+[22:43:43]    Found 0 place URLs
+[22:43:43] 
+── Plumbing Inspectors | Melbourne
+[22:43:43]    Query: "Plumbing Inspectors Melbourne VIC Australia"
+[22:43:43]    Found 0 place URLs
+[22:43:43] 
+── Plumbing Inspectors | Brisbane
+[22:43:43]    Query: "Plumbing Inspectors Brisbane QLD Australia"
+[22:43:43]    Found 0 place URLs
+[22:43:43] 
+── Plumbing Inspectors | Perth
+[22:43:43]    Query: "Plumbing Inspectors Perth WA Australia"
+[22:43:43]    Found 0 place URLs
+[22:43:43] 
+── Plumbing Inspectors | Adelaide
+[22:43:43]    Query: "Plumbing Inspectors Adelaide SA Australia"
+[22:43:43]    Found 0 place URLs
+[22:43:43]    5 consecutive empty searches — pausing 30s...
+[22:44:45] 
+── Plumbing Inspectors | Hobart
+[22:44:45]    Query: "Plumbing Inspectors Hobart TAS Australia"
+[22:44:45]    Found 0 place URLs
+[22:44:45] 
+── Plumbing Inspectors | Canberra
+[22:44:45]    Query: "Plumbing Inspectors Canberra ACT Australia"
+[22:44:45]    Found 0 place URLs
+[22:44:45] 
+── Plumbing Inspectors | Darwin
+[22:44:45]    Query: "Plumbing Inspectors Darwin NT Australia"
+[22:44:45]    Found 0 place URLs
+[22:44:45] 
+── Drainage Inspectors | Sydney
+[22:44:45]    Query: "Drainage Inspectors Sydney NSW Australia"
+[22:44:45]    Found 0 place URLs
+[22:44:45] 
+── Drainage Inspectors | Melbourne
+[22:44:45]    Query: "Drainage Inspectors Melbourne VIC Australia"
+[22:44:45]    Found 0 place URLs
+[22:44:45]    5 consecutive empty searches — pausing 30s...
+[22:52:20] 
+── Drainage Inspectors | Brisbane
+[22:52:20]    Query: "Drainage Inspectors Brisbane QLD Australia"
+[22:52:20]    Found 0 place URLs
+[22:52:20] 
+── Drainage Inspectors | Perth
+[22:52:20]    Query: "Drainage Inspectors Perth WA Australia"
+[22:52:20]    Found 0 place URLs
+[22:52:20] 
+── Drainage Inspectors | Adelaide
+[22:52:20]    Query: "Drainage Inspectors Adelaide SA Australia"
+[22:52:20]    Resetting Maps browser context...
+[22:52:25]    Found 0 place URLs
+[22:52:25] 
+── Drainage Inspectors | Hobart
+[22:52:25]    Query: "Drainage Inspectors Hobart TAS Australia"
+[22:52:25]    Found 0 place URLs
+[22:52:25] 
+── Drainage Inspectors | Canberra
+[22:52:25]    Query: "Drainage Inspectors Canberra ACT Australia"
+[22:52:25]    Found 0 place URLs
+[22:52:25]    5 consecutive empty searches — pausing 30s...
+[23:02:11] 
+── Drainage Inspectors | Darwin
+[23:02:11]    Query: "Drainage Inspectors Darwin NT Australia"
+[23:02:11]    Found 0 place URLs
+[23:02:11] 
+── Essential Services Inspectors | Sydney
+[23:02:11]    Query: "Essential Services Inspectors Sydney NSW Australia"
+[23:02:11]    Found 0 place URLs
+[23:02:11] 
+── Essential Services Inspectors | Melbourne
+[23:02:11]    Query: "Essential Services Inspectors Melbourne VIC Australia"
+[23:02:11]    Found 0 place URLs
+[23:02:11] 
+── Essential Services Inspectors | Brisbane
+[23:02:11]    Query: "Essential Services Inspectors Brisbane QLD Australia"
+[23:02:11]    Found 0 place URLs
+[23:02:11] 
+── Essential Services Inspectors | Perth
+[23:02:11]    Query: "Essential Services Inspectors Perth WA Australia"
+[23:02:11]    Found 0 place URLs
+[23:02:11]    5 consecutive empty searches — pausing 30s...
+[23:05:31] 
+── Essential Services Inspectors | Adelaide
+[23:05:31]    Query: "Essential Services Inspectors Adelaide SA Australia"
+[23:05:31]    Found 0 place URLs
+[23:05:31] 
+── Essential Services Inspectors | Hobart
+[23:05:31]    Query: "Essential Services Inspectors Hobart TAS Australia"
+[23:05:31]    Found 0 place URLs
+[23:05:31] 
+── Essential Services Inspectors | Canberra
+[23:05:31]    Query: "Essential Services Inspectors Canberra ACT Australia"
+[23:05:31]    Found 0 place URLs
+[23:05:31] 
+── Essential Services Inspectors | Darwin
+[23:05:31]    Query: "Essential Services Inspectors Darwin NT Australia"
+[23:05:31]    Found 0 place URLs
+[23:05:31] 
+── Annual Fire Safety Statement Inspectors | Sydney
+[23:05:31]    Query: "Annual Fire Safety Statement Inspectors Sydney NSW Australia"
+[23:05:31]    Found 0 place URLs
+[23:05:31]    5 consecutive empty searches — pausing 30s...
+[23:07:15] 
+── Annual Fire Safety Statement Inspectors | Melbourne
+[23:07:15]    Query: "Annual Fire Safety Statement Inspectors Melbourne VIC Australia"
+[23:07:15]    Found 0 place URLs
+[23:07:15] 
+── Annual Fire Safety Statement Inspectors | Brisbane
+[23:07:15]    Query: "Annual Fire Safety Statement Inspectors Brisbane QLD Australia"
+[23:07:15]    Found 0 place URLs
+[23:07:15] 
+── Annual Fire Safety Statement Inspectors | Perth
+[23:07:15]    Query: "Annual Fire Safety Statement Inspectors Perth WA Australia"
+[23:07:15]    Found 0 place URLs
+[23:07:15] 
+── Annual Fire Safety Statement Inspectors | Adelaide
+[23:07:15]    Query: "Annual Fire Safety Statement Inspectors Adelaide SA Australia"
+[23:07:15]    Found 0 place URLs
+[23:07:15] 
+── Annual Fire Safety Statement Inspectors | Hobart
+[23:07:15]    Query: "Annual Fire Safety Statement Inspectors Hobart TAS Australia"
+[23:07:15]    Found 0 place URLs
+[23:07:15]    5 consecutive empty searches — pausing 30s...
+[23:07:59] 
+── Annual Fire Safety Statement Inspectors | Canberra
+[23:07:59]    Query: "Annual Fire Safety Statement Inspectors Canberra ACT Australia"
+[23:07:59]    Found 0 place URLs
+[23:07:59] 
+── Annual Fire Safety Statement Inspectors | Darwin
+[23:07:59]    Query: "Annual Fire Safety Statement Inspectors Darwin NT Australia"
+[23:07:59]    Found 0 place URLs
+[23:07:59] 
+── Asbestos Assessors | Sydney
+[23:07:59]    Query: "Asbestos Assessors Sydney NSW Australia"
+[23:07:59]    Found 0 place URLs
+[23:07:59] 
+── Asbestos Assessors | Melbourne
+[23:07:59]    Query: "Asbestos Assessors Melbourne VIC Australia"
+[23:07:59]    Found 0 place URLs
+[23:07:59] 
+── Asbestos Assessors | Brisbane
+[23:07:59]    Query: "Asbestos Assessors Brisbane QLD Australia"
+[23:07:59]    Found 0 place URLs
+[23:07:59]    5 consecutive empty searches — pausing 30s...
+[23:09:46] 
+── Asbestos Assessors | Perth
+[23:09:46]    Query: "Asbestos Assessors Perth WA Australia"
+[23:09:46]    Found 0 place URLs
+[23:09:46] 
+── Asbestos Assessors | Adelaide
+[23:09:46]    Query: "Asbestos Assessors Adelaide SA Australia"
+[23:09:46]    Found 0 place URLs
+[23:09:46] 
+── Asbestos Assessors | Hobart
+[23:09:46]    Query: "Asbestos Assessors Hobart TAS Australia"
+[23:09:46]    Found 0 place URLs
+[23:09:46] 
+── Asbestos Assessors | Canberra
+[23:09:46]    Query: "Asbestos Assessors Canberra ACT Australia"
+[23:09:46]    Found 0 place URLs
+[23:09:46] 
+── Asbestos Assessors | Darwin
+[23:09:46]    Query: "Asbestos Assessors Darwin NT Australia"
+[23:09:46]    Found 0 place URLs
+[23:09:46]    5 consecutive empty searches — pausing 30s...
+[23:10:38] 
+── Hazardous Materials Assessors | Sydney
+[23:10:38]    Query: "Hazardous Materials Assessors Sydney NSW Australia"
+[23:10:38]    Found 0 place URLs
+[23:10:38] 
+── Hazardous Materials Assessors | Melbourne
+[23:10:38]    Query: "Hazardous Materials Assessors Melbourne VIC Australia"
+[23:10:38]    Found 0 place URLs
+[23:10:38] 
+── Hazardous Materials Assessors | Brisbane
+[23:10:38]    Query: "Hazardous Materials Assessors Brisbane QLD Australia"
+[23:10:38]    Resetting Maps browser context...
+[23:10:46]    Found 0 place URLs
+[23:10:46] 
+── Hazardous Materials Assessors | Perth
+[23:10:46]    Query: "Hazardous Materials Assessors Perth WA Australia"
+[23:10:46]    Found 0 place URLs
+[23:10:46] 
+── Hazardous Materials Assessors | Adelaide
+[23:10:46]    Query: "Hazardous Materials Assessors Adelaide SA Australia"
+[23:10:46]    Found 0 place URLs
+[23:10:46]    5 consecutive empty searches — pausing 30s...
+[23:20:11] 
+── Hazardous Materials Assessors | Hobart
+[23:20:11]    Query: "Hazardous Materials Assessors Hobart TAS Australia"
+[23:20:11]    Found 0 place URLs
+[23:20:11] 
+── Hazardous Materials Assessors | Canberra
+[23:20:11]    Query: "Hazardous Materials Assessors Canberra ACT Australia"
+[23:20:11]    Found 0 place URLs
+[23:20:11] 
+── Hazardous Materials Assessors | Darwin
+[23:20:11]    Query: "Hazardous Materials Assessors Darwin NT Australia"
+[23:20:11]    Found 0 place URLs
+[23:20:11] 
+── WHS Consultants | Sydney
+[23:20:11]    Query: "WHS Consultants Sydney NSW Australia"
+[23:20:11]    Found 0 place URLs
+[23:20:11] 
+── WHS Consultants | Melbourne
+[23:20:11]    Query: "WHS Consultants Melbourne VIC Australia"
+[23:20:11]    Found 0 place URLs
+[23:20:11]    5 consecutive empty searches — pausing 30s...
+[23:22:19] 
+── WHS Consultants | Brisbane
+[23:22:19]    Query: "WHS Consultants Brisbane QLD Australia"
+[23:22:19]    Found 0 place URLs
+[23:22:19] 
+── WHS Consultants | Perth
+[23:22:19]    Query: "WHS Consultants Perth WA Australia"
+[23:22:19]    Found 0 place URLs
+[23:22:19] 
+── WHS Consultants | Adelaide
+[23:22:19]    Query: "WHS Consultants Adelaide SA Australia"
+[23:22:19]    Found 0 place URLs
+[23:22:19] 
+── WHS Consultants | Hobart
+[23:22:19]    Query: "WHS Consultants Hobart TAS Australia"
+[23:22:19]    Found 0 place URLs
+[23:22:19] 
+── WHS Consultants | Canberra
+[23:22:19]    Query: "WHS Consultants Canberra ACT Australia"
+[23:22:19]    Found 0 place URLs
+[23:22:19]    5 consecutive empty searches — pausing 30s...
+[23:28:59] 
+── WHS Consultants | Darwin
+[23:28:59]    Query: "WHS Consultants Darwin NT Australia"
+[23:28:59]    Found 0 place URLs
+[23:28:59] 
+── SafeWork Consultants | Sydney
+[23:28:59]    Query: "SafeWork Consultants Sydney NSW Australia"
+[23:28:59]    Found 0 place URLs
+[23:28:59] 
+── SafeWork Consultants | Melbourne
+[23:28:59]    Query: "SafeWork Consultants Melbourne VIC Australia"
+[23:28:59]    Found 0 place URLs
+[23:28:59] 
+── SafeWork Consultants | Brisbane
+[23:28:59]    Query: "SafeWork Consultants Brisbane QLD Australia"
+[23:28:59]    Found 0 place URLs
+[23:28:59] 
+── SafeWork Consultants | Perth
+[23:28:59]    Query: "SafeWork Consultants Perth WA Australia"
+[23:28:59]    Found 0 place URLs
+[23:28:59]    5 consecutive empty searches — pausing 30s...
+[23:30:09] 
+── SafeWork Consultants | Adelaide
+[23:30:09]    Query: "SafeWork Consultants Adelaide SA Australia"
+[23:30:09]    Found 0 place URLs
+[23:30:09] 
+── SafeWork Consultants | Hobart
+[23:30:09]    Query: "SafeWork Consultants Hobart TAS Australia"
+[23:30:09]    Found 0 place URLs
+[23:30:09] 
+── SafeWork Consultants | Canberra
+[23:30:09]    Query: "SafeWork Consultants Canberra ACT Australia"
+[23:30:09]    Found 0 place URLs
+[23:30:09] 
+── SafeWork Consultants | Darwin
+[23:30:09]    Query: "SafeWork Consultants Darwin NT Australia"
+[23:30:09]    Found 0 place URLs
+[23:30:09] 
+── Class 1 Remedial Builders | Sydney
+[23:30:09]    Query: "Class 1 Remedial Builders Sydney NSW Australia"
+[23:30:09]    Found 0 place URLs
+[23:30:09]    5 consecutive empty searches — pausing 30s...
+[23:33:26] 
+── Class 1 Remedial Builders | Melbourne
+[23:33:26]    Query: "Class 1 Remedial Builders Melbourne VIC Australia"
+[23:33:26]    Found 0 place URLs
+[23:33:26] 
+── Class 1 Remedial Builders | Brisbane
+[23:33:26]    Query: "Class 1 Remedial Builders Brisbane QLD Australia"
+[23:33:26]    Found 0 place URLs
+[23:33:26] 
+── Class 1 Remedial Builders | Perth
+[23:33:26]    Query: "Class 1 Remedial Builders Perth WA Australia"
+[23:33:26]    Found 0 place URLs
+[23:33:26] 
+── Class 1 Remedial Builders | Adelaide
+[23:33:26]    Query: "Class 1 Remedial Builders Adelaide SA Australia"
+[23:33:26]    Found 0 place URLs
+[23:33:26] 
+── Class 1 Remedial Builders | Hobart
+[23:33:26]    Query: "Class 1 Remedial Builders Hobart TAS Australia"
+[23:33:26]    Found 0 place URLs
+[23:33:26]    5 consecutive empty searches — pausing 30s...
+[23:39:09] 
+── Class 1 Remedial Builders | Canberra
+[23:39:09]    Query: "Class 1 Remedial Builders Canberra ACT Australia"
+[23:39:09]    Found 0 place URLs
+[23:39:09] 
+── Class 1 Remedial Builders | Darwin
+[23:39:09]    Query: "Class 1 Remedial Builders Darwin NT Australia"
+[23:39:09]    Found 0 place URLs
+[23:39:09] 
+── Class 2 Remedial Builders | Sydney
+[23:39:09]    Query: "Class 2 Remedial Builders Sydney NSW Australia"
+[23:39:09]    Resetting Maps browser context...
+[23:44:16]    Found 0 place URLs
+[23:44:16] 
+── Class 2 Remedial Builders | Melbourne
+[23:44:16]    Query: "Class 2 Remedial Builders Melbourne VIC Australia"
+[23:44:16]    Found 0 place URLs
+[23:44:16] 
+── Class 2 Remedial Builders | Brisbane
+[23:44:16]    Query: "Class 2 Remedial Builders Brisbane QLD Australia"
+[23:44:16]    Found 0 place URLs
+[23:44:16]    5 consecutive empty searches — pausing 30s...
+[23:45:19] 
+── Class 2 Remedial Builders | Perth
+[23:45:19]    Query: "Class 2 Remedial Builders Perth WA Australia"
+[23:45:19]    Found 0 place URLs
+[23:45:19] 
+── Class 2 Remedial Builders | Adelaide
+[23:45:19]    Query: "Class 2 Remedial Builders Adelaide SA Australia"
+[23:45:19]    Found 0 place URLs
+[23:45:19] 
+── Class 2 Remedial Builders | Hobart
+[23:45:19]    Query: "Class 2 Remedial Builders Hobart TAS Australia"
+[23:45:19]    Found 0 place URLs
+[23:45:19] 
+── Class 2 Remedial Builders | Canberra
+[23:45:19]    Query: "Class 2 Remedial Builders Canberra ACT Australia"
+[23:45:19]    Found 0 place URLs
+[23:45:19] 
+── Class 2 Remedial Builders | Darwin
+[23:45:19]    Query: "Class 2 Remedial Builders Darwin NT Australia"
+[23:45:19]    Found 0 place URLs
+[23:45:19]    5 consecutive empty searches — pausing 30s...
+[00:21:25] 
+── Remedial Builders | Sydney
+[00:21:25]    Query: "Remedial Builders Sydney NSW Australia"
+[00:21:26]    Found 0 place URLs
+[00:21:26] 
+── Remedial Builders | Melbourne
+[00:21:26]    Query: "Remedial Builders Melbourne VIC Australia"
+[00:21:26]    Found 0 place URLs
+[00:21:26] 
+── Remedial Builders | Brisbane
+[00:21:26]    Query: "Remedial Builders Brisbane QLD Australia"
+[00:21:26]    Found 0 place URLs
+[00:21:26] 
+── Remedial Builders | Perth
+[00:21:26]    Query: "Remedial Builders Perth WA Australia"
+[00:21:26]    Found 0 place URLs
+[00:21:26] 
+── Remedial Builders | Adelaide
+[00:21:26]    Query: "Remedial Builders Adelaide SA Australia"
+[00:21:26]    Found 0 place URLs
+[00:21:26]    5 consecutive empty searches — pausing 30s...
+[00:56:06] 
+── Remedial Builders | Hobart
+[00:56:06]    Query: "Remedial Builders Hobart TAS Australia"
+[00:56:06]    Found 0 place URLs
+[00:56:06] 
+── Remedial Builders | Canberra
+[00:56:06]    Query: "Remedial Builders Canberra ACT Australia"
+[00:56:06]    Found 0 place URLs
+[00:56:06] 
+── Remedial Builders | Darwin
+[00:56:06]    Query: "Remedial Builders Darwin NT Australia"
+[00:56:06]    Found 0 place URLs
+[00:56:06] 
+── Specialist Remedial Contractors | Sydney
+[00:56:06]    Query: "Specialist Remedial Contractors Sydney NSW Australia"
+[00:56:06]    Found 0 place URLs
+[00:56:06] 
+── Specialist Remedial Contractors | Melbourne
+[00:56:06]    Query: "Specialist Remedial Contractors Melbourne VIC Australia"
+[00:56:06]    Found 0 place URLs
+[00:56:06]    5 consecutive empty searches — pausing 30s...
+[00:56:36] 
+── Specialist Remedial Contractors | Brisbane
+[00:56:36]    Query: "Specialist Remedial Contractors Brisbane QLD Australia"
+[01:40:01]    Found 0 place URLs
+[01:40:01] 
+── Specialist Remedial Contractors | Perth
+[01:40:01]    Query: "Specialist Remedial Contractors Perth WA Australia"
+[02:23:24]    Found 0 place URLs
+[02:23:24] 
+── Specialist Remedial Contractors | Adelaide
+[02:23:24]    Query: "Specialist Remedial Contractors Adelaide SA Australia"
+[03:13:50]    Found 0 place URLs
+[03:13:50] 
+── Specialist Remedial Contractors | Hobart
+[03:13:50]    Query: "Specialist Remedial Contractors Hobart TAS Australia"
+[03:24:32]    Found 0 place URLs
+[03:24:32] 
+── Specialist Remedial Contractors | Canberra
+[03:24:32]    Query: "Specialist Remedial Contractors Canberra ACT Australia"
+[04:16:03]    Found 0 place URLs
+[04:16:03]    5 consecutive empty searches — pausing 30s...
+[04:19:37] 
+── Specialist Remedial Contractors | Darwin
+[04:19:37]    Query: "Specialist Remedial Contractors Darwin NT Australia"
+[04:19:37]    Found 0 place URLs
+[04:19:37] 
+── Facade Remediation Contractors | Sydney
+[04:19:37]    Query: "Facade Remediation Contractors Sydney NSW Australia"
+[04:19:37]    Found 0 place URLs
+[04:19:37] 
+── Facade Remediation Contractors | Melbourne
+[04:19:37]    Query: "Facade Remediation Contractors Melbourne VIC Australia"
+[04:19:37]    Found 0 place URLs
+[04:19:37] 
+── Facade Remediation Contractors | Brisbane
+[04:19:37]    Query: "Facade Remediation Contractors Brisbane QLD Australia"
+[04:19:37]    Found 0 place URLs
+[04:19:37] 
+── Facade Remediation Contractors | Perth
+[04:19:37]    Query: "Facade Remediation Contractors Perth WA Australia"
+[04:19:37]    Found 0 place URLs
+[04:19:37]    5 consecutive empty searches — pausing 30s...
+[04:20:07] 
+── Facade Remediation Contractors | Adelaide
+[04:20:07]    Query: "Facade Remediation Contractors Adelaide SA Australia"
+[04:20:07]    Found 0 place URLs
+[04:20:07] 
+── Facade Remediation Contractors | Hobart
+[04:20:07]    Query: "Facade Remediation Contractors Hobart TAS Australia"
+[04:20:07]    Found 0 place URLs
+[04:20:07] 
+── Facade Remediation Contractors | Canberra
+[04:20:07]    Query: "Facade Remediation Contractors Canberra ACT Australia"
+[04:20:07]    Resetting Maps browser context...
+[04:20:13]    Found 0 place URLs
+[04:20:13] 
+── Facade Remediation Contractors | Darwin
+[04:20:13]    Query: "Facade Remediation Contractors Darwin NT Australia"
+[04:20:14]    Found 0 place URLs
+[04:20:14] 
+── Structural Remediation Contractors | Sydney
+[04:20:14]    Query: "Structural Remediation Contractors Sydney NSW Australia"
+[04:20:14]    Found 0 place URLs
+[04:20:14]    5 consecutive empty searches — pausing 30s...
+[04:20:44] 
+── Structural Remediation Contractors | Melbourne
+[04:20:44]    Query: "Structural Remediation Contractors Melbourne VIC Australia"
+[04:20:48]    Found 0 place URLs
+[04:20:48] 
+── Structural Remediation Contractors | Brisbane
+[04:20:48]    Query: "Structural Remediation Contractors Brisbane QLD Australia"
+[04:20:48]    Found 0 place URLs
+[04:20:48] 
+── Structural Remediation Contractors | Perth
+[04:20:48]    Query: "Structural Remediation Contractors Perth WA Australia"
+[04:20:48]    Found 0 place URLs
+[04:20:48] 
+── Structural Remediation Contractors | Adelaide
+[04:20:48]    Query: "Structural Remediation Contractors Adelaide SA Australia"
+[04:20:48]    Found 0 place URLs
+[04:20:48] 
+── Structural Remediation Contractors | Hobart
+[04:20:48]    Query: "Structural Remediation Contractors Hobart TAS Australia"
+[04:20:48]    Found 0 place URLs
+[04:20:48]    5 consecutive empty searches — pausing 30s...
+[04:21:12] 
+── Structural Remediation Contractors | Canberra
+[04:21:12]    Query: "Structural Remediation Contractors Canberra ACT Australia"
+[04:25:11]    Found 20 place URLs
+[04:26:15]    [1273] · Google Maps can't reach the internet —  ACT
+[04:26:59]    [1274] ✉ SuperStruct. — Kingston ACT
+[04:28:00]    [1275] · Precious Constructions Pty Ltd — Melba ACT
+[04:28:43]    [1276] ✉ Virk Construction Management — Dunlop ACT
+[04:29:25]    [1277] ✉ A & A Contractors — Hume ACT
+[04:30:07]    [1278] ✉ Canberra Building Solutions —  ACT
+[04:30:48]    [1279] ✉ Advanced Structural Designs — Campbell ACT
+[04:31:28]    [1280] · No Limit Group — Phillip ACT
+[04:32:14]    [1281] ✉ Cord Civil — Beard ACT
+[04:32:55]    [1282] · iNDETAiL Civil Canberra — Beard ACT
+[04:33:32]    [1283] · Canberra Plumbing Co with Dan — Holt ACT
+[04:34:32]    [1284] · Lifespan Building Group — Fyshwick ACT
+[04:35:14]    [1285] ✉ Baxter Engineering — Hume ACT
+[04:35:52]    [1286] · Detailed Building Solutions —  ACT
+[04:36:36]    [1287] ✉ Valleywolf Building Solutions —  ACT
+[04:36:40]    Done: 15 new businesses
+[04:36:46] 
+── Structural Remediation Contractors | Darwin
+[04:36:46]    Query: "Structural Remediation Contractors Darwin NT Australia"
+[04:37:36]    Found 50 place URLs
+[04:38:16]    [1288] ✉ Rising Sun Building And Construction — Winnellie NT
+[04:38:59]    [1289] ✉ Major Consultancy - Engineers in Darwin — Winnellie NT
+[04:39:47]    [1290] ✉ Swiss Tech Constructions Darwin —  NT
+[04:40:32]    [1291] ✉ WTD Constructions — Holtze NT
+[04:41:12]    [1292] · Masters Engineering Consultancy — Nakara NT
+[04:41:54]    [1293] ✉ Advance Civil Engineering Pty Ltd — Holtze NT
+[04:42:38]    [1294] ✉ NTMM Construction and Painting — Berrimah NT
+[04:43:19]    [1295] · Roofing Darwin - Roof Repairs & Restorations — Darwin City NT
+[04:43:58]    [1296] · Combined Building Services — Berrimah NT
+[04:44:56]    [1297] · MDP Structural Engineers — Winnellie NT
+[04:45:38]    [1298] 📋 Bear Claw — Holtze NT
+[04:46:20]    [1299] · NT Construction Solutions — Yarrawonga NT
+[04:46:58]    [1300] · Top End Steel Fixing — Berrimah NT
+[04:47:42]    [1301] ✉ NS Constructions NT Pty Ltd (NSCON) —  NT
+[04:48:24]    [1302] ✉ Northco Constructions — Muirhead NT
+[04:49:04]    [1303] · Falcon Engineering — Winnellie NT
+[04:49:50]    [1304] ✉ Florance Electrical —  NT
+[04:50:30]    [1305] · DD Painting and Renovation Services Darwin — Millner NT
+[04:51:32]    [1306] · Design Construct Ideas T/A DC Ideas — Pinelands NT
+[04:52:14]    [1307] ✉ Cool Roof Restoration —  NT
+[04:52:56]    [1308] ✉ NS Constructions NT Pty Ltd — Holtze NT
+[04:53:33]    [1309] · Charles Chew & Assoc — Bayview NT
+[04:54:16]    [1310] ✉ Forrest Building Co. — Woolner NT
+[04:55:10]    [1311] ✉ GPA Engineering — Berrimah NT
+[04:55:51]    [1312] ✉ CMAC Engineering — Winnellie NT
+[04:56:29]    [1313] · Roetek Engineering — Woodroffe NT
+[04:57:12]    [1314] ✉ ABBFAB — Berrimah NT
+[04:57:56]    [1315] ✉ Precision Concrete Works NT —  NT
+[04:58:38]    [1316] · Colliers — Parap NT
+[04:59:19]    [1317] ✉ Advanced Clean Air Darwin - Aircon Cleaning Specialists — Winnellie NT
+[05:00:05]    [1318] ✉ Northern Maritime & Industrial Services — Winnellie NT
+[05:00:47]    [1319] ✉ Roof Restoration Services Darwin —  NT
+[05:01:30]    [1320] ✉ Asphalt Construction NT — Woolner NT
+[05:02:14]    [1321] 📋 Roll Press NT Pty Ltd — Tivendale NT
+[05:02:57]    [1322] ✉ Industry Maintenance & Construction Pty Ltd —  NT
+[05:03:35]    [1323] · A1 Darwin Concreting —  NT
+[05:04:18]    [1324] ✉ Voyager Trailers — Yarrawonga NT
+[05:04:56]    [1325] · JMS Metal Roofing (AUST) Pty Ltd —  NT
+[05:22:25]    [1326] · Onsite Welding and Fabrications NT — Winnellie NT
+[05:23:05]    [1327] · Magrips Welding & Fabrications — Girraween NT
+[05:23:07]    Done: 40 new businesses
+[05:23:12] 
+── Concrete Cancer Repair Contractors | Sydney
+[05:23:12]    Query: "Concrete Cancer Repair Contractors Sydney NSW Australia"
+[05:24:02]    Found 49 place URLs
+[05:24:41]    [1328] ✉ Australian Concrete Repairs PTY LTD — Chatswood NSW
+[05:25:43]    [1329] · REAL CONCRETE — Concord NSW
+[05:26:32]    [1330] ✉ Aussie Concrete Repair — Canley Vale NSW
+[05:27:14]    [1331] ✉ Concrete Resurfacing Sydney NSW — Blacktown NSW
+[05:28:01]    [1332] ✉ FCS Concrete Repairs — Gladesville NSW
+[05:28:43]    [1333] · All Concrete Services — Hurlstone Park NSW
+[05:29:22]    [1334] · Concrete Protection & Repair Services — Silverwater NSW
+[05:30:06]    [1335] ✉ Concrete Cutting Sydney — Sydney NSW
+[05:31:07]    [1336] · Concrete Lifting (Jacking) Specialists — Millers Point NSW
+[05:31:48]    [1337] ✉ Concrete Scanning Services —  NSW
+[05:32:33]    [1338] ✉ A1 Crete Concreting — Dulwich Hill NSW
+[05:33:34]    [1339] · Concrete Lifting Services — Matraville NSW
+[05:34:15]    [1340] · Coalesce Concreting Pty Ltd – Concrete Contractor Sydney NSW (Walls, Slabs, Paths, Driveways, Patios, Foundation, Ramps) — Auburn NSW
+[05:35:13]    [1341] · Concrete Driveways Sydney — Ryde NSW
+[05:35:23]   DB error: 
+Invalid `prisma.directoryLead.upsert()` invocation in
+/Users/siasepehrara/remed
+[05:36:04]    [1342] · Sydney Concrete Repairs — Bondi Junction NSW
+[05:36:55]    [1343] ✉ AMA Concrete —  NSW
+[05:37:42]    [1344] ✉ Renucrete Decorative Concrete, Concrete Polishing and Concrete Repairs in Sydney — North Rocks NSW
+[05:38:28]    [1345] ✉ Streamline Concrete Patching — Mona Vale NSW
+[05:39:14]    [1346] ✉ Australian Concrete Pty Ltd —  NSW
+[05:40:09]    [1347] ✉ Your Concreters Sydney — Sydney NSW
+[05:40:51]    [1348] ✉ Bunnings Alexandria — Alexandria NSW
+[05:41:32]    [1349] ✉ RMK contracting Pty Ltd — West Hoxton NSW
+[05:42:14]    [1350] 📋 SYDNEY WIDE SPRAY PAVE - Concrete Resurfacing Sydney — Castle Hill NSW
+[05:42:56]    [1351] ✉ British Concrete — Greenacre NSW
+[05:43:38]    [1352] ✉ Raise and Relevel — Botany NSW
+[05:44:25]    [1353] ✉ Inspire Concrete Group — Plumpton NSW
+[05:46:51]    [1354] ✉ Luxury Crete Spray Crete —  NSW
+[05:47:35]    [1355] · Sydney Concrete Scanning Services — Alexandria NSW
+[06:03:51]    [1356] ✉ CrownCrete —  NSW
+[06:19:52]    [1357] · Concrete Resurfacing Sydney —  NSW
+[06:36:07]    [1358] · Wizcrete Concrete — Gordon NSW
+[06:52:32]    [1359] · Found Concrete — Sydney NSW
+[07:08:13]    [1360] ✉ Concretech One — Brookvale NSW
+[07:17:08]    [1361] · Driveway resurfacing services — Prestons NSW
+[07:17:55]    [1362] 📋 Concrete Institute of Australia — Crows Nest NSW
+[07:18:37]    [1363] ✉ A-1 Concrete Services Pty Ltd — Smithfield NSW
+[07:34:57]    [1364] ✉ CS Formwork Contractors Sydney — Sydney NSW
+[07:49:13]    [1365] 📋 Master Concrete Resurfacing —  NSW
+[07:52:06]    [1366] · Allstonecraft — Artarmon NSW
+[07:55:49]    [1367] ✉ CJR Concrete Pumping Services —  NSW
+[07:55:59]   DB error: 
+Invalid `prisma.directoryLead.upsert()` invocation in
+/Users/siasepehrara/remed
+[07:57:33]    [1368] ✉ BiM Remedial Sydney — Frenchs Forest NSW
+[07:58:13]    [1369] ✉ Concrete scan: All Scanning Services — Condell Park NSW
+[08:00:50]    [1370] ✉ Royal Concrete Resurfacing —  NSW
+[08:16:10]   DB error: 
+Invalid `prisma.directoryLead.upsert()` invocation in
+/Users/siasepehrara/remed
+[08:19:00]    [1371] 📋 Stakat Building – Concrete Repairs, Remedial Building Specialists — Arndell Park NSW
+[08:19:53]    [1372] ✉ Concrete Engineering Solutions — Arndell Park NSW
+[08:20:38]    [1373] ✉ Practical Concrete Solutions PTY LTD —  NSW
+[08:21:21]    [1374] ✉ City Concrete Sydney — Greenacre NSW
+[08:22:05]    [1375] ✉ Fluid Building Services Pty Ltd — Brookvale NSW
+[08:22:47]    [1376] ✉ Hills District Concrete Resurfacing —  NSW
+[08:22:50]    Done: 49 new businesses
+[08:22:55] 
+── Concrete Cancer Repair Contractors | Melbourne
+[08:22:55]    Query: "Concrete Cancer Repair Contractors Melbourne VIC Australia"
+[08:23:46]    Found 49 place URLs
+[08:24:23]    [1377] ✉ CCS Concrete Construction Solutions —  VIC
+[08:25:03]    [1378] · Zep concrete repairs — Melbourne VIC
+[08:25:49]    [1379] 📋 Ace Concrete Rectification — Brunswick VIC
+[08:26:31]    [1380] ✉ ASL Concreting — Reservoir VIC
+[08:27:14]    [1381] 📋 Earthquake Concrete Resurfacing & Restoration — Dandenong North VIC
+[08:27:57]    [1382] ✉ RCW Group Keysbourough | Concrete Repairs Melbourne — Keysborough VIC
+[08:28:43]    [1383] ✉ Concrete Grinding Melbourne — Fitzroy North VIC
+[08:29:27]    [1384] ✉ Master Contractors Melbourne — Braybrook VIC
+[08:30:11]    [1385] 📋 YMC Concreting — Springvale VIC
+[08:30:51]    [1386] ✉ F.K.R. Constructions — Epping VIC
+[08:31:33]    [1387] ✉ Buildfix® — Sunshine West VIC
+[08:32:14]    [1388] ✉ CCR Australia — Melbourne VIC
+[08:33:06]    [1389] ✉ Confix Australia PTY LTD — Port Melbourne VIC
+[08:33:47]    [1390] ✉ Melbourne Concrete Cutting ®️ — Thomastown VIC
+[08:34:34]    [1391] ✉ DEC Concreters Melbourne | Premium Concreting Specialists — Glenroy VIC
+[08:35:20]    [1392] ✉ Melbourne Concrete Driveways — Elwood VIC
+[08:36:03]    [1393] ✉ My Concrete Creations — Doncaster VIC
+[08:36:51]    [1394] ✉ Melbourne Concrete Removal — Balwyn North VIC
+[08:37:31]    [1395] ✉ Innovative Polished Concrete Melbourne 🥇 —  VIC
+[08:38:18]    [1396] ✉ Nazcrete — South Melbourne VIC
+[08:38:59]    [1397] ✉ C. Daniels Foundations P/L — Melbourne VIC
+[08:39:46]    [1398] ✉ Peninsula Polished Concrete — Kew East VIC
+[08:40:28]    [1399] ✉ Concrete Scanning Melbourne - Concrete X-Ray Services —  VIC
+nning Melbourne - Concrete X-Ray Services —  VIC

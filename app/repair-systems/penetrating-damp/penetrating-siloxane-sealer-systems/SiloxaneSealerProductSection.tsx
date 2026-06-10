@@ -41,9 +41,9 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Safeguard Europe / Wykamol Australia",
-    brandUrl: "https://www.wykamol.com.au",
-    tdsUrl: "https://www.wykamol.com.au",
+    fullLabel: "Safeguard Europe / Alexander Watson Australia",
+    brandUrl: "https://www.stormdry.com.au",
+    tdsUrl: "https://www.stormdry.com.au",
     accentColor: "#1e3a8a",
     name: "Stormdry Masonry Protection Cream",
     descriptionLine: "Silane/siloxane cream — penetrating water repellent for brick and masonry facades — widely specified in Australia for penetrating damp",
@@ -56,26 +56,28 @@ const PRODUCTS: Product[] = [
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Stormdry Masonry Protection Cream by Safeguard Europe (distributed through Wykamol Australia) is the leading silane/siloxane cream penetrating water repellent for brick masonry facades in Australia. The cream consistency is a key advantage over liquid silane products for brick and mortar joint applications — the cream stays in contact with the masonry surface during the dwell period, allowing the active silane/siloxane chemistry to penetrate into the brick, mortar joints and raked joints before the product fully penetrates or evaporates.\n\nStormdry is specifically formulated for brick masonry facades where penetrating damp is occurring through the fabric of the wall and through open or deteriorated mortar joints. The product has been widely used in the UK, Europe and Australia on brick veneer facades, solid brick walls and heritage masonry where a colourless, vapour-permeable water repellent treatment is required. It does not change the appearance of the masonry and leaves no visible surface film.\n\nIn Australian Class 2 strata remediation, Stormdry Masonry Protection Cream is specified on brick veneer facades with damp penetration behind the brick skin, particularly on south-facing and wind-driven rain exposed elevations. The cream is applied by brush and worked into the masonry surface, with excess removed from window frames and non-masonry elements. Confirm current product specification and application requirements with Wykamol Australia before specifying.",
+      "Stormdry Masonry Protection Cream by Safeguard Europe (distributed in Australia by Alexander Watson, Mitchell ACT) is the leading silane/siloxane cream penetrating water repellent for brick masonry facades in Australia. The cream consistency is a key advantage over liquid silane products for brick and mortar joint applications — the cream stays in contact with the masonry surface during the dwell period, allowing the active silane/siloxane chemistry to penetrate into the brick, mortar joints and raked joints before the product fully penetrates or evaporates.\n\nStormdry is specifically formulated for brick masonry facades where penetrating damp is occurring through the fabric of the wall and through open or deteriorated mortar joints. The product has been widely used in the UK, Europe and Australia on brick veneer facades, solid brick walls and heritage masonry where a colourless, vapour-permeable water repellent treatment is required. It does not change the appearance of the masonry and leaves no visible surface film.\n\nIn Australian Class 2 strata remediation, Stormdry Masonry Protection Cream is specified on brick veneer facades with damp penetration behind the brick skin, particularly on south-facing and wind-driven rain exposed elevations. The cream is applied by brush and worked into the masonry surface, with excess removed from window frames and non-masonry elements. Confirm current product specification and application requirements with Wykamol Australia before specifying.",
     technicalProperties: [
       "Silane/siloxane blend — cream consistency — stays on the masonry surface during dwell period for maximum penetration into brick and mortar joints",
       "Penetrates brick and mortar joints — including raked, weathered and open mortar joints — providing water repellency across the full masonry face",
       "Colourless — no surface film — does not change the appearance of the masonry after treatment",
       "Vapour-permeable — the masonry remains breathable after treatment — moisture vapour can escape outward through the wall",
       "BBA Agrement certified — a recognised third-party approval providing documented evidence of product performance",
-      "Compatible with soft historic brick, sandstone and calcium silicate masonry — confirm suitability with Wykamol Australia for specific heritage masonry types",
+      "Compatible with soft historic brick, sandstone and calcium silicate masonry — confirm suitability with Alexander Watson (AU distributor) for specific heritage masonry types",
+      "BBA Agrement certified (25-year durability certificate) — covers Stormdry Masonry Protection Cream and repointing additives",
+      "Coverage: 5 L pack covers approximately 25 m²",
     ],
     limitations: [
       "Substrate must be dry before application — do not apply to wet or rain-wet masonry — damp penetrating through the wall during application will block product penetration",
       "Efflorescence, algae, moss and biological growth must be cleaned off before application — contamination blocks product penetration into the masonry pore structure",
       "Not suitable for masonry with active water ingress under hydrostatic pressure — cream sealer provides water repellency only, not waterproofing",
       "Discrete cracks, failed mortar joints and open bed joints must be repointed before application — the cream does not bridge cracks or fill open joints",
-      "Re-application may be required over time depending on UV exposure, pollution and the specific masonry substrate — confirm expected service life with Wykamol Australia",
-      "Confirm current product specification, application method and availability with Wykamol Australia before specifying",
+      "Re-application may be required over time depending on UV exposure, pollution and the specific masonry substrate — BBA certificate indicates 25-year effectiveness",
+      "Confirm current product specification, application method and availability with Alexander Watson (AU distributor) before specifying",
     ],
     procurementSources: [
-      { name: "Wykamol Australia — trade supply — contact for current pricing", url: "https://www.wykamol.com.au" },
-      { name: "Building remediation suppliers — confirm regional availability", url: "https://www.wykamol.com.au" },
+      { name: "Alexander Watson — Australian distributor — stormdry.com.au — 02 6181 2750", url: "https://www.stormdry.com.au" },
+      { name: "Building remediation suppliers — confirm regional availability", url: "https://www.stormdry.com.au" },
     ],
   },
   {
@@ -84,31 +86,32 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.remmers.com.au",
     accentColor: "#1a5276",
     name: "Remmers Funcosil SNL",
-    descriptionLine: "Water-based silicone microemulsion — penetrating siloxane sealer for brick, render and masonry — Remmers WTA-referenced system",
-    productType: "Penetrating siloxane sealer — water-based",
-    filterTags: ["Siloxane", "Water-based", "Penetrating", "Brick", "Masonry", "Render", "Mortar-joint", "Colourless", "External", "1C"],
+    descriptionLine: "Solvent-based silane/siloxane penetrating impregnation for brick, render and masonry — Remmers Funcosil range — approximately 7% active ingredient by mass — ready-to-use (not a concentrate)",
+    productType: "Penetrating silane/siloxane sealer — solvent-based",
+    filterTags: ["Siloxane", "Silane-siloxane", "Solvent-based", "Penetrating", "Brick", "Masonry", "Render", "Mortar-joint", "Colourless", "External", "1C"],
     techChips: [
-      { label: "Silicone microemulsion", cls: "bg-sky-100 text-sky-800" },
-      { label: "Water-based", cls: "bg-green-50 text-green-700" },
-      { label: "WTA-referenced", cls: "bg-amber-50 text-amber-700" },
+      { label: "Silane/siloxane blend", cls: "bg-sky-100 text-sky-800" },
+      { label: "Solvent-based", cls: "bg-amber-50 text-amber-700" },
+      { label: "TODO: confirm WTA reference from AU TDS", cls: "bg-red-50 text-red-700" },
       { label: "Render compatible", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Remmers Funcosil SNL is a water-based silicone microemulsion penetrating sealer from the Remmers Funcosil range. The SNL designation stands for silicone normal liquid — a water-based siloxane concentrate that penetrates into masonry and renders to create a hydrophobic barrier within the substrate pore structure. Being water-based, Funcosil SNL has a lower VOC profile than solvent-based silane products and can be used on occupied or sensitive sites with fewer ventilation and PPE restrictions.\n\nFuncosil SNL is part of Remmers' WTA-referenced facade protection system and is documented in Remmers' technical system documentation for penetrating damp and facade water repellency. It is suitable for brick, calcium silicate masonry, mineral renders and concrete surfaces. Remmers Australia provides national technical support and system documentation through their Australian representative network.\n\nIn penetrating damp applications, Funcosil SNL is applied by brush, roller or low-pressure spray to clean, dry masonry surfaces. It penetrates into the pore structure and the silicone chemistry reacts in place to create a hydrophobic lining. Confirm the current Funcosil SNL product specification, correct dilution ratio and system documentation with Remmers Australia before specifying.",
+      "Remmers Funcosil SNL is a SOLVENT-BASED silane/siloxane penetrating impregnation from the Remmers Funcosil range. The carrier is dearomatised hydrocarbons (not water), with approximately 7% active silane/siloxane ingredient by mass. The product is ready-to-use — it is not a concentrate and should not be diluted. It is applied by the flow-coat method (wet-on-wet application) to achieve adequate saturation of the substrate pore structure.\n\nFuncosil SNL penetrates brick, masonry, mineral render and concrete surfaces, reacting in place to create a hydrophobic lining within the substrate pore structure. The solvent carrier provides effective penetration into dense substrates. Being solvent-based, standard PPE and ventilation precautions apply — confirm current SDS requirements before specifying on occupied or enclosed sites.\n\nTODO: owner confirm — WTA Merkblatt reference for Funcosil SNL not confirmed from live AU source. Confirm coverage rate, application rate per substrate type and current system documentation with Remmers Australia before specifying. Source: remmers.com product page (solvent-based carrier confirmed; 7% active ingredient confirmed).",
     technicalProperties: [
-      "Water-based silicone microemulsion — lower VOC than solvent-based sealers — reduced PPE and ventilation requirements",
-      "Penetrates masonry, brick, mineral render and concrete surfaces — creates hydrophobic lining within substrate pore structure",
-      "WTA-referenced product — part of Remmers Funcosil facade protection system with system documentation",
+      "Solvent-based silane/siloxane impregnation — carrier: dearomatised hydrocarbons — approximately 7% active ingredient by mass — source: remmers.com",
+      "Ready-to-use — do NOT dilute — apply neat by flow-coat (wet-on-wet) method to ensure full substrate saturation",
+      "Penetrates brick, masonry, mineral render and concrete surfaces — creates hydrophobic lining within substrate pore structure",
+      "TODO: owner confirm — WTA Merkblatt reference (e.g. WTA 3-17 or equivalent) not confirmed from live AU source — verify with Remmers Australia",
       "Colourless — no surface film — substrate appearance unchanged after treatment",
-      "Vapour-permeable — the treated substrate continues to breathe — moisture vapour can escape",
-      "Remmers Australia national technical support and representative network",
+      "Vapour-permeable — treated substrate continues to breathe — moisture vapour can escape outward",
+      "Coverage rate: 0.2–1.5 L/m² depending on substrate porosity — confirm with Remmers Australia for specific substrate",
     ],
     limitations: [
-      "Water-based formulation may have lower penetration depth than solvent-based silane in very dense concrete or engineering brick — confirm suitability with Remmers technical",
+      "Solvent-based — PPE and ventilation requirements apply — confirm current SDS before specifying on occupied or enclosed sites",
       "Substrate must be dry before application — do not apply to wet or rain-saturated masonry",
       "Biological growth and efflorescence must be cleaned and treated before application",
       "Not suitable for masonry with active water ingress under positive hydrostatic pressure",
-      "Confirm dilution ratio and application rate for specific substrate with Remmers Australia — Funcosil SNL is typically supplied as a concentrate",
+      "Ready-to-use product — do not dilute — dilution will reduce active ingredient concentration and compromise penetration depth",
       "Confirm current product specification, system documentation and technical support with Remmers Australia before specifying",
     ],
     procurementSources: [
@@ -121,29 +124,27 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://aus.sika.com",
     accentColor: "#cc0000",
     name: "Sika Sikagard-680 S",
-    descriptionLine: "Penetrating silane/siloxane water repellent for concrete and masonry facades — Sika brand — national distribution",
-    productType: "Penetrating silane/siloxane sealer — solvent-based",
+    descriptionLine: "TODO: owner confirm — Sikagard-680 S appears to be an acrylic/methacrylic resin surface protective COATING, NOT a penetrating silane/siloxane sealer — verify correct current Sika AU penetrating sealer product (e.g. Sikagard-700 S or Sikagard-850 SL) with Sika Australia technical before specifying",
+    productType: "TODO: owner confirm — product type incorrect — see system description",
     filterTags: ["Silane-siloxane", "Solvent-based", "Penetrating", "Brick", "Masonry", "Render", "Colourless", "External", "1C"],
     techChips: [
-      { label: "Silane/siloxane blend", cls: "bg-sky-100 text-sky-800" },
-      { label: "Solvent-based", cls: "bg-amber-50 text-amber-700" },
+      { label: "TODO: confirm product type — may not be a penetrating sealer", cls: "bg-red-50 text-red-700" },
+      { label: "TODO: confirm with Sika AU technical", cls: "bg-amber-50 text-amber-700" },
       { label: "Sika brand", cls: "bg-red-50 text-red-700" },
       { label: "National distribution", cls: "bg-green-50 text-green-700" },
     ],
     systemDescription:
-      "Sika Sikagard-680 S is a solvent-based silane/siloxane blend penetrating water repellent for concrete and masonry facades. The combined silane/siloxane chemistry provides both the deep penetration characteristic of silane (driven by the low-viscosity solvent carrier and small silane molecule) and the broad substrate compatibility characteristic of siloxane in a single product formulation.\n\nSika is one of the most widely available construction chemistry brands in Australia with national distribution through Sika trade channels. This distribution advantage is significant on strata remediation projects where multi-storey access, large facade areas and tight project programmes require reliable supply on short lead times. Sika's national technical support network and accredited applicator programme also make project documentation, system warranties and client reporting straightforward to administer.\n\nFor penetrating damp remediation, Sikagard-680 S is applied by brush, roller or spray to clean, dry masonry surfaces. Confirm the current Sikagard product name and classification — Sika's product range changes over time and current product names and specifications must be confirmed with Sika Australia technical before specifying. Confirm whether Sikagard-680 S or an alternative current Sika product is the most appropriate product for the specific application.",
+      "TODO: owner confirm — CRITICAL PRODUCT TYPE ERROR: Research from live sources indicates that Sika Sikagard-680 S is a methacrylic/acrylic resin protective surface COATING for concrete, providing anti-carbonation and surface protection — it is NOT a penetrating silane/siloxane water repellent sealer. Including it on this penetrating sealer page appears to be incorrect.\n\nFrom search results: Sikagard-680 S is described as 'a one-component solvent-containing coating based on acrylic resin' and 'a methacrylic resin protective and anti-carbonation coating for concrete'. This is a surface coating product — it forms a film on the substrate surface and is classified under EN 1504-2 surface protection coatings, not penetrating hydrophobisation.\n\nACTION REQUIRED: Owner to confirm with Sika Australia technical the correct current product name for a Sika penetrating silane/siloxane water repellent sealer for brick and masonry facades. Likely candidates may include Sikagard-700 S (silane) or Sikagard-850 SL — but product names and availability must be confirmed with Sika AU before specifying. This card should either be replaced with the correct Sika penetrating sealer product, or removed from this page and replaced with a Sika anti-carbonation coating entry on the appropriate page.",
     technicalProperties: [
-      "Silane/siloxane blend — combined chemistry — deep penetration of silane with broad substrate compatibility of siloxane",
-      "Solvent-based — effective on concrete, brick, masonry and mineral render",
-      "Colourless — no surface film — substrate appearance unchanged",
-      "Vapour-permeable — treated substrate continues to breathe",
-      "Sika national distribution — available through Sika trade channels across all Australian states — reliable supply for large-area facade remediation projects",
+      "TODO: owner confirm — all technical properties below are unverified and may apply to an acrylic surface coating, not a penetrating silane/siloxane sealer",
+      "TODO: confirm correct Sika AU penetrating sealer product name with Sika Australia technical",
+      "TODO: confirm product classification (EN 1504-2 penetrating hydrophobisation vs surface protection coating)",
+      "Sika national distribution — available through Sika trade channels across all Australian states",
+      "TODO: confirm application method, coverage rate, substrate compatibility and limitations with Sika Australia for the correct penetrating sealer product",
     ],
     limitations: [
-      "Confirm current Sika product name for this product category — Sika product ranges are updated and the current specification must be confirmed with Sika Australia",
-      "Solvent-based — PPE and ventilation requirements apply — check current SDS before specifying on enclosed or occupied sites",
-      "Substrate must be clean and dry — biological growth and efflorescence must be removed before application",
-      "Not suitable for substrates with active hydrostatic water ingress",
+      "TODO: owner confirm — this product card appears to reference the wrong Sika product — Sikagard-680 S is a surface protective coating, not a penetrating sealer",
+      "TODO: remove or replace this card with the correct Sika AU penetrating silane/siloxane sealer product after confirming with Sika Australia technical",
       "Confirm current product specification, classification, application rate and technical support with Sika Australia before specifying",
     ],
     procurementSources: [
@@ -170,8 +171,8 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 
 const BRAND_EQUIV: { system: string; safeguard: string; remmers: string; sika: string }[] = [
   { system: "Silane/siloxane cream — brick and mortar joint penetration", safeguard: "Stormdry Cream", remmers: "—", sika: "—" },
-  { system: "Water-based siloxane — brick, masonry and render", safeguard: "—", remmers: "Funcosil SNL", sika: "—" },
-  { system: "Solvent-based silane/siloxane — brick, masonry, concrete", safeguard: "—", remmers: "—", sika: "Sikagard-680 S*" },
+  { system: "Solvent-based silane/siloxane impregnation — brick, masonry and render", safeguard: "—", remmers: "Funcosil SNL", sika: "—" },
+  { system: "TODO: confirm correct Sika AU penetrating sealer product — Sikagard-680 S is a surface coating", safeguard: "—", remmers: "—", sika: "TODO: confirm with Sika AU*" },
 ];
 
 const TECH_INFO = {
@@ -186,7 +187,7 @@ const TECH_INFO = {
     "Silane/siloxane cream is the best choice for brick masonry with open or raked mortar joints — the cream consistency provides better mortar joint penetration than liquid products",
     "Water-based siloxane (Remmers Funcosil SNL) is preferred on occupied sites where VOC and solvent odour are a concern — lower PPE requirements",
     "Solvent-based silane/siloxane (Sikagard-680 S) provides deeper penetration into concrete and dense masonry than water-based products",
-    "For heritage or heritage-adjacent masonry, confirm compatibility of the specific product with the substrate with Wykamol or Remmers technical before specifying",
+    "For heritage or heritage-adjacent masonry, confirm compatibility of the specific product with the substrate with Alexander Watson (Stormdry AU distributor) or Remmers technical before specifying",
     "Confirm all other moisture pathways (cracking, failed mortar joints, window perimeter sealants, membrane failure) have been identified and addressed before applying penetrating sealer",
   ],
   limitations: [
@@ -510,7 +511,7 @@ export function SiloxaneSealerProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Brand Equivalents</h2>
-            <p className="mt-1 text-sm text-slate-500">Siloxane and silane/siloxane sealer equivalents by product form and substrate. * Confirm current product name and specification with Sika Australia.</p>
+            <p className="mt-1 text-sm text-slate-500">Siloxane and silane/siloxane sealer equivalents by product form and substrate. * TODO: owner confirm — Sikagard-680 S is a surface protective coating, not a penetrating sealer — confirm correct Sika AU penetrating sealer product with Sika Australia before specifying.</p>
           </div>
         </div>
         <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
@@ -518,7 +519,7 @@ export function SiloxaneSealerProductSection() {
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#1e3a8a" }}>Safeguard / Wykamol</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#1e3a8a" }}>Safeguard / Alexander Watson</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#1a5276" }}>Remmers</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#cc0000" }}>Sika</th>
               </tr>

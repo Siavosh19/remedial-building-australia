@@ -98,7 +98,7 @@ const PRODUCTS: Product[] = [
       { label: "25-Year Warranty", cls: "bg-green-100 text-green-800" },
     ],
     systemDescription:
-      "PPG Duranar XL is a high-performance 70% PVDF coating using Kynar 500 resin, factory-applied to aluminium extrusions and flat sheet by approved coil and spray coaters. PPG Duranar is one of the longest-established PVDF brands globally, with extensive track record on Australian high-rise buildings. The XL variant offers enhanced colour range and improved metallic/mica finishes while meeting AAMA 2605 — the most demanding US/AU standard for architectural coatings. System: chrome conversion coating + epoxy primer (5–8 µm) + Duranar XL topcoat (20–25 µm) + optional Duranar Sunstable clear.",
+      "PPG Duranar XL is a high-performance 70% PVDF coating using Kynar 500 resin, factory-applied to aluminium extrusions and flat sheet by approved coil and spray coaters. PPG Duranar is one of the longest-established PVDF brands globally, with extensive track record on Australian high-rise buildings. The XL variant offers enhanced colour range and improved metallic/mica finishes while meeting AAMA 2605 — the most demanding US/AU standard for architectural coatings. System: chrome conversion coating + epoxy primer (5–8 µm) + Duranar XL topcoat (20–25 µm) + TODO: owner confirm — the Duranar Sunstable clear coat: fetched sources describe this as an essential component of the three-coat system for metallic finishes, not optional — confirm whether the clear coat is mandatory or optional for the specified colour and finish with PPG technical.",
     technicalProperties: [
       "PVDF resin: 70% by weight of binder — Kynar 500 fluoropolymer",
       "Gloss: 25–35 GU (60°) standard; metallic variants may vary slightly",
@@ -187,11 +187,11 @@ const PRODUCTS: Product[] = [
       "PVDF resin: 70% by weight of binder — full AAMA 2605 compliance in powder form",
       "Colour retention: ΔE ≤ 5 at 10 years Florida exposure — equivalent to liquid PVDF",
       "Chalk resistance: Rating ≥ 8 (ASTM D4214) at 10 years Florida — same as liquid PVDF",
-      "Film build: 60–80 µm DFT in single powder coat application",
+      "TODO: owner confirm — Film build: 60–80 µm DFT — Interpon D3020 TDS/brochure sources indicate minimum 50 µm (C1–C3 environments) or 60 µm (C4/C5 environments) — the range 60–80 µm is not confirmed from fetched sources — confirm current DFT specification with Interpon/AkzoNobel technical",
       "Salt spray: 3,000 hours (ASTM B117) — marine/coastal approved specification",
-      "Impact resistance: 160 inch-pounds direct impact — tougher than liquid PVDF",
+      "TODO: owner confirm — Impact resistance: 160 inch-pounds direct impact — this value not confirmed from fetched Interpon D3020 sources — confirm from current Interpon D3020 TDS with AkzoNobel technical",
       "Adhesion: 100/100 crosshatch (ASTM D3359) on chrome-pretreated aluminium",
-      "Gloss options: 20–70 GU — broader range than liquid PVDF for same AAMA 2605 performance",
+      "TODO: owner confirm — Gloss options: 20–70 GU — fetched Interpon D3020 sources indicate gloss range of approximately 30–40% (brochure) — the stated 20–70 GU range may not be accurate for D3020 specifically — confirm current gloss range from Interpon D3020 product documentation with AkzoNobel technical",
     ],
     limitations: [
       "Factory powder coat only — oven cure at 180–200°C essential for film formation",
@@ -211,9 +211,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.wattyl.com.au",
     tdsUrl: "https://www.wattyl.com.au/industrial",
     accentColor: "#059669",
-    name: "Wattyl Industrial Fluorocoat",
+    name: "TODO: owner confirm — Wattyl Industrial Fluorocoat (exact current AU product name unconfirmed — 'Wattyl Industrial Fluorocoat' not found on wattyl.com.au Protective Coatings range at time of verification — confirm current site-applied fluoropolymer product name in the Wattyl industrial/protective range with Wattyl technical)",
     descriptionLine: "Site-applied fluoropolymer coating for metal cladding recoating — Wattyl's high-performance architectural metal recoat system — suitable for site application to existing aluminium, steel, and ACP panels where factory PVDF recoating is impractical",
-    productType: "Site-applied fluoropolymer topcoat — architectural metal recoating",
+    productType: "TODO: owner confirm — Site-applied fluoropolymer topcoat — architectural metal recoating (product name unconfirmed — see name field)",
     filterTags: ["Fluoropolymer", "Metal-cladding", "Aluminium", "ACP-recoating", "UV-resistant", "Coastal", "Site-applied", "High-performance", "2-pack"],
     techChips: [
       { label: "Site-Applied", cls: "bg-emerald-100 text-emerald-800" },

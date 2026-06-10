@@ -37,73 +37,72 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Bostik",
-    brandUrl: "https://www.bostik.com/au",
-    accentColor: "#E63946",
-    name: "Bostik Thioflex 600",
-    descriptionLine: "2-part polysulfide sealant — curtain wall, glazing channel and structural joint sealing",
+    fullLabel: "Fosroc (distributed by Parchem)",
+    brandUrl: "https://www.fosroc.com.au",
+    accentColor: "#003087",
+    name: "Fosroc Thioflex 600",
+    descriptionLine: "2-part fuel-resistant polysulfide sealant — movement joints in civil structures, basement and water-retaining structures",
     productType: "2-component polysulfide",
-    filterTags: ["2-part", "Polysulfide", "Structural", "Glazing", "Curtain-wall", "Long-pot-life"],
+    filterTags: ["2-part", "Polysulfide", "Structural", "Chemical-resistant", "Fuel-resistant", "Immersion"],
     techChips: [
       { label: "2-component polysulfide", cls: "bg-purple-100 text-purple-800" },
-      { label: "Structural glazing", cls: "bg-slate-100 text-slate-700" },
-      { label: "Chemical resistant", cls: "bg-amber-50 text-amber-700" },
+      { label: "Fuel resistant", cls: "bg-amber-50 text-amber-700" },
+      { label: "±30% movement", cls: "bg-slate-100 text-slate-700" },
       { label: "Low modulus", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Bostik Thioflex 600 is a two-component polysulfide joint sealant suitable for structural glazing channel sealing, curtain wall perimeter joints, precast concrete joints and water-retaining structures. Used in Australian Class 2 and commercial building remediation for curtain wall joints, precast facade joint sealing and glazing channel applications where chemical resistance and long pot-life after mixing are required. Mix ratio must be confirmed from current TDS; substrate preparation and primer usage must follow Bostik technical guidance.",
+      "Fosroc Thioflex 600 is a two-component fuel-resistant polysulfide joint sealant (distributed in Australia by Parchem Construction Supplies). Available in Gun Grade and Pouring Grade. Accommodates cyclic movement of ±30%. Used for sealing movement joints in civil engineering structures, roads, bridges, airfields, water-retaining structures and joints subject to fuel splash or immersion. In Australian Class 2 building remediation it is applied to below-grade structure joints and water-retaining slab joints where resistance to fuels and chemicals is specified. Mix ratio must be confirmed from current Fosroc TDS; substrate preparation and primer usage must follow Fosroc technical guidance.",
     technicalProperties: [
       "2-component polysulfide — requires mixing of base and curing agent at specified ratio before application",
-      "Low-modulus flexibility — accommodates movement in structural and curtain wall joints without cohesive failure",
-      "Chemical resistance — resistant to many industrial chemicals, fuels and solvents — confirm from current Bostik TDS",
+      "Movement capacity ±30% — cyclic movement accommodation in structural joints",
       "Fuel resistance — suitable for joints subject to fuel splash or immersion in fuel-exposed environments",
-      "Good adhesion to glass, metal, concrete and masonry — confirm primer requirements per substrate from Bostik technical data",
+      "Chemical resistance — resistant to many industrial chemicals — confirm from current Fosroc TDS",
+      "Good adhesion to concrete, masonry and metal — confirm primer requirements per substrate from Fosroc technical data",
     ],
     limitations: [
       "Mix ratio accuracy is critical — incorrect ratios will compromise cure and long-term joint performance",
       "Pot-life must be managed — once mixed, discard material if pot-life is exceeded — do not apply overaged sealant",
-      "Substrate primer is required on most substrates — confirm primer selection from Bostik TDS before application",
-      "Not suitable for high-movement facade joints where silicone or high-movement PU is specified — confirm movement rating",
-      "Confirm current product specification, availability and TDS with Bostik Australia before specifying",
+      "Substrate primer is required on most substrates — confirm primer selection from Fosroc TDS before application",
+      "Not suitable for high-movement facade joints where silicone or high-movement PU is specified — ±30% movement rating",
+      "Confirm current product specification, availability and TDS with Fosroc Australia / Parchem before specifying",
     ],
     procurementSources: [
-      { name: "Bostik Australia trade supply — contact for current pricing", url: "https://www.bostik.com/au" },
-      { name: "Facade and glazing distributors — confirm regional availability", url: "https://www.bostik.com/au" },
+      { name: "Parchem Construction Supplies (Fosroc distributor) — national branches", url: "https://www.parchem.com.au" },
+      { name: "Fosroc Australia — fosroc.com.au — technical and trade supply", url: "https://www.fosroc.com.au" },
     ],
   },
   {
     fullLabel: "Fosroc",
-    brandUrl: "https://www.fosroc.com/au",
+    brandUrl: "https://www.fosroc.com.au",
     accentColor: "#003087",
     name: "Fosroc Nitoseal PS50",
-    descriptionLine: "2-part polysulfide sealant — precast concrete joints, basement structures and water-retaining structures",
+    descriptionLine: "TODO: owner confirm — Nitoseal PS50 not found on current Fosroc Australia product listings — verify if current or discontinued",
     productType: "2-component polysulfide",
     filterTags: ["2-part", "Polysulfide", "Structural", "Chemical-resistant", "Fuel-resistant", "Immersion"],
     techChips: [
       { label: "2-component polysulfide", cls: "bg-blue-100 text-blue-800" },
       { label: "Fuel resistant", cls: "bg-amber-50 text-amber-700" },
       { label: "Water-retaining structures", cls: "bg-sky-50 text-sky-700" },
-      { label: "Low modulus", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm availability", cls: "bg-red-100 text-red-800" },
     ],
     systemDescription:
-      "Fosroc Nitoseal PS50 is a two-component cold-applied polysulfide sealant used for sealing joints in precast concrete structures, basement retaining structures, water-retaining structures, airport pavements and industrial joints subject to fuel or chemical splash. In Australian Class 2 building remediation it is applied to below-grade structure joints, water retaining slab joints and industrial pavement control joints where resistance to fuels and chemicals is specified.",
+      "TODO: owner confirm — Fosroc Nitoseal PS50 was not found on the current Fosroc Australia product database (fosroc.com.au/technical-data). The current Fosroc Australia polysulfide joint sealant is Thioflex 600 (also Fosroc, distributed by Parchem). The Nitoseal range on Fosroc Australia includes PY350 (polyurea), PU250, PU400, MS250 and SC600 but not PS50. Confirm with Fosroc Australia / Parchem whether PS50 is still available in Australia or whether Thioflex 600 is the correct current specification.",
     technicalProperties: [
-      "Excellent fuel and chemical resistance — suitable for joints in areas subject to fuel splash or chemical exposure",
+      "TODO: owner confirm — product availability in current Australian market not verified",
       "Good adhesion to concrete, masonry and metal — confirm primer requirements from Fosroc technical data",
       "Low modulus flexibility — accommodates movement in precast and structural joints without cohesive failure",
-      "Suitable for submerged and water-retaining applications — used in basement and water-retaining structure joints",
+      "Suitable for submerged and water-retaining applications if current and available",
       "2-component mixing from separate base and curing agent — cold-applied without heat equipment",
     ],
     limitations: [
+      "TODO: owner confirm — Nitoseal PS50 not found on current Fosroc Australia listings — may be discontinued",
       "Requires accurate mix ratio — incorrect mixing will compromise cure and joint performance",
       "Not suitable for glass-to-metal structural glazing — confirm application type with Fosroc technical",
       "Substrate must be clean, dry and primed per Fosroc data — confirm primer selection before application",
-      "Pot-life is sensitive to temperature — higher temperatures reduce working time — plan accordingly",
-      "Confirm product availability in the Australian market and with Fosroc Australia technical before specifying",
+      "Confirm product availability in the Australian market and with Fosroc Australia / Parchem before specifying",
     ],
     procurementSources: [
-      { name: "Fosroc Australia technical and trade supply — contact for current pricing", url: "https://www.fosroc.com/au" },
-      { name: "Concrete repair distributors — confirm regional availability", url: "https://www.fosroc.com/au" },
+      { name: "TODO: confirm — Fosroc Australia / Parchem — verify product availability before specifying", url: "https://www.fosroc.com.au" },
     ],
   },
   {
@@ -143,7 +142,7 @@ const PRODUCTS: Product[] = [
   },
   {
     fullLabel: "Tremco",
-    brandUrl: "https://www.tremcosealants.com/au",
+    brandUrl: "https://www.tremco.com.au",
     accentColor: "#005EB8",
     name: "Tremco Dymonic FC",
     descriptionLine: "1-component hybrid polyurethane sealant — facade, window perimeter and movement joints",
@@ -172,8 +171,8 @@ const PRODUCTS: Product[] = [
       "Confirm current product specification, local availability and current TDS with Tremco Australia before specifying",
     ],
     procurementSources: [
-      { name: "Tremco Australia — tremcosealants.com.au — trade supply", url: "https://www.tremcosealants.com/au" },
-      { name: "Facade and glazing trade distributors — confirm regional availability", url: "https://www.tremcosealants.com/au" },
+      { name: "Tremco Australia — tremcosealants.com.au — trade supply", url: "https://www.tremco.com.au" },
+      { name: "Facade and glazing trade distributors — confirm regional availability", url: "https://www.tremco.com.au" },
     ],
   },
 ];
@@ -188,10 +187,10 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; bostik: string; fosroc: string; sika: string; tremco: string }[] = [
-  { system: "Structural glazing channel", bostik: "Thioflex 600", fosroc: "—", sika: "Sikaflex-2c NS", tremco: "—" },
-  { system: "Precast/basement joints", bostik: "Thioflex 600", fosroc: "Nitoseal PS50", sika: "Sikaflex-2c NS", tremco: "—" },
+  { system: "Structural glazing channel", bostik: "—", fosroc: "Thioflex 600", sika: "Sikaflex-2c NS", tremco: "—" },
+  { system: "Precast/basement joints", bostik: "—", fosroc: "Thioflex 600 / PS50*", sika: "Sikaflex-2c NS", tremco: "—" },
   { system: "Facade/movement joints", bostik: "—", fosroc: "—", sika: "Sikaflex-2c NS", tremco: "Dymonic FC" },
-  { system: "Water-retaining structures", bostik: "Thioflex 600", fosroc: "Nitoseal PS50", sika: "—", tremco: "—" },
+  { system: "Water-retaining structures", bostik: "—", fosroc: "Thioflex 600 / PS50*", sika: "—", tremco: "—" },
 ];
 
 const SYSTEM_COMPARISON: {
@@ -203,7 +202,7 @@ const SYSTEM_COMPARISON: {
 }[] = [
   { property: "Components", thioflex: "2-part", nitoseal: "2-part", sikaflex2c: "2-part", dymonic: "1-part" },
   { property: "Cure type", thioflex: "Polysulfide", nitoseal: "Polysulfide", sikaflex2c: "Neutral-cure PU", dymonic: "Moisture-cure PU-hybrid" },
-  { property: "Movement capacity", thioflex: "Low–medium", nitoseal: "Low–medium", sikaflex2c: "Medium–high", dymonic: "Medium" },
+  { property: "Movement capacity", thioflex: "±30%", nitoseal: "Confirm TDS*", sikaflex2c: "Medium–high", dymonic: "Medium" },
   { property: "Chemical resistance", thioflex: "Excellent", nitoseal: "Excellent", sikaflex2c: "Good", dymonic: "Moderate" },
   { property: "Fuel resistance", thioflex: "Good", nitoseal: "Excellent", sikaflex2c: "Moderate", dymonic: "Limited" },
   { property: "Submerged use", thioflex: "Yes", nitoseal: "Yes", sikaflex2c: "Confirm TDS", dymonic: "No" },
@@ -705,7 +704,7 @@ export function PolysulfideSealantsProductSection() {
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">
                   Joint Type
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#E63946" }}>Bostik</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#6b7280" }}>Bostik (no current polysulfide)</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#003087" }}>Fosroc</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#D2000F" }}>Sika</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#005EB8" }}>Tremco</th>
@@ -747,8 +746,8 @@ export function PolysulfideSealantsProductSection() {
                 <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">
                   Property
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#E63946" }}>Bostik Thioflex 600</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#003087" }}>Fosroc Nitoseal PS50</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#003087" }}>Fosroc Thioflex 600</th>
+                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#003087" }}>Fosroc Nitoseal PS50*</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#D2000F" }}>Sika Sikaflex-2c NS</th>
                 <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap" style={{ color: "#005EB8" }}>Tremco Dymonic FC</th>
               </tr>

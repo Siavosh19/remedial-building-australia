@@ -9,7 +9,7 @@ export default async function AdminPage() {
   const user = await getCurrentDirectoryUser();
   if (!user || user.role !== "admin") redirect("/directory/login");
 
-  const [queue, users, totalCompanies, publishedCount] = await Promise.all([
+  const [queue, users, totalCompanies, publishedCount, subscriberCount] = await Promise.all([
     prisma.adminReviewQueue.findMany({
       where: { status: { in: ["discovered", "needs_review", "needs_recheck"] } },
       orderBy: { created_at: "asc" },
@@ -40,6 +40,7 @@ export default async function AdminPage() {
     }),
     prisma.company.count(),
     prisma.company.count({ where: { status: "published" } }),
+    prisma.$queryRaw<[{ count: bigint }]>`SELECT COUNT(*)::bigint as count FROM newsletter_subscribers`,
   ]);
 
   return (
@@ -51,6 +52,7 @@ export default async function AdminPage() {
         totalCompanies,
         publishedCompanies: publishedCount,
         totalUsers: users.length,
+        subscriberCount: Number(subscriberCount[0]?.count ?? 0),
       }}
     />
   );

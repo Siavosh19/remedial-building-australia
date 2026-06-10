@@ -132,9 +132,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://aus.sika.com",
     tdsUrl: "https://aus.sika.com/en/construction/roofing/bituminous-roofing/hot-melt-systems.html",
     accentColor: "#be123c",
-    name: "SikaShield Hot Melt 50/70",
-    descriptionLine: "Hot melt bitumen waterproofing element for inverted roofs, ballasted roofs, podium decks, and terraces — SikaShield system — heated in thermostatically controlled melting kettle at 165°C–185°C — Sika-accredited applicator required — confirm Australian product availability with Sika Australia",
-    productType: "Hot melt bitumen waterproofing — Sika Australia — confirm Australian availability",
+    name: "SikaShield Hot Melt 50/70 (UK product name — TODO: owner confirm current Australian product name with Sika Australia)",
+    descriptionLine: "Hot melt bitumen waterproofing element for inverted roofs, ballasted roofs, podium decks, and terraces — UK product name SikaShield Hot Melt 50/70 confirmed on gbr.sika.com — application temp 165°C–185°C confirmed — BBA certified (UK) — confirm current Australian product name, availability, and accredited applicator with Sika Australia before specifying",
+    productType: "Hot melt bitumen waterproofing — Sika — TODO: confirm Australian product name with Sika Australia",
     filterTags: ["Hot-melt-bitumen", "Fully-bonded", "Monolithic", "Inverted-roof", "Podium-deck", "Roof-deck", "Fabric-reinforced", "Specialist-equipment", "BBA-certified", "Confirm-AU-availability"],
     techChips: [
       { label: "Hot melt bitumen", cls: "bg-rose-100 text-rose-800" },

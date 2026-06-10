@@ -42,10 +42,10 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.selleys.com.au",
     tdsUrl: "https://www.selleys.com.au/sealants-adhesives/fillers/no-more-gaps-flexible-filler/",
     accentColor: "#ef4444",
-    name: "Selleys No More Gaps Flexible Filler",
+    name: "Selleys No More Gaps Interior Multipurpose",
     descriptionLine:
-      "Water-based flexible acrylic gap filler for internal plasterboard and render cracks — paintable over once cured, low odour, suitable for cornices and joints",
-    productType: "Flexible acrylic gap filler for internal cracks",
+      "Water-based acrylic gap filler for internal plasterboard and render cracks — paintable over once cured, low odour, suitable for cornices and joints",
+    productType: "Acrylic gap filler for internal cracks",
     filterTags: ["Crack-filler", "Flexible", "Acrylic", "Paintable", "Plasterboard", "Interior"],
     techChips: [
       { label: "Flexible acrylic", cls: "bg-sky-100 text-sky-800" },
@@ -55,7 +55,7 @@ const PRODUCTS: Product[] = [
       { label: "Low odour", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Selleys No More Gaps Flexible Filler is a water-based flexible acrylic gap filler widely used in Australian residential and strata apartment buildings for filling dormant hairline and fine cracks in plasterboard, render, cornices, and internal joints. Water-based formulation — low odour, easy clean-up with water, and paintable once cured with standard interior paint systems. Suitable for movement-related hairline cracks at cornice junctions, butt joints in plasterboard, and fine render surface cracks.\n\nNot suitable for active (moving) cracks, wet area applications, or cracks wider than approximately 5mm without backing. Crack must be dormant — active cracks will re-crack through the filler. For movement joints and wider cracks, use a PU sealant with backer rod.",
+      "Selleys No More Gaps Interior Multipurpose is a water-based acrylic gap filler widely used in Australian residential and strata apartment buildings for filling dormant hairline and fine cracks in plasterboard, render, cornices, and internal joints. Water-based formulation — low odour, easy clean-up with water, and paintable once fully cured with standard interior paint systems. Suitable for movement-related hairline cracks at cornice junctions, butt joints in plasterboard, and fine render surface cracks.\n\nNot suitable for active (moving) cracks, wet area applications, or cracks wider than approximately 5mm without backing. Crack must be dormant — active cracks will re-crack through the filler. For movement joints and wider cracks, use a PU sealant with backer rod.",
     technicalProperties: [
       "Water-based flexible acrylic — low odour, easy water clean-up during application",
       "Paintable once fully cured with standard interior acrylic paint systems",
@@ -83,18 +83,18 @@ const PRODUCTS: Product[] = [
     accentColor: "#3b82f6",
     name: "Sikaflex-111 Stick & Seal",
     descriptionLine:
-      "1-part polyurethane flexible adhesive-sealant for internal movement joints and crack repair in render and masonry — overpaintable, accommodates thermal movement",
-    productType: "1-part flexible PU sealant for internal movement joints",
+      "1-part silane-terminated polymer flexible adhesive-sealant for internal movement joints and crack repair in render and masonry — overpaintable, accommodates thermal movement",
+    productType: "1-part flexible STP sealant for internal movement joints",
     filterTags: ["Sealant", "PU", "1C", "Flexible", "Paintable", "Render", "Interior", "Movement-joint"],
     techChips: [
-      { label: "1-part PU sealant", cls: "bg-sky-100 text-sky-800" },
+      { label: "1-part STP sealant", cls: "bg-sky-100 text-sky-800" },
       { label: "One-component", cls: "bg-slate-100 text-slate-700" },
       { label: "Moisture-cure", cls: "bg-slate-100 text-slate-700" },
       { label: "Overpaintable", cls: "bg-green-50 text-green-700" },
       { label: "Movement joint", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Sikaflex-111 Stick & Seal is a 1-component moisture-curing polyurethane flexible adhesive-sealant used for movement joints and crack repair in internal render and masonry surfaces. Suitable for wider internal cracks and movement joints where a flexible acrylic filler does not provide sufficient movement accommodation — accommodates ongoing thermal movement and is overpaintable once cured with compatible interior paint systems.\n\nFor active movement joints, install backer rod to control sealant depth and prevent three-sided adhesion. Prime joint faces per Sika TDS on porous or contaminated substrates. Not suitable for continuously wet conditions without specific Sika approval. Confirm current product designation and TDS with Sika Australia before specifying — product names are subject to periodic revision.",
+      "Sikaflex-111 Stick & Seal is a 1-component moisture-curing flexible adhesive-sealant based on silane-terminated polymer technology used for movement joints and crack repair in internal render and masonry surfaces. Suitable for wider internal cracks and movement joints where a flexible acrylic filler does not provide sufficient movement accommodation — accommodates ongoing thermal movement and is overpaintable once cured with compatible interior paint systems. Bonds to a wide variety of substrates including concrete, masonry, ceramic, wood, metal and plastics without primer in most cases.\n\nFor active movement joints, install backer rod to control sealant depth and prevent three-sided adhesion. Prime joint faces per Sika TDS on porous substrates (Sika Primer-3 N is referenced). Not suitable for continuously wet conditions without specific Sika approval. Confirm current product designation and TDS with Sika Australia before specifying — product names are subject to periodic revision.",
     technicalProperties: [
       "1-part moisture-curing polyurethane — no site mixing required, reduces application error",
       "Overpaintable after full cure with compatible interior paint systems — confirm with Sika TDS",
@@ -132,8 +132,8 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; selleys: string; sika: string }[] = [
-  { system: "Flexible acrylic gap filler", selleys: "No More Gaps", sika: "—" },
-  { system: "Flexible PU sealant (movement joints)", selleys: "—", sika: "Sikaflex-111 Stick & Seal" },
+  { system: "Acrylic gap filler", selleys: "No More Gaps Interior Multipurpose", sika: "—" },
+  { system: "Flexible STP sealant (movement joints)", selleys: "—", sika: "Sikaflex-111 Stick & Seal" },
 ];
 
 const SYSTEM_COMPARISON: {
@@ -146,9 +146,9 @@ const SYSTEM_COMPARISON: {
   primaryUse: string;
 }[] = [
   {
-    product: "No More Gaps Flexible Filler",
+    product: "No More Gaps Interior Multipurpose",
     brand: "Selleys",
-    chemistry: "Flexible acrylic",
+    chemistry: "Acrylic",
     paintable: "Yes",
     crackWidth: "Hairline to ~5mm",
     movement: "Minor thermal",
@@ -157,7 +157,7 @@ const SYSTEM_COMPARISON: {
   {
     product: "Sikaflex-111 Stick & Seal",
     brand: "Sika",
-    chemistry: "Polyurethane (1C)",
+    chemistry: "Silane-terminated polymer (1C)",
     paintable: "Yes (confirm TDS)",
     crackWidth: "Fine to wide — with backer rod",
     movement: "Thermal + live load",
@@ -337,7 +337,7 @@ export function InternalCrackingIntroSection() {
           Internal cracks in Class 2 strata apartment buildings form for a range of reasons — long-term building settlement, thermal movement in framing and lining materials, moisture cycling in plasterboard and render, and live load deflection of floor and ceiling systems. The critical distinction before any crack repair is whether a crack is cosmetic (dormant, non-structural) or structural. Structural cracks — typically wider than 3mm, showing step displacement, or associated with movement of building elements — must be assessed by a structural engineer before any filling or concealment is undertaken. Crack filling is appropriate only for dormant cosmetic cracks.
         </p>
         <p>
-          Two product types are used for internal crack repair in Australian strata buildings. Flexible acrylic gap fillers — such as Selleys No More Gaps Flexible Filler — are water-based, low-odour, and paintable, and are suited to hairline and fine dormant cracks in plasterboard, cornices, and thin render coatings. For wider cracks, active movement joints, or locations in render and masonry where ongoing thermal movement is expected, a 1-part flexible polyurethane sealant — such as Sikaflex-111 Stick & Seal — provides greater elongation, better movement accommodation, and is also overpaintable once cured.
+          Two product types are used for internal crack repair in Australian strata buildings. Acrylic gap fillers — such as Selleys No More Gaps Interior Multipurpose — are water-based, low-odour, and paintable, and are suited to hairline and fine dormant cracks in plasterboard, cornices, and thin render coatings. For wider cracks, active movement joints, or locations in render and masonry where ongoing thermal movement is expected, a 1-part flexible sealant based on silane-terminated polymer technology — such as Sikaflex-111 Stick & Seal — provides greater elongation, better movement accommodation, and is also overpaintable once cured.
         </p>
         <p>
           Painting over repaired cracks requires the filler or sealant to be fully cured before any coating is applied — premature painting over uncured filler can cause paint adhesion failure and visible surface irregularity. The filled crack must be sanded flush with the surrounding surface, primed if required, and finished with a compatible interior paint system. For movement joints filled with PU sealant, backer rod should be installed to control the sealant depth and prevent three-sided adhesion, which would prevent the joint from accommodating movement.

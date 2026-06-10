@@ -41,32 +41,32 @@ const PRODUCTS: Product[] = [
     fullLabel: "Selleys",
     brandUrl: "https://www.selleys.com.au",
     accentColor: "#ef4444",
-    name: "Selleys Sugar Soap Mould Killer",
+    name: "Selleys Rapid Mould Killer",
     descriptionLine:
-      "Concentrated biocide wash for mould, mildew and algae removal from internal walls and ceilings before repainting — kills spores and prepares surface for paint",
-    productType: "Concentrated biocide cleaning solution for mould removal",
+      "Ready-to-use biocide spray for mould, mildew and algae removal from internal walls and ceilings — kills spores and prepares surface for paint",
+    productType: "Ready-to-use biocide spray for mould removal",
     filterTags: ["Biocide", "Mould-treatment", "Wash", "Anti-mould", "Interior"],
     techChips: [
-      { label: "Biocide wash", cls: "bg-sky-100 text-sky-800" },
-      { label: "Concentrated solution", cls: "bg-slate-100 text-slate-700" },
+      { label: "Biocide spray", cls: "bg-sky-100 text-sky-800" },
+      { label: "Ready to use", cls: "bg-slate-100 text-slate-700" },
       { label: "Mould & mildew kill", cls: "bg-slate-100 text-slate-700" },
       { label: "Pre-paint preparation", cls: "bg-amber-50 text-amber-700" },
       { label: "Interior", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Selleys Sugar Soap Mould Killer is a concentrated biocide cleaning solution for removing mould, mildew and algae from internal walls and ceilings prior to repainting. Applied by dilution with water per the label rate, then washed onto affected surfaces, allowed to dwell and rinsed. Kills active mould spores and breaks down the mould colony at the surface, preparing the substrate for primer and topcoat application.\n\nThe source of moisture causing mould growth must be identified and rectified before applying any biocide treatment — surface washing does not address underlying water ingress, condensation or plumbing leaks. Confirm current dilution rate and dwell time with the current Selleys product label before use.",
+      "Selleys Rapid Mould Killer is a ready-to-use biocide spray for removing mould, mildew and algae from internal walls and ceilings prior to repainting. Applied directly from the trigger spray bottle to affected surfaces, allowed to dwell and rinsed or wiped off. Kills active mould spores at the surface, preparing the substrate for primer and topcoat application.\n\nThe source of moisture causing mould growth must be identified and rectified before applying any biocide treatment — surface washing does not address underlying water ingress, condensation or plumbing leaks. Confirm current dwell time and application instructions with the current Selleys product label before use.",
     technicalProperties: [
-      "Concentrated biocide — dilute per label rate — cost-effective treatment for affected areas",
+      "Ready-to-use biocide spray — no dilution required — fast acting, spray and rinse application",
       "Kills mould, mildew and algae spores at the surface — prepares substrate for repainting",
-      "Water-based formulation — suitable for internal use with adequate ventilation",
+      "Trigger spray bottle — suitable for internal use with adequate ventilation",
       "Widely available through Bunnings and trade paint suppliers nationally",
-      "Compatible with standard interior paint preparation sequence — wash, dry, prime, topcoat",
+      "Compatible with standard interior paint preparation sequence — treat, dry, prime, topcoat",
     ],
     limitations: [
       "Surface treatment only — does not address the source of moisture — moisture source must be rectified before treatment",
       "Deeply penetrated mould in plasterboard (greater than 3mm) requires full plasterboard replacement — surface washing is not sufficient",
       "PPE required — respiratory protection, gloves and eye protection mandatory during application",
-      "Confirm dilution rate and dwell time against the current Selleys product label — formulation may change",
+      "Confirm dwell time and application instructions against the current Selleys product label — formulation may change",
       "Not a substitute for professional mould remediation assessment for large or widespread mould infestations",
     ],
     procurementSources: [
@@ -79,9 +79,9 @@ const PRODUCTS: Product[] = [
     fullLabel: "Dulux",
     brandUrl: "https://www.dulux.com.au",
     accentColor: "#3b82f6",
-    name: "Dulux Weathershield Mould & Mildew Resistant Paint",
+    name: "Dulux Wash&Wear +PLUS Kitchen&Bathroom Low Sheen",
     descriptionLine:
-      "Premium interior water-based paint with built-in active mould inhibitor for ceilings and walls in high-humidity and mould-prone environments",
+      "TODO: owner confirm — product name and marketing claims: Dulux's interior mould-resistant paint for bathrooms, kitchens and laundries. Current product appears to be Wash&Wear +PLUS Kitchen&Bathroom with Mouldshield Technology — not Weathershield which is an exterior product",
     productType: "Premium interior paint with active mould inhibitor",
     filterTags: ["Paint", "Mould-resistant", "Water-based", "Interior", "Ceiling", "Wall"],
     techChips: [
@@ -92,7 +92,7 @@ const PRODUCTS: Product[] = [
       { label: "AS/NZS 1580", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Dulux Weathershield Mould & Mildew Resistant Paint is a premium water-based interior paint formulated with a built-in active mould inhibitor. Designed for application to ceilings and walls in high-humidity environments including bathrooms, laundries and mould-prone internal areas in Class 2 strata apartment buildings. The active inhibitor suppresses mould re-growth on the painted film surface after remediation.\n\nApply over a suitable mould-resistant or alkali-resistant primer following biocide washing and surface preparation. The active inhibitor in the paint film does not compensate for ongoing moisture — the source of moisture must be rectified before repainting. Confirm current product name and formulation with Dulux Australia as product names are subject to periodic revision.",
+      "TODO: owner confirm — Dulux Weathershield is an exterior product range and is not suitable for interior use. The current Dulux interior mould-resistant paint for bathrooms, kitchens and laundries appears to be Dulux Wash&Wear +PLUS Kitchen&Bathroom Low Sheen, which features Mouldshield Technology and a 10-year guarantee against mould growth on the film. Confirm the correct product name and formulation with Dulux Australia before specifying — product names are subject to periodic revision.\n\nApply over a suitable primer following biocide washing and surface preparation. The active inhibitor in the paint film does not compensate for ongoing moisture — the source of moisture must be rectified before repainting.",
     technicalProperties: [
       "Built-in active mould inhibitor — suppresses mould re-growth on the paint film in high-humidity environments",
       "Water-based formulation — low VOC — suitable for internal use with standard ventilation",
@@ -130,8 +130,8 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; selleys: string; dulux: string }[] = [
-  { system: "Biocide wash (mould removal)", selleys: "Sugar Soap Mould Killer", dulux: "—" },
-  { system: "Mould-resistant interior paint", selleys: "—", dulux: "Mould & Mildew Resistant" },
+  { system: "Biocide spray (mould removal)", selleys: "Rapid Mould Killer", dulux: "—" },
+  { system: "Mould-resistant interior paint", selleys: "—", dulux: "Wash&Wear +PLUS Kitchen&Bathroom (TODO: confirm)" },
 ];
 
 const SYSTEM_COMPARISON: {
@@ -144,22 +144,22 @@ const SYSTEM_COMPARISON: {
   primaryUse: string;
 }[] = [
   {
-    product: "Selleys Sugar Soap Mould Killer",
+    product: "Selleys Rapid Mould Killer",
     brand: "Selleys",
-    type: "Biocide wash",
+    type: "Biocide spray",
     mouldKill: "Yes — kills active spores",
     paintable: "N/A — preparation product",
     substrate: "Plasterboard, paint, masonry",
-    primaryUse: "Pre-paint biocide wash — mould removal from walls and ceilings",
+    primaryUse: "Pre-paint biocide spray — mould removal from walls and ceilings",
   },
   {
-    product: "Dulux Mould & Mildew Resistant",
+    product: "Dulux Wash&Wear +PLUS Kitchen&Bathroom (TODO: confirm name)",
     brand: "Dulux",
     type: "Interior paint",
-    mouldKill: "Inhibits re-growth on film",
+    mouldKill: "Inhibits re-growth on film (Mouldshield Technology)",
     paintable: "Yes — is the topcoat",
     substrate: "Primed plasterboard, masonry",
-    primaryUse: "Mould-resistant topcoat for high-humidity internal areas",
+    primaryUse: "Mould-resistant topcoat for bathrooms, kitchens, laundries",
   },
 ];
 

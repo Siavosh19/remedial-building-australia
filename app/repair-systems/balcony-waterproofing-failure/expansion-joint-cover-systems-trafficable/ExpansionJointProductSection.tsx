@@ -44,29 +44,29 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.schluter.com.au",
     accentColor: "#f59e0b",
     name: "Schluter DILEX-EKE",
-    descriptionLine: "Aluminium movement joint profile with EPDM movement zone — for tiled balcony and terrace surfaces",
-    productType: "Aluminium / EPDM movement joint",
-    filterTags: ["Expansion-joint", "Trafficable", "Aluminium", "EPDM", "Movement-joint", "External", "Balcony", "Podium", "Surface-mount"],
+    descriptionLine: "Recycled rigid PVC anchoring legs with CPE (chlorinated polyethylene) 5 mm movement zone — corner and movement joint profile for tiled floor/wall junctions and balcony surfaces",
+    productType: "PVC / CPE corner movement joint profile",
+    filterTags: ["Expansion-joint", "Trafficable", "EPDM", "Movement-joint", "External", "Balcony", "Podium", "Surface-mount"],
     techChips: [
-      { label: "Aluminium / EPDM", cls: "bg-sky-100 text-sky-800" },
+      { label: "Rigid PVC legs / CPE zone", cls: "bg-sky-100 text-sky-800" },
       { label: "Trafficable", cls: "bg-green-50 text-green-700" },
-      { label: "Tiled deck", cls: "bg-slate-100 text-slate-700" },
+      { label: "Tiled deck — corner joint", cls: "bg-slate-100 text-slate-700" },
       { label: "Balcony / terrace", cls: "bg-amber-50 text-amber-700" },
       { label: "AS 3740", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Schluter DILEX-EKE is an aluminium movement joint profile with an integrated EPDM rubber movement zone designed for expansion and movement joints in tiled balcony, terrace and podium deck surfaces. The EPDM infill accommodates lateral and vertical movement while maintaining waterproofing continuity across the joint. Available in standard leg heights to suit tile thicknesses from 8 to 15 mm. Aluminium anchor legs are bedded into the tile adhesive on each side of the joint. The EPDM centre element is replaceable in some versions.\n\nUsed in Class 2 strata balcony and podium deck remediation where expansion joints in the structural slab or tile installation plane require a trafficable waterproofing cover that can accommodate movement. Confirm movement accommodation and joint width range with Schluter before specifying.\n\n// TODO: confirm current DILEX-EKE series dimensions, colours, and movement accommodation values from current Schluter Australia datasheet.",
+      "Schluter DILEX-EKE is a corner movement joint profile with trapezoid-perforated recycled rigid PVC anchoring legs and a 5 mm-wide soft CPE (chlorinated polyethylene) movement zone — not aluminium legs and not EPDM. It is designed for expansion and movement joints at floor/wall transitions and inside corners in tiled balcony, terrace and podium deck surfaces. The CPE infill accommodates lateral movement while the profile separates individual tile fields at the junction. The CPE movement zone is UV-resistant, resistant to fungi and bacteria, and suitable for external exposed conditions. PVC anchor legs are bedded into the tile adhesive on each side of the joint and must be continuous and void-free for the profile to remain in place. Profile size is selected according to tile thickness.\n\nUsed in Class 2 strata balcony and podium deck remediation where expansion joints at floor/wall junctions or within the tile plane require a trafficable waterproofing cover. Confirm movement accommodation and profile selection with Schluter Australia before specifying.",
     technicalProperties: [
-      "Aluminium anchor legs — corrosion-resistant — suitable for external balcony and podium deck exposure",
-      "EPDM movement zone — UV and ozone-resistant rubber — suitable for external exposed conditions",
+      "Recycled rigid PVC trapezoid-perforated anchor legs — bedded into tile adhesive on each side of joint",
+      "CPE (chlorinated polyethylene) 5 mm-wide movement zone — UV resistant — suitable for external conditions",
       "Trafficable profile — designed to be walked on in tiled deck installations",
-      // TODO: confirm maximum movement accommodation and joint width range from current Schluter TDS
-      "Available in multiple anodised aluminium and stainless steel finishes — confirm colour range with Schluter",
+      "Profile sized according to tile thickness — confirm profile series and size with Schluter Australia",
+      "CPE movement zone is resistant to acids, alkalis, oils, and solvents — suitable for food contact areas",
     ],
     limitations: [
       "Not suitable as a structural movement joint cover where the joint must accommodate large vertical differential movement — confirm joint movement type and magnitude with Schluter technical",
       "Tile adhesive placement must be continuous and void-free under the anchor legs — voids allow flexing and detachment of the profile",
-      "EPDM infill does not eliminate the need for the waterproofing membrane to be detailed correctly at the joint faces before the profile is installed",
+      "CPE infill does not eliminate the need for the waterproofing membrane to be detailed correctly at the joint faces before the profile is installed",
       "Confirm current product specification, availability, and movement accommodation values with Schluter Australia before specifying",
     ],
     procurementSources: [
@@ -159,7 +159,7 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 ];
 
 const BRAND_EQUIV: { system: string; schluter: string; sika: string; tremco: string }[] = [
-  { system: "Aluminium/EPDM — tiled trafficable deck — surface mount", schluter: "DILEX-EKE", sika: "—", tremco: "—" },
+  { system: "PVC/CPE — tiled trafficable deck — corner movement joint — surface mount", schluter: "DILEX-EKE", sika: "—", tremco: "—" },
   { system: "PU sealant — trafficable deck joint", schluter: "—", sika: "Sikaflex system*", tremco: "Vulkem*" },
   { system: "EPDM dual-flange — trafficable deck — recessed", schluter: "—", sika: "—", tremco: "Emshield DFR*" },
 ];
@@ -170,11 +170,11 @@ const SYSTEM_COMPARISON: {
   {
     product: "Schluter DILEX-EKE",
     brand: "Schluter",
-    coverType: "Tile-embedded profile",
-    primaryMaterial: "Aluminium",
-    movementZone: "EPDM rubber infill",
+    coverType: "Tile-embedded corner movement profile",
+    primaryMaterial: "Recycled rigid PVC legs + CPE movement zone",
+    movementZone: "CPE (chlorinated polyethylene) — 5 mm wide",
     trafficRating: "Foot traffic — tiled deck",
-    installMethod: "Anchor legs embedded in tile adhesive each side of joint",
+    installMethod: "PVC anchor legs embedded in tile adhesive each side of joint",
   },
   {
     product: "Sikaflex Expansion Joint System",

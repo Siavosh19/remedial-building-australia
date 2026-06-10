@@ -1,32 +1,25 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import DirectoryListing from "@/components/directory/DirectoryListing";
-import LeadCaptureForm from "@/components/directory/LeadCaptureForm";
 
 export const metadata: Metadata = {
-  title: "Remedial Building Industry Directory | Find Contractors & Consultants",
+  title: "Strata Building Services Directory | Find Contractors & Consultants",
   description:
-    "Search verified remedial building contractors, consultants and suppliers across Australia. Filter by location, category and verification status.",
+    "Search strata building contractors, consultants, waterproofers and specialists across Australia. Filter by location, category and expertise.",
 };
 
 export const revalidate = 60;
 
 export default async function DirectoryPage() {
   let categories: { id: number; name: string; slug: string }[] = [];
-  let parentCategories: { id: number; name: string }[] = [];
   let initialCompanies: Awaited<ReturnType<typeof fetchCompanies>> = [];
 
   try {
-    [categories, parentCategories, initialCompanies] = await Promise.all([
+    [categories, initialCompanies] = await Promise.all([
       prisma.category.findMany({
         where: { is_active: true },
         orderBy: { display_order: "asc" },
         select: { id: true, name: true, slug: true, parent_id: true },
-      }),
-      prisma.category.findMany({
-        where: { is_active: true, parent_id: null },
-        orderBy: { display_order: "asc" },
-        select: { id: true, name: true },
       }),
       fetchCompanies(),
     ]);
@@ -35,7 +28,8 @@ export default async function DirectoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-800">
+    <div className="min-h-screen bg-slate-50 text-slate-800">
+
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
@@ -44,7 +38,7 @@ export default async function DirectoryPage() {
               <div className="text-lg font-extrabold tracking-tight text-sky-950">
                 Remedial Building Australia
               </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
                 Technical Remedial Building Platform
               </div>
             </div>
@@ -56,43 +50,50 @@ export default async function DirectoryPage() {
             <a href="/directory" className="whitespace-nowrap text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           </nav>
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
+          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">
+            Login / Create Account
+          </a>
         </div>
       </header>
 
       {/* Hero */}
       <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-8 py-14">
+        <div className="mx-auto max-w-7xl px-8 py-10">
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
-            Industry Directory
+            Strata Building Services Directory
           </p>
-          <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">
-            Remedial Industry Directory
+          <h1 className="mt-3 text-4xl font-extrabold leading-tight text-sky-950 md:text-5xl">
+            Strata Building Services Directory
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-7 text-slate-600">
-            Australia&rsquo;s remedial building industry directory — contractors, consultants, waterproofers, engineers and specialist trades across all states.
+          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+            Australia&rsquo;s strata building services directory — contractors, consultants, waterproofers, engineers and specialist trades across all states.
           </p>
-          <div className="mt-6">
-            <LeadCaptureForm
-              categories={parentCategories}
-              triggerLabel="Submit a General Enquiry"
-              triggerClassName="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-sky-50 px-5 py-2.5 text-sm font-semibold text-sky-800 transition hover:bg-sky-100"
-            />
+
+          {/* Stats bar */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-100 pt-5 text-sm">
+            <span>
+              <span className="font-extrabold text-sky-950">2,400+</span>{" "}
+              <span className="text-slate-500">Businesses Listed</span>
+            </span>
+            <span className="text-slate-200" aria-hidden>|</span>
+            <span className="font-semibold text-slate-500">Australia Wide</span>
+            <span className="text-slate-200" aria-hidden>|</span>
+            <span className="font-semibold text-slate-500">Verified Industry Directory</span>
           </div>
         </div>
       </div>
 
-      {/* Listing (client component with search + filters) */}
+      {/* Listing */}
       <main>
         <DirectoryListing categories={categories} initialCompanies={initialCompanies} />
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-sky-200 bg-slate-100">
-        <div className="mx-auto max-w-7xl px-5 pt-12">
+      <footer className="border-t border-sky-200 bg-white">
+        <div className="mx-auto max-w-7xl px-5 pt-10">
           <a
             href="/"
-            className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100"
+            className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
           >
             ← Home
           </a>
@@ -146,6 +147,11 @@ async function fetchCompanies() {
         where: { status: "verified" },
         take: 1,
         select: { status: true },
+      },
+      company_tags: {
+        where: { is_approved: true },
+        take: 5,
+        select: { tag: { select: { name: true, tag_type: true } } },
       },
     },
     orderBy: [

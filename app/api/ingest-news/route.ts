@@ -353,7 +353,7 @@ export async function GET() {
 
   // 4. Classify new articles in parallel — cap at 25 per run to stay within maxDuration.
   //    Rejected articles are written back as status="rejected" so they won't be re-sent.
-  const batch = newQueue.slice(0, 25);
+  const batch = newQueue.slice(0, 50);
 
   const enriched = await Promise.allSettled(
     batch.map((item) => classifyAndEnrich(item.title, item.description))

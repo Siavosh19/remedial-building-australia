@@ -80,9 +80,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.mapei.com/au",
     tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#0369a1",
-    name: "Mapei Elastocolor W",
+    name: "TODO: owner confirm — Mapei Elastocolor W (product name variation unconfirmed — the Mapei product confirmed in the Elastomeric Coating Systems file is 'Mapei Elastocolor Paint' — 'Elastocolor W' may be a separate crack-bridging grade or a European variant — confirm whether 'Elastocolor W' is the correct current AU crack-bridging product name, distinct from 'Elastocolor Paint', with Mapei Australia technical)",
     descriptionLine: "Elastomeric crack-bridging waterproof coating for concrete and masonry facades — Mapei specialist system with high elongation, anti-carbonation protection and UV resistance",
-    productType: "Elastomeric crack-bridging coating — Mapei specialist system — concrete and masonry",
+    productType: "TODO: owner confirm — Elastomeric crack-bridging coating — Mapei specialist system — concrete and masonry (product name 'Elastocolor W' unconfirmed as current AU product — see name field)",
     filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Concrete", "Masonry", "Water-based", "Coastal", "Specialist"],
     techChips: [
       { label: "Mapei specialist", cls: "bg-sky-100 text-sky-800" },
@@ -154,9 +154,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.dulux.com.au",
     tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#b45309",
-    name: "Dulux Acratex Permaflex",
-    descriptionLine: "High-elongation elastomeric crack-bridging exterior coating for masonry and render facades — Dulux Acratex specialist system for facades with active crack movement and waterproofing requirements",
-    productType: "High-elongation elastomeric crack-bridging coating — Dulux Acratex system",
+    name: "TODO: owner confirm — Dulux Acratex Permaflex (PRODUCT NOT FOUND — 'Dulux Acratex Permaflex' does not appear in the current Dulux Acratex product range on dulux.com.au — the confirmed Acratex crack-bridging/high-elongation product is 'Acraskin' (or possibly 'AcraShield Advance') — no 'Permaflex' product found — confirm correct current crack-bridging product name in the Dulux Acratex range with Dulux Acratex technical)",
+    descriptionLine: "TODO: owner confirm — High-elongation elastomeric crack-bridging exterior coating for masonry and render facades — Dulux Acratex specialist system for facades with active crack movement and waterproofing requirements (product name 'Permaflex' not confirmed in current Acratex range — see name field)",
+    productType: "TODO: owner confirm — High-elongation elastomeric crack-bridging coating — Dulux Acratex system (product name unconfirmed — see name field)",
     filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Render", "Masonry", "Water-based", "Coastal", "Reinforced", "Specialist"],
     techChips: [
       { label: "Dulux Acratex", cls: "bg-amber-100 text-amber-800" },
@@ -165,7 +165,7 @@ const PRODUCTS: Product[] = [
       { label: "Waterproof", cls: "bg-green-100 text-green-700" },
     ],
     systemDescription:
-      "Dulux Acratex Permaflex is a high-elongation elastomeric crack-bridging exterior coating in the Dulux Acratex specialist facade coating range. It is formulated for masonry and render facades where ongoing crack movement requires a coating system capable of accommodating the crack width change over the service life without the membrane splitting or losing waterproof continuity. Permaflex is applied as a system — Dulux Acratex Prep Coat primer, reinforcement fabric at active crack locations, and Permaflex topcoat — to achieve the required crack-bridging performance class. The Dulux Acratex range is the specialist facade coating product line within Dulux designed specifically for remedial and protective coating work on masonry facades across Australia, with wide trade availability nationally. Confirm current product specification, system documentation, and DFT from the current Dulux Acratex Permaflex TDS and Dulux Acratex technical before specifying.",
+      "TODO: owner confirm — PRODUCT NAME NOT CONFIRMED. 'Dulux Acratex Permaflex' was not found in the current Dulux Acratex product range as of verification date. The Dulux Acratex crack-bridging product is likely 'Acraskin' or 'AcraShield Advance' — the correct current product must be confirmed with Dulux Acratex technical. Note also: the primer 'Dulux Acratex Prep Coat' referenced in this card has been superseded — the current Acratex primers are 'AcraPrime 501' (for render cured 28+ days) and 'Green Render Sealer' (for render cured less than 28 days). All system specifications, DFT, and primer requirements must be sourced from the current Dulux Acratex TDS for the confirmed product before specifying.",
     technicalProperties: [
       "Very high elongation at break — designed for facades with active crack movement requiring ongoing accommodation",
       "Crack-bridging system — applied with fabric reinforcement at active crack locations as part of the Acratex system",
