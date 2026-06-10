@@ -231,8 +231,8 @@ For PRIORITY_1, PRIORITY_2, or PRIORITY_3:
 PRIORITY: priority_1
 CATEGORY: <exactly one of: Building Commission NSW | DBP Act | Class 2 Buildings | Waterproofing Defects | Façade Defects | Concrete Repair | Strata Defects | Building Defects | Remedial Construction | Product & Material Updates | New Construction Systems | Other>
 TAGS: <3–5 comma-separated keywords>
-SUMMARY: <For priority_1 and priority_2: 6–8 sentences analytical summary in your own words, hedged language (may/could/reportedly/is understood to), written for Australian remedial building consultants, waterproofing contractors, strata managers, engineers, and certifiers. Do not reproduce source phrasing. Do not give legal or engineering advice. For priority_3: 2–4 sentences concise summary.>
-IMPACT: <2–3 brief observations about practical relevance for Australian building professionals, separated by " | ". General observations only, not professional advice.>
+SUMMARY: <Write exactly two short paragraphs, separated by a blank line. Total 120–180 words. Rules: start with the main event in plain English; use natural sentence flow, not bullet-style wording; use hedged language where appropriate (reportedly, is understood to, may, could); do not reproduce the source's wording; do not start with "This article", "The report", "In conclusion", or "It is important to"; do not add facts not in the source; write as a professional industry editor who read the article and is briefing colleagues. For priority_3: one short paragraph of 60–90 words, same rules.>
+IMPACT: <One short paragraph, 40–70 words. Start with a direct statement of why this matters to Australian building professionals — remedial consultants, strata managers, waterproofing contractors, engineers, or certifiers. Neutral, practical tone. No hype, no marketing language, no legal or engineering advice. Do not start with "It is important" or "This highlights". Write it as a plain professional observation.>
 
 For REJECT:
 PRIORITY: reject`;

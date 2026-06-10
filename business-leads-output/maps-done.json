@@ -806,5 +806,11 @@
   "379::adelaide-sa",
   "379::hobart-tas",
   "379::canberra-act",
-  "379::darwin-nt"
+  "379::darwin-nt",
+  "380::sydney-nsw",
+  "380::melbourne-vic",
+  "380::brisbane-qld",
+  "380::perth-wa",
+  "380::adelaide-sa",
+  "380::hobart-tas"
 ]

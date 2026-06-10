@@ -123,6 +123,10 @@ function readingTime(text: string): string {
 
 function summaryToParagraphs(summary: string): string[] {
   if (!summary) return [];
+  // New format: paragraphs separated by blank lines
+  const blankLineSplit = summary.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+  if (blankLineSplit.length >= 2) return blankLineSplit;
+  // Legacy fallback: split long text by sentence count
   const sentences = summary.match(/[^.!?]*[.!?]+(?:\s+|$)/g) ?? [];
   if (sentences.length <= 3) return [summary];
   const perPara = Math.ceil(sentences.length / 3);
@@ -249,11 +253,7 @@ export default async function IndustryNewsArticlePage({
     featured_image: getArticleImage(r.category, r.title, imagePool),
   }));
   const paragraphs = summaryToParagraphs(article.summary);
-  const impactBullets = article.industry_impact
-    ? article.industry_impact.split(" | ").map((s) => s.trim()).filter(Boolean)
-    : [];
-  const whyThisMatters = impactBullets[0] ?? null;
-  const implBullets = impactBullets.length > 1 ? impactBullets.slice(1) : impactBullets;
+  const whyItMatters = article.industry_impact?.trim() || null;
   const resources = CATEGORY_RESOURCES[article.category] ?? DEFAULT_RESOURCES;
   const audience = CATEGORY_AUDIENCE[article.category] ?? [];
 
@@ -409,47 +409,23 @@ export default async function IndustryNewsArticlePage({
             </div>
           )}
 
-          {/* ── Industry Commentary section ────────────────────────────── */}
-          {(whyThisMatters || implBullets.length > 0) && (
+          {/* ── Why It Matters ─────────────────────────────────────────── */}
+          {whyItMatters && (
             <div className="mt-10">
-              <div className="mb-4 flex items-center gap-2">
+              <div className="mb-3 flex items-center gap-2">
                 <span className="h-3 w-0.5 rounded-full bg-red-500" />
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-700">
-                  Industry Commentary
+                  Why It Matters
                 </p>
               </div>
-
-              {/* ── Why This Matters ────────────────────────────────── */}
-              {whyThisMatters && (
-                <div className="rounded-2xl border-l-4 border-red-600 bg-red-50 px-7 py-6">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-red-600">
-                    Why This May Matter
-                  </p>
-                  <p className="mt-2 text-base font-semibold leading-7 text-slate-800">
-                    {whyThisMatters}
-                  </p>
-                </div>
-              )}
-
-              {/* ── Industry Implications ───────────────────────────── */}
-              {implBullets.length > 0 && (
-                <div className={`rounded-2xl border border-sky-100 bg-sky-50 px-7 py-6 ${whyThisMatters ? "mt-4" : ""}`}>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-sky-700">
-                    Possible Industry Implications
-                  </p>
-                  <p className="mt-1 text-[11px] text-sky-600">
-                    General observations only — not professional advice. Verify relevance to your circumstances independently.
-                  </p>
-                  <ul className="mt-4 space-y-3">
-                    {implBullets.map((bullet, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm leading-7 text-slate-700">
-                        <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500" />
-                        {bullet}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <div className="rounded-2xl border-l-4 border-red-600 bg-red-50 px-7 py-6">
+                <p className="text-base leading-8 text-slate-800">
+                  {whyItMatters}
+                </p>
+                <p className="mt-3 text-[11px] text-red-400">
+                  General observation only — not professional, legal, or engineering advice.
+                </p>
+              </div>
             </div>
           )}
 
