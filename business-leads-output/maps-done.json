@@ -840,5 +840,11 @@
   "383::canberra-act",
   "383::darwin-nt",
   "384::sydney-nsw",
-  "384::melbourne-vic"
+  "384::melbourne-vic",
+  "384::brisbane-qld",
+  "384::perth-wa",
+  "384::adelaide-sa",
+  "384::hobart-tas",
+  "384::canberra-act",
+  "384::darwin-nt"
 ]

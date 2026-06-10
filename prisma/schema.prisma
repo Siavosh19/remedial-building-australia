@@ -2,6 +2,27 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// industry_news is managed by Supabase directly (not via Prisma mutations).
+// This model declaration exists solely to prevent prisma db push from dropping the table.
+model IndustryNews {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title            String
+  slug             String    @unique
+  summary          String?
+  industry_impact  String?
+  category         String?
+  tags             String[]
+  source_name      String?
+  source_url       String?
+  published_date   DateTime?
+  featured_image   String?
+  status           String?   @default("published")
+  priority         Int?      @default(2)
+  created_at       DateTime? @default(now())
+
+  @@map("industry_news")
+}
+
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
@@ -515,6 +536,12 @@ model Supplier {
   contact_phone             String?
   billing_email             String?
   status                    SupplierStatus  @default(draft)
+  abn                       String?
+  supplier_type             String?
+  product_categories        String[]
+  service_areas             String[]
+  signup_reason             String?
+  signup_notes              String?
   supplier_notes            String?
   admin_notes               String?
   stripe_customer_id        String?

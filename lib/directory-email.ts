@@ -191,6 +191,48 @@ export async function sendLeadNotificationEmail(
   await sendEmail(`New Lead: ${categoryName} in ${suburb}, ${state}`, companyEmail, html, text);
 }
 
+export async function sendAdminSupplierRegistrationEmail(data: {
+  brandName: string;
+  contactPerson: string;
+  contactEmail: string;
+  phone: string;
+  website: string;
+  supplierType: string;
+  productCategories: string[];
+  serviceAreas: string[];
+  signupReason: string[];
+  abn: string | null;
+  billingEmail: string | null;
+  notes: string | null;
+}) {
+  const adminLink = `${SITE_URL}/directory/admin/suppliers`;
+  const rows = [
+    ["Brand name", data.brandName],
+    ["Contact person", data.contactPerson],
+    ["Email", data.contactEmail],
+    ["Phone", data.phone],
+    ["Website", data.website],
+    ["Supplier type", data.supplierType],
+    ["Product categories", data.productCategories.join(", ")],
+    ["Service areas", data.serviceAreas.join(", ")],
+    ["Reason for signup", data.signupReason.join(", ")],
+    ["ABN", data.abn ?? "—"],
+    ["Billing email", data.billingEmail ?? "—"],
+    ["Notes", data.notes ?? "—"],
+  ];
+  const tableRows = rows.map(([label, value]) =>
+    `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">${label}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(String(value))}</td></tr>`
+  ).join("");
+  const html = emailWrapper(
+    "New supplier registration",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A new supplier has submitted a registration.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">${tableRows}</table>
+     <p style="margin:0;"><a href="${adminLink}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Review in Admin Panel →</a></p>`
+  );
+  const text = rows.map(([l, v]) => `${l}: ${v}`).join("\n") + `\n\nAdmin panel: ${adminLink}`;
+  await sendEmail(`New supplier registration — ${data.brandName}`, "info@remedialbuildingaustralia.com.au", html, text);
+}
+
 export async function sendAdminSignupNotification(name: string, email: string, accountType: string) {
   const typeLabel = accountType === "directory" ? "Directory Listing" : accountType === "supplier" ? "Supplier Portal" : "AI Scope Builder";
   const adminLink = `${SITE_URL}/directory/admin`;

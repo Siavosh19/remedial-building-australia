@@ -43,14 +43,21 @@ export default async function AdminPage() {
     prisma.$queryRaw<[{ count: bigint }]>`SELECT COUNT(*)::bigint as count FROM newsletter_subscribers`,
   ]);
 
-  const [aiScopeCount] = await Promise.all([
+  const [aiScopeCount, pendingSupplierCount] = await Promise.all([
     prisma.aIScopeUser.count({ where: { status: "pending" } }),
+    prisma.supplier.count({ where: { status: "draft" } }),
   ]);
 
   return (
     <>
+      {pendingSupplierCount > 0 && (
+        <div className="mb-4 flex items-center gap-3 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+          <span className="font-semibold">{pendingSupplierCount} new supplier {pendingSupplierCount === 1 ? "registration" : "registrations"} pending review.</span>
+          <a href="/directory/admin/suppliers" className="underline hover:text-sky-900">Review →</a>
+        </div>
+      )}
       {aiScopeCount > 0 && (
-        <div className="mb-6 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        <div className="mb-4 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <span className="font-semibold">{aiScopeCount} AI Scope {aiScopeCount === 1 ? "request" : "requests"} pending approval.</span>
           <a href="/directory/admin/ai-scope-users" className="underline hover:text-amber-900">Review →</a>
         </div>
