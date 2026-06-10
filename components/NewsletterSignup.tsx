@@ -146,17 +146,9 @@ export function NewsletterSignup({ variant = "section" }: Props) {
         )}
       </button>
 
-      {/* Privacy note */}
+      {/* Trust line */}
       <p className={privacyClass(variant)}>
-        Your details are stored securely and never sold or shared with third parties.
-        You can unsubscribe at any time by emailing{" "}
-        <a
-          href="mailto:info@remedialbuildingaustralia.com.au"
-          className="underline underline-offset-2 hover:opacity-80"
-        >
-          info@remedialbuildingaustralia.com.au
-        </a>
-        . We send updates fortnightly — no spam.
+        No spam. Industry updates only. Unsubscribe anytime.
       </p>
     </form>
   );

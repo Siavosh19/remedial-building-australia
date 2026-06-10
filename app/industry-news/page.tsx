@@ -101,6 +101,13 @@ export default async function IndustryNewsPage() {
           </div>
         </section>
 
+        {/* ── Editorial note ────────────────────────────────────────────────── */}
+        <div className="border-b border-slate-200 bg-slate-50 px-8 py-3">
+          <p className="mx-auto max-w-7xl text-xs leading-5 text-slate-500">
+            We monitor Australian building, strata, waterproofing, façade, concrete repair and construction industry updates, then summarise them for remedial relevance. All articles link back to the original publisher.
+          </p>
+        </div>
+
         {/* ── Grid (client — search / filter / pagination) ─────────────────── */}
         <NewsGridClient articles={articles} />
 

@@ -216,7 +216,7 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
                 {excerpt(featuredArticle.summary, 260)}
               </p>
               <span className="mt-5 flex items-center gap-1.5 text-sm font-bold text-sky-700 transition group-hover:text-red-700">
-                Read Article <ArrowRight size={14} />
+                Read original source <ArrowRight size={14} />
               </span>
             </div>
           </a>
@@ -275,7 +275,7 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
                       {excerpt(article.summary)}
                     </p>
                     <span className="mt-3 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                      Read Article <ArrowRight size={12} />
+                      Read original source <ArrowRight size={12} />
                     </span>
                   </div>
                 </a>
