@@ -1,0 +1,50 @@
+[
+  {
+    "id": 6,
+    "email": "s_siavosh@yahoo.com",
+    "password_hash": "[redacted]",
+    "full_name": "Sia Sep",
+    "phone": "0414988119",
+    "role": "company_owner",
+    "is_verified": true,
+    "email_verified_at": "2026-05-29T23:33:13.634Z",
+    "created_at": "2026-05-29T23:32:56.869Z",
+    "updated_at": "2026-05-29T23:33:13.635Z"
+  },
+  {
+    "id": 7,
+    "email": "enquiry_tc@yahoo.com",
+    "password_hash": "[redacted]",
+    "full_name": "Sia Sep",
+    "phone": "0414988119",
+    "role": "company_owner",
+    "is_verified": true,
+    "email_verified_at": "2026-05-29T23:59:44.311Z",
+    "created_at": "2026-05-29T23:59:11.674Z",
+    "updated_at": "2026-05-29T23:59:44.312Z"
+  },
+  {
+    "id": 8,
+    "email": "eddy@prorenovation.com.au",
+    "password_hash": "[redacted]",
+    "full_name": "Tsai Eddy",
+    "phone": "0406711777",
+    "role": "company_owner",
+    "is_verified": true,
+    "email_verified_at": "2026-06-03T03:45:55.518Z",
+    "created_at": "2026-06-03T03:45:24.083Z",
+    "updated_at": "2026-06-03T03:45:55.519Z"
+  },
+  {
+    "id": 4,
+    "email": "info@remedialbuildingaustralia.com.au",
+    "password_hash": "[redacted]",
+    "full_name": "Sia Sepehrara",
+    "phone": null,
+    "role": "admin",
+    "is_verified": true,
+    "email_verified_at": null,
+    "created_at": "2026-05-29T22:53:09.795Z",
+    "updated_at": "2026-05-29T23:38:35.572Z"
+  }
+]

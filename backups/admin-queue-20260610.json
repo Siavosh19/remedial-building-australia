@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "company_id": 108,
+    "status": "rejected",
+    "source": "directory signup",
+    "notes": "[{\"ts\":\"2026-05-29T23:58:03.110Z\",\"actor\":\"system\",\"action\":\"legacy_note\",\"note\":\"New directory listing submitted for review.\"},{\"ts\":\"2026-05-29T23:58:03.110Z\",\"actor\":\"info@remedialbuildingaustralia.com.au\",\"action\":\"reject\"}]",
+    "reviewed_by": 4,
+    "reviewed_at": "2026-05-29T23:58:03.513Z",
+    "created_at": "2026-05-28T05:42:34.168Z"
+  },
+  {
+    "id": 5,
+    "company_id": 6737,
+    "status": "published",
+    "source": "directory signup",
+    "notes": "[{\"ts\":\"2026-06-03T05:40:01.161Z\",\"actor\":\"system\",\"action\":\"legacy_note\",\"note\":\"New directory listing submitted for review.\"},{\"ts\":\"2026-06-03T05:40:01.161Z\",\"actor\":\"info@remedialbuildingaustralia.com.au\",\"action\":\"approve\"}]",
+    "reviewed_by": 4,
+    "reviewed_at": "2026-06-03T05:40:01.582Z",
+    "created_at": "2026-06-03T03:55:13.182Z"
+  }
+]

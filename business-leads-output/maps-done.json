@@ -800,5 +800,11 @@
   "378::canberra-act",
   "378::darwin-nt",
   "379::sydney-nsw",
-  "379::melbourne-vic"
+  "379::melbourne-vic",
+  "379::brisbane-qld",
+  "379::perth-wa",
+  "379::adelaide-sa",
+  "379::hobart-tas",
+  "379::canberra-act",
+  "379::darwin-nt"
 ]

@@ -97,7 +97,9 @@
       "Bash(echo \"New PID: $!\")",
       "Bash(xargs ls)",
       "Bash(grep -E \"^xlsx$|^exceljs$|^csv\")",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Read(//Applications/Postgres.app/Contents/**)",
+      "Read(//usr/local/**)"
     ]
   }
 }
