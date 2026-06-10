@@ -4,12 +4,12 @@ export const dynamic = "force-dynamic";
 
 export default async function DirectorySignupsPage() {
   const companies = await prisma.company.findMany({
+    where: { users: { some: {} } },
     orderBy: { created_at: "desc" },
     include: {
       main_category: { select: { name: true } },
       locations: { take: 1 },
     },
-    take: 200,
   });
 
   return (
@@ -17,7 +17,7 @@ export default async function DirectorySignupsPage() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Directory Signups</h1>
-          <p className="text-sm text-slate-500 mt-1">{companies.length} companies (latest 200)</p>
+          <p className="text-sm text-slate-500 mt-1">{companies.length} {companies.length === 1 ? "signup" : "signups"}</p>
         </div>
         <a
           href="/api/directory/admin/export?type=directory"

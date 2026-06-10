@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 type QueueItem = {
   id: number;
@@ -77,6 +77,72 @@ type Stats = {
   totalUsers: number;
   subscriberCount: number;
 };
+
+type Category = { id: number; name: string };
+
+function CategoryCombobox({ categories, value, onChange }: {
+  categories: Category[];
+  value: string;
+  onChange: (id: string) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const selected = categories.find((c) => String(c.id) === value);
+
+  const filtered = query.trim()
+    ? categories.filter((c) => c.name.toLowerCase().includes(query.toLowerCase())).slice(0, 12)
+    : categories.slice(0, 12);
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative space-y-1.5">
+      <span className="text-xs font-semibold text-slate-600">Category</span>
+      <input
+        type="text"
+        placeholder={selected ? selected.name : "Search category…"}
+        value={query}
+        onFocus={() => setOpen(true)}
+        onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
+        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
+      />
+      {selected && !query && (
+        <p className="text-xs text-slate-500 px-1">Selected: <strong>{selected.name}</strong></p>
+      )}
+      {open && filtered.length > 0 && (
+        <ul className="absolute z-50 mt-1 max-h-52 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg">
+          <li>
+            <button
+              type="button"
+              onClick={() => { onChange(""); setQuery(""); setOpen(false); }}
+              className="w-full px-3 py-2 text-left text-xs text-slate-400 hover:bg-slate-50"
+            >
+              — No category —
+            </button>
+          </li>
+          {filtered.map((c) => (
+            <li key={c.id}>
+              <button
+                type="button"
+                onClick={() => { onChange(String(c.id)); setQuery(""); setOpen(false); }}
+                className={`w-full px-3 py-2 text-left text-sm hover:bg-sky-50 hover:text-sky-800 ${String(c.id) === value ? "font-semibold text-sky-700 bg-sky-50" : "text-slate-700"}`}
+              >
+                {c.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 type Props = {
   queue: QueueItem[];
@@ -711,19 +777,13 @@ export default function AdminPanel({ queue: initialQueue, users, stats }: Props)
                             className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
                           />
                         </label>
-                        <label className="block space-y-1.5 sm:col-span-2">
-                          <span className="text-xs font-semibold text-slate-600">Category</span>
-                          <select
+                        <div className="sm:col-span-2">
+                          <CategoryCombobox
+                            categories={categories}
                             value={companyEdit.main_category_id}
-                            onChange={(e) => setCompanyEdit({ ...companyEdit, main_category_id: e.target.value })}
-                            className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none"
-                          >
-                            <option value="">— No category —</option>
-                            {categories.map((cat) => (
-                              <option key={cat.id} value={String(cat.id)}>{cat.name}</option>
-                            ))}
-                          </select>
-                        </label>
+                            onChange={(id) => setCompanyEdit({ ...companyEdit, main_category_id: id })}
+                          />
+                        </div>
                         <label className="block space-y-1.5">
                           <span className="text-xs font-semibold text-slate-600">ABN</span>
                           <input
