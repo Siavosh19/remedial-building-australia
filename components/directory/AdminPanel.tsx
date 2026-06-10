@@ -847,20 +847,34 @@ export default function AdminPanel({ queue: initialQueue, users, stats }: Props)
               </div>
 
               {/* Footer actions */}
-              <div className="mt-auto flex items-center justify-end gap-3 border-t border-slate-200 px-6 py-4">
+              <div className="mt-auto flex items-center justify-between gap-3 border-t border-slate-200 px-6 py-4">
                 <button
-                  onClick={() => { setSelectedUser(null); setDrawerError(null); }}
-                  className="rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:border-slate-400"
+                  onClick={async () => {
+                    if (!selectedUser) return;
+                    if (!confirm(`Permanently delete ${selectedUser.email}? This cannot be undone.`)) return;
+                    const res = await fetch(`/api/directory/admin/user-detail?id=${selectedUser.id}`, { method: "DELETE" });
+                    if (res.ok) { setSelectedUser(null); setDrawerError(null); }
+                    else { const d = await res.json(); setDrawerError(d.error ?? "Delete failed."); }
+                  }}
+                  className="rounded-xl border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 hover:border-red-400 transition"
                 >
-                  Cancel
+                  Delete user
                 </button>
-                <button
-                  onClick={saveUserDrawer}
-                  disabled={drawerSaving}
-                  className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-60"
-                >
-                  {drawerSaving ? "Saving…" : "Save changes"}
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => { setSelectedUser(null); setDrawerError(null); }}
+                    className="rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:border-slate-400"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={saveUserDrawer}
+                    disabled={drawerSaving}
+                    className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-60"
+                  >
+                    {drawerSaving ? "Saving…" : "Save changes"}
+                  </button>
+                </div>
               </div>
             </div>
           ) : null}

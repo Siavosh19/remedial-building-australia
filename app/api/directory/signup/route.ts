@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, createAuthToken } from "@/lib/directory-auth";
-import { sendDirectoryVerificationEmail } from "@/lib/directory-email";
+import { sendDirectoryVerificationEmail, sendAdminSignupNotification } from "@/lib/directory-email";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
 
   const verificationToken = createAuthToken(user.id, "email_verification");
   await sendDirectoryVerificationEmail(fullName, email, verificationToken);
+  sendAdminSignupNotification(fullName, email, accountType).catch(() => {});
 
   const messages = {
     directory: "Verification email sent. Please check your inbox to verify your account, then set up your company listing.",

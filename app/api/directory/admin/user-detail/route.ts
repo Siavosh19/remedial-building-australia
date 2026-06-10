@@ -82,3 +82,23 @@ export async function PATCH(request: NextRequest) {
   await Promise.all(updates);
   return NextResponse.json({ success: true });
 }
+
+export async function DELETE(request: NextRequest) {
+  const admin = await getAdminFromRequest(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const id = Number(new URL(request.url).searchParams.get("id"));
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  if (id === admin.id) return NextResponse.json({ error: "Cannot delete your own account." }, { status: 400 });
+
+  const user = await prisma.user.findUnique({ where: { id }, include: { company_users: true, ai_scope_user: true } });
+  if (!user) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  await prisma.$transaction(async (tx) => {
+    if (user.ai_scope_user) await tx.aIScopeUser.delete({ where: { user_id: id } });
+    if (user.company_users.length) await tx.companyUser.deleteMany({ where: { user_id: id } });
+    await tx.user.delete({ where: { id } });
+  });
+
+  return NextResponse.json({ success: true });
+}

@@ -99,7 +99,13 @@
       "Bash(grep -E \"^xlsx$|^exceljs$|^csv\")",
       "Bash(npm install *)",
       "Read(//Applications/Postgres.app/Contents/**)",
-      "Read(//usr/local/**)"
+      "Read(//usr/local/**)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(vercel curl *)",
+      "Bash(git merge feature/admin-v2 --no-ff -m ' *)",
+      "Bash(kill 67816 67822)",
+      "Bash(nohup bash /Users/siasepehrara/remedial-building-australia/scripts/run-maps-scraper.sh)",
+      "Bash(echo \"Restarted PID: $!\")"
     ]
   }
 }

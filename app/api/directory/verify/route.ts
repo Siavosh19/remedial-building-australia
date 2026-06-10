@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
   // Auto-login — set session cookie so they land straight in dashboard
   const sessionToken = createSessionToken(user.id);
-  const response = NextResponse.json({ success: true });
+  const response = NextResponse.json({ success: true, role: user.role });
   response.cookies.set(createDirectorySessionCookie(sessionToken));
   return response;
 }

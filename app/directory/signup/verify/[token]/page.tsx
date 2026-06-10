@@ -21,8 +21,12 @@ export default function VerifyEmailPage() {
         const data = await res.json();
         if (res.ok) {
           setState("success");
-          // Redirect to dashboard or company setup after short delay
-          setTimeout(() => router.push("/directory/dashboard"), 2500);
+          const dest = data.role === "supplier_user"
+            ? "/supplier-dashboard/setup"
+            : data.role === "ai_scope_user"
+            ? "/ai-scope-builder"
+            : "/directory/dashboard";
+          setTimeout(() => router.push(dest), 2500);
         } else {
           setState("error");
           setErrorMsg(data.error ?? "Verification failed.");

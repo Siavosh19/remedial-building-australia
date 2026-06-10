@@ -190,3 +190,20 @@ export async function sendLeadNotificationEmail(
 
   await sendEmail(`New Lead: ${categoryName} in ${suburb}, ${state}`, companyEmail, html, text);
 }
+
+export async function sendAdminSignupNotification(name: string, email: string, accountType: string) {
+  const typeLabel = accountType === "directory" ? "Directory Listing" : accountType === "supplier" ? "Supplier Portal" : "AI Scope Builder";
+  const adminLink = `${SITE_URL}/directory/admin`;
+  const html = emailWrapper(
+    "New signup",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A new account has been created.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">Name</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(name)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Email</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(email)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Account type</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(typeLabel)}</td></tr>
+     </table>
+     <p style="margin:0;"><a href="${adminLink}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Open Admin Panel →</a></p>`
+  );
+  const text = `New signup: ${name} (${email})\nAccount type: ${typeLabel}\n\nAdmin panel: ${adminLink}`;
+  await sendEmail(`New signup — ${typeLabel}`, "info@remedialbuildingaustralia.com.au", html, text);
+}
