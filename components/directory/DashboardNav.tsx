@@ -22,10 +22,10 @@ export default function DashboardNav() {
           <Link
             key={href}
             href={href}
-            className={`relative px-4 py-3 text-sm font-semibold transition ${
+            className={`relative px-4 py-3 text-base font-semibold transition focus:outline-none ${
               isActive
-                ? "text-slate-950 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-red-600 after:content-['']"
-                : "text-slate-500 hover:text-slate-900"
+                ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-red-500 after:content-['']"
+                : "text-white/55 hover:text-white/90"
             }`}
           >
             {label}
