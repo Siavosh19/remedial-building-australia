@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars.html",
     accentColor: "#be123c",
     name: "Sika MonoTop Series — MonoTop-352NFG / MonoTop-612N / MonoTop-412NFG",
     descriptionLine: "Range of polymer-modified structural repair mortars — MonoTop-352NFG (general use, R3, up to 75 mm), MonoTop-612N (high-build, R4, up to 100 mm), MonoTop-412NFG (structural R4, up to 50 mm) — available nationally including Bunnings. TODO: owner confirm — fine/cosmetic fairing coat is Sika MonoTop FC (0–3 mm, 15 kg), not MonoTop-412NFG — verify intended range with Sika Australia",
@@ -83,7 +82,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://ardexaustralia.com",
-    tdsUrl: "https://ardexaustralia.com/products_category/concrete-repair/concrete-repair-mortars/",
     accentColor: "#0369a1",
     name: "Ardex BR Series — BR 340 / BR 345 / Feather Finish",
     descriptionLine: "Polymer-modified repair mortar range — BR 340 (structural, up to 80 mm, 20 kg), BR 345 (high resistivity structural, up to 80 mm, 20 kg), Ardex Feather Finish (fine/cosmetic — TODO: confirm on current AU catalogue) — through Ardex trade distribution",
@@ -123,7 +121,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#7c2d12",
     name: "Fosroc Renderoc Series — Renderoc HB / Renderoc FC (high-build: TODO confirm)",
     descriptionLine: "Polymer-modified repair mortar range — Renderoc HB (structural, hand-applied bulk), Renderoc FC (fine concrete, cosmetic) — distributed nationally by Parchem Construction Supplies. TODO: owner confirm — Renderoc LA product name not found in Fosroc global product list; Fosroc range includes Renderoc HB, HB2, HB25, HB40, HB60 variants — confirm current Australian high-build product name with Parchem",
@@ -163,7 +160,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products",
     accentColor: "#1d4ed8",
     name: "Mapei Mapegrout Series — Mapegrout Thixotropic / Mapegrout SFR / Mapegrout Fine Fibre",
     descriptionLine: "Polymer-modified repair mortar range — Mapegrout Thixotropic (structural, 25 kg), Mapegrout SFR (steel fibre reinforced high-build, 25 kg), Mapegrout Fine Fibre (fine finish, 25 kg) — through Mapei trade and Bayset",

@@ -33,7 +33,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "Sika Injection-107",
     descriptionLine: "1-component hydrophilic polyurethane injection foam — water-activated expanding foam — active water leaks in cracks and joints",
@@ -74,7 +73,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Master Builders Solutions (BASF)",
     brandUrl: "https://www.master-builders-solutions.com/en-au",
-    tdsUrl: "https://www.master-builders-solutions.com/en-au/products",
     accentColor: "#003591",
     name: "BASF MasterInject 1308",
     descriptionLine: "1-component hydrophilic polyurethane injection resin — gel or foam behaviour — basement cracks, joints and voids",
@@ -114,7 +112,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "Sika Injection-101 RC",
     descriptionLine: "2-component hydrophilic polyurethane injection resin — controlled gel time — construction joints, fine cracks with controlled flow",

@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral Aluminium",
     brandUrl: "https://www.capral.com.au",
-    tdsUrl: "https://www.capral.com.au",
     accentColor: "#0369a1",
     name: "Capral Aluminium Step Flashing",
     descriptionLine: "Capral aluminium sheet for site-formed step and soaker flashing — mill-finish or pre-anodised — AS 1562.1 compliant — lightweight, corrosion resistant, field paintable — wall-to-roof abutment flashings",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Metalcorp Group",
     brandUrl: "https://www.metalcorp.com.au",
-    tdsUrl: "https://www.metalcorp.com.au",
     accentColor: "#16a34a",
     name: "Metalcorp Aluminium Step Flashing",
     descriptionLine: "Metalcorp aluminium sheet for site-formed step and soaker flashing — alternative national supply to Capral — mill-finish — AS 1562.1 — wall-to-roof abutment flashings on tiled pitched roofs",

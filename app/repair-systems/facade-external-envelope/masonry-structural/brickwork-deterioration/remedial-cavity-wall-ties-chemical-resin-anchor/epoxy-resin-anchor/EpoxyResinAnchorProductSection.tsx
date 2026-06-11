@@ -47,7 +47,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Hilti Australia",
     brandUrl: "https://www.hilti.com.au",
-    tdsUrl: "https://www.hilti.com.au/products/anchoring/adhesive-anchors",
     accentColor: "#dc2626",
     name: "Hilti HIT-RE 500 V4 Epoxy Adhesive Anchor",
     descriptionLine: "High-performance two-part epoxy adhesive anchor — ETA-approved — PROFIS Anchor design software for AS 3700 compliant load calculations",
@@ -85,7 +84,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fischer Fixings Australia",
     brandUrl: "https://www.fischer.com.au",
-    tdsUrl: "https://www.fischer.com.au/products/injection-anchors",
     accentColor: "#0369a1",
     name: "Fischer FIS EM 390 S Epoxy Mortar Anchor",
     descriptionLine: "Two-component thixotropic epoxy mortar anchor — high-load structural anchoring in solid and hollow masonry — ETA published load tables",
@@ -123,7 +121,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/products/sikadur.html",
     accentColor: "#b45309",
     name: "Sika AnchorFix-3+ Epoxy Anchor",
     descriptionLine: "Styrene-free two-part epoxy anchor adhesive — reduced odour — preferred for occupied building remediation — national branch supply",
@@ -161,7 +158,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Helifix Australia",
     brandUrl: "https://www.helifix.com.au",
-    tdsUrl: "https://www.helifix.com.au/products/epoxy-resin-ties",
     accentColor: "#7c3aed",
     name: "Helifix Epoxy Resin Anchor System",
     descriptionLine: "Grade 316 stainless tie with two-part epoxy resin — very high load — zero shrinkage — full system supply with published load data",

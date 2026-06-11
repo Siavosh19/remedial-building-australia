@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fantech",
     brandUrl: "https://www.fantech.com.au",
-    tdsUrl: "https://www.fantech.com.au",
     accentColor: "#ef4444",
     name: "TODO: owner confirm — Fantech 150mm inline duct fan (current AU model name)",
     descriptionLine: "TODO: owner confirm — 'Fantech DVA150' could not be confirmed as a current Fantech Australia product. Current Fantech 150mm inline fans include the TD-500/150SIL and WhisperJet 150 series — confirm the correct model name with Fantech before specifying",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Manrose",
     brandUrl: "https://www.manrose.com.au",
-    tdsUrl: "https://www.manrose.com.au",
     accentColor: "#3b82f6",
     name: "Manrose CF100 Ceiling Exhaust Fan",
     descriptionLine: "100mm centrifugal ceiling-mounted exhaust fan with adjustable timer for bathroom and toilet exhaust — quiet operation, backdraft shutter, 25 L/s extract rate",
@@ -117,7 +115,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Clipsal",
     brandUrl: "https://www.clipsal.com",
-    tdsUrl: "https://www.clipsal.com",
     accentColor: "#22c55e",
     name: "TODO: owner confirm — Clipsal Airflow wall exhaust fan (current AU model name)",
     descriptionLine: "TODO: owner confirm — 'Clipsal Airflow GX' could not be confirmed as a current Clipsal Australia model. Clipsal does offer wall-mounted Airflow exhaust fans in Australia — confirm the correct current model name with Clipsal before specifying",
@@ -155,7 +152,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fantech",
     brandUrl: "https://www.fantech.com.au",
-    tdsUrl: "https://www.fantech.com.au",
     accentColor: "#f97316",
     name: "Fantech Acoustic Attenuation Duct",
     descriptionLine: "Internally lined flexible acoustic duct for exhaust fan noise reduction — reduces airborne noise transmission through duct runs in shared walls and ceiling plenums",

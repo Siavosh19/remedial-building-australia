@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Blucher Australia",
     brandUrl: "https://www.blucher.com.au",
-    tdsUrl: "https://www.blucher.com.au",
     accentColor: "#0369a1",
     name: "Blucher Scupper Outlet S300",
     descriptionLine: "AISI 316 stainless steel wall scupper; 75×50mm to 150×75mm; adjustable height sleeve for membrane installation; debris-resistant open face",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Geberit Australia",
     brandUrl: "https://www.geberit.com.au",
-    tdsUrl: "https://www.geberit.com.au",
     accentColor: "#be123c",
     name: "Geberit wall scupper D110",
     descriptionLine: "DN110 discharge; stainless steel body; waterproofing membrane connection flange; compatible with siphonic roof drainage systems",
@@ -118,7 +116,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Alproc Australia",
     brandUrl: "https://www.alproc.com.au",
-    tdsUrl: "https://www.alproc.com.au",
     accentColor: "#16a34a",
     name: "Alproc aluminium scupper",
     descriptionLine: "Extruded aluminium scupper body; powder-coated; custom widths 100–300mm; integral back flange for membrane waterproofing; low-profile outlet",

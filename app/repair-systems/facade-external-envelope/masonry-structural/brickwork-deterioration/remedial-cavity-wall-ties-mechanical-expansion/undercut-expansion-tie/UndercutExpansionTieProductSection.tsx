@@ -22,7 +22,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Hilti Australia",
     brandUrl: "https://www.hilti.com.au",
-    tdsUrl: "https://www.hilti.com.au/products/anchors/undercut-anchors",
     accentColor: "#dc2626",
     name: "Hilti HDA Undercut Anchor",
     descriptionLine: "High-load undercut anchor with keyed mechanical lock for structural masonry anchoring",
@@ -58,7 +57,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Fischer Fixings Australia",
     brandUrl: "https://www.fischer.com.au",
-    tdsUrl: "https://www.fischer.com.au/products/undercut-anchors",
     accentColor: "#0369a1",
     name: "Fischer FAZ II Undercut Anchor",
     descriptionLine: "High-load deformation-controlled undercut anchor for structural masonry and concrete",

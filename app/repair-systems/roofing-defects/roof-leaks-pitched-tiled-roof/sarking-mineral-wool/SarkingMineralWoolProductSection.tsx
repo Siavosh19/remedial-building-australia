@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#0369a1",
     name: "Bradford Gold Glasswool Batts",
     descriptionLine: "CSR Bradford glasswool batt insulation — standard for ceiling and rafter insulation in pitched roofs — R2.5, R3.5, R4.0 and R6.0 available — installed between rafters or ceiling joists below sarking",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Knauf Insulation",
     brandUrl: "https://www.knaufinsulation.com.au",
-    tdsUrl: "https://www.knaufinsulation.com.au",
     accentColor: "#16a34a",
     name: "Knauf Earthwool",
     descriptionLine: "Knauf glasswool mineral wool batts — formaldehyde-free binder — alternative to Bradford Gold — ceiling and rafter insulation for pitched roofs",
@@ -116,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ROCKWOOL",
     brandUrl: "https://www.rockwool.com/au",
-    tdsUrl: "https://www.rockwool.com/au",
     accentColor: "#b45309",
     name: "ROCKWOOL Stone Mineral Wool",
     descriptionLine: "ROCKWOOL stone mineral wool batts and slabs for under-tile, rafter and ceiling applications — non-combustible — vapour-permeable — higher density than glasswool",

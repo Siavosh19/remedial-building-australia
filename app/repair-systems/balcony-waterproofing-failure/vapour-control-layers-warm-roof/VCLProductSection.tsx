@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Kingspan Insulation",
     brandUrl: "https://www.kingspan.com/au",
-    tdsUrl: "https://www.kingspan.com/au",
     accentColor: "#f97316",
     name: "Kingspan Nilvent",
     descriptionLine: "Highly vapour-open breather membrane for use in warm-roof and wall assemblies — not a vapour control layer",
@@ -72,7 +71,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Pro Clima / Rothoblaas",
     brandUrl: "https://www.proclima.com",
-    tdsUrl: "https://www.proclima.com",
     accentColor: "#22c55e",
     name: "Pro Clima DB+",
     descriptionLine: "High-performance polyethylene vapour control layer — warm-roof balcony and flat-roof assemblies — taped lap system",
@@ -143,7 +141,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "DuPont Performance Building Solutions",
     brandUrl: "https://www.dupont.com/tyvek.html",
-    tdsUrl: "https://www.dupont.com/tyvek.html",
     accentColor: "#8b5cf6",
     name: "DuPont Tyvek Airguard Reflective",
     descriptionLine: "Foil-faced high-performance vapour control layer — warm-roof balcony and podium assemblies — very high vapour resistance",

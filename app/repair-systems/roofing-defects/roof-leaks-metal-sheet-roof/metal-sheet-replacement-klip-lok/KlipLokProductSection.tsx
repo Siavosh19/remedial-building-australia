@@ -34,7 +34,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght — BlueScope Steel",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com/products/roofing-and-walling/klip-lok-700",
+    tdsUrl: "https://www.lysaght.com/profiles/klip-lok",
     accentColor: "#0369a1",
     name: "Lysaght Klip-Lok 700",
     descriptionLine:
@@ -74,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght — BlueScope Steel (legacy profile)",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com/products/roofing-and-walling",
     accentColor: "#64748b",
     name: "Lysaght Klip-Lok 406",
     descriptionLine:
@@ -110,7 +109,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stramit — Fletcher Building",
     brandUrl: "https://www.stramit.com.au",
-    tdsUrl: "https://www.stramit.com.au/products/roofing",
     accentColor: "#15803d",
     name: "Stramit (concealed-fix equivalent)",
     descriptionLine:

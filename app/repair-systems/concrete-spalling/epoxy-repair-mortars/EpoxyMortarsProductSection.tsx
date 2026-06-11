@@ -21,7 +21,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardexaustralia.com",
-    tdsUrl: "https://ardexaustralia.com/products/ardex-ra-88-plus/",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-ra-88-plus/",
     accentColor: "#0369a1",
     name: "Ardex RA 88 Plus",
     descriptionLine: "2-component non-sag epoxy repair adhesive — 627 mL and 254 mL cartridges — high strength (> 55 MPa) — horizontal, vertical, and overhead use — fast cure approx. 2 hours — Ardex trade supply",
@@ -92,7 +92,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
+    tdsUrl: "https://www.fosroc.com.au/product/nitomortar-903",
     accentColor: "#7c2d12",
     name: "Fosroc Nitomortar 903",
     descriptionLine: "TODO: owner confirm — Nitomortar 50 does not appear in the current Fosroc AU product range (fosroc.com.au sitemap confirmed Jun 2026) — confirmed AU epoxy mortars are Nitomortar AP, 903, 908, EL-HB — verify correct product with Parchem technical before specifying",
@@ -128,7 +128,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
+    tdsUrl: "https://www.fosroc.com.au/product/nitomortar-ap-au",
     accentColor: "#92400e",
     name: "Fosroc Nitomortar AP",
     descriptionLine: "2-component epoxy paste — patching repairs to concrete, bonding precast concrete, anchor bolt setting — potable water approved AS4020:2018 — can be applied on saturated surface dry (SSD) concrete — Parchem (DuluxGroup) nationally",
@@ -163,6 +163,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://www.sika.com.au",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/epoxy-repair-mortarsandrigidbonding/sikadur-31-cf-normal.html",
     accentColor: "#be123c",
     name: "Sikadur-31 CF Normal",
     descriptionLine: "Two-part thixotropic epoxy repair mortar for concrete spalling, crack filling, and structural bonding — confirm current formulation, pot life, coverage, and system design with Sika Australia technical",
@@ -189,6 +190,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://www.sika.com.au",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/epoxy-repair-mortarsandrigidbonding/sikadur-33.html",
     accentColor: "#be123c",
     name: "Sikadur-33",
     descriptionLine: "High-strength two-part epoxy repair mortar paste for structural repair, concrete reinstatement, and bonding — confirm current formulation, coverage, pot life, and system design with Sika Australia technical",

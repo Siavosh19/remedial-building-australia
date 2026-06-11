@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#b45309",
     name: "Bradford Gold R4.1 Ceiling Batts",
     descriptionLine: "CSR Bradford Gold glasswool ceiling insulation batts — R4.1 — exceeds NCC R4.0 requirement for climate zones 4–6 — 430mm and 580mm widths — standard residential ceiling batt",
@@ -81,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#b45309",
     name: "Bradford Polymax R4.0",
     descriptionLine: "Bradford polyester/recycled fibre ceiling batt — R4.0 — no glass fibres — itch-free handling — alternative to Bradford Gold glasswool",
@@ -121,7 +119,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Knauf Insulation",
     brandUrl: "https://www.knaufinsulation.com.au",
-    tdsUrl: "https://www.knaufinsulation.com.au",
     accentColor: "#15803d",
     name: "Knauf Earthwool R4.0 Ceiling Batts",
     descriptionLine: "Knauf glasswool ceiling insulation — R4.0 — formaldehyde-free ECOSE binder — alternative to Bradford Gold — AS/NZS 4859 classified",
@@ -162,7 +159,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fletcher Insulation",
     brandUrl: "https://www.fletcherinsulation.com.au",
-    tdsUrl: "https://www.fletcherinsulation.com.au",
     accentColor: "#1d4ed8",
     name: "Fletcher Insulation Optimo R4.0",
     descriptionLine: "Fletcher Insulation glasswool ceiling batts R4.0 — AS/NZS 4859 — alternative brand option to Bradford and Knauf",

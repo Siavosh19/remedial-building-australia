@@ -35,7 +35,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia (via Parchem)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au",
     accentColor: "#0369a1",
     name: "Fosroc Nitoproof 510",
     descriptionLine: "Fosroc moisture suppression primer for damp concrete surfaces prior to waterproofing",

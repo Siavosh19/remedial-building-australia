@@ -253,7 +253,7 @@ const TECH_INFO = [
     items: [
       "ISO 11600 does not directly classify polysulfide sealants — it primarily covers silicone and PU sealant systems",
       "ASTM C920 — Standard Specification for Elastomeric Joint Sealants — commonly referenced for polysulfide products on Australian TDS",
-      "AS 4330 — Movement Joints — relevant to joint design requirements for polysulfide sealant applications in Australia",
+      "HB 133 — Guide to the Specification and Use of Sealants in Construction — Australian Handbook covering joint design, sealant selection and polysulfide applications",
       "NCC Volume One — performance requirements for weatherproofing of Class 2 building envelopes — applicable to facade joints",
       "Confirm applicable standards with project engineer or facade consultant before specifying polysulfide joint sealants",
     ],

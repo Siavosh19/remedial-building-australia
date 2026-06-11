@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Hydraloc / Waterproofing Direct",
     brandUrl: "https://www.wpdgroup.com.au",
-    tdsUrl: "https://www.wpdgroup.com.au",
     accentColor: "#0369a1",
     name: "Hydraloc PVC Puddle Flange",
     descriptionLine: "PVC puddle flange — 100mm round outlet — compatible with liquid-applied PU, hybrid, and cementitious membrane systems — standard specification for balcony and terrace waterproofing remediation",

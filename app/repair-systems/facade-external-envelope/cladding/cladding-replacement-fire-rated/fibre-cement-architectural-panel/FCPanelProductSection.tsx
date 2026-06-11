@@ -82,7 +82,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Cemintel Australia",
     brandUrl: "https://www.csr.com.au/cemintel",
-    tdsUrl: "https://www.csr.com.au/cemintel/products",
     accentColor: "#0369a1",
     name: "Cemintel Territory Panel — Large-Format Primed FC",
     descriptionLine: "Large-format compressed fibre cement panel — primed for painting, smooth face, up to 2700 × 1200 mm — non-combustible NCC 2022 — CSR national supply network",
@@ -120,7 +119,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "James Hardie Australia",
     brandUrl: "https://www.jameshardie.com.au",
-    tdsUrl: "https://www.jameshardie.com.au/products/scyon",
     accentColor: "#7c3aed",
     name: "Scyon Axon Panel — Grooved FC Architectural Panel",
     descriptionLine: "Compressed FC panel with vertical groove profile at 133 mm or 200 mm centres — architectural appearance at mid-range cost — NCC 2022 non-combustible — James Hardie national supply",

@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Kingspan",
     brandUrl: "https://www.kingspan.com/au",
-    tdsUrl: "https://www.kingspan.com/au",
     accentColor: "#78350f",
     name: "Kingspan Kooltherm K107 Pitched Roof Board",
     descriptionLine: "High-performance phenolic rigid foam insulation board for under-tile application — between and under rafters — very high R-value per mm — foil-faced — Australian supply",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Recticel",
     brandUrl: "https://www.recticel.com/en-AU",
-    tdsUrl: "https://www.recticel.com/en-AU",
     accentColor: "#0369a1",
     name: "Recticel Eurothane GP",
     descriptionLine: "Polyisocyanurate (PIR) rigid foam board — foil-faced both sides — for under-tile pitched roof upgrade applications — Recticel",
@@ -111,7 +109,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Celotex",
     brandUrl: "https://www.celotex.co.uk",
-    tdsUrl: "https://www.celotex.co.uk",
     accentColor: "#16a34a",
     name: "Celotex RS5000",
     descriptionLine: "PIR insulation board by Celotex — foil-faced — for pitched roof upgrade and sarking applications — TODO: confirm Australian distribution availability",

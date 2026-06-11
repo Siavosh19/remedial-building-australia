@@ -34,7 +34,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
+    tdsUrl: "https://aus.sika.com/en/construction/sealants-adhesives/construction-adhesives/sikaflex-11-fc.html",
     accentColor: "#0369a1",
     name: "Sika Sikaflex-11FC — 1-Component PU Sealant for Joints and Cracks",
     descriptionLine: "1-component moisture-cure PU — ISO 11600 Class 12.5 (±12.5% movement) — 300 mL cartridge and 600 mL sausage — exterior and interior joints",
@@ -69,7 +69,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#15803d",
     name: "TODO: owner confirm — Fosroc Nitoseal MS300 is not listed on current fosroc.com.au; the current Fosroc AU MS polymer sealant range is Nitoseal MS250 (general joints) and Nitoseal MS400 (trafficable floor joints, ±20% movement, 600 mL) — confirm correct product and update",
     descriptionLine: "TODO: owner confirm — Nitoseal MS300 not found on fosroc.com.au (June 2026); current AU MS polymer products are Nitoseal MS250 and MS400; Nitoseal MS400 has ±20% movement (not ±25%), 600 mL pack, no primer on most substrates, isocyanate-free — verify from current Fosroc AU TDS",
@@ -104,7 +103,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products",
     accentColor: "#dc2626",
     name: "Mapei Mapesil AC — Acetoxy Silicone Sealant with Superior UV Resistance",
     descriptionLine: "Acetoxy silicone — excellent UV and weathering resistance — 25% movement — 310 mL cartridge — NOT paintable after cure",
@@ -138,7 +136,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
     accentColor: "#7c3aed",
     name: "TODO: owner confirm — Ardex ST in the current Ardex AU range is a NEUTRAL-CURE SILICONE sealant, not a PU floor joint sealant; the Ardex AU traffickable floor joint sealant is RA 54 (fast-setting semi-rigid polyurea for interior floor control joints, heavy vehicle traffic) or RA 040 (1-component PU joint sealant) — confirm correct product and update all specs",
     descriptionLine: "TODO: owner confirm — Ardex ST on current ardexaustralia.com is a silicone sealant (not PU); if a traffickable interior floor joint sealant is intended, confirm whether RA 54 (polyurea, fast-set, heavy traffic) or RA 040 (1-component PU) is the correct Ardex AU product — update chemistry, specs, and limitations accordingly",

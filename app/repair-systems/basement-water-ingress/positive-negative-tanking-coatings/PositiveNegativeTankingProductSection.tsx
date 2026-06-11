@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Westox Building Products",
     brandUrl: "https://www.westox.com.au",
-    tdsUrl: "https://www.westox.com.au",
     accentColor: "#64748b",
     name: "Westox CR25",
     descriptionLine: "Westox two-component cementitious waterproofing coating for positive and negative-side tanking applications",

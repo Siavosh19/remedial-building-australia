@@ -170,7 +170,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX Deckweb — Self-Adhesive Bandage Tape Format",
     descriptionLine: "Self-adhesive woven polyester bandage tape — pre-applied to substrate at junctions before membrane application — ARDEX membrane system compatible — speeds junction reinforcement on complex or repetitive junction details",
@@ -241,7 +240,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX UD 158 Seam Reinforcement Mesh Tape",
     descriptionLine: "ARDEX self-adhesive reinforcing mesh tape for membrane seam reinforcement at junctions and transitions",

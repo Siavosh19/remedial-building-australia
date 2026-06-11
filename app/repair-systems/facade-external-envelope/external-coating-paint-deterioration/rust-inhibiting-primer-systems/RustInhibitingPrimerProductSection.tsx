@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/metal",
     accentColor: "#e2003a",
     name: "Dulux Metalshield Rust & Metal Primer",
     descriptionLine: "Rust-inhibiting primer for ferrous metal — steel lintels, balustrades, window frames and metal facade elements — zinc phosphate inhibitor — water-based — compatible with Dulux metal topcoat systems",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en_AU/products/metal",
     accentColor: "#0369a1",
     name: "Wattyl Killrust Primer",
     descriptionLine: "Wattyl Killrust rust-inhibiting primer — Australia's most established metal primer range — rust-inhibiting formulation for ferrous metal facade elements — strong adhesion on prepared steel",
@@ -114,7 +112,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
-    tdsUrl: "https://www.haymespaint.com.au/products/metal",
     accentColor: "#7c3aed",
     name: "Haymes Metal Guard Rust Inhibiting Primer",
     descriptionLine: "Australian-made rust-inhibiting primer for steel and ferrous metal — zinc phosphate inhibitor — suitable for exterior metal facade elements, balustrades and steel window frames",
@@ -139,6 +136,7 @@ const PRODUCTS: Product[] = [
       "Requires clean, rust-free metal surface before application",
       "Not suitable as a rust converter — remove active rust before priming",
       "Topcoat within manufacturer's overcoat window",
+      "TODO: owner confirm — Haymes website shows MetalPlus range, not Metal Guard; Metal Guard Rust Inhibiting Primer not confirmed in current Haymes AU range — verify product name with Haymes technical before specifying",
     ],
     procurementSources: [
       { name: "Haymes Paint Trade — Where to Buy", url: "https://www.haymespaint.com.au" },
@@ -149,7 +147,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Taubmans Australia",
     brandUrl: "https://www.taubmans.com.au",
-    tdsUrl: "https://www.taubmans.com.au/products/metal",
     accentColor: "#b45309",
     name: "Taubmans All Weather Metal Primer",
     descriptionLine: "All-weather rust-inhibiting primer for ferrous metal facade elements — formulated for Australian conditions — wide availability through Bunnings and trade suppliers nationally",
@@ -183,7 +180,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Solver Paints Australia",
     brandUrl: "https://www.solverpaints.com.au",
-    tdsUrl: "https://www.solverpaints.com.au/products/metal",
     accentColor: "#059669",
     name: "Solver Metal Primer",
     descriptionLine: "Rust-inhibiting metal primer for steel and ferrous metal facade elements — compatible with Solver exterior enamel and metal topcoat systems",
@@ -215,7 +211,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "International Coatings (AkzoNobel)",
     brandUrl: "https://www.international-pc.com/en-au",
-    tdsUrl: "https://www.international-pc.com/en-au/products",
     accentColor: "#dc2626",
     name: "International Intergard 269 Primer",
     descriptionLine: "High-performance two-pack epoxy primer for steel and ferrous metal — commercial and industrial grade — superior corrosion resistance for coastal and aggressive environments",

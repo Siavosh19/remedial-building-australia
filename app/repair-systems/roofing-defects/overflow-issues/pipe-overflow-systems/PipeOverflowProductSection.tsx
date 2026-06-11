@@ -35,7 +35,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Marley New Zealand / Aliaxis",
     brandUrl: "https://www.marley.com.au",
-    tdsUrl: "https://www.marley.com.au",
     accentColor: "#0369a1",
     name: "Marley uPVC Roof Overflow Pipe DN100",
     descriptionLine: "100mm uPVC pipe overflow system; includes top cap/strainer and bottom outlet fitting; compatible with Colorbond and concrete roofs; standard 3m lengths",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Crane Copper Tube",
     brandUrl: "https://www.cranecopper.com.au",
-    tdsUrl: "https://www.cranecopper.com.au",
     accentColor: "#b45309",
     name: "Crane Copper Overflow Pipe System",
     descriptionLine: "DN75/DN100 soft-drawn copper tube; soldered fittings; formed lead flashing at penetration; for heritage and premium applications",

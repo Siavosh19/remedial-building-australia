@@ -35,7 +35,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght — BlueScope Steel",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com/products/roofing-and-walling/cappings-and-flashings",
     accentColor: "#0369a1",
     name: "Lysaght Ridge and Barge Cappings",
     descriptionLine:
@@ -71,7 +70,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stramit — Fletcher Building",
     brandUrl: "https://www.stramit.com.au",
-    tdsUrl: "https://www.stramit.com.au/products/cappings-and-flashings",
     accentColor: "#15803d",
     name: "Stramit Ridge and Barge Cappings",
     descriptionLine:
@@ -104,7 +102,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stratco — Stratco Pty Ltd",
     brandUrl: "https://www.stratco.com.au",
-    tdsUrl: "https://www.stratco.com.au/roofing/cappings",
     accentColor: "#7c3aed",
     name: "Stratco Ridge and Barge Cappings",
     descriptionLine:

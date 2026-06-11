@@ -24,7 +24,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux / Acratex (Australia)",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/trade",
     accentColor: "#E3051B",
     name: "Dulux Acratex Roller Texture / Freestyle",
     descriptionLine: "100% acrylic texture coating — roller or spray applied — render and masonry facades — Class 2 strata facade finish coat",
@@ -61,7 +60,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Solver Paints (Australia)",
     brandUrl: "https://www.solverpaints.com.au",
-    tdsUrl: "https://www.solverpaints.com.au/products",
     accentColor: "#004B87",
     name: "Solver Texture Coat / Textone",
     descriptionLine: "Acrylic texture coating — render and masonry facade finish — spray or roller applied — Class 2 strata buildings",
@@ -95,7 +93,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote (Australia)",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au/products",
     accentColor: "#5C4033",
     name: "Rockcote Render & Rock Texture Coatings",
     descriptionLine: "Acrylic and mineral-modified texture finish coatings — spray and trowel applied — render over concrete, masonry and EIFS substrates",

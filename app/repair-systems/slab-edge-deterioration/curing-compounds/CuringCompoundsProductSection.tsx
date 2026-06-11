@@ -25,7 +25,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete/admixture-technology/special-admixtures/sika-antisol-ac.html",
     accentColor: "#be123c",
     name: "Sika Antisol AC — Acrylic Curing Compound (TODO: confirm Antisol E vs Antisol AC)",
     descriptionLine: "TODO: owner confirm — Sika Antisol E is not confirmed as the current AU product name. The current Sika Australia acrylic curing compound is listed as Antisol AC (acrylic modified emulsion, complies with AS 3799, water-based). Confirm whether Antisol E is also stocked in AU or whether Antisol AC is the correct current product",
@@ -62,7 +62,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Australia",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/fosroc",
+    tdsUrl: "https://www.fosroc.com.au/product/concure-wb30",
     accentColor: "#15803d",
     name: "Fosroc Concure WB30 — Water-Based Wax Emulsion Curing Compound",
     descriptionLine: "Water-based wax emulsion curing compound for concrete repair — spray or roller applied after mortar finishing — Fosroc product distributed by Parchem nationally",
@@ -128,7 +128,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#b45309",
     name: "Mapei Mapecure E 30 — Curing Compound (TODO: confirm Mapecure S vs E 30)",
     descriptionLine: "TODO: owner confirm — Mapecure S is not confirmed as the current AU product name. The Mapei Australia site lists Mapecure E 30. Confirm the correct current AU Mapei curing compound product name before specifying",

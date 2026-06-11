@@ -24,7 +24,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "SikaCem Cementitious Bonding Slurry",
     descriptionLine: "Polymer-modified cementitious bonding slurry — applied wet-on-wet before render coat — improves render adhesion to dense or low-absorption substrates",
@@ -60,7 +59,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products-catalogue",
     accentColor: "#0055A5",
     name: "Mapei Planicrete / Primer 3296",
     descriptionLine: "Acrylic polymer bonding primer and cementitious bonding agent — improves render adhesion — dense and low-absorption concrete and masonry substrates",
@@ -94,7 +92,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/en-au",
-    tdsUrl: "https://www.fosroc.com/en-au/products",
     accentColor: "#007A33",
     name: "Fosroc Nitobond AR / Nitobond EP",
     descriptionLine: "Acrylic and epoxy bonding agents — improves render and mortar adhesion to concrete and masonry substrates — Fosroc Renderoc system",

@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Machine Render + Rockcote Finessa",
     descriptionLine:
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Boral / USG Boral",
     brandUrl: "https://www.boral.com.au",
-    tdsUrl: "https://www.boral.com.au",
     accentColor: "#92400e",
     name: "Boral Acrylic Render System",
     descriptionLine:
@@ -111,7 +109,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Weber / Saint-Gobain",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#0f766e",
     name: "Weber Render Systems (Spray-Applied)",
     descriptionLine:

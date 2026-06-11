@@ -33,7 +33,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "Sika Plug",
     descriptionLine: "Rapid-setting hydraulic cementitious mortar — physically plugs active running water leaks — basement walls, slabs and pipe penetrations",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/en-au",
-    tdsUrl: "https://www.fosroc.com/en-au/products",
     accentColor: "#007A33",
     name: "Fosroc Renderoc Plug",
     descriptionLine: "Rapid-setting hydraulic cement plugging compound — stops active water flow — concrete and masonry basement walls and slabs",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Master Builders Solutions (BASF)",
     brandUrl: "https://www.master-builders-solutions.com/en-au",
-    tdsUrl: "https://www.master-builders-solutions.com/en-au/products",
     accentColor: "#003591",
     name: "BASF MasterEmaco S 488",
     descriptionLine: "Rapid-setting hydraulic cementitious repair mortar — stops active water ingress — basement structures and below-grade concrete",

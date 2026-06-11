@@ -15,7 +15,7 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Mapei Australia", brandUrl: "https://www.mapei.com/au", tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products-catalogue", accentColor: "#0055A5",
+    fullLabel: "Mapei Australia", brandUrl: "https://www.mapei.com/au", accentColor: "#0055A5",
     name: "Mapei Mapetherm Full EIFS System",
     descriptionLine: "Full EIFS installation system — EPS adhesive, EPS board, base coat, AR mesh, and finish coat — facade insulation and render for Class 2 strata buildings",
     productType: "Full EIFS installation system",
@@ -27,7 +27,7 @@ const PRODUCTS: Product[] = [
     procurementSources: [{ name: "Mapei Australia — contact for current pricing and trade supply", url: "https://www.mapei.com/au" }, { name: "Parchem Construction Supplies", url: "https://www.parchem.com.au" }],
   },
   {
-    fullLabel: "Sto Australia", brandUrl: "https://www.sto.com/au", tdsUrl: "https://www.sto.com/au/products", accentColor: "#E2001A",
+    fullLabel: "Sto Australia", brandUrl: "https://www.sto.com/au", accentColor: "#E2001A",
     name: "Sto Full EIFS System (StoTherm)",
     descriptionLine: "StoTherm full EIFS installation system — adhesive, EPS or mineral wool board, Armat base coat, AR mesh, StoSilco finish — NCC C1.1 tested",
     productType: "Full EIFS installation system — NCC tested",
@@ -39,7 +39,7 @@ const PRODUCTS: Product[] = [
     procurementSources: [{ name: "Sto Australia — contact for current pricing and approved applicator list", url: "https://www.sto.com/au" }],
   },
   {
-    fullLabel: "Dulux / Acratex (Australia)", brandUrl: "https://www.dulux.com.au", tdsUrl: "https://www.dulux.com.au/trade", accentColor: "#E3051B",
+    fullLabel: "Dulux / Acratex (Australia)", brandUrl: "https://www.dulux.com.au", accentColor: "#E3051B",
     name: "Dulux Acratex EIFS-Compatible System",
     descriptionLine: "Acratex polymer-modified render and texture system — EIFS-compatible — base coat, AR mesh, texture finish coat — concrete and masonry substrates",
     productType: "Acrylic render system — EIFS compatible",

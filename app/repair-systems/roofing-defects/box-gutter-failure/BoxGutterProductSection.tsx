@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "BlueScope Steel",
     brandUrl: "https://www.bluescopesteel.com.au",
-    tdsUrl: "https://www.bluescopesteel.com.au",
     accentColor: "#ef4444",
     name: "BlueScope Colorbond Box Gutter Liner",
     descriptionLine: "Pre-formed ZINCALUME/Colorbond steel section for box gutter lining — supplied in standard box gutter profiles or fabricated to order",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral Aluminium",
     brandUrl: "https://www.capral.com.au",
-    tdsUrl: "https://www.capral.com.au",
     accentColor: "#3b82f6",
     name: "Capral Aluminium Box Gutter Extrusion",
     descriptionLine: "Extruded aluminium box gutter section for box gutter lining — corrosion-resistant, suitable for aggressive coastal environments",
@@ -111,7 +109,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Leaf Stopper",
     brandUrl: "https://www.leafstopper.com.au",
-    tdsUrl: "https://www.leafstopper.com.au",
     accentColor: "#22c55e",
     name: "Leaf Stopper Stainless Mesh Leaf Guard",
     descriptionLine: "Woven stainless steel mesh leaf guard system installed over box gutters — prevents leaf accumulation and reduces maintenance frequency",

@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#e2003a",
     name: "TODO: owner confirm — Dulux Weathershield Alkali Resistant Primer (exact current AU product name unconfirmed — Dulux AU website shows Weathershield as self-priming on most surfaces; dedicated alkali-resistant primer product name not found on dulux.com.au as of verification date — confirm current product name with Dulux technical)",
     descriptionLine: "Benchmark alkali-resistant acrylic primer for new cement render and concrete facades — mandatory first coat under Dulux Weathershield topcoat system — water-based, low VOC",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en_AU/products/exterior",
     accentColor: "#0369a1",
     name: "TODO: owner confirm — Wattyl Solagard Exterior Primer (exact current AU product name unconfirmed — Wattyl Solagard is marketed as self-priming on many substrates; the alkali-resistant primer for cement render in the Wattyl range is 'Wattyl Master Prep Pigmented Sealer' or a system-specific primer — confirm current primer product name with Wattyl technical)",
     descriptionLine: "Alkali-resistant exterior primer for cement render and masonry facades — companion primer to Wattyl Solagard acrylic topcoat system — water-based, wide Australian availability",
@@ -114,7 +112,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
-    tdsUrl: "https://www.haymespaint.com.au/products/exterior",
     accentColor: "#7c3aed",
     name: "TODO: owner confirm — Haymes Prep'd & Primed Exterior Primer (exact current AU product name unconfirmed — Haymes primer range on haymespaint.com.au uses 'Prepcoat' family names including Ultracover, Ultralock, and Ultraprime; 'Prep'd & Primed Exterior Primer' not confirmed as current product — confirm current primer product name with Haymes technical)",
     descriptionLine: "Australian-made alkali-resistant exterior primer for cement render and masonry — suitable for new render and bare concrete before Haymes acrylic topcoat application",
@@ -151,7 +148,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Taubmans Australia",
     brandUrl: "https://www.taubmans.com.au",
-    tdsUrl: "https://www.taubmans.com.au/products/primer",
     accentColor: "#b45309",
     name: "TODO: owner confirm — Taubmans Concrete & Masonry Primer Sealer (exact current AU product name unconfirmed — the current Taubmans alkali-resistant masonry primer appears to be 'Taubmans Armawall Primer' (APAS 0117/2 listed, VOC ~26 g/L, coverage ~8–10 m²/L) — 'Concrete & Masonry Primer Sealer' may be a separate or discontinued product — confirm current product name and formulation with Taubmans technical)",
     descriptionLine: "Alkali-resistant primer sealer for concrete and masonry facades — penetrating primer for porous and medium-porosity substrates — mandatory under Taubmans exterior topcoat on new render",
@@ -188,7 +184,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Solver Paints Australia",
     brandUrl: "https://www.solverpaints.com.au",
-    tdsUrl: "https://www.solverpaints.com.au/products/exterior",
     accentColor: "#059669",
     name: "TODO: owner confirm — Solver Exterior Alkali Resistant Primer (exact current AU product name unconfirmed — could not confirm this specific product name on solverpaints.com.au at time of verification — confirm current alkali-resistant primer product name with Solver Paints technical)",
     descriptionLine: "Alkali-resistant acrylic exterior primer for cement render and concrete — part of the Solver exterior coating system — strong regional trade availability across Australia",
@@ -225,7 +220,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "British Paints Australia",
     brandUrl: "https://www.britishpaints.com.au",
-    tdsUrl: "https://www.britishpaints.com.au/products/exterior",
     accentColor: "#dc2626",
     name: "TODO: owner confirm — British Paints 4-in-1 Exterior Primer (closest current AU product is 'British Paints PREP 4in1 Water Based' — functions confirmed as sealer/primer/undercoat/stain-blocker; alkali resistance NOT specifically claimed on product page — confirm whether this product is classified as alkali-resistant and whether it is appropriate as the primer on new cement render — confirm with British Paints technical)",
     descriptionLine: "Multi-purpose exterior primer for render, concrete, and masonry — four functions in one coat: prime, seal, stabilise, and stain-block — widely available nationally",

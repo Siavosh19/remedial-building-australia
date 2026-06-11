@@ -32,7 +32,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Moeding Alphaton Terracotta",
     brandUrl: "https://www.moeding.de/en/",
-    tdsUrl: "https://www.moeding.de/en/products/alphaton/",
     accentColor: "#b45309",
     name: "Moeding Alphaton",
     descriptionLine: "Extruded terracotta rainscreen — zero maintenance, fully non-combustible.",
@@ -152,7 +151,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Laminam Sintered Stone Facade",
     brandUrl: "https://www.laminam.com/en/",
-    tdsUrl: "https://www.laminam.com/en/products/",
     accentColor: "#e2003a",
     name: "Laminam Sintered Stone",
     descriptionLine: "Italian ultra-thin sintered ceramic — monolithic slabs, large format.",

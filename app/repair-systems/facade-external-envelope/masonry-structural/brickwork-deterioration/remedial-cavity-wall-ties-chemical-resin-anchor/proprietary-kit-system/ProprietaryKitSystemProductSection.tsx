@@ -22,7 +22,7 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Helifix Australia",
     brandUrl: "https://www.helifix.com.au",
-    tdsUrl: "https://www.helifix.com.au/products/remedial-wall-ties",
+    tdsUrl: "https://www.helifix.com.au/products/remedial-products/retrotie/",
     accentColor: "#0369a1",
     name: "Helifix SockFix Resin Injection Kit",
     descriptionLine: "Complete proprietary kit: 316 stainless tie + resin cartridge + installation tool in one system",
@@ -94,7 +94,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Simpson Strong-Tie Australia",
     brandUrl: "https://www.strongtie.com.au",
-    tdsUrl: "https://www.strongtie.com.au/products/masonry-anchors",
     accentColor: "#7c3aed",
     name: "Simpson Strong-Tie Remedial Cavity Tie Kit",
     descriptionLine: "Complete Simpson remedial cavity tie kit with 316 stainless tie, resin, and driver tool",

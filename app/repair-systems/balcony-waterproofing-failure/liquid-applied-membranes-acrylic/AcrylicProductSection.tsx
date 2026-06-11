@@ -86,7 +86,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX WPM 310",
     descriptionLine: "Water-based acrylic protective coating and waterproofing membrane — facades, roofs, external surfaces",
@@ -200,7 +199,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Gripset Industries",
     brandUrl: "https://www.gripset.com",
-    tdsUrl: "https://www.gripset.com",
     accentColor: "#f59e0b",
     name: "Gripset 38FC",
     descriptionLine: "Water-based fast-curing fibre-reinforced SBR latex membrane — under toppings, tiles, or overlay finishes",
@@ -238,7 +236,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Gripset Industries",
     brandUrl: "https://www.gripset.com",
-    tdsUrl: "https://www.gripset.com",
     accentColor: "#f59e0b",
     name: "Gripset RD",
     descriptionLine: "Flexible acrylic weatherproof membrane — roofs, walls, facades, parapets, gutters — confirm current product TDS",

@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#e2003a",
     name: "TODO: owner confirm — Dulux Weathershield Mould & Mildew Cleaner (exact current AU product name unconfirmed — could not confirm a dedicated 'Weathershield Mould & Mildew Cleaner' product on dulux.com.au at time of verification — Dulux AU surface preparation guidance references generic bleach solution or Sugar Soap for pre-paint cleaning — confirm whether a dedicated Dulux biocide surface wash product exists in the current AU range with Dulux technical)",
     descriptionLine: "Concentrated biocide surface wash for exterior masonry and render — kills mould, mildew and algae before repainting — widely available nationally",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en_AU/products",
     accentColor: "#0369a1",
     name: "Wattyl Kill Mould",
     descriptionLine: "Biocide surface treatment for mould, mildew and algae on exterior and interior surfaces before painting — bleach-free formulation suitable for strata facade preparation",
@@ -113,7 +111,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Taubmans Australia",
     brandUrl: "https://www.taubmans.com.au",
-    tdsUrl: "https://www.taubmans.com.au/products",
     accentColor: "#7c3aed",
     name: "TODO: owner confirm — Taubmans Mould Killer (CRITICAL: the current Taubmans mould product appears to be 'Taubmans Advanced Adhesion & Mould Blocker' which is a PRIMER/PREPCOAT that is applied and LEFT ON — it is NOT a biocide rinse-off wash — the card describes a concentrated dilutable wash product, which does not match the current product type — confirm with Taubmans technical whether a separate biocide rinse-off wash product exists in the current Taubmans AU range)",
     descriptionLine: "TODO: owner confirm — Concentrated mould, mildew and algae surface treatment for exterior facades — dilutable biocide wash as mandatory pre-paint preparation before exterior recoating (product type may differ from current Taubmans AU product — see name field)",
@@ -150,7 +147,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
-    tdsUrl: "https://www.haymespaint.com.au/products",
     accentColor: "#b45309",
     name: "TODO: owner confirm — Haymes Mould Wash (exact current AU product name unconfirmed — could not confirm a product named 'Haymes Mould Wash' on haymespaint.com.au at time of verification — confirm current biocide surface wash product name in the Haymes range with Haymes technical)",
     descriptionLine: "Australian-made biocide surface wash for mould and algae treatment on exterior facades — part of the Haymes surface preparation system ahead of exterior topcoat repainting",
@@ -186,7 +182,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#059669",
     name: "TODO: owner confirm — Mapei Mapecide (WRONG PRODUCT NAME — 'Mapecide' not found on mapei.com/au at time of verification — the Mapei AU biocide/mould product found is 'Mapei Ultracare Mould Remover' (tile and surface product) — confirm whether 'Mapecide' exists in the current Mapei AU range or whether the correct product for facade biocide preparation is a different Mapei product — confirm with Mapei Australia technical)",
     descriptionLine: "Professional-grade biocidal wash for mould, algae, moss and lichen on exterior masonry, render and concrete — specialist remedial product for building restoration and facade repainting preparation",
@@ -223,7 +218,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Solver Paints Australia",
     brandUrl: "https://www.solverpaints.com.au",
-    tdsUrl: "https://www.solverpaints.com.au/products",
     accentColor: "#dc2626",
     name: "Solver Mould Wash",
     descriptionLine: "Biocide surface wash for mould, mildew and algae preparation on exterior facades before painting — part of the Solver exterior coating system for masonry and render",

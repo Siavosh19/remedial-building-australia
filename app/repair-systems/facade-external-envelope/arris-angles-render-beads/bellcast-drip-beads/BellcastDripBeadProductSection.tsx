@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rondo Building Services",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo Aluminium Bellcast / Drip Bead",
     descriptionLine: "Aluminium bellcast and drip profile bead — forms bellcast or drip at slab edges and window sills — directs water away from facade substrate — exterior render",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "USG Boral / Beadex",
     brandUrl: "https://www.usgboral.com.au",
-    tdsUrl: "https://www.usgboral.com.au",
     accentColor: "#92400e",
     name: "USG Boral Aluminium / PVC Drip Bead",
     descriptionLine: "Aluminium or PVC drip bead — render termination with drip profile — slab edges, window sills and horizontal render surfaces — exterior facade",
@@ -107,7 +105,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trade Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#0f766e",
     name: "Trade-Supply Bellcast / Drip Bead (Aluminium or PVC)",
     descriptionLine: "Trade-supply aluminium or PVC bellcast and drip beads — various profiles — render and plasterboard merchant supply nationally",

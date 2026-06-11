@@ -34,24 +34,24 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght — BlueScope Steel",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com/products/roofing-and-walling/trimdek",
+    tdsUrl: "https://www.lysaght.com/profiles/trimdek",
     accentColor: "#0369a1",
     name: "Lysaght Trimdek",
     descriptionLine:
-      "High-rib trapezoidal Colorbond steel sheet; 35mm rib height; 762mm cover width; pan-fixed; AS 1562.1 compliant",
+      "High-rib trapezoidal Colorbond steel sheet; 29mm rib height; 762mm cover width; pan-fixed; AS 1562.1 compliant",
     productType: "Trapezoidal Colorbond steel sheet — 762mm cover — AS 1562.1",
     filterTags: ["Lysaght", "Colorbond", "Trapezoidal", "0.42mm-BMT"],
     techChips: [
       { label: "Lysaght", cls: "bg-sky-100 text-sky-800" },
       { label: "Colorbond steel", cls: "bg-sky-50 text-sky-700" },
       { label: "762mm cover", cls: "bg-green-50 text-green-700" },
-      { label: "35mm rib", cls: "bg-slate-100 text-slate-700" },
+      { label: "29mm rib", cls: "bg-slate-100 text-slate-700" },
       { label: "AS 1562.1", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
       "Lysaght Trimdek is the Australian market's primary high-rib trapezoidal steel roofing sheet. The profile features a distinctive flat pan flanked by high ribs at 200mm centres, producing a strong structural profile suited to longer purlin spans than corrugated sheet at equivalent BMT. Trimdek is through-fixed via screws driven through the pan (not the rib) into the purlin below, with an EPDM or neoprene sealing washer compressing against the pan face to maintain weathertightness. The full Colorbond colour range is available. It is the most widely specified trapezoidal product on Australian Class 2 strata and commercial flat-to-low-pitch roofs.",
     technicalProperties: [
-      "Profile: trapezoidal (high-rib), 35mm rib height, 200mm rib pitch",
+      "Profile: trapezoidal (high-rib), 29mm rib height, 200mm rib pitch",
       "Cover width: 762mm per sheet (5 pans per sheet)",
       "BMT: 0.42mm (standard residential), 0.48mm (Class 2/commercial), 0.60mm, 0.70mm",
       "Substrate: BlueScope Colorbond steel — full Colorbond colour range",
@@ -73,7 +73,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stramit — Fletcher Building",
     brandUrl: "https://www.stramit.com.au",
-    tdsUrl: "https://www.stramit.com.au/products/roofing",
     accentColor: "#15803d",
     name: "Stramit TrimClad",
     descriptionLine:
@@ -84,13 +83,13 @@ const PRODUCTS: Product[] = [
       { label: "Stramit", cls: "bg-green-100 text-green-800" },
       { label: "Colorbond steel", cls: "bg-sky-50 text-sky-700" },
       { label: "762mm cover", cls: "bg-green-50 text-green-700" },
-      { label: "35mm rib", cls: "bg-slate-100 text-slate-700" },
+      { label: "29mm rib", cls: "bg-slate-100 text-slate-700" },
       { label: "AS 1562.1", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Stramit TrimClad is Stramit's high-rib trapezoidal steel roofing sheet, dimensionally equivalent to Lysaght Trimdek at 762mm cover width and 35mm rib height. Manufactured from BlueScope Colorbond steel and available in the full Colorbond colour range. Pan-fixed via screw through pan into purlin. Stramit's national branch network provides supply in all major Australian markets and the product is widely used as a like-for-like replacement for Trimdek on existing trapezoidal metal roofs. Confirm current product specifications and span tables against the current Stramit TDS.",
+      "Stramit TrimClad is Stramit's high-rib trapezoidal steel roofing sheet, dimensionally equivalent to Lysaght Trimdek at 762mm cover width and 29mm rib height. Manufactured from BlueScope Colorbond steel and available in the full Colorbond colour range. Pan-fixed via screw through pan into purlin. Stramit's national branch network provides supply in all major Australian markets and the product is widely used as a like-for-like replacement for Trimdek on existing trapezoidal metal roofs. Confirm current product specifications and span tables against the current Stramit TDS.",
     technicalProperties: [
-      "Profile: trapezoidal (high-rib), 35mm rib height, 762mm cover width",
+      "Profile: trapezoidal (high-rib), 29mm rib height, 762mm cover width",
       "BMT: 0.42mm, 0.48mm standard; confirm availability for 0.60mm and 0.70mm with Stramit",
       "Substrate: BlueScope Colorbond steel — full Colorbond colour range",
       "AS 1562.1 compliant — Stramit span tables published in current TDS",
@@ -108,7 +107,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stratco — Stratco Pty Ltd",
     brandUrl: "https://www.stratco.com.au",
-    tdsUrl: "https://www.stratco.com.au/roofing",
     accentColor: "#7c3aed",
     name: "Stratco Coverline",
     descriptionLine:
@@ -153,7 +151,7 @@ const BRAND_EQUIV = [
   {
     a: "Lysaght Trimdek",
     b: "Stramit TrimClad",
-    note: "Dimensionally equivalent — same 762mm cover, 35mm rib height, BlueScope Colorbond substrate. Pan-fixed with same screw pattern. Product name differs; span tables are manufacturer-specific.",
+    note: "Dimensionally equivalent — same 762mm cover, 29mm rib height, BlueScope Colorbond substrate. Pan-fixed with same screw pattern. Product name differs; span tables are manufacturer-specific.",
   },
   {
     a: "Lysaght Trimdek",
@@ -182,8 +180,8 @@ const SYSTEM_COMPARISON = [
   },
   {
     attribute: "Rib height",
-    lysaght: "35mm",
-    stramit: "35mm",
+    lysaght: "29mm",
+    stramit: "29mm",
     stratco: "Confirm TDS",
   },
   {
@@ -321,7 +319,7 @@ export function TrimdekIntroSection() {
       </div>
       <div className="space-y-4 text-sm leading-7 text-slate-600">
         <p>
-          Trimdek is a high-rib trapezoidal steel roofing sheet with a 35mm rib height and 762mm cover width, specified for its strong structural performance and clean flat-pan appearance. Unlike the sinusoidal corrugated profile, Trimdek&apos;s wider flat pans and high ribs at 200mm centres allow greater purlin spacing and span capability at equivalent BMT. Sheet replacement requires matching the profile exactly — Trimdek is not interchangeable with corrugated sheet or concealed-fix profiles.
+          Trimdek is a high-rib trapezoidal steel roofing sheet with a 29mm rib height and 762mm cover width, specified for its strong structural performance and clean flat-pan appearance. Unlike the sinusoidal corrugated profile, Trimdek&apos;s wider flat pans and high ribs at 200mm centres allow greater purlin spacing and span capability at equivalent BMT. Sheet replacement requires matching the profile exactly — Trimdek is not interchangeable with corrugated sheet or concealed-fix profiles.
         </p>
         {expanded && (
           <>

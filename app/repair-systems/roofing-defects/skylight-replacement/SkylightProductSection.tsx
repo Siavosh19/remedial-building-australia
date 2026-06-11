@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Velux",
     brandUrl: "https://www.velux.com.au",
-    tdsUrl: "https://www.velux.com.au/products/roof-windows-skylights",
     accentColor: "#ef4444",
     name: "Velux GGL Fixed Deck-Mounted Skylight",
     descriptionLine: "Fixed deck-mounted double-glazed roof window for installation in pitched tiled roofs — factory-sealed double glazing, aluminium frame with pre-fitted flashing",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Velux",
     brandUrl: "https://www.velux.com.au",
-    tdsUrl: "https://www.velux.com.au/products/flashing",
     accentColor: "#3b82f6",
     name: "Velux EDZ Flashing Kit",
     descriptionLine: "Profile-specific aluminium flashing kit for Velux GGL skylights installed in tiled pitched roofs — includes sill, side and top flashings",

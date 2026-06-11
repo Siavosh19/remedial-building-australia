@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardexaustralia.com",
-    tdsUrl: "https://www.ardexaustralia.com",
     accentColor: "#f97316",
     name: "ARDEX WPM 330 Facade",
     descriptionLine: "Elastomeric anti-carbonation facade coating — CO2 barrier for concrete and masonry facades — protects reinforcing steel from carbonation-induced corrosion — confirm current specifications with ARDEX Australia technical",

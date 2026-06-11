@@ -43,7 +43,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Safeguard Europe / Alexander Watson Australia",
     brandUrl: "https://www.stormdry.com.au",
-    tdsUrl: "https://www.stormdry.com.au",
     accentColor: "#1e3a8a",
     name: "Stormdry Masonry Protection Cream",
     descriptionLine: "Silane/siloxane cream — penetrating water repellent for brick and masonry facades — widely specified in Australia for penetrating damp",
@@ -83,7 +82,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#1a5276",
     name: "Remmers Funcosil SNL",
     descriptionLine: "Solvent-based silane/siloxane penetrating impregnation for brick, render and masonry — Remmers Funcosil range — approximately 7% active ingredient by mass — ready-to-use (not a concentrate)",
@@ -121,7 +119,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#cc0000",
     name: "Sika Sikagard-680 S",
     descriptionLine: "TODO: owner confirm — Sikagard-680 S appears to be an acrylic/methacrylic resin surface protective COATING, NOT a penetrating silane/siloxane sealer — verify correct current Sika AU penetrating sealer product (e.g. Sikagard-700 S or Sikagard-850 SL) with Sika Australia technical before specifying",

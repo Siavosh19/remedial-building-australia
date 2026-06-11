@@ -372,7 +372,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#be123c",
     name: "Sika Sikalastic Moisture Seal",
     descriptionLine: "Sika moisture-tolerant primer/sealer for damp substrates prior to membrane application",
@@ -406,7 +405,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Westox Building Products",
     brandUrl: "https://www.westox.com.au",
-    tdsUrl: "https://www.westox.com.au",
     accentColor: "#64748b",
     name: "Westox Wesprime",
     descriptionLine: "Westox primer/sealer for membrane preparation on balcony and wet area substrates",

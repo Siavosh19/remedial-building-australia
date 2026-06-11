@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Schluter Systems",
     brandUrl: "https://www.schluter.com.au",
-    tdsUrl: "https://www.schluter.com.au",
     accentColor: "#f59e0b",
     name: "Schluter DILEX-EKE",
     descriptionLine: "Recycled rigid PVC anchoring legs with CPE (chlorinated polyethylene) 5 mm movement zone — corner and movement joint profile for tiled floor/wall junctions and balcony surfaces",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#ef4444",
     name: "Sikaflex Expansion Joint System",
     descriptionLine: "Sika polyurethane sealant expansion joint system — trafficable balcony and podium deck joints",
@@ -111,7 +109,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco CPG Australia",
     brandUrl: "https://www.tremcosealants.com.au",
-    tdsUrl: "https://www.tremcosealants.com.au",
     accentColor: "#22c55e",
     name: "Tremco Emshield DFR",
     descriptionLine: "EPDM dual-seal expansion joint cover system — trafficable deck and balcony applications",

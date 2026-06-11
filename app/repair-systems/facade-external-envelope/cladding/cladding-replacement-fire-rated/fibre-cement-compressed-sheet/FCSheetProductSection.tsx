@@ -117,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Cemintel Australia",
     brandUrl: "https://www.csr.com.au/cemintel",
-    tdsUrl: "https://www.csr.com.au/cemintel/products",
     accentColor: "#7c3aed",
     name: "Cemintel Barestone — Compressed FC Sheet",
     descriptionLine: "Compressed FC flat sheet — CSR Cemintel — non-combustible NCC 2022 — primed smooth face — compatible with Cemintel joint treatment range — CSR national supply",
@@ -155,7 +154,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "BGC Fibre Cement Australia",
     brandUrl: "https://www.bgcfibrecement.com.au",
-    tdsUrl: "https://www.bgcfibrecement.com.au/products",
     accentColor: "#b45309",
     name: "BGC FC Compressed Sheet — External Cladding Grade",
     descriptionLine: "BGC compressed FC flat sheet — non-combustible NCC 2022 — primed — competitive pricing — strong WA supply with growing eastern states distribution",

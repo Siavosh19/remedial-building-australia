@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions_products/product-finder.html",
     accentColor: "#e2003a",
     name: "Sika Sikagard-705 L Primer",
     descriptionLine: "Penetrating acrylic primer and consolidant for dusty, porous and poorly bonded concrete and render surfaces — improves topcoat adhesion on difficult substrates — Sika Australia",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parchem Construction Supplies (Fosroc)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#0369a1",
     name: "Parchem Nitoprime 25 / Nitocote DP",
     descriptionLine: "Penetrating primer and consolidant for concrete, render and masonry — binds dusty and porous surfaces before protective coating — Fosroc product through Parchem nationally",
@@ -111,7 +109,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products",
     accentColor: "#7c3aed",
     name: "Mapei Primer S",
     descriptionLine: "Acrylic primer and consolidant for concrete, render and masonry — stabilises absorbent and dusty surfaces — used before Mapei coating and waterproofing systems",
@@ -147,7 +144,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
     accentColor: "#b45309",
     name: "Ardex P 82 / Ardex P 51 Primer",
     descriptionLine: "Penetrating acrylic primer and consolidant for concrete and cementitious substrates — stabilises dusty and porous surfaces before Ardex coating and waterproofing systems",
@@ -181,7 +177,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#059669",
     name: "Dulux Concrete & Render Sealer",
     descriptionLine: "Penetrating sealer and consolidant for concrete and render — stabilises dusty and chalky surfaces before Dulux exterior topcoat — widely available through Dulux trade and Bunnings",

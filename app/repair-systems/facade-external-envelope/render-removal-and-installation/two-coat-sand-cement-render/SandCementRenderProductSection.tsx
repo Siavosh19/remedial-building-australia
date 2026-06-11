@@ -23,7 +23,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Boral Construction Materials",
     brandUrl: "https://www.boral.com.au",
-    tdsUrl: "https://www.boral.com.au/products/cement",
     accentColor: "#E05A1A",
     name: "Boral OPC / Fly Ash Cement + Brickies Sand",
     descriptionLine: "Site-batched sand/cement render — OPC and plasticising sand — two-coat scratch and float — concrete and masonry substrates",
@@ -61,7 +60,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "BGC Cement (Australia)",
     brandUrl: "https://www.bgccement.com.au",
-    tdsUrl: "https://www.bgccement.com.au/products",
     accentColor: "#003F7D",
     name: "BGC General Purpose Cement + Pre-mixed Render",
     descriptionLine: "OPC general purpose cement for site-batched render — or BGC pre-bagged render mixes — two-coat sand/cement system — AS 3700",
@@ -93,7 +91,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Haymes Paint / Parchem",
     brandUrl: "https://www.haymes.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#1C3E6E",
     name: "Parchem Pre-bagged Render / Haymes Render",
     descriptionLine: "Pre-bagged sand/cement render — factory-controlled mix — two-coat system — concrete and masonry facade installation",

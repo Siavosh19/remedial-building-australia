@@ -115,7 +115,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stratco / Metroll",
     brandUrl: "https://www.stratco.com.au/",
-    tdsUrl: "https://www.stratco.com.au/products/wall-cladding/",
     accentColor: "#7c3aed",
     name: "Colorbond Walling Stock Head Flashing Profile",
     descriptionLine: "Stock Colorbond head flashing profiles — immediate availability — standard sizes — 1–3 day delivery from trade store",
@@ -152,7 +151,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Metroll / BlueScope Colorbond",
     brandUrl: "https://www.metroll.com.au/",
-    tdsUrl: "https://www.metroll.com.au/products/",
     accentColor: "#b45309",
     name: "Colorbond Ultra Anti-Capillary Custom Head Flashing",
     descriptionLine: "Custom Colorbond Ultra with anti-capillary groove and end dams — high-specification — shop drawing — C4 coastal rated",

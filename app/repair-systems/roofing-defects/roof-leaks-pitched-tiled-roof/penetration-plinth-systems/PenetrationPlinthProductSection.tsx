@@ -75,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks Industries",
     brandUrl: "https://www.deks.com.au",
-    tdsUrl: "https://www.deks.com.au",
     accentColor: "#78350f",
     name: "Deks Elevated Pipe Collar System",
     descriptionLine: "Deks elevated collar or plinth accessory — raised adapter or extension for weathered elevation around a pipe penetration on low-pitch roof areas — TODO: confirm current Deks elevated collar product name and availability",

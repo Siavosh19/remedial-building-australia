@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral Aluminium Australia",
     brandUrl: "https://www.capral.com.au",
-    tdsUrl: "https://www.capral.com.au/products/aluminium-sheet",
     accentColor: "#e2003a",
     name: "Capral Solid Aluminium Sheet — 3 mm / 4 mm — PVDF Finish",
     descriptionLine: "Solid aluminium sheet 3–4 mm thickness with PVDF fluoropolymer finish — non-combustible — high-rise NCC 2022 compliant — Capral national distribution — AAMA 2605 coating standard",
@@ -81,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral / Metal Distributors Australia",
     brandUrl: "https://www.capral.com.au",
-    tdsUrl: "https://www.capral.com.au/products/aluminium-sheet",
     accentColor: "#0369a1",
     name: "Solid Aluminium Sheet — 3 mm / 4 mm — Powder-Coat Finish",
     descriptionLine: "Solid aluminium cladding panel — polyester powder-coat finish — non-combustible NCC 2022 — wide colour range — site-specific powder coating — AAMA 2604 class finish",
@@ -119,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fairview Architectural Australia",
     brandUrl: "https://www.fairview.com.au",
-    tdsUrl: "https://www.fairview.com.au/products/solid-aluminium",
     accentColor: "#7c3aed",
     name: "Fairview Solid Aluminium Cassette Panel — PVDF",
     descriptionLine: "Fairview solid aluminium cassette panel system — PVDF finish — concealed-fix cassette — non-combustible NCC 2022 — Australian brand — pre-fabricated panels to project sizes",

@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#0369a1",
     name: "Mapei Planitop XS + Polypropylene Fibre Admixture",
     descriptionLine:
@@ -80,7 +79,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Primus Basecoat + Polypropylene Fibres",
     descriptionLine:
@@ -116,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#166534",
     name: "Sika SikaTop-122 Plus + SikaFibre AD12",
     descriptionLine:
@@ -152,7 +149,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/en-AU",
-    tdsUrl: "https://www.fosroc.com/en-AU",
     accentColor: "#7c3aed",
     name: "Fosroc Renderoc Classic + Polypropylene Fibre",
     descriptionLine:

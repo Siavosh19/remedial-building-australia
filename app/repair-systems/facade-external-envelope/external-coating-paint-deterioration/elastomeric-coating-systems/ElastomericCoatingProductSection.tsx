@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#e2003a",
     name: "TODO: owner confirm — Dulux Acratex Weathershield Flex (PRODUCT NOT FOUND — 'Dulux Acratex Weathershield Flex' does not appear in the current Dulux Acratex product range on dulux.com.au — confirmed Acratex elastomeric products include AcraShield Advance, Elastomeric 201, Acraskin, and AcraGuard — no 'Weathershield Flex' product found — confirm correct current Dulux Acratex elastomeric facade coating product name with Dulux Acratex technical)",
     descriptionLine: "TODO: owner confirm — High-build elastomeric acrylic exterior coating for masonry and render — flexible, waterproof, UV-resistant — two-coat system for facades with minor crack movement and moisture exposure (product name not confirmed — see name field)",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Solver Paints Australia",
     brandUrl: "https://www.solverpaints.com.au",
-    tdsUrl: "https://www.solverpaints.com.au/products",
     accentColor: "#0369a1",
     name: "Solver Permalastic",
     descriptionLine: "Elastomeric acrylic exterior coating for masonry and render — flexible waterproof system with UV resistance for strata facade repainting — two-coat over primer",
@@ -116,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Taubmans Australia",
     brandUrl: "https://www.taubmans.com.au",
-    tdsUrl: "https://www.taubmans.com.au/products",
     accentColor: "#7c3aed",
     name: "TODO: owner confirm — Taubmans Endure Exterior Flex (product appears discontinued — 'Taubmans Endure Exterior' range has been discontinued per trade sources — confirm whether a current Taubmans flexible/elastomeric exterior facade coating exists in the current AU range — confirm with Taubmans technical)",
     descriptionLine: "TODO: owner confirm — Flexible exterior acrylic topcoat with elastomeric properties for masonry and render facades — enhanced waterproofing and crack tolerance in a durable two-coat exterior system (product appears discontinued — see name field)",
@@ -153,7 +150,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Nutech Paints Australia",
     brandUrl: "https://www.nutechpaint.com.au",
-    tdsUrl: "https://www.nutechpaint.com.au/products",
     accentColor: "#b45309",
     name: "TODO: owner confirm — Nutech Nuvol Elastomeric Coating (PRODUCT NOT FOUND — 'Nutech Nuvol' not found on nutechpaint.com.au at time of verification — Nutech product range includes roof coatings (NuFlex, TileFlex), concrete sealers, and sports surface coatings — no facade elastomeric product called 'Nuvol' found — confirm whether a Nutech facade elastomeric coating product exists in the current AU range with Nutech technical)",
     descriptionLine: "TODO: owner confirm — High-performance elastomeric coating for masonry and render — specialist remedial product designed for waterproofing, UV resistance and crack accommodation on Australian strata facades (product name 'Nuvol' not confirmed on Nutech AU — see name field)",
@@ -227,7 +223,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#dc2626",
     name: "Mapei Elastocolor Paint",
     descriptionLine: "Elastomeric waterproof coating for concrete and masonry facades — Mapei specialist remedial system with high elongation, anti-carbonation protection and UV resistance for strata and commercial buildings",

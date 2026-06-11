@@ -175,7 +175,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Davco / Laticrete Australia",
     brandUrl: "https://davco.com.au",
-    tdsUrl: "https://davco.com.au",
     accentColor: "#16a34a",
     name: "Davco K11 Flex",
     descriptionLine: "Two-part acrylic-modified cementitious waterproofing system — bonds to damp substrates — under-tile balcony, terrace, basement, and wet area use — nationally stocked",
@@ -298,7 +297,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Westox Building Products",
     brandUrl: "https://www.westox.com.au",
-    tdsUrl: "https://www.westox.com.au",
     accentColor: "#64748b",
     name: "Westox Flexible Cement Membrane / FCM Kit 18kg",
     descriptionLine: "Westox two-component cementitious flexible waterproofing membrane — 18 kg kit",

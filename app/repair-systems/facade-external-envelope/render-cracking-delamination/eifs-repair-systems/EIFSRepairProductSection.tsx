@@ -23,7 +23,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products-catalogue",
     accentColor: "#0055A5",
     name: "Mapei Silexcolor Coat / Mapetherm System",
     descriptionLine: "EIFS base coat and finish coat system — AR glass mesh reinforcement — EPS board substrate — facade insulation and render system repair",
@@ -60,7 +59,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sto Australia",
     brandUrl: "https://www.sto.com/au",
-    tdsUrl: "https://www.sto.com/au/products",
     accentColor: "#E2001A",
     name: "Sto Armat Classic / StoSilco Colour",
     descriptionLine: "EIFS base coat, mesh reinforcement, and silicone resin finish coat — Sto system — commercial and strata facade repair",
@@ -97,7 +95,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux / Acratex (Australia)",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/trade",
     accentColor: "#E3051B",
     name: "Dulux Acratex Render Systems",
     descriptionLine: "Polymer-modified render and texture coating system — EIFS-compatible base coat and finish coat — concrete and masonry facade repair",

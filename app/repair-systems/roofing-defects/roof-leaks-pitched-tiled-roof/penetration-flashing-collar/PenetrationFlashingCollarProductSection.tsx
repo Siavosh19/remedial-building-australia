@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks Industries (Australian)",
     brandUrl: "https://www.deks.com.au",
-    tdsUrl: "https://www.deks.com.au",
     accentColor: "#0369a1",
     name: "Deks D-1 Multi Flashing",
     descriptionLine: "Standard pre-formed EPDM collar for round pipe penetrations through tiled roofs — sizes 13mm to 150mm pipe OD — square base plate, round EPDM collar — PVC plumbing and conduit penetrations",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks Industries",
     brandUrl: "https://www.deks.com.au",
-    tdsUrl: "https://www.deks.com.au",
     accentColor: "#0369a1",
     name: "Deks 45 Aluminium Flashing",
     descriptionLine: "Aluminium base plate with EPDM collar — for concrete tile profiles, steeper pitches, or installations requiring a metal base plate — higher thermal movement tolerance",
@@ -114,7 +112,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks Industries",
     brandUrl: "https://www.deks.com.au",
-    tdsUrl: "https://www.deks.com.au",
     accentColor: "#0369a1",
     name: "Deks Poly Multi-Pitch",
     descriptionLine: "Polypropylene multi-pitch flashing collar — adjustable pitch angle — suitable for pitches 0–45° — round EPDM collar",

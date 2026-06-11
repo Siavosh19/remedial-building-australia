@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote EPS Render System",
     descriptionLine:
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#0369a1",
     name: "Mapei EIFS Remediation System",
     descriptionLine:
@@ -113,7 +111,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#166534",
     name: "Sika EIFS System (SikaCeram / Sika Facade)",
     descriptionLine:
@@ -148,7 +145,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sto Australia",
     brandUrl: "https://www.sto.com/au",
-    tdsUrl: "https://www.sto.com/au",
     accentColor: "#1e40af",
     name: "Sto EIFS System (StoTherm / StoLevell)",
     descriptionLine:

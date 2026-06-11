@@ -67,7 +67,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
     accentColor: "#0369a1",
     name: "Sika AnchorFix-3+ — Epoxy Acrylate for Structural Stitch Bars and Dowels",
     descriptionLine: "TODO: owner confirm — AnchorFix-3+ not found on current Sika AU chemical anchoring page (current lineup is AnchorFix-1, AnchorFix-3001, AnchorFix-3030); chemistry described as 'epoxy acrylate' is also unconfirmed for current product — 2-part epoxy acrylate — crack stitching and rebar dowelling — dry and damp holes — 330 mL cartridge — 0°C to 40°C installation range",
@@ -134,7 +133,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products",
     accentColor: "#dc2626",
     name: "Mapei Mapefox EW — Epoxy Adhesive for Crack Stitching in Wet Conditions",
     descriptionLine: "TODO: owner confirm — Mapei AU site blocked (Cloudflare); could not verify product name, EW wet-hole rating, or availability from live source — 2-part epoxy — EW variant rated for damp and wet holes — crack stitching in basements and retaining walls — dispenser gun with static mixing nozzle",

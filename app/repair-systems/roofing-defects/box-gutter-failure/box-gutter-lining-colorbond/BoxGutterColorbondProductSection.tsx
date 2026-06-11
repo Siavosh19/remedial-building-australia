@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "BlueScope Steel",
     brandUrl: "https://www.bluescopesteel.com.au",
-    tdsUrl: "https://www.bluescopesteel.com.au/steel-products/colorbond-ultra-steel",
     accentColor: "#0369a1",
     name: "BlueScope Colorbond Ultra Steel (box gutter lining)",
     descriptionLine: "Colorbond Ultra is BlueScope's premium roofing steel with enhanced durability for box gutter applications. 0.55BMT to 1.0mm available. Custom roll-formed by fabricator to box gutter profile. Widest colour range.",
@@ -52,15 +51,15 @@ const PRODUCTS: Product[] = [
       { label: "Custom roll-formed", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "BlueScope Colorbond Ultra Steel is BlueScope's premium pre-painted steel product with an enhanced coating system providing superior corrosion resistance compared to standard Colorbond. For box gutter lining applications, Colorbond Ultra steel coil is supplied to a specialist roofing or sheet metal fabricator who roll-forms the steel to the required box gutter profile on site or in their workshop. The fabricator determines the profile geometry based on the hydraulic design, catchment area, and existing gutter dimensions. Colorbond Ultra provides the widest colour range of any Colorbond product and is particularly suited to Class 2 strata buildings in coastal, industrial, or high-corrosivity environments where the extended coating durability is warranted. The BlueScope warranty for Colorbond Ultra is the longest in the Colorbond range — confirm current warranty terms and conditions with BlueScope Steel. BMT (base metal thickness) selection — typically 0.55BMT for residential or light commercial and 0.75mm to 1.0mm for heavier-duty or wider gutter applications — must be confirmed by the roofing engineer or fabricator against the box gutter design and AS 1562.3 minimum thickness requirements. Do not specify Colorbond Ultra based on colour alone — confirm the steel grade, BMT, and coating system against the project environment and AS 1562.3.",
+      "BlueScope Colorbond Ultra Steel is BlueScope's premium pre-painted steel product with an enhanced coating system providing superior corrosion resistance compared to standard Colorbond. For box gutter lining applications, Colorbond Ultra steel coil is supplied to a specialist roofing or sheet metal fabricator who roll-forms the steel to the required box gutter profile on site or in their workshop. The fabricator determines the profile geometry based on the hydraulic design, catchment area, and existing gutter dimensions. Colorbond Ultra provides the widest colour range of any Colorbond product and is particularly suited to Class 2 strata buildings in coastal, industrial, or high-corrosivity environments where the extended coating durability is warranted. The BlueScope warranty for Colorbond Ultra is the longest in the Colorbond range — confirm current warranty terms and conditions with BlueScope Steel. BMT (base metal thickness) selection — typically 0.55BMT for residential or light commercial and 0.75mm to 1.0mm for heavier-duty or wider gutter applications — must be confirmed by the roofing engineer or fabricator against the box gutter design and AS 1562.3 minimum thickness requirements. Do not specify Colorbond Ultra based on colour alone — confirm the steel grade, BMT, and coating system against the project environment and AS 1562.1.",
     technicalProperties: [
       "Pre-painted Colorbond Ultra steel — enhanced ACTIVATE technology coating system — superior corrosion resistance compared to standard Colorbond",
-      "BMT range: 0.55mm to 1.0mm — confirm required BMT against AS 1562.3 and hydraulic design",
+      "BMT range: 0.55mm to 1.0mm — confirm required BMT against AS 1562.1 and hydraulic design",
       "Full Colorbond colour range — widest colour selection in the Colorbond product family",
       "Custom roll-formed by specialist fabricator to the specified box gutter profile — not a standard off-the-shelf profile",
       "Welded or mechanically lapped and sealed joints depending on fabricator capability and specification — confirm joint method with fabricator",
       "Suitable for coastal, industrial, and high-corrosivity environments where enhanced coating durability is warranted",
-      "AS 1562.3 compliance depends on correct design, fabrication, and installation — not an inherent product property",
+      "AS 1562.1 compliance depends on correct design, fabrication, and installation — not an inherent product property",
     ],
     limitations: [
       "Not a standard stock item — Colorbond Ultra box gutter lining must be custom roll-formed by a specialist fabricator — lead time must be confirmed before programming works",
@@ -68,7 +67,7 @@ const PRODUCTS: Product[] = [
       "Colorbond steel must not be in direct contact with copper, lead, or treated timber without appropriate separation — dissimilar metal corrosion risk",
       "All laps, joints, and penetrations must be sealed — leaking laps at joints are a primary failure mode in box gutter linings",
       "Colorbond is not suitable for use in highly acidic or alkaline environments — confirm suitability for the specific exposure environment with BlueScope",
-      "Box gutter design must comply with AS 1562.3 and must be confirmed by a licensed hydraulic or roofing engineer before fabrication — product alone does not guarantee compliance",
+      "Box gutter design must comply with AS 1562.1 and must be confirmed by a licensed hydraulic or roofing engineer before fabrication — product alone does not guarantee compliance",
     ],
     procurementSources: [
       { name: "BlueScope Steel — coil supply to fabricators", url: "https://www.bluescopesteel.com.au" },
@@ -102,7 +101,7 @@ const PRODUCTS: Product[] = [
     ],
     limitations: [
       "Lead time for custom-formed profiles varies by branch and current workload — confirm before programming works",
-      "BMT and profile design must be confirmed by the roofing engineer against AS 1562.3 — Lysaght fabrication does not substitute for design engineering",
+      "BMT and profile design must be confirmed by the roofing engineer against AS 1562.1 — Lysaght fabrication does not substitute for design engineering",
       "Confirm Colorbond grade (standard vs Ultra) with Lysaght at time of order — do not assume Ultra is the default",
       "Not suitable for copper contact or contact with treated timber without separation — standard Colorbond dissimilar metal precautions apply",
       "All joints, laps, and outlet connections must be detailed and sealed by the installing contractor — Lysaght supplies fabricated sections, not a complete system",
@@ -138,7 +137,7 @@ const PRODUCTS: Product[] = [
     limitations: [
       "Branch coverage differs from Lysaght in some regions — confirm local availability before specifying",
       "Lead time for custom profiles varies — confirm before programming works",
-      "BMT and profile design must be confirmed by the roofing engineer against AS 1562.3",
+      "BMT and profile design must be confirmed by the roofing engineer against AS 1562.1",
       "All standard Colorbond dissimilar metal precautions apply — no copper or treated timber contact without separation",
       "Confirm current product range and fabrication capability with Stramit before specifying",
     ],
@@ -203,7 +202,7 @@ const TECH_INFO = {
     "Standard box gutter remediation where a pre-painted, colour-matched roofing steel lining is required",
   ],
   selectionCriteria: [
-    "BMT (base metal thickness) — confirm against AS 1562.3 minimum requirements and hydraulic design",
+    "BMT (base metal thickness) — confirm against AS 1562.1 minimum requirements and hydraulic design",
     "Colorbond grade — standard Colorbond vs Colorbond Ultra — based on site environment and corrosivity category",
     "Colour selection — confirm against existing roof colour for visual match",
     "Fabricator capability — confirm the selected fabricator can roll-form the required profile to the required dimensions and tolerances",
@@ -220,7 +219,7 @@ const TECH_INFO = {
     "Custom-formed profiles cannot be returned to stock — incorrect dimensions result in material waste and programme delays",
   ],
   standardsNotes: [
-    "AS 1562.3 — Design and Installation of Sheet Metal Roof and Wall Cladding — Part 3: Aluminium — note: Colorbond is covered under the steel standard AS 1562.1",
+    "AS 1562.1 — Design and Installation of Sheet Metal Roof and Wall Cladding — Part 1: Steel — primary standard for Colorbond box gutter design and installation (AS 1562.3 covers aluminium and does not apply to Colorbond steel)",
     "AS 1562.1 — Design and Installation of Sheet Metal Roof and Wall Cladding — Part 1: Steel — primary standard for Colorbond box gutter design and installation",
     "NCC Volume One — performance requirements for roof drainage on Class 2 buildings",
     "BlueScope Colorbond Technical Specification and Warranty Conditions — confirm current version before specifying",

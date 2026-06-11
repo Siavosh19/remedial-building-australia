@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/masonry-restoration.html",
     accentColor: "#0369a1",
     name: "Sika Monotop-612 / SikaRep Repointing Mortar — Polymer-Modified",
     descriptionLine: "Sika polymer-modified cementitious repointing mortar — improved bond and reduced shrinkage — for hard exposed masonry joints, parapets, and coastal zones — confirm current Sika AU product designation before specifying",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products",
     accentColor: "#b45309",
     name: "Mapei Mape-Antique MC / Mapegrout BM — Polymer-Modified Repointing Mortar",
     descriptionLine: "Mapei polymer-modified masonry repointing mortars — Mape-Antique MC (conservation masonry) or Mapegrout BM (structural repair base) — improved bond, reduced shrinkage — national supply through Mapei and Bayset",
@@ -116,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parchem Construction Supplies (Fosroc)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#7c3aed",
     name: "Fosroc RepaBuild / Renderoc Series — Polymer-Modified Repointing Mortar",
     descriptionLine: "Fosroc polymer-modified cementitious mortars distributed by Parchem Construction Supplies — RepaBuild MF (fine repair) / Renderoc Classic — for masonry repointing and surface repair on Class 2 facades",
@@ -154,7 +151,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
     accentColor: "#be123c",
     name: "Ardex X 32 / Ardex Endura Repointing Mortar — Polymer-Modified",
     descriptionLine: "Ardex polymer-modified masonry repair and repointing mortar — Ardex X 32 (masonry repair mortar) — improved bond and durability for exposed parapet and coastal repointing — national supply through Ardex distributors",

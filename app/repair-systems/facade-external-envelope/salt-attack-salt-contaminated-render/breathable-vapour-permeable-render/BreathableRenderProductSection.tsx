@@ -36,7 +36,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers (Australia)",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#0369a1",
     name: "Remmers Außenputz WTA",
     descriptionLine: "WTA-classified vapour-permeable exterior render — high pore volume — low sd value — exterior masonry",
@@ -71,7 +70,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Caparol Australia (DAW SE)",
     brandUrl: "https://www.caparol.com.au",
-    tdsUrl: "https://www.caparol.com.au",
     accentColor: "#7c2d12",
     name: "Caparol Capagrund / RenoExpert",
     descriptionLine: "Vapour-permeable render system for damp masonry facades — European specialist brand — Australian availability TODO confirm",
@@ -103,7 +101,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Breathable Render",
     descriptionLine: "Breathable polymer-modified render — exterior facade — vapour permeability rating to be confirmed from TDS",

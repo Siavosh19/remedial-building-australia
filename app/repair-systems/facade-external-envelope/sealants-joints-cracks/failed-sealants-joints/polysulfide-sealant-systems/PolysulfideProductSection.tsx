@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/au",
-    tdsUrl: "https://www.fosroc.com/au",
     accentColor: "#dc2626",
     name: "Fosroc Thioflex 600",
     descriptionLine: "Two-part polysulfide joint sealant — chemical resistant — suitable for concrete facade joints, water-retaining structures and immersed joint applications — widely used in Australian construction and remediation",
@@ -59,7 +58,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au",
     accentColor: "#0369a1",
     name: "Sika Sikaflex-2AP",
     descriptionLine: "Two-part polysulfide sealant — suitable for immersed joints, water-retaining structures and chemical-resistance applications — Australian market availability — confirm current designation with Sika Australia",
@@ -94,7 +92,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco Australia",
     brandUrl: "https://www.tremcoinc.com.au",
-    tdsUrl: "https://www.tremcoinc.com.au",
     accentColor: "#7c3aed",
     name: "Tremco Thiokol 2235M",
     descriptionLine: "Two-part polysulfide joint sealant — chemical resistant — fuel resistant formulation — used in Australian facade, civil and industrial construction for immersed and chemical exposure joints — confirm availability with Tremco Australia",

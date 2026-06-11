@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/waterproofing/liquid-applied-membranes/sikamembrane-720.html",
     accentColor: "#dc2626",
     name: "Sika® Sikalastic®-560 / SikaMembrane®-720 liquid-applied membrane",
     descriptionLine: "Sika liquid-applied polyurethane or hybrid waterproofing membrane — used for balcony hob and threshold waterproofing termination — applied up and over the hob upstand and terminated at the top — requires primer and reinforcement mesh at changes of direction — confirm current product with Sika Australia",

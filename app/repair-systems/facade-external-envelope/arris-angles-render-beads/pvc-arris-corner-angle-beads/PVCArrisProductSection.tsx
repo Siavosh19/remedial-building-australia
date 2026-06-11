@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rondo Building Services",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo PVC Corner Bead (UV-stabilised)",
     descriptionLine: "UV-stabilised PVC arris corner bead — lightweight, corrosion-resistant — exterior and interior render corners on masonry and AAC substrates",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "USG Boral",
     brandUrl: "https://www.usgboral.com.au",
-    tdsUrl: "https://www.usgboral.com.au",
     accentColor: "#92400e",
     name: "USG Boral PVC Arris Bead",
     descriptionLine: "PVC arris corner bead — exterior and interior render — corrosion-resistant — USG Boral distribution",
@@ -108,7 +106,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trade Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#0f766e",
     name: "Trade-Supply PVC Corner and Arris Bead",
     descriptionLine: "Trade-supply UV-stabilised PVC arris and corner beads — 25mm and 35mm leg — available through render and plasterboard merchants nationally",

@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardexaustralia.com",
-    tdsUrl: "https://www.ardexaustralia.com",
     accentColor: "#f97316",
     name: "ARDEX WPM 612 TPO",
     descriptionLine: "Thermoplastic polyolefin (TPO) single-ply roofing membrane — heat-welded seams — exposed UV-rated flat roof system — mechanically fixed or fully adhered installation — confirm current specifications with ARDEX Australia technical",
@@ -73,7 +72,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardexaustralia.com",
-    tdsUrl: "https://www.ardexaustralia.com",
     accentColor: "#f97316",
     name: "ARDEX WPM 615 TPO",
     descriptionLine: "Reinforced thermoplastic polyolefin (TPO) single-ply roofing membrane — polyester fleece reinforced — heat-welded seams — exposed UV-rated flat roof system — confirm current specifications with ARDEX Australia technical",

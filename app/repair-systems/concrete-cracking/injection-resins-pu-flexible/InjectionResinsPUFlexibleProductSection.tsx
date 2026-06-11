@@ -34,7 +34,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
     accentColor: "#0369a1",
     name: "Sika Injection-107 — Single-Component Hydrophilic PU Injection Resin",
     descriptionLine: "1-component hydrophilic PU — water-reactive expanding foam — wet and actively leaking cracks, joints, and honeycombs — free foaming factor ~22× on contact with water",
@@ -69,7 +68,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#15803d",
     name: "TODO: owner confirm — Fosroc Nitoflex PU is not listed on the current fosroc.com.au product range; current Fosroc AU PU injection products are Nitofill PU130 (hydrophobic, semi-flexible, 20 kg) and Nitofill PU150 (hydrophilic, flexible, 20 kg) — confirm correct product and update",
     descriptionLine: "TODO: owner confirm — Nitoflex PU not found on fosroc.com.au (June 2026); Fosroc AU current hydrophobic PU injection product is Nitofill PU130 (mixed with accelerator, expands up to 25×) — verify from current Fosroc AU TDS",
@@ -104,7 +102,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products",
     accentColor: "#dc2626",
     name: "TODO: owner confirm — Mapei Mapeject PU 25H / PU 25HD product names not confirmed on current mapei.com/au product listing; verify that these PU injection formulations are available in Australia and update product name if different",
     descriptionLine: "TODO: owner confirm — Mapeject PU 25H and PU 25HD not confirmed on mapei.com/au (June 2026); Mapei AU PU injection product availability requires direct confirmation — all specs below are unverified for the Australian market",

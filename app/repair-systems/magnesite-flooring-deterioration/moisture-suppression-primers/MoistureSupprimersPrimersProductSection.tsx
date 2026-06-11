@@ -25,7 +25,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products/ardex-mc-rapid/",
     accentColor: "#0369a1",
     name: "Ardex MC Rapid — Two-Part Epoxy Moisture Control Primer",
     descriptionLine: "Two-part epoxy moisture-suppressing floor primer for high-RH magnesite and concrete substrates — confirm AU pack size with Ardex",
@@ -62,7 +61,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/flooring.html",
     accentColor: "#be123c",
     name: "Sika Primer MB — Two-Part Epoxy Moisture-Suppressing Floor Primer",
     descriptionLine: "Two-part epoxy moisture-suppressing floor primer for magnesite and concrete before self-levelling — 4 kg kit",

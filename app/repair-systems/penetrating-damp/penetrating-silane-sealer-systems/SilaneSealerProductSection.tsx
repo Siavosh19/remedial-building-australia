@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wacker Chemie Australia",
     brandUrl: "https://www.wacker.com/en/au",
-    tdsUrl: "https://www.wacker.com/en/au",
     accentColor: "#003d7a",
     name: "Wacker Silres BS 290 — Solvent-Based Silane/Siloxane Penetrating Water Repellent",
     descriptionLine: "TODO: owner confirm — card previously listed 'Wacker Silres BS 45' but BS 45 is a water-dilutable paint binder emulsion, not a penetrating masonry sealer. Wacker's penetrating sealer range is the BS 290 / BS 1001 series. Verify the correct AU Wacker penetrating sealer product name with Wacker Chemie Australia before publishing.",
@@ -80,7 +79,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#1a5276",
     name: "Remmers Funcosil SL",
     descriptionLine: "Solvent-based oligomeric silane — deep-penetrating facade and masonry water repellent — Remmers WTA-referenced system",
@@ -117,7 +115,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Evonik Australia",
     brandUrl: "https://www.evonik.com/en/country/australia",
-    tdsUrl: "https://www.evonik.com/en/country/australia",
     accentColor: "#6a1fa0",
     name: "Protectosil BHN",
     descriptionLine: "n-octyltriethoxysilane — penetrating silane sealer for concrete and masonry — widely specified for chloride barrier and penetrating damp protection",

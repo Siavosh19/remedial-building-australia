@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au/solutions_products/02/020101/02010101_sikaflex11fc/Sikaflex-11FC.html",
     accentColor: "#dc2626",
     name: "Sika Sikaflex-11FC+",
     descriptionLine: "One-part moisture-curing polyurethane facade sealant — paintable — excellent adhesion to masonry, concrete, render and aluminium — ±25% movement accommodation — most widely specified one-part PU sealant in Australian facade remediation",
@@ -61,7 +60,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco Australia",
     brandUrl: "https://www.tremcoinc.com.au",
-    tdsUrl: "https://www.tremcoinc.com.au",
     accentColor: "#0369a1",
     name: "Tremco Vulkem 116",
     descriptionLine: "One-part moisture-curing polyurethane facade sealant — high movement accommodation — suitable for facade movement joints, expansion joints and perimeter sealing — primer may be required on some substrates",
@@ -97,7 +95,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bostik Australia",
     brandUrl: "https://www.bostik.com/au",
-    tdsUrl: "https://www.bostik.com/au",
     accentColor: "#7c3aed",
     name: "Bostik Seal N Flex 1",
     descriptionLine: "One-part polyurethane sealant — suitable for masonry, concrete and render movement joints — UV-stable — paintable — widely available through Australian trade and hardware channels",

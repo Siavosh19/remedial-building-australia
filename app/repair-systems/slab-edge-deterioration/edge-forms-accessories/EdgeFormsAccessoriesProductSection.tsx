@@ -96,7 +96,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dincel Construction System",
     brandUrl: "https://www.dincel.com.au",
-    tdsUrl: "https://www.dincel.com.au/products",
     accentColor: "#15803d",
     name: "Dincel PVC Permanent Structural Edge and Kicker Form",
     descriptionLine: "Permanent interlocking PVC structural formwork for slab edge and kicker applications — stays in place as part of the repair — fire-rated and structural formwork system",

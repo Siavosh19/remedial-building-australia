@@ -34,7 +34,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght — BlueScope Steel",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com/products/roofing-and-walling/custom-orb",
+    tdsUrl: "https://www.lysaght.com/profiles/custom-orb",
     accentColor: "#0369a1",
     name: "Lysaght Custom Orb — Zincalume",
     descriptionLine:
@@ -72,7 +72,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght — BlueScope Steel",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com/products/roofing-and-walling/trimdek",
+    tdsUrl: "https://www.lysaght.com/profiles/trimdek",
     accentColor: "#374151",
     name: "Lysaght Trimdek — Zincalume",
     descriptionLine:
@@ -108,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stramit — Fletcher Building",
     brandUrl: "https://www.stramit.com.au",
-    tdsUrl: "https://www.stramit.com.au/products/roofing",
     accentColor: "#15803d",
     name: "Stramit (Zincalume equivalent)",
     descriptionLine:

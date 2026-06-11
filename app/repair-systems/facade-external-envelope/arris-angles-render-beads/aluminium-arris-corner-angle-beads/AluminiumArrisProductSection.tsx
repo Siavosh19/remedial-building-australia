@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trim-Tex / Rondo",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo Aluminium Corner Bead (Standard Duty)",
     descriptionLine: "Standard duty aluminium arris corner bead — 25mm x 25mm or 35mm x 35mm flange — exterior and interior render corners on masonry, AAC, and concrete block substrates",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "USG Boral",
     brandUrl: "https://www.usgboral.com.au",
-    tdsUrl: "https://www.usgboral.com.au",
     accentColor: "#92400e",
     name: "USG Boral Aluminium Arris Bead (Standard / Heavy Duty)",
     descriptionLine: "Aluminium arris corner bead — standard and heavy duty profiles — exterior and interior render — USG Boral distribution",
@@ -110,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Unifix / Buildex",
     brandUrl: "https://www.unifix.com.au",
-    tdsUrl: "https://www.unifix.com.au",
     accentColor: "#0f766e",
     name: "Unifix Aluminium Corner Bead (Perforated Flange)",
     descriptionLine: "Aluminium arris corner bead — perforated flange — exterior and interior masonry and render — Unifix / Buildex national distribution",
@@ -142,7 +139,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Beadex / Trade Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#1e40af",
     name: "Trade-Supply Aluminium Arris Bead",
     descriptionLine: "Trade-supply aluminium arris and corner beads — standard and heavy duty — 25–35mm leg — available through plasterboard and render merchants nationally",

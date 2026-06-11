@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral Aluminium",
     brandUrl: "https://www.capral.com.au",
-    tdsUrl: "https://www.capral.com.au/products",
     accentColor: "#0369a1",
     name: "Capral Aluminium Step Flashing",
     descriptionLine: "Site-formed step and counter-flashing from Capral 5000-series mill-finish aluminium sheet (0.7mm, 0.9mm) — lightweight, corrosion resistant, can be painted to match wall or roof colour",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Metalcorp",
     brandUrl: "https://www.metalcorp.com.au",
-    tdsUrl: "https://www.metalcorp.com.au",
     accentColor: "#b45309",
     name: "Metalcorp Aluminium Flashing",
     descriptionLine: "Aluminium flashing from Metalcorp sheet in mill-finish and pre-painted — used for step and counter-flashing applications on pitched tiled roofs",

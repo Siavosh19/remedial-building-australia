@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#0369a1",
     name: "Remmers Silikat-Imprägnierung SP (Silicate Impregnation)",
     descriptionLine: "Penetrating silicate salt-retardant treatment — reduces capillary salt migration in masonry and concrete before re-rendering — Remmers Australia",
@@ -73,7 +72,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#0369a1",
     name: "Mapei Antipluviol S (Silane/Siloxane Impregnation)",
     descriptionLine: "Silane/siloxane water-repellent impregnation — reduces water and salt absorption in masonry and concrete substrates before render — Mapei Australia",
@@ -107,7 +105,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Salt-Retardant Substrate Treatment",
     descriptionLine: "Salt-retardant penetrating treatment — exterior masonry facades with salt contamination before re-rendering — Saint-Gobain Weber Australia",

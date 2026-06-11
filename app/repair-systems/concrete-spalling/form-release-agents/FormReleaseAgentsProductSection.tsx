@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/concrete-formwork/form-release-agents.html",
     accentColor: "#be123c",
     name: "Sika Separol WB — Water-Based Form Release Agent",
     descriptionLine: "Water-based, low-VOC form release agent for steel and plywood formwork in concrete spalling patch repair and reinstatement",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia (via Parchem)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/form-release-agents",
     accentColor: "#7c2d12",
     name: "Fosroc Ronaform — Water-Based Release Agent",
     descriptionLine: "Water-based low-stain release agent for steel, plywood, and coated formwork — good coverage rate and low transfer to concrete face",

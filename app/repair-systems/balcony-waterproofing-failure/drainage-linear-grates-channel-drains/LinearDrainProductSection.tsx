@@ -88,7 +88,6 @@ KERDI-LINE is available in multiple lengths from 300mm to 1200mm and in standard
   {
     fullLabel: "ACO Building Drainage",
     brandUrl: "https://www.acoau.com.au",
-    tdsUrl: "https://www.acoau.com.au/products/building-drainage",
     accentColor: "#16a34a",
     name: "ACO Stainless Linear Channel Drain",
     descriptionLine: "Stainless steel linear channel drain — slot and perforated grate formats — fixed and adjustable-height — Class A to Class C load — suitable for residential balcony, communal terrace, and podium applications — widely stocked in Australia",
@@ -175,7 +174,6 @@ Infinity Drain products are primarily distributed through specialist tile showro
   {
     fullLabel: "Geberit Australia",
     brandUrl: "https://www.geberit.com.au",
-    tdsUrl: "https://www.geberit.com.au/products/drainage/shower-channels",
     accentColor: "#dc2626",
     name: "Geberit CleanLine Linear Drain",
     descriptionLine: "Stainless steel linear channel drain — slot grate — fixed-height — Class A pedestrian load — liquid-applied membrane compatible — available through Geberit Australian plumbing merchant network — standard residential balcony and terrace specification",

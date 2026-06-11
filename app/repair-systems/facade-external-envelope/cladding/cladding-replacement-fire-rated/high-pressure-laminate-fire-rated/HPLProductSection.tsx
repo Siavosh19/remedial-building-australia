@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Formica Group / Abet Laminati",
     brandUrl: "https://www.formica.com/en-au",
-    tdsUrl: "https://www.formica.com/en-au/products/exterior",
     accentColor: "#e2003a",
     name: "Formica Exterior Grade Compact HPL — FR Class",
     descriptionLine: "High-pressure laminate exterior grade compact panel — phenolic resin core with FR additives — through-colour or decorative face — non-combustible grade — EN 438-7 compliant — concealed-fix facade",
@@ -155,7 +154,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Abet Laminati / Architectural Systems",
     brandUrl: "https://www.abetlaminati.com",
-    tdsUrl: "https://www.abetlaminati.com/en/products/exterior",
     accentColor: "#b45309",
     name: "Abet HPL Exterior — Compact Decorative Phenolic Panel",
     descriptionLine: "Abet Laminati compact HPL exterior panel — fire-rated phenolic core — EN 438-7 — wide colour and texture range — Italian manufacture — concealed or face-fixed facade system",

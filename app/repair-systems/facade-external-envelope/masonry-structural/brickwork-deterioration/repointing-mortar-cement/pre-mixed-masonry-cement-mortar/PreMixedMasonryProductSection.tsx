@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Boral Australia",
     brandUrl: "https://www.boral.com.au",
-    tdsUrl: "https://www.boral.com.au/building-products/masonry",
     accentColor: "#b45309",
     name: "Boral Pre-mixed Masonry Cement Repointing Mortar",
     descriptionLine: "Boral factory-blended masonry cement repointing mortar — add water only — colour-matched range available — national supply through Boral trade centres and hardware merchants",

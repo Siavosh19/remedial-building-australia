@@ -40,7 +40,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Selleys",
     brandUrl: "https://www.selleys.com.au",
-    tdsUrl: "https://www.selleys.com.au/sealants-adhesives/fillers/no-more-gaps-flexible-filler/",
+    tdsUrl: "https://www.selleys.com.au/products/putty-and-fillers/gap-filler/no-more-gaps-interior-multipurpose/",
     accentColor: "#ef4444",
     name: "Selleys No More Gaps Interior Multipurpose",
     descriptionLine:
@@ -79,7 +79,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/sealing-bonding/joint-sealants/sikaflex-111-stick-and-seal.html",
     accentColor: "#3b82f6",
     name: "Sikaflex-111 Stick & Seal",
     descriptionLine:
@@ -96,7 +95,7 @@ const PRODUCTS: Product[] = [
     systemDescription:
       "Sikaflex-111 Stick & Seal is a 1-component moisture-curing flexible adhesive-sealant based on silane-terminated polymer technology used for movement joints and crack repair in internal render and masonry surfaces. Suitable for wider internal cracks and movement joints where a flexible acrylic filler does not provide sufficient movement accommodation — accommodates ongoing thermal movement and is overpaintable once cured with compatible interior paint systems. Bonds to a wide variety of substrates including concrete, masonry, ceramic, wood, metal and plastics without primer in most cases.\n\nFor active movement joints, install backer rod to control sealant depth and prevent three-sided adhesion. Prime joint faces per Sika TDS on porous substrates (Sika Primer-3 N is referenced). Not suitable for continuously wet conditions without specific Sika approval. Confirm current product designation and TDS with Sika Australia before specifying — product names are subject to periodic revision.",
     technicalProperties: [
-      "1-part moisture-curing polyurethane — no site mixing required, reduces application error",
+      "1-part moisture-curing silane-terminated polymer (STP) — no site mixing required, reduces application error",
       "Overpaintable after full cure with compatible interior paint systems — confirm with Sika TDS",
       "Good elongation and movement accommodation for internal movement joints and wider cracks in render and masonry",
       "Bonds to a broad range of building substrates including render, masonry, concrete, and timber",

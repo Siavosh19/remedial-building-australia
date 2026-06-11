@@ -148,7 +148,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/sealing-bonding/joint-sealants/sikaflex-11-fc-plus.html",
     accentColor: "#f97316",
     name: "Sikaflex-11 FC+",
     descriptionLine: "1-part polyurethane sealant for sealing collar-to-pipe and collar-to-flashing lap joints at roof and wall penetrations",

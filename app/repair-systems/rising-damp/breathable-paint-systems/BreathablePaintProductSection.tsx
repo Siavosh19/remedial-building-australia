@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Keim Australia",
     brandUrl: "https://www.keim.com.au",
-    tdsUrl: "https://www.keim.com.au",
     accentColor: "#2d6a4f",
     name: "Keim Granital",
     descriptionLine: "Mineral silicate paint — exceptionally breathable — petrification bond to masonry — the reference standard for breathable paint on rising damp walls",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au",
     accentColor: "#c8102e",
     name: "Dulux Weathershield Breathable Masonry Paint",
     descriptionLine: "Water-based breathable masonry paint — exterior use — for masonry surfaces requiring improved moisture vapour permeability",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tikkurila Australia",
     brandUrl: "https://www.tikkurila.com.au",
-    tdsUrl: "https://www.tikkurila.com.au",
     accentColor: "#003580",
     name: "Tikkurila Silora / Mineral Masonry Paint",
     descriptionLine: "Mineral-based breathable masonry paint — for external masonry — breathable topcoat for rising damp remediation and renovation",

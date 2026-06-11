@@ -43,7 +43,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Vinidex",
     brandUrl: "https://www.vinidex.com.au",
-    tdsUrl: "https://www.vinidex.com.au",
     accentColor: "#ef4444",
     name: "Vinidex PVC Round Downpipe DN100",
     descriptionLine: "UV-stabilised PVC round downpipe DN100 for rainwater discharge from gutters — lightweight, corrosion-free, available in standard lengths and colours",
@@ -81,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com",
     accentColor: "#f97316",
     name: "Lysaght Square Line Downpipe",
     descriptionLine: "Pre-formed Colorbond steel square downpipe — compatible with Lysaght fascia gutters, available in full Colorbond colour range",
@@ -119,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Calder",
     brandUrl: "https://www.calder.com.au",
-    tdsUrl: "https://www.calder.com.au",
     accentColor: "#eab308",
     name: "Calder Copper Round Downpipe",
     descriptionLine: "Seamless copper tube downpipe for heritage or premium replacement where existing downpipes are copper — develops natural patina, extremely long service life",
@@ -156,7 +153,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks",
     brandUrl: "https://www.deks.com.au",
-    tdsUrl: "https://www.deks.com.au",
     accentColor: "#22c55e",
     name: "Deks D-1 Multi Pipe Flashing Collar",
     descriptionLine: "EPDM rubber self-sealing pipe collar for downpipe penetrations through roofs and external walls — suits DN50–DN100 pipe diameter",
@@ -194,7 +190,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/sealing-bonding/joint-sealants/sikaflex-11-fc-plus.html",
     accentColor: "#3b82f6",
     name: "Sikaflex-11 FC+",
     descriptionLine: "1-part polyurethane sealant for sealing downpipe-to-collar, downpipe-to-gutter outlet and gutter joint connections",

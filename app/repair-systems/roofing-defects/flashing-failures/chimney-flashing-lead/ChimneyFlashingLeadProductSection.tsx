@@ -37,7 +37,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Austral Lead",
     brandUrl: "https://www.australlead.com.au",
-    tdsUrl: "https://www.australlead.com.au",
     accentColor: "#475569",
     name: "Austral Lead Code 4 Sheet (chimney apron)",
     descriptionLine: "Code 4 (1.8mm) lead sheet for chimney front apron, soakers, and step flashing at chimney/roof junction — standard specification for Australian chimney flashings — AS 3703",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Austral Lead",
     brandUrl: "https://www.australlead.com.au",
-    tdsUrl: "https://www.australlead.com.au",
     accentColor: "#334155",
     name: "Austral Lead Code 5 Sheet (chimney back gutter)",
     descriptionLine: "Code 5 (2.24mm) lead sheet for chimney back gutter (saddle flashing) — heavier weight resists wind uplift at back gutter position — AS 3703 — heritage and standard applications",
@@ -117,7 +115,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Calder Industrial",
     brandUrl: "https://www.calderindustrial.com.au",
-    tdsUrl: "https://www.calderindustrial.com.au",
     accentColor: "#7c3aed",
     name: "Calder Industrial Lead Sheet (chimney)",
     descriptionLine: "Calder Industrial lead sheet Code 4 and Code 5 — alternative supplier to Austral Lead for chimney flashing applications — front apron, soakers, and back gutter — AS 3703",

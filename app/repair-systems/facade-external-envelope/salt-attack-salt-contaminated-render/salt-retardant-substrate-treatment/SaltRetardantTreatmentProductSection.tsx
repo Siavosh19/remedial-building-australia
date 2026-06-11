@@ -36,7 +36,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#be123c",
     name: "Sika Sikacryl-621",
     descriptionLine: "Crystalline / silicate substrate treatment for salt-affected masonry — penetrating — reduces capillary salt migration",
@@ -70,7 +69,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers (Australia)",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#0369a1",
     name: "Remmers Sulfatex",
     descriptionLine: "Silane-modified substrate treatment for salt-affected masonry — part of the Remmers WTA renovating render system",
@@ -105,7 +103,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Aquron Services Australia",
     brandUrl: "https://www.aquron.com.au",
-    tdsUrl: "https://www.aquron.com.au",
     accentColor: "#7c2d12",
     name: "Aquron 2000",
     descriptionLine: "Silicate crystalline concrete and masonry treatment — permanently seals capillary pores — Australian-supplied specialist product",

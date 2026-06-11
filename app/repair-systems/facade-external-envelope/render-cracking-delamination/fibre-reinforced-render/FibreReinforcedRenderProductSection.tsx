@@ -24,7 +24,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "SikaRenderEM Fibre",
     descriptionLine: "Fibre-reinforced polymer-modified render — alkali-resistant glass fibre — improved crack resistance — concrete and masonry facades",
@@ -61,7 +60,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products-catalogue",
     accentColor: "#0055A5",
     name: "Mapei Planitop Fast 330",
     descriptionLine: "Fibre-reinforced, rapid-setting polymer-modified repair mortar — glass fibre reinforcement — facade patch and render repair",
@@ -98,7 +96,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/en-au",
-    tdsUrl: "https://www.fosroc.com/en-au/products",
     accentColor: "#007A33",
     name: "Fosroc Renderoc LA",
     descriptionLine: "Lightweight, fibre-reinforced polymer-modified render mortar — low-alkalinity AR glass fibre — facade and soffit render repair",

@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/mortar-concrete-repair/sikagrout-212.html",
     accentColor: "#dc2626",
     name: "Sika® SikaGrout®-212 / SikaRep® rapid-set mortar",
     descriptionLine: "Sika rapid-set cementitious repair mortar — used for forming or reinstating balcony door hob upstands where a fast return to service is required — achieves structural strength within hours — confirm current product name and specification with Sika Australia before specifying",

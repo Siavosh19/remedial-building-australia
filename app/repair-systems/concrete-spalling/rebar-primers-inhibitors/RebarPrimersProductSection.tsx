@@ -114,7 +114,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia (via Parchem)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/",
+    tdsUrl: "https://www.fosroc.com.au/product/nitoprime-zincrich",
     accentColor: "#7c2d12",
     name: "Fosroc Nitoprime Zincrich — Epoxy Zinc-Rich Rebar Primer",
     descriptionLine: "Two-component epoxy zinc-rich primer for cleaned reinforcement — highest-durability barrier primer for aggressive chloride and marine environments — requires abrasive blast clean preferred",
@@ -149,7 +149,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/",
     accentColor: "#92400e",
     name: "Parchem Zinc Primer — General Purpose Rebar Primer",
     descriptionLine: "Single-component cementitious zinc-rich rebar primer — general purpose for standard spalling repairs not in aggressive marine or coastal environments",
@@ -184,6 +183,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://www.sika.com.au",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/steel-reinforcmentprimers/sika-monotop-910n.html",
     accentColor: "#be123c",
     name: "Sika MonoTop-910 N",
     descriptionLine: "Cementitious rebar anti-corrosion primer and bonding agent for concrete spalling repair — brush-applied to cleaned and prepared reinforcement — confirm current formulation, coverage, and system design with Sika Australia technical",

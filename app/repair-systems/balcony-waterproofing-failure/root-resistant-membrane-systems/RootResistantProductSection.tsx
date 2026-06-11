@@ -301,7 +301,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia (via Parchem)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au",
     accentColor: "#0369a1",
     name: "Fosroc Nitoproof 210",
     descriptionLine: "Fosroc root-resistant sheet membrane system for planter boxes and podium slabs",

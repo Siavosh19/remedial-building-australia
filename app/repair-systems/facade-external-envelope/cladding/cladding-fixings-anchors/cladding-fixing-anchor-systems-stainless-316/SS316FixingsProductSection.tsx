@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Buildex / ITW",
     brandUrl: "https://www.itsco.com.au/buildex",
-    tdsUrl: "https://www.itsco.com.au/buildex/products/",
     accentColor: "#b45309",
     name: "Buildex SS316 Self-Drilling Screw — FC-to-Aluminium",
     descriptionLine: "316 stainless self-drilling screw — FC sheet and panel to aluminium top-hat — HCR class, no pre-drilling required through rail",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Hilti Australia",
     brandUrl: "https://www.hilti.com.au/",
-    tdsUrl: "https://www.hilti.com.au/content/hilti/A_AU/en/products/anchor-systems/adhesive-anchors.html",
     accentColor: "#0369a1",
     name: "Hilti HIT-Z SS316 Chemical Anchor — Cladding Bracket to Concrete",
     descriptionLine: "316 stainless threaded rod chemical anchor — post-installed bracket to concrete or masonry — PROFIS Anchor engineered — pull-out test required",
@@ -116,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Buildex / ITW",
     brandUrl: "https://www.buildex.com.au/",
-    tdsUrl: "https://www.buildex.com.au/products/",
     accentColor: "#7c3aed",
     name: "Bi-Metal Drill Screw SS316 — FC Panel to Thick Steel Subframe",
     descriptionLine: "316 stainless shank with hardened carbon steel drill tip — drills FC panel to steel subframe 4–8 mm without pre-drilling",

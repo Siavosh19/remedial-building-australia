@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#0369a1",
     name: "Remmers Vorspritzmörtel SP (WTA Spray Slurry)",
     descriptionLine: "WTA spray slurry — cementitious bonding slurry for salt-affected substrates before WTA renovating render — Remmers Australia",
@@ -70,7 +69,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#0369a1",
     name: "Mapei Renderfix / Polymer Bonding Slurry for Salt Substrates",
     descriptionLine: "Polymer bonding slurry for salt-affected substrates — applied before salt-resistant render — exterior masonry and concrete facades — Mapei Australia",
@@ -102,7 +100,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Saline Primer / Salt Substrate Slurry",
     descriptionLine: "Saline-resistant primer or cementitious slurry for salt-affected substrates — exterior masonry facades — before salt-resistant render — Saint-Gobain Weber Australia",

@@ -76,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stramit",
     brandUrl: "https://www.stramit.com.au",
-    tdsUrl: "https://www.stramit.com.au",
     accentColor: "#b45309",
     name: "Stramit Colorbond Step Flashing",
     descriptionLine: "Stramit Colorbond steel step and counter-flashing — alternative to Lysaght — site-formed from Colorbond coil — same Colorbond colour range",

@@ -35,7 +35,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght / BlueScope Steel",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com",
     accentColor: "#0369a1",
     name: "Lysaght/BlueScope Colorbond Step Flashing",
     descriptionLine: "Factory-pre-painted Colorbond steel step and soaker flashing — site-formed by roofer — standard for all stepped wall-to-roof abutment flashing repairs on tiled roofs — full BlueScope Colorbond colour range",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stramit Corporation",
     brandUrl: "https://www.stramit.com.au",
-    tdsUrl: "https://www.stramit.com.au",
     accentColor: "#7c3aed",
     name: "Stramit Colorbond Step Flashing",
     descriptionLine: "Stramit Colorbond step flashing — formed from Colorbond coil — alternative to BlueScope/Lysaght for step and soaker flashing at wall-to-roof abutments on tiled pitched roofs",

@@ -41,7 +41,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions_products/02/02a015/02a015sa01/sikagard-550-w-elastic.html",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/protective-coatingslinings/sikagard-550-w-elastic.html",
     accentColor: "#e2003a",
     name: "Sika Sikagard 550 W Elastic",
     descriptionLine: "Specialist high-elongation elastomeric crack-bridging coating for concrete and masonry facades — Sika professional system for active crack accommodation, waterproofing and carbonation protection",
@@ -78,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#0369a1",
     name: "TODO: owner confirm — Mapei Elastocolor W (product name variation unconfirmed — the Mapei product confirmed in the Elastomeric Coating Systems file is 'Mapei Elastocolor Paint' — 'Elastocolor W' may be a separate crack-bridging grade or a European variant — confirm whether 'Elastocolor W' is the correct current AU crack-bridging product name, distinct from 'Elastocolor Paint', with Mapei Australia technical)",
     descriptionLine: "Elastomeric crack-bridging waterproof coating for concrete and masonry facades — Mapei specialist system with high elongation, anti-carbonation protection and UV resistance",
@@ -115,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#7c3aed",
     name: "Parchem Nitocote EP402",
     descriptionLine: "High-performance elastomeric waterproof facade coating with crack-bridging capability — Fosroc/Parchem specialist system for concrete and masonry facades with active crack movement",
@@ -152,7 +150,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Acratex Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#b45309",
     name: "TODO: owner confirm — Dulux Acratex Permaflex (PRODUCT NOT FOUND — 'Dulux Acratex Permaflex' does not appear in the current Dulux Acratex product range on dulux.com.au — the confirmed Acratex crack-bridging/high-elongation product is 'Acraskin' (or possibly 'AcraShield Advance') — no 'Permaflex' product found — confirm correct current crack-bridging product name in the Dulux Acratex range with Dulux Acratex technical)",
     descriptionLine: "TODO: owner confirm — High-elongation elastomeric crack-bridging exterior coating for masonry and render facades — Dulux Acratex specialist system for facades with active crack movement and waterproofing requirements (product name 'Permaflex' not confirmed in current Acratex range — see name field)",
@@ -189,7 +186,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
     accentColor: "#059669",
     name: "Ardex WPM 300 / Ardiflex",
     descriptionLine: "Elastomeric waterproof crack-bridging membrane system for concrete and masonry facades — Ardex specialist remedial product range for facades with active cracking and moisture ingress",

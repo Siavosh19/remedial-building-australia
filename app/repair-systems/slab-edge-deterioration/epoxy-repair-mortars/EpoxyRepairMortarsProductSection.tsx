@@ -25,7 +25,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-ra-88-plus/",
     accentColor: "#0369a1",
     name: "Ardex RA 88 Plus — 2-Part Structural Epoxy Repair Mortar",
     descriptionLine: "2-component epoxy aggregate repair mortar for high-strength slab edge repair — early return to service — 4.5 kg kit — Ardex trade supply nationally",
@@ -63,17 +63,17 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
+    tdsUrl: "https://aus.sika.com/en/construction/grouts-anchoring/epoxy-grouts/sikadur-42-au.html",
     accentColor: "#be123c",
     name: "Sika Sikadur-42 — 3-Part Epoxy Mortar for Slab Edge",
-    descriptionLine: "3-component solvent-free epoxy aggregate repair mortar — high compressive strength for slab edge, nosing, and structural patch repair — 5 kg kit — Sika Australia",
+    descriptionLine: "3-component solvent-free epoxy aggregate repair mortar — high compressive strength for slab edge, nosing, and structural patch repair — 14.6 kg kit — Sika Australia",
     productType: "3-component epoxy aggregate repair mortar — structural — Sika Australia",
     filterTags: ["3-Part", "Structural", "Slab-Edge", "High-Traffic", "Early-Strength", "Chemical-Resistant", "Epoxy"],
     techChips: [
       { label: "3-component epoxy", cls: "bg-rose-100 text-rose-800" },
       { label: "Solvent-free", cls: "bg-green-50 text-green-700" },
       { label: "High strength", cls: "bg-slate-100 text-slate-700" },
-      { label: "5 kg kit", cls: "bg-amber-50 text-amber-700" },
+      { label: "14.6 kg kit", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
       "Sika Sikadur-42 is a three-component, solvent-free epoxy aggregate repair mortar for high-strength structural slab edge, step nosing, and patch repair where early return to service and durability under traffic are required. The three components — epoxy resin (Part A), hardener (Part B), and selected aggregate (Part C) — are pre-proportioned in the kit and mixed together by mechanical drill mixer immediately before application. Sikadur-42 does not require a separate bonding primer on clean, dry, and prepared concrete surfaces — the epoxy resin provides direct adhesion to the substrate. In Australian carparks and external slab edge applications, Sikadur-42 is specified for: vehicular ramp nosings, carpark deck edge repairs, step treads subject to foot traffic, and slab edge repairs where early return to service is required within hours rather than days. The solvent-free formulation makes it suitable for use in enclosed carpark levels with limited ventilation. Fix edge form angles before applying. Confirm current pot life (typically 20–45 minutes at +20°C), minimum/maximum temperature, and repair depth per application from the current Sika Australia TDS.",
@@ -83,7 +83,7 @@ const PRODUCTS: Product[] = [
       "High compressive strength — early trafficable within 4–8 hours at +20°C",
       "Suitable for enclosed carparks — solvent-free, low emission",
       "Good abrasion and impact resistance for traffic and pedestrian use",
-      "5 kg kit — confirm current pack sizes from Sika Australia TDS",
+      "14.6 kg kit — confirm current pack sizes from Sika Australia TDS",
     ],
     limitations: [
       "Short pot life — confirm from current Sika TDS — plan batch sizes to avoid waste at end of pot life",
@@ -101,7 +101,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Australia",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/fosroc",
     accentColor: "#15803d",
     name: "Fosroc Nitomortar 50 — 3-Part Epoxy Slab Edge Repair Mortar",
     descriptionLine: "3-component epoxy aggregate mortar for structural slab edge and high-traffic repair — 5 kg kit — Fosroc product distributed nationally by Parchem",
@@ -138,7 +137,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Australia",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/fosroc",
+    tdsUrl: "https://www.fosroc.com.au/product/nitomortar-ap-au",
     accentColor: "#78716c",
     name: "Fosroc Nitomortar AP — 3-Part Structural Epoxy Repair Mortar",
     descriptionLine: "3-component epoxy aggregate repair mortar — 4.5 kg kit — structural slab edge repair with aggregate pack — Fosroc / Parchem nationally",

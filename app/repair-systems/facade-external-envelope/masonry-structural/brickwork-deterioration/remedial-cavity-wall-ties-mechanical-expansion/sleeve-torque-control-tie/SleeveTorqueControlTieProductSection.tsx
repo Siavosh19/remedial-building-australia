@@ -22,7 +22,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Rawlplug Australia",
     brandUrl: "https://www.rawlplug.com.au",
-    tdsUrl: "https://www.rawlplug.com.au/products/sleeve-anchors",
     accentColor: "#0369a1",
     name: "Rawlplug Stainless Sleeve Anchor (R-SL-A4)",
     descriptionLine: "Grade 316 stainless sleeve expansion anchor for structural masonry and cavity tie installation",
@@ -58,7 +57,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Würth Australia",
     brandUrl: "https://www.wuerth.com.au",
-    tdsUrl: "https://www.wuerth.com.au/products/anchors",
     accentColor: "#b45309",
     name: "Würth Stainless Sleeve Anchor",
     descriptionLine: "Grade 316 stainless sleeve anchor for solid masonry anchoring with torque-controlled installation",
@@ -94,7 +92,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Hilti Australia",
     brandUrl: "https://www.hilti.com.au",
-    tdsUrl: "https://www.hilti.com.au/products/anchors/sleeve-anchors",
     accentColor: "#dc2626",
     name: "Hilti HSA-R2 Stainless Sleeve Anchor",
     descriptionLine: "Grade 316 stainless sleeve anchor with ETA approval and PROFIS design software support",

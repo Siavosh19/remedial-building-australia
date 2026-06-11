@@ -52,7 +52,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Monier",
     brandUrl: "https://www.monier.com.au",
-    tdsUrl: "https://www.monier.com.au",
     accentColor: "#ef4444",
     name: "Monier Marseille Concrete Roof Tile",
     descriptionLine: "Concrete interlocking roof tile for direct replacement of broken or missing tiles on pitched tiled roofs",
@@ -88,7 +87,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Baumit",
     brandUrl: "https://www.baumit.com.au",
-    tdsUrl: "https://www.baumit.com.au",
     accentColor: "#f97316",
     name: "Baumit UniRepair Rebed Mortar",
     descriptionLine: "Polymer-modified cementitious mortar for rebedding ridge and hip tiles on pitched tiled roofs — replaces traditional sand/cement mix",
@@ -124,7 +122,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com",
     accentColor: "#eab308",
     name: "Lysaght Trimdek Valley Iron",
     descriptionLine: "Pre-formed Colorbond steel valley iron for pitched tiled roofs — directs rainwater from internal valleys to gutters",
@@ -160,7 +157,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks",
     brandUrl: "https://www.deks.com.au",
-    tdsUrl: "https://www.deks.com.au",
     accentColor: "#22c55e",
     name: "Deks D-1 Multi Pipe Flashing",
     descriptionLine: "EPDM rubber self-sealing pipe flashing collar for roof penetrations — suits pipe diameters 0–115mm on pitched tiled and metal roofs",
@@ -197,7 +193,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#3b82f6",
     name: "Bradford Anticon Sarking",
     descriptionLine: "Reflective foil sarking/underlay installed beneath roof tiles — provides thermal insulation, condensation control and secondary weather resistance",
@@ -233,7 +228,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/sealing-bonding/joint-sealants/sikaflex-11-fc-plus.html",
     accentColor: "#8b5cf6",
     name: "Sikaflex-11 FC+",
     descriptionLine: "1-part polyurethane sealant for sealing ridge tile joints, flashing-to-tile transitions and roof penetration perimeters",
@@ -270,7 +264,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Monier",
     brandUrl: "https://www.monier.com.au",
-    tdsUrl: "https://www.monier.com.au",
     accentColor: "#ec4899",
     name: "Monier Vibrant Single Roman Tile",
     descriptionLine: "Concrete interlocking single-roman profile roof tile — alternative profile for buildings where Marseille match is not available",
@@ -305,7 +298,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Boral",
     brandUrl: "https://www.boral.com.au",
-    tdsUrl: "https://www.boral.com.au",
     accentColor: "#6366f1",
     name: "Boral Terracotta Roof Tile",
     descriptionLine: "Terracotta clay interlocking roof tile for replacement of broken or missing tiles on buildings with original terracotta roof — confirm profile match before ordering",

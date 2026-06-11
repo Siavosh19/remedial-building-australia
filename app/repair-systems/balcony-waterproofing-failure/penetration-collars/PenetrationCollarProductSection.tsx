@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#0369a1",
     name: "ARDEX Pre-formed PVC Pipe Collar",
     descriptionLine: "Pre-formed PVC flanged pipe collar — standard pipe diameters — compatible with ARDEX liquid-applied membrane systems — membrane laps over collar flange — external balcony and terrace penetration sealing",
@@ -83,7 +82,6 @@ The collar flange must be set at the correct height relative to the membrane app
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#16a34a",
     name: "Mapei Pre-formed Pipe Collar",
     descriptionLine: "Pre-formed PVC flanged pipe collar — standard pipe diameters — compatible with Mapei liquid-applied membrane systems — membrane laps over collar flange — external balcony and terrace penetration sealing",
@@ -203,7 +201,6 @@ Membrane compatibility must be confirmed before applying — the collar base fla
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#0284c7",
     name: "Site-formed Collar — ARDEX System Components",
     descriptionLine: "Site-formed penetration collar using ARDEX liquid-applied membrane and reinforcing fabric — for non-standard pipe diameters, existing penetrations, and irregular sections — ARDEX membrane system only — applicator skill required",
@@ -245,7 +242,6 @@ Site-formed collars require greater applicator skill than pre-formed collars and
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#15803d",
     name: "Site-formed Collar — Mapei System Components",
     descriptionLine: "Site-formed penetration collar using Mapei liquid-applied membrane and reinforcing fabric — for non-standard pipe diameters, existing penetrations, and irregular sections — Mapei membrane system only — applicator skill required",

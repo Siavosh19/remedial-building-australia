@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au",
     accentColor: "#dc2626",
     name: "Sika Primer-3N",
     descriptionLine: "Universal sealant adhesion primer — one-part moisture-curing — suitable for priming concrete, masonry, render, mortar and similar porous substrates before Sikaflex sealant application — most widely specified Sika sealant primer in Australian facade remediation",
@@ -58,7 +57,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au",
     accentColor: "#0369a1",
     name: "Sika Primer-215",
     descriptionLine: "Silicone sealant adhesion primer — suitable for non-porous substrates including aluminium, glass and UPVC — used prior to SikaSil silicone sealant application on aluminium window frames and glazing perimeters",
@@ -92,7 +90,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco Australia",
     brandUrl: "https://www.tremcoinc.com.au",
-    tdsUrl: "https://www.tremcoinc.com.au",
     accentColor: "#7c3aed",
     name: "Tremco 636 Primer",
     descriptionLine: "Universal sealant adhesion primer — suitable for concrete, masonry, aluminium, glass and other substrates prior to Tremco sealant application — widely used in Australian facade remediation with Tremco sealant systems",

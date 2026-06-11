@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/dulux-acra-prep-alkali-resistant-primer",
     accentColor: "#ef4444",
     name: "TODO: owner confirm — Dulux alkali-resistant primer (current AU product name)",
     descriptionLine:
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Taubmans",
     brandUrl: "https://www.taubmans.com.au",
-    tdsUrl: "https://www.taubmans.com.au/products/taubmans-3-in-1-ceiling-and-wall",
     accentColor: "#3b82f6",
     name: "TODO: owner confirm — Taubmans interior ceiling paint (current AU product name)",
     descriptionLine:

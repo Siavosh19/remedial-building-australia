@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "LYSAGHT / Colorbond — custom fabrication",
     brandUrl: "https://www.lysaght.com/en-au",
-    tdsUrl: "https://www.lysaght.com/en-au",
     accentColor: "#dc2626",
     name: "Custom-fabricated Colorbond head flashing",
     descriptionLine: "Custom-fabricated Colorbond steel head flashing — fabricated by a local sheet metal fabricator from Colorbond coated steel — full colour range available — suitable for non-coastal and low-to-moderate exposure environments — the standard colour-matched head flashing for inland and sheltered strata buildings",
@@ -58,7 +57,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "LYSAGHT / Zincalume — custom fabrication",
     brandUrl: "https://www.lysaght.com/en-au",
-    tdsUrl: "https://www.lysaght.com/en-au",
     accentColor: "#0369a1",
     name: "Custom-fabricated Zincalume head flashing",
     descriptionLine: "Custom-fabricated Zincalume (Zn/Al alloy coated) steel head flashing — unpainted mill finish — for concealed applications where the flashing will be rendered over or where a mill finish is acceptable — improved corrosion resistance over galvanised but not suitable for coastal environments",
@@ -94,7 +92,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stratco / Fielders — pre-formed Colorbond sections",
     brandUrl: "https://www.stratco.com.au",
-    tdsUrl: "https://www.stratco.com.au",
     accentColor: "#7c3aed",
     name: "Pre-formed Colorbond head flashing section",
     descriptionLine: "Pre-formed Colorbond steel Z-profile or hook-nose head flashing section — available ex-stock from Stratco, Fielders and flashings suppliers — cut to length on site — suitable for standard reveals where profile matches project requirements",

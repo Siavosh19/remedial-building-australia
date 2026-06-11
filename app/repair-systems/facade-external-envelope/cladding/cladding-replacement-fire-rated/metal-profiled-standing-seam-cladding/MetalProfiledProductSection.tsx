@@ -119,7 +119,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fielders Steel / Stramit Australia",
     brandUrl: "https://www.fielders.com.au",
-    tdsUrl: "https://www.fielders.com.au/products/wall-cladding",
     accentColor: "#7c3aed",
     name: "Fielders KingFlor / Panelrib — Profiled Steel Wall Cladding",
     descriptionLine: "Fielders profiled steel wall cladding — Panelrib, Longline, and concealed-fix profiles — Colorbond steel — non-combustible — face or concealed fix — NCC 2022 — national rollformer network",
@@ -157,7 +156,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "KME Group / Aurubis — Copper Facade",
     brandUrl: "https://www.kme.com",
-    tdsUrl: "https://www.kme.com/architectural",
     accentColor: "#b45309",
     name: "KME Copper — Standing Seam Facade",
     descriptionLine: "Copper standing seam wall cladding — natural, pre-oxidised, or lacquered finish — non-combustible — 100yr+ service life — premium architectural — coastal corrosion resistant — patinating finish",

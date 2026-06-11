@@ -34,7 +34,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Buildex — ITW Australia",
     brandUrl: "https://www.buildex.com.au",
-    tdsUrl: "https://www.buildex.com.au/products/roofing",
     accentColor: "#dc2626",
     name: "Buildex Climaseal — Class 3",
     descriptionLine:
@@ -72,7 +71,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Buildex — ITW Australia",
     brandUrl: "https://www.buildex.com.au",
-    tdsUrl: "https://www.buildex.com.au/products/roofing",
     accentColor: "#0369a1",
     name: "Buildex Galvadrive — Class 4",
     descriptionLine:

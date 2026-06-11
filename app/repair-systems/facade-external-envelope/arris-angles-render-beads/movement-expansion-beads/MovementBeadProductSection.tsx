@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rondo Building Services",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo Aluminium Movement / Expansion Bead",
     descriptionLine: "Aluminium movement and expansion bead — accommodates thermal and structural movement in render plane — panel joints and substrate changes — exterior facade render",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "USG Boral / Beadex",
     brandUrl: "https://www.usgboral.com.au",
-    tdsUrl: "https://www.usgboral.com.au",
     accentColor: "#92400e",
     name: "USG Boral Aluminium / PVC Movement Bead",
     descriptionLine: "Aluminium or PVC movement bead — render expansion and control joints — exterior facade panels and substrate changes",
@@ -108,7 +106,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trade Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#0f766e",
     name: "Trade-Supply PVC Movement / Expansion Bead",
     descriptionLine: "PVC movement and expansion beads — render control joints at substrate changes and panel joints — trade supply nationally",

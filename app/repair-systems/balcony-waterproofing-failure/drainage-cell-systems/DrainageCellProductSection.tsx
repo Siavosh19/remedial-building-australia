@@ -248,7 +248,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX UD 150 Drainage Moisture Control System",
     descriptionLine: "ARDEX drainage and moisture control cell system for planter boxes and podium slabs",

@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Velux Australia",
     brandUrl: "https://www.velux.com.au",
-    tdsUrl: "https://www.velux.com.au/products/roof-windows/centre-pivot-roof-windows",
     accentColor: "#0369a1",
     name: "Velux GGL CK02",
     descriptionLine: "Centre-pivot roof window; 55×78cm; factory-lacquered pine; laminated inner / tempered outer glazing; low-e argon-filled IGU; 10-year guarantee; suits 15–90° pitches.",
@@ -80,7 +79,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fakro Australia",
     brandUrl: "https://www.fakro.com.au",
-    tdsUrl: "https://www.fakro.com.au/products/roof-windows/fixed-non-opening/ftp-v-u3/",
     accentColor: "#16a34a",
     name: "Fakro FTP-V U3",
     descriptionLine: "Fixed non-opening skylight; 55×78cm to 94×140cm; PVC-coated pine frame; 3-glass unit with argon fill; Uf=1.2 W/m²K; AS 4285 compliant; universal flashing collar.",
@@ -121,7 +119,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Velux Australia",
     brandUrl: "https://www.velux.com.au",
-    tdsUrl: "https://www.velux.com.au/products/flat-roof-solutions/fixed-curb-mount",
     accentColor: "#0369a1",
     name: "Velux FCM Fixed Curb-Mount Skylight",
     descriptionLine: "Laminated low-e glass; aluminium frame; curb-mounted for flat-to-low pitch; IP4X rated; suitable for flat roofs with 2° min pitch; suits single-ply membrane roofs.",

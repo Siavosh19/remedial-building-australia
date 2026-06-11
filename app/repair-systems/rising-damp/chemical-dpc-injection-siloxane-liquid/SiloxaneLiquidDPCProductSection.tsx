@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#1a5276",
     name: "Remmers Kiesol",
     descriptionLine: "Concentrated silane/siloxane liquid DPC injection concentrate — the benchmark liquid injection product for rising damp",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Safeguard Europe / Wykamol",
     brandUrl: "https://www.wykamol.com.au",
-    tdsUrl: "https://www.wykamol.com.au",
     accentColor: "#1e3a8a",
     name: "Wykamol Basecourse DPC Fluid",
     descriptionLine: "Siloxane-based liquid DPC injection fluid — for dense and low-porosity masonry where cream does not achieve full penetration",

@@ -91,7 +91,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Soprema (Canada / International) — confirm Australian distributor",
     brandUrl: "https://www.soprema.com",
-    tdsUrl: "https://www.soprema.ca/en/products-systems/colphene-h",
     accentColor: "#0369a1",
     name: "Soprema Colphene H",
     descriptionLine: "Hot-applied rubberised asphalt waterproofing membrane — mineral filler reinforced — two-pour system with fabric — podium decks, plaza decks, inverted roofs, green roofs, planters, and below-grade applications — confirm Australian availability before specifying",
@@ -130,7 +129,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/roofing/bituminous-roofing/hot-melt-systems.html",
     accentColor: "#be123c",
     name: "SikaShield Hot Melt 50/70 (UK product name — TODO: owner confirm current Australian product name with Sika Australia)",
     descriptionLine: "Hot melt bitumen waterproofing element for inverted roofs, ballasted roofs, podium decks, and terraces — UK product name SikaShield Hot Melt 50/70 confirmed on gbr.sika.com — application temp 165°C–185°C confirmed — BBA certified (UK) — confirm current Australian product name, availability, and accredited applicator with Sika Australia before specifying",

@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Big River Group",
     brandUrl: "https://www.bigrivergroup.com.au",
-    tdsUrl: "https://www.bigrivergroup.com.au",
     accentColor: "#b45309",
     name: "Big River Group H2 Treated Pine Battens",
     descriptionLine: "H2 LOSP treated pine roof battens — standard batten for non-termite-hazard areas — AS 1604 H2 treatment — 38×38, 50×38 and 75×50 standard sizes",
@@ -81,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Carter Holt Harvey",
     brandUrl: "https://www.chh.com.au",
-    tdsUrl: "https://www.chh.com.au",
     accentColor: "#15803d",
     name: "Carter Holt Harvey H2/H3 Treated Battens",
     descriptionLine: "H2 and H3 preservative-treated pine roof battens — H3 required in termite hazard areas (AS 3660) and high moisture zones — AS 1604 compliant",
@@ -122,7 +120,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "SUPALOC",
     brandUrl: "https://www.supaloc.com.au",
-    tdsUrl: "https://www.supaloc.com.au",
     accentColor: "#1d4ed8",
     name: "SUPALOC Engineered Roof Batten",
     descriptionLine: "Proprietary engineered metal/composite batten — rot and termite resistant — used where timber battens have repeatedly failed — alternative to treated timber",

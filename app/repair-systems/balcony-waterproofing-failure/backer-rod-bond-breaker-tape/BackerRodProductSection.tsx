@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Nomaflex / Carpenter Co.",
     brandUrl: "https://www.nomaflex.com.au",
-    tdsUrl: "https://www.nomaflex.com.au",
     accentColor: "#0ea5e9",
     name: "Nomaflex Closed-Cell Backer Rod",
     descriptionLine: "Closed-cell polyethylene foam backer rod — controls sealant depth and prevents three-sided adhesion in movement joints",
@@ -74,7 +73,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco CPG Australia",
     brandUrl: "https://www.tremcosealants.com.au",
-    tdsUrl: "https://www.tremcosealants.com.au",
     accentColor: "#22c55e",
     name: "Tremco Closed Cell Backer Rod",
     descriptionLine: "Closed-cell polyethylene foam backer rod — Tremco CPG system-compatible — movement joint depth control",

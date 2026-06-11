@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com",
     accentColor: "#ef4444",
     name: "Lysaght Quad Fascia Gutter",
     descriptionLine: "Pre-formed Colorbond steel quad profile fascia gutter — most common external gutter profile for pitched roof replacement on Class 2 strata buildings",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com",
     accentColor: "#3b82f6",
     name: "Lysaght Half-Round Fascia Gutter",
     descriptionLine: "Pre-formed Colorbond steel half-round profile fascia gutter — traditional profile suited to heritage or period-style buildings",
@@ -114,7 +112,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Leaf Stopper",
     brandUrl: "https://www.leafstopper.com.au",
-    tdsUrl: "https://www.leafstopper.com.au",
     accentColor: "#22c55e",
     name: "Leaf Stopper Stainless Mesh Gutter Guard",
     descriptionLine: "Fine-weave stainless steel mesh leaf guard fitted over replacement fascia gutters — reduces blockage frequency and maintenance interval",

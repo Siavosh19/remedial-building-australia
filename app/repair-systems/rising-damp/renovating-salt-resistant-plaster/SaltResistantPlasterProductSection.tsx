@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#1a5276",
     name: "Remmers SP Renovation Plaster System",
     descriptionLine: "WTA 2-9-04 compliant two-coat renovation plaster system — salt-resistant undercoat and finish plaster for rising damp remediation",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#e63a22",
     name: "Mapei Mape-Antique Renovation Plaster System",
     descriptionLine: "Salt-tolerant renovation plaster system for rising damp remediation — Mapei brand — internal masonry wall replastering",
@@ -110,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#cc0000",
     name: "Sika Vandex Cementitious Render Systems",
     descriptionLine: "Cementitious salt-tolerant render and slurry products for masonry walls with moisture and salt issues — positive-side application",

@@ -40,7 +40,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Helifix Australia",
     brandUrl: "https://www.helifix.com.au",
-    tdsUrl: "https://www.helifix.com.au/products/dryfix",
+    tdsUrl: "https://www.helifix.com.au/products/remedial-products/dryfix/",
     accentColor: "#0369a1",
     name: "Helifix BowTie DryFix",
     descriptionLine: "Grade 316 stainless helical friction-fit tie installed dry without grout or resin — immediate load transfer through friction engagement with the masonry",
@@ -78,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Thor Helical Australia",
     brandUrl: "https://www.thorhelical.com.au",
-    tdsUrl: "https://www.thorhelical.com.au/dryfix-ties",
     accentColor: "#b45309",
     name: "Thor Helical DryFix Stainless Wall Tie",
     descriptionLine: "Grade 316 stainless helical DryFix friction tie for rapid no-grout remedial installation — immediate load capacity without curing time",

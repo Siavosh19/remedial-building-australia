@@ -33,7 +33,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Xypex Australia",
     brandUrl: "https://www.xypex.com.au",
-    tdsUrl: "https://www.xypex.com.au/products/xypex-concentrate",
     accentColor: "#1e40af",
     name: "Xypex Concentrate",
     descriptionLine: "Crystalline waterproofing slurry — positive and negative side application — basement walls, slabs, and water-retaining structures",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Xypex Australia",
     brandUrl: "https://www.xypex.com.au",
-    tdsUrl: "https://www.xypex.com.au/products/xypex-modified",
     accentColor: "#1e40af",
     name: "Xypex Modified",
     descriptionLine: "Crystalline waterproofing slurry — designed for positive-side application and as a parge coat — lower active chemical concentration than Concentrate",
@@ -111,7 +109,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Penetron Australia",
     brandUrl: "https://www.penetron.com.au",
-    tdsUrl: "https://www.penetron.com.au/products",
+    tdsUrl: "https://penetron.com.au/wp-content/uploads/2025/09/Penetron_PDS.pdf",
     accentColor: "#6b21a8",
     name: "Penetron Standard",
     descriptionLine: "Crystalline waterproofing system — positive and negative side — concrete basement walls, slabs and water-retaining structures",

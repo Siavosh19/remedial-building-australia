@@ -32,7 +32,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Hilti MFT Adjustable Facade Bracket System",
     brandUrl: "https://www.hilti.com.au/",
-    tdsUrl: "https://www.hilti.com.au/content/hilti/A_AU/en/engineering/anchor-design/anchor-design-software.html",
     accentColor: "#e2003a",
     name: "Hilti MFT Adjustable Bracket",
     descriptionLine: "Three-axis adjustable stainless bracket — eliminates shimming on remediation.",
@@ -72,7 +71,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral Standard Helping-Hand Bracket — 6063-T6",
     brandUrl: "https://www.capral.com.au/",
-    tdsUrl: "https://www.capral.com.au/products/architectural/",
     accentColor: "#0369a1",
     name: "Capral Standard Helping-Hand",
     descriptionLine: "Fixed-offset aluminium helping-hand bracket — standard cladding subframe.",
@@ -112,7 +110,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Nvelope NV4 Adjustable Bracket System",
     brandUrl: "https://www.nvelope.com/",
-    tdsUrl: "https://www.nvelope.com/products/",
     accentColor: "#7c3aed",
     name: "Nvelope NV4 Adjustable",
     descriptionLine: "Engineered adjustable bracket with integrated thermal break — terracotta and heavy panels.",
@@ -152,7 +149,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Swing Bracket — Stainless 316 — Thermally Broken",
     brandUrl: "https://www.dorken.de/en/",
-    tdsUrl: "https://www.dorken.de/en/products/",
     accentColor: "#b45309",
     name: "Swing Bracket SS316",
     descriptionLine: "Pivot-arm swing bracket — accommodates out-of-plane substrate variation.",

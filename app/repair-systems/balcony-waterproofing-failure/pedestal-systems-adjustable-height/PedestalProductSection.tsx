@@ -144,7 +144,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Keksia / Eterno Ivica — TradieCart / keksia.com.au",
     brandUrl: "https://keksia.com.au",
-    tdsUrl: "https://keksia.com.au/products/pedestals",
     accentColor: "#0369a1",
     name: "Keksia NM / PR / Star.T Series",
     descriptionLine: "Keksia NM and PR series adjustable pedestal systems — PR series self-levelling head accommodates slopes up to 5% — bi-material anti-noise head reduces sound impact up to 25dB — Star.T series from 10mm minimum height — available through TradieCart and keksia.com.au — 70 years Italian engineering (Eterno Ivica)",
@@ -185,7 +184,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Maximus Pedestal Systems (Australia)",
     brandUrl: "https://maximuspedestalsystems.com/",
-    tdsUrl: "https://maximuspedestalsystems.com/",
     accentColor: "#16a34a",
     name: "Maximus Pedestal Systems",
     descriptionLine: "Australian-manufactured adjustable height pedestal system — residential and commercial podium, roof terrace, and balcony applications — large-format tile and paver support — Melbourne-based with national supply — confirm current product range and height specifications with Maximus before specifying",
@@ -223,7 +221,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Moonbay — via TradieCart",
     brandUrl: "https://www.tradiecart.com.au",
-    tdsUrl: "https://www.tradiecart.com.au/flooring-solutions/pedestals-and-raised-floor-systems/",
     accentColor: "#475569",
     name: "Moonbay POD Series",
     descriptionLine: "Moonbay POD series — budget adjustable height pedestal for residential balcony and terrace paving on flat or near-flat substrates — cost-effective specification for standard residential applications without complex slope correction or wind uplift requirements — available through TradieCart",

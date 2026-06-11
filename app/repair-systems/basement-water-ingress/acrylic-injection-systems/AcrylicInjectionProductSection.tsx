@@ -33,7 +33,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
+    tdsUrl: "https://aus.sika.com/dam/dms/au01/o/sika_injection-306.pdf",
     accentColor: "#cc0000",
     name: "Sika Injection-306",
     descriptionLine: "2-component acrylic acrylate gel injection system — very low viscosity — hairline cracks and fine construction joints",
@@ -73,7 +73,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Master Builders Solutions (BASF)",
     brandUrl: "https://www.master-builders-solutions.com/en-au",
-    tdsUrl: "https://www.master-builders-solutions.com/en-au/products",
     accentColor: "#003591",
     name: "BASF MasterInject 1315",
     descriptionLine: "2-component acrylic acrylate injection gel — very low viscosity — fine crack and hairline crack sealing in basement concrete",

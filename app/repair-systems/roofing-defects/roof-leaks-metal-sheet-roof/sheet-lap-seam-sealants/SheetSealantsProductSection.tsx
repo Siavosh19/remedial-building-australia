@@ -34,7 +34,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco — RPM Building Products",
     brandUrl: "https://www.tremco.com.au",
-    tdsUrl: "https://www.tremco.com.au/products/sealants",
     accentColor: "#0369a1",
     name: "Butyl mastic tape / strip",
     descriptionLine:
@@ -71,7 +70,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Various sealant manufacturers",
     brandUrl: "https://www.bostik.com.au",
-    tdsUrl: "https://www.bostik.com.au/products/construction",
     accentColor: "#7c3aed",
     name: "Neutral-cure silicone sealant",
     descriptionLine:
@@ -107,7 +105,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco / Sika / Selleys",
     brandUrl: "https://www.tremco.com.au",
-    tdsUrl: "https://www.tremco.com.au/products",
     accentColor: "#15803d",
     name: "Polyurethane sealant",
     descriptionLine:

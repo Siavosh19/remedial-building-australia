@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#e2003a",
     name: "Dulux Weathershield Exterior Acrylic",
     descriptionLine: "Premium 100% acrylic exterior topcoat — benchmark exterior masonry and render coating in Australia — UV-resistant, weather-resistant, two-coat system over primer",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en_AU/products/exterior",
     accentColor: "#0369a1",
     name: "Wattyl Solagard Exterior Acrylic",
     descriptionLine: "High-durability 100% acrylic exterior coating with advanced UV stabilisers — designed for Australian conditions with strong fade and chalk resistance on masonry and render facades",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
-    tdsUrl: "https://www.haymespaint.com.au/products/exterior",
     accentColor: "#7c3aed",
     name: "TODO: owner confirm — Haymes Extreme Shield Exterior Acrylic (WRONG PRODUCT NAME — 'Extreme Shield' is not an active Haymes exterior acrylic product — the correct current Haymes exterior acrylic is 'Exterior Solashield®' available in Low Sheen, Matt, Satin, and Gloss finishes — confirm correct product name is 'Haymes Exterior Solashield' and update this card with current Haymes TDS data)",
     descriptionLine: "TODO: owner confirm — Australian-made premium acrylic exterior topcoat with weatherguard technology — strong UV, mould and algae resistance for masonry and render facades — independently tested for Australian conditions (product name incorrect — correct Haymes exterior acrylic is 'Exterior Solashield®' — see name field)",
@@ -152,7 +149,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Jotun Paints Australia",
     brandUrl: "https://www.jotun.com/au",
-    tdsUrl: "https://www.jotun.com/au/decorative/products",
     accentColor: "#b45309",
     name: "Jotun Jotashield Extreme",
     descriptionLine: "Premium exterior acrylic coating with Jotun's ColourGuard and DirtGuard technologies — exceptional UV and dirt resistance — suitable for demanding Australian commercial and high-rise facade applications",
@@ -665,7 +661,7 @@ export function ExteriorAcrylicCoatingProductSection() {
           <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
           <div>
             <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — 4 brands — exterior acrylic coating systems — scroll to view all</p>
+            <p className="mt-1 text-sm text-slate-500">7 products — exterior acrylic coating systems — scroll to view all</p>
           </div>
         </div>
 

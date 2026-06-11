@@ -48,7 +48,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Soprema Australia",
     brandUrl: "https://www.soprema.com.au",
-    tdsUrl: "https://www.soprema.com.au",
     accentColor: "#1e40af",
     name: "Soprema Sopralene Flam 180 AR",
     descriptionLine: "SBS elastomeric modified bitumen — polyester-reinforced torch-on base sheet",
@@ -85,7 +84,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Soprema Australia",
     brandUrl: "https://www.soprema.com.au",
-    tdsUrl: "https://www.soprema.com.au",
     accentColor: "#1e40af",
     name: "Soprema Sopralene Flam 250 S",
     descriptionLine: "SBS elastomeric modified bitumen — mineral slate-faced torch-on cap sheet",
@@ -122,7 +120,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "IKO Australia",
     brandUrl: "https://www.iko.com",
-    tdsUrl: "https://www.iko.com",
     accentColor: "#dc2626",
     name: "IKO Armourbase Pro",
     descriptionLine: "SBS modified bitumen — polyester-reinforced torch-on base sheet for commercial and residential waterproofing",
@@ -159,7 +156,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "IKO Australia",
     brandUrl: "https://www.iko.com",
-    tdsUrl: "https://www.iko.com",
     accentColor: "#dc2626",
     name: "IKO Armour Cap",
     descriptionLine: "Modified bitumen torch-on cap sheet — mineral-surfaced exposed finish for balcony and roof applications",
@@ -196,7 +192,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Nuralite Waterproofing",
     brandUrl: "https://www.nuralite.co.nz",
-    tdsUrl: "https://www.nuralite.co.nz",
     accentColor: "#16a34a",
     name: "Nuralite NP250",
     descriptionLine: "SBS modified bitumen torch-on membrane — residential and light commercial balcony and roof waterproofing",
@@ -233,7 +228,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Polyglass / Mapei Group",
     brandUrl: "https://www.polyglass.it",
-    tdsUrl: "https://www.polyglass.it",
     accentColor: "#7c3aed",
     name: "Polyglass Polybest",
     descriptionLine: "SBS/APP modified bitumen torch-on membrane — via Parchem and building trade distribution in Australia",

@@ -36,7 +36,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Blucher Australia",
     brandUrl: "https://www.blucher.com.au",
-    tdsUrl: "https://www.blucher.com.au/products/roof-drains/",
     accentColor: "#f97316",
     name: "Blucher Marine Drain D500",
     descriptionLine: "Stainless steel AISI 316 flat roof drain; 50–100mm outlets; adjustable top with sealing clamping ring; integrated sump; accepts all membrane types",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Geberit Australia",
     brandUrl: "https://www.geberit.com.au",
-    tdsUrl: "https://www.geberit.com.au/products/drainage-systems/roof-drainage/pluvia-roof-drainage/",
     accentColor: "#0369a1",
     name: "Geberit Pluvia Flat Roof Drain",
     descriptionLine: "Siphonic roof drainage outlet; DN75–DN110; integrated WP flange; chrome-plated ABS or stainless steel strainer; vacuum-tight membrane connection",
@@ -119,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "HL Hutterer & Lechner",
     brandUrl: "https://www.hutterer-lechner.com",
-    tdsUrl: "https://www.hutterer-lechner.com/en/products/roof-drains/",
     accentColor: "#16a34a",
     name: "HL Hutterer HL62N Roof Drain",
     descriptionLine: "Cast iron or stainless AISI 316 flat roof drain; DN50–DN200; adjustable height; integrated bitumen/sheet membrane clamping flange; UV-resistant grate",

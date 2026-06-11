@@ -35,7 +35,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Alproc Australia",
     brandUrl: "https://www.alproc.com.au",
-    tdsUrl: "https://www.alproc.com.au",
     accentColor: "#16a34a",
     name: "Alproc Weir Overflow Outlet",
     descriptionLine: "Aluminium alloy weir body; adjustable weir blade ±30mm; 150–300mm width; integral membrane flange; powder-coated in Colorbond range",
@@ -75,7 +74,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Blucher Australia",
     brandUrl: "https://www.blucher.com.au",
-    tdsUrl: "https://www.blucher.com.au",
     accentColor: "#0369a1",
     name: "Blucher Weir Drain W400",
     descriptionLine: "AISI 316 stainless steel weir outlet; DN100 outlet; integrated clamping ring for sheet membranes; corrosion-resistant for coastal environments",

@@ -70,6 +70,7 @@ const PRODUCTS: Product[] = [
       "Laps and penetrations must be sealed with compatible self-adhesive tape — unsealed laps allow water ingress",
       "Not a waterproofing membrane — does not replace flashings at all window and door openings",
       "Wrinkles in the membrane create water traps — install taut and neat without sagging",
+      "TODO: owner confirm — ThermaWall not found in current Ametalin product range; current confirmed AU range is VapourTech, ThermalBreak, ThermalLiner, SilverWrap, SilverSark, FireSark — verify product name and availability with Ametalin before specifying",
     ],
     procurementSources: [
       { name: "Ametalin Australia — national", url: "https://www.ametalin.com/" },
@@ -79,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Kingspan / Bradford",
     brandUrl: "https://www.kingspan.com/au/",
-    tdsUrl: "https://www.kingspan.com/au/en-au/products/insulation-boards/reflective-insulation/",
     accentColor: "#0369a1",
     name: "Kingspan Kooltherm W1 Reflective Vapour Barrier",
     descriptionLine: "Reflective foil vapour barrier — Class B — Sd > 20 m — thermal and vapour control — NCC 2022 Section J contribution",

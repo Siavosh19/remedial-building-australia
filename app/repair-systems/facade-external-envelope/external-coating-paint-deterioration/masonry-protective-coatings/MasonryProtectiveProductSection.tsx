@@ -30,7 +30,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux / Acratex Australia",
     brandUrl: "https://www.acratex.com.au",
-    tdsUrl: "https://www.acratex.com.au",
     accentColor: "#7c3aed",
     name: "Dulux Acratex AcraSkin",
     descriptionLine: "Fine texture acrylic protective coating for rendered and masonry facades — provides a smooth or fine-textured finish with weather and UV resistance — confirm current specifications with Acratex technical",

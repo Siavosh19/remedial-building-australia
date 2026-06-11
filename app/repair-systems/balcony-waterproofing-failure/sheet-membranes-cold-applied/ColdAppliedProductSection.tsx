@@ -220,7 +220,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX WPM 116 Fibre-Backed Base Sheet",
     descriptionLine: "ARDEX fibre-backed cold-applied sheet membrane base sheet for balcony and podium waterproofing",
@@ -254,7 +253,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX Butynol Sheet Applied Membrane",
     descriptionLine: "ARDEX butyl rubber cold-applied sheet membrane for balcony and podium waterproofing",

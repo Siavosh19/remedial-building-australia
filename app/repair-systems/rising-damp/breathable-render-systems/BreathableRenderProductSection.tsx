@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parex Australia",
     brandUrl: "https://www.parex.com.au",
-    tdsUrl: "https://www.parex.com.au",
     accentColor: "#c85000",
     name: "Parex Monorex GT",
     descriptionLine: "Through-coloured mineral scraped-texture render — breathable — for external masonry walls including rising damp remediation",
@@ -80,7 +79,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Keim Australia",
     brandUrl: "https://www.keim.com.au",
-    tdsUrl: "https://www.keim.com.au",
     accentColor: "#2d6a4f",
     name: "Keim Mineral Silicate Render",
     descriptionLine: "Mineral silicate render — exceptionally breathable — chemically bonds to masonry — for external walls with rising damp or moisture issues",
@@ -117,7 +115,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#1a5276",
     name: "Remmers Kalkputz / NHL Lime-Based Breathable Render",
     descriptionLine: "Lime-based breathable render system — WTA-referenced — for external masonry walls after rising damp treatment — heritage compatible",

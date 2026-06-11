@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions_products/02/02a015/02a015sa01/sika-impregnation-h.html",
     accentColor: "#e2003a",
     name: "Sika Impregnation H",
     descriptionLine: "Silane-siloxane penetrating water repellent for concrete and masonry — colourless, breathable, deep penetrating — professional remedial system for reducing water ingress and carbonation on building facades",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#0369a1",
     name: "Mapei Antipluviol W",
     descriptionLine: "Siloxane water repellent impregnation for concrete, masonry and render — colourless breathable penetrating treatment — Mapei specialist product for facade water repellency and chloride protection",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#7c3aed",
     name: "Parchem Nitocote Sealer 30",
     descriptionLine: "Silane penetrating water repellent sealer for concrete and masonry facades — deep penetrating colourless treatment — Parchem/Fosroc specialist product for water repellency and chloride protection",
@@ -152,7 +149,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dry-Treat Australia",
     brandUrl: "https://www.drytreat.com",
-    tdsUrl: "https://www.drytreat.com/products",
     accentColor: "#b45309",
     name: "Dry-Treat STAIN-PROOF Original",
     descriptionLine: "Premium fluoropolymer impregnating sealer for concrete, masonry and stone — deep penetrating water and oil repellent — long-lasting protection for Australian building facades and paved surfaces",
@@ -179,6 +175,7 @@ const PRODUCTS: Product[] = [
       "Substrate must be dry and clean before application — confirm surface preparation from TDS",
       "Does not seal cracks or fill defects — repair substrate before applying impregnating sealer",
       "Confirm current product name and suitability for facade concrete and masonry from Dry-Treat technical",
+      "TODO: owner confirm — STAIN-PROOF Original may have been renamed to 'STAIN-PROOF Premium Impregnating Sealer' on current Dry-Treat AU site — verify exact current product name before specifying",
     ],
     procurementSources: [
       { name: "Dry-Treat Australia — trade supply", url: "https://www.drytreat.com" },
@@ -189,7 +186,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux / Dulux Acratex Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#059669",
     name: "Dulux Aquashield Exterior Concrete Sealer",
     descriptionLine: "Penetrating water repellent sealer for concrete, render and masonry — colourless breathable treatment as pre-coat preparation or standalone facade water repellency system",
@@ -226,7 +222,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
     accentColor: "#dc2626",
     name: "Ardex AR 990 Silane Siloxane Sealer",
     descriptionLine: "Silane-siloxane penetrating water repellent for concrete and masonry — colourless breathable deep penetrating treatment — Ardex specialist product for water repellency and facade protection",

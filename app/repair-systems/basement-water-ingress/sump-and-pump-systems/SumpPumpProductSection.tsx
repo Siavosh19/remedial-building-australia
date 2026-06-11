@@ -33,7 +33,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Grundfos Australia",
     brandUrl: "https://www.grundfos.com/au",
-    tdsUrl: "https://product.grundfos.com/en/search?q=unilift+kp",
     accentColor: "#0047BB",
     name: "Grundfos Unilift KP 150-A-1",
     descriptionLine: "Submersible drainage pump — manual operation — portable — basement sump pit primary or backup pump",
@@ -73,7 +72,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Grundfos Australia",
     brandUrl: "https://www.grundfos.com/au",
-    tdsUrl: "https://product.grundfos.com/en/search?q=unilift+ap",
     accentColor: "#0047BB",
     name: "Grundfos Unilift AP 35.40.08",
     descriptionLine: "Automatic submersible drainage pump — built-in float switch — primary sump pump for cavity drain basement systems",
@@ -113,7 +111,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "DAB Pumps Australia",
     brandUrl: "https://www.dabpumps.com.au",
-    tdsUrl: "https://www.dabpumps.com.au/drainage-submersible",
     accentColor: "#e05c00",
     name: "DAB FEKA VS 550 T-NA",
     descriptionLine: "Submersible drainage pump — automatic float switch — basement sump primary or backup pump — Italian engineering",

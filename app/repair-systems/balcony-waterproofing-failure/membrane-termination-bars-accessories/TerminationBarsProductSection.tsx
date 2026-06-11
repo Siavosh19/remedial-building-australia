@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Schluter Systems",
     brandUrl: "https://www.schluter.com.au",
-    tdsUrl: "https://www.schluter.com.au",
     accentColor: "#f59e0b",
     name: "Schluter BARA-RK",
     descriptionLine: "Aluminium membrane termination bar — mechanically anchors liquid-applied membrane at upstand and wall terminations",
@@ -74,7 +73,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX Membrane Termination Profile",
     descriptionLine: "Aluminium membrane termination bar for use with ARDEX waterproofing systems at upstand and wall terminations",
@@ -108,7 +106,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#0ea5e9",
     name: "Mapei Termination Bar Profile",
     descriptionLine: "Aluminium membrane termination profile for Mapei waterproofing systems at upstand and wall junctions",
@@ -140,7 +137,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX STB / STA Self-Adhesive Butynol Tape",
     descriptionLine: "ARDEX self-adhesive butyl rubber tape for membrane terminations, sealing and detailing at junctions",

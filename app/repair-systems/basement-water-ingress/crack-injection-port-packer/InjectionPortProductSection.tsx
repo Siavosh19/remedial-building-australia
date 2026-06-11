@@ -33,7 +33,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "Sika Injection Port LP",
     descriptionLine: "Surface-mounted low-pressure injection port — bonded to crack surface — for PU, acrylic, and epoxy injection resins",
@@ -72,7 +71,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "Sika Injection Packer HP",
     descriptionLine: "Drill-in high-pressure injection packer — 10mm and 13mm diameter — PU, acrylic and epoxy resins — basement cracks and joints",
@@ -112,7 +110,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Master Builders Solutions (BASF)",
     brandUrl: "https://www.master-builders-solutions.com/en-au",
-    tdsUrl: "https://www.master-builders-solutions.com/en-au/products",
     accentColor: "#003591",
     name: "BASF MasterInject Surface Port",
     descriptionLine: "Surface-mounted injection port — bonded to crack — low-pressure PU, acrylic, and epoxy resin delivery — BASF injection system",
@@ -148,7 +145,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Master Builders Solutions (BASF)",
     brandUrl: "https://www.master-builders-solutions.com/en-au",
-    tdsUrl: "https://www.master-builders-solutions.com/en-au/products",
     accentColor: "#003591",
     name: "BASF MasterInject Packer",
     descriptionLine: "Drill-in injection packer — high-pressure — for BASF MasterInject PU, acrylic, and epoxy injection resins",

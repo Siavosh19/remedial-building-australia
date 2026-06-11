@@ -34,7 +34,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
     accentColor: "#0369a1",
     name: "TODO: owner confirm — Sika Injection-451 is not listed on the current aus.sika.com product range; current AU structural epoxy injection product appears to be Sikadur-52 AU — confirm correct product name",
     descriptionLine: "TODO: owner confirm — specs below are for Sika Injection-451 which is not confirmed on current aus.sika.com range; Sikadur-52 AU (current AU product) has ~500 mPa·s at 23°C, cracks ≥0.3 mm, tensile bond ≥8 MPa — verify and update",
@@ -69,7 +68,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
     accentColor: "#15803d",
     name: "TODO: owner confirm — Fosroc Concresive 1414 is not listed on the current fosroc.com.au product range; current AU Fosroc epoxy injection product is Nitofill LV — confirm correct product name and update all specs",
     descriptionLine: "TODO: owner confirm — Concresive 1414 not found on fosroc.com.au (June 2026); Fosroc AU current epoxy injection product is Nitofill LV (low viscosity dual cartridge epoxy, 450 mL twin cartridge) — verify specs from current Fosroc AU TDS",
@@ -104,7 +102,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products",
     accentColor: "#dc2626",
     name: "TODO: owner confirm — Mapei Mapeject 52 is not listed on the current mapei.com/au product range; current Mapei AU epoxy injection product is Epojet (or Epojet LV for micro-cracks) — confirm correct product name and update all specs",
     descriptionLine: "TODO: owner confirm — Mapeject 52 not found on mapei.com/au (June 2026); Mapei AU current epoxy injection products are Epojet (pot life ~40 min at 23°C, EN 1504-5) and Epojet LV (very low viscosity, pot life ~35 min at 23°C) — verify specs from current Mapei AU TDS",
@@ -139,7 +136,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
     accentColor: "#7c3aed",
     name: "TODO: owner confirm — Ardex FK 45 is not listed on the current ardexaustralia.com product range; current AU Ardex epoxy crack injection products are RA 142 (super low viscosity, working time 20 min, cracks ≤3 mm) and RA 144 (low viscosity, cracks 3–6 mm) — confirm correct product name and update all specs",
     descriptionLine: "TODO: owner confirm — FK 45 not found on ardexaustralia.com (June 2026); Ardex AU current injection products are RA 142 (super low viscosity, 470 mL dual cartridge, 10–35°C) and RA 144 (low viscosity, 470 mL, 3–6 mm cracks) — verify specs from current Ardex AU TDS",

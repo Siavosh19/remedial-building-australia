@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#b45309",
     name: "Bradford Thermoseal Anti-Ponding Board",
     descriptionLine: "Aluminium anti-ponding board — installed at eaves — bridges fascia to first batten — prevents sarking and insulation sagging into gutter — standard product for all pitched roof insulation/sarking installations",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#b45309",
     name: "CSR Bradford Thermoseal AP Strip",
     descriptionLine: "Ventilated aluminium anti-ponding/airflow strip — installed at eaves batten — maintains gutter airspace — variant of the Thermoseal anti-ponding board range",

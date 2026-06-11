@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rondo Building Services",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo Aluminium Reveal Bead",
     descriptionLine: "Aluminium reveal bead — rendering window and door reveals — provides clean render edge and drip profile at window and door perimeter reveals — exterior facade",
@@ -73,7 +72,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "USG Boral / Beadex",
     brandUrl: "https://www.usgboral.com.au",
-    tdsUrl: "https://www.usgboral.com.au",
     accentColor: "#92400e",
     name: "USG Boral Aluminium / PVC Reveal Bead",
     descriptionLine: "Aluminium or PVC reveal bead — window and door reveal render termination — exterior facade",
@@ -105,7 +103,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trade Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#0f766e",
     name: "Trade-Supply PVC / Aluminium Reveal Bead",
     descriptionLine: "PVC and aluminium reveal beads — window and door reveal render edge — render and plasterboard merchant supply nationally",

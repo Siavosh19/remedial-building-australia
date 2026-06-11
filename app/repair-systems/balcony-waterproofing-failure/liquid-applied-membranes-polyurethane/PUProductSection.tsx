@@ -35,7 +35,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX WPM 157",
     descriptionLine: "One-component water-based polyurethane waterproofing membrane — balcony and wet area use",
@@ -73,7 +72,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX WPM 155 Rapid Plus",
     descriptionLine: "One-component rapid-setting polyurethane waterproofing membrane — programme-critical applications",
@@ -110,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX WPM 130 Builders Express",
     descriptionLine: "Single-component polyurethane-acrylic hybrid membrane — domestic and light commercial balcony use",
@@ -147,7 +144,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#ef4444",
     name: "Sika Sikalastic-487",
     descriptionLine: "One-component solvent-based polyurethane waterproofing membrane — Class III AS 4858 — under screed and under tile — 15 L pail",
@@ -185,7 +181,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#ef4444",
     name: "SikaTile-110 Secure Proof",
     descriptionLine: "One-component water-based polyurethane Class III undertile waterproofing membrane — fibre reinforced — internal and external — 15 L pail",
@@ -220,7 +215,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Davco / Laticrete Australia",
     brandUrl: "https://davco.com.au",
-    tdsUrl: "https://davco.com.au",
     accentColor: "#0ea5e9",
     name: "Davco K10 Plus",
     descriptionLine: "Single-component water-based polyurethane Class III waterproofing membrane — greater than 500% elongation — wet area and balcony — available in green or grey",
@@ -257,7 +251,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bostik Australia",
     brandUrl: "https://www.bostik.com/en-au",
-    tdsUrl: "https://www.bostik.com/en-au",
     accentColor: "#8b5cf6",
     name: "Bostik Dampfix PU",
     descriptionLine: "Single-component polyurethane waterproofing membrane — balcony and wet area use",
@@ -294,7 +287,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bostik Australia",
     brandUrl: "https://www.bostik.com/en-au",
-    tdsUrl: "https://www.bostik.com/en-au",
     accentColor: "#8b5cf6",
     name: "Bostik Dampfix Platinum",
     descriptionLine: "High-performance polyurethane-hybrid waterproofing membrane — commercial and strata balcony use",
@@ -330,7 +322,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco CPG Australia",
     brandUrl: "https://www.tremcosealants.com.au",
-    tdsUrl: "https://www.tremcosealants.com.au",
     accentColor: "#22c55e",
     name: "Tremco Vulkem 350R",
     descriptionLine: "One-component polyurethane waterproofing membrane — remediation grade balcony and deck use",
@@ -365,7 +356,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Gripset Industries",
     brandUrl: "https://www.gripset.com",
-    tdsUrl: "https://www.gripset.com",
     accentColor: "#f59e0b",
     name: "Gripset P39",
     descriptionLine: "Single-component hybrid polyurethane waterproofing membrane — Australian manufactured — under tile and exposed light trafficable UV-stable use — balcony and terrace",
@@ -402,7 +392,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#be123c",
     name: "Sika Sikalastic WPU",
     descriptionLine: "One-component polyurethane waterproofing membrane for wet area and balcony use",
@@ -437,7 +426,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia (via Parchem)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au",
     accentColor: "#0369a1",
     name: "Fosroc Nitoproof 750",
     descriptionLine: "Fosroc polyurethane membrane for waterproofing applications",
@@ -471,7 +459,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia (via Parchem)",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au",
     accentColor: "#0369a1",
     name: "Fosroc Nitoproof 810",
     descriptionLine: "Fosroc polyurethane membrane system for waterproofing",

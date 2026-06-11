@@ -190,7 +190,6 @@ In balcony waterproofing remediation, Keraflex Maxi S1 is specified where the pr
   {
     fullLabel: "Bostik Australia",
     brandUrl: "https://www.bostik.com/au",
-    tdsUrl: "https://www.bostik.com/au",
     accentColor: "#7c3aed",
     name: "Bostik UltraSet SuperFlex — TODO: owner confirm — 'UltraSet SuperFlex' not found in the current Bostik Australia tile adhesive range; Bostik AU tile adhesives include Excelflex, Ultra Mastik, Conflex, and Evoflex — confirm correct current Australian product name before publishing",
     descriptionLine: "TODO: owner confirm product name — 'Bostik UltraSet SuperFlex' not confirmed in AU Bostik tile adhesive range; confirm correct current product and update all specifications — highly flexible polymer-modified tile adhesive claimed for external balconies and terraces",
@@ -230,7 +229,6 @@ Where Bostik adhesive is being specified over an ARDEX or Mapei membrane, membra
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX X 56",
     descriptionLine: "ARDEX flexible tile adhesive for balcony and wet area tile installation",
@@ -262,7 +260,6 @@ Where Bostik adhesive is being specified over an ARDEX or Mapei membrane, membra
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#f97316",
     name: "ARDEX X 52",
     descriptionLine: "ARDEX polymer-modified tile adhesive for balcony and wet area applications",

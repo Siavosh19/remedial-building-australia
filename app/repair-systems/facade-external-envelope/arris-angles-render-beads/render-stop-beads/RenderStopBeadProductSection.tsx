@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rondo Building Services",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo Aluminium Render Stop Bead",
     descriptionLine: "Aluminium render stop / screed bead — defines render termination line at slab soffits, window heads, control joints and substrate changes — exterior and interior facade",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "USG Boral / Beadex",
     brandUrl: "https://www.usgboral.com.au",
-    tdsUrl: "https://www.usgboral.com.au",
     accentColor: "#92400e",
     name: "USG Boral Aluminium / PVC Render Stop Bead",
     descriptionLine: "Aluminium or PVC render stop bead — exterior and interior render edge termination — USG Boral distribution",
@@ -108,7 +106,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trade Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#0f766e",
     name: "Trade-Supply Render Stop / Screed Bead",
     descriptionLine: "Trade-supply aluminium and PVC render stop and screed beads — various leg profiles — available through render and plasterboard merchants nationally",

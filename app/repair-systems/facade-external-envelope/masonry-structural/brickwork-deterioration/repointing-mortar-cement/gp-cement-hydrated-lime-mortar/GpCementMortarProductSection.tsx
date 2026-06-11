@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Boral Australia",
     brandUrl: "https://www.boral.com.au",
-    tdsUrl: "https://www.boral.com.au/building-products/cement-lime",
     accentColor: "#b45309",
     name: "Boral GP Cement (Builders Cement) + Boral Hydrated Lime — M3/M4 Repointing Mortar",
     descriptionLine: "Boral GP Cement (40 kg / 20 kg bags) + Boral Hydrated Lime (20 kg bags) — site-mixed to AS 3700 M3 or M4 designation — national distribution through Boral trade network and hardware merchants",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Cement Australia (Holcim / Hanson)",
     brandUrl: "https://www.cementaustralia.com.au",
-    tdsUrl: "https://www.cementaustralia.com.au/products",
     accentColor: "#0369a1",
     name: "Cement Australia GP Cement + Hydrated Lime — M3/M4 Repointing Mortar",
     descriptionLine: "Cement Australia GP Cement (now under Holcim) + hydrated lime — site-mixed to AS 3700 M3 or M4 — strong eastern states coverage through Holcim, Hanson and Cement Australia distribution",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Adbri (Adelaide Brighton Cement)",
     brandUrl: "https://www.adbri.com.au",
-    tdsUrl: "https://www.adbri.com.au/products/cement",
     accentColor: "#7c3aed",
     name: "Adbri GP Cement + Adbri Hydrated Lime — M3/M4 Repointing Mortar",
     descriptionLine: "Adbri (Adelaide Brighton) GP Cement + Adbri Hydrated Lime — site-mixed to AS 3700 M3 or M4 — national distribution, dominant in SA and WA through Adbri / Cockburn supply network",

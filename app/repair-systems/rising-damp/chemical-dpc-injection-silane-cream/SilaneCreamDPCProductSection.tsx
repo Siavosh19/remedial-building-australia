@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Safeguard Europe / Wykamol",
     brandUrl: "https://www.wykamol.com.au",
-    tdsUrl: "https://www.wykamol.com.au",
     accentColor: "#1e3a8a",
     name: "Dryzone Damp-Proofing Cream",
     descriptionLine: "Silane-based cream chemical DPC injection — the market-leading rising damp treatment for Australian masonry",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#cc0000",
     name: "Sika SikaMur InjectoCream-100",
     descriptionLine: "One-component silane cream DPC injection — Sika brand — for rising damp in masonry walls",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#1a5276",
     name: "Remmers Kiesol C",
     descriptionLine: "Concentrated silane/siloxane cream DPC injection — WTA-referenced system — for injection into dense or low-porosity masonry",

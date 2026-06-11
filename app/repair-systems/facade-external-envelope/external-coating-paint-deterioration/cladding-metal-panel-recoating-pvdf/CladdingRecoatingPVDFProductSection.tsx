@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Valspar Australia",
     brandUrl: "https://www.valspar.com/en-au",
-    tdsUrl: "https://www.valspar.com/en-au/products/architectural-coatings",
     accentColor: "#e2003a",
     name: "Valspar Fluropon Classic II PVDF",
     descriptionLine: "Premium 70% PVDF (Kynar 500) factory-applied fluoropolymer coating — benchmark for architectural aluminium cladding, curtain wall and ACP panels — exceptional UV and colour stability over 20+ years",
@@ -83,7 +82,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "PPG Industries Australia",
     brandUrl: "https://www.ppg.com/en-AU",
-    tdsUrl: "https://www.ppgarchitectural.com/en-AU",
     accentColor: "#0369a1",
     name: "PPG Duranar XL PVDF",
     descriptionLine: "70% PVDF (Kynar 500) factory fluoropolymer coating — PPG's flagship architectural metal coating for curtain wall, aluminium extrusions, and ACP — superior chalk and fade resistance to AAMA 2605",
@@ -167,7 +165,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "AkzoNobel / Interpon Australia",
     brandUrl: "https://www.interpon.com/en-AU",
-    tdsUrl: "https://www.interpon.com/en-AU/products/D-Series",
     accentColor: "#b45309",
     name: "Interpon D3020 PVDF Powder",
     descriptionLine: "AkzoNobel's premium 70% PVDF powder coating — Interpon D3020 meets AAMA 2605 in powder form — factory-applied to aluminium cladding, curtain wall, and louvres — widest colour range of any PVDF powder",
@@ -209,7 +206,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Industrial Coatings",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/industrial",
     accentColor: "#059669",
     name: "TODO: owner confirm — Wattyl Industrial Fluorocoat (exact current AU product name unconfirmed — 'Wattyl Industrial Fluorocoat' not found on wattyl.com.au Protective Coatings range at time of verification — confirm current site-applied fluoropolymer product name in the Wattyl industrial/protective range with Wattyl technical)",
     descriptionLine: "Site-applied fluoropolymer coating for metal cladding recoating — Wattyl's high-performance architectural metal recoat system — suitable for site application to existing aluminium, steel, and ACP panels where factory PVDF recoating is impractical",

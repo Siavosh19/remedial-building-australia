@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Avdel / Bollhoff",
     brandUrl: "https://www.avdelglobal.com/en-au/",
-    tdsUrl: "https://www.avdelglobal.com/en-au/products/",
     accentColor: "#b45309",
     name: "Avdel SS316 Breakstem Rivet — Large-Flange — Aluminium and FC Cladding",
     descriptionLine: "316 stainless large-flange breakstem blind rivet — aluminium cassette and FC panel to subframe — HCR coastal rated — visible fixing",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Moeding / Shildan",
     brandUrl: "https://www.moeding.de/en/",
-    tdsUrl: "https://www.moeding.de/en/products/alphaton/",
     accentColor: "#0369a1",
     name: "Moeding Slip-fit Terracotta Clip — Concealed Aluminium",
     descriptionLine: "Concealed anodised aluminium clip for terracotta slip-fit lath — no visible fixing on panel face — individual panel replacement",
@@ -116,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fairview Architectural",
     brandUrl: "https://www.fairviewarchitectural.com.au/",
-    tdsUrl: "https://www.fairviewarchitectural.com.au/product-category/solid-aluminium/",
     accentColor: "#7c3aed",
     name: "Fairview Secret-Fix Cassette Clip — Solid Aluminium Replacement",
     descriptionLine: "316 stainless secret-fix cassette clip — solid aluminium panel to Z-section rail — no exposed fasteners — ACP replacement system",

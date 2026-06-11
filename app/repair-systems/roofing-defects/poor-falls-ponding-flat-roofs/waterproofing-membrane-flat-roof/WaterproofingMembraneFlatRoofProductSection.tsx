@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/waterproofing/single-ply-membranes/sika-sarnafil-g-410.html",
     accentColor: "#be123c",
     name: "Sika Sarnafil G 410",
     descriptionLine: "Single-ply PVC-P membrane; thermally welded; 1.2–2.0mm thickness; UV-stable; root-resistant; suitable for green roofs and ballasted systems; ISO 13859 compliant",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Protan Australia",
     brandUrl: "https://www.protan.com/au",
-    tdsUrl: "https://www.protan.com/au/products/se-16/",
     accentColor: "#0369a1",
     name: "Protan SE 1.6",
     descriptionLine: "Single-ply PVC-P roof membrane; 1.6mm; flexible at -35°C; fire class Broof(t1); excellent chemical resistance; factory-welded options for large areas",
@@ -118,7 +116,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "ARDEX Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://ardexaustralia.com/product/ardex-w-800-rf/",
     accentColor: "#f97316",
     name: "ARDEX W 800 RF",
     descriptionLine: "Rapid-hardening liquid-applied PMMA waterproofing; 2–3mm applied; trafficable in 2 hours; -30°C to +90°C service range; 100% seamless; AS 4654.1 compliant",

@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com.au/",
-    tdsUrl: "https://www.sika.com.au/en/solutions-products/01/01001/01001001/01001001074.html",
     accentColor: "#b45309",
     name: "Sika Sikaflex 11FC+ Neutral-Cure Polyurethane Facade Sealant",
     descriptionLine: "1-component neutral-cure polyurethane facade sealant — ISO 11600 Class 25LM — paintable after cure — UV stable — non-sag",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco / Bostik",
     brandUrl: "https://www.tremco.com.au/",
-    tdsUrl: "https://www.tremco.com.au/products/",
     accentColor: "#0369a1",
     name: "Tremco Spectrem 2 Neutral-Cure Silicone — Structural Glazing and Facade",
     descriptionLine: "High-performance 1-component neutral-cure silicone — ISO 11600 Class 25LM — structural glazing certification — UV stable 25+ year",
@@ -153,7 +151,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com.au/",
-    tdsUrl: "https://www.sika.com.au/en/solutions-products/01/01001/01001001.html",
     accentColor: "#b45309",
     name: "Sika MS Polymer Facade Sealant — Paintable Low-Movement Joints",
     descriptionLine: "1-component MS polymer sealant — paintable, low-odour, isocyanate-free — ISO 11600 Class 12.5 — bonds most facade substrates without primer",

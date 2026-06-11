@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral / Ullrich Aluminium",
     brandUrl: "https://www.capral.com.au/",
-    tdsUrl: "https://www.capral.com.au/products/architectural/",
     accentColor: "#b45309",
     name: "Anodised Aluminium Factory Head Flashing — 6063-T5",
     descriptionLine: "Factory-folded anodised 6063-T5 head flashing — coastal zone rated — anti-capillary groove — Class 2 anodising — 25–40 year service",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ullrich / Capral Aluminium",
     brandUrl: "https://www.ullrich.com.au/",
-    tdsUrl: "https://www.ullrich.com.au/products/",
     accentColor: "#0369a1",
     name: "Powder-Coat Aluminium Head Flashing — Colour-Matched",
     descriptionLine: "Colour-matched powder-coat aluminium head flashing — architectural facades — AS 3715 Class B — 60–80 micron DFT",
@@ -152,7 +150,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ametalin / Capral Aluminium",
     brandUrl: "https://www.ametalin.com/",
-    tdsUrl: "https://www.ametalin.com/products/",
     accentColor: "#b45309",
     name: "Aluminium Head Flashing with Integrated EPDM Seal",
     descriptionLine: "Aluminium head flashing with factory-integrated EPDM compression seal — eliminates sealant failure at back leg — coastal rated",

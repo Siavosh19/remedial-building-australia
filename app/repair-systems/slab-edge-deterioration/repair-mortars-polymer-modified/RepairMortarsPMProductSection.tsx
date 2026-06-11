@@ -25,7 +25,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-612n.html",
     accentColor: "#be123c",
     name: "Sika MonoTop-612 N — Slab Edge Repair Mortar",
     descriptionLine: "Polymer-modified high-strength high-build repair mortar — EN 1504-3 Class R4 — up to 100 mm single layer — vertical and overhead — Sika Australia (current AU product is MonoTop-612 N)",
@@ -63,7 +63,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-br-340/",
     accentColor: "#0369a1",
     name: "Ardex BR 340 — Fibre-Reinforced Polymer-Modified Slab Edge Repair Mortar",
     descriptionLine: "MICROTEC fibre-reinforced polymer-modified structural repair mortar — up to 80 mm per single application — vertical, horizontal and overhead — Ardex trade supply",
@@ -100,7 +100,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Australia",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/fosroc",
+    tdsUrl: "https://www.fosroc.com.au/product/renderoc-hb",
     accentColor: "#15803d",
     name: "Fosroc Renderoc HB / Renderoc LA55 — Slab Edge Repair Mortars",
     descriptionLine: "Fosroc repair mortars for slab edge — Renderoc HB (high-build structural, up to 80 mm trowel) and Renderoc LA55 (low-alkali EN 1504-3 R4 structural micro-concrete, up to 200 mm form-pour) — distributed nationally by Parchem",
@@ -169,7 +169,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions",
     accentColor: "#b45309",
     name: "Mapei Mapegrout T60 — Thixotropic Structural Repair Mortar",
     descriptionLine: "TODO: owner confirm — Mapegrout SHB is not listed on the current Mapei Australia product page. Mapegrout T60 (thixotropic, EN 1504-3) and Mapegrout T40 are the current listed AU thixotropic repair mortars — confirm correct product with Mapei Australia before specifying",

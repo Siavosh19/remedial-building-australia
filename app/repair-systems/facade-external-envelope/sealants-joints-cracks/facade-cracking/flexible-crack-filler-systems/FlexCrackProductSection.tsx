@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au",
     accentColor: "#dc2626",
     name: "Sika SikaFill-300",
     descriptionLine: "Elastomeric crack bridging coating and filler — suitable for filling and bridging fine to moderate non-structural facade cracks — paintable — used as a flexible crack repair system under facade coatings in Australian strata remediation",
@@ -56,7 +55,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bostik Australia",
     brandUrl: "https://www.bostik.com/au",
-    tdsUrl: "https://www.bostik.com/au",
     accentColor: "#0369a1",
     name: "Bostik Seal N Flex Facade",
     descriptionLine: "One-part flexible polyurethane crack sealant — paintable — suitable for non-structural facade cracks in render, masonry and concrete — can be used as a crack filler before overcoating with facade paint in Australian strata remediation",
@@ -92,7 +90,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Selleys Australia",
     brandUrl: "https://www.selleys.com.au",
-    tdsUrl: "https://www.selleys.com.au",
     accentColor: "#7c3aed",
     name: "Selleys No More Gaps Exterior",
     descriptionLine: "Flexible acrylic exterior crack filler — paintable — suitable for hairline to fine cracks in render, masonry and concrete facades — low movement accommodation — widely available through Australian hardware channels — for minor crack filling before repainting",

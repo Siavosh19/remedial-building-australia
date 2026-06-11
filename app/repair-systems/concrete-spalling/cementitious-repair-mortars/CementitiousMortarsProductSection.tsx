@@ -74,7 +74,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardexaustralia.com",
-    tdsUrl: "https://ardexaustralia.com/products/ardex-br-340/",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-br-340/",
     accentColor: "#0369a1",
     name: "Ardex BR 340",
     descriptionLine: "MICROTEC® Fibre-Reinforced Polymer Modified Structural Concrete Patching and Repair Mortar — 20 kg bag — high build up to 80 mm — low resistivity — active corrosion inhibitor — Ardex trade supply",
@@ -108,7 +108,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products",
+    tdsUrl: "https://www.fosroc.com.au/product/renderoc-hb",
     accentColor: "#7c2d12",
     name: "Fosroc Renderoc HB",
     descriptionLine: "TODO: owner confirm — Renderoc GP does not appear in the current Fosroc AU product range (fosroc.com.au sitemap confirmed Jun 2026) — nearest general-use cementitious mortar is Renderoc HB — verify correct product with Parchem technical before specifying",
@@ -143,7 +143,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products",
+    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/mapegrout-fast-set",
     accentColor: "#1d4ed8",
     name: "Mapei Mapegrout Fast-Set",
     descriptionLine: "Rapid-setting cementitious repair mortar — 25 kg bag — for fast-track concrete spalling repair where traffic reinstatement or time-critical programme is required — Mapei trade and Bayset",
@@ -180,6 +180,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://www.sika.com.au",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-fc.html",
     accentColor: "#be123c",
     name: "Sika MonoTop FC",
     descriptionLine: "Fine-finish cementitious repair mortar for surface profiling and cosmetic finishing of concrete surfaces — confirm current formulation, coverage, and system design with Sika Australia technical",
@@ -205,6 +206,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://www.sika.com.au",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-723n.html",
     accentColor: "#be123c",
     name: "Sika MonoTop-723 N",
     descriptionLine: "Cementitious repair mortar for general concrete spalling repair — one-coat application for shallow to medium-depth spall repair — confirm current formulation, coverage, and system design with Sika Australia technical",

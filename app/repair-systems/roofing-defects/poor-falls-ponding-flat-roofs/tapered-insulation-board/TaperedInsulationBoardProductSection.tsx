@@ -36,7 +36,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Kingspan Insulation",
     brandUrl: "https://www.kingspan.com/au",
-    tdsUrl: "https://www.kingspan.com/au/en-au/products/insulation-boards/thermaroof/kingspan-thermaroof-tr26-fm/",
     accentColor: "#f97316",
     name: "Kingspan Thermaroof TR26 FM",
     descriptionLine: "PIR tapered insulation board; factory-cut to specified fall; R-value up to R6.0; FM-approved for insurance compliance; BBA certified",
@@ -77,7 +76,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Recticel Insulation",
     brandUrl: "https://www.recticelinsulation.com.au",
-    tdsUrl: "https://www.recticelinsulation.com.au/products/eurothane-g/",
     accentColor: "#0369a1",
     name: "Recticel Eurothane G",
     descriptionLine: "Polyisocyanurate (PIR) tapered board; Lambda 0.022 W/mK; halogen-free; dimensionally stable; compatible with all major single-ply and built-up roofing systems",
@@ -117,7 +115,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockwool Australia",
     brandUrl: "https://www.rockwool.com/au",
-    tdsUrl: "https://www.rockwool.com/au/products/hardrock-multi-fix/",
     accentColor: "#be123c",
     name: "Rockwool Hardrock Multi-Fix",
     descriptionLine: "Dual-density mineral wool tapered board; non-combustible (Euro Class A1); vapour-permeable; suitable for inverted and warm roof constructions",

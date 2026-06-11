@@ -85,7 +85,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Australia",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au/products",
     accentColor: "#b45309",
     name: "Rockcote Primus Basecoat + Rockcote Finessa",
     descriptionLine: "Two-coat system — Rockcote Primus Basecoat (polymer-modified base/scratch coat) + Rockcote Finessa Fine Render (smooth finish coat) — exterior masonry, AAC, and concrete facade systems",
@@ -126,7 +125,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
     accentColor: "#be123c",
     name: "Sika SikaTop-122 Plus (Scratch) + SikaTop-144 Fine Mortar (Finish)",
     descriptionLine: "Two-coat system — SikaTop-122 Plus (polymer-modified scratch coat / bonding mortar) + SikaTop-144 (fine polymer-modified finish mortar) — exterior concrete and masonry facades — TODO: confirm SikaTop-144 AU availability",

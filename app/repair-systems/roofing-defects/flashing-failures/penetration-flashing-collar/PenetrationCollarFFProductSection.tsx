@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks Industries",
     brandUrl: "https://deks.com.au",
-    tdsUrl: "https://deks.com.au",
     accentColor: "#0369a1",
     name: "Deks D-1 Multi Flashing",
     descriptionLine: "Deks D-1 Multi pre-formed EPDM rubber penetration flashing collar — multi-pitch — adjustable to a range of pipe diameters — tiled and metal roofs — standard specification for vent and soil pipe penetration flashing on Australian pitched roofs",
@@ -81,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks Industries",
     brandUrl: "https://deks.com.au",
-    tdsUrl: "https://deks.com.au",
     accentColor: "#0284c7",
     name: "Deks 45 Flashing",
     descriptionLine: "Deks 45 pre-formed EPDM penetration flashing collar — optimised for roof pitches up to 45 degrees — round pipe penetrations — tiled and metal roofs — rigid aluminium base flange",
@@ -119,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks Industries",
     brandUrl: "https://deks.com.au",
-    tdsUrl: "https://deks.com.au",
     accentColor: "#075985",
     name: "Deks Poly Multi-Pitch Flashing",
     descriptionLine: "Deks Poly Multi-Pitch pre-formed polypropylene penetration flashing collar — multi-pitch — round pipe — UV-resistant polypropylene body — lightweight — tiled and metal roofs",
@@ -158,7 +155,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Polyplas Industries",
     brandUrl: "https://www.polyplas.com.au",
-    tdsUrl: "https://www.polyplas.com.au",
     accentColor: "#b45309",
     name: "Polyplas Poly-I-Flash",
     descriptionLine: "Polyplas Poly-I-Flash pre-formed EPDM and polypropylene penetration flashing collar — Australian manufacturer — multi-pitch — round pipe — tiled and corrugated metal roofs — alternative to Deks range",

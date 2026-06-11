@@ -39,7 +39,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#0369a1",
     name: "Bradford Anticon",
     descriptionLine: "Extra Heavy Duty anti-glare reflective foil sarking — multi-layer reinforced foil — anti-glare non-reflective upper surface — reflective lower surface — installed below tiles on battens — NCC-compliant — most widely specified brand in Australia",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "CSR Bradford",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au",
     accentColor: "#0369a1",
     name: "Bradford Anticon Ultra",
     descriptionLine: "Higher-performance variant of Bradford Anticon — improved thermal performance and vapour permeability — EHD anti-glare reflective foil sarking",
@@ -113,7 +111,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fletcher Insulation",
     brandUrl: "https://www.fletcherinsulation.com.au",
-    tdsUrl: "https://www.fletcherinsulation.com.au",
     accentColor: "#b45309",
     name: "Fletcher Insulation Sisalation 475",
     descriptionLine: "Reflective foil sarking in 475mm width (wide format) — reinforced with woven scrim — Fletcher Insulation — EHD — for roof sarking under tiles",
@@ -149,7 +146,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Kingspan",
     brandUrl: "https://www.kingspan.com/au",
-    tdsUrl: "https://www.kingspan.com/au",
     accentColor: "#78350f",
     name: "Kingspan Thermofoil",
     descriptionLine: "Kingspan reflective foil underlay and sarking product — for pitched roof applications — EHD reflective foil",

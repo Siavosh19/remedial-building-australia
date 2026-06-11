@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#0369a1",
     name: "Mapei Planitop XS (sand-cement system)",
     descriptionLine:
@@ -80,7 +79,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Boral Australia",
     brandUrl: "https://www.boral.com.au",
-    tdsUrl: "https://www.boral.com.au",
     accentColor: "#92400e",
     name: "Boral OPC + Boral Render Sand",
     descriptionLine:
@@ -120,7 +118,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Pre-Mix Render Base + Rockcote Fine Render",
     descriptionLine:

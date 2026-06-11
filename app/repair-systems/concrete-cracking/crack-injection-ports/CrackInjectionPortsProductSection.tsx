@@ -33,7 +33,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika / Mapei / Fosroc",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
     accentColor: "#0369a1",
     name: "Surface-Bonded Plastic Injection Port — Standard Low-Pressure Crack Injection",
     descriptionLine: "Surface-bonded plastic nipple — epoxy paste adhesive — 100–300 mm spacing — max 0.5 MPa — compatible with both PU and epoxy injection resins",
@@ -102,7 +101,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika / Fosroc / Mapei",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
     accentColor: "#15803d",
     name: "Crack Port Adhesive — Fast-Setting Epoxy Paste for Port Bonding and Surface Sealing",
     descriptionLine: "Fast-setting 2-component epoxy paste — bonds surface ports to concrete AND seals crack between ports — required before any injection — TODO: owner confirm product names: Sika Monotop 623 not confirmed on aus.sika.com; Fosroc Nitomortar FC not confirmed on fosroc.com.au; Mapei Eporip Turbo (confirmed in search results)",

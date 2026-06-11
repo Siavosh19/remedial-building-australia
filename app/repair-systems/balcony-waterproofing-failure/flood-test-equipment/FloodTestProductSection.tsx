@@ -89,7 +89,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Plumboss / Drainchem / plumbing trade",
     brandUrl: "https://www.plumboss.com.au",
-    tdsUrl: "https://www.plumboss.com.au/collections/test-plugs",
     accentColor: "#64748b",
     name: "Mechanical Expansion Test Plug — Aluminium",
     descriptionLine: "Mechanical aluminium expansion plug — wing nut tightened — expands to seal a range of internal pipe diameters — alternative to inflatable balloon where pipe surface is irregular or a rigid plug is preferred — plumbing trade supply",

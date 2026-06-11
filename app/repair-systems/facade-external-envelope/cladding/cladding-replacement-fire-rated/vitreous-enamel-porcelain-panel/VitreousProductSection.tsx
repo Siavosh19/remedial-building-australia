@@ -80,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Agrob Buchtal / PGH Bricks & Pavers",
     brandUrl: "https://www.agrob-buchtal.de",
-    tdsUrl: "https://www.agrob-buchtal.de/en/facade-systems",
     accentColor: "#0369a1",
     name: "Porcelain Facade Panel — Back-Ventilated Rainscreen",
     descriptionLine: "Full-body porcelain facade panel — 13–20 mm — non-combustible — UV-stable glazed or natural finish — back-ventilated rainscreen system — concealed-fix — NCC 2022 compliant",
@@ -118,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Laminam / Architectural Ceramics Australia",
     brandUrl: "https://www.laminam.com",
-    tdsUrl: "https://www.laminam.com/en/products/",
     accentColor: "#7c3aed",
     name: "Laminam Large-Format Sintered Stone Panel",
     descriptionLine: "Laminam sintered stone panel — 3 mm to 12 mm — large format up to 3000 × 1500 mm — non-combustible — full-body colour — UV-stable — facade rainscreen and interior — Italian manufacture",

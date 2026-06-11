@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Selleys Australia",
     brandUrl: "https://www.selleys.com.au",
-    tdsUrl: "https://www.selleys.com.au",
     accentColor: "#dc2626",
     name: "Selleys Rot Doctor Timber Hardener",
     descriptionLine: "Low-viscosity timber consolidant and hardener — penetrates and stabilises soft, punky or partially decayed timber — applied before epoxy filler to create a sound substrate for filler application — widely available in Australia",
@@ -58,7 +57,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Selleys Australia",
     brandUrl: "https://www.selleys.com.au",
-    tdsUrl: "https://www.selleys.com.au",
     accentColor: "#0369a1",
     name: "Selleys Knead It Wood",
     descriptionLine: "Two-part epoxy putty filler for timber — knead to activate — used to restore the profile of localised rot areas in timber window frames — sandable and paintable when cured — widely available in Australia",
@@ -95,7 +93,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "PC Products (via Australian distributors)",
     brandUrl: "https://www.pcepoxy.com",
-    tdsUrl: "https://www.pcepoxy.com",
     accentColor: "#7c3aed",
     name: "PC Products PC-Woody Epoxy Paste",
     descriptionLine: "Two-part epoxy wood filler paste — trowel-applied — suitable for larger timber repair voids and window frame profile restoration — sandable and paintable — used in commercial and strata timber frame remediation",

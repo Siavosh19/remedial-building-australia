@@ -32,7 +32,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Capral 65 mm Top-Hat Rail — 6063-T5",
     brandUrl: "https://www.capral.com.au/",
-    tdsUrl: "https://www.capral.com.au/products/architectural/",
     accentColor: "#e2003a",
     name: "Capral 65 mm Top-Hat",
     descriptionLine: "Standard 65 mm 6063-T5 aluminium top-hat — engineered cladding subframe.",
@@ -72,7 +71,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ultraframe Z-Section Aluminium Rail — 6063-T6",
     brandUrl: "https://www.ultraframe-aluminium.com.au/",
-    tdsUrl: "https://www.ultraframe-aluminium.com.au/products/",
     accentColor: "#0369a1",
     name: "Z-Section Rail 6063-T6",
     descriptionLine: "Z-profile aluminium subframe — higher yield strength for wide-span applications.",
@@ -112,7 +110,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ametalin ThermoBLOCK Rail with Thermal Break",
     brandUrl: "https://www.ametalin.com/",
-    tdsUrl: "https://www.ametalin.com/products/",
     accentColor: "#7c3aed",
     name: "ThermoBLOCK Thermal-Break Rail",
     descriptionLine: "Aluminium rail with integrated EPDM thermal break — condensation control.",
@@ -152,7 +149,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ullrich 100 mm Heavy-Duty Top-Hat — 6063-T6",
     brandUrl: "https://www.ullrich.com.au/",
-    tdsUrl: "https://www.ullrich.com.au/products/",
     accentColor: "#b45309",
     name: "Ullrich 100 mm Heavy-Duty",
     descriptionLine: "100 mm wide 6063-T6 top-hat for high-load or large-panel cladding systems.",

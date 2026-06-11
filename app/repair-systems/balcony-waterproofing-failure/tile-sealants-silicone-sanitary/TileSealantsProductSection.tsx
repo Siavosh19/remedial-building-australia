@@ -40,7 +40,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/sealing-bonding/joint-sealants/sikaflex-11-fc-plus.html",
     accentColor: "#ef4444",
     name: "Sikaflex-11 FC+",
     descriptionLine: "One-component moisture-curing polyurethane sealant — movement joints in tiled wet areas and balconies",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco CPG Australia",
     brandUrl: "https://www.tremcosealants.com.au",
-    tdsUrl: "https://www.tremcosealants.com.au",
     accentColor: "#22c55e",
     name: "Tremco Spectrem 1",
     descriptionLine: "TODO: owner confirm — Spectrem 1 is moisture-cure silicone (not neutral-cure) per Tremco TDS; neutral-cure equivalent in Tremco range is Spectrem 2 — confirm correct product and designation for Australian wet area sanitary use before publishing",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bostik Australia",
     brandUrl: "https://www.bostik.com/en-au",
-    tdsUrl: "https://www.bostik.com/en-au",
     accentColor: "#8b5cf6",
     name: "Bostik Seal-N-Flex 1",
     descriptionLine: "One-component polyurethane sealant — flexible movement joints in tiled wet areas and balconies",
@@ -151,7 +148,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#3b82f6",
     name: "Mapei Mapesil T — TODO: owner confirm — current Australian Mapei silicone is Mapesil LM (neutral-cure) or Mapesil AC (acetoxy); Mapesil T appears to be a US product — confirm correct Australian product name before publishing",
     descriptionLine: "TODO: owner confirm product name — neutral-cure silicone for sanitary wet area movement joints, tiled internal angles and floor-wall junctions — Australian Mapei range has Mapesil LM (neutral-cure) and Mapesil AC (acetoxy) — confirm which is the correct product for this card",

@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#e2003a",
     name: "Dulux Weathershield Exterior Gloss",
     descriptionLine: "Premium UV-resistant exterior gloss enamel for timber and primed surfaces — benchmark exterior trim topcoat for doors, window frames and fascias on Australian buildings",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en_AU/products",
     accentColor: "#0369a1",
     name: "Wattyl Solagard Exterior Gloss",
     descriptionLine: "High-durability UV-resistant exterior gloss enamel for timber trim — advanced UV stabilisers for Australian conditions — suitable for doors, window frames and exterior timber on strata facades",
@@ -115,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Cabot's Australia",
     brandUrl: "https://www.cabots.com.au",
-    tdsUrl: "https://www.cabots.com.au/products",
     accentColor: "#7c3aed",
     name: "Cabot's Exterior Enamel Gloss",
     descriptionLine: "Exterior gloss enamel for timber — UV-resistant protective finish for doors, window frames and exterior timber trim — Cabot's exterior wood coating system for Australian conditions",
@@ -150,7 +147,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
-    tdsUrl: "https://www.haymespaint.com.au/products",
     accentColor: "#b45309",
     name: "TODO: owner confirm — Haymes Ultra Trim Exterior Gloss (product name may be incorrect — the current Haymes trim product is 'Ultratrim® Acrylic' (available in Semi Gloss and High Gloss — NOT a specific 'Exterior Gloss' grade) — 'Ultra Trim Exterior Gloss' is not confirmed as the exact current Haymes product name — confirm correct current product name with Haymes technical and confirm whether Ultratrim® Acrylic is water-based and exterior-rated)",
     descriptionLine: "Australian-made premium exterior gloss enamel for timber trim — UV-resistant hard gloss finish for doors, window frames and exterior timber elements — Haymes exterior system",
@@ -186,7 +182,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Solver Paints Australia",
     brandUrl: "https://www.solverpaints.com.au",
-    tdsUrl: "https://www.solverpaints.com.au/products",
     accentColor: "#059669",
     name: "Solver Super Trim Exterior Gloss",
     descriptionLine: "Exterior gloss enamel for timber trim — UV-resistant durable finish for doors, window frames and exterior timber elements — Solver exterior system for strata repainting",
@@ -221,7 +216,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "British Paints Australia",
     brandUrl: "https://www.britishpaints.com.au",
-    tdsUrl: "https://www.britishpaints.com.au/products",
     accentColor: "#dc2626",
     name: "British Paints Classic Exterior Gloss",
     descriptionLine: "Exterior gloss enamel for timber and primed surfaces — UV-resistant classic gloss finish for doors, window frames and exterior trim — widely available through hardware and trade channels",

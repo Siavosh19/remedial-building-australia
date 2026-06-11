@@ -15,7 +15,7 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Sika Australia", brandUrl: "https://aus.sika.com", tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html", accentColor: "#cc0000",
+    fullLabel: "Sika Australia", brandUrl: "https://aus.sika.com", accentColor: "#cc0000",
     name: "SikaRenderEM Two-Coat System",
     descriptionLine: "Polymer-modified two-coat render installation system — scratch and finish coat — concrete and masonry — full render removal and replacement scope",
     productType: "Polymer-modified two-coat render installation",
@@ -27,7 +27,7 @@ const PRODUCTS: Product[] = [
     procurementSources: [{ name: "Sika Australia — contact for current pricing and trade supply", url: "https://aus.sika.com" }, { name: "Parchem Construction Supplies", url: "https://www.parchem.com.au" }],
   },
   {
-    fullLabel: "Mapei Australia", brandUrl: "https://www.mapei.com/au", tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products-catalogue", accentColor: "#0055A5",
+    fullLabel: "Mapei Australia", brandUrl: "https://www.mapei.com/au", accentColor: "#0055A5",
     name: "Mapei Planitop XS / Planitop Smooth",
     descriptionLine: "Polymer-modified repair mortar — two-coat render installation — 5–30mm thickness range — concrete and masonry facade installation",
     productType: "Polymer-modified render installation mortar",
@@ -39,7 +39,7 @@ const PRODUCTS: Product[] = [
     procurementSources: [{ name: "Mapei Australia — contact for current pricing", url: "https://www.mapei.com/au" }, { name: "Parchem Construction Supplies", url: "https://www.parchem.com.au" }],
   },
   {
-    fullLabel: "Fosroc Australia", brandUrl: "https://www.fosroc.com/en-au", tdsUrl: "https://www.fosroc.com/en-au/products", accentColor: "#007A33",
+    fullLabel: "Fosroc Australia", brandUrl: "https://www.fosroc.com/en-au", accentColor: "#007A33",
     name: "Fosroc Renderoc Classic / Renderoc FC",
     descriptionLine: "Polymer-modified render installation — Renderoc range — scratch and finish coat — concrete and masonry facades — Fosroc supply chain",
     productType: "Polymer-modified render installation system",

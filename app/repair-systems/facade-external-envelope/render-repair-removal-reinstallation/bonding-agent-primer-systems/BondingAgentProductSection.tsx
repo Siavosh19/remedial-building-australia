@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#0369a1",
     name: "Mapei Planicrete AC (Acrylic Bonding Agent)",
     descriptionLine: "Acrylic bonding agent and SBR admixture — applied to substrate before render application or added to render mix as polymer admixture — exterior and interior masonry and concrete substrates",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#166534",
     name: "SikaBond or SikaLatex (Bonding Agent / SBR Admixture)",
     descriptionLine: "SBR latex bonding agent and render admixture — applied to substrate or added to render mix — improves adhesion to dense and smooth concrete and masonry substrates",
@@ -110,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/en-AU",
-    tdsUrl: "https://www.fosroc.com/en-AU",
     accentColor: "#7c3aed",
     name: "Fosroc Renderoc Primer / Nitobond SBR",
     descriptionLine: "SBR bonding slurry and primer — applied to substrate before Fosroc render application — improves adhesion to smooth and dense concrete and masonry substrates",
@@ -143,7 +140,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Primer / Acrylic Bonding Agent",
     descriptionLine: "Acrylic bonding agent and primer — applied to smooth or dense substrate before Rockcote render — improves adhesion on concrete, polished masonry, and low-absorption substrates",

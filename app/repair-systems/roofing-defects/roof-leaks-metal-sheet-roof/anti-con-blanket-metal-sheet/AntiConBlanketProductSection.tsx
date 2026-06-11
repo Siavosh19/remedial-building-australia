@@ -34,7 +34,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bradford Insulation — CSR",
     brandUrl: "https://www.bradfordinsulation.com.au",
-    tdsUrl: "https://www.bradfordinsulation.com.au/products/metal-roofing/anticon",
     accentColor: "#0369a1",
     name: "Bradford Anticon",
     descriptionLine:
@@ -72,7 +71,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Knauf Insulation Australia",
     brandUrl: "https://www.knaufinsulation.com.au",
-    tdsUrl: "https://www.knaufinsulation.com.au/products/metal-building-insulation",
     accentColor: "#ea580c",
     name: "Knauf Metal Roof Insulation Blanket",
     descriptionLine:

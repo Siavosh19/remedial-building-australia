@@ -36,7 +36,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Westox Building Products",
     brandUrl: "https://www.westox.com.au",
-    tdsUrl: "https://www.westox.com.au",
     accentColor: "#64748b",
     name: "Westox Wet Area Membrane",
     descriptionLine: "Westox liquid-applied acrylic-based undertile membrane for wet areas and balconies",

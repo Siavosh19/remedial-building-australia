@@ -31,7 +31,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au",
     accentColor: "#16a34a",
     name: "Wattyl Duraguard",
     descriptionLine: "Premium exterior acrylic coating with enhanced durability for masonry and render facades — UV-resistant, weatherproof, anti-fungal — confirm current specifications with Wattyl technical",
@@ -66,7 +65,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au",
     accentColor: "#16a34a",
     name: "Wattyl Solagard Low Sheen",
     descriptionLine: "Low-sheen exterior acrylic coating for masonry and render facades — UV-resistant, anti-fungal, designed for Australian conditions — confirm current specifications with Wattyl technical",

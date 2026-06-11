@@ -110,7 +110,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Hilti / Ramset / Fischer",
     brandUrl: "https://www.hilti.com.au",
-    tdsUrl: "https://www.hilti.com.au/content/hilti/A_AU1/en_AU/products/anchor-systems/chemical-anchor-systems.html",
     accentColor: "#be123c",
     name: "Chemical Anchor — Epoxy or Hybrid Injection System",
     descriptionLine: "Two-component epoxy or hybrid injectable chemical anchor for starter bar installation, additional reinforcement, form tie fixings, and structural fixings in concrete repair",

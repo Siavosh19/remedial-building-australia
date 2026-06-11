@@ -153,7 +153,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Permaform / Capral Aluminium",
     brandUrl: "https://www.permaform.com.au/",
-    tdsUrl: "https://www.permaform.com.au/products/",
     accentColor: "#b45309",
     name: "Termite Base Weep + Cavity Closer System",
     descriptionLine: "Steel base weep with factory-fitted cavity closer — termite and weather barrier — NCC 2022 Part B3.2 compliant — termite risk zones M, H, VH",

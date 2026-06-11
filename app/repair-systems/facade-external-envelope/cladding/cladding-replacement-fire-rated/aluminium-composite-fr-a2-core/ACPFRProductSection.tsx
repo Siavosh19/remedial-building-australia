@@ -118,6 +118,7 @@ const PRODUCTS: Product[] = [
       "Powder-coat finish has lower UV stability than PVDF — specify PVDF for coastal or high-UV exposure facades",
       "Panel test reports are configuration-specific — do not transfer test reports between different installation methods",
       "Some earlier Vitrabond batches (pre-NCC 2022) may have different test scope — confirm current report version",
+      "TODO: owner confirm — Fairview has rebranded; Vitrabond not confirmed in current product range at fairviewarchitectural.com.au (current range shows Vitradual, Vitracore G2, Stryüm, Solara, Genesis) — verify current Vitrabond FR availability and product name before specifying",
     ],
     procurementSources: [
       { name: "Fairview Architectural — Vitrabond", url: "https://www.fairviewarchitectural.com.au/vitrabond" },
@@ -169,7 +170,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "EuroBond International",
     brandUrl: "https://www.eurobond.com.au",
-    tdsUrl: "https://www.eurobond.com.au/products",
     accentColor: "#b45309",
     name: "EuroBond FR A2 — Mineral Core ACP",
     descriptionLine: "EuroBond FR A2 is a 4 mm mineral core ACP system available in Australia — independently fire-tested to AS 1530.3 and AS 5113 — competitive pricing with comprehensive NCC 2022 compliance documentation",
@@ -211,7 +211,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Kingspan Architectural",
     brandUrl: "https://www.kingspan.com/au",
-    tdsUrl: "https://www.kingspan.com/au/en-au/products/facades",
     accentColor: "#059669",
     name: "Kingspan Benchmark FR-Core ACP",
     descriptionLine: "Kingspan's FR-core 4 mm ACP — fire-retardant modified core tested to AS 1530.3 and AS 5113 — widely available in Australia through Kingspan's established supply chain — suitable where fire engineering confirms FR-core acceptability",

@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux / Acratex Australia",
     brandUrl: "https://www.acratex.com.au",
-    tdsUrl: "https://www.acratex.com.au/products/acrashield-advance",
     accentColor: "#7c3aed",
     name: "Dulux Acratex AcraShield Advance",
     descriptionLine: "Premium elastomeric facade coating with high elongation and crack-bridging capability — waterproof membrane coating for exterior masonry and render facades — UV-resistant and weather-resistant — confirm current specifications with Acratex technical",

@@ -43,7 +43,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com",
     accentColor: "#ef4444",
     name: "Lysaght Colorbond Step Flashing",
     descriptionLine: "Pre-formed Colorbond steel step and counter flashings for tiled pitched roofs abutting walls, parapets and chimneys",
@@ -81,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Austral Lead",
     brandUrl: "https://www.australlead.com.au",
-    tdsUrl: "https://www.australlead.com.au",
     accentColor: "#3b82f6",
     name: "Austral Lead Sheet Flashing",
     descriptionLine: "Soft-form pure lead sheet for chimney, parapet and complex roof flashings — workable and durable, resists corrosion and thermal movement",
@@ -118,7 +116,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Deks",
     brandUrl: "https://www.deks.com.au",
-    tdsUrl: "https://www.deks.com.au",
     accentColor: "#22c55e",
     name: "Deks D-1 Multi Pipe Flashing",
     descriptionLine: "EPDM rubber self-sealing pipe flashing collar for roof penetrations — accommodates 0–115mm pipe diameter on pitched tiled and metal roofs",
@@ -155,7 +152,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/sealing-bonding/joint-sealants/sikaflex-11-fc-plus.html",
     accentColor: "#f97316",
     name: "Sikaflex-11 FC+",
     descriptionLine: "1-part polyurethane sealant for sealing flashing-to-tile, flashing-to-wall and collar-to-pipe transitions on pitched roofs",

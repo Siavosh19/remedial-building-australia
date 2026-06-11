@@ -22,7 +22,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Helifix Australia",
     brandUrl: "https://www.helifix.com.au",
-    tdsUrl: "https://www.helifix.com.au/products/mechanical-ties",
     accentColor: "#0369a1",
     name: "Helifix CemTie Mechanical Expansion Tie",
     descriptionLine: "Stainless steel wedge expansion tie for solid masonry — no grout or resin required",
@@ -58,7 +57,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Ancon Building Products Australia",
     brandUrl: "https://www.ancon.com.au",
-    tdsUrl: "https://www.ancon.com.au/mechanical-ties",
     accentColor: "#b45309",
     name: "Ancon Mechanical Expansion Remedial Wall Tie",
     descriptionLine: "316 stainless mechanical expansion cavity tie for solid masonry — torque-set installation",
@@ -94,7 +92,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Simpson Strong-Tie Australia",
     brandUrl: "https://www.strongtie.com.au",
-    tdsUrl: "https://www.strongtie.com.au/products/masonry-anchors",
     accentColor: "#7c3aed",
     name: "Simpson Strong-Tie Wedge-All / Titen HD Masonry Anchor",
     descriptionLine: "Stainless steel wedge expansion anchor for structural masonry anchoring and cavity tie installation",

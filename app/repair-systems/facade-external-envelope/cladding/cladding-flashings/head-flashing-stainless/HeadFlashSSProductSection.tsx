@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Metroll / Steel & Tube",
     brandUrl: "https://www.metroll.com.au/",
-    tdsUrl: "https://www.metroll.com.au/products/steel-roofing-and-cladding/",
     accentColor: "#b45309",
     name: "SS316 Factory-Folded Head Flashing",
     descriptionLine: "Custom-folded 316L SS head flashing — marine zone and long-life coastal — anti-capillary groove — 50+ year service",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "BlueScope / Metroll",
     brandUrl: "https://www.bluescope.com.au/",
-    tdsUrl: "https://www.bluescope.com.au/our-products/",
     accentColor: "#0369a1",
     name: "SS316 Site-Folded Head Flashing",
     descriptionLine: "316 SS coil stock — site-folded on portable folder for remediation work — coastal and marine zone rated",
@@ -151,7 +149,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Metroll / Sika Australia",
     brandUrl: "https://www.metroll.com.au/",
-    tdsUrl: "https://www.sika.com.au/en/solutions-products/01/01001/01001001.html",
     accentColor: "#b45309",
     name: "SS316 Head Flashing with Formed End Dams",
     descriptionLine: "Factory 316L head flashing with factory-formed end dams — prevents end-run water ingress — marine zone — silicone sealant at joints",

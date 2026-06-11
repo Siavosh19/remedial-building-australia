@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dow (formerly Dow Corning)",
     brandUrl: "https://www.dow.com/au",
-    tdsUrl: "https://www.dow.com/au",
     accentColor: "#dc2626",
     name: "Dow Corning 791 Silicone Weatherseal",
     descriptionLine: "Neutral cure one-part silicone weatherseal — excellent adhesion to glass, aluminium and metal frames — UV-stable — not paintable — the benchmark neutral cure silicone for window and door perimeter sealing in Australian strata remediation",
@@ -59,7 +58,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au",
     accentColor: "#0369a1",
     name: "Sika SikaSil-WS 305 CT",
     descriptionLine: "Neutral cure one-part construction silicone — suitable for facade weathersealing, window perimeter and metal cladding joints — UV-stable — widely available through Australian trade channels",
@@ -96,7 +94,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco Australia",
     brandUrl: "https://www.tremcoinc.com.au",
-    tdsUrl: "https://www.tremcoinc.com.au",
     accentColor: "#7c3aed",
     name: "Tremco Spectrem 1",
     descriptionLine: "Neutral cure silicone weatherseal — suitable for facade weathersealing and window perimeter joints — UV-stable — widely used in Australian commercial and strata remediation",

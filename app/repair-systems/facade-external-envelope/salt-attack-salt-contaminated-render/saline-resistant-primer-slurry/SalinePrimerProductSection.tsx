@@ -36,7 +36,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#be123c",
     name: "SikaCem Bonding Slurry",
     descriptionLine: "Cementitious bonding slurry — saline substrate adhesion primer — apply at green set before render — polymer-modified",
@@ -71,7 +70,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au",
     accentColor: "#7c2d12",
     name: "Fosroc Nitobond EP",
     descriptionLine: "Two-component epoxy bonding primer — strong adhesion to dense and salt-contaminated substrates — Parchem national distribution",
@@ -107,7 +105,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux / AcraTex",
     brandUrl: "https://www.duluxpro.com.au",
-    tdsUrl: "https://www.duluxpro.com.au",
     accentColor: "#0369a1",
     name: "Dulux Professional Render Primer",
     descriptionLine: "Acrylic render primer for masonry and concrete — confirm suitability for salt-contaminated substrates with Dulux technical before specifying",

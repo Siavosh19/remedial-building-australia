@@ -22,7 +22,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Helifix Australia",
     brandUrl: "https://www.helifix.com.au",
-    tdsUrl: "https://www.helifix.com.au/products/resin-anchor-ties",
     accentColor: "#0369a1",
     name: "Helifix Vinylester Resin Anchor System",
     descriptionLine: "316 stainless tie with vinylester resin injection for high-load cavity wall tie replacement",
@@ -94,7 +93,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Simpson Strong-Tie Australia",
     brandUrl: "https://www.strongtie.com.au",
-    tdsUrl: "https://www.strongtie.com.au/products/anchors",
     accentColor: "#7c3aed",
     name: "Simpson Strong-Tie SET-XP Vinylester Anchor",
     descriptionLine: "SET-XP high-strength vinylester adhesive anchor system for masonry tie installation",
@@ -130,7 +128,6 @@ const SUPPLIERS: Supplier[] = [
   {
     fullLabel: "Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/anchoring",
     accentColor: "#059669",
     name: "Parchem HIT-RE 500 / Concresive Anchor",
     descriptionLine: "High-performance vinylester or epoxy anchoring systems for remedial masonry tie installation",

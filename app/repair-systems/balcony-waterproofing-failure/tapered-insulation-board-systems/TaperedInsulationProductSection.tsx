@@ -139,7 +139,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Enduroflex Australia",
     brandUrl: "https://www.enduroflex.com.au",
-    tdsUrl: "https://www.enduroflex.com.au/warm-roof-services",
     accentColor: "#0d9488",
     name: "Enduroflex Tapered Insulation Service",
     descriptionLine: "Warm roof tapered insulation design and installation service — New South Wales — condensation risk analysis provided — PIR tapered board systems for falls creation on podium slabs and roof decks — confirm availability for the specific project location with Enduroflex before specifying",

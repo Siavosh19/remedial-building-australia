@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au/products/trade/exterior",
     accentColor: "#e2003a",
     name: "Dulux Metalshield Gloss",
     descriptionLine: "Premium UV-resistant exterior enamel for metal substrates — gloss finish with corrosion inhibiting primers — suitable for steel, aluminium and iron facade elements on Australian buildings",
@@ -68,6 +67,7 @@ const PRODUCTS: Product[] = [
       "Not for immersion or prolonged water contact — specify anti-corrosion coating system for submerged or wet service",
       "Colour and gloss retention will be lower for solvent-based enamel in high-UV environments — confirm UV grade from TDS",
       "Touch-up repainting over existing enamel may exhibit gloss variation — feather edges and prime bare areas",
+      "TODO: owner confirm — product may be named 'Metalshield Epoxy Enamel Gloss' on current Dulux AU site — verify exact current product name before specifying",
     ],
     procurementSources: [
       { name: "Dulux Trade Centres — national", url: "https://www.dulux.com.au" },
@@ -78,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Wattyl Australia",
     brandUrl: "https://www.wattyl.com.au",
-    tdsUrl: "https://www.wattyl.com.au/en_AU/products",
     accentColor: "#0369a1",
     name: "Wattyl Killrust Enamel",
     descriptionLine: "High-durability exterior enamel with rust-inhibiting technology for steel, iron and metal surfaces — gloss and semi-gloss — corrosion-resistant exterior metal topcoat for Australian conditions",
@@ -115,7 +114,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
-    tdsUrl: "https://www.haymespaint.com.au/products",
     accentColor: "#7c3aed",
     name: "Haymes Metal Guard Enamel",
     descriptionLine: "Australian-made exterior enamel for metal surfaces — UV-resistant gloss and semi-gloss for steel, aluminium and iron facade elements — part of the Haymes Metal Guard protective coating system",
@@ -141,6 +139,7 @@ const PRODUCTS: Product[] = [
       "Haymes distribution strongest in Victoria and regional — confirm national availability with local supplier",
       "Confirm current product name and system from Haymes TDS before specifying on a remedial project",
       "Not a two-pack system — for aggressive industrial or marine environments, specify two-pack polyurethane topcoat",
+      "TODO: owner confirm — Haymes website shows MetalPlus range; Metal Guard Enamel not confirmed in current Haymes AU product range — verify current product name with Haymes technical before specifying",
     ],
     procurementSources: [
       { name: "Haymes Paint Trade — Where to Buy", url: "https://www.haymespaint.com.au" },
@@ -151,7 +150,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Taubmans Australia",
     brandUrl: "https://www.taubmans.com.au",
-    tdsUrl: "https://www.taubmans.com.au/products",
     accentColor: "#b45309",
     name: "Taubmans All Weather Metal Enamel",
     descriptionLine: "Exterior metal enamel with UV resistance for steel, aluminium and iron facade elements — gloss finish — corrosion-resistant exterior topcoat for Australian building facade applications",
@@ -186,7 +184,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Solver Paints Australia",
     brandUrl: "https://www.solverpaints.com.au",
-    tdsUrl: "https://www.solverpaints.com.au/products",
     accentColor: "#059669",
     name: "Solver Tough Metal Enamel",
     descriptionLine: "Tough exterior enamel for metal facade elements — UV-resistant gloss for steel, aluminium and iron — part of the Solver exterior metal coating system for strata and commercial buildings",
@@ -221,7 +218,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Jotun Paints Australia",
     brandUrl: "https://www.jotun.com/au",
-    tdsUrl: "https://www.jotun.com/au/decorative/products",
     accentColor: "#dc2626",
     name: "Jotun Fenomastic Weathershield Enamel",
     descriptionLine: "Premium UV-resistant exterior enamel for metal and wood facade elements — Jotun's high-durability exterior topcoat with advanced UV stabilisers for extended colour retention on commercial buildings",
@@ -248,6 +244,7 @@ const PRODUCTS: Product[] = [
       "Confirm current Australian product availability — Jotun Australia range may differ from international catalogues",
       "Steel substrate preparation mandatory — Sa 2½ or St 3 minimum before primer",
       "Confirm primer specification with Jotun technical before applying over existing enamel or new substrate",
+      "TODO: owner confirm — Fenomastic Weathershield Enamel not confirmed on current Jotun AU site — verify product name and availability before specifying",
     ],
     procurementSources: [
       { name: "Jotun Australia — trade supply", url: "https://www.jotun.com/au" },

@@ -32,7 +32,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/solutions-products/product-finder.html",
     accentColor: "#cc0000",
     name: "SikaTop Armatec 110 / SikaRenderEM",
     descriptionLine: "Polymer-modified two-coat render system — scratch coat and finish coat — concrete and masonry substrates — Class 2 strata facade repair",
@@ -72,7 +71,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products-catalogue",
     accentColor: "#0055A5",
     name: "Mapei Planitop XS / Planitop Smooth & Repair",
     descriptionLine: "Polymer-modified fine render and smoothing mortar — two-coat repair system — concrete and masonry facades — Class 2 strata buildings",
@@ -110,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/en-au",
-    tdsUrl: "https://www.fosroc.com/en-au/products",
     accentColor: "#007A33",
     name: "Fosroc Renderoc Classic / Renderoc FC",
     descriptionLine: "Polymer-modified cementitious render mortar — two-coat facade repair system — concrete and masonry substrates — strata and commercial buildings",

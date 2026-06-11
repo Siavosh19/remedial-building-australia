@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au",
     accentColor: "#dc2626",
     name: "Sika Sikaflex-2CSL",
     descriptionLine: "Two-part, self-leveling polyurethane joint sealant — for horizontal facade joints and traffic-exposed deck joints — high movement accommodation — mixed A+B components on site — widely used on Australian precast concrete facade and carpark structures",
@@ -60,7 +59,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco Australia",
     brandUrl: "https://www.tremcoinc.com.au",
-    tdsUrl: "https://www.tremcoinc.com.au",
     accentColor: "#0369a1",
     name: "Tremco Dymeric 240 FC",
     descriptionLine: "Two-part polyurethane joint sealant — for vertical and horizontal facade expansion joints — high movement accommodation — paintable — used in commercial and strata facade remediation across Australia",
@@ -97,7 +95,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc Australia",
     brandUrl: "https://www.fosroc.com/au",
-    tdsUrl: "https://www.fosroc.com/au",
     accentColor: "#7c3aed",
     name: "Fosroc Expandite Plastijoint",
     descriptionLine: "Two-part polyurethane joint sealant — suitable for facade movement joints, construction joints and expansion joints in concrete structures — widely used in Australian commercial and strata building remediation",

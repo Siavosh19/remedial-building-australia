@@ -21,7 +21,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://www.sika.com/au",
-    tdsUrl: "https://www.sika.com/au",
     accentColor: "#dc2626",
     name: "Sikaflex-11FC+ (movement joint formation)",
     descriptionLine: "One-part PU sealant applied into a formed movement joint to accommodate ongoing facade movement and prevent recurring cracking — applied into a chased-out joint with backer rod and Sika Primer-3N — the most commonly specified movement joint sealant in Australian Class 2 strata facade remediation",
@@ -58,7 +57,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco Australia",
     brandUrl: "https://www.tremcoinc.com.au",
-    tdsUrl: "https://www.tremcoinc.com.au",
     accentColor: "#0369a1",
     name: "Tremco Vulkem 116 (movement joint formation)",
     descriptionLine: "One-part PU sealant applied into a formed facade movement joint — high movement accommodation — suitable for facade crack remediation where a movement joint is formed at the crack location — Tremco primer may be required on substrates",
@@ -94,7 +92,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au",
     accentColor: "#7c3aed",
     name: "Ardex FS-40 (facade movement joint)",
     descriptionLine: "One-part polyurethane facade joint sealant — suitable for movement joint formation at facade crack locations — paintable — compatible with Ardex render and coating systems — used in Australian strata facade crack remediation where Ardex system is specified",

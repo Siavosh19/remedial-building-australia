@@ -143,6 +143,7 @@ const PRODUCTS: Product[] = [
       "Must not impede overflow system function — confirm that mesh installation does not cover or obstruct overflow scuppers or weirs",
       "Confirm current product range and availability with Klip-Lok before specifying — confirm product is suitable for box gutter application",
       "Fixed installation requires removal for gutter cleaning — factor this into the maintenance programme",
+      "TODO: owner confirm — kliplok.com.au may not be Lysaght Klip-Lok brand; Lysaght Klip-Lok is a roofing sheet profile, not a gutter mesh brand — verify brand ownership and whether this is a legitimate separate gutter mesh product before specifying",
     ],
     procurementSources: [
       { name: "Klip-Lok Gutter Mesh — direct", url: "https://www.kliplok.com.au" },

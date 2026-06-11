@@ -41,7 +41,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Unifix / Buildex",
     brandUrl: "https://www.unifix.com.au",
-    tdsUrl: "https://www.unifix.com.au",
     accentColor: "#0f766e",
     name: "Unifix Grade 316 Stainless Steel Corner Bead",
     descriptionLine: "Grade 316 stainless steel arris corner bead — coastal and marine environments — exterior render corners on masonry, AAC, and concrete substrates",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rondo / Specialist Supply",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo Stainless Steel Corner Bead (Grade 304 / 316)",
     descriptionLine: "Stainless steel arris corner bead — Grade 304 (non-coastal) or Grade 316 (coastal/marine) — exterior render corners — Rondo distribution",
@@ -110,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trade / Specialist Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#7c3aed",
     name: "Trade-Supply Grade 316 Stainless Arris Bead",
     descriptionLine: "Grade 316 stainless steel arris and corner beads — specialist trade and coastal builders merchant supply — various leg profiles — exterior render corners",

@@ -34,7 +34,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "VMZINC — Umicore",
     brandUrl: "https://www.vmzinc.com.au",
-    tdsUrl: "https://www.vmzinc.com.au/products",
     accentColor: "#64748b",
     name: "VMZINC Natural Zinc",
     descriptionLine:
@@ -74,7 +73,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rheinzink — Rheinzink GmbH (Germany)",
     brandUrl: "https://www.rheinzink.com.au",
-    tdsUrl: "https://www.rheinzink.com.au/products",
     accentColor: "#1e3a5f",
     name: "Rheinzink Natural Zinc",
     descriptionLine:

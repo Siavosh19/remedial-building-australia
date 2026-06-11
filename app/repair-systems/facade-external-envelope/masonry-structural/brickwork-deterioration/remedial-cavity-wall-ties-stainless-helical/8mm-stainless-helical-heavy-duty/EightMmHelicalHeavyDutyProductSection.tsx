@@ -41,7 +41,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Helifix Australia",
     brandUrl: "https://www.helifix.com.au",
-    tdsUrl: "https://www.helifix.com.au/products/remedial-wall-ties",
+    tdsUrl: "https://www.helifix.com.au/products/remedial-products/helibar-remedial/",
     accentColor: "#0369a1",
     name: "Helifix SockFix HD / HeliBond 8mm",
     descriptionLine: "8mm Grade 316 stainless helical grout-in tie for heavy-duty cavity wall applications — parapets, lintels, and high-stress zones",
@@ -117,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ancon Building Products Australia",
     brandUrl: "https://www.ancon.com.au",
-    tdsUrl: "https://www.ancon.com.au/remedial-wall-ties",
     accentColor: "#7c3aed",
     name: "Ancon MDC 8mm Remedial Helical Wall Tie",
     descriptionLine: "8mm Grade 316 stainless helical tie with cementitious or resin grout for heavy-duty masonry remediation — published load data for engineer specification",

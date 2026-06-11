@@ -75,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dorken (Delta Membranes)",
     brandUrl: "https://www.delta-waterproofing.com.au",
-    tdsUrl: "https://www.delta-waterproofing.com.au/products",
     accentColor: "#0f766e",
     name: "Delta MS 20",
     descriptionLine: "Heavy-duty HDPE dimple cavity drain membrane — 20mm dimple height — high water pressure and podium slab applications",
@@ -114,7 +113,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dorken (Delta Membranes)",
     brandUrl: "https://www.delta-waterproofing.com.au",
-    tdsUrl: "https://www.delta-waterproofing.com.au/products",
     accentColor: "#0f766e",
     name: "Delta Geo-Drain",
     descriptionLine: "Composite drainage mat — floor drainage layer — basement slab drainage under concrete topping — combined membrane and drainage function",

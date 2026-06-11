@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Austral Lead & Metals",
     brandUrl: "https://www.australlead.com.au",
-    tdsUrl: "https://www.australlead.com.au/products",
     accentColor: "#475569",
     name: "Austral Lead Code 3 Sheet (1.32mm / 14.97 kg/m²)",
     descriptionLine: "Code 3 lead sheet from Austral Lead & Metals — minimum standard for step flashings where small soakers are used — less commonly used than Code 4 for step flashings",
@@ -79,7 +78,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Austral Lead & Metals",
     brandUrl: "https://www.australlead.com.au",
-    tdsUrl: "https://www.australlead.com.au/products",
     accentColor: "#1e293b",
     name: "Austral Lead Code 4 Sheet (1.80mm / 20.41 kg/m²)",
     descriptionLine: "Code 4 lead sheet — Australian standard for most step flashing and chimney flashing applications — most commonly specified code for step and counter-flashing on heritage and high-specification tiled roofs",
@@ -121,7 +119,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Calder Industrial Materials",
     brandUrl: "https://www.calderindustrial.com.au",
-    tdsUrl: "https://www.calderindustrial.com.au",
     accentColor: "#7c3aed",
     name: "Calder Industrial Lead Sheet",
     descriptionLine: "Calder Industrial lead sheet in Code 3, 4 and 5 gauges — alternative to Austral Lead — used for all lead flashing applications on pitched tiled roofs",

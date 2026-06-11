@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rondo Building Services",
     brandUrl: "https://www.rondo.com.au",
-    tdsUrl: "https://www.rondo.com.au",
     accentColor: "#0369a1",
     name: "Rondo Mesh-Wing Corner / Stop Bead",
     descriptionLine: "Aluminium or PVC angle and stop bead with integral fibreglass mesh wings — embed mesh in render base coat for improved corner and edge reinforcement — exterior and interior facade",
@@ -78,7 +77,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "USG Boral / Beadex",
     brandUrl: "https://www.usgboral.com.au",
-    tdsUrl: "https://www.usgboral.com.au",
     accentColor: "#92400e",
     name: "USG Boral Mesh-Wing Corner / Edge Bead",
     descriptionLine: "Aluminium or PVC corner or edge bead with integral fibreglass mesh wings — render base coat reinforcement at corners and edge terminations — exterior facade",
@@ -110,7 +108,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Trade Supply",
     brandUrl: "https://www.tradelink.com.au",
-    tdsUrl: "https://www.tradelink.com.au",
     accentColor: "#0f766e",
     name: "Trade-Supply Mesh-Wing Render Bead (PVC / Aluminium)",
     descriptionLine: "PVC and aluminium mesh-wing beads — integral fibreglass mesh for render reinforcement — render and plasterboard merchants nationally",

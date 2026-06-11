@@ -115,7 +115,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "James Hardie / trade suppliers",
     brandUrl: "https://www.jhardie.com.au/",
-    tdsUrl: "https://www.jhardie.com.au/products/accessories/",
     accentColor: "#7c3aed",
     name: "PVC H-Section Express Joint Trim — FC Sheet Residential",
     descriptionLine: "UV-stabilised PVC H-section trim for FC sheet expressed joints — residential inland applications — paintable — low cost",

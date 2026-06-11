@@ -36,7 +36,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#0369a1",
     name: "Remmers WTA Sanierputz SP",
     descriptionLine: "WTA-classified salt-resistant renovating render — exterior masonry facades with salt contamination — chloride and sulfate attack — Remmers Australia",
@@ -73,7 +72,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parex (Alumasc)",
     brandUrl: "https://www.parex.com.au",
-    tdsUrl: "https://www.parex.com.au",
     accentColor: "#7c2d12",
     name: "Parex Reveno Renovating Render",
     descriptionLine: "Salt-tolerant porous-matrix renovating render — facades subject to salt attack and efflorescence — Parex/Alumasc distribution Australia",
@@ -106,7 +104,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Salt Renovation Render",
     descriptionLine: "Salt-resistant renovating render — exterior facade — coastal and salt-affected environments — Saint-Gobain Weber Australia",

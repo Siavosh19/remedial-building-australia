@@ -35,7 +35,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Lysaght — BlueScope Steel",
     brandUrl: "https://www.lysaght.com",
-    tdsUrl: "https://www.lysaght.com/products/corrugated/custom-orb",
+    tdsUrl: "https://www.lysaght.com/profiles/custom-orb",
     accentColor: "#0369a1",
     name: "Lysaght Custom Orb",
     descriptionLine:
@@ -73,7 +73,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stramit Building Products",
     brandUrl: "https://www.stramit.com.au",
-    tdsUrl: "https://www.stramit.com.au/products/roofing/corrugated",
     accentColor: "#dc2626",
     name: "Stramit Corrugated Colorbond Sheet",
     descriptionLine:
@@ -108,7 +107,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Stratco",
     brandUrl: "https://www.stratco.com.au",
-    tdsUrl: "https://www.stratco.com.au/roofing/corrugated-roofing",
     accentColor: "#16a34a",
     name: "Stratco Corrugated Colorbond Sheet",
     descriptionLine:

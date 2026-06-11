@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Remmers Australia",
     brandUrl: "https://www.remmers.com.au",
-    tdsUrl: "https://www.remmers.com.au",
     accentColor: "#0369a1",
     name: "Remmers Feinputz SP (Breathable Finish Render)",
     descriptionLine: "Vapour-permeable fine finish render — sd value <0.14m — exterior masonry facades requiring moisture vapour release — Remmers Australia",
@@ -73,7 +72,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Parex (Alumasc)",
     brandUrl: "https://www.parex.com.au",
-    tdsUrl: "https://www.parex.com.au",
     accentColor: "#7c2d12",
     name: "Parex Breathable Render System",
     descriptionLine: "Breathable vapour-permeable render — exterior masonry facades where low sd value is required — Parex/Alumasc distribution Australia",
@@ -104,7 +102,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Rockcote / Saint-Gobain Weber",
     brandUrl: "https://www.rockcote.com.au",
-    tdsUrl: "https://www.rockcote.com.au",
     accentColor: "#b45309",
     name: "Rockcote Breathable Render System",
     descriptionLine: "Breathable vapour-permeable render — exterior masonry facades — Saint-Gobain Weber Australia",

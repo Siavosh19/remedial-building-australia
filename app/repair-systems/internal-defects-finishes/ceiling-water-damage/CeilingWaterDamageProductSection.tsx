@@ -38,7 +38,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dulux",
     brandUrl: "https://www.dulux.com.au",
-    tdsUrl: "https://www.dulux.com.au",
     accentColor: "#ef4444",
     name: "Dulux 1Step Prep Water Based Primer, Sealer & Undercoat",
     descriptionLine: "Water-based primer, sealer and undercoat with stain-blocking for tannin and water stains on plasterboard ceilings before top-coat repainting",
@@ -76,7 +75,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Taubmans",
     brandUrl: "https://www.taubmans.com.au",
-    tdsUrl: "https://www.taubmans.com.au",
     accentColor: "#3b82f6",
     name: "TODO: owner confirm — Taubmans Moisture Shield Interior Paint",
     descriptionLine:

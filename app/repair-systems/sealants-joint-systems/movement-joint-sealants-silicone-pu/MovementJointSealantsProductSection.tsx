@@ -44,7 +44,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dow",
     brandUrl: "https://www.dow.com",
-    tdsUrl: "https://www.dow.com",
     accentColor: "#0066cc",
     name: "DOWSIL 795",
     descriptionLine: "Neutral-cure structural silicone sealant — façade glazing and curtain wall joints",
@@ -81,7 +80,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Dow",
     brandUrl: "https://www.dow.com",
-    tdsUrl: "https://www.dow.com",
     accentColor: "#0066cc",
     name: "DOWSIL 791",
     descriptionLine: "Neutral-cure low-modulus silicone weatherproofing sealant — curtain wall, façade and perimeter weatherseal joints",
@@ -119,7 +117,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco CPG Australia",
     brandUrl: "https://www.tremcosealants.com.au",
-    tdsUrl: "https://www.tremcosealants.com.au",
     accentColor: "#22c55e",
     name: "Tremco Spectrem 2",
     descriptionLine: "Neutral-cure medium-modulus silicone sealant — 2-sided structural glazing, façade and curtain wall perimeter joints",
@@ -154,7 +151,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#cc0000",
     name: "Sika Sikaflex-11 FC Purform",
     descriptionLine: "One-component pure polyurethane sealant and adhesive — general purpose façade and construction joints",
@@ -191,7 +187,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com",
     accentColor: "#cc0000",
     name: "Sika Sikaflex PRO-3 Purform",
     descriptionLine: "One-component pure polyurethane weatherproofing sealant — façade, balcony and movement joints",
@@ -228,7 +223,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au",
     accentColor: "#e63a22",
     name: "Mapei Mapeflex PU50 SL",
     descriptionLine: "One-component polyurethane sealant — movement and construction joints in Class 2 and commercial buildings",
@@ -263,7 +257,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco CPG Australia",
     brandUrl: "https://www.tremcosealants.com.au",
-    tdsUrl: "https://www.tremcosealants.com.au",
     accentColor: "#22c55e",
     name: "Tremco Dymonic FC",
     descriptionLine: "One-component moisture-cure polyurethane hybrid sealant — façade, window perimeter and construction joints",

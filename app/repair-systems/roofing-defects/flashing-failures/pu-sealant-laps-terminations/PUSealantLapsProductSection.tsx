@@ -42,7 +42,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/sealing-bonding/sealants/polyurethane-sealants/sikaflex-11-fc-plus.html",
     accentColor: "#be123c",
     name: "Sikaflex-11FC+",
     descriptionLine: "Sika one-component PU sealant — primary product for sealing flashing lap joints, upstand terminations, counter-flashing joints, and all roof flashing interfaces — excellent adhesion to metal, masonry, and Colorbond",
@@ -84,7 +83,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Bostik Australia",
     brandUrl: "https://www.bostik.com/au",
-    tdsUrl: "https://www.bostik.com/au",
     accentColor: "#0369a1",
     name: "Bostik Seal-N-Flex 1",
     descriptionLine: "Bostik 1-component polyurethane sealant for general construction and roofing joints — suitable for flashing lap sealing and termination sealing — Australian construction market standard",
@@ -124,7 +122,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Tremco / RPM Building Solutions",
     brandUrl: "https://www.tremcosealants.com",
-    tdsUrl: "https://www.tremcosealants.com",
     accentColor: "#16a34a",
     name: "Tremco Dymonic FC",
     descriptionLine: "Tremco 1-component PU/hybrid facade sealant for flashing joints and lap sealing on roofing applications — UV stable — paintable — suitable for metal-to-masonry and metal-to-metal flashing joints",

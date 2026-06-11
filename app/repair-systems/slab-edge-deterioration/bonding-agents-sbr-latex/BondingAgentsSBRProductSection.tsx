@@ -25,7 +25,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
-    tdsUrl: "https://www.ardex.com.au/products",
     accentColor: "#0369a1",
     name: "Ardex P 51 — Water-Based Acrylic Bonding Primer",
     descriptionLine: "Water-based acrylic adhesion primer for concrete and masonry substrates before PM repair mortar application — Ardex trade supply nationally",
@@ -53,6 +52,7 @@ const PRODUCTS: Product[] = [
       "Do not apply to contaminated, oily, or dusty surfaces — surface preparation is mandatory",
       "Confirm compatibility with chosen Ardex repair mortar from current Ardex Australia TDS",
       "Not suitable as a standalone waterproofing product",
+      "TODO: owner confirm — Ardex P 51 confirmed as Universal Flooring Primer on ardexaustralia.com — verify current AU product intended for concrete repair bonding coat in slab edge applications",
     ],
     procurementSources: [
       { name: "Ardex Australia — trade supply nationally", url: "https://www.ardex.com.au" },
@@ -62,7 +62,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-and-protection.html",
     accentColor: "#be123c",
     name: "Sika Latex SBR — SBR Bonding Agent and Admixture",
     descriptionLine: "Styrene-butadiene rubber (SBR) latex bonding agent and mortar admixture — applied as slurry bond coat or added to mortar mix — Sika Australia national distribution",
@@ -90,6 +89,7 @@ const PRODUCTS: Product[] = [
       "Not a structural adhesive — bond strength is a function of substrate preparation quality",
       "Do not add excess SBR to mortar mix — over-polymer addition can retard set and reduce compressive strength",
       "Confirm compatibility when used as admixture with proprietary repair mortar systems",
+      "TODO: owner confirm — Sika Latex SBR not found under this name on aus.sika.com; current confirmed AU SBR bonding agent is LANKO 751 Lankolatex SBR — verify current product name with Sika Australia",
     ],
     procurementSources: [
       { name: "Bunnings — Sika Latex SBR nationally", url: "https://www.bunnings.com.au" },
@@ -100,7 +100,7 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Fosroc / Parchem Australia",
     brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.parchem.com.au/products/fosroc",
+    tdsUrl: "https://www.fosroc.com.au/product/nitobond-sbr",
     accentColor: "#15803d",
     name: "Fosroc Nitobond SBR — SBR Latex Bonding Agent",
     descriptionLine: "SBR latex bonding agent for concrete and masonry — used as slurry bond coat before repair mortar or as polymer admixture — Fosroc product distributed by Parchem nationally",

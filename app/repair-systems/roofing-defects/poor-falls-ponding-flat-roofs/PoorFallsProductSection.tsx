@@ -116,7 +116,6 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Blucher",
     brandUrl: "https://www.blucher.com.au",
-    tdsUrl: "https://www.blucher.com.au/products/flat-roof-drainage",
     accentColor: "#22c55e",
     name: "Blucher Compact Floor Drain",
     descriptionLine: "Stainless steel drain outlet for flat roof drainage — adjustable height, siphonic or gravity drainage configuration, suitable for membrane upstand detailing",

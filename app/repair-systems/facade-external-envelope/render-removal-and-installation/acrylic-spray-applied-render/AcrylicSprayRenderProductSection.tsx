@@ -15,7 +15,7 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
-    fullLabel: "Dulux / Acratex (Australia)", brandUrl: "https://www.dulux.com.au", tdsUrl: "https://www.dulux.com.au/trade", accentColor: "#E3051B",
+    fullLabel: "Dulux / Acratex (Australia)", brandUrl: "https://www.dulux.com.au", accentColor: "#E3051B",
     name: "Dulux Acratex Spray Render",
     descriptionLine: "Acrylic spray-applied render — machine or hopper spray — thin coat 4–6mm — concrete and masonry facade installation",
     productType: "Acrylic spray-applied render",
@@ -27,7 +27,7 @@ const PRODUCTS: Product[] = [
     procurementSources: [{ name: "Dulux Trade stores — nationwide supply", url: "https://www.dulux.com.au" }, { name: "Dulux Acratex trade supply network", url: "https://www.dulux.com.au" }],
   },
   {
-    fullLabel: "Rockcote (Australia)", brandUrl: "https://www.rockcote.com.au", tdsUrl: "https://www.rockcote.com.au/products", accentColor: "#5C4033",
+    fullLabel: "Rockcote (Australia)", brandUrl: "https://www.rockcote.com.au", accentColor: "#5C4033",
     name: "Rockcote Spray Render / ArchiStone",
     descriptionLine: "Spray-applied acrylic and polymer render systems — range of textures — concrete, masonry, and EIFS substrates",
     productType: "Spray-applied acrylic render and texture system",
@@ -39,7 +39,7 @@ const PRODUCTS: Product[] = [
     procurementSources: [{ name: "Rockcote — contact for current pricing and trade supply", url: "https://www.rockcote.com.au" }],
   },
   {
-    fullLabel: "Solver Paints (Australia)", brandUrl: "https://www.solverpaints.com.au", tdsUrl: "https://www.solverpaints.com.au/products", accentColor: "#004B87",
+    fullLabel: "Solver Paints (Australia)", brandUrl: "https://www.solverpaints.com.au", accentColor: "#004B87",
     name: "Solver Spray Texture / Machine Render",
     descriptionLine: "Spray-applied acrylic texture render — eastern Australia supply — concrete and masonry facade installation",
     productType: "Spray-applied acrylic render",
