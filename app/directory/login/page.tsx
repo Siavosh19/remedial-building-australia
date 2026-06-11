@@ -94,13 +94,13 @@ export default function DirectoryLoginPage() {
         <section className="border-b border-sky-900/30 bg-sky-950 px-8 py-8">
           <div className="mx-auto max-w-5xl">
             <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-sky-400">
-              Business Directory
+              Account Portal
             </p>
             <h1 className="mt-2 text-2xl font-extrabold text-white md:text-3xl">
-              Directory Business Portal
+              Remedial Building Australia Portal
             </h1>
             <p className="mt-2 text-sm text-sky-200/80">
-              Sign in to manage your listing, quote requests and subscription.
+              Sign in to access your account, tools, listings and subscriptions.
             </p>
           </div>
         </section>
@@ -115,24 +115,24 @@ export default function DirectoryLoginPage() {
               {/* Back link */}
               <div className="mb-8">
                 <Link
-                  href="/directory"
+                  href="/"
                   className="inline-flex items-center gap-1.5 text-base text-slate-500 transition-colors hover:text-slate-800"
                 >
                   <span aria-hidden="true">&larr;</span>
-                  <span>Back to directory</span>
+                  <span>Back to website</span>
                 </Link>
               </div>
 
               {/* Heading */}
               <div className="mb-8">
                 <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-slate-400">
-                  Remedial Building Australia
+                  Account Access
                 </p>
                 <h2 className="text-3xl font-extrabold leading-tight text-slate-950">
-                  Directory Business Login
+                  Account Login
                 </h2>
                 <p className="mt-2 text-base text-slate-500">
-                  Manage your listing, quote requests and subscription.
+                  Access your dashboard, saved tools, listings and account settings.
                 </p>
               </div>
 
