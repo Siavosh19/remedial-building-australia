@@ -92,7 +92,7 @@ export default function DirectoryLoginPage() {
 
         {/* ── Page intro ─────────────────────────────────────────────────────── */}
         <section className="border-b border-sky-900/30 bg-sky-950 px-8 py-8">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-3xl">
             <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-sky-400">
               Business Directory
             </p>
@@ -105,154 +105,143 @@ export default function DirectoryLoginPage() {
           </div>
         </section>
 
-        {/* ── Login area ─────────────────────────────────────────────────────── */}
-        <div className="mx-auto max-w-5xl px-4 py-12">
-          <div className="flex flex-col items-stretch gap-6 lg:flex-row">
+        {/* ── Login card ─────────────────────────────────────────────────────── */}
+        <div className="mx-auto max-w-3xl px-4 py-12">
 
-            {/* Login card */}
-            <div className="w-full shrink-0 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm lg:max-w-[520px] lg:p-10">
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm md:p-10">
 
-              {/* Back link */}
-              <div className="mb-8">
-                <Link
-                  href="/directory"
-                  className="inline-flex items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-slate-800"
-                >
-                  <span aria-hidden="true">&larr;</span>
-                  <span>Back to directory</span>
-                </Link>
-              </div>
-
-              {/* Heading */}
-              <div className="mb-8">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-400">
-                  Remedial Building Australia
-                </p>
-                <h2 className="text-2xl font-extrabold leading-tight text-slate-950">
-                  Directory Business Login
-                </h2>
-                <p className="mt-1 text-sm font-medium text-slate-500">Business Directory Portal</p>
-                <p className="mt-1 text-sm text-slate-500">
-                  Manage your listing, quote requests and subscription.
-                </p>
-              </div>
-
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <label className="block space-y-1.5 text-sm font-semibold text-slate-700">
-                  <span>Email address</span>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={(event) => setForm({ ...form, email: event.target.value })}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-sky-950 focus:outline-none focus:ring-2 focus:ring-sky-950/10"
-                    style={{ minHeight: "48px" }}
-                    placeholder="you@company.com"
-                    required
-                  />
-                </label>
-
-                <label className="block space-y-1.5 text-sm font-semibold text-slate-700">
-                  <span>Password</span>
-                  <input
-                    type="password"
-                    value={form.password}
-                    onChange={(event) => setForm({ ...form, password: event.target.value })}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-sky-950 focus:outline-none focus:ring-2 focus:ring-sky-950/10"
-                    style={{ minHeight: "48px" }}
-                    placeholder="••••••••"
-                    required
-                  />
-                </label>
-
-                <label className="flex cursor-pointer items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="h-4 w-4 rounded border-slate-300 accent-sky-950"
-                  />
-                  <span className="text-sm text-slate-600">Stay signed in for 30 days</span>
-                </label>
-
-                {status ? (
-                  <div
-                    className={`rounded-xl border px-4 py-3 text-sm ${
-                      status.type === "success"
-                        ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                        : "border-rose-200 bg-rose-50 text-rose-800"
-                    }`}
-                  >
-                    {status.message}
-                  </div>
-                ) : null}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full rounded-xl bg-red-700 px-5 font-semibold text-white transition hover:bg-red-800 active:bg-red-900 disabled:cursor-not-allowed disabled:opacity-60"
-                  style={{ minHeight: "50px" }}
-                >
-                  {loading ? "Signing in…" : "Sign in"}
-                </button>
-              </form>
-
-              {/* Bottom links */}
-              <div className="mt-6 space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
-                  <Link
-                    href="/directory/forgot-password"
-                    className="font-medium text-sky-950 transition-colors hover:text-sky-700"
-                  >
-                    Forgot your password?
-                  </Link>
-                  <Link
-                    href="/directory/signup"
-                    className="font-medium text-sky-950 transition-colors hover:text-sky-700"
-                  >
-                    Create account
-                  </Link>
-                </div>
-                <p className="text-center text-xs text-slate-400">
-                  Need help?{" "}
-                  <Link href="/contact" className="underline underline-offset-2 transition-colors hover:text-slate-600">
-                    Contact support
-                  </Link>
-                </p>
-              </div>
+            {/* Back link */}
+            <div className="mb-8">
+              <Link
+                href="/directory"
+                className="inline-flex items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-slate-800"
+              >
+                <span aria-hidden="true">&larr;</span>
+                <span>Back to directory</span>
+              </Link>
             </div>
 
-            {/* Right info panel — desktop only */}
-            <div className="hidden flex-1 flex-col justify-center rounded-2xl bg-sky-950 p-10 text-white lg:flex">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-white/50">
-                Business Portal
+            {/* Heading */}
+            <div className="mb-8">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                Remedial Building Australia
               </p>
-              <h2 className="mb-6 text-xl font-bold leading-snug">
-                Everything you need to<br />manage your listing
+              <h2 className="text-2xl font-extrabold leading-tight text-slate-950">
+                Directory Business Login
               </h2>
-              <ul className="space-y-4">
-                {[
-                  "Manage your business listing",
-                  "Receive quote requests",
-                  "Track profile views",
-                  "Manage your subscription",
-                ].map((text) => (
-                  <li key={text} className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/15 text-xs font-bold text-white">
-                      &#10003;
-                    </span>
-                    <span className="text-sm text-white/85">{text}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-10 border-t border-white/10 pt-6">
-                <p className="text-xs text-white/40">
-                  Remedial Building Australia &mdash; Trusted by building professionals nationwide.
-                </p>
+              <p className="mt-1 text-sm text-slate-500">
+                Manage your listing, quote requests and subscription.
+              </p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <label className="block space-y-1.5 text-sm font-semibold text-slate-700">
+                <span>Email address</span>
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={(event) => setForm({ ...form, email: event.target.value })}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-sky-950 focus:outline-none focus:ring-2 focus:ring-sky-950/10"
+                  style={{ minHeight: "48px" }}
+                  placeholder="you@company.com"
+                  required
+                />
+              </label>
+
+              <label className="block space-y-1.5 text-sm font-semibold text-slate-700">
+                <span>Password</span>
+                <input
+                  type="password"
+                  value={form.password}
+                  onChange={(event) => setForm({ ...form, password: event.target.value })}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-sky-950 focus:outline-none focus:ring-2 focus:ring-sky-950/10"
+                  style={{ minHeight: "48px" }}
+                  placeholder="••••••••"
+                  required
+                />
+              </label>
+
+              <label className="flex cursor-pointer items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300 accent-sky-950"
+                />
+                <span className="text-sm text-slate-600">Stay signed in for 30 days</span>
+              </label>
+
+              {status ? (
+                <div
+                  className={`rounded-xl border px-4 py-3 text-sm ${
+                    status.type === "success"
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                      : "border-rose-200 bg-rose-50 text-rose-800"
+                  }`}
+                >
+                  {status.message}
+                </div>
+              ) : null}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-xl bg-red-700 px-5 font-semibold text-white transition hover:bg-red-800 active:bg-red-900 disabled:cursor-not-allowed disabled:opacity-60"
+                style={{ minHeight: "50px" }}
+              >
+                {loading ? "Signing in…" : "Sign in"}
+              </button>
+            </form>
+
+            {/* Bottom links */}
+            <div className="mt-6 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+                <Link
+                  href="/directory/forgot-password"
+                  className="font-medium text-sky-950 transition-colors hover:text-sky-700"
+                >
+                  Forgot your password?
+                </Link>
+                <Link
+                  href="/directory/signup"
+                  className="font-medium text-sky-950 transition-colors hover:text-sky-700"
+                >
+                  Create account
+                </Link>
               </div>
+              <p className="text-center text-xs text-slate-400">
+                Need help?{" "}
+                <Link href="/contact" className="underline underline-offset-2 transition-colors hover:text-slate-600">
+                  Contact support
+                </Link>
+              </p>
             </div>
 
           </div>
+
+          {/* ── Info panel — below card, light and compact ──────────────────── */}
+          <div className="mt-4 rounded-xl border border-slate-200 bg-white px-6 py-5">
+            <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              Business Portal
+            </p>
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-4">
+              {[
+                "Manage your listing",
+                "Receive quote requests",
+                "Track profile views",
+                "Manage subscription",
+              ].map((text) => (
+                <li key={text} className="flex items-center gap-2 text-sm text-slate-500">
+                  <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[9px] font-bold text-slate-400">
+                    ✓
+                  </span>
+                  {text}
+                </li>
+              ))}
+            </ul>
+          </div>
+
         </div>
 
       </main>
