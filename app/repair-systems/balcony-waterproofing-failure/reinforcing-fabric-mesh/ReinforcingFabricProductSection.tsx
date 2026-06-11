@@ -238,6 +238,39 @@ const PRODUCTS: Product[] = [
       { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
     ],
   },
+  {
+    fullLabel: "ARDEX Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au",
+    accentColor: "#f97316",
+    name: "ARDEX UD 158 Seam Reinforcement Mesh Tape",
+    descriptionLine: "ARDEX self-adhesive reinforcing mesh tape for membrane seam reinforcement at junctions and transitions",
+    productType: "Self-adhesive reinforcing mesh tape — membrane seam reinforcement",
+    filterTags: ["Self-adhesive", "Junction-reinforcement", "Wall-to-floor", "Internal-external-corners", "ARDEX-membrane-compatible"],
+    techChips: [
+      { label: "Self-adhesive mesh tape", cls: "bg-orange-100 text-orange-800" },
+      { label: "ARDEX system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Seam reinforcement", cls: "bg-slate-100 text-slate-700" },
+      { label: "Junction and transition", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "ARDEX UD 158 is a self-adhesive reinforcing mesh tape for membrane seam reinforcement at junctions, corners and transitions in ARDEX waterproofing systems. It is designed for use within the ARDEX waterproofing system — applied directly to prepared substrates at internal and external corners, wall-to-floor junctions, drain surrounds and other transitions before membrane application. The self-adhesive format allows fast, precise placement without mortar fillet preparation. Embed the tape into the wet first coat of membrane and ensure the full membrane DFT is achieved over the tape in subsequent coats. Confirm current product specification and compatible ARDEX membrane systems with ARDEX Australia before specifying.",
+    technicalProperties: [
+      "Self-adhesive reinforcing mesh tape — for junction reinforcement at membrane transitions",
+      "Suitable for internal and external corners, wall-to-floor junctions, drain surrounds and penetrations",
+      "For use within ARDEX waterproofing systems — confirm compatible membranes with ARDEX technical",
+      "Apply to prepared substrate before membrane application — ensure full membrane DFT is achieved over tape",
+    ],
+    limitations: [
+      "ARDEX system only — confirm compatibility with the specific ARDEX membrane being used",
+      "Not a substitute for full membrane DFT at junctions — full membrane film thickness must still be achieved over the tape",
+      "Confirm current product name and specification with ARDEX Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "ARDEX Australia — trade supply — contact for current pricing", url: "https://www.ardex.com.au" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

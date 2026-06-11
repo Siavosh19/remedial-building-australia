@@ -105,7 +105,15 @@
       "Bash(git merge feature/admin-v2 --no-ff -m ' *)",
       "Bash(kill 67816 67822)",
       "Bash(nohup bash /Users/siasepehrara/remedial-building-australia/scripts/run-maps-scraper.sh)",
-      "Bash(echo \"Restarted PID: $!\")"
+      "Bash(echo \"Restarted PID: $!\")",
+      "Bash(PGPASSWORD='19@Remedial@19' psql *)",
+      "Bash(vercel env *)",
+      "Bash(SKIP_ENV_VALIDATION=1 npx next *)",
+      "Bash(mkdir -p \"/Users/siasepehrara/remedial-building-australia/app/api/directory/quote-request/[id]\")",
+      "Bash(mkdir -p \"/Users/siasepehrara/remedial-building-australia/app/api/directory/company/media/[id]\")",
+      "Bash(DATABASE_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true\" DIRECT_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres\" npx prisma *)",
+      "Bash(grep -v \"^--$\")",
+      "Bash(grep -v \"^\\\\\"https://[^/]*/\\\\?\\\\\"$\")"
     ]
   }
 }

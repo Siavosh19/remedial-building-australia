@@ -147,6 +147,29 @@ const PRODUCTS: Product[] = [
       { name: "Remmers Australia — trade supply — contact for current pricing", url: "https://www.remmers.com.au" },
     ],
   },
+  {
+    fullLabel: "Westox",
+    brandUrl: "https://www.westox.com.au",
+    accentColor: "#64748b",
+    name: "Westox 50 Low Odour",
+    descriptionLine: "Low-odour silane DPC injection cream for rising damp treatment in brick and masonry — confirm current formulation, injection method, coverage, and system specifications with Westox technical",
+    productType: "Low-odour silane cream — chemical DPC injection for masonry",
+    filterTags: ["Silane-cream", "DPC-injection", "Brick", "Blockwork", "Porous-masonry", "No-pressure", "1C"],
+    techChips: [{ label: "Low odour", cls: "bg-slate-100 text-slate-700" }, { label: "Silane cream", cls: "bg-slate-100 text-slate-700" }, { label: "DPC injection", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Westox 50 Low Odour is a low-odour silane DPC injection cream for chemical damp proof course installation in brick, blockwork, and masonry substrates subject to rising damp. Low-odour formulations are particularly suited to occupied buildings where conventional silane cream DPC products may cause odour complaints during application.\n\nThe Westox 50 Low Odour product is part of the Westox rising damp treatment range. Confirm current product technical data sheet, injection method, hole diameter, hole spacing, coverage, and full rising damp system design (injection + plaster + coating) with Westox technical before specifying. Do not rely on injection alone — salt-contaminated plaster must be stripped and replaced.",
+    technicalProperties: [
+      "Low-odour silane DPC injection cream — suitable for use in occupied buildings where odour is a consideration",
+      "Suitable for injection into brick, blockwork, and porous masonry substrates",
+      "Confirm injection method, hole diameter, spacing, coverage, and full system design from current Westox 50 Low Odour TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system specifications with Westox technical before specifying",
+      "Chemical DPC injection alone is insufficient — old salt-contaminated plaster must be stripped and replaced with compatible renovation plaster",
+      "Not suitable for injection into dense concrete or low-porosity substrates — confirm substrate suitability with Westox",
+      "Confirm current Australian product availability with Westox before specifying",
+    ],
+    procurementSources: [{ name: "Westox — contact for trade supply", url: "https://www.westox.com.au" }],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

@@ -20,7 +20,7 @@ const coverageCards = [
     href: "/repair-systems",
   },
   {
-    title: "Industry News",
+    title: "News & Insights",
     description:
       "Focused updates on the DBP Act, Building Commission rulings, strata remedial works, waterproofing compliance and façade rectification.",
     href: "/industry-news",
@@ -66,7 +66,7 @@ export default function AboutPage() {
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
             <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
+            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           </nav>
@@ -226,7 +226,7 @@ export default function AboutPage() {
             <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
             <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
             <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
             <a href="/directory" className="hover:text-sky-700">Business Directory</a>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>

@@ -298,6 +298,37 @@ const PRODUCTS: Product[] = [
       { name: "Tremco Australia — confirm trade distributor and current anti-root cap sheet product", url: "https://www.tremco.com.au" },
     ],
   },
+  {
+    fullLabel: "Fosroc Australia (via Parchem)",
+    brandUrl: "https://www.parchem.com.au",
+    tdsUrl: "https://www.parchem.com.au",
+    accentColor: "#0369a1",
+    name: "Fosroc Nitoproof 210",
+    descriptionLine: "Fosroc root-resistant sheet membrane system for planter boxes and podium slabs",
+    productType: "Root-resistant sheet membrane system",
+    filterTags: ["Cold-applied", "Planter-box", "Below-grade", "Green-roof", "Podium-slab", "Confirm-AU-availability"],
+    techChips: [
+      { label: "Root-resistant", cls: "bg-green-100 text-green-800" },
+      { label: "Sheet membrane", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fosroc / Parchem", cls: "bg-slate-100 text-slate-700" },
+      { label: "Planter box / podium", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Fosroc Nitoproof 210 is a Fosroc root-resistant sheet membrane system for use in planter box and podium slab waterproofing applications where root intrusion resistance is required. As a Fosroc product distributed in Australia through Parchem Construction Supplies, it is available as part of the broader Fosroc waterproofing system range. Confirm current product specification, root resistance testing, applicable installation conditions, and system requirements with Fosroc Australia / Parchem before specifying.",
+    technicalProperties: [
+      "Root-resistant sheet membrane system — for planter box, podium slab and below-grade waterproofing applications",
+      "Part of the Fosroc waterproofing system range — distributed through Parchem nationally",
+      "Confirm current product specification and root resistance credentials from Fosroc Australia / Parchem TDS",
+    ],
+    limitations: [
+      "Confirm current product name, specification and root resistance certification with Fosroc Australia / Parchem before specifying",
+      "Confirm compatible Fosroc primer and system accessories required for installation",
+      "Root resistance should be confirmed against the plant species to be installed above",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — Fosroc nationally", url: "https://www.parchem.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

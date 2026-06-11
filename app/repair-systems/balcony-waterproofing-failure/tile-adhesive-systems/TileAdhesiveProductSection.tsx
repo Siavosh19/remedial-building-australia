@@ -227,6 +227,70 @@ Where Bostik adhesive is being specified over an ARDEX or Mapei membrane, membra
       { name: "Bunnings Trade — confirm stocking", url: "https://www.bunnings.com.au" },
     ],
   },
+  {
+    fullLabel: "ARDEX Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au",
+    accentColor: "#f97316",
+    name: "ARDEX X 56",
+    descriptionLine: "ARDEX flexible tile adhesive for balcony and wet area tile installation",
+    productType: "Flexible polymer-modified tile adhesive — balcony and wet area",
+    techChips: [
+      { label: "Flexible adhesive", cls: "bg-orange-100 text-orange-800" },
+      { label: "ARDEX system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Balcony and wet area", cls: "bg-slate-100 text-slate-700" },
+      { label: "Polymer-modified", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "ARDEX X 56 is an ARDEX flexible tile adhesive for balcony and wet area tile installation. It is part of the ARDEX tile and stone system and is designed for use over ARDEX waterproofing membranes and screeds. Apply by notched trowel to the cured ARDEX membrane. Confirm current product name, flexibility classification, coverage, and system compatibility with ARDEX Australia before specifying.",
+    technicalProperties: [
+      "Flexible polymer-modified tile adhesive — for balcony and wet area tile installation",
+      "For use over cured ARDEX waterproofing membranes and prepared substrates",
+      "Part of the ARDEX tile and stone system — confirm compatible membranes with ARDEX technical",
+      "Apply by notched trowel — confirm trowel notch size from current ARDEX TDS",
+    ],
+    limitations: [
+      "Confirm current product specification and flexible classification with ARDEX Australia before specifying",
+      "Movement joints must be installed per AS 3958.1 and ARDEX system requirements",
+      "Confirm compatibility with the specific ARDEX membrane system being used",
+    ],
+    procurementSources: [
+      { name: "ARDEX Australia — trade supply — contact for current pricing", url: "https://www.ardex.com.au" },
+      { name: "Bayset", url: "https://www.bayset.com.au" },
+    ],
+  },
+  {
+    fullLabel: "ARDEX Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au",
+    accentColor: "#f97316",
+    name: "ARDEX X 52",
+    descriptionLine: "ARDEX polymer-modified tile adhesive for balcony and wet area applications",
+    productType: "Polymer-modified tile adhesive — balcony and wet area",
+    techChips: [
+      { label: "Polymer-modified adhesive", cls: "bg-orange-100 text-orange-800" },
+      { label: "ARDEX system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Balcony and wet area", cls: "bg-slate-100 text-slate-700" },
+      { label: "Standard flexibility", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "ARDEX X 52 is an ARDEX polymer-modified tile adhesive for balcony and wet area tile installation. It is part of the ARDEX tile and stone system for use over ARDEX waterproofing membranes and prepared substrates. Apply by notched trowel to the cured ARDEX membrane or substrate. Confirm current product name, polymer modification level, coverage, and system compatibility with ARDEX Australia before specifying.",
+    technicalProperties: [
+      "Polymer-modified tile adhesive — for balcony and wet area tile installation",
+      "For use over cured ARDEX waterproofing membranes and prepared substrates",
+      "Part of the ARDEX tile and stone system — confirm compatible membranes with ARDEX technical",
+      "Apply by notched trowel — confirm trowel notch size from current ARDEX TDS",
+    ],
+    limitations: [
+      "Confirm current product specification and polymer modification level with ARDEX Australia before specifying",
+      "Movement joints must be installed per AS 3958.1 and ARDEX system requirements",
+      "Confirm compatibility with the specific ARDEX membrane and substrate system being used",
+    ],
+    procurementSources: [
+      { name: "ARDEX Australia — trade supply — contact for current pricing", url: "https://www.ardex.com.au" },
+      { name: "Bayset", url: "https://www.bayset.com.au" },
+    ],
+  },
 ];
 
 // ─── Section 2 — Epoxy adhesives ──────────────────────────────────────────────

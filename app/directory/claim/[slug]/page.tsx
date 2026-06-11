@@ -9,6 +9,7 @@ type CompanyInfo = {
   suburb: string | null;
   state: string;
   is_claimed: boolean;
+  listing_claim_status: string;
 };
 
 export default function ClaimListingPage() {
@@ -94,12 +95,25 @@ export default function ClaimListingPage() {
             )}
           </div>
 
-          {/* Already claimed */}
-          {company?.is_claimed ? (
+          {/* Already claimed or pending */}
+          {(company?.listing_claim_status === "claimed" || company?.is_claimed) ? (
             <div className="px-8 py-8 text-center">
               <p className="text-lg font-bold text-slate-950">Already claimed</p>
               <p className="mt-2 text-sm text-slate-500">
                 This listing has already been claimed by its owner.
+              </p>
+              <a
+                href="/directory/login"
+                className="mt-6 inline-flex rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+              >
+                Sign in to your account
+              </a>
+            </div>
+          ) : company?.listing_claim_status === "claim_pending" ? (
+            <div className="px-8 py-8 text-center">
+              <p className="text-lg font-bold text-slate-950">Claim under review</p>
+              <p className="mt-2 text-sm text-slate-500">
+                A claim for this listing is currently under review. If this is your business, please contact us.
               </p>
               <a
                 href="/directory/login"

@@ -245,6 +245,40 @@ const PRODUCTS: Product[] = [
     specifierNote:
       "For residential and light commercial planter box applications, widely available generic cells are appropriate. For commercial podium gardens, heavy loading, or machine access, specify a branded product with confirmed compressive strength.",
   },
+  {
+    fullLabel: "ARDEX Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au",
+    accentColor: "#f97316",
+    name: "ARDEX UD 150 Drainage Moisture Control System",
+    descriptionLine: "ARDEX drainage and moisture control cell system for planter boxes and podium slabs",
+    productType: "Drainage and moisture control cell system",
+    filterTags: ["30mm", "Water-retention-cups", "Planter-box", "Podium", "Roof-garden"],
+    techChips: [
+      { label: "ARDEX drainage system", cls: "bg-orange-100 text-orange-800" },
+      { label: "Moisture control", cls: "bg-sky-50 text-sky-700" },
+      { label: "Planter box / podium", cls: "bg-slate-100 text-slate-700" },
+      { label: "ARDEX system", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "ARDEX UD 150 is ARDEX's drainage and moisture control cell system for use in planter boxes, podium slab gardens, green roofs and landscaped terraces on Class 2 strata buildings. As part of the ARDEX waterproofing and landscape drainage system, UD 150 is used to provide a drainage void between the waterproofing membrane and the growing medium or topping slab, protecting the membrane from root penetration and allowing excess water to drain freely to outlets. Confirm current product specification, depth options, compressive strength, and compatibility with ARDEX membranes with ARDEX Australia before specifying.",
+    technicalProperties: [
+      "Drainage and moisture control cell system — suitable for planter boxes, podium slabs, green roofs and landscaped terraces",
+      "Part of the ARDEX waterproofing and drainage system — designed for compatibility with ARDEX membranes",
+      "Provides a drainage void to protect the membrane and allow free water drainage",
+      "Confirm current product depth options and compressive strength from ARDEX Australia TDS",
+    ],
+    limitations: [
+      "Geotextile filter fabric must be specified above the drainage cell to prevent migration of growing medium or substrate fines",
+      "Confirm current product specification, depth, and compressive strength with ARDEX Australia before specifying",
+      "Confirm ARDEX membrane compatibility before specifying as part of the full ARDEX system",
+      "Not a waterproofing membrane — drainage void layer only",
+    ],
+    procurementSources: [
+      { name: "ARDEX Australia — trade supply — contact for current pricing", url: "https://www.ardex.com.au" },
+    ],
+    specifierNote: "Confirm depth options and filter fabric specification with ARDEX Australia technical before installing.",
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

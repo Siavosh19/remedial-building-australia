@@ -217,6 +217,75 @@ const PRODUCTS: Product[] = [
       { name: "Adheseal", url: "https://adheseal.com.au" },
     ],
   },
+  {
+    fullLabel: "ARDEX Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au",
+    accentColor: "#f97316",
+    name: "ARDEX WPM 116 Fibre-Backed Base Sheet",
+    descriptionLine: "ARDEX fibre-backed cold-applied sheet membrane base sheet for balcony and podium waterproofing",
+    productType: "Fibre-backed cold-applied sheet membrane base sheet",
+    filterTags: ["Cold-applied", "Fabric-face", "Balcony-terrace", "Podium-slab", "Primer-required", "Multi-layer"],
+    techChips: [
+      { label: "Cold-applied sheet", cls: "bg-orange-100 text-orange-800" },
+      { label: "Fibre-backed", cls: "bg-slate-100 text-slate-700" },
+      { label: "ARDEX system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Base sheet", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "ARDEX WPM 116 is a fibre-backed cold-applied sheet membrane base sheet for use in ARDEX balcony and podium waterproofing systems. As the base sheet in a multi-layer ARDEX sheet membrane system, WPM 116 is bonded to the primed substrate using a compatible ARDEX adhesive or primer, with overlapping sheet laps sealed and pressed. Seams are sealed with ARDEX-compatible tape. The fibre-backing provides dimensional stability during installation. Confirm current product specification, primer, adhesive, and full system requirements with ARDEX Australia before specifying.",
+    technicalProperties: [
+      "Fibre-backed cold-applied sheet membrane base sheet — for ARDEX multi-layer sheet membrane systems",
+      "Cold-applied — no heat welding or open flame required",
+      "Fibre backing provides dimensional stability during installation",
+      "For use in balcony, terrace and podium slab waterproofing as part of the ARDEX system",
+    ],
+    limitations: [
+      "Primer mandatory — confirm correct ARDEX primer for the substrate with ARDEX technical",
+      "Part of a multi-layer ARDEX system — confirm full system specification with ARDEX Australia before specifying",
+      "Not suitable as a standalone exposed membrane — requires protection layer or finish system above",
+      "Confirm current product name and specification with ARDEX Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "ARDEX Australia — trade supply — contact for current pricing", url: "https://www.ardex.com.au" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
+  {
+    fullLabel: "ARDEX Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au",
+    accentColor: "#f97316",
+    name: "ARDEX Butynol Sheet Applied Membrane",
+    descriptionLine: "ARDEX butyl rubber cold-applied sheet membrane for balcony and podium waterproofing",
+    productType: "Butyl rubber cold-applied sheet membrane",
+    filterTags: ["Cold-applied", "Butyl-rubber", "Non-bituminous", "Balcony-terrace", "Podium-slab", "Primer-required"],
+    techChips: [
+      { label: "Butyl rubber sheet", cls: "bg-orange-100 text-orange-800" },
+      { label: "Cold-applied", cls: "bg-slate-100 text-slate-700" },
+      { label: "Non-bituminous", cls: "bg-green-50 text-green-700" },
+      { label: "ARDEX system", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "ARDEX Butynol is a butyl rubber cold-applied sheet membrane for balcony, terrace and podium slab waterproofing. Butyl rubber (IIR) provides excellent weather resistance, ozone resistance, and chemical resistance with good elongation and flexibility over a wide temperature range. Cold-applied — no open flame or heat welding required — suitable for occupied strata building remediation where hot-work restrictions apply. Apply to primed substrate and seal all laps and terminations with ARDEX-compatible tape or sealant. Confirm current product specification, primer, lap sealing method, and full system requirements with ARDEX Australia before specifying.",
+    technicalProperties: [
+      "Butyl rubber (IIR) sheet membrane — excellent weather, ozone and chemical resistance",
+      "Cold-applied — no open flame or heat welding — suitable where hot-work restrictions apply",
+      "Non-bituminous — no bitumen bleed or yellowing at terminations",
+      "Good elongation and flexibility across a wide temperature range",
+      "Primer mandatory — confirm ARDEX-compatible primer before application",
+    ],
+    limitations: [
+      "Primer mandatory — confirm correct ARDEX primer for the substrate with ARDEX technical",
+      "Not suitable for direct UV-exposed applications without a protection or finish system above — confirm exposure requirements with ARDEX",
+      "Lap sealing mandatory — all sheet laps must be sealed with ARDEX-compatible tape or sealant",
+      "Confirm current product name and system specification with ARDEX Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "ARDEX Australia — trade supply — contact for current pricing", url: "https://www.ardex.com.au" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

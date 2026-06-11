@@ -98,11 +98,11 @@ const heroSlidesBase = [
     cta: "Browse Repair Systems",
   },
   {
-    label: "Industry News",
+    label: "News & Insights",
     title: "Regulatory and technical updates for the remedial building sector.",
     description: "Coverage of Building Commission decisions, DBP Act changes, strata remedial obligations, waterproofing compliance and façade rectification programs.",
     href: "/industry-news",
-    cta: "Read Industry News",
+    cta: "Read News & Insights",
   },
   {
     label: "AI Scope Builder",
@@ -214,7 +214,7 @@ export default function RemedialBuildingAustraliaHome() {
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
             <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
+            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
           </nav>
@@ -233,7 +233,7 @@ export default function RemedialBuildingAustraliaHome() {
             <nav className="flex flex-col gap-4 text-sm font-semibold text-sky-800">
               <a href="/" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Home</a>
               <a href="/repair-systems" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Repair Systems</a>
-              <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Industry News</a>
+              <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">News &amp; Insights</a>
               <a href="/ai-scope-builder" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">AI Scope Builder</a>
               <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Defect Library</a>
               <a href="/directory" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Business Directory</a>
@@ -383,8 +383,8 @@ export default function RemedialBuildingAustraliaHome() {
         <section className="mx-auto max-w-7xl px-5 py-20">
           <div className="mb-8 flex items-center justify-between">
             <div>
-              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry News & Articles</div>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-5xl">Latest Industry News</h2>
+              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">News &amp; Insights</div>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-5xl">Latest News &amp; Insights</h2>
             </div>
             <a href="/industry-news" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
           </div>
@@ -563,7 +563,7 @@ export default function RemedialBuildingAustraliaHome() {
             <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
             <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
             <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
             <a href="/directory" className="hover:text-sky-700">Business Directory</a>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>

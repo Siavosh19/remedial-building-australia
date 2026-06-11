@@ -369,6 +369,74 @@ const PRODUCTS: Product[] = [
       { name: "Fosroc Australia — product information", url: "https://www.fosroc.com.au" },
     ],
   },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    tdsUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika Sikalastic Moisture Seal",
+    descriptionLine: "Sika moisture-tolerant primer/sealer for damp substrates prior to membrane application",
+    productType: "Moisture-tolerant primer/sealer — damp substrate preparation",
+    filterTags: ["Epoxy-primer", "Moisture-barrier", "Damp-green-concrete", "Liquid-membrane-system", "Internal-external"],
+    techChips: [
+      { label: "Moisture-tolerant primer", cls: "bg-rose-100 text-rose-800" },
+      { label: "Damp substrate", cls: "bg-sky-50 text-sky-700" },
+      { label: "Sika system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Pre-membrane", cls: "bg-green-50 text-green-700" },
+    ],
+    systemDescription:
+      "Sika Sikalastic Moisture Seal is a Sika moisture-tolerant primer and sealer for use on damp substrates prior to membrane application in balcony and wet area waterproofing remediation. It is designed for situations where the concrete substrate cannot be fully dried before membrane application — a common occurrence on occupied Class 2 strata balcony remediation projects. Apply by roller or brush to the substrate and allow to cure to the specified condition before applying the Sika membrane. Confirm current product name, application requirements, and compatible membrane systems with Sika Australia technical before specifying — Sika product names are subject to periodic revision.",
+    technicalProperties: [
+      "Moisture-tolerant formulation — can be applied to damp concrete substrates prior to membrane",
+      "Seals the substrate surface to reduce the risk of moisture-related adhesion failures under the membrane",
+      "For use within the Sika waterproofing membrane system — confirm compatible membranes with Sika technical",
+      "Apply by roller or brush — confirm coverage and recoat time from current Sika TDS",
+    ],
+    limitations: [
+      "System-specific — confirm compatibility with the specific Sika membrane being used — not a universal cross-brand primer",
+      "Confirm allowable substrate moisture content with Sika Australia — moisture-tolerant does not mean unlimited moisture",
+      "Confirm current product name and specification with Sika Australia before specifying — product names subject to change",
+      "Not a standalone waterproofing membrane — pre-membrane primer only",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — trade supply — contact for current pricing", url: "https://aus.sika.com" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Westox Building Products",
+    brandUrl: "https://www.westox.com.au",
+    tdsUrl: "https://www.westox.com.au",
+    accentColor: "#64748b",
+    name: "Westox Wesprime",
+    descriptionLine: "Westox primer/sealer for membrane preparation on balcony and wet area substrates",
+    productType: "Primer/sealer — pre-membrane substrate preparation",
+    filterTags: ["Acrylic-primer", "Water-based", "Liquid-membrane-system", "Porous-substrates", "Internal-external", "Low-VOC"],
+    techChips: [
+      { label: "Primer/sealer", cls: "bg-slate-100 text-slate-700" },
+      { label: "Pre-membrane", cls: "bg-slate-100 text-slate-700" },
+      { label: "Westox system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Water-based", cls: "bg-green-50 text-green-700" },
+    ],
+    systemDescription:
+      "Westox Wesprime is a Westox primer and sealer for substrate preparation prior to membrane application in balcony and wet area waterproofing remediation. Part of the Westox waterproofing system range, Wesprime prepares the substrate to improve adhesion of the subsequently applied Westox liquid membrane. Apply by brush or roller to prepared substrates. Allow to cure as directed before membrane application. Confirm current product specification, compatible membrane systems, and application requirements with Westox Building Products before specifying.",
+    technicalProperties: [
+      "Primer/sealer for substrate preparation prior to Westox membrane application",
+      "Improves adhesion between substrate and Westox liquid waterproofing membrane",
+      "Water-based formulation — confirm from current Westox TDS",
+      "For use in the Westox waterproofing membrane system — confirm compatible systems with Westox",
+    ],
+    limitations: [
+      "Confirm compatible Westox membrane systems before specifying — system primer only",
+      "Confirm current product specification and application requirements with Westox Building Products",
+      "Not a substitute for the waterproofing membrane — primer preparation only",
+      "Westox distribution network may be regional — confirm local availability before specifying",
+    ],
+    procurementSources: [
+      { name: "Westox Building Products — trade supply", url: "https://www.westox.com.au" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

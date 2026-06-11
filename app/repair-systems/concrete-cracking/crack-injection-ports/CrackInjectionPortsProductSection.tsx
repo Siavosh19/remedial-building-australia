@@ -165,6 +165,32 @@ const PRODUCTS: Product[] = [
       { name: "DCP Chemprox — crack measurement tools", url: "https://www.dcpchemprox.com.au" },
     ],
   },
+  {
+    fullLabel: "Mapei",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: undefined,
+    accentColor: "#0284c7",
+    name: "Mapei Rubber Band Syringe",
+    descriptionLine: "Low-pressure syringe injection tool for crack injection of PU foams and epoxy resins — rubber band spring mechanism provides constant low-pressure injection — confirm current product specifications with Mapei Australia",
+    productType: "Low-pressure injection syringe — crack injection tool",
+    filterTags: ["PU-Compatible", "Epoxy-Compatible"],
+    techChips: [{ label: "Low-pressure", cls: "bg-blue-100 text-blue-700" }, { label: "Rubber-band", cls: "bg-slate-100 text-slate-700" }, { label: "Reusable", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "The Mapei Rubber Band Syringe is a low-pressure injection tool for crack injection of two-component PU foam and epoxy injection resins in concrete and masonry. The rubber band spring mechanism provides a constant, controlled low-pressure injection force that avoids the overpressure risk of mechanical or pneumatic injection equipment.\n\nLow-pressure syringe injection is suitable for hairline and fine cracks where controlled material flow is required. The syringe is used in conjunction with surface-bonded or mechanical injection ports and compatible Mapei injection resins (Mapefix EP, Mapeflex PU45, and other injection products).\n\nConfirm current product technical data sheet, compatible resin systems, and injection technique with Mapei Australia before specifying.",
+    technicalProperties: [
+      "Low-pressure rubber-band syringe — provides constant controlled injection pressure for hairline and fine crack injection",
+      "Compatible with Mapei PU foam and epoxy injection resins — confirm compatible resin products with Mapei Australia",
+      "Confirm current product specifications, cartridge size, and compatible injection resins from current Mapei documentation",
+    ],
+    limitations: [
+      "Confirm current product specifications and compatible injection resin systems with Mapei Australia before specifying",
+      "Not suitable for high-volume or wide crack injection — rubber band syringe is designed for fine and hairline crack injection",
+      "Confirm current Australian product availability with Mapei Australia or Bayset before specifying",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
+      { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

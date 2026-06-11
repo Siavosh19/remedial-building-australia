@@ -177,6 +177,57 @@ const PRODUCTS: Product[] = [
       { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
     ],
   },
+  {
+    fullLabel: "Sika",
+    brandUrl: "https://www.sika.com.au",
+    accentColor: "#be123c",
+    name: "Sika MonoTop FC",
+    descriptionLine: "Fine-finish cementitious repair mortar for surface profiling and cosmetic finishing of concrete surfaces — confirm current formulation, coverage, and system design with Sika Australia technical",
+    productType: "Fine-finish cementitious mortar — surface profiling and cosmetic repair",
+    filterTags: ["Cementitious", "Non-structural", "Pre-bagged", "Hand-applied"],
+    techChips: [{ label: "Fine finish", cls: "bg-red-100 text-red-700" }, { label: "Cosmetic", cls: "bg-slate-100 text-slate-700" }, { label: "Cementitious", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Sika MonoTop FC is a fine-finish cementitious repair mortar for surface profiling and cosmetic finishing of concrete surfaces. It is used as a thin-section finishing coat over structural repair mortars or to restore surface texture and profile after spalling repair works.\n\nSika MonoTop FC is part of the Sika MonoTop concrete repair system. It is not a structural repair mortar — it is a finishing product used over an already structurally repaired substrate.\n\nConfirm current product technical data sheet, maximum application thickness, coverage, and compatible substrate from current Sika MonoTop FC TDS before specifying.",
+    technicalProperties: [
+      "Fine-finish cementitious mortar — for surface profiling and cosmetic finishing over repaired concrete",
+      "Part of the Sika MonoTop concrete repair system — confirm compatible base layer product from current Sika documentation",
+      "Confirm maximum thickness, coverage, and application method from current Sika MonoTop FC TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Sika Australia technical before specifying",
+      "Not a structural repair product — must only be applied over sound, structurally repaired concrete substrate",
+      "Not suitable as a standalone repair over active spalling or delamination — structural repair must be completed first",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
+      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Sika",
+    brandUrl: "https://www.sika.com.au",
+    accentColor: "#be123c",
+    name: "Sika MonoTop-723 N",
+    descriptionLine: "Cementitious repair mortar for general concrete spalling repair — one-coat application for shallow to medium-depth spall repair — confirm current formulation, coverage, and system design with Sika Australia technical",
+    productType: "Cementitious repair mortar — general concrete spalling repair",
+    filterTags: ["Cementitious", "General-use", "Pre-bagged", "Hand-applied", "Trowel-grade"],
+    techChips: [{ label: "Cementitious", cls: "bg-red-100 text-red-700" }, { label: "General use", cls: "bg-slate-100 text-slate-700" }, { label: "Pre-bagged", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Sika MonoTop-723 N is a cementitious repair mortar for general concrete spalling repair applications. It is a pre-bagged, hand-applied trowel-grade mortar suitable for shallow to medium-depth concrete spall repairs on balconies, facades, columns, beams, and slab soffits.\n\nSika MonoTop-723 N is part of the Sika MonoTop concrete repair system. Confirm current product technical data sheet, maximum application thickness, coverage, primer requirements (typically Sika MonoTop-910 N or Sika Icosit KC220/50), and compatible system design with Sika Australia technical before specifying.",
+    technicalProperties: [
+      "Pre-bagged cementitious repair mortar — suitable for shallow to medium-depth concrete spalling repair",
+      "Hand-applied trowel-grade — part of the Sika MonoTop repair system",
+      "Confirm maximum application thickness, coverage, and primer specification from current Sika MonoTop-723 N TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Sika Australia technical before specifying",
+      "Rebar anti-corrosion primer (Sika MonoTop-910 N) is typically required before mortar application — confirm current primer specification with Sika",
+      "Not suitable for application over wet or contaminated concrete — substrate preparation to current Sika specification is mandatory",
+      "Do not apply in temperatures below +5°C or above +35°C — confirm temperature limitations from current TDS",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
+      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

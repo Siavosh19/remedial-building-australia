@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/repair-systems", label: "Repair Systems" },
-  { href: "/industry-news", label: "Industry News" },
+  { href: "/industry-news", label: "News & Insights" },
   { href: "/ai-scope-builder", label: "AI Scope Builder" },
 ];
 
@@ -82,7 +82,7 @@ export function ScopeShell({ children, activePath = "/ai-scope-builder", bgClass
             <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
             <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
             <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
             <a href="/directory" className="hover:text-sky-700">Business Directory</a>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>

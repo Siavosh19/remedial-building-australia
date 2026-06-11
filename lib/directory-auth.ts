@@ -56,6 +56,8 @@ export function verifyAuthToken(token: string, expectedPurpose: DirectoryTokenPa
   }
 }
 
+const ADMIN_ROLES = new Set(["admin", "super_admin", "content_admin", "supplier_manager", "read_only_admin"]);
+
 export async function getCurrentDirectoryUser() {
   const cookie = (await cookies()).get(COOKIE_NAME)?.value;
   if (!cookie) return null;
@@ -67,7 +69,9 @@ export async function getCurrentDirectoryUser() {
     where: { id: payload.userId },
   });
 
-  if (!user || !user.is_verified) return null;
+  if (!user) return null;
+  // Admin roles bypass email verification — they are created directly
+  if (!user.is_verified && !ADMIN_ROLES.has(user.role)) return null;
   return user;
 }
 
@@ -97,13 +101,13 @@ export function clearDirectorySessionCookie() {
 
 export async function getCurrentAdminUser() {
   const user = await getCurrentDirectoryUser();
-  if (!user || user.role !== "admin") return null;
+  if (!user || !ADMIN_ROLES.has(user.role)) return null;
   return user;
 }
 
 export async function getAdminFromRequest(request: Request) {
   const user = await getDirectoryUserFromRequest(request);
-  if (!user || user.role !== "admin") return null;
+  if (!user || !ADMIN_ROLES.has(user.role)) return null;
   return user;
 }
 
@@ -116,6 +120,7 @@ export async function getDirectoryUserFromRequest(request: Request) {
   const payload = verifySessionToken(token);
   if (!payload) return null;
   const user = await prisma.user.findUnique({ where: { id: payload.userId } });
-  if (!user || !user.is_verified) return null;
+  if (!user) return null;
+  if (!user.is_verified && !ADMIN_ROLES.has(user.role)) return null;
   return user;
 }

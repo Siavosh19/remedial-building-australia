@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CONCRETE_DEFECTS_DATA } from "@/lib/concrete-defects-data";
+import { prisma } from "@/lib/prisma";
 
 const BASE = "https://www.remedialbuildingaustralia.com.au";
 
@@ -72,7 +73,7 @@ const DEFECT_LIBRARY_CATEGORIES = [
   },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
 
   // ── Homepage ──
@@ -155,6 +156,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
       });
     }
+  }
+
+  // ── RBA Insights (published only) ──────────────────────────────────────────
+  entries.push({ url: `${BASE}/rba-insights`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 });
+  try {
+    const insights = await prisma.rbaInsightsArticle.findMany({
+      where: { status: "published" },
+      select: { slug: true, updated_at: true },
+    });
+    for (const insight of insights) {
+      entries.push({
+        url: `${BASE}/rba-insights/${insight.slug}`,
+        lastModified: insight.updated_at,
+        changeFrequency: "monthly",
+        priority: 0.75,
+      });
+    }
+  } catch {
+    // Graceful degradation if DB unavailable during sitemap generation
   }
 
   return entries;

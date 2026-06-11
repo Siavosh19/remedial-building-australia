@@ -181,6 +181,32 @@ const PRODUCTS: Product[] = [
       { name: "Parchem online and branch network nationally", url: "https://www.parchem.com.au" },
     ],
   },
+  {
+    fullLabel: "Sika",
+    brandUrl: "https://www.sika.com.au",
+    accentColor: "#be123c",
+    name: "Sika MonoTop-910 N",
+    descriptionLine: "Cementitious rebar anti-corrosion primer and bonding agent for concrete spalling repair — brush-applied to cleaned and prepared reinforcement — confirm current formulation, coverage, and system design with Sika Australia technical",
+    productType: "Cementitious rebar anti-corrosion primer — concrete spalling repair",
+    filterTags: ["Zinc-rich", "Brush-applied", "St2-surface", "Carbonation", "Chloride", "AS-3610"],
+    techChips: [{ label: "Cementitious", cls: "bg-red-100 text-red-700" }, { label: "Rebar primer", cls: "bg-slate-100 text-slate-700" }, { label: "Anti-corrosion", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Sika MonoTop-910 N is a cementitious anti-corrosion primer and bonding coat for cleaned reinforcement in concrete spalling repair applications. It is applied by brush to prepared and cleaned rebar prior to repair mortar application.\n\nSika MonoTop-910 N is part of the Sika MonoTop concrete repair system and is designed for use in conjunction with compatible Sika MonoTop repair mortars. The product contains an active corrosion-inhibiting component and acts simultaneously as a bonding bridge between the rebar and repair mortar.\n\nConfirm current product technical data sheet, coverage rate, application method, inter-coat timing, and compatible repair mortar system design with Sika Australia technical before specifying. Confirm AS 3735 and AS/NZS 2699 compliance requirements with Sika Australia for specific project certification requirements.",
+    technicalProperties: [
+      "Cementitious anti-corrosion primer for cleaned reinforcement — provides corrosion protection and bonding function in one product",
+      "Part of the Sika MonoTop concrete repair system — confirm compatible repair mortar from current Sika MonoTop system documentation",
+      "Confirm coverage rate, application method, and inter-coat timing from current Sika MonoTop-910 N TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Sika Australia technical before specifying",
+      "Not suitable for application to wet or contaminated rebar — rebar must be cleaned to St 2 or better before primer application",
+      "Must be used as part of the complete Sika MonoTop repair system — not compatible with all repair mortars — confirm system with Sika",
+      "Apply repair mortar while MonoTop-910 N is still green (tacky) — do not allow primer to fully cure before applying repair mortar",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
+      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

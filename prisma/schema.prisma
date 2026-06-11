@@ -207,6 +207,53 @@ enum AdminReviewStatus {
   needs_recheck
 }
 
+enum DirectoryPlanType {
+  basic
+  claimed
+  featured
+}
+
+enum DirectoryClaimStatus {
+  unclaimed
+  claim_pending
+  claimed
+  rejected
+}
+
+enum DirectorySubStatus {
+  none
+  trialing
+  active
+  past_due
+  cancelled
+  expired
+}
+
+enum DirectoryBillingCycle {
+  free
+  monthly
+  yearly
+}
+
+enum QuoteRequestStatus {
+  new
+  viewed
+  responded
+  not_suitable
+  won
+  lost
+}
+
+enum QuoteRequestRole {
+  strata_manager
+  committee_member
+  building_manager
+  consultant
+  builder
+  owner
+  other
+}
+
 enum LeadUrgency {
   emergency
   within_week
@@ -234,6 +281,21 @@ model Company {
   created_at       DateTime            @default(now())
   updated_at       DateTime            @updatedAt
 
+  // ── New plan / claim / subscription fields ───────────────────────────────
+  plan_type              DirectoryPlanType    @default(basic)
+  listing_claim_status   DirectoryClaimStatus @default(unclaimed)
+  logo_url               String?
+  quote_requests_enabled Boolean              @default(false)
+  claimed_at             DateTime?
+  featured_until         DateTime?
+  licence_number         String?
+  licence_type           String?
+  insurance_details      String?
+  profile_views          Int                  @default(0)
+  website_clicks         Int                  @default(0)
+  phone_clicks           Int                  @default(0)
+  suspended              Boolean              @default(false)
+
   main_category    Category?           @relation("CompanyMainCategory", fields: [main_category_id], references: [id])
   locations        Location[]
   company_categories CompanyCategory[]
@@ -243,12 +305,18 @@ model Company {
   lead_subscriptions LeadSubscription[]
   lead_deliveries  LeadDelivery[]
   admin_review_queue AdminReviewQueue[]
+  directory_subscription DirectorySubscription?
+  claim_requests   ClaimRequest[]
+  quote_requests   QuoteRequest[]
+  media            CompanyMedia[]
 
   @@index([status])
   @@index([is_featured])
   @@index([confidence_score])
   @@index([is_claimed])
   @@index([name])
+  @@index([plan_type])
+  @@index([listing_claim_status])
   @@map("companies")
 }
 
@@ -522,6 +590,109 @@ model DirectoryLead {
   @@map("directory_leads")
 }
 
+// ── Directory Subscription ────────────────────────────────────────────────────
+
+model DirectorySubscription {
+  id                      Int                    @id @default(autoincrement())
+  company_id              Int                    @unique
+  plan_type               DirectoryPlanType      @default(basic)
+  billing_cycle           DirectoryBillingCycle  @default(free)
+  subscription_status     DirectorySubStatus     @default(none)
+  stripe_customer_id      String?
+  stripe_subscription_id  String?
+  trial_started_at        DateTime?
+  trial_ends_at           DateTime?
+  current_period_start    DateTime?
+  current_period_end      DateTime?
+  cancel_at_period_end    Boolean                @default(false)
+  cancelled_at            DateTime?
+  admin_override_plan     DirectoryPlanType?
+  admin_override_by       Int?
+  admin_override_at       DateTime?
+  admin_notes             String?
+  created_at              DateTime               @default(now())
+  updated_at              DateTime               @updatedAt
+
+  company                 Company                @relation(fields: [company_id], references: [id])
+
+  @@index([subscription_status])
+  @@index([plan_type])
+  @@map("directory_subscriptions")
+}
+
+// ── Claim Requests ────────────────────────────────────────────────────────────
+
+model ClaimRequest {
+  id              Int                  @id @default(autoincrement())
+  company_id      Int
+  user_id         Int
+  status          DirectoryClaimStatus @default(claim_pending)
+  claimant_name   String
+  claimant_email  String
+  claimant_phone  String?
+  notes           String?
+  admin_notes     String?
+  reviewed_by     Int?
+  reviewed_at     DateTime?
+  created_at      DateTime             @default(now())
+  updated_at      DateTime             @updatedAt
+
+  company         Company              @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
+  @@index([status])
+  @@index([user_id])
+  @@map("claim_requests")
+}
+
+// ── Quote Requests ────────────────────────────────────────────────────────────
+
+model QuoteRequest {
+  id                 Int                @id @default(autoincrement())
+  company_id         Int
+  requester_name     String
+  requester_email    String
+  requester_phone    String?
+  requester_role     QuoteRequestRole?
+  building_suburb    String?
+  project_category   String?
+  urgency            String?
+  budget_range       String?
+  message            String?
+  status             QuoteRequestStatus @default(new)
+  notified_business  Boolean            @default(false)
+  notified_admin     Boolean            @default(false)
+  responded_at       DateTime?
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @updatedAt
+
+  company            Company            @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
+  @@index([status])
+  @@index([created_at])
+  @@map("quote_requests")
+}
+
+// ── Company Media ─────────────────────────────────────────────────────────────
+
+model CompanyMedia {
+  id          Int      @id @default(autoincrement())
+  company_id  Int
+  media_type  String   // "logo" | "photo"
+  url         String
+  filename    String?
+  size_bytes  Int?
+  sort_order  Int      @default(0)
+  created_at  DateTime @default(now())
+
+  company     Company  @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
+  @@index([media_type])
+  @@map("company_media")
+}
+
 // ── Supplier / Brand ─────────────────────────────────────────────────────────
 
 model Supplier {
@@ -781,4 +952,29 @@ model TermsAcceptance {
 
   @@index([user_id])
   @@map("terms_acceptances")
+}
+
+model RbaInsightsArticle {
+  id                      Int       @id @default(autoincrement())
+  title                   String
+  slug                    String    @unique
+  category                String
+  summary                 String?
+  featured_image_url      String?
+  featured_image_alt_text String?
+  body_content            String?
+  author                  String    @default("Remedial Building Australia")
+  published_date          DateTime?
+  status                  String    @default("draft")
+  seo_title               String?
+  seo_description         String?
+  related_defect_pages    String[]
+  related_repair_systems  String[]
+  is_featured             Boolean   @default(false)
+  reading_time_minutes    Int?
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @updatedAt
+
+  @@index([status])
+  @@map("rba_insights_articles")
 }

@@ -186,6 +186,100 @@ const PRODUCTS: Product[] = [
       { name: "Commercial paint trade suppliers — confirm local availability", url: "https://www.jotun.com/au" },
     ],
   },
+  {
+    fullLabel: "Westox",
+    brandUrl: "https://www.westox.com.au",
+    accentColor: "#64748b",
+    name: "Westox WX Colourcote 15 Litre",
+    descriptionLine: "Exterior acrylic topcoat for masonry and render facades — available in a range of colours — confirm current formulation, coverage, primer requirements and Australian availability with Westox technical",
+    productType: "Acrylic exterior topcoat — masonry and render facades",
+    filterTags: ["Acrylic", "Two-coat", "Exterior-topcoat", "Masonry", "Render", "Water-based", "Weatherproof"],
+    techChips: [
+      { label: "Acrylic", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior topcoat", cls: "bg-slate-100 text-slate-700" },
+      { label: "Water-based", cls: "bg-blue-100 text-blue-700" },
+    ],
+    systemDescription:
+      "Westox WX Colourcote is an exterior acrylic topcoat for masonry and render facades. Westox is an Australian decorative and protective coatings brand. Apply as a two-coat system over a compatible primer — confirm alkali-resistant primer requirement on new or unpainted cement render with Westox technical.\n\nConfirm current product formulation, coverage rates, DFT, thinning recommendations, primer specification, and Australian availability with Westox technical before specifying. Do not rely on this general reference as a substitute for current Westox WX Colourcote TDS.",
+    technicalProperties: [
+      "Exterior acrylic topcoat — suitable for masonry and render facades",
+      "Water-based formulation — confirm VOC classification and application conditions from current TDS",
+      "Confirm coverage rate, DFT per coat, and two-coat system specifications from current Westox TDS",
+      "Confirm primer specification for new render and existing substrates from Westox technical",
+    ],
+    limitations: [
+      "Confirm current product formulation, coverage, and system specifications with Westox technical before specifying",
+      "Alkali-resistant primer required on new or unpainted cement render — confirm primer product with Westox",
+      "Not a crack-bridging system — specify elastomeric coating where active facade cracking is present",
+      "Confirm current Australian product availability with Westox or Westox distributors before specifying",
+    ],
+    procurementSources: [
+      { name: "Westox — contact for trade supply", url: "https://www.westox.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Westox",
+    brandUrl: "https://www.westox.com.au",
+    accentColor: "#64748b",
+    name: "Westox Satintex 15 Litre",
+    descriptionLine: "Satin-finish exterior acrylic coating for masonry and render facades — confirm current formulation, coverage, primer requirements and Australian availability with Westox technical",
+    productType: "Satin-finish acrylic exterior coating — masonry and render",
+    filterTags: ["Acrylic", "Two-coat", "Exterior-topcoat", "Masonry", "Render", "Water-based"],
+    techChips: [
+      { label: "Satin finish", cls: "bg-slate-100 text-slate-700" },
+      { label: "Acrylic", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Westox Satintex is a satin-finish exterior acrylic coating for masonry and render facades. A satin finish provides moderate sheen compared to low-sheen or flat acrylic finishes — specify where the facade design requires a semi-reflective surface.\n\nApply as a two-coat system over a compatible primer — confirm alkali-resistant primer requirement on new or unpainted cement render with Westox technical. Confirm current product formulation, coverage rates, DFT, and primer specification from current Westox TDS before specifying.",
+    technicalProperties: [
+      "Satin-finish exterior acrylic topcoat — masonry and render substrates",
+      "Water-based formulation — confirm VOC classification from current TDS",
+      "Confirm coverage rate, DFT per coat, and two-coat system specifications from current Westox TDS",
+      "Confirm primer specification for substrate type from Westox technical",
+    ],
+    limitations: [
+      "Confirm current product formulation and system specifications with Westox technical before specifying",
+      "Alkali-resistant primer required on new cement render — confirm primer product with Westox",
+      "Not a crack-bridging system — specify elastomeric coating for facades with active cracking",
+      "Confirm current Australian product availability with Westox before specifying",
+    ],
+    procurementSources: [
+      { name: "Westox — contact for trade supply", url: "https://www.westox.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Westox",
+    brandUrl: "https://www.westox.com.au",
+    accentColor: "#64748b",
+    name: "Westox Glosstex 15 Litre",
+    descriptionLine: "Gloss-finish exterior acrylic coating for masonry and render facades — confirm current formulation, coverage, primer requirements and Australian availability with Westox technical",
+    productType: "Gloss-finish acrylic exterior coating — masonry and render",
+    filterTags: ["Acrylic", "Two-coat", "Exterior-topcoat", "Masonry", "Render", "Water-based"],
+    techChips: [
+      { label: "Gloss finish", cls: "bg-slate-100 text-slate-700" },
+      { label: "Acrylic", cls: "bg-slate-100 text-slate-700" },
+      { label: "Exterior", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Westox Glosstex is a gloss-finish exterior acrylic coating for masonry and render facades. A gloss finish provides a high-sheen reflective surface — specify where facade design or project brief requires a gloss finish exterior coating on render or masonry.\n\nApply as a two-coat system over a compatible primer — confirm alkali-resistant primer requirement on new or unpainted cement render with Westox technical. Confirm current product formulation, coverage rates, DFT, and primer specification from current Westox TDS before specifying.",
+    technicalProperties: [
+      "Gloss-finish exterior acrylic topcoat — masonry and render substrates",
+      "Water-based formulation — confirm VOC classification from current TDS",
+      "Confirm coverage rate, DFT per coat, and two-coat system specifications from current Westox TDS",
+      "Confirm primer specification for substrate type from Westox technical",
+    ],
+    limitations: [
+      "Confirm current product formulation and system specifications with Westox technical before specifying",
+      "Alkali-resistant primer required on new cement render — confirm primer product with Westox",
+      "Not a crack-bridging system — specify elastomeric coating for facades with active cracking",
+      "High-gloss finishes will highlight substrate imperfections — ensure thorough surface preparation before application",
+      "Confirm current Australian product availability with Westox before specifying",
+    ],
+    procurementSources: [
+      { name: "Westox — contact for trade supply", url: "https://www.westox.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

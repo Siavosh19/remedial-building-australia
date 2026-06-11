@@ -46,7 +46,7 @@ export default async function DirectoryPage() {
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
             <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">Industry News</a>
+            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
             <a href="/directory" className="whitespace-nowrap text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           </nav>
@@ -78,7 +78,7 @@ export default async function DirectoryPage() {
             <span className="text-slate-200" aria-hidden>|</span>
             <span className="font-semibold text-slate-500">Australia Wide</span>
             <span className="text-slate-200" aria-hidden>|</span>
-            <span className="font-semibold text-slate-500">Verified Industry Directory</span>
+            <span className="font-semibold text-slate-500">Australian Strata Building Directory</span>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default async function DirectoryPage() {
             <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
             <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
             <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
             <a href="/directory" className="hover:text-sky-700">Business Directory</a>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
@@ -127,26 +127,23 @@ export default async function DirectoryPage() {
 
 async function fetchCompanies() {
   return prisma.company.findMany({
-    where: { status: "published" },
+    where: { status: "published", suspended: false },
     select: {
       id: true,
       slug: true,
       name: true,
       description: true,
       phone: true,
+      plan_type: true,
       profile_status: true,
       confidence_score: true,
       is_featured: true,
       is_claimed: true,
+      logo_url: true,
       main_category: { select: { id: true, name: true, slug: true } },
       locations: {
         take: 1,
         select: { suburb: true, state: true, postcode: true },
-      },
-      licences: {
-        where: { status: "verified" },
-        take: 1,
-        select: { status: true },
       },
       company_tags: {
         where: { is_approved: true },
@@ -155,10 +152,12 @@ async function fetchCompanies() {
       },
     },
     orderBy: [
+      // Featured first, then claimed, then basic
+      { plan_type: "desc" },
       { is_featured: "desc" },
       { confidence_score: "desc" },
       { is_claimed: "desc" },
     ],
-    take: 100,
+    take: 200,
   });
 }

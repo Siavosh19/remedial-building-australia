@@ -5,7 +5,7 @@ import AdminSidebar from "./AdminSidebar";
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const user = await getCurrentDirectoryUser();
-  if (!user || user.role !== "admin") redirect("/directory/login");
+  if (!user || !["admin", "super_admin"].includes(user.role)) redirect("/directory/login");
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-100">

@@ -137,6 +137,39 @@ const PRODUCTS: Product[] = [
       { name: "Tile and waterproofing trade suppliers nationally — confirm availability", url: "https://www.mapei.com/au" },
     ],
   },
+  {
+    fullLabel: "ARDEX Australia",
+    brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://www.ardex.com.au",
+    accentColor: "#f97316",
+    name: "ARDEX STB / STA Self-Adhesive Butynol Tape",
+    descriptionLine: "ARDEX self-adhesive butyl rubber tape for membrane terminations, sealing and detailing at junctions",
+    productType: "Self-adhesive butyl rubber sealing tape — membrane terminations and detailing",
+    filterTags: ["Wall-termination", "Upstand", "Liquid-applied", "Sheet-membrane", "External", "Internal"],
+    techChips: [
+      { label: "Self-adhesive butyl tape", cls: "bg-orange-100 text-orange-800" },
+      { label: "Membrane termination", cls: "bg-slate-100 text-slate-700" },
+      { label: "ARDEX Butynol system", cls: "bg-slate-100 text-slate-700" },
+      { label: "Cold-applied — no flame", cls: "bg-green-50 text-green-700" },
+    ],
+    systemDescription:
+      "ARDEX STB / STA are self-adhesive butyl rubber tapes for use in ARDEX Butynol sheet membrane systems — providing sealing at membrane terminations, laps, upstands, penetrations and junctions. Self-adhesive butyl rubber provides immediate adhesion on contact without the need for heat, open flame, or separate adhesive. STB and STA designations refer to different tape formats within the ARDEX Butynol accessory range — confirm the appropriate tape format, width, and thickness for the specific application detail with ARDEX Australia. Apply to primed or cleaned substrates and press firmly with a roller for full contact adhesion.",
+    technicalProperties: [
+      "Self-adhesive butyl rubber tape — for membrane termination sealing and detailing",
+      "Cold-applied — no heat, flame or separate adhesive required",
+      "For use with ARDEX Butynol sheet membrane systems — sealing laps, upstands, penetrations and junctions",
+      "Immediate adhesion on contact — press firmly with a roller for full contact",
+    ],
+    limitations: [
+      "Confirm correct tape format (STB or STA), width and thickness for the specific application with ARDEX Australia",
+      "Apply to primed or clean substrates — contamination reduces adhesion",
+      "Part of the ARDEX Butynol system — confirm compatibility with the specific ARDEX membrane system being used",
+      "Confirm current product specification with ARDEX Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "ARDEX Australia — trade supply — contact for current pricing", url: "https://www.ardex.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

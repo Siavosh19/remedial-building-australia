@@ -17,10 +17,12 @@ type CompanyResult = {
   name: string;
   description: string | null;
   phone: string | null;
+  plan_type?: string;
   profile_status: string;
   confidence_score: number;
   is_featured: boolean;
   is_claimed: boolean;
+  logo_url?: string | null;
   distance_km?: number | null;
   main_category: CategoryOption | null;
   locations: Array<{
@@ -30,7 +32,7 @@ type CompanyResult = {
     services_nationwide?: boolean;
     services_statewide?: boolean;
   }>;
-  licences: Array<{ status: string }>;
+  licences?: Array<{ status: string }>;
   company_tags?: Array<{ tag: { name: string; tag_type: string } }>;
 };
 
@@ -80,29 +82,27 @@ function DistanceBadge({ distanceKm }: { distanceKm: number }) {
 function CompanyRow({ company }: { company: CompanyResult }) {
   const location = company.locations[0];
   const locationParts = [location?.suburb, location?.state].filter(Boolean);
-  const isVerified =
-    company.licences.length > 0 ||
-    ["business_verified", "contact_verified", "licence_verified", "practitioner_verified"].includes(
-      company.profile_status
-    );
+  const planType = company.plan_type ?? (company.is_featured ? "featured" : company.is_claimed ? "claimed" : "basic");
+  const isFeatured = planType === "featured";
+  const isClaimed = planType === "claimed" || planType === "featured";
   const abbr = initials(company.name);
   const tags = company.company_tags ?? [];
 
   return (
     <div
       className={`flex gap-4 border-b border-slate-100 bg-white px-6 py-5 last:border-0 transition-colors hover:bg-slate-50/70 ${
-        company.is_featured ? "border-l-4 border-l-amber-400" : ""
+        isFeatured ? "border-l-4 border-l-amber-400" : ""
       }`}
     >
       {/* Logo / initials */}
       <div
-        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-sm font-extrabold ${
-          company.is_featured
-            ? "bg-amber-100 text-amber-800"
-            : "bg-sky-100 text-sky-800"
+        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-sm font-extrabold overflow-hidden ${
+          isFeatured ? "bg-amber-100 text-amber-800" : "bg-sky-100 text-sky-800"
         }`}
       >
-        {abbr || "?"}
+        {company.logo_url
+          ? <img src={company.logo_url} alt={`${company.name} logo`} className="h-full w-full object-cover" />
+          : abbr || "?"}
       </div>
 
       {/* Main content */}
@@ -114,19 +114,14 @@ function CompanyRow({ company }: { company: CompanyResult }) {
               {company.main_category.name}
             </span>
           )}
-          {company.is_featured && (
+          {isFeatured && (
             <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-800">
               ★ Featured
             </span>
           )}
-          {isVerified && (
-            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">
-              Business Verified ✓
-            </span>
-          )}
-          {company.is_claimed && !isVerified && !company.is_featured && (
+          {isClaimed && !isFeatured && (
             <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-bold text-indigo-700">
-              Claimed Profile ✓
+              Claimed Profile
             </span>
           )}
           {company.distance_km != null && (
@@ -178,7 +173,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
           >
             View Profile →
           </a>
-          {company.is_claimed ? (
+          {isClaimed ? (
             <a
               href={`/directory/company/${company.slug}`}
               className="whitespace-nowrap rounded-xl border border-sky-300 bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-800 transition hover:bg-sky-100"
@@ -190,7 +185,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
               href={`/directory/claim/${company.slug}`}
               className="whitespace-nowrap rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
             >
-              Claim Profile
+              Claim this profile →
             </a>
           )}
         </div>

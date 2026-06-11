@@ -233,6 +233,120 @@ export async function sendAdminSupplierRegistrationEmail(data: {
   await sendEmail(`New supplier registration — ${data.brandName}`, "info@remedialbuildingaustralia.com.au", html, text);
 }
 
+export async function sendClaimRequestAdminEmail(
+  claimantName: string,
+  claimantEmail: string,
+  companyName: string,
+  companySlug: string,
+  claimRequestId: number,
+) {
+  const adminLink = `${SITE_URL}/directory/admin/claims`;
+  const html = emailWrapper(
+    "New claim request",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A business owner has submitted a claim request for a directory listing.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">Claimant</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(claimantName)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Email</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(claimantEmail)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Listing</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(companyName)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Request ID</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">#${claimRequestId}</td></tr>
+     </table>
+     <p style="margin:0;"><a href="${adminLink}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Review Claim →</a></p>`
+  );
+  const text = `New claim request #${claimRequestId}\nClaimant: ${claimantName} (${claimantEmail})\nListing: ${companyName}\n\nReview at: ${adminLink}`;
+  await sendEmail(`New claim request — ${companyName}`, "info@remedialbuildingaustralia.com.au", html, text);
+}
+
+export async function sendClaimDecisionEmail(
+  claimantName: string,
+  claimantEmail: string,
+  companyName: string,
+  approved: boolean,
+  adminNote?: string,
+) {
+  const dashLink = `${SITE_URL}/directory/dashboard`;
+  const html = approved
+    ? emailWrapper(
+        "Your claim has been approved",
+        `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Hi ${safeHtml(claimantName)},</p>
+         <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Your claim for <strong>${safeHtml(companyName)}</strong> has been approved. You can now manage your listing from the dashboard.</p>
+         <p style="margin:0 0 24px;"><a href="${dashLink}" style="display:inline-block;padding:14px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;">Go to Dashboard →</a></p>`
+      )
+    : emailWrapper(
+        "Your claim could not be approved",
+        `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Hi ${safeHtml(claimantName)},</p>
+         <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Unfortunately your claim for <strong>${safeHtml(companyName)}</strong> could not be approved at this time.${adminNote ? ` Reason: ${safeHtml(adminNote)}` : ""}</p>
+         <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">If you believe this is an error, please contact us at <a href="mailto:info@remedialbuildingaustralia.com.au" style="color:#0369a1;">info@remedialbuildingaustralia.com.au</a>.</p>`
+      );
+  const subject = approved ? `Your claim is approved — ${companyName}` : `Claim not approved — ${companyName}`;
+  const text = approved
+    ? `Hi ${claimantName},\n\nYour claim for ${companyName} has been approved. Go to your dashboard: ${dashLink}`
+    : `Hi ${claimantName},\n\nYour claim for ${companyName} could not be approved.${adminNote ? ` Reason: ${adminNote}` : ""}`;
+  await sendEmail(subject, claimantEmail, html, text);
+}
+
+export async function sendQuoteRequestBusinessEmail(
+  companyEmail: string,
+  companyName: string,
+  companySlug: string,
+  requesterName: string,
+  requesterEmail: string,
+  requesterPhone: string | null,
+  requesterRole: string | null,
+  suburb: string | null,
+  category: string | null,
+  urgency: string | null,
+  budget: string | null,
+  message: string | null,
+) {
+  const dashLink = `${SITE_URL}/directory/dashboard/quote-requests`;
+  const rows: [string, string][] = [
+    ["From", requesterName],
+    ["Email", requesterEmail],
+    ...(requesterPhone ? [["Phone", requesterPhone] as [string, string]] : []),
+    ...(requesterRole ? [["Role", requesterRole.replace(/_/g, " ")] as [string, string]] : []),
+    ...(suburb ? [["Suburb", suburb] as [string, string]] : []),
+    ...(category ? [["Category", category] as [string, string]] : []),
+    ...(urgency ? [["Urgency", urgency] as [string, string]] : []),
+    ...(budget ? [["Budget", budget] as [string, string]] : []),
+    ...(message ? [["Message", message] as [string, string]] : []),
+  ];
+  const tableRows = rows.map(([l, v]) =>
+    `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;vertical-align:top;">${l}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(v)}</td></tr>`
+  ).join("");
+  const html = emailWrapper(
+    "New Quote Request",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">You have received a new quote request on Remedial Building Australia.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">${tableRows}</table>
+     <p style="margin:0;"><a href="${dashLink}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">View in Dashboard →</a></p>`
+  );
+  const text = rows.map(([l, v]) => `${l}: ${v}`).join("\n") + `\n\nView in dashboard: ${dashLink}`;
+  await sendEmail(`New Quote Request — ${companyName}`, companyEmail, html, text);
+}
+
+export async function sendQuoteRequestAdminEmail(
+  companyName: string,
+  companySlug: string,
+  requesterName: string,
+  requesterEmail: string,
+  category: string | null,
+  suburb: string | null,
+) {
+  const adminLink = `${SITE_URL}/directory/admin/quote-requests`;
+  const html = emailWrapper(
+    "New Quote Request",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A new quote request was submitted via the directory.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">Business</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(companyName)}</td></tr>
+       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">From</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(requesterName)} — ${safeHtml(requesterEmail)}</td></tr>
+       ${category ? `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Category</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(category)}</td></tr>` : ""}
+       ${suburb ? `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Suburb</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(suburb)}</td></tr>` : ""}
+     </table>
+     <p style="margin:0;"><a href="${adminLink}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">View in Admin →</a></p>`
+  );
+  const text = `New quote request for ${companyName}\nFrom: ${requesterName} (${requesterEmail})\n${category ? `Category: ${category}\n` : ""}${suburb ? `Suburb: ${suburb}\n` : ""}\nAdmin: ${adminLink}`;
+  await sendEmail(`New Quote Request — ${companyName}`, "info@remedialbuildingaustralia.com.au", html, text);
+}
+
 export async function sendAdminSignupNotification(name: string, email: string, accountType: string) {
   const typeLabel = accountType === "directory" ? "Directory Listing" : accountType === "supplier" ? "Supplier Portal" : "AI Scope Builder";
   const adminLink = `${SITE_URL}/directory/admin`;

@@ -204,6 +204,58 @@ const PRODUCTS: Product[] = [
       { name: "Fosroc Australia — product information", url: "https://www.fosroc.com.au" },
     ],
   },
+  {
+    fullLabel: "Dulux / Acratex",
+    brandUrl: "https://www.acratex.com.au",
+    accentColor: "#7c3aed",
+    name: "Dulux Acratex RenderWall",
+    descriptionLine: "Polymer-modified cementitious render for exterior masonry, concrete block, and brick surfaces — confirm current formulation, coat thicknesses, coverage, primer requirements, and system design with Dulux Acratex technical",
+    productType: "Polymer-modified cementitious render — exterior masonry and concrete",
+    filterTags: ["Polymer-modified", "Two-coat", "Exterior", "Masonry", "Concrete", "Pre-bagged", "Hand-applied"],
+    techChips: [{ label: "Polymer-modified", cls: "bg-purple-100 text-purple-700" }, { label: "Exterior", cls: "bg-slate-100 text-slate-700" }, { label: "Pre-bagged", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Dulux Acratex RenderWall is a polymer-modified cementitious render for exterior masonry, concrete block, and brick facade surfaces. It is used in two-coat render systems on remedial projects requiring full render removal and replacement or render re-coat over prepared substrates.\n\nRenderWall is part of the Dulux Acratex facade system range and is designed to work with compatible Acratex primers, base coats, and finish coats. Confirm current product technical data sheet, system design, coat thicknesses, coverage, and primer specification with Dulux Acratex technical before specifying.",
+    technicalProperties: [
+      "Polymer-modified cementitious render — suitable for exterior masonry, concrete block, and brick",
+      "Designed for use within the Dulux Acratex facade system — confirm compatible primer and topcoat from current Acratex TDS",
+      "Confirm coat thicknesses, coverage, and system design from current Dulux Acratex RenderWall TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Dulux Acratex technical before specifying",
+      "Not suitable for application over substrates with active cracking or rising damp — address substrate defects before applying render",
+      "Confirm compatibility with existing substrate treatments and subsequent topcoat systems with Dulux Acratex before specifying",
+      "Do not apply in temperatures below +5°C or above +35°C, or when rain is imminent",
+    ],
+    procurementSources: [
+      { name: "Dulux Acratex — contact for trade supply and technical support", url: "https://www.acratex.com.au" },
+      { name: "Dulux trade stores — national distribution", url: "https://www.dulux.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Rockcote",
+    brandUrl: "https://www.rockcote.com.au",
+    accentColor: "#0891b2",
+    name: "Rockcote Quick Render",
+    descriptionLine: "Fast-setting polymer-modified render for masonry and concrete block — confirms current formulation, set time, coat thicknesses, and system design with Rockcote technical",
+    productType: "Fast-setting polymer-modified render — masonry and concrete block",
+    filterTags: ["Polymer-modified", "Two-coat", "Exterior", "Masonry", "Concrete", "Pre-bagged", "Hand-applied"],
+    techChips: [{ label: "Polymer-modified", cls: "bg-cyan-100 text-cyan-700" }, { label: "Fast-setting", cls: "bg-slate-100 text-slate-700" }, { label: "Pre-bagged", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Rockcote Quick Render is a fast-setting polymer-modified cementitious render for masonry and concrete block facade surfaces. Fast-setting renders are useful in remedial projects where rapid return to service is required, or where cold temperatures or tight program schedules necessitate shorter overcoat times.\n\nRockcote Quick Render is part of the Rockcote render system range. Confirm current product technical data sheet, set time, working time, coat thicknesses, coverage, and compatible primer and topcoat specification with Rockcote technical before specifying.",
+    technicalProperties: [
+      "Fast-setting polymer-modified cementitious render — suitable for masonry and concrete block exterior surfaces",
+      "Designed for use within the Rockcote facade system — confirm compatible primer and topcoat from current Rockcote TDS",
+      "Confirm set time, working time, coat thicknesses, and system design from current Rockcote Quick Render TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Rockcote technical before specifying",
+      "Fast set time reduces working window — confirm workability window for site conditions before use",
+      "Not suitable for application over substrates with active cracking or rising damp — address substrate defects before applying render",
+      "Confirm current Australian product availability with Rockcote before specifying",
+    ],
+    procurementSources: [
+      { name: "Rockcote — contact for trade supply and technical support", url: "https://www.rockcote.com.au" },
+      { name: "Rockcote trade distributors — contact Rockcote for nearest", url: "https://www.rockcote.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

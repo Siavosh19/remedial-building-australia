@@ -127,6 +127,54 @@ const PRODUCTS: Product[] = [
       { name: "Rockcote trade distributors — contact Rockcote for nearest", url: "https://www.rockcote.com.au" },
     ],
   },
+  {
+    fullLabel: "Haymes",
+    brandUrl: "https://www.haymespaint.com.au",
+    accentColor: "#ca8a04",
+    name: "Haymes Rendertex Rendershield Membrane",
+    descriptionLine: "Texture coating and membrane system for masonry and render facades — confirm current formulation, texture profile, coverage, DFT, and system design with Haymes technical",
+    productType: "Texture coating membrane — masonry and render facades",
+    filterTags: ["Texture-coat", "Acrylic", "Render-finish", "Concrete-masonry", "UV-resistant", "Roller-applied", "Water-resistant"],
+    techChips: [{ label: "Texture coat", cls: "bg-yellow-100 text-yellow-700" }, { label: "Membrane", cls: "bg-slate-100 text-slate-700" }, { label: "Roller-applied", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Haymes Rendertex Rendershield Membrane is a texture coating and membrane system for masonry and rendered facade surfaces. The Rendertex range provides textured finishes with weather and UV resistance for exterior facade application.\n\nConfirm current product technical data sheet, texture profile, application method, coverage, DFT, primer requirements, and system design with Haymes technical before specifying.",
+    technicalProperties: [
+      "Texture coating and membrane system — suitable for masonry and rendered facade surfaces",
+      "Designed for exterior facade use — confirm UV resistance and weather exposure suitability from current Haymes TDS",
+      "Confirm texture profile, coverage, DFT, and primer requirements from current Haymes Rendertex Rendershield Membrane TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system specifications with Haymes technical before specifying",
+      "Texture matching for patch repairs may require on-site trials — confirm texture match approach with Haymes before repair works",
+      "Confirm current Australian product availability with Haymes before specifying",
+    ],
+    procurementSources: [
+      { name: "Haymes Paint — contact for trade supply and technical support", url: "https://www.haymespaint.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Haymes",
+    brandUrl: "https://www.haymespaint.com.au",
+    accentColor: "#ca8a04",
+    name: "Haymes Rendertex Roll On Texture",
+    descriptionLine: "Roller-applied acrylic texture coating for masonry and render facades — confirm current formulation, texture profile, coverage, and system design with Haymes technical",
+    productType: "Roller-applied acrylic texture coating — masonry and render facades",
+    filterTags: ["Texture-coat", "Acrylic", "Render-finish", "Concrete-masonry", "UV-resistant", "Roller-applied", "Water-resistant"],
+    techChips: [{ label: "Texture coat", cls: "bg-yellow-100 text-yellow-700" }, { label: "Roller-applied", cls: "bg-slate-100 text-slate-700" }, { label: "Acrylic", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Haymes Rendertex Roll On Texture is a roller-applied acrylic texture coating for masonry and rendered facade surfaces. Roller-applied texture coatings are commonly used in remedial repainting and overcoat programs where a contractor-friendly application method is required without specialist spray equipment.\n\nConfirm current product technical data sheet, texture profile, application method, coverage rate, and system design with Haymes technical before specifying.",
+    technicalProperties: [
+      "Roller-applied acrylic texture coating — suitable for masonry and rendered facade surfaces",
+      "Does not require specialist spray equipment — confirm roller application method and nap size from current Haymes TDS",
+      "Confirm texture profile, coverage rate, and primer requirements from current Haymes Rendertex Roll On Texture TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system specifications with Haymes technical before specifying",
+      "Roller-applied textures produce different profiles from spray-applied — not interchangeable where specific texture matching is required",
+      "Confirm current Australian product availability with Haymes before specifying",
+    ],
+    procurementSources: [
+      { name: "Haymes Paint — contact for trade supply and technical support", url: "https://www.haymespaint.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

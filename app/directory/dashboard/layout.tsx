@@ -6,13 +6,9 @@ import DashboardNav from "@/components/directory/DashboardNav";
 
 
 const STATUS_COLOR: Record<string, string> = {
-  basic:                   "bg-slate-200 text-slate-700",
-  contact_verified:        "bg-sky-100 text-sky-800",
-  business_verified:       "bg-sky-200 text-sky-900",
-  licence_verified:        "bg-blue-100 text-blue-800",
-  practitioner_verified:   "bg-blue-200 text-blue-900",
-  claimed:                 "bg-blue-100 text-blue-900",
-  featured:                "bg-red-100 text-red-700",
+  basic:    "bg-slate-100 text-slate-600",
+  claimed:  "bg-indigo-100 text-indigo-700",
+  featured: "bg-amber-100 text-amber-800",
 };
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
@@ -21,12 +17,14 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
+    select: { id: true, name: true, slug: true, status: true, plan_type: true, profile_status: true },
   });
 
   if (user.role === "admin") redirect("/directory/admin");
   if (!company) redirect("/directory/signup/company");
 
-  const statusCls = STATUS_COLOR[company.profile_status] ?? "bg-slate-700 text-slate-200";
+  const planLabel = company.plan_type === "featured" ? "Featured Profile" : company.plan_type === "claimed" ? "Claimed Profile" : "Basic Listing";
+  const statusCls = STATUS_COLOR[company.plan_type] ?? "bg-slate-100 text-slate-600";
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -42,7 +40,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           </div>
           <div className="flex items-center gap-3">
             <span className={`rounded-full px-3 py-1 text-xs font-bold tracking-wide ${statusCls}`}>
-              {company.profile_status.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+              {planLabel}
             </span>
             <a
               href={`/directory/company/${company.slug}`}

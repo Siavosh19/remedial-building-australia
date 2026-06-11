@@ -20,10 +20,16 @@ export async function POST(request: NextRequest) {
 
   const passwordMatches = await comparePassword(password, user.password_hash);
   if (!passwordMatches) return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
-  if (!user.is_verified) return NextResponse.json({ error: "Please verify your email before logging in." }, { status: 403 });
+
+  const ADMIN_ROLES = new Set(["admin", "super_admin", "content_admin", "supplier_manager", "read_only_admin"]);
+  if (!user.is_verified && !ADMIN_ROLES.has(user.role)) {
+    return NextResponse.json({ error: "Please verify your email before logging in." }, { status: 403 });
+  }
+
+  await prisma.user.update({ where: { id: user.id }, data: { last_login_at: new Date() } });
 
   const sessionToken = createSessionToken(user.id);
-  const response = NextResponse.json({ success: true });
+  const response = NextResponse.json({ success: true, role: user.role });
   response.cookies.set(createDirectorySessionCookie(sessionToken, rememberMe));
   return response;
 }

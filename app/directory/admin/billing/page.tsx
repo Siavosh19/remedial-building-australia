@@ -1,9 +1,10 @@
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminBillingPage() {
-  const [products, totalRevenue] = await Promise.all([
+  const [products, totalRevenue, dirSubs] = await Promise.all([
     prisma.supplierProduct.findMany({
       where: { payment_status: "paid", promotion_status: "active" },
       include: { supplier: { select: { brand_name: true, slug: true } } },
@@ -13,6 +14,10 @@ export default async function AdminBillingPage() {
       where: { payment_status: "paid", promotion_status: "active" },
       _sum: { monthly_fee: true },
     }),
+    prisma.directorySubscription.findMany({
+      where: { subscription_status: { in: ["trialing", "active"] } },
+      select: { plan_type: true, subscription_status: true, billing_cycle: true },
+    }),
   ]);
 
   const overdue = await prisma.supplierProduct.findMany({
@@ -21,6 +26,11 @@ export default async function AdminBillingPage() {
   });
 
   const mrr = Number(totalRevenue._sum.monthly_fee ?? 0);
+
+  const dirTrialing = dirSubs.filter((s) => s.subscription_status === "trialing").length;
+  const dirActive = dirSubs.filter((s) => s.subscription_status === "active").length;
+  const dirFeatured = dirSubs.filter((s) => s.plan_type === "featured" && ["trialing","active"].includes(s.subscription_status)).length;
+  const dirClaimed = dirSubs.filter((s) => s.plan_type === "claimed" && ["trialing","active"].includes(s.subscription_status)).length;
 
   return (
     <div>
@@ -117,6 +127,35 @@ export default async function AdminBillingPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Directory listing subscriptions */}
+      <div className="mt-10">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-900">Directory Listing Subscriptions</h2>
+          <Link href="/directory/admin/directory-companies" className="text-xs font-semibold text-indigo-600 hover:text-indigo-800">
+            Manage companies →
+          </Link>
+        </div>
+        <div className="grid grid-cols-4 gap-4">
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Total (trial + active)</div>
+            <div className="text-3xl font-black text-slate-900 mt-1">{dirSubs.length}</div>
+          </div>
+          <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 shadow-sm">
+            <div className="text-xs font-semibold text-sky-700 uppercase tracking-wide">In Trial</div>
+            <div className="text-3xl font-black text-sky-900 mt-1">{dirTrialing}</div>
+          </div>
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm">
+            <div className="text-xs font-semibold text-emerald-700 uppercase tracking-wide">Active (paying)</div>
+            <div className="text-3xl font-black text-emerald-900 mt-1">{dirActive}</div>
+          </div>
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
+            <div className="text-xs font-semibold text-amber-700 uppercase tracking-wide">Featured</div>
+            <div className="text-3xl font-black text-amber-900 mt-1">{dirFeatured}</div>
+            <div className="text-xs text-amber-600 mt-1">{dirClaimed} claimed</div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -399,6 +399,109 @@ const PRODUCTS: Product[] = [
       { name: "Bldcare", url: "https://www.bldcare.com.au" },
     ],
   },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    tdsUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika Sikalastic WPU",
+    descriptionLine: "One-component polyurethane waterproofing membrane for wet area and balcony use",
+    productType: "One-component polyurethane membrane",
+    filterTags: ["Pure-PU", "Undertile", "Balcony-terrace", "1C", "Water-based", "AS-4858"],
+    techChips: [
+      { label: "One-component PU", cls: "bg-sky-100 text-sky-800" },
+      { label: "Water-based", cls: "bg-slate-100 text-slate-700" },
+      { label: "Balcony / wet area", cls: "bg-slate-100 text-slate-700" },
+      { label: "AS 4858", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Sika Sikalastic WPU is a one-component polyurethane waterproofing membrane for wet area and balcony applications in residential and commercial construction. It is designed for use under tiles, screeds and protected balcony finishes. Apply by roller or brush in two coats over Sika-approved primer. Embed reinforcing tape at all corners, junctions and drain surrounds before applying the second coat. Flood test before tiling. Confirm current product name, specification, and system components with Sika Australia — Sika product names and formulations are subject to periodic revision.",
+    technicalProperties: [
+      "One-component polyurethane — no mixing required on site",
+      "Water-based formulation — suitable for occupied building environments with standard ventilation",
+      "Suitable for use under tiles, screeds, and protected balcony finishes",
+      "AS 4858 compliant — confirm current compliance status with Sika Australia",
+      "Apply by roller or brush — two-coat system over Sika-approved primer",
+    ],
+    limitations: [
+      "Primer mandatory — confirm Sika-compatible primer with Sika Australia technical before application",
+      "Two-coat minimum to achieve required DFT — single coat is insufficient",
+      "Not suitable for direct trafficable or UV-exposed surfaces without a protection layer",
+      "Confirm current product name and system specification with Sika Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — trade supply — contact for current pricing", url: "https://aus.sika.com" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Fosroc Australia (via Parchem)",
+    brandUrl: "https://www.parchem.com.au",
+    tdsUrl: "https://www.parchem.com.au",
+    accentColor: "#0369a1",
+    name: "Fosroc Nitoproof 750",
+    descriptionLine: "Fosroc polyurethane membrane for waterproofing applications",
+    productType: "Polyurethane waterproofing membrane",
+    filterTags: ["Pure-PU", "Undertile", "Under-screed", "Balcony-terrace", "1C", "Water-based", "AS-4858"],
+    techChips: [
+      { label: "Polyurethane", cls: "bg-sky-100 text-sky-800" },
+      { label: "Fosroc / Parchem", cls: "bg-slate-100 text-slate-700" },
+      { label: "Undertile / under screed", cls: "bg-slate-100 text-slate-700" },
+      { label: "AS 4858", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Fosroc Nitoproof 750 is a Fosroc polyurethane membrane for waterproofing applications in balcony, terrace and wet area remediation. As a Fosroc product distributed nationally through Parchem Construction Supplies, it is part of the Fosroc concrete repair and waterproofing system range. Apply by roller or brush in two coats over a Fosroc-compatible primer. Embed reinforcing fabric at all junctions and penetrations before the second coat. Flood test before tiling. Confirm current product name, specification, and system requirements with Fosroc Australia / Parchem before specifying.",
+    technicalProperties: [
+      "Polyurethane chemistry — good elongation and flexibility for balcony waterproofing",
+      "For use under tile, screed, and protected balcony finish systems",
+      "Part of the Fosroc waterproofing system — confirm compatible primer and accessories from Parchem",
+      "AS 4858 compliant — confirm current compliance with Fosroc / Parchem technical",
+    ],
+    limitations: [
+      "Primer mandatory — confirm Fosroc-compatible primer selection with Parchem before application",
+      "Two-coat minimum required — single coat is insufficient",
+      "Not suitable for direct trafficable or UV-exposed applications without a protection layer",
+      "Confirm current product name and system requirements with Fosroc Australia / Parchem before specifying",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — Fosroc nationally", url: "https://www.parchem.com.au" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Fosroc Australia (via Parchem)",
+    brandUrl: "https://www.parchem.com.au",
+    tdsUrl: "https://www.parchem.com.au",
+    accentColor: "#0369a1",
+    name: "Fosroc Nitoproof 810",
+    descriptionLine: "Fosroc polyurethane membrane system for waterproofing",
+    productType: "Polyurethane waterproofing membrane system",
+    filterTags: ["Pure-PU", "Undertile", "Under-screed", "Balcony-terrace", "AS-4858"],
+    techChips: [
+      { label: "Polyurethane system", cls: "bg-sky-100 text-sky-800" },
+      { label: "Fosroc / Parchem", cls: "bg-slate-100 text-slate-700" },
+      { label: "Undertile / under screed", cls: "bg-slate-100 text-slate-700" },
+      { label: "AS 4858", cls: "bg-amber-50 text-amber-700" },
+    ],
+    systemDescription:
+      "Fosroc Nitoproof 810 is a Fosroc polyurethane membrane system for waterproofing on balconies, terraces and external areas. Distributed nationally in Australia through Parchem Construction Supplies. Apply by roller or brush in two coats over Fosroc-compatible primer. Embed reinforcing fabric at all junctions, corners and penetrations prior to the second coat. Flood test before any screed or tile commencement. Confirm current product name, system specification and application requirements with Fosroc Australia / Parchem before specifying.",
+    technicalProperties: [
+      "Polyurethane membrane system — for balcony, terrace and external area waterproofing",
+      "Suitable for use under tiles, screeds and protected balcony finishes",
+      "Part of the Fosroc waterproofing system range — available through Parchem nationally",
+      "Confirm compatibility with tile adhesive and screed system with Parchem before specifying",
+    ],
+    limitations: [
+      "Primer mandatory — confirm Fosroc-compatible primer selection with Parchem / Fosroc Australia",
+      "Two-coat minimum — single coat is insufficient to achieve required DFT",
+      "Confirm current product name, specification and system requirements with Fosroc / Parchem before specifying",
+      "Not suitable for direct trafficable or UV-exposed applications without a protection layer",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — Fosroc nationally", url: "https://www.parchem.com.au" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

@@ -36,7 +36,7 @@ export default function MaterialsProductsIndexPage() {
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
             <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
+            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
           </nav>

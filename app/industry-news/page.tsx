@@ -1,10 +1,12 @@
 import { readdirSync, existsSync } from "fs";
 import { join, extname } from "path";
 import { supabase } from "@/lib/supabase";
+import { prisma } from "@/lib/prisma";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { NewsGridClient, type NewsArticle } from "@/components/industry-news/NewsGridClient";
 import { NewsLegalFooter } from "@/components/industry-news/NewsLegalFooter";
 import { assignUniqueImages } from "@/lib/news-categories";
+import { InsightsSidebar, type InsightCard } from "@/components/rba-insights/InsightsSidebar";
 
 export const revalidate = 300;
 
@@ -44,10 +46,35 @@ async function getArticles(): Promise<Omit<NewsArticle, "featured_image">[]> {
   }));
 }
 
+async function getInsights(): Promise<InsightCard[]> {
+  const rows = await prisma.rbaInsightsArticle.findMany({
+    where: { status: "published" },
+    orderBy: [{ is_featured: "desc" }, { published_date: "desc" }],
+    take: 6,
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      category: true,
+      summary: true,
+      featured_image_url: true,
+      featured_image_alt_text: true,
+      published_date: true,
+      reading_time_minutes: true,
+      author: true,
+    },
+  });
+  return rows.map((r) => ({
+    ...r,
+    published_date: r.published_date ? r.published_date.toISOString() : null,
+  }));
+}
+
 export default async function IndustryNewsPage() {
-  const [rawArticles, imagePool] = await Promise.all([
+  const [rawArticles, imagePool, insights] = await Promise.all([
     getArticles(),
     Promise.resolve(getNewsImagePool()),
+    getInsights(),
   ]);
   const articles = assignUniqueImages(rawArticles, [], imagePool);
 
@@ -68,12 +95,11 @@ export default async function IndustryNewsPage() {
             </div>
           </a>
           <nav className="hidden items-center gap-7 text-sm font-semibold text-sky-800 md:flex">
-                        <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
+            <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap text-red-700">Industry News</a>
+            <a href="/industry-news" className="whitespace-nowrap text-red-700">News &amp; Insights</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          
           </nav>
           <a
             href="/ai-scope-builder"
@@ -93,7 +119,7 @@ export default async function IndustryNewsPage() {
               Industry Intelligence
             </p>
             <h1 className="mt-2 text-3xl font-extrabold leading-tight tracking-tight text-white md:text-4xl">
-              Industry News
+              Industry News &amp; Remedial Insights
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-sky-300">
               Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects, strata issues, concrete repair and DBP Act developments.
@@ -108,8 +134,22 @@ export default async function IndustryNewsPage() {
           </p>
         </div>
 
-        {/* ── Grid (client — search / filter / pagination) ─────────────────── */}
-        <NewsGridClient articles={articles} />
+        {/* ── Two-column layout: News + RBA Insights sidebar ────────────────── */}
+        <div className="mx-auto max-w-7xl px-0 lg:px-6">
+          <div className="flex flex-col lg:flex-row lg:gap-8">
+
+            {/* Left column — existing Industry News feed (untouched) */}
+            <div className="min-w-0 flex-1">
+              <NewsGridClient articles={articles} />
+            </div>
+
+            {/* Right sidebar — RBA Insights */}
+            <div className="w-full border-t border-slate-200 bg-slate-50 px-6 py-8 lg:w-80 lg:shrink-0 lg:border-l lg:border-t-0 lg:bg-transparent lg:pt-8">
+              <InsightsSidebar insights={insights} />
+            </div>
+
+          </div>
+        </div>
 
         {/* ── Newsletter ─────────────────────────────────────────────────────── */}
         <NewsletterSignup variant="section" />
@@ -143,7 +183,7 @@ export default async function IndustryNewsPage() {
             <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
             <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
             <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
             <a href="/directory" className="hover:text-sky-700">Business Directory</a>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>

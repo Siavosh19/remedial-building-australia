@@ -1,0 +1,192 @@
+import type { Metadata } from "next";
+import { AlertTriangle, ArrowRight } from "lucide-react";
+import { Code4LeadFlashingIntroSection, Code4LeadFlashingProductSection } from "./Code4LeadFlashingProductSection";
+
+export const metadata: Metadata = {
+  title: "Code 4 Milled Lead Cavity Flashing — Midland Lead · Austral Lead — Remedial Building Australia",
+  description:
+    "Supplier comparison for Code 4 milled lead cavity flashing (1.8mm, 20 kg/m²) for masonry facade remediation on Australian Class 2 strata buildings — Midland Lead Australia and Austral Lead.",
+};
+
+const ACTIVE_SLUG = "code-4-milled-lead-flashing";
+const BASE_LEAD = "/repair-systems/facade-external-envelope/masonry-structural/brickwork-deterioration/cavity-flashing-lead";
+const BASE_BRICKWORK = "/repair-systems/facade-external-envelope/masonry-structural/brickwork-deterioration";
+const HUB = "/repair-systems/facade-external-envelope/masonry-structural";
+
+const SIBLING_GROUPS = [
+  {
+    heading: "Lead Cavity Flashing",
+    tabs: [
+      { label: "Code 4 Lead Flashing", slug: "code-4-milled-lead-flashing" },
+      { label: "Code 5 Lead Flashing", slug: "code-5-milled-lead-flashing" },
+      { label: "Code 6 Heavy Duty Lead", slug: "code-6-heavy-duty-lead-flashing" },
+    ],
+    base: BASE_LEAD,
+  },
+];
+
+export default function Code4LeadFlashingPage() {
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
+          <a href="/" className="flex shrink-0 items-center gap-3">
+            <div>
+              <div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Technical Remedial Building Platform</div>
+            </div>
+          </a>
+          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
+            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
+            <a href="/repair-systems" className="whitespace-nowrap text-sky-950 underline underline-offset-4 decoration-red-700">Repair Systems</a>
+            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">Industry News</a>
+            <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
+            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
+          </nav>
+          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
+        </div>
+      </header>
+
+      <main>
+        <section className="border-b border-slate-200 bg-white px-8 py-12">
+          <div className="mx-auto max-w-7xl">
+            <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
+              <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
+              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a><span>/</span>
+              <a href="/repair-systems/facade-external-envelope" className="hover:text-sky-700 transition">Facade &amp; External Envelope</a><span>/</span>
+              <a href={HUB} className="hover:text-sky-700 transition">Masonry &amp; Structural</a><span>/</span>
+              <a href={BASE_BRICKWORK} className="hover:text-sky-700 transition">Brickwork Deterioration</a><span>/</span>
+              <a href={BASE_LEAD} className="hover:text-sky-700 transition">Cavity Flashing — Lead</a><span>/</span>
+              <span className="text-sky-950">Code 4 Lead Flashing</span>
+            </nav>
+            <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
+                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                  Code 4 milled lead cavity flashing
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+                  Supplier reference for Code 4 milled lead cavity flashing (1.8mm, 20 kg/m²) for masonry facade remediation on Class 2 strata buildings. The standard lead code for cavity flashing above lintels, at sill courses, and at the base of cavity — self-sealing laps, coastal-grade durability, and fully workable on site.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                {[
+                  { label: "Suppliers listed", value: "2" },
+                  { label: "Code", value: "Code 4" },
+                  { label: "Thickness", value: "1.8mm" },
+                  { label: "Weight", value: "20 kg/m²" },
+                ].map((s) => (
+                  <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
+                    <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="border-b border-slate-200 bg-white px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex items-stretch gap-0 overflow-x-auto">
+              {SIBLING_GROUPS.map((group, gi) => (
+                <div key={group.heading} className={`flex shrink-0 flex-col${gi > 0 ? " border-l border-slate-200 ml-1 pl-1" : ""}`}>
+                  <div className="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-red-700 whitespace-nowrap">{group.heading}</div>
+                  <div className="flex items-end">
+                    {group.tabs.map((tab) => {
+                      const active = tab.slug === ACTIVE_SLUG;
+                      return (
+                        <a key={tab.slug} href={`${group.base}/${tab.slug}`}
+                          className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${active ? "border-red-700 text-sky-950" : "border-transparent text-slate-500 hover:text-sky-900"}`}>
+                          {tab.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <section className="px-8 py-14">
+          <div className="mx-auto max-w-7xl space-y-10">
+            <Code4LeadFlashingIntroSection />
+            <Code4LeadFlashingProductSection />
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
+              <div className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white">
+                  <AlertTriangle size={15} />
+                </div>
+                <h3 className="text-base font-extrabold text-amber-900">Do not confuse Code 4 lead flashing with:</h3>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Code 5 lead flashing (2.24mm, 25 kg/m²) — heavier grade for parapets, exposed ledges, and wide-cavity applications — listed on the Code 5 lead flashing page",
+                  "Code 6 heavy duty lead flashing (2.65mm, 30 kg/m²) — for the most demanding applications including parapet copings in exposed coastal locations — listed on the Code 6 lead flashing page",
+                  "Code 3 lead flashing (1.32mm) — lighter grade not typically used for cavity flashing in masonry facades — more common in internal DPC applications",
+                  "Aluminium cavity flashing — lighter, lower-cost, but not self-sealing at laps and not suitable for all coastal applications — listed on the cavity flashing — aluminium page",
+                  "Alcore composite flashing — bitumen-aluminium laminate, different thermal and installation properties — listed on the cavity flashing — Alcore page",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>
+              <p className="text-xs leading-6 text-amber-900">This page provides general technical information only. Lead code selection, flashing width, lap detail, and weep former spacing must be confirmed by a qualified remedial practitioner against project-specific conditions and AS 3700.</p>
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { href: BASE_LEAD, label: "Cavity Flashing — Lead", title: "Browse all lead flashing codes" },
+                { href: HUB, label: "Masonry & Structural", title: "Browse all masonry remediation categories" },
+                { href: "/defect-library/facade-external-envelope", label: "Defect Library", title: "Cavity flashing failure in masonry facades" },
+                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for cavity flashing remediation" },
+              ].map((card) => (
+                <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
+                  <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>
+                  <h4 className="text-sm font-extrabold leading-snug text-sky-950">{card.title}</h4>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">Open <ArrowRight size={11} /></div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-slate-200 bg-slate-100">
+        <div className="mx-auto max-w-7xl px-5 pt-10">
+          <a href={BASE_LEAD} className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">← Cavity Flashing — Lead</a>
+        </div>
+        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
+          <div>
+            <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
+            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
+            <a href="/about" className="hover:text-sky-700">About</a>
+            <a href="/contact" className="hover:text-sky-700">Contact</a>
+            <a href="/terms" className="hover:text-sky-700">Terms</a>
+            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+          </div>
+        </div>
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
+        </div>
+      </footer>
+    </div>
+  );
+}

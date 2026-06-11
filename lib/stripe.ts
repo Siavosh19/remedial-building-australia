@@ -19,3 +19,25 @@ export const STRIPE_PRICES = {
   premium: process.env.STRIPE_PRICE_PREMIUM ?? "",
   category_sponsor: process.env.STRIPE_PRICE_CATEGORY_SPONSOR ?? "",
 };
+
+// Directory listing subscription prices
+// Set these env vars once Stripe products are created:
+//   STRIPE_DIR_CLAIMED_MONTHLY   = price_xxx  ($29/month, 60-day trial)
+//   STRIPE_DIR_CLAIMED_YEARLY    = price_xxx  ($270/year, 60-day trial)
+//   STRIPE_DIR_FEATURED_MONTHLY  = price_xxx  ($79/month, 60-day trial)
+//   STRIPE_DIR_FEATURED_YEARLY   = price_xxx  ($750/year, 60-day trial)
+export const STRIPE_DIR_PRICES = {
+  claimed_monthly:  process.env.STRIPE_DIR_CLAIMED_MONTHLY  ?? "",
+  claimed_yearly:   process.env.STRIPE_DIR_CLAIMED_YEARLY   ?? "",
+  featured_monthly: process.env.STRIPE_DIR_FEATURED_MONTHLY ?? "",
+  featured_yearly:  process.env.STRIPE_DIR_FEATURED_YEARLY  ?? "",
+} as const;
+
+export type DirPriceKey = keyof typeof STRIPE_DIR_PRICES;
+
+export const DIR_PLAN_AMOUNTS = {
+  claimed_monthly:  2900,   // cents AUD
+  claimed_yearly:   27000,
+  featured_monthly: 7900,
+  featured_yearly:  75000,
+} as const;

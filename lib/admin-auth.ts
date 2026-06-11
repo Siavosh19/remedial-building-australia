@@ -58,3 +58,10 @@ export async function requireSupplierUser(request: Request) {
 export function isAdminRole(role: string): boolean {
   return ADMIN_ROLES.has(role) || role === "admin";
 }
+
+export async function getAdminFromRequest(request: Request) {
+  const user = await getDirectoryUserFromRequest(request);
+  if (!user) return null;
+  if (!ADMIN_ROLES.has(user.role) && user.role !== "admin") return null;
+  return user;
+}

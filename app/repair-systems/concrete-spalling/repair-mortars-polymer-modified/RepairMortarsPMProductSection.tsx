@@ -200,6 +200,32 @@ const PRODUCTS: Product[] = [
       { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
     ],
   },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#0369a1",
+    name: "Fosroc Renderoc G",
+    descriptionLine: "General-purpose polymer-modified cementitious repair mortar for concrete spalling repair — hand-applied trowel-grade — confirm current formulation, coverage, and system design with Parchem technical",
+    productType: "General-purpose PM repair mortar — concrete spalling repair",
+    filterTags: ["General-use", "Thixotropic", "Hand-applied", "Trowel-grade", "Pre-bagged"],
+    techChips: [{ label: "General use", cls: "bg-blue-100 text-blue-700" }, { label: "Pre-bagged", cls: "bg-slate-100 text-slate-700" }, { label: "Trowel-grade", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Fosroc Renderoc G is a general-purpose polymer-modified cementitious repair mortar for concrete spalling repair on balconies, facades, car parks, and building structures. It is a pre-bagged, hand-applied trowel-grade mortar suitable for shallow to medium-depth spall reinstatement.\n\nRenderoc G is part of the Fosroc Renderoc concrete repair system, distributed in Australia through Parchem Construction Supplies. Confirm current product technical data sheet, maximum application thickness, coverage, rebar primer specification, and system design with Parchem technical before specifying. The Fosroc product range distributed by Parchem is subject to periodic revision — verify current product name and availability with Parchem.",
+    technicalProperties: [
+      "General-purpose polymer-modified cementitious repair mortar — suitable for shallow to medium-depth concrete spalling repair",
+      "Pre-bagged trowel-grade mortar — hand-applied — part of the Fosroc Renderoc repair system",
+      "Confirm maximum thickness, coverage, rebar primer, and system design from current Fosroc/Parchem Renderoc G TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Parchem technical before specifying",
+      "Rebar anti-corrosion primer (Nitoprime Zincrich or equivalent) is typically required before mortar application — confirm with Parchem",
+      "Not suitable for application over wet or contaminated concrete — substrate preparation to current Fosroc specification is mandatory",
+      "Confirm current Fosroc product range revision status and Renderoc G availability with Parchem before specifying",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — national distribution (DuluxGroup)", url: "https://www.parchem.com.au" },
+      { name: "Fosroc Australia — product information", url: "https://www.fosroc.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
       name: true,
       slug: true,
       is_claimed: true,
+      listing_claim_status: true,
       locations: { select: { suburb: true, state: true }, take: 1 },
     },
   });
@@ -21,6 +22,7 @@ export async function GET(request: NextRequest) {
     name: company.name,
     slug: company.slug,
     is_claimed: company.is_claimed,
+    listing_claim_status: company.listing_claim_status,
     suburb: company.locations[0]?.suburb ?? null,
     state: company.locations[0]?.state ?? null,
   });

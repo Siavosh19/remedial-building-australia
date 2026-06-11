@@ -276,7 +276,7 @@ export default async function IndustryNewsArticlePage({
           <nav className="hidden items-center gap-7 text-sm font-semibold text-sky-800 md:flex">
                         <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap text-red-700">Industry News</a>
+            <a href="/industry-news" className="whitespace-nowrap text-red-700">News &amp; Insights</a>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           
@@ -321,7 +321,7 @@ export default async function IndustryNewsArticlePage({
               href="/industry-news"
               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.15em] text-slate-400 transition hover:text-sky-700"
             >
-              <ArrowLeft size={13} /> Industry News
+              <ArrowLeft size={13} /> News & Insights
             </a>
           </div>
 
@@ -550,7 +550,7 @@ export default async function IndustryNewsArticlePage({
             href="/industry-news"
             className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-sky-800"
           >
-            <ArrowLeft size={15} /> All Industry News
+            <ArrowLeft size={15} /> All News & Insights
           </a>
         </div>
 
@@ -583,7 +583,7 @@ export default async function IndustryNewsArticlePage({
             <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
             <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
             <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">Industry News</a>
+            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
             <a href="/directory" className="hover:text-sky-700">Business Directory</a>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>

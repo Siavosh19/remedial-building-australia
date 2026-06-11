@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV = [
-  { label: "Overview",     href: "/directory/dashboard" },
-  { label: "Profile",      href: "/directory/dashboard/profile" },
-  { label: "Leads",        href: "/directory/dashboard/leads" },
-  { label: "Subscription", href: "/directory/dashboard/subscription" },
-  { label: "Settings",     href: "/directory/dashboard/settings" },
+  { label: "Overview",        href: "/directory/dashboard" },
+  { label: "Profile",         href: "/directory/dashboard/profile" },
+  { label: "Quote Requests",  href: "/directory/dashboard/quote-requests" },
+  { label: "Subscription",    href: "/directory/dashboard/subscription" },
+  { label: "Settings",        href: "/directory/dashboard/settings" },
 ];
 
 export default function DashboardNav() {

@@ -295,6 +295,40 @@ const PRODUCTS: Product[] = [
       { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
     ],
   },
+  {
+    fullLabel: "Westox Building Products",
+    brandUrl: "https://www.westox.com.au",
+    tdsUrl: "https://www.westox.com.au",
+    accentColor: "#64748b",
+    name: "Westox Flexible Cement Membrane / FCM Kit 18kg",
+    descriptionLine: "Westox two-component cementitious flexible waterproofing membrane — 18 kg kit",
+    productType: "Two-component cementitious flexible waterproofing membrane",
+    filterTags: ["Two-component", "Under-tile", "Balcony-terrace", "Internal-external", "AS-4858"],
+    techChips: [
+      { label: "Two-component cementitious", cls: "bg-slate-100 text-slate-700" },
+      { label: "Flexible membrane", cls: "bg-slate-100 text-slate-700" },
+      { label: "18 kg kit", cls: "bg-amber-50 text-amber-700" },
+      { label: "Westox system", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Westox Flexible Cement Membrane (FCM Kit 18kg) is a two-component cementitious flexible waterproofing membrane from Westox Building Products. The 18 kg kit format consists of a cement-based powder component and a polymer liquid component mixed on site to produce a flexible cementitious waterproofing slurry for balcony and wet area waterproofing. Apply by brush or roller in two coats over prepared substrate. Embed reinforcing fabric at all junctions, corners and penetrations. Confirm current product specification, application requirements, and compatible system accessories with Westox Building Products before specifying.",
+    technicalProperties: [
+      "Two-component cementitious flexible waterproofing membrane — powder and polymer liquid components mixed on site",
+      "For balcony and wet area waterproofing as part of the Westox system",
+      "Apply by brush or roller in two coats — embed reinforcing fabric at all junctions",
+      "18 kg kit format — confirm coverage from current Westox TDS",
+    ],
+    limitations: [
+      "Confirm current product specification, classification and system requirements with Westox Building Products before specifying",
+      "Reinforcing fabric mandatory at all junctions, corners, drain surrounds and penetrations",
+      "Westox distribution may be regional — confirm local availability before specifying",
+      "Confirm compatible tile adhesive and system accessories with Westox technical",
+    ],
+    procurementSources: [
+      { name: "Westox Building Products — trade supply", url: "https://www.westox.com.au" },
+      { name: "Waterproofing Direct", url: "https://www.wpdgroup.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [

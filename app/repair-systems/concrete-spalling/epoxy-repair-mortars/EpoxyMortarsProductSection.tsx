@@ -160,6 +160,58 @@ const PRODUCTS: Product[] = [
       { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
     ],
   },
+  {
+    fullLabel: "Sika",
+    brandUrl: "https://www.sika.com.au",
+    accentColor: "#be123c",
+    name: "Sikadur-31 CF Normal",
+    descriptionLine: "Two-part thixotropic epoxy repair mortar for concrete spalling, crack filling, and structural bonding — confirm current formulation, pot life, coverage, and system design with Sika Australia technical",
+    productType: "Two-part thixotropic epoxy repair mortar — concrete repair and bonding",
+    filterTags: ["Epoxy", "2-part", "High-strength", "Chemical-resistant", "Thin-section"],
+    techChips: [{ label: "Epoxy", cls: "bg-red-100 text-red-700" }, { label: "2-part", cls: "bg-slate-100 text-slate-700" }, { label: "Thixotropic", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Sikadur-31 CF Normal is a two-part thixotropic epoxy paste adhesive and repair mortar for concrete repair, crack filling, and structural bonding applications. It is used in concrete spalling repair for bonding precast concrete elements, filling cracks, anchoring bolts, and bonding repair sections.\n\nSikadur-31 CF Normal is formulated for normal temperature working conditions — confirm that the CF Normal grade is appropriate for site temperatures and that CF Rapid or other grades are not required. Confirm current product technical data sheet, pot life, mixing ratio, surface preparation, and system design with Sika Australia technical before specifying.",
+    technicalProperties: [
+      "Two-part thixotropic epoxy paste — suitable for concrete repair, crack filling, structural bonding, and bolt anchoring",
+      "Confirms excellent adhesion to concrete, masonry, steel, and most construction materials",
+      "Confirm mixing ratio, pot life, temperature range, and application method from current Sikadur-31 CF Normal TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Sika Australia technical before specifying",
+      "Pot life is temperature-sensitive — shorter at higher temperatures — confirm working time for site conditions",
+      "Rigid cure — not suitable for active cracks or moving joints — use a flexible system for movement joints",
+      "Substrate must be clean, dry, and sound — do not apply over weak or contaminated concrete",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
+      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Sika",
+    brandUrl: "https://www.sika.com.au",
+    accentColor: "#be123c",
+    name: "Sikadur-33",
+    descriptionLine: "High-strength two-part epoxy repair mortar paste for structural repair, concrete reinstatement, and bonding — confirm current formulation, coverage, pot life, and system design with Sika Australia technical",
+    productType: "Two-part epoxy repair paste — structural repair and concrete reinstatement",
+    filterTags: ["Epoxy", "2-part", "High-strength", "Chemical-resistant"],
+    techChips: [{ label: "Epoxy", cls: "bg-red-100 text-red-700" }, { label: "2-part", cls: "bg-slate-100 text-slate-700" }, { label: "High-strength", cls: "bg-slate-100 text-slate-700" }],
+    systemDescription: "Sikadur-33 is a high-strength two-part epoxy repair mortar paste for structural concrete reinstatement, bonding of precast elements, anchoring, and crack filling on concrete structures. It is used where high compressive and tensile bond strength is required in concrete spalling repair.\n\nConfirm current product technical data sheet, mixing ratio, pot life, application method, and system design with Sika Australia technical before specifying. Confirm the appropriate Sikadur grade for the specific application from the Sika Australia Sikadur product range documentation.",
+    technicalProperties: [
+      "Two-part high-strength epoxy paste — suitable for structural concrete reinstatement, bonding, anchoring, and crack filling",
+      "Provides high compressive and bond strength suitable for structural concrete repair applications",
+      "Confirm mixing ratio, pot life, temperature range, and application method from current Sikadur-33 TDS",
+    ],
+    limitations: [
+      "Confirm current product formulation and system design with Sika Australia technical before specifying",
+      "Pot life is temperature-sensitive — shorter at higher temperatures — confirm working time for site conditions",
+      "Rigid cure — not suitable for active cracks or moving joints",
+      "Substrate must be clean, dry, and structurally sound — do not apply over weak, contaminated, or carbonated concrete without prior assessment",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
+      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
+    ],
+  },
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
