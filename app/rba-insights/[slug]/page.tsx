@@ -107,8 +107,8 @@ export default async function RbaInsightsArticlePage({
             <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
           </nav>
-          <a href="/ai-scope-builder" className="hidden shrink-0 rounded-xl bg-sky-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 md:inline-flex">
-            AI Scope Builder
+          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 md:inline-flex">
+            Login / Create Account
           </a>
         </div>
       </header>
