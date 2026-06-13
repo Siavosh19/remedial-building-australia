@@ -22,6 +22,7 @@ import {
   MessageSquare,
   List,
   Pencil,
+  Lightbulb,
 } from "lucide-react";
 
 const NAV = [
@@ -29,6 +30,7 @@ const NAV = [
   { href: "/directory/admin/directory-companies", label: "Directory Companies", icon: List },
   { href: "/directory/admin/claims", label: "Claim Requests", icon: FileCheck },
   { href: "/directory/admin/quote-requests", label: "Quote Requests", icon: MessageSquare },
+  { href: "/directory/admin/expert-advice-requests", label: "Expert Advice Requests", icon: Lightbulb },
   { href: "/directory/admin/suppliers", label: "Suppliers", icon: Building2 },
   { href: "/directory/admin/supplier-marketing", label: "Promotions", icon: Megaphone },
   { href: "/directory/admin/billing", label: "Billing", icon: CreditCard },
