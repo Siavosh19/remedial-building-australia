@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { CONCRETE_DEFECTS_DATA } from "@/lib/concrete-defects-data";
 import { prisma } from "@/lib/prisma";
 
+export const revalidate = 3600; // regenerate every hour so new articles appear without a redeploy
+
 const BASE = "https://www.remedialbuildingaustralia.com.au";
 
 const BALCONY_SUBCATEGORIES = [
@@ -73,93 +75,132 @@ const DEFECT_LIBRARY_CATEGORIES = [
   },
 ];
 
+const EXPERT_ADVICE_SLUGS = [
+  "preliminary-defect-assessment",
+  "scope-quote-tender-review",
+  "remedial-budget-estimate",
+  "capital-works-forecast",
+  "building-repair-strategy-advice",
+  "pre-purchase-apartment-defect-review",
+];
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
+  const now = new Date();
 
-  // ── Homepage ──
-  entries.push({ url: BASE, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 });
+  // ── Homepage ──────────────────────────────────────────────────────────────
+  entries.push({ url: BASE, lastModified: now, changeFrequency: "weekly", priority: 1.0 });
 
-  // ── Top-level section pages ──
-  for (const path of ["/defect-library", "/repair-systems", "/industry-news", "/directory", "/ai-scope-builder"]) {
-    entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 });
+  // ── Top-level section pages ───────────────────────────────────────────────
+  for (const path of [
+    "/defect-library",
+    "/repair-systems",
+    "/industry-news",
+    "/rba-insights",
+    "/directory",
+    "/expert-remedial-advice",
+    "/ai-scope-builder",
+  ]) {
+    entries.push({ url: `${BASE}${path}`, lastModified: now, changeFrequency: "weekly", priority: 0.9 });
   }
 
-  // ── About / Contact ──
-  for (const path of ["/about", "/contact"]) {
-    entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 });
+  // ── Core public pages ─────────────────────────────────────────────────────
+  for (const path of ["/about", "/contact", "/newsletter", "/directory/pricing"]) {
+    entries.push({ url: `${BASE}${path}`, lastModified: now, changeFrequency: "monthly", priority: 0.8 });
   }
 
-  // ── Legal ──
+  // ── Materials & Products Index (live data page) ───────────────────────────
+  entries.push({ url: `${BASE}/materials-products-index`, lastModified: now, changeFrequency: "monthly", priority: 0.75 });
+
+  // ── AI Scope Builder public reference pages ───────────────────────────────
+  for (const path of ["/ai-scope-builder/materials", "/ai-scope-builder/repair-systems"]) {
+    entries.push({ url: `${BASE}${path}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 });
+  }
+
+  // ── Placeholder / coming-soon public pages ────────────────────────────────
+  for (const path of ["/courses", "/materials-products", "/useful-resources"]) {
+    entries.push({ url: `${BASE}${path}`, lastModified: now, changeFrequency: "monthly", priority: 0.5 });
+  }
+
+  // ── Legal ─────────────────────────────────────────────────────────────────
   for (const path of ["/terms", "/privacy-policy"]) {
-    entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 });
+    entries.push({ url: `${BASE}${path}`, lastModified: now, changeFrequency: "yearly", priority: 0.3 });
   }
 
-  // ── Defect Library — category index pages ──
+  // ── Expert Remedial Advice — service pages ────────────────────────────────
+  for (const slug of EXPERT_ADVICE_SLUGS) {
+    entries.push({
+      url: `${BASE}/expert-remedial-advice/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    });
+  }
+
+  // ── Defect Library — category index pages ────────────────────────────────
   for (const cat of DEFECT_LIBRARY_CATEGORIES) {
     entries.push({
       url: `${BASE}/defect-library/${cat.slug}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
     });
-    // Individual defect pages
     for (const defect of cat.defects) {
       entries.push({
         url: `${BASE}/defect-library/${cat.slug}/${defect}`,
-        lastModified: new Date(),
+        lastModified: now,
         changeFrequency: "monthly",
         priority: 0.7,
       });
     }
   }
 
-  // ── Repair Systems — static subcategory index pages ──
+  // ── Repair Systems — static category and tool pages ──────────────────────
   for (const path of [
+    "/repair-systems/system-selector",
+    "/repair-systems/library",
     "/repair-systems/waterproofing-water-ingress",
     "/repair-systems/concrete-structural-defects",
     "/repair-systems/repair-mortars",
   ]) {
-    entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.85 });
+    entries.push({ url: `${BASE}${path}`, lastModified: now, changeFrequency: "weekly", priority: 0.85 });
   }
 
-  // ── Repair Systems — balcony waterproofing failure index ──
+  // ── Repair Systems — balcony waterproofing failure index + subcategories ──
   entries.push({
     url: `${BASE}/repair-systems/balcony-waterproofing-failure`,
-    lastModified: new Date(),
+    lastModified: now,
     changeFrequency: "weekly",
     priority: 0.85,
   });
-
-  // ── Repair Systems — balcony waterproofing failure subcategories ──
   for (const slug of BALCONY_SUBCATEGORIES) {
     entries.push({
       url: `${BASE}/repair-systems/balcony-waterproofing-failure/${slug}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.75,
     });
   }
 
-  // ── Repair Systems — dynamic [subcategory] and [subcategory]/[productCategory] ──
+  // ── Repair Systems — dynamic subcategory and product-category pages ───────
   for (const sub of CONCRETE_DEFECTS_DATA) {
     entries.push({
       url: `${BASE}/repair-systems/${sub.slug}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.8,
     });
     for (const cat of sub.productCategories) {
       entries.push({
         url: `${BASE}/repair-systems/${sub.slug}/${cat.slug}`,
-        lastModified: new Date(),
+        lastModified: now,
         changeFrequency: "weekly",
         priority: 0.7,
       });
     }
   }
 
-  // ── RBA Insights (published only) ──────────────────────────────────────────
-  entries.push({ url: `${BASE}/rba-insights`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 });
+  // ── RBA Insights — published articles ────────────────────────────────────
   try {
     const insights = await prisma.rbaInsightsArticle.findMany({
       where: { status: "published" },
@@ -174,7 +215,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch {
-    // Graceful degradation if DB unavailable during sitemap generation
+    // Graceful degradation if DB unavailable
+  }
+
+  // ── Industry News — published articles ───────────────────────────────────
+  try {
+    const news = await prisma.industryNews.findMany({
+      where: { status: "published" },
+      select: { slug: true, published_date: true },
+    });
+    for (const article of news) {
+      entries.push({
+        url: `${BASE}/industry-news/${article.slug}`,
+        lastModified: article.published_date ?? now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+  } catch {
+    // Graceful degradation if DB unavailable
+  }
+
+  // ── Directory — published company profiles ────────────────────────────────
+  try {
+    const companies = await prisma.company.findMany({
+      where: { status: "published", suspended: false },
+      select: { slug: true, updated_at: true },
+    });
+    for (const company of companies) {
+      entries.push({
+        url: `${BASE}/directory/company/${company.slug}`,
+        lastModified: company.updated_at,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      });
+    }
+  } catch {
+    // Graceful degradation if DB unavailable
   }
 
   return entries;

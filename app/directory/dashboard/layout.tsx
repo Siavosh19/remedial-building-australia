@@ -30,7 +30,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     <div className="min-h-screen bg-[#F5F7FA]">
       {/* Top bar */}
       <header className="border-b border-sky-900/40 bg-sky-950">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 md:gap-6 md:px-6 md:py-4">
           <div className="flex items-center gap-4">
             <a href="/" className="text-base font-bold tracking-tight text-white transition hover:text-sky-300">
               Remedial Building Australia
@@ -59,7 +59,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         </div>
 
         {/* Nav tabs */}
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-6xl overflow-x-auto px-2 md:px-6">
           <DashboardNav />
         </div>
       </header>

@@ -56,12 +56,11 @@ export async function POST(request: NextRequest) {
   });
 
   if (scraped) {
-    // Claim the existing scraped record
+    // Link owner to existing scraped record — admin must approve before is_claimed is set
     await prisma.$transaction(async (tx) => {
       await tx.company.update({
         where: { id: scraped.id },
         data: {
-          is_claimed: true,
           abn: abn || scraped.abn || null,
           phone: phone || scraped.phone || null,
           website: website || scraped.website || null,
@@ -98,7 +97,7 @@ export async function POST(request: NextRequest) {
       }
     });
   } else {
-    // Create new company — user is the owner so mark claimed immediately
+    // Create new company — starts as unclaimed draft; admin approval grants claimed status
     await prisma.company.create({
       data: {
         slug: `${normalise(companyName)}-${Date.now()}`,
@@ -112,7 +111,7 @@ export async function POST(request: NextRequest) {
         status: "draft",
         profile_status: "basic",
         confidence_score,
-        is_claimed: true,
+        is_claimed: false,
         is_featured: false,
         locations: {
           create: {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import DirectoryListing from "@/components/directory/DirectoryListing";
+import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "Strata Building Services Directory | Find Contractors & Consultants",
@@ -11,18 +12,34 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function DirectoryPage() {
-  let categories: { id: number; name: string; slug: string }[] = [];
-  let initialCompanies: Awaited<ReturnType<typeof fetchCompanies>> = [];
+  let categories: { id: number; name: string; slug: string; parent_id?: number | null; company_count: number }[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let initialCompanies: any[] = [];
 
   try {
-    [categories, initialCompanies] = await Promise.all([
+    const [rawCats, rawCompanies] = await Promise.all([
       prisma.category.findMany({
         where: { is_active: true },
         orderBy: { display_order: "asc" },
-        select: { id: true, name: true, slug: true, parent_id: true },
+        select: { id: true, name: true, slug: true, parent_id: true, _count: { select: { companies: true } } },
       }),
-      fetchCompanies(),
+      prisma.company.findMany({
+        where: { status: "published" },
+        orderBy: [{ plan_type: "desc" }, { confidence_score: "desc" }],
+        take: 24,
+        select: {
+          id: true, slug: true, name: true, description: true, phone: true,
+          plan_type: true, profile_status: true, confidence_score: true,
+          is_featured: true, is_claimed: true, logo_url: true,
+          main_category: { select: { id: true, name: true, slug: true } },
+          locations: { take: 1, select: { suburb: true, state: true, postcode: true, services_nationwide: true, services_statewide: true } },
+          licences: { select: { status: true } },
+          company_tags: { where: { is_approved: true }, select: { tag: { select: { name: true, tag_type: true } } } },
+        },
+      }),
     ]);
+    categories = rawCats.map(c => ({ ...c, company_count: c._count.companies }));
+    initialCompanies = rawCompanies.map(c => ({ ...c, plan_type: c.plan_type ?? undefined }));
   } catch {
     // DB unavailable — render with empty state
   }
@@ -30,55 +47,31 @@ export default async function DirectoryPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">
-                Remedial Building Australia
-              </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Technical Remedial Building Platform
-              </div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          </nav>
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">
-            Login / Create Account
-          </a>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
-      <div className="border-b border-slate-200 bg-white">
+      <div className="bg-sky-950">
         <div className="mx-auto max-w-7xl px-8 py-10">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
+          <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-400">
             Strata Building Services Directory
           </p>
-          <h1 className="mt-3 text-4xl font-extrabold leading-tight text-sky-950 md:text-5xl">
+          <h1 className="mt-3 text-4xl font-extrabold leading-tight text-white md:text-5xl">
             Strata Building Services Directory
           </h1>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+          <p className="mt-3 max-w-2xl text-base leading-7 text-sky-200">
             Australia&rsquo;s strata building services directory — contractors, consultants, waterproofers, engineers and specialist trades across all states.
           </p>
 
           {/* Stats bar */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-100 pt-5 text-sm">
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-5 text-sm">
             <span>
-              <span className="font-extrabold text-sky-950">2,400+</span>{" "}
-              <span className="text-slate-500">Businesses Listed</span>
+              <span className="font-extrabold text-white">13,500+</span>{" "}
+              <span className="text-sky-300">Businesses Listed</span>
             </span>
-            <span className="text-slate-200" aria-hidden>|</span>
-            <span className="font-semibold text-slate-500">Australia Wide</span>
-            <span className="text-slate-200" aria-hidden>|</span>
-            <span className="font-semibold text-slate-500">Australian Strata Building Directory</span>
+            <span className="text-white/20" aria-hidden>|</span>
+            <span className="font-semibold text-sky-300">Australia Wide</span>
+            <span className="text-white/20" aria-hidden>|</span>
+            <span className="font-semibold text-sky-300">Australian Strata Building Directory</span>
           </div>
         </div>
       </div>
@@ -125,39 +118,3 @@ export default async function DirectoryPage() {
   );
 }
 
-async function fetchCompanies() {
-  return prisma.company.findMany({
-    where: { status: "published", suspended: false },
-    select: {
-      id: true,
-      slug: true,
-      name: true,
-      description: true,
-      phone: true,
-      plan_type: true,
-      profile_status: true,
-      confidence_score: true,
-      is_featured: true,
-      is_claimed: true,
-      logo_url: true,
-      main_category: { select: { id: true, name: true, slug: true } },
-      locations: {
-        take: 1,
-        select: { suburb: true, state: true, postcode: true },
-      },
-      company_tags: {
-        where: { is_approved: true },
-        take: 5,
-        select: { tag: { select: { name: true, tag_type: true } } },
-      },
-    },
-    orderBy: [
-      // Featured first, then claimed, then basic
-      { plan_type: "desc" },
-      { is_featured: "desc" },
-      { confidence_score: "desc" },
-      { is_claimed: "desc" },
-    ],
-    take: 200,
-  });
-}

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import QuoteRequestForm from "@/components/directory/QuoteRequestForm";
 import TrackableContactButtons from "@/components/directory/TrackableContactButtons";
+import SiteHeader from "@/components/SiteHeader";
+import { isBusinessEmail } from "@/lib/email-utils";
 
 export const revalidate = 60;
 
@@ -37,6 +39,8 @@ function formatDate(d: Date | null | undefined) {
   return new Intl.DateTimeFormat("en-AU", { day: "numeric", month: "long", year: "numeric" }).format(new Date(d));
 }
 
+const BASE_URL = "https://www.remedialbuildingaustralia.com.au";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const company = await prisma.company.findFirst({
@@ -49,6 +53,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       company.description?.slice(0, 155) ??
       `${company.name} — ${company.main_category?.name ?? "strata building services"} listed on the Strata Building Services Directory.`,
+    alternates: {
+      canonical: `${BASE_URL}/directory/company/${slug}`,
+    },
   };
 }
 
@@ -84,12 +91,6 @@ export default async function CompanyProfilePage({ params }: Props) {
   ]);
   if (!company) notFound();
 
-  // Track profile view
-  prisma.company.update({
-    where: { id: company.id },
-    data: { profile_views: { increment: 1 } },
-  }).catch(() => {});
-
   const similar = company.main_category_id
     ? await prisma.company.findMany({
         where: { status: "published", main_category_id: company.main_category_id, id: { not: company.id } },
@@ -105,7 +106,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
   const isClaimed = company.plan_type === "claimed" || company.plan_type === "featured";
   const isFeatured = company.plan_type === "featured";
-  const canShowContact = isClaimed;
+  const canShowContact = true;
   const location = company.locations[0];
 
   const tagsByType = {
@@ -138,30 +139,35 @@ export default async function CompanyProfilePage({ params }: Props) {
     .join("")
     .toUpperCase();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: company.name,
+    url: profileUrl,
+    ...(company.description ? { description: company.description } : {}),
+    ...(logo ? { image: logo } : {}),
+    ...(location
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: location.suburb ?? undefined,
+            addressRegion: location.state,
+            postalCode: location.postcode,
+            addressCountry: "AU",
+          },
+        }
+      : {}),
+    ...(company.main_category ? { "@type": ["LocalBusiness", company.main_category.name] } : {}),
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Technical Remedial Building Platform</div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          </nav>
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">
-            Login / Create Account
-          </a>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Breadcrumb */}
       <div className="border-b border-slate-200 bg-white">
@@ -236,46 +242,30 @@ export default async function CompanyProfilePage({ params }: Props) {
           {/* LEFT */}
           <div className="space-y-5">
 
-            {/* Contact (claimed profiles only) */}
-            {canShowContact && (company.phone || company.website || company.google_business_url || company.email) && (
-              <Section label="Contact Details">
-                <div className="space-y-4">
-                  {company.phone && (
-                    <div className="flex items-start gap-3">
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700 text-sm">☎</span>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Phone</p>
-                        <a href={`tel:${company.phone}`} className="mt-0.5 block font-semibold text-sky-800 hover:text-sky-600">
-                          {company.phone}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {company.website && (
-                    <div className="flex items-start gap-3">
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700 text-sm">↗</span>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Website</p>
-                        <a href={company.website} target="_blank" rel="noopener noreferrer" className="mt-0.5 block font-semibold text-sky-800 hover:text-sky-600">
-                          {company.website.replace(/^https?:\/\//, "")}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {company.email && (
-                    <div className="flex items-start gap-3">
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700 text-sm">@</span>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Email</p>
-                        <a href={`mailto:${company.email}`} className="mt-0.5 block font-semibold text-sky-800 hover:text-sky-600">
-                          {company.email}
-                        </a>
-                      </div>
-                    </div>
-                  )}
+            {/* Contact Details — shown for all published listings */}
+            <Section label="Contact Details">
+              <div className="space-y-4">
+                {/* Website */}
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700 text-sm">↗</span>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Website</p>
+                    {company.website ? (
+                      <a href={company.website} target="_blank" rel="noopener noreferrer" className="mt-0.5 block font-semibold text-sky-800 hover:text-sky-600">
+                        {company.website.replace(/^https?:\/\//, "")}
+                      </a>
+                    ) : (
+                      <p className="mt-0.5 text-sm text-slate-400">Not listed</p>
+                    )}
+                  </div>
                 </div>
-              </Section>
-            )}
+              </div>
+              {!isClaimed && (
+                <p className="mt-4 rounded-xl bg-amber-50 px-4 py-2.5 text-xs text-amber-700">
+                  Is this your business? <a href={`/directory/claim/${company.slug}`} className="font-bold underline hover:text-amber-900">Claim this profile</a> to update your contact details and receive enquiries.
+                </p>
+              )}
+            </Section>
 
             {/* About */}
             {(company.description || company.year_established) && (

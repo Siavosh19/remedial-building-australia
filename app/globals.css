@@ -129,6 +129,12 @@
   }
 }
 
+@utility scrollbar-hide {
+  &::-webkit-scrollbar { display: none; }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 /* RBA Insights article body prose styles */
 .prose-content h1,
 .prose-content h2,

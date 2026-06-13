@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { getArticleImage, formatDate } from "@/lib/news-categories";
 import { ArticleDisclaimer } from "@/components/industry-news/ArticleDisclaimer";
 import { NewsLegalFooter } from "@/components/industry-news/NewsLegalFooter";
+import SiteHeader from "@/components/SiteHeader";
 
 export const revalidate = 3600;
 
@@ -260,40 +261,12 @@ export default async function IndustryNewsArticlePage({
   return (
     <div className="min-h-screen bg-white text-slate-800">
 
-      {/* ── Header ────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-4">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">
-                Remedial Building Australia
-              </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Independent Remedial Building Information Platform
-              </div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-7 text-sm font-semibold text-sky-800 md:flex">
-                        <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          
-          </nav>
-          <a
-            href="/directory/login"
-            className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 md:inline-flex"
-          >
-            Login / Create Account
-          </a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
 
         {/* ── Hero image ─────────────────────────────────────────────────── */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-200 md:aspect-[3/1]">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-200 md:aspect-[2/1]">
           <Image
             src={heroImage}
             alt={article.title}
@@ -365,11 +338,6 @@ export default async function IndustryNewsArticlePage({
               ))}
             </div>
           )}
-
-          {/* ── Disclaimer ────────────────────────────────────────────── */}
-          <div className="mt-7">
-            <ArticleDisclaimer />
-          </div>
 
           <hr className="mt-7 border-slate-100" />
 
@@ -483,6 +451,11 @@ export default async function IndustryNewsArticlePage({
               </p>
             </div>
           )}
+
+          {/* ── Disclaimer ────────────────────────────────────────────── */}
+          <div className="mt-8">
+            <ArticleDisclaimer />
+          </div>
 
           {/* ── Related Resources ─────────────────────────────────────── */}
           <div className="mt-10">

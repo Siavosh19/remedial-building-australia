@@ -9,7 +9,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-100">
-      <AdminSidebar email={user.email} />
+      <div className="hidden md:block">
+        <AdminSidebar email={user.email} />
+      </div>
       <div className="flex flex-1 flex-col overflow-hidden">
         <header className="flex h-14 shrink-0 items-center border-b border-slate-200 bg-white px-6">
           <span className="rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white">Admin Panel</span>

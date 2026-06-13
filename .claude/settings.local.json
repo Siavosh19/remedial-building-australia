@@ -2,6 +2,13 @@
   "permissions": {
     "allow": [
       "*",
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__*",
       "Bash(npx tsc *)",
       "Bash(vercel --prod)",
       "Bash(npx vercel *)",
@@ -113,7 +120,18 @@
       "Bash(mkdir -p \"/Users/siasepehrara/remedial-building-australia/app/api/directory/company/media/[id]\")",
       "Bash(DATABASE_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true\" DIRECT_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres\" npx prisma *)",
       "Bash(grep -v \"^--$\")",
-      "Bash(grep -v \"^\\\\\"https://[^/]*/\\\\?\\\\\"$\")"
+      "Bash(grep -v \"^\\\\\"https://[^/]*/\\\\?\\\\\"$\")",
+      "Bash(grep -E '\\(\\\\.com\\\\.au|\\\\.com|\\\\.au\\)/?$|/products/?$|/products/[a-z-]+/?$')",
+      "Bash(xargs ls -lh)",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(rm 'Class 2 Apartment Defects.png' 'Concrete, Structure & Remedial Repair.png' 'Expert Advice.png' 'Façade, Cladding & External Envelope.png' 'General Building Industry News 1 .png' 'General Building Industry News 2.png' 'Insurance, Liability & Construction Risk 2.png' 'Materials, Products & Repair Systems.png' 'Modern Construction & New Building Methods.png' 'Passive Fire Compliance.png' 'Standards, Codes & Technical Guidance.png' 'Strata, Levies & Building Disputes.png' 'Waterproofing, Membranes & Water Ingress.png' 'News 22 - Building Regulation & Compliance.png')",
+      "Bash(ls *.png)",
+      "Bash(open *)",
+      "Bash(psql postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true -c '\\\\dt directory.*')",
+      "Bash(psql postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true -c 'SELECT table_name FROM information_schema.tables WHERE table_schema='\\\\''public'\\\\'' AND table_name LIKE '\\\\''%compan%'\\\\'' OR table_name LIKE '\\\\''%location%'\\\\'' OR table_name LIKE '\\\\''%director%'\\\\'' ORDER BY table_name;')",
+      "Bash(brew list *)",
+      "Bash(grep -v 'Use \\\\`node')",
+      "Bash(awk --line-buffered '/Saved:/ { match\\($0, /\\([0-9]+\\) new filled/, a\\); if \\(a[1]+0 > last || /Done\\\\./\\) { print; last=a[1]+0 } } /Done\\\\./ { print }')"
     ]
   }
 }

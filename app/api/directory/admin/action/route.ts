@@ -92,8 +92,14 @@ export async function POST(request: NextRequest) {
         where: { id: queueItem.company_id },
         data: {
           status: companyStatus,
-          // Ensure claimed flag is set on approval — owner submitted so they are the claimer
-          ...(companyStatus === "published" ? { is_claimed: true } : {}),
+          ...(companyStatus === "published"
+            ? {
+                is_claimed: true,
+                listing_claim_status: "claimed",
+                plan_type: "claimed",
+                claimed_at: new Date(),
+              }
+            : {}),
         },
       });
     }

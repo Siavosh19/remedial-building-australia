@@ -9,6 +9,7 @@ type CategoryOption = {
   name: string;
   slug: string;
   parent_id?: number | null;
+  company_count?: number;
 };
 
 type CompanyResult = {
@@ -90,7 +91,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
 
   return (
     <div
-      className={`flex gap-4 border-b border-slate-100 bg-white px-6 py-5 last:border-0 transition-colors hover:bg-slate-50/70 ${
+      className={`flex gap-4 border-b-2 border-slate-200 bg-white px-6 py-5 last:border-0 transition-colors hover:bg-slate-50/70 ${
         isFeatured ? "border-l-4 border-l-amber-400" : ""
       }`}
     >
@@ -164,7 +165,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
       </div>
 
       {/* Right: reviews + action buttons */}
-      <div className="flex shrink-0 flex-col items-end justify-between gap-3 pl-2">
+      <div className="flex shrink-0 flex-col items-end justify-between gap-2 pl-1 sm:gap-3 sm:pl-2">
         <p className="text-xs text-slate-400">No reviews yet</p>
         <div className="flex flex-col items-end gap-2">
           <a
@@ -249,6 +250,141 @@ function Pagination({
           Next →
         </button>
       </div>
+    </div>
+  );
+}
+
+// ─── Category browser (hierarchical) ─────────────────────────────────────────
+
+function CategoryBrowser({
+  categories,
+  value,
+  onChange,
+}: {
+  categories: CategoryOption[];
+  value: string;
+  onChange: (slug: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const ref = useRef<HTMLDivElement>(null);
+
+  const parents = categories
+    .filter((c) => !c.parent_id)
+    .filter((c) => {
+      const hasOwn = (c.company_count ?? 0) > 0;
+      const hasChildren = categories.some(
+        (ch) => ch.parent_id === c.id && (ch.company_count ?? 0) > 0
+      );
+      return hasOwn || hasChildren;
+    });
+
+  function getChildren(parentId: number) {
+    return categories.filter((c) => c.parent_id === parentId && (c.company_count ?? 0) > 0);
+  }
+
+  const selectedLabel = value
+    ? (categories.find((c) => c.slug === value)?.name ?? "All Categories")
+    : "All Categories";
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  function select(slug: string) {
+    onChange(slug);
+    setOpen(false);
+    setExpanded(new Set());
+  }
+
+  function toggleExpand(id: number, e: React.MouseEvent) {
+    e.stopPropagation();
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={`flex items-center gap-2 rounded-xl border px-3.5 py-2 text-sm font-semibold transition ${
+          value
+            ? "border-sky-400 bg-sky-400/20 text-sky-200"
+            : "border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20"
+        }`}
+      >
+        <svg width={13} height={13} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+        <span className="max-w-[150px] truncate">{selectedLabel}</span>
+        <svg className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`} width={10} height={10} viewBox="0 0 12 12" fill="currentColor">
+          <path d="M6 8L1 3h10z" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-1.5 max-h-96 w-72 overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-xl">
+          {value && (
+            <button
+              onClick={() => select("")}
+              className="flex w-full items-center gap-2 border-b border-slate-100 px-4 py-2.5 text-left text-sm font-semibold text-slate-500 hover:bg-slate-50"
+            >
+              <span>×</span> Clear category filter
+            </button>
+          )}
+          {parents.map((parent) => {
+            const children = getChildren(parent.id);
+            const hasChildren = children.length > 0;
+            const isExpanded = expanded.has(parent.id);
+            return (
+              <div key={parent.id} className="border-b border-slate-50 last:border-0">
+                <div className={`flex items-center ${value === parent.slug ? "bg-sky-50" : "hover:bg-sky-50"}`}>
+                  <button
+                    onClick={() => select(parent.slug)}
+                    className="flex-1 px-4 py-2.5 text-left text-sm font-semibold text-sky-950"
+                  >
+                    {parent.name}
+                  </button>
+                  {hasChildren && (
+                    <button
+                      onClick={(e) => toggleExpand(parent.id, e)}
+                      className="shrink-0 px-3 py-2.5 text-slate-400 hover:text-slate-700"
+                      aria-label="Expand"
+                    >
+                      <svg className={`transition-transform duration-150 ${isExpanded ? "rotate-90" : ""}`} width={10} height={10} viewBox="0 0 12 12" fill="currentColor">
+                        <path d="M4 1l7 5-7 5z" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                {hasChildren && isExpanded && (
+                  <div className="bg-slate-50">
+                    {children.map((child) => (
+                      <button
+                        key={child.id}
+                        onClick={() => select(child.slug)}
+                        className={`flex w-full items-center py-2 pl-8 pr-4 text-left text-sm hover:bg-sky-100 ${
+                          value === child.slug ? "bg-sky-100 font-semibold text-sky-800" : "font-medium text-sky-900"
+                        }`}
+                      >
+                        {child.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -435,17 +571,12 @@ function LocationAutocomplete({
 
   if (selectedLocation) {
     return (
-      <div className="flex items-center gap-2.5 rounded-xl border border-sky-300 bg-sky-50 px-4 py-2.5">
-        <span className="text-base">{TYPE_ICONS[selectedLocation.type]}</span>
-        <div className="min-w-0 flex-1">
-          <span className="block text-[10px] font-bold uppercase tracking-wider text-sky-500">
-            {TYPE_LABELS[selectedLocation.type]}
-          </span>
-          <span className="block truncate text-sm font-semibold text-sky-900">{selectedLocation.label}</span>
-        </div>
+      <div className="flex h-[42px] items-center gap-2.5 rounded-xl border-2 border-sky-400 bg-sky-50 px-4">
+        <span className="shrink-0 text-sm">{TYPE_ICONS[selectedLocation.type]}</span>
+        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-sky-900">{selectedLocation.label}</span>
         <button
           onClick={onClear}
-          className="shrink-0 rounded-lg px-2 py-1 text-xs font-bold text-sky-500 hover:bg-sky-100 hover:text-sky-700"
+          className="shrink-0 rounded-lg px-2 py-0.5 text-xs font-bold text-sky-500 hover:bg-sky-100 hover:text-sky-700"
         >
           × Clear
         </button>
@@ -468,7 +599,7 @@ function LocationAutocomplete({
         value={inputVal}
         onChange={(e) => handleInput(e.target.value)}
         placeholder="Suburb, postcode or state…"
-        className="w-full rounded-xl border border-slate-300 bg-slate-50 py-2.5 pl-10 pr-10 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
+        className="w-full rounded-xl border-2 border-slate-900 bg-white py-2.5 pl-10 pr-10 text-sm focus:border-black focus:outline-none focus:ring-2 focus:ring-white/30"
         autoComplete="off"
       />
       {fetching && (
@@ -507,6 +638,108 @@ function LocationAutocomplete({
   );
 }
 
+// ─── Keyword autocomplete ─────────────────────────────────────────────────────
+
+type KeywordSuggestion = {
+  type: "category";
+  text: string;
+  slug: string;
+  count: number;
+};
+
+function KeywordAutocomplete({
+  value,
+  onChange,
+  onSearch,
+  onSelectCategory,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  onSearch: () => void;
+  onSelectCategory: (slug: string, label: string) => void;
+}) {
+  const [suggestions, setSuggestions] = useState<KeywordSuggestion[]>([]);
+  const [open, setOpen] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  function handleChange(v: string) {
+    onChange(v);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (v.trim().length < 2) { setSuggestions([]); setOpen(false); return; }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/directory/suggest?q=${encodeURIComponent(v.trim())}`);
+        const data = await res.json();
+        const s = data.suggestions ?? [];
+        setSuggestions(s);
+        setOpen(s.length > 0);
+      } catch {
+        setSuggestions([]); setOpen(false);
+      }
+    }, 250);
+  }
+
+  function pick(s: KeywordSuggestion) {
+    setSuggestions([]); setOpen(false);
+    onSelectCategory(s.slug, s.text);
+  }
+
+  return (
+    <div ref={containerRef} className="relative">
+      <svg
+        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+        width={15} height={15} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden
+      >
+        <circle cx={11} cy={11} r={8} />
+        <path d="m21 21-4.35-4.35" />
+      </svg>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
+        onKeyDown={(e) => { if (e.key === "Enter") { setOpen(false); onSearch(); } if (e.key === "Escape") setOpen(false); }}
+        placeholder="Company, service or category…"
+        autoComplete="off"
+        className="w-full rounded-xl border-2 border-slate-900 bg-white py-2.5 pl-10 pr-4 text-sm focus:border-black focus:outline-none focus:ring-2 focus:ring-white/30"
+      />
+
+      {open && suggestions.length > 0 && (
+        <div className="absolute left-0 top-full z-50 mt-1.5 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+          <div className="border-b border-slate-100 px-4 py-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Categories</span>
+          </div>
+          {suggestions.map((s, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => pick(s)}
+              className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-sky-50 focus:bg-sky-50 focus:outline-none"
+            >
+              <span className="shrink-0 text-sm text-sky-600">
+                <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path d="M3 7a2 2 0 012-2h3.586a1 1 0 01.707.293L10.414 6.5A1 1 0 0011.121 6.793H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                </svg>
+              </span>
+              <div className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold text-sky-950">{s.text}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function DirectoryListing({ categories, initialCompanies }: Props) {
@@ -523,11 +756,12 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
   const [featured, setFeatured] = useState(false);
   const [page, setPage] = useState(1);
 
-  const [companies, setCompanies] = useState<CompanyResult[]>(initialCompanies);
-  const [total, setTotal] = useState(initialCompanies.length);
+  const [companies, setCompanies] = useState<CompanyResult[]>([]);
+  const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isLocalFallback, setIsLocalFallback] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const geocodeAbortRef = useRef<AbortController | null>(null);
 
@@ -592,17 +826,29 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
   // Re-run search when explicit filters change (category, featured, page, coords)
   // Does NOT watch qInput — keyword requires Enter or button click
   useEffect(() => {
+    if (!hasSearched) return;
     fetchResults({ q, selectedLocation, coords, category, featured, page });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, featured, coords, page]);
 
   function applySearch() {
+    setHasSearched(true);
     setQ(qInput);
     setPage(1);
     fetchResults({ q: qInput, selectedLocation, coords, category, featured, page: 1 });
   }
 
+  function handleSelectCategory(slug: string, label: string) {
+    setQInput(label);
+    setQ(label);
+    setCategory(slug);
+    setHasSearched(true);
+    setPage(1);
+    fetchResults({ q: label, selectedLocation, coords, category: slug, featured, page: 1 });
+  }
+
   function handleLocationSelect(loc: LocationSuggestion) {
+    setHasSearched(true);
     setSelectedLocation(loc);
     setCoords(null);
     setIsLocalFallback(false);
@@ -662,34 +908,25 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
     setFeatured(false);
     setPage(1);
     setIsLocalFallback(false);
-    fetchResults({ q: "", selectedLocation: null, coords: null, category: "", featured: false, page: 1 });
+    setHasSearched(false);
+    setCompanies([]);
+    setTotal(0);
   }
 
   return (
     <>
       {/* ── Search + filters ─────────────────────────────────────────────── */}
-      <div className="sticky top-[73px] z-40 border-b border-slate-200 bg-white shadow-sm">
+      <div className="sticky top-[73px] z-40 border-b border-sky-900 bg-sky-950 shadow-sm">
         <div className="mx-auto max-w-7xl px-6 py-4">
           {/* Row 1: keyword + location + search button */}
           <div className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
             {/* Keyword */}
-            <div className="relative">
-              <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                width={15} height={15} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden
-              >
-                <circle cx={11} cy={11} r={8} />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-              <input
-                type="text"
-                value={qInput}
-                onChange={(e) => setQInput(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") applySearch(); }}
-                placeholder="Company, service or defect type…"
-                className="w-full rounded-xl border border-slate-300 bg-slate-50 py-2.5 pl-10 pr-4 text-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-100"
-              />
-            </div>
+            <KeywordAutocomplete
+              value={qInput}
+              onChange={setQInput}
+              onSearch={applySearch}
+              onSelectCategory={handleSelectCategory}
+            />
 
             {/* Location */}
             <LocationAutocomplete
@@ -708,28 +945,35 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
             </button>
           </div>
 
-          {/* Row 2: category (hidden for now) + Featured toggle + clear */}
+          {/* Row 2: category browser + Featured toggle + clear */}
           <div className="mt-3 flex flex-wrap items-center gap-2.5">
-            <div className="hidden">
-              <CategorySelector categories={categories} value={category} onChange={setCategory} />
-            </div>
+            <CategoryBrowser
+              categories={categories}
+              value={category}
+              onChange={(slug) => {
+                setCategory(slug);
+                setHasSearched(true);
+                setPage(1);
+                fetchResults({ q, selectedLocation, coords, category: slug, featured, page: 1 });
+              }}
+            />
 
             <button
-              onClick={() => { setFeatured((v) => !v); }}
+              onClick={() => { setHasSearched(true); setFeatured((v) => !v); }}
               className={`rounded-xl border px-3.5 py-2 text-sm font-semibold transition ${
                 featured
-                  ? "border-amber-500 bg-amber-50 text-amber-800"
-                  : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:bg-slate-50"
+                  ? "border-amber-400 bg-amber-400/20 text-amber-300"
+                  : "border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20"
               }`}
             >
-              {featured && <span className="mr-1 text-amber-500">✓</span>}
+              {featured && <span className="mr-1 text-amber-400">✓</span>}
               Featured
             </button>
 
             {hasFilters && (
               <button
                 onClick={clearFilters}
-                className="ml-auto rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-semibold text-slate-500 transition hover:bg-slate-100"
+                className="ml-auto rounded-xl border border-white/20 bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/70 transition hover:bg-white/20"
               >
                 Clear all
               </button>
@@ -741,93 +985,94 @@ export default function DirectoryListing({ categories, initialCompanies }: Props
       {/* ── Results ──────────────────────────────────────────────────────── */}
       <div className="mx-auto max-w-7xl px-6 py-8">
 
-        {/* Results meta bar */}
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-slate-600">
-              {loading
-                ? "Searching…"
-                : `${total} ${total === 1 ? "business" : "businesses"} found`}
-              {selectedLocation && !loading && total > 0 && (
-                <span className="ml-1 font-normal text-slate-400">near {selectedLocation.label.split(",")[0]}</span>
-              )}
-            </p>
-            {isLocalFallback && !loading && selectedLocation && (
-              <p className="mt-1 text-xs text-amber-700">
-                No local businesses found. Showing relevant businesses that service your area.
-              </p>
-            )}
-          </div>
-          <a
-            href="/directory/signup"
-            className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
-          >
-            List your business →
-          </a>
-        </div>
-
-        {/* Claim banner */}
-        <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="font-bold text-sky-950">Own a business listed here?</p>
-            <p className="mt-0.5 text-sm text-slate-600">
-              Claim your profile to manage your details, showcase your expertise and receive enquiries from potential clients.
-            </p>
-          </div>
-          <a
-            href="/directory/signup"
-            className="shrink-0 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 sm:whitespace-nowrap"
-          >
-            Claim Your Profile
-          </a>
-        </div>
-
-        {/* Results list */}
-        {loading ? (
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-            {Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)}
-          </div>
-        ) : companies.length === 0 ? (
-          <div className="rounded-2xl border border-slate-200 bg-white px-10 py-20 text-center shadow-sm">
-            <p className="text-lg font-bold text-sky-950">No businesses found</p>
-            <p className="mt-2 text-sm text-slate-500">
-              {hasFilters
-                ? "Try adjusting your search or clearing your filters."
-                : "No listings are published yet. Be the first to list your business."}
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              {hasFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="rounded-xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800"
-                >
-                  Clear all filters
-                </button>
-              )}
-              {!hasFilters && (
-                <a
-                  href="/directory/signup"
-                  className="rounded-xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800"
-                >
-                  List your business →
-                </a>
-              )}
-            </div>
-          </div>
-        ) : (
+        {!hasSearched ? (
+          /* ── Pre-search prompt ─────────────────────────────────────────── */
           <>
-            <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-              {companies.map((company) => (
-                <CompanyRow key={company.id} company={company} />
-              ))}
+            <div className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 px-8 py-12 text-center">
+              <p className="text-2xl font-extrabold text-sky-950">Search the directory</p>
+              <p className="mt-2 text-sm text-slate-600">
+                Enter a business name, service type, suburb, postcode or state to find listed businesses.
+              </p>
+              <p className="mt-4 text-xs text-slate-400">13,500+ businesses listed across Australia</p>
             </div>
-            <Pagination
-              page={page}
-              totalPages={totalPages}
-              total={total}
-              pageSize={20}
-              onPage={setPage}
-            />
+
+            <div className="flex flex-col gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-bold text-sky-950">Own a business in this industry?</p>
+                <p className="mt-0.5 text-sm text-slate-600">
+                  Claim your profile to manage your details, showcase your expertise and receive enquiries.
+                </p>
+              </div>
+              <a
+                href="/directory/signup"
+                className="shrink-0 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 sm:whitespace-nowrap"
+              >
+                List / Claim Your Profile
+              </a>
+            </div>
+          </>
+        ) : (
+          /* ── Search results ────────────────────────────────────────────── */
+          <>
+            {/* Results meta bar */}
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-slate-600">
+                  {loading
+                    ? "Searching…"
+                    : `${total} ${total === 1 ? "business" : "businesses"} found`}
+                  {selectedLocation && !loading && total > 0 && (
+                    <span className="ml-1 font-normal text-slate-400">near {selectedLocation.label.split(",")[0]}</span>
+                  )}
+                </p>
+                {isLocalFallback && !loading && selectedLocation && (
+                  <p className="mt-1 text-xs text-amber-700">
+                    No local businesses found. Showing relevant businesses that service your area.
+                  </p>
+                )}
+              </div>
+              <a
+                href="/directory/signup"
+                className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
+              >
+                List your business →
+              </a>
+            </div>
+
+            {/* Results list */}
+            {loading ? (
+              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                {Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)}
+              </div>
+            ) : companies.length === 0 ? (
+              <div className="rounded-2xl border border-slate-200 bg-white px-10 py-20 text-center shadow-sm">
+                <p className="text-lg font-bold text-sky-950">No businesses found</p>
+                <p className="mt-2 text-sm text-slate-500">Try adjusting your search or clearing your filters.</p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={clearFilters}
+                    className="rounded-xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-800"
+                  >
+                    Clear all filters
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="overflow-hidden rounded-2xl border-2 border-slate-300 shadow-sm">
+                  {companies.map((company) => (
+                    <CompanyRow key={company.id} company={company} />
+                  ))}
+                </div>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  total={total}
+                  pageSize={20}
+                  onPage={setPage}
+                />
+              </>
+            )}
           </>
         )}
       </div>

@@ -17,21 +17,12 @@ export default function TrackableContactButtons({
     }).catch(() => {});
   }
 
-  if (!phone && !website) return null;
+  if (!website) return null;
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-700">Get in Touch</p>
       <div className="mt-4 flex flex-col gap-3">
-        {phone && (
-          <a
-            href={`tel:${phone}`}
-            onClick={() => track("phone")}
-            className="flex items-center justify-center gap-2 rounded-xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
-          >
-            <span>☎</span> {phone}
-          </a>
-        )}
         {website && (
           <a
             href={website}

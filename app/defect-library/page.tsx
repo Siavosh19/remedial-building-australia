@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import SiteHeader from "@/components/SiteHeader";
 
 const categoryData = [
   {
@@ -98,7 +99,6 @@ const categoryData = [
 
 export default function DefectLibraryPage() {
   const [query, setQuery] = useState("");
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -118,51 +118,7 @@ export default function DefectLibraryPage() {
 
   return (
     <div className="min-h-screen bg-slate-100">
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">
-                Remedial Building Australia
-              </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">
-                Technical Remedial Building Platform
-              </div>
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          </nav>
-
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
-          <button
-            className="md:hidden p-1"
-            onClick={() => setMobileNavOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-        {mobileNavOpen && (
-          <div className="border-t border-sky-100 bg-white px-6 py-4 md:hidden">
-            <nav className="flex flex-col gap-4 text-sm font-semibold text-sky-800">
-              <a href="/" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Home</a>
-              <a href="/repair-systems" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Repair Systems</a>
-              <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">News &amp; Insights</a>
-              <a href="/ai-scope-builder" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">AI Scope Builder</a>
-              <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Defect Library</a>
-              <a href="/directory" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Business Directory</a>
-            </nav>
-          </div>
-        )}
-      </header>
+      <SiteHeader />
 
       <main className="px-6 py-16">
         <section className="mx-auto max-w-7xl">
@@ -171,7 +127,7 @@ export default function DefectLibraryPage() {
               Defect Library
             </p>
 
-            <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950 md:text-6xl">
+            <h1 className="mt-4 text-3xl font-extrabold leading-tight text-sky-950 sm:text-5xl md:text-6xl">
               Browse remedial building defects by category
             </h1>
 

@@ -179,7 +179,7 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
             href={`/industry-news/${featuredArticle.slug}`}
             className="group grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl lg:grid-cols-[1.1fr_0.9fr]"
           >
-            <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 lg:aspect-[3/1]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 lg:aspect-auto lg:min-h-[320px]">
               <NewsImage
                 src={featuredArticle.featured_image}
                 alt={featuredArticle.title}
@@ -283,7 +283,7 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 pt-4">
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}

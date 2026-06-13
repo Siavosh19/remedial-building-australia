@@ -954,6 +954,35 @@ model TermsAcceptance {
   @@map("terms_acceptances")
 }
 
+model ExpertAdviceRequest {
+  id                     Int       @id @default(autoincrement())
+  created_at             DateTime  @default(now())
+  service                String
+  service_name           String
+  name                   String
+  email                  String
+  phone                  String?
+  property_type          String?
+  building_address       String
+  description            String
+  urgency                String?
+  extra_fields           Json?
+  uploaded_file_refs     Json?
+  disclaimer_accepted    Boolean   @default(false)
+  disclaimer_version     String    @default("1.0")
+  disclaimer_accepted_at DateTime?
+  disclaimer_text        String?
+  ip_address             String?
+  user_account_id        Int?
+  payment_id             String?
+  payment_status         String    @default("pending")
+
+  @@index([service])
+  @@index([email])
+  @@index([created_at])
+  @@map("expert_advice_requests")
+}
+
 model RbaInsightsArticle {
   id                      Int       @id @default(autoincrement())
   title                   String

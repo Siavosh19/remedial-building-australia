@@ -64,11 +64,12 @@ function locationScore(
     return 20;
   }
 
-  // No lat/lng — fall back to service coverage flags
-  if (loc.services_nationwide) return 60;
-  if (loc.services_statewide && loc.state === searchState) return 150;
-  if (loc.state === searchState) return 80;
-  return 20;
+  // No lat/lng — fall back to service coverage flags.
+  // Scores are large enough that same-state always beats trustBoost from featured interstate business.
+  if (loc.state === searchState) return 300;
+  if (loc.services_statewide && loc.state === searchState) return 300;
+  if (loc.services_nationwide) return 250;
+  return 5;
 }
 
 function trustBoost(row: {
@@ -88,7 +89,7 @@ function trustBoost(row: {
 // ─── Synonym expansion ────────────────────────────────────────────────────────
 
 const STOPWORDS = new Set([
-  "building", "buildings", "service", "services", "management", "australia",
+  "service", "services", "management", "australia",
   "australian", "company", "companies", "group", "pty", "ltd", "the", "and",
   "for", "with", "our", "all", "new", "south", "wales", "victoria", "queensland",
 ]);
@@ -113,10 +114,14 @@ const SYNONYM_GROUPS: string[][] = [
   ["fire safety", "fire protection"],
   ["electrical", "electrician", "electricians"],
   ["scaffold", "scaffolding"],
-  ["render", "rendering"],
+  ["render", "rendering", "renderer", "renderers"],
   ["tiling", "tiles", "tile", "tiler", "tilers"],
   ["timber", "carpentry", "carpenter"],
   ["structural", "structure"],
+  ["builder", "builders", "building", "buildings", "build"],
+  ["contractor", "contractors"],
+  ["specialist", "specialists"],
+  ["certifier", "certifiers", "certification"],
 ];
 
 function expandQuery(q: string): string[] {
@@ -127,7 +132,9 @@ function expandQuery(q: string): string[] {
   for (const word of words) {
     terms.add(word);
     for (const group of SYNONYM_GROUPS) {
-      if (group.some((syn) => syn === word || syn.includes(word) || word.includes(syn))) {
+      // Only expand when there is an exact match or the synonym starts with the search word
+      // (prefix match). Avoid substring matches like "builder" → "render" via word.includes(syn).
+      if (group.some((syn) => syn === word || syn.startsWith(word) || word.startsWith(syn))) {
         group.forEach((syn) => terms.add(syn));
       }
     }
@@ -148,8 +155,9 @@ function buildWhere(params: {
   licenceVerified: boolean;
   claimed: boolean;
   hasCoords: boolean;
+  searchState: string;
 }): Prisma.CompanyWhereInput {
-  const { q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, hasCoords } = params;
+  const { q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, hasCoords, searchState } = params;
 
   const where: Prisma.CompanyWhereInput = { status: "published" };
   const AND: Prisma.CompanyWhereInput[] = [];
@@ -219,9 +227,22 @@ function buildWhere(params: {
       AND.push({ locations: { some: { postcode } } });
     }
   } else {
-    // When coords present, still optionally filter by state to keep result set manageable
-    // Only apply if there's a state hint but no specific suburb/postcode
-    // (suburb/postcode searches need broader results for nearest-first ranking)
+    // When coords are present, hard-filter by state so interstate businesses never appear
+    // in a location search result — scoring alone can't overcome the trustBoost gap when
+    // almost no businesses have lat/lng. Allow nationwide and statewide service exceptions.
+    if (searchState) {
+      const upperState = searchState.toUpperCase();
+      const validSearchState = VALID_STATES.find((s) => s === upperState);
+      if (validSearchState) {
+        AND.push({
+          OR: [
+            { locations: { some: { state: validSearchState } } },
+            { locations: { some: { services_nationwide: true } } },
+            { locations: { some: { services_statewide: true, state: validSearchState } } },
+          ],
+        });
+      }
+    }
   }
 
   // ── Verification filters ────────────────────────────────────────────────────
@@ -241,6 +262,7 @@ const COMPANY_SELECT = {
   name: true,
   description: true,
   phone: true,
+  plan_type: true,
   profile_status: true,
   confidence_score: true,
   is_featured: true,
@@ -295,18 +317,80 @@ export async function GET(request: NextRequest) {
   const where = buildWhere({
     q, category, stateFilter, suburb, postcode,
     featured, licenceVerified, claimed,
-    hasCoords,
+    hasCoords, searchState,
   });
 
   try {
-    // ── No location coords: pure Prisma with simple sort ──────────────────────
+    // ── No location coords ────────────────────────────────────────────────────
     if (!hasCoords) {
+      // With a keyword: fetch all matches, re-rank by relevance, then paginate.
+      // This ensures name/category matches always outrank description-only matches.
+      if (q) {
+        const terms = expandQuery(q);
+
+        const candidates = await prisma.company.findMany({
+          where,
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            is_featured: true,
+            confidence_score: true,
+            is_claimed: true,
+            profile_status: true,
+            main_category: { select: { name: true } },
+          },
+        });
+
+        if (candidates.length === 0) {
+          return NextResponse.json({ companies: [], total: 0, page, pageSize: PAGE_SIZE, totalPages: 0, isLocalFallback: false });
+        }
+
+        const scored = candidates.map((row) => {
+          let relevance = 0;
+          for (const term of terms) {
+            const t = term.toLowerCase();
+            if (row.name.toLowerCase().includes(t)) relevance += 100;
+            if ((row.main_category?.name ?? "").toLowerCase().includes(t)) relevance += 50;
+            if ((row.description ?? "").toLowerCase().includes(t)) relevance += 10;
+          }
+          return { id: row.id, score: relevance * 10 + trustBoost(row) };
+        });
+
+        scored.sort((a, b) => b.score - a.score);
+
+        const total = scored.length;
+        const pageIds = scored.slice(offset, offset + PAGE_SIZE).map((r) => r.id);
+
+        if (pageIds.length === 0) {
+          return NextResponse.json({ companies: [], total, page, pageSize: PAGE_SIZE, totalPages: Math.ceil(total / PAGE_SIZE), isLocalFallback: false });
+        }
+
+        const fullRows = await prisma.company.findMany({
+          where: { id: { in: pageIds } },
+          select: COMPANY_SELECT,
+        });
+
+        const companies = pageIds.map((id) => fullRows.find((r) => r.id === id)!).filter(Boolean);
+
+        return NextResponse.json({
+          companies,
+          total,
+          page,
+          pageSize: PAGE_SIZE,
+          totalPages: Math.ceil(total / PAGE_SIZE),
+          isLocalFallback: false,
+        });
+      }
+
+      // No keyword: simple sort (category/featured filter only)
       const [total, rows] = await Promise.all([
         prisma.company.count({ where }),
         prisma.company.findMany({
           where,
           select: COMPANY_SELECT,
           orderBy: [
+            { plan_type: "desc" },
             { is_featured: "desc" },
             { confidence_score: "desc" },
             { is_claimed: "desc" },

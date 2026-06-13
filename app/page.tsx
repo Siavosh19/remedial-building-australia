@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Menu, Users, HardHat, Droplets, Layers, Search, ScanSearch } from "lucide-react";
+import { ArrowRight, Menu, Users, HardHat, Droplets, Layers, Search, ScanSearch, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
@@ -13,15 +13,17 @@ interface CoreService {
   image: string;
   href: string;
   badge?: string;
+  cta?: string;
   quickLinks?: { label: string; href: string; available: boolean }[];
 }
 
 const coreServices: CoreService[] = [
   {
-    title: "Defect Library",
-    text: "Structured guidance for common Class 2 building defects, organised by category, cause, risk and repair pathway.",
-    image: "/Images/Defect%20Library.jpg",
-    href: "/defect-library",
+    title: "Expert Remedial Advice",
+    text: "Desktop reviews for defects, scopes, quotes, repair budgets, and strata capital works planning.",
+    image: "/Images/Expert%20Advice.jpg",
+    href: "/expert-remedial-advice",
+    cta: "Coming Soon",
   },
   {
     title: "Repair Systems",
@@ -54,10 +56,10 @@ const coreServices: CoreService[] = [
     ],
   },
   {
-    title: "Courses",
-    text: "Training resources covering remedial building works, waterproofing systems, concrete repair, defect identification and industry practice.",
-    image: "/Images/Courses.jpg",
-    href: "/courses",
+    title: "Defect Library",
+    text: "Structured guidance for common Class 2 building defects, organised by category, cause, risk and repair pathway.",
+    image: "/Images/Defect%20Library.jpg",
+    href: "/defect-library",
   },
   {
     title: "Useful Resources",
@@ -138,6 +140,17 @@ export default function RemedialBuildingAustraliaHome() {
   const [newsLoading, setNewsLoading] = useState(true);
   const [directoryQuery, setDirectoryQuery] = useState("");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [expertOpen, setExpertOpen] = useState(false);
+  const [mobileExpertOpen, setMobileExpertOpen] = useState(false);
+
+  const expertServices = [
+    { title: "Preliminary Defect Assessment",       href: "/expert-remedial-advice/preliminary-defect-assessment" },
+    { title: "Scope, Quote & Tender Review",         href: "/expert-remedial-advice/scope-quote-tender-review" },
+    { title: "Remedial Budget Estimate",             href: "/expert-remedial-advice/remedial-budget-estimate" },
+    { title: "Building Repair Strategy Advice",      href: "/expert-remedial-advice/building-repair-strategy-advice" },
+    { title: "Pre-Purchase Apartment Defect Review", href: "/expert-remedial-advice/pre-purchase-apartment-defect-review" },
+    { title: "Capital Works Forecast",               href: "/expert-remedial-advice/capital-works-forecast" },
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -199,7 +212,7 @@ export default function RemedialBuildingAustraliaHome() {
   return (
     <div className="min-h-screen bg-white text-sky-950">
       <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 md:gap-8 md:px-8">
           <a href="/" className="flex shrink-0 items-center gap-3">
             <div>
               <div className="text-lg font-extrabold tracking-tight text-sky-950">
@@ -211,12 +224,38 @@ export default function RemedialBuildingAustraliaHome() {
             </div>
           </a>
 
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
+          <nav className="hidden items-center gap-6 text-sm font-semibold text-sky-800 md:flex">
             <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
             <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700 transition">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
+            <div
+              className="relative"
+              onMouseEnter={() => setExpertOpen(true)}
+              onMouseLeave={() => setExpertOpen(false)}
+            >
+              <a
+                href="/expert-remedial-advice"
+                className="flex items-center gap-1 whitespace-nowrap hover:text-red-700 transition"
+              >
+                Expert Advice
+                <ChevronDown size={13} className={`mt-px transition-transform duration-200 ${expertOpen ? "rotate-180" : ""}`} />
+              </a>
+              {expertOpen && (
+                <div className="absolute left-0 top-full z-50 mt-1 w-72 rounded-xl border border-sky-100 bg-white py-2 shadow-lg">
+                  {expertServices.map((s) => (
+                    <a
+                      key={s.href}
+                      href={s.href}
+                      className="block px-4 py-2.5 text-sm font-semibold text-sky-800 hover:bg-sky-50 hover:text-red-700 transition"
+                    >
+                      {s.title}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
             <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
             <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
+            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
           </nav>
 
           <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
@@ -233,10 +272,33 @@ export default function RemedialBuildingAustraliaHome() {
             <nav className="flex flex-col gap-4 text-sm font-semibold text-sky-800">
               <a href="/" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Home</a>
               <a href="/repair-systems" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Repair Systems</a>
-              <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">News &amp; Insights</a>
+              <div>
+                <button
+                  className="flex w-full items-center justify-between hover:text-red-700 transition"
+                  onClick={() => setMobileExpertOpen((o) => !o)}
+                >
+                  <span>Expert Advice</span>
+                  <ChevronDown size={13} className={`transition-transform duration-200 ${mobileExpertOpen ? "rotate-180" : ""}`} />
+                </button>
+                {mobileExpertOpen && (
+                  <div className="ml-4 mt-2 flex flex-col gap-3 border-l-2 border-sky-100 pl-4">
+                    {expertServices.map((s) => (
+                      <a
+                        key={s.href}
+                        href={s.href}
+                        onClick={() => setMobileNavOpen(false)}
+                        className="text-sm font-medium text-sky-700 hover:text-red-700 transition"
+                      >
+                        {s.title}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
               <a href="/ai-scope-builder" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">AI Scope Builder</a>
               <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Defect Library</a>
               <a href="/directory" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Business Directory</a>
+              <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">News &amp; Insights</a>
               <a href="/directory/login" onClick={() => setMobileNavOpen(false)} className="mt-2 inline-flex rounded-xl bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800 transition">Login / Create Account</a>
             </nav>
           </div>
@@ -341,7 +403,8 @@ export default function RemedialBuildingAustraliaHome() {
                 type="submit"
                 className="shrink-0 rounded-xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
               >
-                Search Directory
+                <span className="hidden sm:inline">Search Directory</span>
+                <span className="sm:hidden">Search</span>
               </button>
             </form>
 
@@ -536,7 +599,7 @@ export default function RemedialBuildingAustraliaHome() {
                   )}
 
                   <div className="mt-auto pt-6 flex items-center text-sm font-bold text-sky-700 group-hover:text-red-700 transition">
-                    View more <ArrowRight className="ml-2" size={16} />
+                    {service.cta ?? "View more"} <ArrowRight className="ml-2" size={16} />
                   </div>
                 </div>
               </a>
