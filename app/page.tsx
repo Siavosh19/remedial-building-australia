@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Menu, ChevronDown, Users, HardHat, Droplets, Layers, Search, ScanSearch } from "lucide-react";
+import { ArrowRight, Menu, ChevronDown, Users, HardHat, Droplets, Layers, Search, ScanSearch, ClipboardCheck, FileSearch, Calculator, Wrench, Building2, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
@@ -14,6 +14,75 @@ const expertServices = [
   { title: "Building Repair Strategy Advice",      href: "/expert-remedial-advice/building-repair-strategy-advice" },
   { title: "Pre-Purchase Apartment Defect Review", href: "/expert-remedial-advice/pre-purchase-apartment-defect-review" },
   { title: "Capital Works Forecast",               href: "/expert-remedial-advice/capital-works-forecast" },
+];
+
+// Visual-only filter chips for the home-page Expert Remedial Advice section.
+const expertAdviceFilters = [
+  "All Services",
+  "Defects",
+  "Quotes & Tenders",
+  "Strategy",
+  "Strata",
+  "Pre-Purchase",
+];
+
+// Home-page Expert Remedial Advice cards.
+// Swap `image` to replace any thumbnail — paths are relative to /public.
+const expertAdviceCards = [
+  {
+    title: "Preliminary Defect Assessment",
+    description: "Identify and document defects with a clear, independent assessment.",
+    image: "/Images/Categories/concrete-structural-defects.jpg",
+    href: "/expert-remedial-advice/preliminary-defect-assessment",
+    cta: "View Service",
+    Icon: ClipboardCheck,
+    highlight: false,
+  },
+  {
+    title: "Scope, Quote & Tender Review",
+    description: "Independent review of scopes, quotes and tenders to ensure completeness, accuracy and fairness.",
+    image: "/Images/AI%20Scope%20Builder.jpg",
+    href: "/expert-remedial-advice/scope-quote-tender-review",
+    cta: "Learn More",
+    Icon: FileSearch,
+    highlight: true,
+  },
+  {
+    title: "Remedial Budget Estimate",
+    description: "Realistic budget estimates to support planning, funding and decision making.",
+    image: "/Images/technical%20Resources.jpg",
+    href: "/expert-remedial-advice/remedial-budget-estimate",
+    cta: "View Service",
+    Icon: Calculator,
+    highlight: false,
+  },
+  {
+    title: "Building Repair Strategy Advice",
+    description: "Tailored repair strategies and risk-based recommendations to protect your asset.",
+    image: "/Images/Repair%20methods.jpg",
+    href: "/expert-remedial-advice/building-repair-strategy-advice",
+    cta: "View Service",
+    Icon: Wrench,
+    highlight: false,
+  },
+  {
+    title: "Pre-Purchase Apartment Defect Review",
+    description: "Independent defect review and risk assessment before you buy.",
+    image: "/Images/Categories/facade-external-envelope.jpg",
+    href: "/expert-remedial-advice/pre-purchase-apartment-defect-review",
+    cta: "View Service",
+    Icon: Building2,
+    highlight: false,
+  },
+  {
+    title: "Capital Works Forecast",
+    description: "Long-term capital works forecasting to plan and budget with confidence.",
+    image: "/Images/Categories/balconies-podiums.jpg",
+    href: "/expert-remedial-advice/capital-works-forecast",
+    cta: "View Service",
+    Icon: LineChart,
+    highlight: false,
+  },
 ];
 
 interface CoreService {
@@ -149,6 +218,7 @@ export default function RemedialBuildingAustraliaHome() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [expertOpen, setExpertOpen] = useState(false);
   const [mobileExpertOpen, setMobileExpertOpen] = useState(false);
+  const [activeExpertFilter, setActiveExpertFilter] = useState("All Services");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -536,6 +606,99 @@ export default function RemedialBuildingAustraliaHome() {
                 );
               })}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Expert Remedial Advice ───────────────────────────────────────── */}
+        <section className="border-y border-slate-100 bg-slate-50/60">
+          <div className="mx-auto max-w-7xl px-5 py-20">
+            <div className="mb-8">
+              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Expert Remedial Advice</div>
+              <h2 className="mt-2 max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-4xl">
+                Independent desktop advice for building defects, scopes, budgets and strata planning
+              </h2>
+              <p className="mt-3 max-w-3xl text-base leading-7 text-slate-500">
+                Practical, independent guidance from experienced professionals to help you make confident decisions at every stage of the remedial process.
+              </p>
+            </div>
+
+            {/* Filter chips — visual only for now */}
+            <div className="mb-10 flex flex-wrap gap-2.5">
+              {expertAdviceFilters.map((f) => {
+                const active = activeExpertFilter === f;
+                return (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setActiveExpertFilter(f)}
+                    className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                      active
+                        ? "bg-sky-950 text-white shadow-sm"
+                        : "border border-slate-200 bg-white text-sky-800 hover:border-sky-300 hover:text-red-700"
+                    }`}
+                  >
+                    {f}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Service cards */}
+            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              {expertAdviceCards.map(({ title, description, image, href, cta, Icon, highlight }) => (
+                <a
+                  key={title}
+                  href={href}
+                  className={`group flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl ${
+                    highlight
+                      ? "border-2 border-red-200 ring-2 ring-red-100"
+                      : "border border-slate-200 hover:border-sky-300"
+                  }`}
+                >
+                  {/* Image banner */}
+                  <div className="relative h-44 w-full overflow-hidden">
+                    <img
+                      src={image}
+                      alt={title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-sky-950/40 to-transparent" />
+                    {/* Icon badge */}
+                    <span className="absolute -bottom-5 left-6 flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-red-700 shadow-md ring-1 ring-slate-100">
+                      <Icon size={20} />
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex flex-1 flex-col px-6 pb-6 pt-8">
+                    <h3 className="text-lg font-extrabold leading-snug text-sky-950">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">{description}</p>
+                    <div className="mt-auto pt-5">
+                      <span
+                        className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                          highlight
+                            ? "bg-red-700 text-white group-hover:bg-red-800"
+                            : "border border-slate-200 bg-white text-sky-800 group-hover:border-sky-300 group-hover:text-red-700"
+                        }`}
+                      >
+                        {cta}
+                        <ArrowRight size={15} className="transition group-hover:translate-x-0.5" />
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            {/* View all link */}
+            <div className="mt-10 text-center">
+              <a
+                href="/expert-remedial-advice"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-sky-800 shadow-sm transition hover:border-sky-300 hover:text-red-700"
+              >
+                View All Expert Advice Services <ArrowRight size={15} />
+              </a>
             </div>
           </div>
         </section>
