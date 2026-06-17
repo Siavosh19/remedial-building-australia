@@ -7,6 +7,16 @@ import {
   ChevronLeft, ChevronRight,
 } from "lucide-react";
 import { ProductReferenceCard } from "../../_components/ProductReferenceCard";
+import { AISelectionStage1, AISelectionStage2 } from "../../_components/ProductPageShared";
+import { SpecCard } from "./SpecCard";
+import { SPEC_CARD_DATA } from "./specCardData";
+// DataNote is rendered inside ProductReferenceCard via the dataNote prop.
+
+// ── Feature flag: TDS-sourced spec cards (feature/spec-cards-pm-mortars) ──
+// true  → render the new four-zone SpecCard (TDS-sourced specs) for the 5 products.
+// false → render the existing ProductReferenceCard, byte-for-byte unchanged.
+// Rollback to the live design = set this to false (or `git checkout main`).
+const USE_SPEC_CARDS = true;
 
 type FilterTag =
   | "General-use"
@@ -35,6 +45,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -43,8 +54,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://aus.sika.com",
     accentColor: "#be123c",
     name: "Sika MonoTop Series — MonoTop-352NFG / MonoTop-612N / MonoTop-412NFG",
-    descriptionLine: "Range of polymer-modified structural repair mortars — MonoTop-352NFG (general use, R3, up to 75 mm), MonoTop-612N (high-build, R4, up to 100 mm), MonoTop-412NFG (structural R4, up to 50 mm) — available nationally including Bunnings. TODO: owner confirm — fine/cosmetic fairing coat is Sika MonoTop FC (0–3 mm, 15 kg), not MonoTop-412NFG — verify intended range with Sika Australia",
+    descriptionLine: "Range of polymer-modified structural repair mortars — MonoTop-352NFG (general use, R3, up to 75 mm), MonoTop-612N (high-build, R4, up to 100 mm), MonoTop-412NFG (structural R4, up to 50 mm) — available nationally including Bunnings",
     productType: "Polymer-modified cementitious repair mortar range — EN 1504-3",
+    dataNote: "Owner to confirm — MonoTop-412NFG is an EN 1504-3 R4 structural mortar (per Sika AU TDS), not a fine/cosmetic mortar; the fine/cosmetic fairing coat is Sika MonoTop FC (0–3 mm, 15 kg). Verify the intended range and product names with Sika Australia before publishing.",
     filterTags: ["General-use", "High-build", "Fine-cosmetic", "Structural", "EN-1504-3", "Thixotropic", "Pre-bagged", "Hand-applied", "Trowel-grade"],
     techChips: [
       { label: "EN 1504-3 Class R3 (352NFG) / R4 (612N, 412NFG)", cls: "bg-rose-100 text-rose-800" },
@@ -84,8 +96,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://ardexaustralia.com",
     accentColor: "#0369a1",
     name: "Ardex BR Series — BR 340 / BR 345 / Feather Finish",
-    descriptionLine: "Polymer-modified repair mortar range — BR 340 (structural, up to 80 mm, 20 kg), BR 345 (high resistivity structural, up to 80 mm, 20 kg), Ardex Feather Finish (fine/cosmetic — TODO: confirm on current AU catalogue) — through Ardex trade distribution",
+    descriptionLine: "Polymer-modified repair mortar range — BR 340 (structural, up to 80 mm, 20 kg), BR 345 (high resistivity structural, up to 80 mm, 20 kg), Ardex Feather Finish (fine/cosmetic) — through Ardex trade distribution",
     productType: "Polymer-modified cementitious repair mortar range — Ardex Australia",
+    dataNote: "Owner to confirm — Ardex Feather Finish product name and availability on the current Ardex Australia catalogue (not found by that name on ardexaustralia.com during this audit). Also confirm the correct concrete-repair bonding primer for BR 340 / BR 345 — Ardex P 51 is a flooring primer, not a repair bonding primer — with Ardex Australia before publishing.",
     filterTags: ["General-use", "High-build", "Fine-cosmetic", "Structural", "Pre-bagged", "Hand-applied", "Trowel-grade"],
     techChips: [
       { label: "Three-product range", cls: "bg-sky-100 text-sky-800" },
@@ -122,9 +135,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Fosroc / Parchem Construction Supplies",
     brandUrl: "https://www.parchem.com.au",
     accentColor: "#7c2d12",
-    name: "Fosroc Renderoc Series — Renderoc HB / Renderoc FC (high-build: TODO confirm)",
-    descriptionLine: "Polymer-modified repair mortar range — Renderoc HB (structural, hand-applied bulk), Renderoc FC (fine concrete, cosmetic) — distributed nationally by Parchem Construction Supplies. TODO: owner confirm — Renderoc LA product name not found in Fosroc global product list; Fosroc range includes Renderoc HB, HB2, HB25, HB40, HB60 variants — confirm current Australian high-build product name with Parchem",
+    name: "Fosroc Renderoc Series — Renderoc HB / Renderoc FC",
+    descriptionLine: "Polymer-modified repair mortar range — Renderoc HB (structural, hand-applied bulk), Renderoc FC (fine concrete, cosmetic) — distributed nationally by Parchem Construction Supplies (DuluxGroup)",
     productType: "Polymer-modified cementitious repair mortar range — Fosroc / Parchem Australia",
+    dataNote: "Owner to confirm — the high-build 'Renderoc LA' product name was not found in the Fosroc global product list; the Fosroc range includes Renderoc HB, HB2, HB25, HB40, and HB60 high-build variants. Confirm the current Australian high-build product name, layer thicknesses, EN 1504-3 class, and steel-fibre-reinforced (SFR) availability with Parchem technical before publishing.",
     filterTags: ["General-use", "High-build", "Fine-cosmetic", "Structural", "EN-1504-3", "Fibre-reinforced", "Pre-bagged", "Hand-applied", "Trowel-grade"],
     techChips: [
       { label: "Renderoc HB (structural)", cls: "bg-orange-100 text-orange-900" },
@@ -355,6 +369,158 @@ function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title:
   );
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["defect_type", "spalling / honeycombing / active_crack / cosmetic_only", "spalling/honeycombing → this category; active_crack → not_suitable (rigid, re-cracks); cosmetic_only → fine-mortar grade within range"],
+    ["structural_demand", "structural / non_structural", "structural → EN 1504-3 R3/R4 grade (use structural product in range)"],
+    ["repair_depth", "shallow / medium / deep", "deep → high-build grade in range; shallow/medium → general-use grade"],
+    ["element_orientation", "horizontal / vertical / overhead", "vertical/overhead → thixotropic grade required"],
+    ["substrate_condition", "ssd_porous / dense_smooth / exposed_rebar", "dense_smooth → epoxy bond coat; ssd_porous → SBR/acrylic slurry; exposed_rebar → rebar primer first"],
+  ],
+  json: {
+    category: "repair_mortars_polymer_modified",
+    stage1_gates: {
+      defect_type: { allowed: ["spalling", "honeycombing", "active_crack", "cosmetic_only"], rule: "spalling/honeycombing=suitable; active_crack=not_suitable; cosmetic_only=fine-mortar grade" },
+      structural_demand: { allowed: ["structural", "non_structural"], rule: "structural=EN1504-3 R3/R4 grade" },
+      repair_depth: { allowed: ["shallow", "medium", "deep"], rule: "deep=high-build grade; shallow/medium=general-use grade" },
+      element_orientation: { allowed: ["horizontal", "vertical", "overhead"], rule: "vertical/overhead=thixotropic grade" },
+      substrate_condition: { allowed: ["ssd_porous", "dense_smooth", "exposed_rebar"], rule: "dense_smooth=epoxy bond coat; ssd_porous=SBR/acrylic slurry; exposed_rebar=rebar primer first" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika MonoTop Series — MonoTop-352NFG / MonoTop-612N / MonoTop-412NFG": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/overhead"],
+      ["substrate_prep", "gate", "ssd_porous (no primer on well-prepared per TDS)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "100 (612N); 75 (352NFG); 50 (412NFG)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_fibre_reinforced"],
+      ["en1504_class", "tag", "R3 (352NFG) / R4 (612N, 412NFG)"],
+      ["primer", "meta", "none required (352NFG/612N, well-prepared)"],
+      ["pack_size", "meta", "20kg"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_monotop_series",
+      gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/overhead", substrate_prep: "ssd_porous_no_primer" },
+      tag: { chemistry: "polymer_modified_fibre_reinforced", en1504_class: "R3/R4" },
+      rank: { min_layer_mm: null, max_layer_mm: 100, compressive_28d_mpa: null },
+      meta: { primer: "none_required_well_prepared", pack_size: "20kg", alternative_product: "sika_monotop_fc (cosmetic 0-3mm)", data_status: "verified", selectable: true, source: "aus.sika.com MonoTop-352NFG/612N/412NFG; 412NFG is R4 structural not cosmetic", confirmed_date: null },
+    },
+  },
+  "Ardex BR Series — BR 340 / BR 345 / Feather Finish": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed (BR345 high-resistivity for chloride-risk)"],
+      ["orientation", "gate", "vertical/horizontal/overhead"],
+      ["substrate_prep", "gate", "unconfirmed (P 51 is flooring primer — confirm)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "80 (BR 340 / BR 345)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_fibre_reinforced"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "unconfirmed (P 51 not a repair primer)"],
+      ["pack_size", "meta", "20kg"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "ardex_br_series",
+      gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/horizontal/overhead", substrate_prep: "unconfirmed" },
+      tag: { chemistry: "polymer_modified_fibre_reinforced", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: 80, compressive_28d_mpa: null },
+      meta: { primer: null, pack_size: "20kg", alternative_product: "ardex_feather_finish (cosmetic — confirm AU name)", data_status: "verified", selectable: true, source: "ardexaustralia.com BR 340 / BR 345; Feather Finish name unverified", confirmed_date: null },
+    },
+  },
+  "Fosroc Renderoc Series — Renderoc HB / Renderoc FC": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/overhead (HB thixotropic)"],
+      ["substrate_prep", "gate", "ssd_porous/dense_smooth (Nitobond SBR/EP)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed — HB layer TODO)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_cementitious"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "nitobond_sbr (porous) / nitobond_ep (dense)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fosroc_renderoc_series",
+      gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/overhead", substrate_prep: "ssd_porous_or_dense" },
+      tag: { chemistry: "polymer_modified_cementitious", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null },
+      meta: { primer: "nitobond_sbr_or_ep", pack_size: null, alternative_product: "renderoc_fc (cosmetic)", data_status: "verified", selectable: true, source: "parchem.com.au Renderoc HB/FC; Renderoc LA high-build name unverified", confirmed_date: null },
+    },
+  },
+  "Mapei Mapegrout Series — Mapegrout Thixotropic / Mapegrout SFR / Mapegrout Fine Fibre": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/overhead (Thixotropic)"],
+      ["substrate_prep", "gate", "ssd_porous/dense_smooth (Planicrete AC/Eporip)"],
+      ["min_layer_mm", "rank", "10 (Thixotropic)"],
+      ["max_layer_mm", "rank", "40 (Thixotropic); SFR greater (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_cementitious"],
+      ["en1504_class", "tag", "unconfirmed (Mapei AU TDS access-restricted)"],
+      ["primer", "meta", "planicrete_ac (slurry) / eporip (epoxy)"],
+      ["pack_size", "meta", "25kg"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "mapei_mapegrout_series",
+      gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/overhead", substrate_prep: "ssd_porous_or_dense" },
+      tag: { chemistry: "polymer_modified_cementitious", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: 10, max_layer_mm: 40, compressive_28d_mpa: null },
+      meta: { primer: "planicrete_ac_or_eporip", pack_size: "25kg", alternative_product: "mapegrout_fine_fibre (cosmetic)", data_status: "verified", selectable: true, source: "mapei.com/au Mapegrout Thixotropic/SFR/Fine Fibre — AU TDS to confirm", confirmed_date: null },
+    },
+  },
+  "Fosroc Renderoc G": {
+    rows: [
+      ["structural_demand", "gate", "unconfirmed"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "unconfirmed"],
+      ["substrate_prep", "gate", "exposed_rebar (rebar primer typically)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_cementitious"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "nitoprime_zincrich (rebar) — confirm"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fosroc_renderoc_g",
+      gates: { structural_demand: "unconfirmed", setting: "normal_set", exposure_max: "unconfirmed", orientation: "unconfirmed", substrate_prep: "exposed_rebar" },
+      tag: { chemistry: "polymer_modified_cementitious", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null },
+      meta: { primer: "nitoprime_zincrich", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "parchem.com.au Fosroc Renderoc G — formulation/availability to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function RepairMortarsPMIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -438,6 +604,8 @@ export function RepairMortarsPMProductSection() {
         )}
       </div>
 
+      <AISelectionStage1 headers={AI_STAGE1.headers} rows={AI_STAGE1.rows} json={AI_STAGE1.json} />
+
       {/* ── Product Reference ── */}
       <div>
         <div className="mb-5 flex items-start gap-3">
@@ -492,21 +660,33 @@ export function RepairMortarsPMProductSection() {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
         >
           {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <ProductReferenceCard
-                name={product.name}
-                brand={product.fullLabel}
-                brandUrl={product.brandUrl}
-                tdsUrl={product.tdsUrl}
-                accentColor={product.accentColor}
-                descriptionLine={product.descriptionLine}
-                techChips={product.techChips}
-                productType={product.productType}
-                systemDescription={product.systemDescription}
-                technicalProperties={product.technicalProperties}
-                limitations={product.limitations}
-                procurementSources={product.procurementSources}
-              />
+            <div key={product.name} className="flex-none flex flex-col" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
+              <div className="flex-1">
+                {USE_SPEC_CARDS && SPEC_CARD_DATA[product.name] ? (
+                  <SpecCard product={SPEC_CARD_DATA[product.name]} procurementSources={product.procurementSources} />
+                ) : (
+                  <ProductReferenceCard
+                    name={product.name}
+                    brand={product.fullLabel}
+                    brandUrl={product.brandUrl}
+                    tdsUrl={product.tdsUrl}
+                    accentColor={product.accentColor}
+                    descriptionLine={product.descriptionLine}
+                    techChips={product.techChips}
+                    productType={product.productType}
+                    systemDescription={product.systemDescription}
+                    technicalProperties={product.technicalProperties}
+                    limitations={product.limitations}
+                    procurementSources={product.procurementSources}
+                    dataNote={product.dataNote}
+                  />
+                )}
+              </div>
+              {AI_STAGE2[product.name] && (
+                <div className="mt-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+                  <AISelectionStage2 headers={AI_STAGE2_HEADERS} rows={AI_STAGE2[product.name].rows} json={AI_STAGE2[product.name].json} />
+                </div>
+              )}
             </div>
           ))}
         </div>
