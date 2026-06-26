@@ -164,13 +164,6 @@ export default function DirectoryLoginPage() {
                   Create account
                 </Link>
               </div>
-              <div className="rounded-xl border border-sky-100 bg-sky-50/60 px-4 py-3 text-sm text-sky-900">
-                Strata manager, owners corporation, building manager or property owner?{" "}
-                <Link href="/client/signup" className="font-semibold underline underline-offset-2 hover:text-sky-700">
-                  Create a client account
-                </Link>{" "}
-                to request quotes from listed businesses.
-              </div>
               <p className="text-center text-xs text-slate-400">
                 Need help?{" "}
                 <Link href="/contact" className="underline underline-offset-2 transition-colors hover:text-slate-600">

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import AuthHeader from "@/components/AuthHeader";
+import SiteHeader from "@/components/SiteHeader";
 import TurnstileWidget from "@/components/TurnstileWidget";
 import { validateAuPhone } from "@/lib/phone-au";
 import { RBA_DISCLAIMER } from "@/lib/legal";
@@ -79,9 +79,9 @@ export default function ClientSignupPage() {
     "w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none";
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <AuthHeader />
-      <div className="mx-auto max-w-3xl px-6 py-10">
+    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+      <SiteHeader />
+      <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
         <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm md:p-10">
           {status?.type === "success" ? (
             <div className="py-6">
@@ -259,7 +259,12 @@ export default function ClientSignupPage() {
             </>
           )}
         </div>
-      </div>
+      </main>
+      <footer className="border-t border-sky-200 bg-slate-100">
+        <div className="mx-auto max-w-7xl px-6 py-8 text-xs text-slate-400">
+          © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }
