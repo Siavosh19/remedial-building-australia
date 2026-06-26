@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 export const maxDuration = 300;
 
@@ -25,7 +25,7 @@ ${existingSummary}
 
 WRITING RULES:
 1. Start with the main event in plain English.
-2. For priority 1 or 2: write exactly two short paragraphs separated by a blank line. Total 120–180 words. For priority 3: one paragraph, 60–90 words.
+2. For priority 1 or 2: write exactly two paragraphs separated by a blank line. The first paragraph is up to 350 words; the second paragraph is 75 words maximum. For priority 3: one paragraph, 60–90 words.
 3. Use natural sentence flow — not robotic or bullet-style wording.
 4. Never start with "This article discusses", "The report highlights", "In conclusion", or "It is important to note".
 5. Do not reproduce the source's exact phrasing.
@@ -57,7 +57,7 @@ WHY_IT_MATTERS:
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 700,
+        max_tokens: 1400,
         messages: [{ role: "user", content: prompt }],
       }),
     });

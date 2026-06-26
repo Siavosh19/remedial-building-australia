@@ -7,6 +7,7 @@ const NAV = [
   { label: "Overview",        href: "/directory/dashboard" },
   { label: "Profile",         href: "/directory/dashboard/profile" },
   { label: "Quote Requests",  href: "/directory/dashboard/quote-requests" },
+  { label: "Lead Requests",   href: "/directory/dashboard/lead-requests" },
   { label: "Subscription",    href: "/directory/dashboard/subscription" },
   { label: "Settings",        href: "/directory/dashboard/settings" },
 ];

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://remedialbuildingaustralia.com.au";

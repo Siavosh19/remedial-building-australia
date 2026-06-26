@@ -82,6 +82,7 @@ enum UserRole {
   supplier_user
   ai_scope_user
   newsletter_subscriber
+  client_user
 }
 
 enum AccountType {
@@ -89,6 +90,48 @@ enum AccountType {
   directory_user
   supplier_user
   ai_scope_user
+  strata_client
+}
+
+// ── Strata / client quote-request platform ───────────────────────────────────
+enum ClientType {
+  strata_manager
+  owners_corp_rep
+  building_manager
+  property_owner
+  consultant
+  other
+}
+
+enum PropertyType {
+  residential_strata
+  commercial_strata
+  mixed_use
+  residential_house
+  commercial_building
+  other
+}
+
+enum ClientQuoteStatus {
+  draft
+  submitted
+  sent_to_businesses
+  responses_received
+  closed
+}
+
+enum ContractorResponseStatus {
+  pending
+  contacted
+  quoted
+  declined
+  not_suitable
+}
+
+enum QuoteEmailStatus {
+  pending
+  sent
+  failed
 }
 
 enum SupplierStatus {
@@ -211,6 +254,8 @@ enum DirectoryPlanType {
   basic
   claimed
   featured
+  business
+  premium
 }
 
 enum DirectoryClaimStatus {
@@ -308,6 +353,7 @@ model Company {
   directory_subscription DirectorySubscription?
   claim_requests         ClaimRequest[]
   quote_requests         QuoteRequest[]
+  quote_request_deliveries QuoteRequestDelivery[]
   media                  CompanyMedia[]
 
   @@index([status])
@@ -363,6 +409,8 @@ model Category {
   sub_leads           Lead[]            @relation("LeadSubcategory")
   directory_leads     DirectoryLead[]   @relation("DirectoryLeadCategory")
   directory_sub_leads DirectoryLead[]   @relation("DirectoryLeadSubcategory")
+  client_quote_requests     ClientQuoteRequest[] @relation("ClientQuoteCategory")
+  client_quote_subrequests  ClientQuoteRequest[] @relation("ClientQuoteSubcategory")
 
   @@map("categories")
 }
@@ -433,6 +481,7 @@ model User {
   account_type      AccountType?
   supplier_id       Int?
   is_verified       Boolean      @default(false)
+  suspended         Boolean      @default(false)
   email_verified_at DateTime?
   terms_accepted_at DateTime?
   terms_version     String?
@@ -446,6 +495,8 @@ model User {
   supplier                    Supplier?          @relation(fields: [supplier_id], references: [id])
   audit_logs                  AuditLog[]         @relation("AuditLogActor")
   ai_scope_user               AIScopeUser?
+  client_profile              ClientProfile?
+  client_quote_requests       ClientQuoteRequest[]
 
   @@index([account_type])
   @@index([supplier_id])
@@ -620,6 +671,33 @@ model DirectorySubscription {
   @@map("directory_subscriptions")
 }
 
+// Admin-managed billing plans across every product line (directory listings, AI
+// Scope Reader, supplier cards, …). The admin "Plans & Pricing" screen is the
+// single source of truth; checkout reads the Stripe price id from here, not env.
+model Plan {
+  id                Int      @id @default(autoincrement())
+  product_line      String   // "directory" | "ai_scope" | "supplier_card"
+  tier              String   // "claimed" | "featured" | … (free-form per product line)
+  name              String
+  description       String?
+  billing_interval  String   // "month" | "year" | "one_time"
+  amount_cents      Int      // price in the smallest currency unit
+  currency          String   @default("aud")
+  trial_days        Int      @default(0)
+  features          String[] // bullet points shown on the pricing card
+  stripe_product_id String?
+  stripe_price_id   String?  // the live Stripe price used at checkout
+  is_active         Boolean  @default(true)
+  is_public         Boolean  @default(true) // show on the public pricing page
+  display_order     Int      @default(0)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  @@index([product_line])
+  @@index([is_active])
+  @@map("plans")
+}
+
 // ── Claim Requests ────────────────────────────────────────────────────────────
 
 model ClaimRequest {
@@ -672,6 +750,112 @@ model QuoteRequest {
   @@index([status])
   @@index([created_at])
   @@map("quote_requests")
+}
+
+// ── Strata / Client Quote-Request Platform ───────────────────────────────────
+// A separate, additive platform layered on top of the directory. Clients submit
+// one broadcast request; it is matched to paid (Premium / Premium Plus) listings
+// and fanned out as QuoteRequestDelivery rows. The directory itself is untouched.
+
+model ClientProfile {
+  id           Int        @id @default(autoincrement())
+  user_id      Int        @unique
+  client_type  ClientType
+  company_name String?
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("client_profiles")
+}
+
+model ClientQuoteRequest {
+  id                        Int               @id @default(autoincrement())
+  client_user_id            Int
+  contact_name              String
+  contact_email             String
+  contact_phone             String?
+  company_name              String?
+  building_address          String
+  suburb                    String
+  postcode                  String
+  state                     LocationState?
+  strata_plan_number        String?
+  property_type             PropertyType
+  work_category_id          Int
+  work_subcategory_id       Int?
+  description               String
+  urgency                   LeadUrgency
+  preferred_inspection      String?
+  consultant_scope_available Boolean          @default(false)
+  budget_range              String?
+  terms_accepted            Boolean           @default(false)
+  terms_version             String?
+  accepted_at               DateTime?
+  status                    ClientQuoteStatus @default(draft)
+  matched_count             Int               @default(0)
+  latitude                  Float?
+  longitude                 Float?
+  created_at                DateTime          @default(now())
+  updated_at                DateTime          @updatedAt
+  submitted_at              DateTime?
+  closed_at                 DateTime?
+
+  client        User                   @relation(fields: [client_user_id], references: [id])
+  work_category Category               @relation("ClientQuoteCategory", fields: [work_category_id], references: [id])
+  subcategory   Category?              @relation("ClientQuoteSubcategory", fields: [work_subcategory_id], references: [id])
+  deliveries    QuoteRequestDelivery[]
+  files         QuoteRequestFile[]
+
+  @@index([client_user_id])
+  @@index([status])
+  @@index([work_category_id])
+  @@index([created_at])
+  @@map("client_quote_requests")
+}
+
+model QuoteRequestDelivery {
+  id              Int                      @id @default(autoincrement())
+  request_id      Int
+  company_id      Int
+  rank_tier       Int                      @default(0)
+  email_status    QuoteEmailStatus         @default(pending)
+  email_sent_at   DateTime?
+  email_error     String?
+  opened_at       DateTime?
+  response_status ContractorResponseStatus @default(pending)
+  responded_at    DateTime?
+  quote_doc_url   String?
+  notes           String?
+  created_at      DateTime                 @default(now())
+  updated_at      DateTime                 @updatedAt
+
+  request ClientQuoteRequest @relation(fields: [request_id], references: [id], onDelete: Cascade)
+  company Company            @relation(fields: [company_id], references: [id])
+
+  @@unique([request_id, company_id])
+  @@index([request_id])
+  @@index([company_id])
+  @@index([response_status])
+  @@map("quote_request_deliveries")
+}
+
+model QuoteRequestFile {
+  id           Int      @id @default(autoincrement())
+  request_id   Int
+  file_type    String // "photo" | "report" | "drawing" | "document"
+  url          String
+  filename     String?
+  size_bytes   Int?
+  content_type String?
+  uploaded_by  String   @default("client") // "client" | "business"
+  created_at   DateTime @default(now())
+
+  request ClientQuoteRequest @relation(fields: [request_id], references: [id], onDelete: Cascade)
+
+  @@index([request_id])
+  @@map("quote_request_files")
 }
 
 // ── Company Media ─────────────────────────────────────────────────────────────

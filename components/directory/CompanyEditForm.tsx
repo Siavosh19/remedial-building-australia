@@ -67,6 +67,8 @@ export default function CompanyEditForm({ company, categories }: Props) {
   const [media, setMedia] = useState<CompanyMedia[]>(company.media);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [photoDragOver, setPhotoDragOver] = useState(false);
+  const [logoDragOver, setLogoDragOver] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
 
@@ -120,10 +122,22 @@ export default function CompanyEditForm({ company, categories }: Props) {
     setMedia((prev) => prev.filter((m) => m.id !== id));
   }
 
+  // Upload one or more dropped/selected photo files, respecting the plan limit.
+  async function uploadPhotos(files: File[]) {
+    const images = files.filter((f) => f.type.startsWith("image/"));
+    if (!images.length) { setUploadError("Please drop image files only."); return; }
+    const remaining = photoLimit - photos.length;
+    if (remaining <= 0) { setUploadError(`You've reached your limit of ${photoLimit} photos.`); return; }
+    if (images.length > remaining) setUploadError(`Only ${remaining} more photo${remaining === 1 ? "" : "s"} can be added — extras were skipped.`);
+    for (const f of images.slice(0, remaining)) {
+      await uploadFile(f, "photo");
+    }
+  }
+
   return (
     <div className="space-y-10">
       {/* Basic details */}
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form id="company-edit-form" onSubmit={handleSubmit} className="space-y-6">
         <div className="grid gap-6 md:grid-cols-2">
           <label className="block text-sm font-semibold text-slate-800">
             <span>Company name</span>
@@ -296,13 +310,6 @@ export default function CompanyEditForm({ company, categories }: Props) {
           </div>
         ) : null}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex items-center justify-center rounded-2xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {loading ? "Saving…" : "Save changes"}
-        </button>
       </form>
 
       {/* Media uploads — Claimed/Featured only */}
@@ -310,7 +317,7 @@ export default function CompanyEditForm({ company, categories }: Props) {
         <div className="border-t border-slate-100 pt-8 space-y-6">
           <div>
             <h2 className="text-base font-semibold text-slate-800">Logo</h2>
-            <p className="text-xs text-slate-500 mt-1">Upload your business logo. Replaces the initials shown on your profile.</p>
+            <p className="text-xs text-slate-500 mt-1">Upload or drag &amp; drop your business logo. Replaces the initials shown on your profile.</p>
             <div className="mt-4 flex items-start gap-4">
               {logo ? (
                 <div className="relative">
@@ -322,8 +329,13 @@ export default function CompanyEditForm({ company, categories }: Props) {
                   >×</button>
                 </div>
               ) : (
-                <div className="h-16 w-16 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-300 text-sm">
-                  Logo
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setLogoDragOver(true); }}
+                  onDragLeave={() => setLogoDragOver(false)}
+                  onDrop={(e) => { e.preventDefault(); setLogoDragOver(false); const f = Array.from(e.dataTransfer.files).find((x) => x.type.startsWith("image/")); if (f) uploadFile(f, "logo"); else setUploadError("Please drop an image file."); }}
+                  className={`h-16 w-16 rounded-xl border-2 border-dashed flex items-center justify-center text-center text-[10px] leading-tight transition ${logoDragOver ? "border-sky-400 bg-sky-50 text-sky-500" : "border-slate-300 text-slate-300"}`}
+                >
+                  Drop logo
                 </div>
               )}
               <div>
@@ -342,36 +354,59 @@ export default function CompanyEditForm({ company, categories }: Props) {
 
           <div>
             <h2 className="text-base font-semibold text-slate-800">Project photos</h2>
-            <p className="text-xs text-slate-500 mt-1">Up to {photoLimit} photos. {photos.length}/{photoLimit} used.</p>
+            <p className="text-xs text-slate-500 mt-1">Up to {photoLimit} photos. {photos.length}/{photoLimit} used. Drag &amp; drop images below, or click + to browse.</p>
             {uploadError && <p className="mt-2 text-xs text-red-600">{uploadError}</p>}
-            <div className="mt-4 flex flex-wrap gap-3">
-              {photos.map((p) => (
-                <div key={p.id} className="relative">
-                  <img src={p.url} alt={p.filename ?? "Photo"} className="h-20 w-20 rounded-xl object-cover border border-slate-200" />
-                  <button
-                    type="button"
-                    onClick={() => deleteMedia(p.id)}
-                    className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-white text-xs hover:bg-red-500"
-                  >×</button>
-                </div>
-              ))}
-              {photos.length < photoLimit && (
-                <>
-                  <input ref={photoInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadFile(f, "photo"); }} />
-                  <button
-                    type="button"
-                    disabled={uploading}
-                    onClick={() => photoInputRef.current?.click()}
-                    className="h-20 w-20 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 text-2xl hover:border-sky-400 hover:text-sky-500 disabled:opacity-60"
-                  >
-                    +
-                  </button>
-                </>
+            <div
+              onDragOver={(e) => { e.preventDefault(); if (photos.length < photoLimit) setPhotoDragOver(true); }}
+              onDragLeave={() => setPhotoDragOver(false)}
+              onDrop={(e) => { e.preventDefault(); setPhotoDragOver(false); uploadPhotos(Array.from(e.dataTransfer.files)); }}
+              className={`mt-4 rounded-2xl border-2 border-dashed p-4 transition ${photoDragOver ? "border-sky-400 bg-sky-50" : "border-slate-200"}`}
+            >
+              <div className="flex flex-wrap gap-3">
+                {photos.map((p) => (
+                  <div key={p.id} className="relative">
+                    <img src={p.url} alt={p.filename ?? "Photo"} className="h-20 w-20 rounded-xl object-cover border border-slate-200" />
+                    <button
+                      type="button"
+                      onClick={() => deleteMedia(p.id)}
+                      className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-white text-xs hover:bg-red-500"
+                    >×</button>
+                  </div>
+                ))}
+                {photos.length < photoLimit && (
+                  <>
+                    <input ref={photoInputRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => { if (e.target.files?.length) uploadPhotos(Array.from(e.target.files)); e.target.value = ""; }} />
+                    <button
+                      type="button"
+                      disabled={uploading}
+                      onClick={() => photoInputRef.current?.click()}
+                      className="h-20 w-20 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 text-2xl hover:border-sky-400 hover:text-sky-500 disabled:opacity-60"
+                    >
+                      +
+                    </button>
+                  </>
+                )}
+              </div>
+              {uploading && <p className="mt-3 text-xs font-medium text-sky-600">Uploading…</p>}
+              {!photos.length && !uploading && (
+                <p className="mt-3 text-xs text-slate-400">Drop your project images here.</p>
               )}
             </div>
           </div>
         </div>
       )}
+
+      {/* Save bar — sticks to the bottom of the page, below logo & photos */}
+      <div className="sticky bottom-0 -mx-1 mt-2 border-t border-slate-200 bg-white/95 px-1 py-4 backdrop-blur">
+        <button
+          type="submit"
+          form="company-edit-form"
+          disabled={loading}
+          className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        >
+          {loading ? "Saving…" : "Save changes"}
+        </button>
+      </div>
     </div>
   );
 }

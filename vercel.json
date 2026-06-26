@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/send-newsletter",
-      "schedule": "0 22 * * 0"
+      "schedule": "0 0 * * 2"
     }
   ]
 }

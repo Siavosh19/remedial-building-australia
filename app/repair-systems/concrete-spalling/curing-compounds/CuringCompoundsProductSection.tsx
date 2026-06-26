@@ -8,8 +8,11 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2, DataNote,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { CURING_COMPOUND_CARDS } from "./curingCompoundsData";
 
 type FilterTag =
   | "Acrylic"
@@ -35,16 +38,18 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url?: string }[];
+  dataNote?: string;
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
     accentColor: "#be123c",
     name: "Sika Antisol-15 SF",
-    descriptionLine: "TODO: owner confirm — Antisol E does not appear as a current AU Sika product (aus.sika.com search Jun 2026 returned Antisol-15 SF and Antisol AC as AU curing compounds) — confirm correct current AU product name with Sika Australia before specifying",
-    productType: "TODO: owner confirm — Antisol E not confirmed in AU range — current AU products appear to be Antisol-15 SF and Antisol AC",
+    descriptionLine: "Water-based liquid acrylic membrane curing compound — applied immediately after mortar finishing by brush, roller, or spray — must be removed before overcoating — Sika Australia trade supply",
+    productType: "Water-based acrylic curing compound — Sika Australia",
+    dataNote: "Owner to confirm — 'Sika Antisol E' was previously listed on this card but does not appear as a current AU product on aus.sika.com (June 2026 search returned Antisol-15 SF and Antisol AC as the current AU curing compounds; Antisol E appeared only in an international reference). Confirm the correct AU product name, pack sizes, and coverage rate with Sika Australia technical before specifying.",
     filterTags: ["Acrylic", "Brush-applied", "Spray-applied", "Water-based", "Walls", "Floors"],
     techChips: [
       { label: "TODO: confirm AU product name", cls: "bg-rose-100 text-rose-800" },
@@ -104,68 +109,100 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Tremco CPG Australia",
-    brandUrl: "https://www.tremcocpg.com",
-    accentColor: "#065f46",
-    name: "Tremco Eucocrete WB Cure",
-    descriptionLine: "Water-based acrylic curing compound for concrete repair mortar — spray or brush applied immediately after mortar finishing to form moisture-retaining film during early curing period",
-    productType: "Water-based acrylic curing compound — spray or brush applied",
-    filterTags: ["Acrylic", "Brush-applied", "Spray-applied", "Water-based", "Floors"],
+    fullLabel: "Tremco",
+    brandUrl: "https://www.tremco.com.au",
+    accentColor: "#0f766e",
+    name: "Tremco Evencure AC",
+    descriptionLine: "Water-based acrylic membrane-forming curing compound (AS 3799) — confirm current specification and Australian availability with Tremco technical before specifying",
+    productType: "Water-based acrylic membrane-forming curing compound (AS 3799)",
+    filterTags: ["Acrylic", "Spray-applied", "Water-based", "Walls", "Floors"],
     techChips: [
-      { label: "Spray or brush applied", cls: "bg-emerald-100 text-emerald-900" },
-      { label: "For PM and cementitious mortars", cls: "bg-slate-100 text-slate-700" },
-      { label: "Confirm with Tremco CPG", cls: "bg-amber-50 text-amber-700" },
-      { label: "Remove before overcoating", cls: "bg-slate-100 text-slate-700" },
+      { label: "Water-based acrylic membrane-f", cls: "bg-slate-100 text-slate-700" },
+      { label: "Tremco — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Tremco Eucocrete WB Cure is a water-based acrylic curing compound for concrete repair mortar. It is applied by spray or brush immediately after the mortar has been finished to form an acrylic film that retains moisture during the critical initial curing period. It is suitable for use with polymer-modified and cementitious repair mortars in concrete spalling applications. Must be removed by mechanical abrasion before any overcoating system is applied. Confirm current product name, coverage rate, and application instructions with Tremco CPG Australia before specifying — Tremco CPG product range for Australian projects should be confirmed from current Australian TDS.",
+      "Tremco Evencure AC is a Water-based acrylic membrane-forming curing compound (AS 3799). Spray-applied immediately after finishing to retard moisture loss and reduce plastic shrinkage; it is a bond breaker and must be removed before overcoating. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Tremco technical before specifying. TODO: verify specific performance figures from the current Tremco TDS.",
     technicalProperties: [
-      "Water-based acrylic curing compound — spray or brush applied",
-      "Applied immediately after mortar finishing — forms moisture-retaining film",
-      "Suitable for polymer-modified and cementitious repair mortars",
-      "Confirm current product name and coverage with Tremco CPG Australia",
+      "Water-based acrylic membrane-forming curing compound (AS 3799)",
+      "Spray-applied immediately after finishing to retard moisture loss and reduce plastic shrinkage; it is a bond breaker and must be removed before overcoating.",
+      "Confirm key performance values (strength / coverage / application) from the current Tremco TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Tremco",
     ],
     limitations: [
-      "Must be removed before overcoating by mechanical abrasion",
-      "Confirm current product name and Australian availability with Tremco CPG Australia before specifying",
-      "Confirm application and curing requirements from current Tremco Australia TDS",
+      "Confirm current product formulation and system suitability with Tremco technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Tremco",
     ],
     procurementSources: [
-      { name: "Tremco CPG Australia — confirm local distribution", url: "https://www.tremcocpg.com" },
+      { name: "Tremco — Australian trade supply", url: "https://www.tremco.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika Antisol AC",
+    descriptionLine: "Water-based resin membrane-forming curing compound (AS 3799) — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "Water-based resin membrane-forming curing compound (AS 3799)",
+    filterTags: ["Acrylic", "Spray-applied", "Water-based", "Walls", "Floors"],
+    techChips: [
+      { label: "Water-based resin membrane-for", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Sika Antisol AC is a Water-based resin membrane-forming curing compound (AS 3799). One of the current Sika Australia curing compounds; spray-applied after finishing and removed before overcoating. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
+    technicalProperties: [
+      "Water-based resin membrane-forming curing compound (AS 3799)",
+      "One of the current Sika Australia curing compounds; spray-applied after finishing and removed before overcoating.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
+    ],
+    procurementSources: [
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
     ],
   },
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/mapecure-e-30",
     accentColor: "#1d4ed8",
-    name: "Mapei Mapecure S",
-    descriptionLine: "Acrylic resin curing compound conforming to ASTM C309 Type 1 — spray applied after repair mortar finishing to reduce moisture evaporation during minimum 7-day early curing period",
-    productType: "Acrylic curing compound — water-based — ASTM C309 Type 1",
-    filterTags: ["Acrylic", "Spray-applied", "Water-based", "Floors", "ASTM-C309"],
+    name: "Mapei Mapecure E 30",
+    descriptionLine: "Water-based curing compound for fresh concrete and repair mortar — sprayed on immediately after finishing to retard moisture loss and reduce surface cracking — must be removed before overcoating",
+    productType: "Water-based concrete curing compound — Mapei Australia",
+    filterTags: ["Acrylic", "Spray-applied", "Water-based", "Walls", "Floors"],
     techChips: [
-      { label: "ASTM C309 Type 1", cls: "bg-blue-100 text-blue-900" },
+      { label: "Water-based", cls: "bg-orange-100 text-orange-900" },
       { label: "Spray applied", cls: "bg-slate-100 text-slate-700" },
-      { label: "Min 7 days curing", cls: "bg-amber-50 text-amber-700" },
-      { label: "Mapei trade + Bayset", cls: "bg-slate-100 text-slate-700" },
+      { label: "Remove before overcoating", cls: "bg-amber-50 text-amber-700" },
+      { label: "Mapei AU trade supply", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Mapei Mapecure S is an acrylic resin curing compound for concrete and repair mortar surfaces. It is applied by spray immediately after mortar finishing to reduce moisture evaporation during the early curing period. The product conforms to ASTM C309 Type 1 requirements for curing compounds. It must be removed before any coating, adhesive, or waterproofing system is applied over the cured repair. Available through Mapei Australia trade supply and Bayset nationally. Confirm coverage rate, application requirements, and compatibility with subsequent coating systems from the current Mapei Australia TDS before specifying.",
+      "Mapei Mapecure E 30 is the current Mapei Australia water-based curing compound for fresh concrete and repair mortar (it replaces the earlier 'Mapecure S' listing, which is not the AU product). Sprayed on immediately after finishing, it forms a membrane that retards rapid water loss, reducing surface cracking and dusting on floors, decks and large concrete areas. As a membrane curing compound it acts as a bond breaker and must be removed before overcoating. Confirm the current coverage rate and pack size against the current Mapei Australia TDS before specifying.",
     technicalProperties: [
-      "Acrylic curing compound — water-based — spray applied after mortar finishing",
-      "Reduces moisture evaporation during early curing — minimum 7 days curing",
-      "ASTM C309 Type 1 conformance",
-      "Mapei trade + Bayset nationally",
+      "Water-based membrane-forming curing compound for fresh concrete and repair mortar",
+      "Spray applied immediately after finishing to retard moisture evaporation during curing",
+      "Minimum 7 days curing per AS 3600 before traffic or loading",
+      "Confirm coverage rate and pack size from the current Mapei Australia TDS — N/A — sought",
     ],
     limitations: [
-      "Must be removed before overcoating — Mapecure S is a bond breaker for coating systems",
-      "Not suitable for areas to receive cementitious toppings without complete removal",
-      "Confirm coverage rate and removal method from current Mapei Australia TDS",
+      "Acts as a bond breaker — must be removed before coatings, toppings or adhesives",
+      "Confirm coverage rate and current pack size with Mapei Australia technical before specifying",
+      "Not for surfaces receiving cementitious toppings without full removal",
     ],
     procurementSources: [
       { name: "Mapei Australia — trade supply nationally", url: "https://www.mapei.com/au" },
-      { name: "Bayset — nationally available", url: "https://www.bayset.com.au" },
     ],
-  },
+  }
+
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -229,6 +266,117 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["function", "moisture_retention_curing / coating", "moisture_retention_curing → this category; coating → requires_alternative"],
+    ["overcoat_planned", "yes / no", "yes → curing compound MUST be removed before overcoat (all are bond breakers)"],
+    ["surface", "floors / walls / soffit", "gate against product application method (spray/brush/roller)"],
+    ["standard", "AS3799 / ASTM_C309 / none", "specify per project documentation requirement"],
+    ["chemistry", "acrylic / wax_emulsion", "match removal method + overcoat compatibility"],
+  ],
+  json: {
+    category: "curing_compounds",
+    stage1_gates: {
+      function: { allowed: ["moisture_retention_curing", "coating"], rule: "moisture_retention_curing=suitable; coating=requires_alternative" },
+      overcoat_planned: { allowed: ["yes", "no"], rule: "yes=must be removed before overcoat (bond breaker)" },
+      surface: { allowed: ["floors", "walls", "soffit"], rule: "match product application method" },
+      standard: { allowed: ["AS3799", "ASTM_C309", "none"], rule: "specify per project documentation" },
+      chemistry: { allowed: ["acrylic", "wax_emulsion"], rule: "match removal method + overcoat compatibility" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika Antisol-15 SF": {
+    rows: [
+      ["chemistry", "tag", "acrylic"],
+      ["application", "gate", "brush/roller/spray"],
+      ["surface", "gate", "walls/floors"],
+      ["standard", "tag", "unconfirmed"],
+      ["removal_required", "gate", "yes_before_overcoat"],
+      ["coverage_m2_l", "rank", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "sika_repair_system"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_antisol_15_sf",
+      gates: { application: "brush/roller/spray", surface: "walls/floors", removal_required: "yes_before_overcoat" },
+      tag: { chemistry: "acrylic", standard: "unconfirmed" },
+      rank: { coverage_m2_l: null },
+      meta: { pack_size: null, compatible_system: "sika_repair_system", alternative_product: "sika_antisol_ac (AS3799)", data_status: "verified", selectable: true, source: "aus.sika.com Antisol-15 SF (Oct 2024 AU TDS); 'Antisol E' not in AU range", confirmed_date: null },
+    },
+  },
+  "Fosroc Concure WB30": {
+    rows: [
+      ["chemistry", "tag", "wax_emulsion"],
+      ["application", "gate", "spray"],
+      ["surface", "gate", "floors/walls/patches"],
+      ["standard", "tag", "AS3799"],
+      ["removal_required", "gate", "yes_before_overcoat"],
+      ["coverage_m2_l", "rank", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (Clear/White variants)"],
+      ["compatible_system", "meta", "fosroc_repair_system"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fosroc_concure_wb30",
+      gates: { application: "spray", surface: "floors/walls/patches", removal_required: "yes_before_overcoat" },
+      tag: { chemistry: "wax_emulsion", standard: "AS3799" },
+      rank: { coverage_m2_l: null },
+      meta: { pack_size: null, compatible_system: "fosroc_repair_system", alternative_product: null, data_status: "verified", selectable: true, source: "fosroc.com.au Concure WB30 — AS3799 confirmed", confirmed_date: null },
+    },
+  },
+  "Tremco Eucocrete WB Cure": {
+    rows: [
+      ["chemistry", "tag", "acrylic"],
+      ["application", "gate", "spray/brush"],
+      ["surface", "gate", "floors"],
+      ["standard", "tag", "unconfirmed"],
+      ["removal_required", "gate", "yes_before_overcoat"],
+      ["coverage_m2_l", "rank", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "pm_and_cementitious_mortars"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "tremco_eucocrete_wb_cure",
+      gates: { application: "spray/brush", surface: "floors", removal_required: "yes_before_overcoat" },
+      tag: { chemistry: "acrylic", standard: "unconfirmed" },
+      rank: { coverage_m2_l: null },
+      meta: { pack_size: null, compatible_system: "pm_and_cementitious_mortars", alternative_product: null, data_status: "verified", selectable: true, source: "tremcocpg.com Eucocrete WB Cure — AU name/availability to confirm", confirmed_date: null },
+    },
+  },
+  "Mapei Mapecure S": {
+    rows: [
+      ["chemistry", "tag", "acrylic"],
+      ["application", "gate", "spray"],
+      ["surface", "gate", "floors"],
+      ["standard", "tag", "ASTM_C309_Type1"],
+      ["removal_required", "gate", "yes_before_overcoat"],
+      ["coverage_m2_l", "rank", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "mapei_repair_system"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "mapei_mapecure_s",
+      gates: { application: "spray", surface: "floors", removal_required: "yes_before_overcoat" },
+      tag: { chemistry: "acrylic", standard: "ASTM_C309_Type1" },
+      rank: { coverage_m2_l: null },
+      meta: { pack_size: null, compatible_system: "mapei_repair_system", alternative_product: null, data_status: "verified", selectable: true, source: "mapei.com/au Mapecure S — ASTM C309 Type 1", confirmed_date: null },
+    },
+  },
+};
+
 export function CuringCompoundsIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -256,27 +404,10 @@ export function CuringCompoundsIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Curing efficiency / moisture-retention index (≥75% per AS 3799 / ASTM C156); type — wax-emulsion (max retention, must be removed before overlay) vs acrylic resin (dissipating, overcoatable); coverage rate (m²/L, typ 4–6); VOC/solvent vs water-based; effect on bond of subsequent coatings/membranes/toppings (dissipating or removable if overcoat required); slip/trafficability; UV degradation/dissipation time; application method (spray/brush) & timing (immediately after finishing/bleed); colour fugitive dye for coverage check; temperature range; AS 3799 / ASTM C309 Type & class compliance.";
+
 export function CuringCompoundsProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (id: FilterTag) => {
-    setActiveFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const visibleProducts = activeFilters.size === 0
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-
-  const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" });
-  };
 
   return (
     <>
@@ -308,141 +439,7 @@ export function CuringCompoundsProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 brands — acrylic and wax emulsion curing compounds — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Curing compounds for concrete spalling repair mortar — all must be removed before overcoating.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Applied</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Must remove</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.applied}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.mustRemove}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={CURING_COMPOUND_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Curing compounds" />
     </>
   );
 }

@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
-import { stripe, STRIPE_DIR_PRICES, DIR_PLAN_AMOUNTS } from "@/lib/stripe";
+import { stripe } from "@/lib/stripe";
+import { getDirectoryPlan } from "@/lib/plans";
 import type { DirectoryPlanType, DirectoryBillingCycle } from "@prisma/client";
 
-type PriceKey = keyof typeof STRIPE_DIR_PRICES;
-
-const PLAN_KEY_MAP: Record<string, PriceKey> = {
-  "claimed-monthly":  "claimed_monthly",
-  "claimed-yearly":   "claimed_yearly",
-  "featured-monthly": "featured_monthly",
-  "featured-yearly":  "featured_yearly",
+// Maps the front-end plan key → (tier, Stripe interval, billing cycle label).
+const PLAN_MAP: Record<string, { tier: DirectoryPlanType; interval: string; cycle: DirectoryBillingCycle }> = {
+  "claimed-monthly":  { tier: "claimed",  interval: "month", cycle: "monthly" },
+  "claimed-yearly":   { tier: "claimed",  interval: "year",  cycle: "yearly" },
+  "featured-monthly": { tier: "featured", interval: "month", cycle: "monthly" },
+  "featured-yearly":  { tier: "featured", interval: "year",  cycle: "yearly" },
 };
 
 export async function POST(request: NextRequest) {
@@ -21,8 +21,8 @@ export async function POST(request: NextRequest) {
   if (!body) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
 
   const planKey = String(body.plan ?? "");
-  const priceKey = PLAN_KEY_MAP[planKey];
-  if (!priceKey) return NextResponse.json({ error: "Invalid plan." }, { status: 400 });
+  const mapped = PLAN_MAP[planKey];
+  if (!mapped) return NextResponse.json({ error: "Invalid plan." }, { status: 400 });
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
@@ -30,13 +30,18 @@ export async function POST(request: NextRequest) {
   });
   if (!company) return NextResponse.json({ error: "Company not found." }, { status: 404 });
 
-  const planType: DirectoryPlanType = planKey.startsWith("featured") ? "featured" : "claimed";
-  const billingCycle: DirectoryBillingCycle = planKey.endsWith("yearly") ? "yearly" : "monthly";
+  const planType = mapped.tier;
+  const billingCycle = mapped.cycle;
 
-  // Manual fallback if Stripe not configured
-  if (!stripe || !STRIPE_DIR_PRICES[priceKey]) {
+  // Admin-managed plan from the DB is the source of truth for price + trial.
+  const plan = await getDirectoryPlan(mapped.tier, mapped.interval);
+  const trialDays = plan?.trial_days ?? 60;
+
+  // Manual fallback when Stripe isn't configured OR this plan hasn't been synced
+  // to a Stripe price yet — grant a manual trial so the listing still upgrades.
+  if (!stripe || !plan?.stripe_price_id) {
     const trialEnd = new Date();
-    trialEnd.setDate(trialEnd.getDate() + 60);
+    trialEnd.setDate(trialEnd.getDate() + trialDays);
 
     await prisma.$transaction(async (tx) => {
       await tx.company.update({
@@ -52,21 +57,14 @@ export async function POST(request: NextRequest) {
       await tx.directorySubscription.upsert({
         where: { company_id: company.id },
         create: {
-          company_id: company.id,
-          plan_type: planType,
-          billing_cycle: billingCycle,
-          subscription_status: "trialing",
-          trial_started_at: new Date(),
-          trial_ends_at: trialEnd,
-          admin_notes: "Manual trial — Stripe not yet configured",
+          company_id: company.id, plan_type: planType, billing_cycle: billingCycle,
+          subscription_status: "trialing", trial_started_at: new Date(), trial_ends_at: trialEnd,
+          admin_notes: "Manual trial — Stripe price not configured",
         },
         update: {
-          plan_type: planType,
-          billing_cycle: billingCycle,
-          subscription_status: "trialing",
-          trial_started_at: new Date(),
-          trial_ends_at: trialEnd,
-          admin_notes: "Manual trial — Stripe not yet configured",
+          plan_type: planType, billing_cycle: billingCycle,
+          subscription_status: "trialing", trial_started_at: new Date(), trial_ends_at: trialEnd,
+          admin_notes: "Manual trial — Stripe price not configured",
         },
       });
     });
@@ -85,29 +83,61 @@ export async function POST(request: NextRequest) {
     stripeCustomerId = customer.id;
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    customer: stripeCustomerId,
-    line_items: [{ price: STRIPE_DIR_PRICES[priceKey], quantity: 1 }],
-    subscription_data: {
-      trial_period_days: 60,
-      metadata: { company_id: String(company.id), plan_type: planType, billing_cycle: billingCycle },
-    },
-    success_url: `${siteUrl}/directory/dashboard/subscription?checkout=success`,
-    cancel_url: `${siteUrl}/directory/pricing`,
-    metadata: { company_id: String(company.id) },
-  });
+  // Existing subscriber → swap the plan on their CURRENT subscription (upgrade /
+  // downgrade) instead of a brand-new checkout. Avoids a second charge & the redirect.
+  const existingSubId = company.directory_subscription?.stripe_subscription_id;
+  const existingStatus = company.directory_subscription?.subscription_status;
+  if (existingSubId && (existingStatus === "active" || existingStatus === "trialing")) {
+    try {
+      const current = await stripe.subscriptions.retrieve(existingSubId);
+      // A cancelled / incomplete / expired sub can't be swapped — let it fall
+      // through to a fresh checkout below rather than erroring.
+      if (current.status === "active" || current.status === "trialing") {
+        const itemId = current.items.data[0]?.id;
+        if (itemId) {
+          await stripe.subscriptions.update(existingSubId, {
+            items: [{ id: itemId, price: plan.stripe_price_id }],
+            proration_behavior: "create_prorations",
+            metadata: { company_id: String(company.id), plan_type: planType, billing_cycle: billingCycle },
+          });
+          await prisma.$transaction([
+            prisma.directorySubscription.update({ where: { company_id: company.id }, data: { plan_type: planType, billing_cycle: billingCycle } }),
+            prisma.company.update({ where: { id: company.id }, data: { plan_type: planType, is_featured: planType === "featured", quote_requests_enabled: true } }),
+          ]);
+          return NextResponse.json({ success: true, mode: "updated" });
+        }
+      }
+    } catch {
+      // The stored subscription id isn't valid on this Stripe account (e.g. a
+      // test-mode id after going live). Ignore it and start a fresh checkout.
+    }
+  }
 
-  // Save customer ID early
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
+  let session;
+  try {
+    session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      customer: stripeCustomerId,
+      line_items: [{ price: plan.stripe_price_id, quantity: 1 }],
+      subscription_data: {
+        // Stripe rejects a 0-day trial — only include it when there genuinely is one.
+        ...(trialDays > 0 ? { trial_period_days: trialDays } : {}),
+        metadata: { company_id: String(company.id), plan_type: planType, billing_cycle: billingCycle },
+      },
+      success_url: `${siteUrl}/directory/dashboard/subscription?checkout=success`,
+      cancel_url: `${siteUrl}/directory/pricing`,
+      metadata: { company_id: String(company.id) },
+    });
+  } catch {
+    return NextResponse.json({ error: "Could not start checkout. Please try again." }, { status: 502 });
+  }
+
   await prisma.directorySubscription.upsert({
     where: { company_id: company.id },
     create: {
-      company_id: company.id,
-      plan_type: planType,
-      billing_cycle: billingCycle,
-      subscription_status: "none",
-      stripe_customer_id: stripeCustomerId,
+      company_id: company.id, plan_type: planType, billing_cycle: billingCycle,
+      subscription_status: "none", stripe_customer_id: stripeCustomerId,
     },
     update: { stripe_customer_id: stripeCustomerId },
   });

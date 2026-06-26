@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useFilesRegistry } from "./FilesContext";
 
 interface Props {
   name: string;
@@ -31,19 +32,23 @@ export default function FileUploadZone({
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const filesRef = useRef<File[]>([]);
+  const registry = useFilesRegistry();
 
   function sync(next: File[]) {
     filesRef.current = next;
     setFiles(next);
-    if (!inputRef.current) return;
-    try {
-      const dt = new DataTransfer();
-      next.forEach((f) => dt.items.add(f));
-      inputRef.current.files = dt.files;
-    } catch {
-      // Older Safari fallback — files stay in component state only
-    }
+    // Source of truth for submission: the shared registry (reliable across
+    // browsers). The DOM input is used only to open the file picker.
+    registry?.set(name, next);
   }
+
+  // Keep the registry in step with this zone's field name, and clear the entry
+  // when the zone unmounts or its name changes (e.g. a defect is removed/
+  // re-indexed) so orphaned files are never submitted.
+  useEffect(() => {
+    registry?.set(name, filesRef.current);
+    return () => registry?.set(name, []);
+  }, [name, registry]);
 
   function addFiles(incoming: FileList | File[]) {
     const arr = Array.from(incoming);
@@ -101,7 +106,6 @@ export default function FileUploadZone({
         <input
           ref={inputRef}
           type="file"
-          name={name}
           accept={accept}
           multiple={multiple}
           className="sr-only"

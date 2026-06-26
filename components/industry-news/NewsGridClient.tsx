@@ -17,7 +17,15 @@ export type NewsArticle = {
   published_date: string;
   priority: 1 | 2 | 3;
   featured_image: string;
+  /** "insight" = original RBA-published article; defaults to external news. */
+  kind?: "news" | "insight";
+  /** Internal link target. External news uses /industry-news/<slug>. */
+  href?: string;
 };
+
+function linkFor(a: NewsArticle): string {
+  return a.href ?? `/industry-news/${a.slug}`;
+}
 
 function readingTime(text: string): string {
   const mins = Math.max(1, Math.round((text ?? "").trim().split(/\s+/).length / 200));
@@ -176,19 +184,19 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
         {/* ── Featured article ────────────────────────────────────────── */}
         {featuredArticle && (
           <a
-            href={`/industry-news/${featuredArticle.slug}`}
+            href={linkFor(featuredArticle)}
             className="group grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl lg:grid-cols-[1.1fr_0.9fr]"
           >
-            <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 lg:aspect-[3/1]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 lg:aspect-auto lg:h-full lg:min-h-[20rem]">
               <NewsImage
                 src={featuredArticle.featured_image}
                 alt={featuredArticle.title}
-                sizes="100vw"
+                sizes="(min-width: 1024px) 55vw, 100vw"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              <span className="absolute left-4 top-4 rounded-full bg-red-700 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">
-                {featuredArticle.priority === 1 ? "Technical Focus" : "Latest"}
+              <span className={`absolute left-4 top-4 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow ${featuredArticle.kind === "insight" ? "bg-sky-700" : "bg-red-700"}`}>
+                {featuredArticle.kind === "insight" ? "RBA Insight" : featuredArticle.priority === 1 ? "Technical Focus" : "Latest"}
               </span>
             </div>
             <div className="flex flex-col justify-center p-8 lg:p-10">
@@ -216,7 +224,7 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
                 {excerpt(featuredArticle.summary, 260)}
               </p>
               <span className="mt-5 flex items-center gap-1.5 text-sm font-bold text-sky-700 transition group-hover:text-red-700">
-                Read original source <ArrowRight size={14} />
+                {featuredArticle.kind === "insight" ? "Read insight" : "Read original source"} <ArrowRight size={14} />
               </span>
             </div>
           </a>
@@ -229,9 +237,11 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
               {paginatedArticles.map((article) => (
                 <a
                   key={article.id}
-                  href={`/industry-news/${article.slug}`}
+                  href={linkFor(article)}
                   className={`group flex flex-col overflow-hidden rounded-2xl border shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg ${
-                    article.priority === 1
+                    article.kind === "insight"
+                      ? "border-sky-200 bg-white ring-1 ring-sky-100"
+                      : article.priority === 1
                       ? "border-red-100 bg-white"
                       : article.priority === 3
                       ? "border-slate-100 bg-slate-50/60"
@@ -244,11 +254,15 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
                       alt={article.title}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
-                    {article.priority === 1 && (
+                    {article.kind === "insight" ? (
+                      <span className="absolute left-3 top-3 rounded-full bg-sky-700 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
+                        RBA Insight
+                      </span>
+                    ) : article.priority === 1 ? (
                       <span className="absolute left-3 top-3 rounded-full bg-red-700 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow">
                         Technical Focus
                       </span>
-                    )}
+                    ) : null}
                   </div>
                   <div className="flex flex-1 flex-col p-5">
                     <span className="inline-block w-fit rounded-md border border-sky-100 bg-sky-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sky-800">
@@ -275,7 +289,7 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
                       {excerpt(article.summary)}
                     </p>
                     <span className="mt-3 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                      Read original source <ArrowRight size={12} />
+                      {article.kind === "insight" ? "Read insight" : "Read original source"} <ArrowRight size={12} />
                     </span>
                   </div>
                 </a>
@@ -283,7 +297,7 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 pt-4">
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}

@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Layers, Ruler, SquareStack, FileText } from "lucide-react";
 import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag = "Galvanised-Steel" | "PVC" | "Permanent" | "Temporary" | "Edge-Form" | "Nosing-Form" | "Strip-Off";
 
@@ -247,70 +248,13 @@ export function EdgeFormsAccessoriesIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Material: galvanised steel angle (sacrificial/permanent, hot-dip galv coating mass to AS 1397 / AS/NZS 4680) vs PVC angle (permanent, non-corrosive) vs site-stripped formwork; leg dimensions and gauge/section matched to repair depth/nosing geometry; permanent vs temporary (left-in needs corrosion durability for exposure classification per AS 3600); straightness/edge tolerance for clean arris & nosing line; fixing method and concrete cover maintained over any embedded steel; chamfer/drip-groove formation; chemical compatibility & bond with repair mortar; trafficable / impact-resistant arris for slab edges & stair nosings; alignment/level adjustability";
+
 export function EdgeFormsAccessoriesProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (tag: FilterTag) =>
-    setActiveFilters((prev) => { const n = new Set(prev); n.has(tag) ? n.delete(tag) : n.add(tag); return n; });
-
-  const filtered = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => p.filterTags.some((t) => activeFilters.has(t)));
-
-  const scroll = (dir: "left" | "right") => {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: dir === "left" ? -420 : 420, behavior: "smooth" });
-  };
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Filter:</span>
-        {FILTER_DEFS.map(({ tag, label }) => (
-          <button key={tag} onClick={() => toggleFilter(tag)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${activeFilters.has(tag) ? "border-red-700 bg-red-700 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-sky-400"}`}>{label}</button>
-        ))}
-        {activeFilters.size > 0 && <button onClick={() => setActiveFilters(new Set())} className="text-xs font-bold text-red-700 underline">Clear</button>}
-      </div>
-
-      <div className="relative">
-        <button onClick={() => scroll("left")} className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronLeft size={16} /></button>
-        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scroll-smooth pb-2" style={{ scrollbarWidth: "none" }}>
-          {filtered.map((p) => (
-            <div key={p.name} className="w-80 shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeftWidth: 4, borderLeftColor: p.accentColor }}>
-              <div className="border-b border-slate-100 px-5 py-4">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{p.fullLabel}</span>
-                  <div className="flex gap-1">
-                    {p.tdsUrl && <a href={p.tdsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700"><FileText size={9} /> TDS</a>}
-                    <a href={p.brandUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700">Brand</a>
-                  </div>
-                </div>
-                <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{p.name}</h3>
-                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{p.productType}</p>
-                <CollapsibleCardDetails text={p.descriptionLine} chips={p.techChips} />
-              </div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                <CollapsibleDescription text={p.systemDescription} />
-              </div>
-              <div className="space-y-3 px-5 py-4">
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                  <CollapsibleList items={p.technicalProperties} icon="check" limit={3} />
-                </div>
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                  <CollapsibleList items={p.limitations} icon="x" limit={3} />
-                </div>
-              </div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                <CollapsibleSources sources={p.procurementSources} />
-              </div>
-            </div>
-          ))}
-        </div>
-        <button onClick={() => scroll("right")} className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronRight size={16} /></button>
-      </div>
-
+    <>
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <button onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left hover:bg-slate-50">
           <div>
@@ -335,31 +279,7 @@ export function EdgeFormsAccessoriesProductSection() {
         )}
       </div>
 
-      <div>
-        <h3 className="mb-4 text-lg font-extrabold text-sky-950">System Comparison</h3>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-5 py-3 text-left font-bold text-slate-700 whitespace-nowrap sticky left-0 bg-slate-50 border-r border-slate-200">Product</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Type</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Use</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 bg-inherit px-5 py-3 font-semibold text-slate-800 border-r border-slate-200 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.use}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.note}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" criteriaKey="concrete-spalling/edge-forms-accessories" />
+    </>
   );
 }

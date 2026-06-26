@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Crack-bridging"
@@ -35,6 +36,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -79,9 +81,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
     accentColor: "#0369a1",
-    name: "TODO: owner confirm — Mapei Elastocolor W (product name variation unconfirmed — the Mapei product confirmed in the Elastomeric Coating Systems file is 'Mapei Elastocolor Paint' — 'Elastocolor W' may be a separate crack-bridging grade or a European variant — confirm whether 'Elastocolor W' is the correct current AU crack-bridging product name, distinct from 'Elastocolor Paint', with Mapei Australia technical)",
+    name: "Mapei Elastocolor W",
     descriptionLine: "Elastomeric crack-bridging waterproof coating for concrete and masonry facades — Mapei specialist system with high elongation, anti-carbonation protection and UV resistance",
-    productType: "TODO: owner confirm — Elastomeric crack-bridging coating — Mapei specialist system — concrete and masonry (product name 'Elastocolor W' unconfirmed as current AU product — see name field)",
+    productType: "Elastomeric crack-bridging coating — Mapei specialist system — concrete and masonry",
+    dataNote: "Owner to confirm — product name variation unconfirmed: the Mapei product confirmed in the Elastomeric Coating Systems file is 'Mapei Elastocolor Paint', and 'Elastocolor W' may be a separate crack-bridging grade or a European variant. Confirm whether 'Elastocolor W' is the correct current AU crack-bridging product name, distinct from 'Elastocolor Paint', with Mapei Australia technical before publishing.",
     filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Concrete", "Masonry", "Water-based", "Coastal", "Specialist"],
     techChips: [
       { label: "Mapei specialist", cls: "bg-sky-100 text-sky-800" },
@@ -151,9 +154,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Dulux Acratex Australia",
     brandUrl: "https://www.dulux.com.au",
     accentColor: "#b45309",
-    name: "TODO: owner confirm — Dulux Acratex Permaflex (PRODUCT NOT FOUND — 'Dulux Acratex Permaflex' does not appear in the current Dulux Acratex product range on dulux.com.au — the confirmed Acratex crack-bridging/high-elongation product is 'Acraskin' (or possibly 'AcraShield Advance') — no 'Permaflex' product found — confirm correct current crack-bridging product name in the Dulux Acratex range with Dulux Acratex technical)",
-    descriptionLine: "TODO: owner confirm — High-elongation elastomeric crack-bridging exterior coating for masonry and render facades — Dulux Acratex specialist system for facades with active crack movement and waterproofing requirements (product name 'Permaflex' not confirmed in current Acratex range — see name field)",
-    productType: "TODO: owner confirm — High-elongation elastomeric crack-bridging coating — Dulux Acratex system (product name unconfirmed — see name field)",
+    name: "Dulux Acratex Permaflex",
+    descriptionLine: "High-elongation elastomeric crack-bridging exterior coating for masonry and render facades — Dulux Acratex specialist system for facades with active crack movement and waterproofing requirements",
+    productType: "High-elongation elastomeric crack-bridging coating — Dulux Acratex system",
+    dataNote: "Owner to confirm — product name not found: 'Dulux Acratex Permaflex' does not appear in the current Dulux Acratex range on dulux.com.au; the confirmed Acratex crack-bridging/high-elongation product is likely 'Acraskin' or 'AcraShield Advance'. Also note the referenced primer 'Acratex Prep Coat' has been superseded by 'AcraPrime 501' (render cured 28+ days) and 'Green Render Sealer' (render cured under 28 days). Confirm the correct current crack-bridging product name and primer with Dulux Acratex technical before publishing.",
     filterTags: ["Crack-bridging", "Elastomeric", "High-elongation", "Waterproof", "Active-crack", "Render", "Masonry", "Water-based", "Coastal", "Reinforced", "Specialist"],
     techChips: [
       { label: "Dulux Acratex", cls: "bg-amber-100 text-amber-800" },
@@ -575,7 +579,8 @@ export function ElastomericCrackBridgingProductSection() {
                     <CollapsibleList items={product.limitations} icon="x" limit={3} />
                   </div>
                 </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import PageNav from "@/components/PageNav";
 
+import SiteHeader from "@/components/SiteHeader";
+import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 export const metadata: Metadata = {
   title: "Hydrostatic Pressure Issues | Remedial Building Australia",
   description: "Technical guide to hydrostatic pressure water ingress in Class 2 building basements — causes, assessment and waterproofing methodology.",
@@ -42,25 +45,13 @@ const risks = [
 export default function Page() {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800">
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3"><div><div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div><div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">Technical Remedial Building Platform</div></div></a>
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-                        <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          
-          </nav>
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
-        </div>
-      </header>
+      <SiteHeader />
       <main className="px-6 py-20">
         <section className="mx-auto max-w-7xl">
           <a href="/defect-library/basements-substructure" className="inline-flex rounded-xl border border-slate-300 bg-white px-5 py-3 text-base font-semibold text-slate-700 shadow-sm hover:bg-slate-100">← Back to Basements & Substructure</a>
           <div className="mt-10">
             <div>
+              <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Basements & Substructure</p>
               <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Hydrostatic Pressure Issues</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Hydrostatic pressure is the force exerted by groundwater against the external face of basement walls and slabs. In areas with a high groundwater table or in periods of sustained rain, this pressure can force water through even small defects in the concrete and waterproofing system — appearing as weeping, seeping or active flow through the basement structure. Hydrostatic ingress is particularly challenging to remediate because the water pressure is continuous, unlike rain-driven ingress. The repair approach must either resist the hydrostatic head (tanking) or relieve it (cavity drain or drainage systems).  </p>
@@ -101,20 +92,26 @@ export default function Page() {
           </section>
         </section>
       </main>
+      <SeoCrossPromo />
+
       <footer className="border-t border-sky-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-12"><a href="/" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200">← Home</a></div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div><div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div><p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and future AI-assisted scope writing.</p></div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

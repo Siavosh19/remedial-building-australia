@@ -2,6 +2,8 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Layers, Ruler, SquareStack, FileText } from "lucide-react";
 import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { FLOOR_PATCHING_CARDS } from "./floorPatchingData";
 
 type FilterTag = "Feather-Edge" | "Rapid-Set" | "Fine-Repair" | "Floor-Patching" | "Thin-Section" | "Polymer-Modified" | "Magnesite" | "Pre-SLC";
 
@@ -133,41 +135,6 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Parchem Construction Products",
-    brandUrl: "https://www.parchem.com.au",
-    accentColor: "#78716c",
-    name: "Parchem Speed Rep — Rapid-Setting Floor Repair Mortar",
-    descriptionLine: "Rapid-setting floor repair mortar for isolated depressions and substrate failure before levelling — 25 kg bag",
-    productType: "Rapid-setting cementitious floor repair mortar",
-    filterTags: ["Rapid-Set", "Floor-Patching", "Pre-SLC", "Magnesite"],
-    techChips: [
-      { label: "Rapid-set", cls: "bg-stone-100 text-stone-800" },
-      { label: "Pre-SLC", cls: "bg-zinc-100 text-zinc-800" },
-      { label: "Floor repair", cls: "bg-slate-100 text-slate-700" },
-    ],
-    systemDescription:
-      "Parchem Speed Rep is described as a rapid-setting floor repair mortar for repairing isolated depressions, damaged saw-cut edges, and failed substrate areas in floors prior to self-levelling compound application. TODO: owner confirm — the product name 'Speed Rep' could not be found on the current Parchem Australia website. Verify this product is still available and confirm the current product name with Parchem before specifying.",
-    technicalProperties: [
-      "Pack size: 25 kg bag",
-      "Rapid-set — trafficable typically within 1–3 hrs",
-      "Apply over primed surface by trowel",
-      "Suitable for floor depressions, edge damage, and localised failure",
-      "Contact Parchem for current TDS and coverage rates",
-      "Confirm SLC overcoating time requirements with Parchem",
-    ],
-    limitations: [
-      "Batch size must be limited to what can be placed within working time",
-      "Do not prime with incompatible primer — confirm with Parchem",
-      "Do not apply SLC until Speed Rep has reached adequate strength",
-      "Not for structural repairs",
-      "Rapid-set exotherm in thick applications — avoid excessive build-up in single lifts",
-      "Contact Parchem for current product data and system compatibility",
-    ],
-    procurementSources: [
-      { name: "Parchem Construction Products", url: "https://www.parchem.com.au" },
-    ],
-  },
-  {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au/",
     tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/concrete-repair/detail/planitop-fast-330",
@@ -204,6 +171,68 @@ const PRODUCTS: Product[] = [
       { name: "Mapei distributors", url: "https://www.mapei.com/au/en/contact-us/where-to-buy" },
     ],
   },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Renderoc HB40",
+    descriptionLine: "Polymer-modified high-build cementitious repair mortar (EN 1504-3 R3) — confirm current specification and Australian availability with Fosroc technical before specifying",
+    productType: "Polymer-modified high-build cementitious repair mortar (EN 1504-3 R3)",
+    filterTags: ["Floor-Patching", "Polymer-Modified", "Magnesite", "Pre-SLC"],
+    techChips: [
+      { label: "Polymer-modified high-build ce", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fosroc — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Fosroc Renderoc HB40 is a Polymer-modified high-build cementitious repair mortar (EN 1504-3 R3). High-build polymer-modified mortar to reinstate deeper losses in an encapsulated magnesite floor before a levelling underlayment. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Fosroc technical before specifying. TODO: verify specific performance figures from the current Fosroc TDS.",
+    technicalProperties: [
+      "Polymer-modified high-build cementitious repair mortar (EN 1504-3 R3)",
+      "High-build polymer-modified mortar to reinstate deeper losses in an encapsulated magnesite floor before a levelling underlayment.",
+      "Confirm key performance values (strength / coverage / application) from the current Fosroc TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Fosroc",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Fosroc technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Fosroc",
+    ],
+    procurementSources: [
+      { name: "Fosroc — Australian trade supply", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://ardexaustralia.com",
+    accentColor: "#0369a1",
+    name: "Ardex A 38",
+    descriptionLine: "Rapid-set cementitious patching / screed mortar — confirm current specification and Australian availability with Ardex technical before specifying",
+    productType: "Rapid-set cementitious patching / screed mortar",
+    filterTags: ["Floor-Patching", "Rapid-Set", "Magnesite", "Pre-SLC"],
+    techChips: [
+      { label: "Rapid-set cementitious patchin", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ardex — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Ardex A 38 is a Rapid-set cementitious patching / screed mortar. Rapid-set cementitious patching/screed mortar for fast reinstatement and ramping before overlaying. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Ardex technical before specifying. TODO: verify specific performance figures from the current Ardex TDS.",
+    technicalProperties: [
+      "Rapid-set cementitious patching / screed mortar",
+      "Rapid-set cementitious patching/screed mortar for fast reinstatement and ramping before overlaying.",
+      "Confirm key performance values (strength / coverage / application) from the current Ardex TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Ardex",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Ardex technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Ardex",
+    ],
+    procurementSources: [
+      { name: "Ardex — Australian trade supply", url: "https://ardexaustralia.com" },
+    ],
+  }
+
+
 ];
 
 const FILTER_DEFS: { tag: FilterTag; label: string }[] = [
@@ -304,102 +333,13 @@ export function FloorPatchingCompoundsIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Compressive/flexural strength (MPa) & EN 1504-3 class (R1–R4 — R4 structural for trafficked/loaded floors); min & max layer thickness & feather-edge capability; max total build; set/cure time & trafficable/recoatable time (rapid-set for quick return to service); polymer modification & fibre reinforcement for crack resistance; bond strength to old concrete/screed & primer/SSD requirement; shrinkage class & dimensional stability; compatibility & moisture tolerance with substrate (esp. residual magnesite/chloride contamination — alkali/salt resistance); abrasion resistance & receptivity to floor finish/adhesive (pH, moisture); application temp range.";
+
 export function FloorPatchingCompoundsProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (tag: FilterTag) =>
-    setActiveFilters((prev) => {
-      const n = new Set(prev);
-      n.has(tag) ? n.delete(tag) : n.add(tag);
-      return n;
-    });
-
-  const filtered =
-    activeFilters.size === 0
-      ? PRODUCTS
-      : PRODUCTS.filter((p) => p.filterTags.some((t) => activeFilters.has(t)));
-
-  const scroll = (dir: "left" | "right") => {
-    if (scrollRef.current)
-      scrollRef.current.scrollBy({ left: dir === "left" ? -420 : 420, behavior: "smooth" });
-  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        {FILTER_DEFS.map(({ tag, label }) => {
-          const active = activeFilters.has(tag);
-          return (
-            <button
-              key={tag}
-              onClick={() => toggleFilter(tag)}
-              className={`rounded-full border px-3 py-1 text-xs font-bold transition ${
-                active
-                  ? "border-sky-600 bg-sky-600 text-white"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-sky-300"
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
-        {activeFilters.size > 0 && (
-          <button
-            onClick={() => setActiveFilters(new Set())}
-            className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-bold text-red-700 transition hover:bg-red-100"
-          >
-            Clear filters
-          </button>
-        )}
-      </div>
-
-      <div className="relative">
-        <button onClick={() => scroll("left")} className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronLeft size={16} /></button>
-        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scroll-smooth pb-2" style={{ scrollbarWidth: "none" }}>
-          {filtered.map((p) => (
-            <div key={p.name} className="w-80 shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeftWidth: 4, borderLeftColor: p.accentColor }}>
-              <div className="border-b border-slate-100 px-5 py-4">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{p.fullLabel}</span>
-                  <div className="flex gap-1">
-                    {p.tdsUrl && <a href={p.tdsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700"><FileText size={9} /> TDS</a>}
-                    <a href={p.brandUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700">Brand</a>
-                  </div>
-                </div>
-                <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{p.name}</h3>
-                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{p.productType}</p>
-                <CollapsibleCardDetails text={p.descriptionLine} chips={p.techChips} />
-              </div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                <CollapsibleDescription text={p.systemDescription} />
-              </div>
-              <div className="space-y-3 px-5 py-4">
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                  <CollapsibleList items={p.technicalProperties} icon="check" limit={3} />
-                </div>
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                  <CollapsibleList items={p.limitations} icon="x" limit={3} />
-                </div>
-              </div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                <CollapsibleSources sources={p.procurementSources} />
-              </div>
-            </div>
-          ))}
-          {filtered.length === 0 && (
-            <div className="flex w-full items-center justify-center py-12 text-sm text-slate-400">
-              No products match the selected filters.
-            </div>
-          )}
-        </div>
-        <button onClick={() => scroll("right")} className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronRight size={16} /></button>
-      </div>
-
+    <>
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <button onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left hover:bg-slate-50">
           <div>
@@ -424,33 +364,7 @@ export function FloorPatchingCompoundsProductSection() {
         )}
       </div>
 
-      <div>
-        <h3 className="mb-4 text-lg font-extrabold text-sky-950">System Comparison</h3>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-5 py-3 text-left font-bold text-slate-700 whitespace-nowrap sticky left-0 bg-slate-50 border-r border-slate-200">Product</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Brand</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Type</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Range</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Set type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 bg-inherit px-5 py-3 font-semibold text-slate-800 border-r border-slate-200 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.range}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.setType}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <AutoProductReference products={PRODUCTS} cards={FLOOR_PATCHING_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Floor patching compounds" />
+    </>
   );
 }

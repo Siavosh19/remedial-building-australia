@@ -3,8 +3,11 @@ import type { LocationState } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { sendAdminNewSignupEmail } from "@/lib/directory-email";
+import { verifyAbn, abnNameMismatch } from "@/lib/abn";
+import { validateAuPhone } from "@/lib/phone-au";
+import { postcodeToState } from "@/lib/au-locations";
+import { geocodeAU } from "@/lib/geocode";
 
-const ABN_RE = /^\d{11}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const STATES: LocationState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 
@@ -18,6 +21,7 @@ export async function POST(request: NextRequest) {
   const companyName = String(body.companyName ?? "").trim();
   const abn = String(body.abn ?? "").trim();
   const mainCategoryId = Number(body.mainCategoryId ?? 0);
+  const otherCategory = String(body.otherCategory ?? "").trim();
   const state = String(body.state ?? "").trim();
   const suburb = String(body.suburb ?? "").trim();
   const postcode = String(body.postcode ?? "").trim();
@@ -27,19 +31,72 @@ export async function POST(request: NextRequest) {
   const description = String(body.description ?? "").trim();
 
   if (!companyName) return NextResponse.json({ error: "Company name is required." }, { status: 400 });
-  if (!ABN_RE.test(abn)) return NextResponse.json({ error: "ABN must be 11 digits." }, { status: 400 });
   if (!mainCategoryId) return NextResponse.json({ error: "Primary category is required." }, { status: 400 });
   if (!STATES.includes(state as LocationState)) return NextResponse.json({ error: "Invalid state." }, { status: 400 });
   if (!suburb) return NextResponse.json({ error: "Suburb is required." }, { status: 400 });
-  if (!postcode) return NextResponse.json({ error: "Postcode is required." }, { status: 400 });
-  if (!phone) return NextResponse.json({ error: "Phone number is required." }, { status: 400 });
+  if (!/^\d{4}$/.test(postcode)) return NextResponse.json({ error: "Postcode must be 4 digits." }, { status: 400 });
   if (!businessEmail || !EMAIL_RE.test(businessEmail)) return NextResponse.json({ error: "A valid business email is required." }, { status: 400 });
   if (!description) return NextResponse.json({ error: "Short description is required." }, { status: 400 });
+
+  // ── ABN verification (checksum, plus live ABR lookup when configured) ──────────
+  const abnCheck = await verifyAbn(abn);
+  if (!abnCheck.validFormat) {
+    return NextResponse.json({ error: "Please enter a valid 11-digit ABN." }, { status: 400 });
+  }
+  if (abnCheck.status === "cancelled") {
+    return NextResponse.json({ error: "This ABN is recorded as cancelled with the ABR. Please use your active ABN." }, { status: 400 });
+  }
+  if (abnCheck.status === "not_found") {
+    return NextResponse.json({ error: "We couldn't find this ABN in the Australian Business Register. Please check it and try again." }, { status: 400 });
+  }
+
+  // ── Australian phone number ────────────────────────────────────────────────────
+  const phoneCheck = validateAuPhone(phone);
+  if (!phoneCheck.valid) {
+    return NextResponse.json({ error: phoneCheck.message }, { status: 400 });
+  }
+  const phoneNational = phoneCheck.national!;
+
+  // ── Suburb / postcode / state consistency (free anti-junk check) ───────────────
+  const pcState = postcodeToState(postcode);
+  if (pcState && pcState !== state) {
+    return NextResponse.json(
+      { error: `Postcode ${postcode} is in ${pcState}, not ${state}. Please check your suburb, postcode and state.` },
+      { status: 400 },
+    );
+  }
 
   const existing = await prisma.company.findFirst({ where: { users: { some: { user_id: user.id } } } });
   if (existing) return NextResponse.json({ error: "You already have a company linked to this account." }, { status: 400 });
 
-  const confidence_score = 10 + 15 + (website ? 10 : 0); // ABN +10, Phone +15, Website +10
+  // "Other (specify)" → file under Other / General Services and capture the
+  // requested label so an admin can create/assign a proper category later.
+  let resolvedCategoryId = mainCategoryId;
+  let otherCategoryNote = "";
+  if (mainCategoryId < 0) {
+    const other = await prisma.category.findFirst({ where: { slug: "other-general-services" }, select: { id: true } });
+    resolvedCategoryId = other?.id ?? 0;
+    if (otherCategory) otherCategoryNote = ` Requested category (not in list): "${otherCategory}".`;
+  }
+  if (!resolvedCategoryId) {
+    return NextResponse.json({ error: "Primary category is required." }, { status: 400 });
+  }
+
+  // ABN verified + active → business_verified trust tier; otherwise basic.
+  const profileStatus = abnCheck.active ? "business_verified" : "basic";
+  const nameMismatch = abnNameMismatch(abnCheck.entityName, companyName);
+  const verifyNote =
+    otherCategoryNote +
+    (abnCheck.source === "abr"
+      ? `ABN ${abn}: ${abnCheck.status.toUpperCase()}` +
+        (abnCheck.entityName ? ` — registered as "${abnCheck.entityName}"` : "") +
+        (abnCheck.gstRegistered ? ", GST-registered" : "") +
+        (nameMismatch ? " ⚠ registered name differs from listing name" : "") +
+        `. Phone verified as AU ${phoneCheck.type}.`
+      : `ABN ${abn}: format/checksum OK (live ABR check not configured). Phone verified as AU ${phoneCheck.type}.`);
+
+  // Confidence: ABN +10, Phone +15, Website +10, live-verified ABN +20.
+  const confidence_score = 10 + 15 + (website ? 10 : 0) + (abnCheck.active ? 20 : 0);
 
   // Check if a scraped (unclaimed) company already exists with matching email or name
   const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -63,11 +120,12 @@ export async function POST(request: NextRequest) {
         data: {
           is_claimed: true,
           abn: abn || scraped.abn || null,
-          phone: phone || scraped.phone || null,
+          phone: phoneNational || scraped.phone || null,
           website: website || scraped.website || null,
           email: businessEmail,
           description: description || scraped.description || null,
-          main_category_id: mainCategoryId || scraped.main_category_id,
+          main_category_id: resolvedCategoryId || scraped.main_category_id,
+          profile_status: profileStatus,
           status: "draft",
         },
       });
@@ -87,13 +145,13 @@ export async function POST(request: NextRequest) {
             company_id: scraped.id,
             status: "discovered",
             source: "directory signup (claimed existing)",
-            notes: "Existing scraped listing claimed by owner via signup.",
+            notes: `Existing scraped listing claimed by owner via signup. ${verifyNote}`,
           },
         });
       } else {
         await tx.adminReviewQueue.update({
           where: { id: scraped.admin_review_queue[0].id },
-          data: { status: "discovered", source: "directory signup (claimed existing)", notes: "Claimed by owner via signup." },
+          data: { status: "discovered", source: "directory signup (claimed existing)", notes: `Claimed by owner via signup. ${verifyNote}` },
         });
       }
     });
@@ -105,12 +163,12 @@ export async function POST(request: NextRequest) {
         name: companyName,
         abn,
         website: website || null,
-        phone,
+        phone: phoneNational,
         email: businessEmail,
         description,
-        main_category_id: mainCategoryId,
+        main_category_id: resolvedCategoryId,
         status: "draft",
-        profile_status: "basic",
+        profile_status: profileStatus,
         confidence_score,
         is_claimed: true,
         is_featured: false,
@@ -146,7 +204,7 @@ export async function POST(request: NextRequest) {
           create: {
             status: "discovered",
             source: "directory signup",
-            notes: "New directory listing submitted for review.",
+            notes: `New directory listing submitted for review. ${verifyNote}`,
           },
         },
       },
@@ -154,7 +212,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Notify admin of new signup — fire and forget
-  const category = await prisma.category.findUnique({ where: { id: mainCategoryId }, select: { name: true } });
+  const category = await prisma.category.findUnique({ where: { id: resolvedCategoryId }, select: { name: true } });
   sendAdminNewSignupEmail(
     companyName,
     user.full_name ?? businessEmail,
@@ -213,6 +271,17 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.state === "string" && STATES.includes(body.state as LocationState)) locationFields.state = body.state as LocationState;
 
   if (Object.keys(locationFields).length > 0) {
+    // Geocode the new/updated address so it participates in proximity ranking.
+    const geo = geocodeAU(
+      locationFields.suburb ? String(locationFields.suburb) : null,
+      locationFields.state ? String(locationFields.state) : null,
+      locationFields.postcode ? String(locationFields.postcode) : null,
+    );
+    if (geo) {
+      locationFields.latitude = geo.latitude;
+      locationFields.longitude = geo.longitude;
+    }
+
     if (locationId) {
       await prisma.location.update({ where: { id: locationId }, data: locationFields });
     } else if (locationFields.state && locationFields.postcode) {
@@ -224,6 +293,7 @@ export async function PATCH(request: NextRequest) {
           city: locationFields.suburb ? String(locationFields.suburb) : null,
           state: locationFields.state as LocationState,
           postcode: String(locationFields.postcode),
+          ...(geo ? { latitude: geo.latitude, longitude: geo.longitude } : {}),
         },
       });
     }

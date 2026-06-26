@@ -8,8 +8,11 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { REBAR_PRIMER_CARDS } from "../../concrete-spalling/rebar-primers-inhibitors/rebarPrimersData";
 
 type FilterTag =
   | "3-component"
@@ -39,38 +42,6 @@ type Product = {
 };
 
 const PRODUCTS: Product[] = [
-  {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    accentColor: "#be123c",
-    name: "SikaTop Armatec 110 EpoCem",
-    descriptionLine: "3-component epoxy cement — rebar corrosion protection coating and concrete bonding agent in one — wet-on-wet application",
-    productType: "3-component epoxy cement — rebar primer and bonding agent",
-    filterTags: ["3-component", "Bonding-agent", "Rebar-primer", "Chloride", "Carbonation", "Brush-applied"],
-    techChips: [
-      { label: "3-component epoxy cement", cls: "bg-rose-100 text-rose-800" },
-      { label: "Rebar primer + bonding agent", cls: "bg-slate-100 text-slate-700" },
-      { label: "Wet-on-wet mortar placement", cls: "bg-amber-50 text-amber-700" },
-      { label: "Sika Australia nationally", cls: "bg-slate-100 text-slate-700" },
-    ],
-    systemDescription:
-      "SikaTop Armatec 110 EpoCem is a 3-component product (epoxy resin, cement powder, water) that serves as both a corrosion protection primer for cleaned reinforcing steel and a bonding agent applied to the prepared concrete substrate. The combination of epoxy chemistry and cement gives both chemical resistance and alkalinity — creating a passivating environment over the rebar. Applied by brush to the rebar and the concrete substrate face in a single operation. The repair mortar is placed wet-on-wet into the fresh Armatec coating — this combined application method eliminates the need for a separate bonding agent. Compatible with Sika MonoTop and SikaTop repair mortar systems. Confirm current mixing ratio, pot life, and application rate from Sika Australia TDS. Available through Sika Australia distributors nationally.",
-    technicalProperties: [
-      "3-component epoxy cement — combined rebar primer and concrete bonding agent",
-      "Applied to cleaned rebar (St 2 minimum) and prepared concrete substrate in one operation",
-      "Repair mortar placed wet-on-wet into fresh Armatec — critical application technique",
-      "Sika Australia — trade supply nationally",
-    ],
-    limitations: [
-      "3-component on-site mixing required — incorrect ratio compromises both corrosion protection and bond strength",
-      "Repair mortar must be placed while Armatec is within pot life — wet-on-wet technique is not optional",
-      "Rebar must be cleaned to St 2 minimum before application — do not apply over loose scale or active rust flakes",
-      "Not suitable for use with non-Sika repair mortars without written compatibility confirmation",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — national trade supply", url: "https://aus.sika.com" },
-    ],
-  },
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
@@ -136,37 +107,36 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Mapei Australia",
-    brandUrl: "https://www.mapei.com/au",
-    accentColor: "#16a34a",
-    name: "Mapei Mapefer 1K",
-    descriptionLine: "Single-component cementitious corrosion protection coating applied directly to cleaned rebar — compatible with Mapei Mapegrout repair mortars",
-    productType: "Single-component cementitious rebar corrosion protection coating",
-    filterTags: ["1-part-cementitious", "Rebar-primer", "Chloride", "Carbonation", "Brush-applied"],
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika Armatec 1C",
+    descriptionLine: "1-component cementitious bonding primer and rebar corrosion protection — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "1-component cementitious bonding primer and rebar corrosion protection",
+    filterTags: ["1-part-cementitious", "Bonding-agent", "Rebar-primer", "Brush-applied", "Carbonation", "Chloride"],
     techChips: [
-      { label: "Single-component cementitious", cls: "bg-green-100 text-green-900" },
-      { label: "No solvent — low VOC", cls: "bg-slate-100 text-slate-700" },
-      { label: "Compatible with Mapegrout mortars", cls: "bg-amber-50 text-amber-700" },
-      { label: "Mapei Australia — national supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "1-component cementitious bondi", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Mapei Mapefer 1K is a single-component polymer-modified cementitious corrosion protection coating mixed with water on site and applied by brush to cleaned reinforcing steel before repair mortar placement. The alkaline cementite matrix creates a high-pH passivating layer on the steel surface, inhibiting electrochemical corrosion. No solvent — low VOC, suitable for enclosed spaces where solvent-based primers are not appropriate. Apply to rebar cleaned to St 2 minimum; apply repair mortar while the Mapefer 1K coating is still in the stiff plastic/green state — if fully dried, re-apply. Compatible with Mapei Mapegrout polymer-modified repair mortar systems. Available through Mapei Australia trade supply nationally. Confirm open time and application protocol from the current Mapei TDS.",
+      "Sika Armatec 1C is a 1-component cementitious bonding primer and rebar corrosion protection. Single-component cementitious coat providing reinforcement corrosion protection and a bonding bridge for the repair mortar. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
     technicalProperties: [
-      "Single-component cementitious — powder mixed with water — no hazardous solvent",
-      "Applied by brush to cleaned rebar (St 2 minimum) as a corrosion protection coating",
-      "Alkaline matrix passivates steel surface — suitable for carbonation and low-chloride environments",
-      "Mapei Australia — national trade supply",
+      "1-component cementitious bonding primer and rebar corrosion protection",
+      "Single-component cementitious coat providing reinforcement corrosion protection and a bonding bridge for the repair mortar.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
     ],
     limitations: [
-      "No zinc — cementitious alkaline passivation only — confirm suitability for high-chloride environments with engineer of record",
-      "Apply repair mortar while coating is still plastic — if fully cured before mortar placement, re-apply",
-      "Rebar must be cleaned to St 2 minimum before application",
-      "Confirm compatibility with Mapegrout repair mortar from Mapei TDS before use",
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
     ],
     procurementSources: [
-      { name: "Mapei Australia — national trade supply", url: "https://www.mapei.com/au" },
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
     ],
-  },
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -258,6 +228,89 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["application_target", "bare_rebar / concrete_surface", "corrosion repair primes bare rebar; surface treatment → MCI category"],
+    ["environment", "carbonation / chloride_coastal_marine", "chloride_marine → 2-part epoxy zinc-rich preferred"],
+    ["surface_prep", "St2 / Sa2", "gate against product minimum cleanliness (AS 1627.4 / ISO 8501-1)"],
+    ["chemistry", "cementitious_zinc / single_part_zinc / epoxy_zinc / epoxy_cement", "match environment + repair mortar system"],
+    ["mortar_compatibility", "system_match / mismatch", "confirm compatible primer from repair mortar manufacturer"],
+  ],
+  json: {
+    category: "rebar_primers_inhibitors",
+    stage1_gates: {
+      application_target: { allowed: ["bare_rebar", "concrete_surface"], rule: "bare_rebar=zinc-rich primer; concrete_surface=MCI" },
+      environment: { allowed: ["carbonation", "chloride_coastal_marine"], rule: "chloride_marine=epoxy zinc-rich preferred" },
+      surface_prep: { allowed: ["St2", "Sa2"], rule: "match product minimum cleanliness" },
+      chemistry: { allowed: ["cementitious_zinc", "single_part_zinc", "epoxy_zinc", "epoxy_cement"], rule: "match environment + mortar system" },
+      mortar_compatibility: { allowed: ["system_match", "mismatch"], rule: "confirm compatible primer from mortar manufacturer" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "SikaTop Armatec 110 EpoCem": {
+    rows: [
+      ["application_target", "gate", "bare_rebar (+ bonding agent)"],
+      ["environment_max", "gate", "chloride/carbonation"],
+      ["surface_prep_min", "gate", "St2"],
+      ["coats", "gate", "unconfirmed"],
+      ["chemistry", "tag", "epoxy_cement_3comp"],
+      ["pot_life_min", "rank", "null (unconfirmed)"],
+      ["compatible_system", "meta", "sika_monotop/sikatop"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sikatop_armatec_110_epocem", gates: { application_target: "bare_rebar", environment_max: "chloride_carbonation", surface_prep_min: "St2", coats: "unconfirmed" }, tag: { chemistry: "epoxy_cement_3comp" }, rank: { pot_life_min: null }, meta: { compatible_system: "sika_monotop/sikatop", alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com SikaTop Armatec 110 EpoCem — wet-on-wet; rebar primer + bonding agent", confirmed_date: null } },
+  },
+  "Ardex BR 10 ZP": {
+    rows: [
+      ["application_target", "gate", "bare_rebar"],
+      ["environment_max", "gate", "chloride/carbonation"],
+      ["surface_prep_min", "gate", "St2"],
+      ["coats", "gate", "unconfirmed"],
+      ["chemistry", "tag", "single_part_zinc"],
+      ["pot_life_min", "rank", "null (single component)"],
+      ["compatible_system", "meta", "ardex_br_mortars"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "ardex_br_10_zp", gates: { application_target: "bare_rebar", environment_max: "chloride_carbonation", surface_prep_min: "St2", coats: "unconfirmed" }, tag: { chemistry: "single_part_zinc" }, rank: { pot_life_min: null }, meta: { compatible_system: "ardex_br_mortars", alternative_product: null, data_status: "verified", selectable: true, source: "ardex.com.au Ardex BR 10 ZP — single-component zinc-rich; BR series naming subject to revision", confirmed_date: null } },
+  },
+  "Fosroc Nitoprime Zincrich": {
+    rows: [
+      ["application_target", "gate", "bare_rebar"],
+      ["environment_max", "gate", "chloride_marine"],
+      ["surface_prep_min", "gate", "St2/St3"],
+      ["coats", "gate", "unconfirmed"],
+      ["chemistry", "tag", "epoxy_zinc_2part"],
+      ["pot_life_min", "rank", "null (unconfirmed)"],
+      ["compatible_system", "meta", "fosroc_renderoc"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "fosroc_nitoprime_zincrich", gates: { application_target: "bare_rebar", environment_max: "chloride_marine", surface_prep_min: "St2/St3", coats: "unconfirmed" }, tag: { chemistry: "epoxy_zinc_2part" }, rank: { pot_life_min: null }, meta: { compatible_system: "fosroc_renderoc", alternative_product: null, data_status: "verified", selectable: true, source: "parchem.com.au Fosroc Nitoprime Zincrich — solvent-based; preferred high-chloride/marine", confirmed_date: null } },
+  },
+  "Mapei Mapefer 1K": {
+    rows: [
+      ["application_target", "gate", "bare_rebar"],
+      ["environment_max", "gate", "chloride/carbonation"],
+      ["surface_prep_min", "gate", "St2"],
+      ["coats", "gate", "2 (typical)"],
+      ["chemistry", "tag", "cementitious_zinc_1comp"],
+      ["pot_life_min", "rank", "null (unconfirmed)"],
+      ["compatible_system", "meta", "mapei_mapegrout"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "mapei_mapefer_1k", gates: { application_target: "bare_rebar", environment_max: "chloride_carbonation", surface_prep_min: "St2", coats: "2" }, tag: { chemistry: "cementitious_zinc_1comp" }, rank: { pot_life_min: null }, meta: { compatible_system: "mapei_mapegrout", alternative_product: null, data_status: "verified", selectable: true, source: "mapei.com/au Mapefer 1K — single-component cementitious rebar coating", confirmed_date: null } },
+  },
+};
+
 export function RebarPrimersInhibitorsIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -284,6 +337,8 @@ export function RebarPrimersInhibitorsIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Type: active zinc-rich sacrificial (galvanic) vs epoxy barrier vs cementitious polymer-modified vs surface-applied migrating corrosion inhibitor (MCI); zinc content (% by wt, e.g. >80% in dry film) for sacrificial action; number of coats & DFT; recoat/overcoat window before mortar application; compatibility/bond with chosen repair mortar; chloride-contaminated vs carbonation-only environment suitability; incipient-anode (ring/halo) mitigation capability; pot life & application temp; single vs two-component; coverage per kg/m of bar; conformance to EN 1504-7 (reinforcement protection) concept.";
 
 export function RebarPrimersInhibitorsProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -337,139 +392,7 @@ export function RebarPrimersInhibitorsProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — rebar primers and corrosion protection coatings — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Rebar primer types for reinforcement corrosion repair. Confirm all selections from current manufacturer TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Parts</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Function</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Chloride resistance</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.parts}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.function}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.chloride}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={REBAR_PRIMER_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Rebar primers & inhibitors" />
     </>
   );
 }

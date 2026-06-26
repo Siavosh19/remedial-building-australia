@@ -11,6 +11,34 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // ── Merge: slab-edge-deterioration → concrete-spalling (permanent) ──
+      {
+        source: "/repair-systems/slab-edge-deterioration",
+        destination: "/repair-systems/concrete-spalling",
+        permanent: true,
+      },
+      {
+        source: "/repair-systems/slab-edge-deterioration/:path*",
+        destination: "/repair-systems/concrete-spalling/:path*",
+        permanent: true,
+      },
+      // ── Merge: settlement-cracks → concrete-cracking (permanent) ──
+      // lime-repointing-mortars was dropped (masonry) → send to the cracking landing.
+      {
+        source: "/repair-systems/settlement-cracks/lime-repointing-mortars",
+        destination: "/repair-systems/concrete-cracking",
+        permanent: true,
+      },
+      {
+        source: "/repair-systems/settlement-cracks",
+        destination: "/repair-systems/concrete-cracking",
+        permanent: true,
+      },
+      {
+        source: "/repair-systems/settlement-cracks/:path*",
+        destination: "/repair-systems/concrete-cracking/:path*",
+        permanent: true,
+      },
       // Poor falls / flat roofs → balcony waterproofing (permanent)
       {
         source: "/repair-systems/roofing-defects/poor-falls-ponding-flat-roofs/polymer-modified-screed",

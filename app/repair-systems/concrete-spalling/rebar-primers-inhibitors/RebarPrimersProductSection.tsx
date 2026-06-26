@@ -8,8 +8,11 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { REBAR_PRIMER_CARDS } from "./rebarPrimersData";
 
 type FilterTag =
   | "Zinc-rich"
@@ -38,44 +41,7 @@ type Product = {
   procurementSources: { name: string; url: string }[];
 };
 
-const PRODUCTS: Product[] = [
-  {
-    fullLabel: "Sika Australia",
-    brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/corrosion-inhibitorssacrificialanodes/sika-ferrogard-903plus.html",
-    accentColor: "#be123c",
-    name: "Sika FerroGard-903 Plus — Migrating Corrosion Inhibitor (Concrete Impregnation)",
-    descriptionLine: "Surface-applied migrating corrosion inhibitor (MCI) applied to the concrete surface — penetrates concrete to reach reinforcing steel and form a protective layer — NOT applied directly to bare rebar — applied by brush, roller, or spray. Sold in 20 L pail and 205 L drum",
-    productType: "Surface-applied migrating corrosion inhibitor — brush/roller/spray to concrete surface — NOT a direct rebar primer",
-    filterTags: ["MCI-corrosion-inhibitor", "Brush-applied", "St2-surface", "Carbonation", "Chloride"],
-    techChips: [
-      { label: "MCI — applied to concrete surface, not bare rebar", cls: "bg-rose-100 text-rose-800" },
-      { label: "Penetrates concrete to reach steel", cls: "bg-green-50 text-green-700" },
-      { label: "Migrates into concrete", cls: "bg-slate-100 text-slate-700" },
-      { label: "Carbonation and chloride environments", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "Sika FerroGard-903 Plus is a surface-applied mixed corrosion inhibitor applied to the concrete surface (not directly to bare rebar) — it penetrates the concrete and forms a protective monomolecular layer on the surface of the reinforcing steel (Sika AU TDS). It is based on organic compounds. It is NOT applied as a direct rebar primer to cleaned exposed steel — it is applied by brush, roller, low pressure, or airless spray to the concrete surface and penetrates through the concrete to reach the steel. It is suitable for method 11.3 (applying inhibitor to the concrete) defined by EN 1504-9 for Principle 11 (anodic control). Corrosion protection is said to increase service life by up to 15 years as part of a complete Sika concrete repair and protection system. After the last coat, the surface becomes mat then undergoes low-pressure water cleaning; the day after application, pressure washing (~10 MPa) removes soluble salts. Application rate is approximately 0.50 kg/m² (~480 ml/m²). Sold in 20 L pail and 205 L drum. For direct rebar primer applications (applied to cleaned bare rebar), Sika AU offers Ferrogard zinc-based sacrificial anodes (FerroGard-710 Reba, FerroGard-720 Reba) — these are discrete zinc anodes fixed to rebar, not a brush-applied primer. TODO: owner confirm — if a brush-applied direct rebar primer is required for the Sika system, confirm the correct current Sika AU product name with Sika technical.",
-    technicalProperties: [
-      "Surface-applied MCI — applied to concrete surface by brush, roller, or spray — penetrates concrete to reach reinforcing steel",
-      "Forms protective monomolecular layer on steel surface — organic compound chemistry",
-      "Application rate: approximately 0.50 kg/m² (~480 ml/m²) — confirm from Sika AU TDS for project conditions",
-      "Packaging: 20 L pail and 205 L drum — confirmed on aus.sika.com",
-      "Suitable for EN 1504-9 Principle 11, method 11.3 (applying inhibitor to the concrete)",
-      "NOT a direct rebar primer — applied to concrete surface, not to bare exposed rebar",
-    ],
-    limitations: [
-      "NOT applied directly to bare rebar — this is a surface-applied concrete impregnation — the product reaches the steel by penetrating through the concrete matrix",
-      "Not suitable where rebar is exposed and concrete cover has been fully removed — for bare rebar, specify a zinc-rich or epoxy zinc-rich rebar primer instead",
-      "After last coat application, surface must reach mat condition, followed by low-pressure water cleaning; pressure washing (~10 MPa) required the next day — confirm full application procedure from Sika AU TDS",
-      "The migration mechanism means the product is suited for structures where concrete cover is intact but corrosion risk is present — confirm suitability for specific repair scenario with Sika Australia",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — nationally via trade", url: "https://aus.sika.com" },
-      { name: "Parchem Construction Supplies — nationally", url: "https://www.parchem.com.au" },
-      { name: "Concrete repair trade suppliers nationally", url: "https://aus.sika.com" },
-    ],
-  },
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
@@ -147,40 +113,6 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Parchem Construction Supplies",
-    brandUrl: "https://www.parchem.com.au",
-    accentColor: "#92400e",
-    name: "Parchem Zinc Primer — General Purpose Rebar Primer",
-    descriptionLine: "Single-component cementitious zinc-rich rebar primer — general purpose for standard spalling repairs not in aggressive marine or coastal environments",
-    productType: "Single-component cementitious zinc-rich primer — general-purpose rebar primer",
-    filterTags: ["Zinc-rich", "Brush-applied", "St2-surface", "Carbonation"],
-    techChips: [
-      { label: "Single-component", cls: "bg-amber-800 text-white" },
-      { label: "Cementitious zinc-rich", cls: "bg-slate-100 text-slate-700" },
-      { label: "Brush apply — 2 coats", cls: "bg-green-50 text-green-700" },
-      { label: "General purpose", cls: "bg-slate-100 text-slate-700" },
-    ],
-    systemDescription:
-      "Parchem zinc primer is a single-component cementitious zinc-rich rebar primer suitable for general-purpose rebar priming in concrete spalling repairs where the environment is not aggressively chloride-contaminated — internal carparks, building interior repairs, and sheltered balconies. The product is mixed with clean water to a slurry consistency and applied to reinforcement cleaned to minimum St 2 (ISO 8501-1) by brush in two full coats. After the second coat has reached touch-dry, the repair mortar is placed over the primed rebar. Available from Parchem Construction Supplies nationally. Single-component products are easier to handle and have no pot life limitations compared to two-component epoxy systems — this makes them practical for small repair crews and repairs with small areas of exposed rebar. For more aggressive environments, upgrade to Fosroc Nitoprime Zincrich (two-component epoxy zinc-rich) or Sika Ferrogard-903+ (migrating corrosion inhibitor).",
-    technicalProperties: [
-      "Single-component — mix with clean water to slurry consistency — no pot life limitation",
-      "Cementitious zinc-rich — zinc particles provide cathodic protection — compatible with cementitious repair mortars",
-      "Two-coat brush application to rebar cleaned to minimum St 2 (ISO 8501-1)",
-      "Suitable for standard carbonation-induced spalling repairs in non-aggressive environments",
-    ],
-    limitations: [
-      "Single-component cementitious zinc-rich primers are not suitable for highly aggressive marine, coastal, or continuously chloride-exposed environments — upgrade to two-component epoxy zinc-rich (Nitoprime Zincrich) for these conditions",
-      "Do not apply to wet rebar — clean and dry rebar surface is required for primer adhesion",
-      "Allow each coat to reach touch-dry before applying the next coat and before placing repair mortar — check from Parchem TDS for minimum dry time at ambient temperature",
-      "Single-component products have shorter shelf life than two-component systems once opened — store sealed and use within the open container life stated on the product label",
-    ],
-    procurementSources: [
-      { name: "Parchem Construction Supplies — nationally", url: "https://www.parchem.com.au" },
-      { name: "Trade concrete repair suppliers nationally", url: "https://www.parchem.com.au" },
-      { name: "Parchem online and branch network nationally", url: "https://www.parchem.com.au" },
-    ],
-  },
-  {
     fullLabel: "Sika",
     brandUrl: "https://www.sika.com.au",
     tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/steel-reinforcmentprimers/sika-monotop-910n.html",
@@ -207,6 +139,37 @@ const PRODUCTS: Product[] = [
       { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
     ],
   },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Mapefer 1K",
+    descriptionLine: "Single-component cementitious corrosion-inhibiting rebar primer — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "Single-component cementitious corrosion-inhibiting rebar primer",
+    filterTags: ["MCI-corrosion-inhibitor", "Brush-applied", "St2-surface", "Carbonation", "Chloride"],
+    techChips: [
+      { label: "Single-component cementitious ", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Mapei Mapefer 1K is a Single-component cementitious corrosion-inhibiting rebar primer. Brush-applied anti-corrosion coating to exposed reinforcement before placing the repair mortar. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
+    technicalProperties: [
+      "Single-component cementitious corrosion-inhibiting rebar primer",
+      "Brush-applied anti-corrosion coating to exposed reinforcement before placing the repair mortar.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
+    ],
+    procurementSources: [
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
+    ],
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -303,6 +266,143 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["application_target", "bare_rebar / concrete_surface", "bare_rebar → zinc-rich rebar primer; concrete_surface (cover intact) → MCI impregnation"],
+    ["environment", "carbonation / chloride_coastal_marine", "chloride_coastal_marine → epoxy zinc-rich preferred; carbonation → single-part zinc-rich ok"],
+    ["surface_prep", "St2 / Sa2", "gate against product minimum cleanliness requirement (ISO 8501-1)"],
+    ["chemistry", "cementitious_zinc / single_part_zinc / epoxy_zinc / mci", "match environment + repair mortar system"],
+    ["mortar_compatibility", "system_match / mismatch", "confirm compatible primer from repair mortar manufacturer"],
+  ],
+  json: {
+    category: "rebar_primers_inhibitors",
+    stage1_gates: {
+      application_target: { allowed: ["bare_rebar", "concrete_surface"], rule: "bare_rebar=zinc-rich primer; concrete_surface=MCI impregnation" },
+      environment: { allowed: ["carbonation", "chloride_coastal_marine"], rule: "chloride_marine=epoxy zinc-rich preferred; carbonation=single-part zinc-rich ok" },
+      surface_prep: { allowed: ["St2", "Sa2"], rule: "match product minimum cleanliness (ISO 8501-1)" },
+      chemistry: { allowed: ["cementitious_zinc", "single_part_zinc", "epoxy_zinc", "mci"], rule: "match environment + repair mortar system" },
+      mortar_compatibility: { allowed: ["system_match", "mismatch"], rule: "confirm compatible primer from mortar manufacturer" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika FerroGard-903 Plus — Migrating Corrosion Inhibitor (Concrete Impregnation)": {
+    rows: [
+      ["application_target", "gate", "concrete_surface (NOT bare rebar)"],
+      ["environment_max", "gate", "chloride/carbonation"],
+      ["surface_prep_min", "gate", "n/a (concrete surface)"],
+      ["coats", "gate", "unconfirmed"],
+      ["chemistry", "tag", "mci"],
+      ["coverage_kg_m2", "rank", "0.50"],
+      ["pot_life_min", "rank", "null (n/a)"],
+      ["pack_size", "meta", "20L pail / 205L drum"],
+      ["compatible_system", "meta", "sika_repair_system"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_ferrogard_903_plus",
+      gates: { application_target: "concrete_surface", environment_max: "chloride_carbonation", surface_prep_min: "n/a", coats: "unconfirmed" },
+      tag: { chemistry: "mci" },
+      rank: { coverage_kg_m2: 0.5, pot_life_min: null },
+      meta: { pack_size: "20L pail / 205L drum", compatible_system: "sika_repair_system", alternative_product: "sika_ferrogard_710/720_reba (anodes for bare rebar)", data_status: "verified", selectable: true, source: "aus.sika.com FerroGard-903 Plus", confirmed_date: null },
+    },
+  },
+  "Ardex BR 10 ZP — Single-Part Zinc-Rich Primer": {
+    rows: [
+      ["application_target", "gate", "bare_rebar"],
+      ["environment_max", "gate", "chloride/carbonation"],
+      ["surface_prep_min", "gate", "St2"],
+      ["coats", "gate", "2"],
+      ["chemistry", "tag", "single_part_zinc"],
+      ["coverage_kg_m2", "rank", "null (unconfirmed)"],
+      ["pot_life_min", "rank", "null (single component)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "ardex_br_340_345"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "ardex_br_10_zp",
+      gates: { application_target: "bare_rebar", environment_max: "chloride_carbonation", surface_prep_min: "St2", coats: "2" },
+      tag: { chemistry: "single_part_zinc" },
+      rank: { coverage_kg_m2: null, pot_life_min: null },
+      meta: { pack_size: null, compatible_system: "ardex_br_340_345", alternative_product: null, data_status: "verified", selectable: true, source: "ardexaustralia.com Ardex BR 10 ZP — full application procedure to confirm", confirmed_date: null },
+    },
+  },
+  "Fosroc Nitoprime Zincrich — Epoxy Zinc-Rich Rebar Primer": {
+    rows: [
+      ["application_target", "gate", "bare_rebar"],
+      ["environment_max", "gate", "chloride_marine"],
+      ["surface_prep_min", "gate", "Sa2 preferred (St2 min)"],
+      ["coats", "gate", "2"],
+      ["chemistry", "tag", "epoxy_zinc"],
+      ["coverage_kg_m2", "rank", "null (unconfirmed)"],
+      ["pot_life_min", "rank", "30-60"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "fosroc_repair_system"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fosroc_nitoprime_zincrich",
+      gates: { application_target: "bare_rebar", environment_max: "chloride_marine", surface_prep_min: "Sa2_preferred_St2_min", coats: "2" },
+      tag: { chemistry: "epoxy_zinc" },
+      rank: { coverage_kg_m2: null, pot_life_min: "30-60" },
+      meta: { pack_size: null, compatible_system: "fosroc_repair_system", alternative_product: null, data_status: "verified", selectable: true, source: "fosroc.com.au Nitoprime Zincrich", confirmed_date: null },
+    },
+  },
+  "Parchem Zinc Primer — General Purpose Rebar Primer": {
+    rows: [
+      ["application_target", "gate", "bare_rebar"],
+      ["environment_max", "gate", "carbonation (not aggressive marine)"],
+      ["surface_prep_min", "gate", "St2"],
+      ["coats", "gate", "2"],
+      ["chemistry", "tag", "cementitious_zinc"],
+      ["coverage_kg_m2", "rank", "null (unconfirmed)"],
+      ["pot_life_min", "rank", "null (single component)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "cementitious_mortars"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "parchem_zinc_primer",
+      gates: { application_target: "bare_rebar", environment_max: "carbonation", surface_prep_min: "St2", coats: "2" },
+      tag: { chemistry: "cementitious_zinc" },
+      rank: { coverage_kg_m2: null, pot_life_min: null },
+      meta: { pack_size: null, compatible_system: "cementitious_mortars", alternative_product: "fosroc_nitoprime_zincrich (aggressive env)", data_status: "verified", selectable: true, source: "parchem.com.au Parchem Zinc Primer", confirmed_date: null },
+    },
+  },
+  "Sika MonoTop-910 N": {
+    rows: [
+      ["application_target", "gate", "bare_rebar"],
+      ["environment_max", "gate", "chloride/carbonation"],
+      ["surface_prep_min", "gate", "St2"],
+      ["coats", "gate", "unconfirmed"],
+      ["chemistry", "tag", "cementitious_anticorrosion"],
+      ["coverage_kg_m2", "rank", "null (unconfirmed)"],
+      ["pot_life_min", "rank", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "sika_monotop_system"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_monotop_910n",
+      gates: { application_target: "bare_rebar", environment_max: "chloride_carbonation", surface_prep_min: "St2", coats: "unconfirmed" },
+      tag: { chemistry: "cementitious_anticorrosion" },
+      rank: { coverage_kg_m2: null, pot_life_min: null },
+      meta: { pack_size: null, compatible_system: "sika_monotop_system", alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sika MonoTop-910 N — coverage/timing to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function RebarPrimersIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -329,6 +429,8 @@ export function RebarPrimersIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Type: active zinc-rich sacrificial (galvanic) vs epoxy barrier vs cementitious polymer-modified vs surface-applied migrating corrosion inhibitor (MCI); zinc content (% by wt, e.g. >80% in dry film) for sacrificial action; number of coats & DFT; recoat/overcoat window before mortar application; compatibility/bond with chosen repair mortar; chloride-contaminated vs carbonation-only environment suitability; incipient-anode (ring/halo) mitigation capability; pot life & application temp; single vs two-component; coverage per kg/m of bar; conformance to EN 1504-7 (reinforcement protection) concept.";
 
 export function RebarPrimersProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -382,139 +484,7 @@ export function RebarPrimersProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 rebar primers — MCI migrating inhibitor, cementitious zinc-rich, epoxy zinc-rich, and general purpose — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of rebar primers for concrete spalling repair. Selection depends on environment and repair mortar compatibility — confirm from manufacturer TDS.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Min. Clean</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Best Use</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap font-medium">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.minclean}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.bestuse}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={REBAR_PRIMER_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Rebar primers & inhibitors" />
     </>
   );
 }

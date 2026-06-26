@@ -1,0 +1,100 @@
+{
+  "section": "magnesite-flooring-deterioration",
+  "flags": [
+    {
+      "subcategory": "Floor Patching Compounds",
+      "name": "Parchem Speed Rep",
+      "reason": "not in AU market",
+      "evidence": "No product named 'Speed Rep' exists in the current Parchem/Fosroc AU catalogue. Parchem's actual rapid cementitious repair mortars are the Renderoc range (Renderoc HB / HB40 / HB70). https://www.fosroc.com.au/product/renderoc-hb40 ; https://www.parchem.com.au/technical-data/"
+    },
+    {
+      "subcategory": "Moisture Suppression Primers",
+      "name": "Mapei Eco Prim T Plus",
+      "reason": "misplaced -> Self Levelling Underlayments",
+      "evidence": "Eco Prim T Plus is a single-component acrylic universal/levelling primer for absorbent and non-absorbent substrates ahead of smoothing/levelling compounds. It is NOT a moisture-suppression DPM (which must be a 2-part epoxy). Belongs with the levelling system, not moisture barriers. https://www.mapei.com/au/en/products-and-solutions/products/detail/eco-prim-t-plus"
+    },
+    {
+      "subcategory": "Moisture Suppression Primers",
+      "name": "Fosroc Nitoprime 28",
+      "reason": "misplaced -> Floor Patching Compounds",
+      "evidence": "Nitoprime 28 is a two-component solvent-containing modified-epoxy bonding primer used with Fosroc repair compounds (Nitomortar HB, Nitocote ET550). It is an adhesion/bonding primer for repair mortars, not a moisture-suppression DPM. https://www.fosroc.com/product/show/nitoprime-28"
+    },
+    {
+      "subcategory": "Moisture Suppression Primers",
+      "name": "Parchem Epirez 510",
+      "reason": "not in AU market",
+      "evidence": "No current Parchem/Epirez product 'Epirez 510' could be verified in the AU catalogue. Current Epirez epoxy primer/sealer offerings carry other codes (e.g. Epirez 123 Primer/Sealer). Conservative flag pending a valid TDS. https://www.parchem.com.au/technical-data/ ; https://www.itwpf.com.au/epirez/technical-data/technical-data-sheets/"
+    },
+    {
+      "subcategory": "Self Levelling Underlayments",
+      "name": "Parchem Flowfill RS",
+      "reason": "not in AU market",
+      "evidence": "No self-levelling floor underlayment named 'Flowfill RS' is listed by Parchem/Fosroc AU. Parchem's actual self-smoothing floor underlayment is Durafloor Leveltop Rapid; 'Flowfill' in the Fosroc range denotes flowable void-fill/grout, not a flooring self-leveller. http://www.parchem.com.au/construction/product/concrete-underlayment-mortars/durafloor-leveltop-rapid/i/92"
+    }
+  ],
+  "recommendations": [
+    {
+      "subcategory": "Floor Grinding Preparation",
+      "brand": "Other / Generic",
+      "name": "Scanmaskin Scan Combiflex 650",
+      "type": "Triple-head planetary diamond grinder",
+      "reason": "Widely used AU contractor-grade planetary grinder for removing old magnesite/adhesive residues and profiling concrete prior to DPM application."
+    },
+    {
+      "subcategory": "Floor Grinding Preparation",
+      "brand": "Other / Generic",
+      "name": "Husqvarna PG 450",
+      "type": "Single-phase diamond floor grinder",
+      "reason": "Common AU-available planetary grinder one step up from the PG 280; suited to larger magnesite removal/preparation areas. https://www.husqvarnaconstruction.com"
+    },
+    {
+      "subcategory": "Floor Patching Compounds",
+      "brand": "Parchem",
+      "name": "Fosroc Renderoc HB40",
+      "type": "Polymer-modified high-build cementitious repair mortar (EN 1504-3 R3)",
+      "reason": "Real current Parchem/Fosroc AU repair mortar to replace the fabricated 'Speed Rep'. https://www.fosroc.com.au/product/renderoc-hb40"
+    },
+    {
+      "subcategory": "Floor Patching Compounds",
+      "brand": "Ardex",
+      "name": "Ardex A 38",
+      "type": "Rapid-set cementitious patching/screed mortar",
+      "reason": "Fast-setting AU patch/screed for filling magnesite removal voids before levelling; complements Feather Finish for deeper fills. https://ardexaustralia.com"
+    },
+    {
+      "subcategory": "Moisture Suppression Primers",
+      "brand": "Mapei",
+      "name": "Mapei Mapeproof Primer",
+      "type": "Two-part epoxy moisture barrier / DPM primer",
+      "reason": "Current Mapei AU epoxy moisture-barrier primer; correct DPM class product for chloride/moisture-laden magnesite slabs (replaces the misplaced acrylic Eco Prim T Plus). https://www.mapei.com/au/en/products-and-solutions/products/detail/mapeproof-primer"
+    },
+    {
+      "subcategory": "Moisture Suppression Primers",
+      "brand": "Mapei",
+      "name": "Mapei Triblock P",
+      "type": "Three-component epoxy-cementitious moisture/DPM primer",
+      "reason": "Epoxy-cementitious DPM primer for damp substrates with high residual humidity; well suited to magnesite-affected slabs. https://www.mapei.com/au/en/products-and-solutions/lines/screeds-and-preparation-of-floor-substrates/category/moisture-barriers"
+    },
+    {
+      "subcategory": "Moisture Suppression Primers",
+      "brand": "Ardex",
+      "name": "Ardex WPM 300",
+      "type": "Two-part epoxy moisture vapour barrier",
+      "reason": "AU-available Ardex epoxy moisture-barrier alternative/back-up to MC Rapid for suppressing high RH/MVER on remediated slabs. https://ardexaustralia.com"
+    },
+    {
+      "subcategory": "Self Levelling Underlayments",
+      "brand": "Parchem",
+      "name": "Parchem Durafloor Leveltop Rapid",
+      "type": "Rapid trowellable/self-smoothing floor levelling underlayment",
+      "reason": "Real current Parchem/Fosroc AU self-levelling underlayment to replace the unverified 'Flowfill RS'. http://www.parchem.com.au/construction/product/concrete-underlayment-mortars/durafloor-leveltop-rapid/i/92"
+    },
+    {
+      "subcategory": "Self Levelling Underlayments",
+      "brand": "Ardex",
+      "name": "Ardex K 55",
+      "type": "Rapid-drying cementitious self-levelling and smoothing compound",
+      "reason": "Current AU Ardex self-leveller suited over moisture-barrier-primed magnesite-remediated slabs. https://ardexaustralia.com/product/ardex-k-55/"
+    }
+  ]
+}

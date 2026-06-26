@@ -16,10 +16,10 @@ export async function POST(request: NextRequest) {
   if (!password) return NextResponse.json({ error: "Password is required." }, { status: 400 });
 
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+  if (!user) return NextResponse.json({ error: "Wrong email or password — please check and try again." }, { status: 401 });
 
   const passwordMatches = await comparePassword(password, user.password_hash);
-  if (!passwordMatches) return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+  if (!passwordMatches) return NextResponse.json({ error: "Wrong email or password — please check and try again." }, { status: 401 });
 
   const ADMIN_ROLES = new Set(["admin", "super_admin", "content_admin", "supplier_manager", "read_only_admin"]);
   if (!user.is_verified && !ADMIN_ROLES.has(user.role)) {

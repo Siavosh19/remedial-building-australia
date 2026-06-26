@@ -42,6 +42,40 @@ type Product = {
 
 const PRODUCTS: Product[] = [
   {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://www.ardexaustralia.com",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-wr-120-fr/",
+    accentColor: "#0369a1",
+    name: "Ardex WR 120 FR",
+    productType: "Fibre-reinforced polymer-modified render",
+    descriptionLine: "Fine-grade, fibre-reinforced, polymer-modified render for internal and external walls — 2–12 mm per coat, spray build-up to 30 mm — non-slump",
+    filterTags: ["Render-repair", "Polymer-modified", "Fibre-reinforced", "Hand-applied", "Vertical", "Base-coat", "Exterior"],
+    techChips: [
+      { label: "Fibre-reinforced render", cls: "bg-sky-100 text-sky-800" },
+      { label: "2–12 mm per coat", cls: "bg-slate-100 text-slate-700" },
+      { label: "Spray build to 30 mm", cls: "bg-amber-50 text-amber-700" },
+      { label: "Internal & external walls", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Ardex WR 120 FR is a fine-grade, fibre-reinforced, polymer-modified render for rendering walls internally and externally at an application thickness from 2–12 mm. When spray applied with an appropriate pump, a build-up of 30 mm can be achieved in one coat. The fibre reinforcement provides excellent non-slump performance and improved crack resistance, and the product is valued for its ease of application.\n\nIt is used for general facade rendering and render reinstatement, and in swimming pool applications where it must be primed, waterproofed, then tiled. Confirm substrate preparation, bonding primer, coverage and the compatible finish/topcoat system from the current Ardex Australia TDS before specifying. Source: ardexaustralia.com product page (ardex-wr-120-fr).",
+    technicalProperties: [
+      "Fine-grade, fibre-reinforced, polymer-modified render — internal and external wall rendering",
+      "Application thickness 2–12 mm per coat; spray-applied build-up to 30 mm in one coat with an appropriate pump",
+      "Fibre reinforcement provides non-slump performance on vertical surfaces and improved crack resistance",
+      "Suitable for swimming pool substrates — prime, waterproof, then tile per the Ardex system",
+      "Ardex Australia — trade supply nationally — confirm current pack size and coverage from TDS",
+    ],
+    limitations: [
+      "Confirm substrate preparation, bonding primer and maximum coat thickness from the current Ardex Australia TDS",
+      "Spray build-up to 30 mm requires an appropriate render pump — confirm equipment and technique with Ardex",
+      "For pool / wet-area use the render must be primed and waterproofed before tiling — the render is not a waterproofing layer",
+      "Confirm current product specification, finish/topcoat compatibility and compliance with Ardex Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "Ardex Australia — trade supply nationally", url: "https://www.ardexaustralia.com" },
+    ],
+  },
+  {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
     accentColor: "#ef4444",

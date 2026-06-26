@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 // Set max duration — increase to 300 on Vercel Pro if needed
 export const maxDuration = 60;

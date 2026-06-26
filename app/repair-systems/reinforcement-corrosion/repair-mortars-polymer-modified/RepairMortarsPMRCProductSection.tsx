@@ -8,8 +8,11 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { REF_CARDS } from "../../concrete-spalling/repair-mortars-polymer-modified/referenceCardData";
 
 type FilterTag =
   | "EN-1504-R4"
@@ -167,6 +170,37 @@ const PRODUCTS: Product[] = [
       { name: "Mapei Australia — national trade supply", url: "https://www.mapei.com/au" },
     ],
   },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Mapegrout T40",
+    descriptionLine: "Polymer-modified structural repair mortar (EN 1504-3 R3) — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "Polymer-modified structural repair mortar (EN 1504-3 R3)",
+    filterTags: ["EN-1504-R3", "1-component", "Thixotropic", "Vertical", "Corrosion-repair"],
+    techChips: [
+      { label: "Polymer-modified structural re", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Mapei Mapegrout T40 is a Polymer-modified structural repair mortar (EN 1504-3 R3). EN 1504-3 R3 thixotropic structural repair mortar for hand-applied patch repair on vertical surfaces. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
+    technicalProperties: [
+      "Polymer-modified structural repair mortar (EN 1504-3 R3)",
+      "EN 1504-3 R3 thixotropic structural repair mortar for hand-applied patch repair on vertical surfaces.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
+    ],
+    procurementSources: [
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
+    ],
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -262,6 +296,109 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["defect_type", "corrosion_spalling / honeycombing / active_crack / cosmetic_only", "corrosion_spalling → this category; active_crack → not_suitable (rigid); cosmetic_only → fine-finish grade"],
+    ["structural_demand", "structural / non_structural", "structural → EN 1504-3 R3/R4 grade"],
+    ["exposure", "sheltered / moderate / coastal_high_chloride", "coastal_high_chloride → confirm chloride-resistant grade"],
+    ["element_orientation", "horizontal / vertical / overhead", "vertical/overhead → thixotropic grade required"],
+    ["substrate_condition", "ssd_porous / dense_smooth / exposed_rebar", "exposed_rebar → rebar primer first; dense_smooth → epoxy bond coat"],
+  ],
+  json: {
+    category: "repair_mortars_polymer_modified",
+    stage1_gates: {
+      defect_type: { allowed: ["corrosion_spalling", "honeycombing", "active_crack", "cosmetic_only"], rule: "corrosion_spalling=suitable; active_crack=not_suitable; cosmetic_only=fine-finish grade" },
+      structural_demand: { allowed: ["structural", "non_structural"], rule: "structural=EN1504-3 R3/R4" },
+      exposure: { allowed: ["sheltered", "moderate", "coastal_high_chloride"], rule: "coastal_high_chloride=confirm chloride-resistant grade" },
+      element_orientation: { allowed: ["horizontal", "vertical", "overhead"], rule: "vertical/overhead=thixotropic grade" },
+      substrate_condition: { allowed: ["ssd_porous", "dense_smooth", "exposed_rebar"], rule: "exposed_rebar=rebar primer first; dense_smooth=epoxy bond coat" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika MonoTop-412N": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/overhead"],
+      ["substrate_prep", "gate", "ssd_porous + rebar primer (Armatec)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "50"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_1comp"],
+      ["en1504_class", "tag", "R4"],
+      ["primer", "meta", "sikatop_armatec_110"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sika_monotop_412n", gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/overhead", substrate_prep: "ssd_porous_rebar_primer" }, tag: { chemistry: "polymer_modified_1comp", en1504_class: "R4" }, rank: { min_layer_mm: null, max_layer_mm: 50, compressive_28d_mpa: null }, meta: { primer: "sikatop_armatec_110", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sika MonoTop-412N — EN 1504-3 R4, thixotropic, up to 50mm/lift", confirmed_date: null } },
+  },
+  "Ardex BR 345": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/overhead"],
+      ["substrate_prep", "gate", "ssd_porous + rebar primer (BR 10 ZP)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_2comp"],
+      ["en1504_class", "tag", "unconfirmed (R3 per type, confirm)"],
+      ["primer", "meta", "ardex_br_10_zp"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "ardex_br_345", gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/overhead", substrate_prep: "ssd_porous_rebar_primer" }, tag: { chemistry: "polymer_modified_2comp", en1504_class: "unconfirmed" }, rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null }, meta: { primer: "ardex_br_10_zp", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "ardex.com.au Ardex BR 345 — 2-component, thixotropic; EN class/thickness to confirm", confirmed_date: null } },
+  },
+  "Fosroc Renderoc HB": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/overhead"],
+      ["substrate_prep", "gate", "ssd_porous + Nitoprime Zincrich + Nitobond EP"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_thixo"],
+      ["en1504_class", "tag", "R3/R4 (confirm grade)"],
+      ["primer", "meta", "nitoprime_zincrich + nitobond_ep"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "fosroc_renderoc_hb", gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/overhead", substrate_prep: "ssd_porous_rebar_primer" }, tag: { chemistry: "polymer_modified_thixo", en1504_class: "R3/R4" }, rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null }, meta: { primer: "nitoprime_zincrich+nitobond_ep", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "parchem.com.au Fosroc Renderoc HB — confirm grade/EN class (HB/HB60/HBS differ)", confirmed_date: null } },
+  },
+  "Mapei Mapegrout Thixotropic": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/overhead"],
+      ["substrate_prep", "gate", "ssd_porous + rebar primer (Mapefer)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_1comp_thixo"],
+      ["en1504_class", "tag", "R3"],
+      ["primer", "meta", "mapefer_1k"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "mapei_mapegrout_thixotropic", gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/overhead", substrate_prep: "ssd_porous_rebar_primer" }, tag: { chemistry: "polymer_modified_1comp_thixo", en1504_class: "R3" }, rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null }, meta: { primer: "mapefer_1k", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "mapei.com/au Mapegrout Thixotropic — EN 1504-3 R3", confirmed_date: null } },
+  },
+};
+
 export function RepairMortarsPMRCIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -288,6 +425,8 @@ export function RepairMortarsPMRCIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "EN 1504-3 class (structural R3/R4 vs non-structural R1/R2); compressive, flexural and tensile bond strength (MPa, ≥1.5 for R3 / ≥2.0 for R4 per EN 1542); minimum and maximum layer thickness per lift and maximum total build; 1C vs 2C (2C generally lower E-modulus/better flexibility); shrinkage class (low-shrink/shrinkage-compensated) and cracking resistance; initial/final set and overcoat/recoat time; elastic modulus and thermal-expansion compatibility with the parent concrete; chloride/sulfate resistance and carbonation resistance; bonding-slurry/primer requirement and SSD prep; rebar-priming/corrosion-protection compatibility (EN 1504-7); thixotropy for overhead/vertical application; application and substrate temperature range";
 
 export function RepairMortarsPMRCProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -341,141 +480,7 @@ export function RepairMortarsPMRCProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — polymer-modified repair mortars for reinforcement corrosion repair — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Polymer-modified repair mortars for reinforcement corrosion repair. Confirm all selections from current manufacturer TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">EN 1504-3 class</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Parts</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">System primer</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Strength</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.class}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.parts}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.primer}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.strength}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={REF_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Polymer-modified repair mortars" />
     </>
   );
 }

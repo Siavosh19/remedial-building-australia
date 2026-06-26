@@ -2,7 +2,9 @@
 
 import { useState, useRef } from "react";
 import { Layers, SquareStack, Ruler, ExternalLink, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, FileText, BookOpen } from "lucide-react";
-import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle, DataNote } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { INJECTION_EPOXY_CARDS } from "./injectionEpoxyData";
 
 type FilterTag =
   | "Structural"
@@ -28,6 +30,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -35,9 +38,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
     accentColor: "#0369a1",
-    name: "TODO: owner confirm — Sika Injection-451 is not listed on the current aus.sika.com product range; current AU structural epoxy injection product appears to be Sikadur-52 AU — confirm correct product name",
-    descriptionLine: "TODO: owner confirm — specs below are for Sika Injection-451 which is not confirmed on current aus.sika.com range; Sikadur-52 AU (current AU product) has ~500 mPa·s at 23°C, cracks ≥0.3 mm, tensile bond ≥8 MPa — verify and update",
+    name: "Sika Sikadur-52 AU — Low-Viscosity Structural Epoxy Injection Resin",
+    descriptionLine: "2-component low-viscosity epoxy injection resin — structural reinstatement of dormant, dry cracks",
     productType: "2-component low-viscosity epoxy injection resin — structural — Sika Australia",
+    dataNote: "Owner to confirm — Sika Injection-451 (the product these specs were originally written for) is not listed on the current aus.sika.com range; the current AU structural epoxy injection product appears to be Sikadur-52 AU (~500 mPa·s at 23°C, cracks ≥0.3 mm, tensile bond ≥8 MPa on concrete, compressive strength ≥70 MPa, pot life ~45 min at 20°C, 3:1 mix by volume). Confirm the correct product name and all specs against the current Sika Australia TDS before publishing.",
     filterTags: ["Structural", "Low-Viscosity", "2-Component", "Dormant-Only", "Dry-Only", "High-Strength"],
     techChips: [
       { label: "TODO: owner confirm — viscosity (Inj-451 not on current AU range)", cls: "bg-sky-100 text-sky-800" },
@@ -69,9 +73,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Fosroc / Parchem",
     brandUrl: "https://www.parchem.com.au",
     accentColor: "#15803d",
-    name: "TODO: owner confirm — Fosroc Concresive 1414 is not listed on the current fosroc.com.au product range; current AU Fosroc epoxy injection product is Nitofill LV — confirm correct product name and update all specs",
-    descriptionLine: "TODO: owner confirm — Concresive 1414 not found on fosroc.com.au (June 2026); Fosroc AU current epoxy injection product is Nitofill LV (low viscosity dual cartridge epoxy, 450 mL twin cartridge) — verify specs from current Fosroc AU TDS",
-    productType: "2-component ultra-low viscosity epoxy injection resin — fine crack structural repair — Fosroc / Parchem Australia",
+    name: "Fosroc Nitofill LV — Low-Viscosity Epoxy Injection Resin for Fine Cracks",
+    descriptionLine: "2-component low-viscosity epoxy injection resin — fine crack structural repair — 450 mL twin cartridge",
+    productType: "2-component low-viscosity epoxy injection resin — fine crack structural repair — Fosroc / Parchem Australia",
+    dataNote: "Owner to confirm — Fosroc Concresive 1414 (the product these specs were originally written for) is not found on the current fosroc.com.au range; the current Fosroc Australia low-viscosity epoxy injection product is Nitofill LV (450 mL twin cartridge or 15 L pack). Confirm the correct product name and replace all viscosity, pot life, minimum crack width, compressive strength, and tensile bond values from the current Nitofill LV TDS before publishing.",
     filterTags: ["Structural", "Low-Viscosity", "2-Component", "Dormant-Only", "Dry-Only", "High-Strength", "Fine-Crack"],
     techChips: [
       { label: "TODO: owner confirm — viscosity (Concresive 1414 not on current AU range)", cls: "bg-emerald-100 text-emerald-800" },
@@ -103,9 +108,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
     accentColor: "#dc2626",
-    name: "TODO: owner confirm — Mapei Mapeject 52 is not listed on the current mapei.com/au product range; current Mapei AU epoxy injection product is Epojet (or Epojet LV for micro-cracks) — confirm correct product name and update all specs",
-    descriptionLine: "TODO: owner confirm — Mapeject 52 not found on mapei.com/au (June 2026); Mapei AU current epoxy injection products are Epojet (pot life ~40 min at 23°C, EN 1504-5) and Epojet LV (very low viscosity, pot life ~35 min at 23°C) — verify specs from current Mapei AU TDS",
+    name: "Mapei Epojet — Low-Viscosity Structural Epoxy Injection Resin",
+    descriptionLine: "2-component low-viscosity epoxy injection resin — structural crack repair — EN 1504-5",
     productType: "2-component low-viscosity epoxy injection resin — structural crack repair — Mapei Australia",
+    dataNote: "Owner to confirm — Mapei Mapeject 52 (the product these specs were originally written for) is not found on the current mapei.com/au range; the current Mapei Australia epoxy injection products are Epojet (superfluid, pot life ~40 min at 23°C, EN 1504-5/EN 1504-6) and Epojet LV (very low viscosity, pot life ~35 min at 23°C). Confirm the correct product name (and the matched port adhesive — Eporip Turbo per TDS refs, not Mapegrout Rapido) and replace all specs from the current Mapei Australia Epojet TDS before publishing.",
     filterTags: ["Structural", "Low-Viscosity", "2-Component", "Dormant-Only", "Dry-Only", "High-Strength"],
     techChips: [
       { label: "TODO: owner confirm — viscosity (Mapeject 52 not on current AU range)", cls: "bg-red-100 text-red-800" },
@@ -137,9 +143,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
     accentColor: "#7c3aed",
-    name: "TODO: owner confirm — Ardex FK 45 is not listed on the current ardexaustralia.com product range; current AU Ardex epoxy crack injection products are RA 142 (super low viscosity, working time 20 min, cracks ≤3 mm) and RA 144 (low viscosity, cracks 3–6 mm) — confirm correct product name and update all specs",
-    descriptionLine: "TODO: owner confirm — FK 45 not found on ardexaustralia.com (June 2026); Ardex AU current injection products are RA 142 (super low viscosity, 470 mL dual cartridge, 10–35°C) and RA 144 (low viscosity, 470 mL, 3–6 mm cracks) — verify specs from current Ardex AU TDS",
+    name: "Ardex RA 142 / RA 144 — Low-Viscosity Epoxy Crack Injection Resins",
+    descriptionLine: "2-component low-viscosity epoxy injection resins — RA 142 for hairline to fine cracks, RA 144 for 3–6 mm cracks — 470 mL dual cartridge",
     productType: "2-component low-viscosity epoxy injection and void-filling resin — Ardex Australia",
+    dataNote: "Owner to confirm — Ardex FK 45 (the product these specs were originally written for) is not found on the current ardexaustralia.com range; the current Ardex Australia epoxy crack injection products are RA 142 (super low viscosity, 470 mL dual cartridge, working time 20 min, 10–35°C, hairline to fine cracks) and RA 144 (low viscosity, 470 mL, 3–6 mm cracks and masonry). Confirm the correct product name, whether honeycombed void filling is in scope, and replace all mix ratio, pot life, compressive strength, and minimum crack width values from the current Ardex Australia RA 142 / RA 144 TDS before publishing.",
     filterTags: ["Structural", "2-Component", "Dormant-Only", "Dry-Only", "High-Strength", "Dual-Use"],
     techChips: [
       { label: "TODO: owner confirm — mix ratio (FK 45 not on current AU range)", cls: "bg-violet-100 text-violet-800" },
@@ -165,6 +172,68 @@ const PRODUCTS: Product[] = [
       { name: "Ardex Australia — national trade supply", url: "https://www.ardex.com.au" },
     ],
   },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Epojet LV",
+    descriptionLine: "Very-low-viscosity 2-component epoxy injection resin — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "Very-low-viscosity 2-component epoxy injection resin",
+    filterTags: ["Structural", "Low-Viscosity", "2-Component", "Fine-Crack"],
+    techChips: [
+      { label: "Very-low-viscosity 2-component", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Mapei Epojet LV is a Very-low-viscosity 2-component epoxy injection resin. Very-low-viscosity structural epoxy for injecting fine dormant cracks, including into slightly damp substrates. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
+    technicalProperties: [
+      "Very-low-viscosity 2-component epoxy injection resin",
+      "Very-low-viscosity structural epoxy for injecting fine dormant cracks, including into slightly damp substrates.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
+    ],
+    procurementSources: [
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
+    ],
+  },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika Sikadur-52 LP",
+    descriptionLine: "Long-pot-life low-viscosity 2-component epoxy injection resin — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "Long-pot-life low-viscosity 2-component epoxy injection resin",
+    filterTags: ["Structural", "Low-Viscosity", "2-Component", "Fine-Crack"],
+    techChips: [
+      { label: "Long-pot-life low-viscosity 2-", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Sika Sikadur-52 LP is a Long-pot-life low-viscosity 2-component epoxy injection resin. Long-pot-life low-viscosity structural epoxy for injecting fine to medium dormant cracks in larger sections. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
+    technicalProperties: [
+      "Long-pot-life low-viscosity 2-component epoxy injection resin",
+      "Long-pot-life low-viscosity structural epoxy for injecting fine to medium dormant cracks in larger sections.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
+    ],
+    procurementSources: [
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
+    ],
+  }
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -258,6 +327,8 @@ export function InjectionResinsEpoxyRigidIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Viscosity (mPa·s — low for fine cracks; match to crack width, typ. ≥0.2–0.3 mm) & penetration capacity; cured compressive/tensile/flexural strength & E-modulus (must monolithically restore structural capacity — for DORMANT cracks only, EN 1504-5); bond/adhesion to concrete (MPa); damp/moisture tolerance of substrate (most epoxies need dry — confirm); gel/pot life & full cure time at temperature; mix ratio & application temp range; injection pressure & port spacing; shrinkage (low); chemical resistance; verify NOT for active/moving cracks (use flexible PU there).";
+
 export function InjectionResinsEpoxyRigidProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -306,116 +377,7 @@ export function InjectionResinsEpoxyRigidProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — epoxy rigid injection resins — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll to view all</span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
-          </div>
-        </div>
-
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of epoxy rigid injection resins. Confirm all product selections against the current manufacturer TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Viscosity</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Min crack width</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Bond / strength</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Pot life</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Structural?</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.viscosity}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.minCrack}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.tensileStrength}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.potLife}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.structural}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={INJECTION_EPOXY_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Rigid epoxy injection resins" />
     </>
   );
 }

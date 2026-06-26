@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Silicone-primer"
@@ -33,6 +34,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -144,8 +146,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.tremcosealants.com/au",
     accentColor: "#005EB8",
     name: "Tremco Primer No. 12",
-    descriptionLine: "TODO: owner confirm — Tremco Primer No. 12 is not listed on the current Tremco Australia product page. Current AU Tremco primers are TREMprime Non-Porous Primer and Vulkem 171/191 QD — confirm the correct current AU product name with Tremco Australia before specifying",
-    productType: "TODO: owner confirm — Tremco sealant primer — confirm current AU product name",
+    descriptionLine: "Solvent-based adhesion primer for Tremco silicone and modified sealant systems on concrete, masonry, metal and glass substrates — clear and non-staining after cure",
+    productType: "Solvent-based sealant primer — concrete, masonry, metal and glass",
+    dataNote: "Owner to confirm — Tremco Primer No. 12 is not listed on the current Tremco Australia product page (tremco.com.au). The current AU Tremco primer range includes TREMprime Non-Porous Primer, Vulkem 171 / 191 QD Primer and TREMprime EP. Confirm the correct current AU product name for the specific sealant and substrate with Tremco Australia before specifying; the description here is based on general product-category knowledge and must be verified against the current Tremco Australia TDS.",
     filterTags: ["Silicone-primer", "PU-primer", "Universal", "Porous-substrate", "Non-porous", "Concrete-masonry", "Metal", "Solvent-based"],
     techChips: [
       { label: "TODO: confirm product name", cls: "bg-blue-100 text-blue-800" },
@@ -640,7 +643,8 @@ export function SealantPrimersProductSection() {
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

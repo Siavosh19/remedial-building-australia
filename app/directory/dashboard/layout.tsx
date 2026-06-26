@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import DashboardNav from "@/components/directory/DashboardNav";
+import { planLabel } from "@/lib/plans";
 
 
 const STATUS_COLOR: Record<string, string> = {
@@ -23,7 +24,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   if (user.role === "admin") redirect("/directory/admin");
   if (!company) redirect("/directory/signup/company");
 
-  const planLabel = company.plan_type === "featured" ? "Featured Profile" : company.plan_type === "claimed" ? "Claimed Profile" : "Basic Listing";
+  const planDisplay = planLabel(company.plan_type);
   const statusCls = STATUS_COLOR[company.plan_type] ?? "bg-slate-100 text-slate-600";
 
   return (
@@ -40,7 +41,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           </div>
           <div className="flex items-center gap-3">
             <span className={`rounded-full px-3 py-1 text-sm font-bold tracking-wide ${statusCls}`}>
-              {planLabel}
+              {planDisplay}
             </span>
             <a
               href={`/directory/company/${company.slug}`}
@@ -77,15 +78,19 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

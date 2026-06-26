@@ -66,9 +66,16 @@ function extractFilterTags(text) {
 
 function parseProductsFromFile(filePath) {
   const content = fs.readFileSync(filePath, "utf-8");
-  if (!content.includes("const PRODUCTS")) return [];
+  if (!content.includes("fullLabel:")) return [];
 
-  const arrayContent = content.slice(content.indexOf("const PRODUCTS"));
+  // Scan from the first `Product[]` array declaration to the end of the file so
+  // pages that use multiple or renamed arrays (e.g. POLYMER_PRODUCTS,
+  // EPOXY_PRODUCTS, GROUT_PRODUCTS) are captured — not only `const PRODUCTS`.
+  // Starting at the array declaration skips the `type Product = { fullLabel }`
+  // definition; if no typed array is found we fall back to the whole file (the
+  // type-def segment is filtered out later because it has no quoted values).
+  const arrStart = content.indexOf(": Product[]");
+  const arrayContent = arrStart === -1 ? content : content.slice(arrStart);
   const positions = [];
   let from = 0;
   while (true) {
@@ -82,7 +89,14 @@ function parseProductsFromFile(filePath) {
     const end = i + 1 < positions.length ? positions[i + 1] : arrayContent.length;
     const seg = arrayContent.slice(start, end);
     const fullLabel = extractStringField(seg, "fullLabel");
-    const name = extractStringField(seg, "name");
+    let name = extractStringField(seg, "name");
+    // Defensive: never let an unresolved "— TODO …" caveat leak into the index
+    // name. Strip a dash-delimited TODO suffix only when a real product name
+    // precedes it (whole-TODO names, which shouldn't exist, are left intact).
+    if (name) {
+      const m = name.match(/^(.*?)\s*[—–-]\s*TODO[:\s]/i);
+      if (m && m[1].trim().length >= 3) name = m[1].trim();
+    }
     const productType = extractStringField(seg, "productType");
     const filterTags = extractFilterTags(seg);
     if (!name || !fullLabel) return null;

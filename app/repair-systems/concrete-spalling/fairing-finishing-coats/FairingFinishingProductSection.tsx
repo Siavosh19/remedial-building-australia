@@ -1,11 +1,14 @@
 "use client";
 import { useState, useRef } from "react";
 import { CheckCircle, BookOpen, ExternalLink, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
+import { AISelectionStage1, AISelectionStage2 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { FAIRING_FINISHING_CARDS } from "./fairingFinishingData";
 
 type FilterTag = "Fairing-coat" | "Finishing-coat" | "Cementitious" | "Pre-bagged" | "Hand-applied" | "Westox" | "Fine-finish";
 type Product = { fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string; name: string; descriptionLine: string; productType: string; filterTags: FilterTag[]; techChips: { label: string; cls: string }[]; systemDescription: string; technicalProperties: string[]; limitations: string[]; procurementSources: { name: string; url: string }[] };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Westox",
     brandUrl: "https://www.westox.com.au",
@@ -28,6 +31,68 @@ const PRODUCTS: Product[] = [
     ],
     procurementSources: [{ name: "Westox — contact for trade supply", url: "https://www.westox.com.au" }],
   },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Renderoc FC",
+    descriptionLine: "Cementitious fairing coat (<=3 mm) for fair-faced finish — confirm current specification and Australian availability with Fosroc technical before specifying",
+    productType: "Cementitious fairing coat (<=3 mm) for fair-faced finish",
+    filterTags: ["Fairing-coat", "Finishing-coat", "Cementitious", "Pre-bagged", "Hand-applied", "Fine-finish"],
+    techChips: [
+      { label: "Cementitious fairing coat", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fosroc — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Fosroc Renderoc FC is a Cementitious fairing coat (<=3 mm) for fair-faced finish. Thin cosmetic fairing coat to blowhole-fill and level a completed structural repair before a protective coating. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Fosroc technical before specifying. TODO: verify specific performance figures from the current Fosroc TDS.",
+    technicalProperties: [
+      "Cementitious fairing coat (<=3 mm) for fair-faced finish",
+      "Thin cosmetic fairing coat to blowhole-fill and level a completed structural repair before a protective coating.",
+      "Confirm key performance values (strength / coverage / application) from the current Fosroc TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Fosroc",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Fosroc technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Fosroc",
+    ],
+    procurementSources: [
+      { name: "Fosroc — Australian trade supply", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Mapefinish",
+    descriptionLine: "Two-component cementitious fairing / finishing coat — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "Two-component cementitious fairing / finishing coat",
+    filterTags: ["Fairing-coat", "Finishing-coat", "Cementitious", "Pre-bagged", "Hand-applied", "Fine-finish"],
+    techChips: [
+      { label: "Two-component cementitious fai", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Mapei Mapefinish is a Two-component cementitious fairing / finishing coat. Two-component skim coat for fine finishing and levelling of repaired concrete before coating. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
+    technicalProperties: [
+      "Two-component cementitious fairing / finishing coat",
+      "Two-component skim coat for fine finishing and levelling of repaired concrete before coating.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
+    ],
+    procurementSources: [
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
+    ],
+  }
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [{ id: "Fairing-coat", label: "Fairing coat" }, { id: "Finishing-coat", label: "Finishing coat" }, { id: "Fine-finish", label: "Fine finish" }, { id: "Cementitious", label: "Cementitious" }, { id: "Pre-bagged", label: "Pre-bagged" }];
@@ -50,9 +115,59 @@ function CollapsibleDescription({ text }: { text: string }) {
   return (<div><p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p><button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button></div>);
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["function", "cosmetic_profiling / structural_repair", "cosmetic_profiling → this category; structural_repair → requires_alternative (repair mortar)"],
+    ["substrate", "structurally_repaired_cured / unrepaired", "unrepaired → not_suitable (complete structural repair first)"],
+    ["thickness", "thin_section / build_up", "thin-section only; build-up → use repair mortar"],
+    ["chemistry", "cementitious / polymer", "match base repair + coating system"],
+    ["finish_intent", "for_coating / exposed", "confirm finish is compatible with specified topcoat"],
+  ],
+  json: {
+    category: "fairing_finishing_coats",
+    stage1_gates: {
+      function: { allowed: ["cosmetic_profiling", "structural_repair"], rule: "cosmetic_profiling=suitable; structural_repair=requires_alternative" },
+      substrate: { allowed: ["structurally_repaired_cured", "unrepaired"], rule: "unrepaired=not_suitable" },
+      thickness: { allowed: ["thin_section", "build_up"], rule: "thin-section only; build_up=repair mortar" },
+      chemistry: { allowed: ["cementitious", "polymer"], rule: "match base repair + coating system" },
+      finish_intent: { allowed: ["for_coating", "exposed"], rule: "confirm finish compatible with topcoat" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Westox Plastalite Fairing Coat Part A 15kg": {
+    rows: [
+      ["function", "gate", "cosmetic_profiling"],
+      ["structural", "gate", "non_structural"],
+      ["substrate_target", "gate", "structurally_repaired_cured"],
+      ["thickness", "gate", "thin_section"],
+      ["chemistry", "tag", "cementitious_fine_finish"],
+      ["max_thickness_mm", "rank", "null (unconfirmed)"],
+      ["pack_size", "meta", "15kg (Part A; Part B TBC)"],
+      ["compatible_system", "meta", "westox_repair (confirm)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "westox_plastalite_fairing_coat_a",
+      gates: { function: "cosmetic_profiling", structural: "non_structural", substrate_target: "structurally_repaired_cured", thickness: "thin_section" },
+      tag: { chemistry: "cementitious_fine_finish" },
+      rank: { max_thickness_mm: null },
+      meta: { pack_size: "15kg", compatible_system: "westox_repair", alternative_product: null, data_status: "verified", selectable: true, source: "westox.com.au Westox Plastalite Fairing Coat Part A — Part B requirement to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function FairingFinishingIntroSection() {
-  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Fairing &amp; finishing coats</h3></div><p className="text-sm leading-7 text-slate-600">Fairing and finishing coats are thin-section cementitious products applied over structurally repaired concrete to restore surface texture and profile, filling minor surface imperfections, bug holes, and form face irregularities. They are cosmetic finishing layers, not structural repair products. Westox Plastalite Fairing Coat Part A is a fairing coat for concrete repair finishing. Confirm current specifications with Westox technical before specifying.</p></div>);
+  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Fairing &amp; finishing coats</h3></div><p className="text-sm leading-7 text-slate-600">Fairing and finishing coats are thin-section cementitious products applied over structurally repaired concrete to restore surface texture and profile, filling minor surface imperfections, bug holes, and form face irregularities. They are cosmetic finishing layers, not structural repair products, selected on maximum thickness, fineness of finish and overcoat compatibility.</p></div>);
 }
+
+const DESIGN_CRITERIA = "Max applied thickness (typ. 1\u20133 mm feather-edge to fill bug-holes/pinholes) & min layer; bond strength to parent concrete & repair mortar (MPa, EN 1504-3 R-class context); compatibility/E-modulus & thermal match with substrate and underlying repair mortar; shrinkage class (low/non-shrink); carbonation resistance & permeability (suitability as part of EN 1504-2 protection); polymer-modified for flexibility & adhesion; surface finish/closed texture for subsequent coating; open time & overcoat window before protective coating; primer/SSD prep; application temperature range.";
 
 export function FairingFinishingProductSection() {
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -61,22 +176,6 @@ export function FairingFinishingProductSection() {
   const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
   const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
   return (
-    <div>
-      <div className="mb-5 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">1 product — Westox — fairing and finishing coat systems</p></div></div>
-      <div className="mb-5 flex flex-wrap items-center gap-2"><span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>{FILTER_DEFS.map((f) => { const active = activeFilters.has(f.id); return <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>; })}{activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}</div>
-      <div className="mb-4 flex items-center justify-between"><span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""}</span><div className="flex items-center gap-2"><button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button><button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button></div></div>
-      <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-        {visibleProducts.map((product) => (
-          <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-              <div className="border-b border-slate-100 bg-slate-50 px-5 py-4"><div className="flex items-center justify-between gap-2"><span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span><div className="flex shrink-0 items-center gap-1"><a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a></div></div><h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3><p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p><CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} /></div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4"><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p><CollapsibleDescription text={product.systemDescription} /></div>
-              <div className="space-y-3 px-5 py-4"><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div></div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <AutoProductReference products={PRODUCTS} cards={FAIRING_FINISHING_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Fairing & finishing coats" />
   );
 }

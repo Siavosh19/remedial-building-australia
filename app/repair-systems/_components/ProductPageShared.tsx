@@ -118,4 +118,91 @@ export function TechCard({ icon, title, items, style }: { icon: React.ReactNode;
   );
 }
 
+// ── Data note ───────────────────────────────────────────────────────────────
+// Collapsed-by-default amber note for "owner to confirm" caveats. Keeps the
+// product name/type clean (and out of the materials index) while preserving the
+// verification context one click away at the bottom of the card.
+export function DataNote({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-lg border border-amber-200 bg-amber-50/70 px-3 py-2">
+      <button onClick={() => setExpanded((e) => !e)} className="flex w-full items-center justify-between gap-2 text-left">
+        <span className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-amber-700">
+          <AlertTriangle size={10} className="shrink-0" /> Data note — owner to confirm
+        </span>
+        <span className="shrink-0 text-[9px] font-bold text-amber-600">{expanded ? "Hide ↑" : "Show ↓"}</span>
+      </button>
+      {expanded && <p className="mt-1.5 text-[10px] leading-4 text-amber-800/90">{text}</p>}
+    </div>
+  );
+}
+
+// ── AI Selection Data (review mode) ─────────────────────────────────────────
+// Review-mode blocks: render EXPANDED on load, labelled "AI SELECTION DATA — REVIEW".
+// Hidden later via one flag. Clone the existing card/dropdown/table patterns only.
+
+const REVIEW_BADGE = "AI SELECTION DATA — REVIEW";
+
+export function AISelectionReviewTable({ headers, rows }: { headers: string[]; rows: string[][] }) {
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+      <table className="min-w-full text-xs">
+        <thead>
+          <tr className="border-b border-slate-200 bg-slate-50">
+            {headers.map((h) => (
+              <th key={h} className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+              {row.map((cell, j) => (
+                <td key={j} className="px-4 py-2.5 align-top text-slate-600">{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export function AISelectionJson({ data }: { data: unknown }) {
+  return (
+    <pre className="mt-3 overflow-x-auto rounded-2xl border border-slate-200 bg-slate-900 p-4 text-[11px] leading-5 text-slate-100">
+      {JSON.stringify(data, null, 2)}
+    </pre>
+  );
+}
+
+// Stage 1 — card retained for layout/system-selector data; detail hidden from public.
+// Data still flows in via props (used by the system selector); it is no longer rendered to visitors.
+export function AISelectionStage1({ headers, rows, json }: { headers: string[]; rows: string[][]; json: unknown }) {
+  void headers; void rows; void json;
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+      <div className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left">
+        <div>
+          <span className="mb-1 inline-flex items-center rounded bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-amber-800">{REVIEW_BADGE}</span>
+          <p className="text-base font-extrabold text-sky-950">AI Selection Data</p>
+          <p className="mt-0.5 text-xs text-slate-500">Stage 1 — category gates · review mode</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Stage 2 — card retained for layout/system-selector data; detail hidden from public.
+export function AISelectionStage2({ headers, rows, json }: { headers: string[]; rows: string[][]; json: unknown }) {
+  void headers; void rows; void json;
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">AI SELECTION DATA</p>
+      </div>
+    </div>
+  );
+}
+
 export { BookOpen, Layers, SquareStack, Ruler, CheckCircle, AlertTriangle, FileText, ExternalLink };

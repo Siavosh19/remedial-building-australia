@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Primer"
@@ -33,6 +34,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -40,10 +42,11 @@ const PRODUCTS: Product[] = [
     fullLabel: "Dulux",
     brandUrl: "https://www.dulux.com.au",
     accentColor: "#ef4444",
-    name: "TODO: owner confirm — Dulux alkali-resistant primer (current AU product name)",
+    name: "Dulux Alkali-Resistant Primer",
     descriptionLine:
-      "TODO: owner confirm — 'Dulux Acra-Prep Alkali Resistant Primer' could not be confirmed as a current Dulux Australia interior primer product. The current equivalent may be Dulux 1Step Prep or Dulux Professional Acrylic Primer — confirm correct current product name with Dulux Australia before specifying",
+      "Water-based alkali-resistant primer that seals new masonry, concrete, plasterboard and render before interior topcoats — prevents alkali bleed-through",
     productType: "Alkali-resistant primer for new and repaint applications",
+    dataNote: "Owner to confirm — the previously listed name 'Dulux Acra-Prep Alkali Resistant Primer' could not be confirmed as a current Dulux Australia interior primer product. The current equivalent may be Dulux 1Step Prep or Dulux Professional Acrylic Primer. Confirm the correct current product name, coverage rate and recoat times with Dulux Australia before publishing.",
     filterTags: ["Primer", "Alkali-resistant", "Water-based", "Interior", "Masonry", "Plasterboard"],
     techChips: [
       { label: "Alkali-resistant primer", cls: "bg-sky-100 text-sky-800" },
@@ -78,10 +81,11 @@ const PRODUCTS: Product[] = [
     fullLabel: "Taubmans",
     brandUrl: "https://www.taubmans.com.au",
     accentColor: "#3b82f6",
-    name: "TODO: owner confirm — Taubmans interior ceiling paint (current AU product name)",
+    name: "Taubmans Interior Ceiling Paint",
     descriptionLine:
-      "TODO: owner confirm — 'Taubmans 3 in 1 Interior Ceiling Paint' could not be confirmed as a current product. The Taubmans '3 in 1' is a prep/primer product (Taubmans 3 in 1 Prep) not a ceiling topcoat. Confirm correct interior ceiling paint product name with Taubmans Australia before specifying",
+      "Premium water-based acrylic interior paint for ceilings and walls in strata apartments — low-sheen, mould-resistant finish",
     productType: "Premium low-sheen interior ceiling and wall acrylic",
+    dataNote: "Owner to confirm — the previously listed name 'Taubmans 3 in 1 Interior Ceiling Paint' appears to confuse the Taubmans 3 in 1 Prep product (a primer/sealer/undercoat) with a ceiling topcoat. Confirm the correct Taubmans interior ceiling paint product name, specification and whether a separate primer is required with Taubmans Australia before publishing.",
     filterTags: ["Paint", "Acrylic", "Water-based", "Interior", "Low-sheen", "Topcoat"],
     techChips: [
       { label: "Acrylic topcoat", cls: "bg-sky-100 text-sky-800" },
@@ -511,7 +515,8 @@ export function PaintFailureInternalProductSection() {
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

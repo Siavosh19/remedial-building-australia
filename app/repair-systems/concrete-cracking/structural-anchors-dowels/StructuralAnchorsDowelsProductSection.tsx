@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Layers, Ruler, SquareStack, FileText } from "lucide-react";
 import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag = "Masonry-Stitching" | "Concrete-Stitching" | "Helical-Bar" | "Chemical-Anchor" | "AS5216" | "Wall-Tie";
 
@@ -22,127 +23,6 @@ type Product = {
 };
 
 const PRODUCTS: Product[] = [
-  {
-    fullLabel: "Helifix Australia — CemTie / Heli Tie",
-    brandUrl: "https://www.helifix.com.au",
-    accentColor: "#0369a1",
-    name: "Helifix CemTie / Heli Tie — Helical Wall Crack Stitching Bars",
-    descriptionLine: "304 stainless steel helical tie bars — mortar bed joint installation — masonry and brick crack stitching",
-    productType: "Stainless steel helical bar crack stitching system",
-    filterTags: ["Masonry-Stitching", "Helical-Bar", "Wall-Tie"],
-    techChips: [
-      { label: "304 SS helical bar", cls: "bg-sky-100 text-sky-800" },
-      { label: "6 mm diameter", cls: "bg-slate-100 text-slate-700" },
-      { label: "No brick drilling", cls: "bg-sky-50 text-sky-700" },
-    ],
-    systemDescription: "Helifix helical stainless steel tie bars (CemTie and Heli Tie range) are the most widely used system for crack stitching in brick and masonry walls affected by settlement. The helical profile allows the bar to be driven into a 25–35 mm deep slot cut along the mortar bed joint adjacent to the crack, then fixed with Helifix HBS grout or specialist resin. Unlike drilled bar systems, helical ties are installed into the mortar joint — avoiding drilling through bricks — preserving the brick face and limiting disruption to the masonry. The helical profile grips the slot walls without requiring a large hole or heavy injection equipment. Typically installed at 300–450 mm centres vertically, alternating on each face where accessible. Available in 6 mm diameter, lengths 225–750 mm. Structural engineer assessment of the settlement crack cause is required before specifying — stitching a crack that is still moving does not fix the crack.",
-    technicalProperties: [
-      "304 stainless steel helical bar — 6 mm diameter — 225–750 mm lengths",
-      "Installed into mortar bed joint slot — no drilling through brick faces",
-      "Fixed with Helifix HBS grout or specialist resin",
-      "Installed at 300–450 mm centres vertically — alternating each face",
-    ],
-    limitations: [
-      "Do not stitch an active (still moving) settlement crack — confirm settlement has ceased before stitching",
-      "Helical tie restores tensile continuity across the crack — it does not address the cause of settlement; engineer must confirm cause and whether underpinning is required first",
-      "Mortar bed joint must be minimum 8 mm thick for slot cutting — consult Helifix if joints are thinner",
-      "Stainless steel only — black mild steel ties corrode rapidly in masonry and are not suitable",
-    ],
-    procurementSources: [
-      { name: "Helifix Australia", url: "https://www.helifix.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Thor Helical Australia — Helical Bar",
-    brandUrl: "https://www.thorhelical.com.au",
-    accentColor: "#15803d",
-    name: "Thor Helical Bar — Remedial Wall Tie and Crack Stitching System",
-    descriptionLine: "304 SS helical bars — crack stitching and cavity wall tie replacement — mortar-joint and drilled installation",
-    productType: "Stainless steel helical bar — crack stitching and wall tie replacement",
-    filterTags: ["Masonry-Stitching", "Helical-Bar", "Wall-Tie"],
-    techChips: [
-      { label: "304 SS helical", cls: "bg-green-100 text-green-800" },
-      { label: "6 mm / 225–1000 mm", cls: "bg-slate-100 text-slate-700" },
-      { label: "Wall tie replacement", cls: "bg-green-50 text-green-700" },
-    ],
-    systemDescription: "Thor Helical Bar is the primary alternative to Helifix for helical stainless steel bar crack stitching in Australian masonry. Available in 6 mm diameter, lengths 225 to 1000 mm. Installation is the same — slot cut along a mortar joint, bar driven in and fixed with Thor Helical grout or resin. Thor Helical bars are also used for cavity wall tie replacement in brick veneer and double-brick construction where existing ties have corroded or were not installed to specification. Cavity wall tie replacement involves drilling through the outer brick leaf into the inner leaf and installing a helical bar across the cavity to re-tie the two leafs together — this application is distinct from crack stitching and requires a different assessment and installation pattern. Both applications require engineer assessment before specifying layout and bar density. Thor Helical Australia supply and technical support nationally.",
-    technicalProperties: [
-      "304 stainless steel helical bar — 6 mm — lengths 225–1000 mm",
-      "Same mortar-joint installation method as Helifix for crack stitching",
-      "Cavity wall tie replacement — drilled through outer brick leaf to inner leaf",
-      "Thor Helical Australia — national supply and technical support",
-    ],
-    limitations: [
-      "Cavity wall tie replacement requires drilling through the outer brick leaf — confirm wall construction by test drill or cavity inspection before specifying",
-      "Do not use black mild steel or galvanised bars in masonry — corrosion product expansion causes additional cracking",
-      "Cavity tie replacement requires both leafs to be structurally sound — if inner leaf is degraded, tie replacement alone does not restore stability",
-      "Crack stitching does not address settlement cause — engineer confirmation of settlement status is required",
-    ],
-    procurementSources: [
-      { name: "Thor Helical Australia", url: "https://www.thorhelical.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Hilti Australia — HIT-RE 500 V3 + N12 Bar",
-    brandUrl: "https://www.hilti.com.au",
-    accentColor: "#be123c",
-    name: "Hilti HIT-RE 500 V3 + N12 Bar — Structural Dowel Stitching in Concrete",
-    descriptionLine: "2-part epoxy + deformed rebar — crack stitching in concrete settlement cracks at 45° — AS 5216 compliant",
-    productType: "Epoxy adhesive + rebar structural dowel system",
-    filterTags: ["Concrete-Stitching", "Chemical-Anchor", "AS5216"],
-    techChips: [
-      { label: "AS 5216", cls: "bg-red-100 text-red-800" },
-      { label: "HIT-RE 500 V3", cls: "bg-slate-100 text-slate-700" },
-      { label: "45° drilling", cls: "bg-red-50 text-red-700" },
-    ],
-    systemDescription: "For settlement cracks in concrete elements — foundations, retaining walls, concrete block walls, and concrete frames — structural stitching uses N12 or N16 deformed rebar installed at 30–45 degrees to the crack with Hilti HIT-RE 500 V3 epoxy adhesive. Drilled hole (typically 16–20 mm for N12) at 30–45 degrees through the crack plane, 3-stage cleaned (blow-brush-blow), injection-filled with HIT-RE 500 V3, bar inserted to full embedment depth. The bar crosses the crack plane and is anchored in sound concrete on each side. Bar spacing, embedment, angle, and diameter must be designed by structural engineer per AS 5216. Hilti PROFIS Anchor design software supports calculation. This method applies to reinforced and unreinforced concrete settlement damage in foundations, ground-bearing slabs, and structural walls.",
-    technicalProperties: [
-      "AS 5216 compliant — Hilti HIT-RE 500 V3 epoxy + N12/N16 deformed rebar",
-      "16–20 mm drill hole — 30–45 degree angle through crack plane",
-      "3-stage hole cleaning mandatory (blow-brush-blow) before injection",
-      "Structural engineer design required — bar spacing, angle, and embedment per AS 5216",
-    ],
-    limitations: [
-      "Do not install in PT (post-tensioned) concrete without a GPR scan confirming tendon positions — 45-degree drilling will intersect PT tendons if not mapped",
-      "Settlement must be confirmed dormant before concrete stitch repair — engineer confirmation required",
-      "Full cure required before loading — confirm cure time from Hilti TDS for ambient temperature on site",
-      "Stitching alone does not address foundation movement — engineer must determine if underpinning or ground treatment is required first",
-    ],
-    procurementSources: [
-      { name: "Hilti Australia — direct and trade supply", url: "https://www.hilti.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Ramset Australia — Chemset Reo 502 PLUS",
-    brandUrl: "https://www.ramset.com.au",
-    accentColor: "#78716c",
-    name: "Ramset Chemset Reo 502 PLUS — Chemical Anchor for Concrete Dowels",
-    descriptionLine: "2-part pure epoxy — structural dowel and rebar installation in concrete — AS 5216 compliant — broad trade availability — 600 mL cartridge",
-    productType: "Pure epoxy anchoring adhesive — structural dowel — AS 5216",
-    filterTags: ["Concrete-Stitching", "Masonry-Stitching", "Chemical-Anchor", "AS5216"],
-    techChips: [
-      { label: "AS 5216", cls: "bg-stone-200 text-stone-800" },
-      { label: "600 mL cartridge", cls: "bg-slate-100 text-slate-700" },
-      { label: "Trade availability", cls: "bg-stone-100 text-stone-700" },
-    ],
-    systemDescription: "Ramset Chemset Reo 502 PLUS is a heavy-duty pure epoxy chemical anchor for post-installed reinforcing bar and structural dowels in cracked and uncracked concrete. AS 5216 compliant. Available in 600 mL cartridges, widely distributed through trade suppliers and Bunnings nationally. Suitable for dry, wet, or flooded holes. Used in settlement crack repair for concrete elements where a broadly available chemical anchor is appropriate for structural dowel installation. For masonry block installation with hollow core cells, a mesh sock or sleeve insert is required to contain the resin — without containment, the resin runs into the void and no anchorage develops. Structural engineer design required for bar layout, spacing, and embedment per AS 5216. Note: the previously named 'Chemset Epoxy 500+' does not appear in the current Ramset Australia product range — Chemset Reo 502 PLUS is the current equivalent product.",
-    technicalProperties: [
-      "AS 5216 compliant — 600 mL cartridge — cracked and uncracked concrete",
-      "Suitable for dry, wet, and flooded holes in concrete",
-      "Masonry block: mesh sock required to contain resin in hollow core cells",
-      "Dispense waste shot before injection — first material from new nozzle is unmixed",
-    ],
-    limitations: [
-      "Hollow masonry block requires mesh sock or sleeve — without containment, resin runs into void and no bond develops",
-      "Structural engineer design required — bar spacing, diameter, embedment, and loading per AS 5216",
-      "Dispense waste shot before injecting — first material from a new static nozzle is unmixed",
-      "Confirm current product name and cartridge size with Ramset Australia before specifying — product range subject to change",
-    ],
-    procurementSources: [
-      { name: "Ramset Australia", url: "https://www.ramset.com.au" },
-      { name: "Bunnings Trade", url: "https://www.bunnings.com.au" },
-    ],
-  },
 ];
 
 const FILTER_DEFS: { tag: FilterTag; label: string }[] = [
@@ -230,6 +110,8 @@ export function StructuralAnchorsDowelsIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "System type — epoxy-bonded rebar/dowel (load transfer) vs helical SS crack-stitching bar (distributes/stitches masonry cracks); bond strength & pull-out / characteristic resistance to AS 5216 (design of post-installed anchors); embedment depth & edge/spacing distances; hole diameter & drilling method (no diamond-core for some adhesives); substrate (concrete/masonry) & cracked vs uncracked concrete rating; adhesive gel/working & full-cure time vs temperature; bar grade & corrosion (SS316 coastal); load type (tension/shear/seismic/fatigue); base-material temperature & moisture (dry/submerged-rated); fire resistance of anchor";
+
 export function StructuralAnchorsDowelsProductSection() {
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -246,54 +128,6 @@ export function StructuralAnchorsDowelsProductSection() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Filter:</span>
-        {FILTER_DEFS.map(({ tag, label }) => (
-          <button key={tag} onClick={() => toggleFilter(tag)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${activeFilters.has(tag) ? "border-red-700 bg-red-700 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-sky-400"}`}>{label}</button>
-        ))}
-        {activeFilters.size > 0 && <button onClick={() => setActiveFilters(new Set())} className="text-xs font-bold text-red-700 underline">Clear</button>}
-      </div>
-
-      <div className="relative">
-        <button onClick={() => scroll("left")} className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronLeft size={16} /></button>
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none]">
-          {filtered.map((p) => (
-            <div key={p.name} className="w-[380px] shrink-0 rounded-2xl border border-slate-200 bg-white overflow-hidden" style={{ borderTop: `4px solid ${p.accentColor}` }}>
-              <div className="p-5">
-                <a href={p.brandUrl} target="_blank" rel="noopener noreferrer" className="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-sky-700">{p.fullLabel} ↗</a>
-                {p.tdsUrl && <a href={p.tdsUrl} target="_blank" rel="noopener noreferrer" className="mb-2 flex items-center gap-1 text-[10px] font-semibold text-sky-600 hover:text-sky-800">TDS ↗</a>}
-                <h3 className="text-sm font-extrabold leading-snug text-sky-950">{p.name}</h3>
-                <p className="mt-1 text-xs text-slate-500">{p.descriptionLine}</p>
-                <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">{p.productType}</p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {p.techChips.map((c) => <span key={c.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${c.cls}`}>{c.label}</span>)}
-                </div>
-                <CollapsibleDescription text={p.systemDescription} />
-                <div className="mt-4 border-t border-slate-100 pt-4">
-                  <CollapsibleCardDetails
-                    text=""
-                    chips={p.filterTags.map((t) => ({ label: t.replace(/-/g, " "), cls: "bg-sky-50 text-sky-700" }))}
-                  />
-                </div>
-                <div className="mt-3">
-                  <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">Technical properties</p>
-                  <CollapsibleList items={p.technicalProperties} icon="check" limit={3} />
-                </div>
-                <div className="mt-3">
-                  <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">Limitations</p>
-                  <CollapsibleList items={p.limitations} icon="x" limit={3} />
-                </div>
-                <div className="mt-3">
-                  <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">Procurement</p>
-                  <CollapsibleSources sources={p.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <button onClick={() => scroll("right")} className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronRight size={16} /></button>
-      </div>
-
       <div className="rounded-2xl border border-slate-200 bg-white">
         <button onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left">
           <div className="flex items-center gap-3">
@@ -316,31 +150,7 @@ export function StructuralAnchorsDowelsProductSection() {
         )}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6">
-        <h3 className="mb-4 text-sm font-extrabold text-sky-950">System comparison — masonry vs concrete stitching</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                {["Product", "Substrate", "Installation", "Bar material", "Key use"].map((h) => (
-                  <th key={h} className="px-3 py-2.5 text-left font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {SYSTEM_COMPARISON.map((row) => (
-                <tr key={row.product} className="hover:bg-slate-50">
-                  <td className="px-3 py-2.5 font-semibold text-sky-950">{row.product}</td>
-                  <td className="px-3 py-2.5 text-slate-600">{row.substrate}</td>
-                  <td className="px-3 py-2.5 text-slate-600">{row.installation}</td>
-                  <td className="px-3 py-2.5 text-slate-600">{row.material}</td>
-                  <td className="px-3 py-2.5 text-slate-600">{row.keyUse}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete cracking" criteriaKey="concrete-cracking/structural-anchors-dowels" />
     </div>
   );
 }

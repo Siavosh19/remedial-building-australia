@@ -2,6 +2,8 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Layers, Ruler, SquareStack, FileText } from "lucide-react";
 import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { MS_CARDS } from "./moistureSuppressionData";
 
 type FilterTag = "2-Part-Epoxy" | "1-Part-Acrylic" | "High-RH" | "Moisture-Control" | "Adhesion-Primer" | "Floor-Levelling" | "Magnesite";
 
@@ -95,112 +97,98 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Fosroc Australia (via Parchem)",
-    brandUrl: "https://www.parchem.com.au",
-    accentColor: "#15803d",
-    name: "Fosroc Nitoprime 28 — Two-Part Penetrating Epoxy Primer",
-    descriptionLine: "Two-part penetrating epoxy primer for damp and high-moisture substrates before floor levelling — 4 L kit",
-    productType: "Two-part penetrating epoxy floor primer",
-    filterTags: ["2-Part-Epoxy", "High-RH", "Moisture-Control", "Adhesion-Primer", "Floor-Levelling"],
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Mapeproof Primer",
+    descriptionLine: "Two-part epoxy moisture barrier / DPM primer — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "Two-part epoxy moisture barrier / DPM primer",
+    filterTags: ["2-Part-Epoxy", "High-RH", "Moisture-Control", "Magnesite"],
     techChips: [
-      { label: "2-part epoxy", cls: "bg-green-100 text-green-800" },
-      { label: "Penetrating", cls: "bg-emerald-100 text-emerald-800" },
-      { label: "Damp substrates", cls: "bg-slate-100 text-slate-700" },
+      { label: "Two-part epoxy moisture barrie", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Fosroc Nitoprime 28 is a low-viscosity two-part epoxy primer designed to penetrate into damp concrete and magnesite substrates, providing a moisture-tolerant bonding interface for subsequent floor levelling compounds. Its penetrating action consolidates soft surface layers and provides adhesion in conditions where standard acrylic primers would fail.",
+      "Mapei Mapeproof Primer is a Two-part epoxy moisture barrier / DPM primer. Two-part epoxy moisture-vapour barrier over high-RH or encapsulated magnesite substrates before levelling. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
     technicalProperties: [
-      "Pack size: 4 L kit (A + B components)",
-      "Low-viscosity — penetrating action into substrate pores",
-      "Suitable for damp substrates — check TDS for maximum RH rating",
-      "Coverage: approximately 5–8 m²/L on average porosity",
-      "Cures to a tack-free, bondable surface",
-      "Available through Parchem Construction Products Australia",
+      "Two-part epoxy moisture barrier / DPM primer",
+      "Two-part epoxy moisture-vapour barrier over high-RH or encapsulated magnesite substrates before levelling.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
     ],
     limitations: [
-      "Not suitable for free-water conditions — substrate must be damp but not wet",
-      "Friable or delaminating magnesite must be removed before application",
-      "Ensure uniform mixing of A and B components — unmixed material will not cure",
-      "Pot life is limited — do not mix large quantities in warm weather",
-      "Do not overcoat until tacky stage — check TDS for window",
-      "Contact Parchem for current TDS and product availability",
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
     ],
     procurementSources: [
-      { name: "Parchem Construction Products", url: "https://www.parchem.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Parchem Construction Products",
-    brandUrl: "https://www.parchem.com.au",
-    accentColor: "#78716c",
-    name: "Parchem Epirez 510 — Two-Part Low-Viscosity Epoxy Adhesion Primer",
-    descriptionLine: "Two-part low-viscosity epoxy adhesion and moisture-control primer for floor applications — 5 L kit",
-    productType: "Two-part low-viscosity epoxy floor adhesion primer",
-    filterTags: ["2-Part-Epoxy", "High-RH", "Moisture-Control", "Adhesion-Primer", "Floor-Levelling"],
-    techChips: [
-      { label: "2-part epoxy", cls: "bg-stone-100 text-stone-800" },
-      { label: "Low-viscosity", cls: "bg-slate-100 text-slate-700" },
-      { label: "Adhesion primer", cls: "bg-zinc-100 text-zinc-800" },
-    ],
-    systemDescription:
-      "Parchem Epirez 510 is a two-part low-viscosity epoxy primer used for adhesion and moisture control on floor substrates. Applied as a thin primer coat over prepared magnesite or concrete, it creates a chemically bonded interface for self-levelling underlayments. Suitable for substrates with moderate to high relative humidity where acrylic primers would fail.",
-    technicalProperties: [
-      "Pack size: 5 L kit",
-      "Low-viscosity — penetrates porous concrete and magnesite surface",
-      "Two-component — mix A and B before application",
-      "Coverage: approximately 4–8 m²/L depending on porosity",
-      "Apply by roller or brush — avoid excessive build-up",
-      "Parchem-branded product — contact for current TDS",
-    ],
-    limitations: [
-      "Not for application over standing water, oil contamination, or active salts",
-      "Substrate preparation (CSP 2 minimum) is mandatory",
-      "Overcoat window must be observed — too early or too late will affect bond",
-      "Disposal of mixed epoxy components must comply with local waste regulations",
-      "Pot life varies with temperature — reduce batch size in warm conditions",
-      "Confirm compatibility with selected SLC brand before specifying",
-    ],
-    procurementSources: [
-      { name: "Parchem Construction Products", url: "https://www.parchem.com.au" },
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
     ],
   },
   {
     fullLabel: "Mapei Australia",
-    brandUrl: "https://www.mapei.com/au/",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/eco-prim-t-plus",
-    accentColor: "#b45309",
-    name: "Mapei Eco Prim T Plus — Single-Component Acrylic Floor Levelling Primer",
-    descriptionLine: "Single-component acrylic adhesion primer for self-levelling underlayments over encapsulated magnesite — 1 L / 10 L",
-    productType: "Single-component acrylic floor levelling primer",
-    filterTags: ["1-Part-Acrylic", "Adhesion-Primer", "Floor-Levelling", "Magnesite"],
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Triblock P",
+    descriptionLine: "Three-component epoxy-cementitious moisture / DPM primer — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "Three-component epoxy-cementitious moisture / DPM primer",
+    filterTags: ["2-Part-Epoxy", "High-RH", "Moisture-Control", "Magnesite"],
     techChips: [
-      { label: "1-part acrylic", cls: "bg-amber-100 text-amber-800" },
-      { label: "Ready to use", cls: "bg-yellow-100 text-yellow-800" },
-      { label: "SLC primer", cls: "bg-slate-100 text-slate-700" },
+      { label: "Three-component epoxy-cementit", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Mapei Eco Prim T Plus is a single-component acrylic adhesion primer used directly from the container to prime surfaces before applying Mapei self-levelling underlayments. It is suitable over encapsulated magnesite where relative humidity is within acceptable limits. TODO: owner confirm — the product name on the AU Mapei website is 'Eco Prim T Plus', not 'Eco Prim T'. The old plain 'Eco Prim T' page returns 403 Forbidden — verify whether the product has been updated/renamed in Australia before specifying.",
+      "Mapei Triblock P is a Three-component epoxy-cementitious moisture / DPM primer. Three-component epoxy-cementitious moisture-tolerant primer/DPM for damp and high-RH floor substrates. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
     technicalProperties: [
-      "Pack size: 1 L, 10 L",
-      "Ready to use — no mixing required",
-      "Coverage: 30–150 g/m² (i.e. approximately 7–33 m²/L) depending on substrate porosity",
-      "Application method: roller or brush — work product into substrate",
-      "Allow to become tacky before applying self-levelling compound; do not wait more than 24 hrs after application",
-      "Compatible with Mapei Ultraplan Eco, Ultraplan Maxi Plus, and other Mapei SLC products",
+      "Three-component epoxy-cementitious moisture / DPM primer",
+      "Three-component epoxy-cementitious moisture-tolerant primer/DPM for damp and high-RH floor substrates.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
     ],
     limitations: [
-      "Not suitable for high-moisture substrates — use 2-part epoxy primer (e.g. Ardex MC Rapid, Sika Primer MB) when substrate moisture exceeds acceptable limits; confirm current RH threshold from Mapei AU TDS",
-      "Do not dilute — use as supplied",
-      "Do not apply in temperatures below 5°C or above 35°C",
-      "One coat only — do not apply multiple coats",
-      "SLC must be applied while primer is still tacky — if primer dries completely, re-prime",
-      "Acrylic primer does not suppress moisture vapour — moisture testing mandatory before use",
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
     ],
     procurementSources: [
-      { name: "Mapei Australia", url: "https://www.mapei.com/au/" },
-      { name: "Mapei authorised distributors", url: "https://www.mapei.com/au/en/contact-us/where-to-buy" },
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
     ],
   },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://ardexaustralia.com",
+    accentColor: "#0369a1",
+    name: "Ardex WPM 300",
+    descriptionLine: "Two-part epoxy moisture vapour barrier — confirm current specification and Australian availability with Ardex technical before specifying",
+    productType: "Two-part epoxy moisture vapour barrier",
+    filterTags: ["2-Part-Epoxy", "High-RH", "Moisture-Control", "Magnesite"],
+    techChips: [
+      { label: "Two-part epoxy moisture vapour", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ardex — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Ardex WPM 300 is a Two-part epoxy moisture vapour barrier. Two-part epoxy moisture-vapour barrier to control residual moisture before applying levelling compounds. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Ardex technical before specifying. TODO: verify specific performance figures from the current Ardex TDS.",
+    technicalProperties: [
+      "Two-part epoxy moisture vapour barrier",
+      "Two-part epoxy moisture-vapour barrier to control residual moisture before applying levelling compounds.",
+      "Confirm key performance values (strength / coverage / application) from the current Ardex TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Ardex",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Ardex technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Ardex",
+    ],
+    procurementSources: [
+      { name: "Ardex — Australian trade supply", url: "https://ardexaustralia.com" },
+    ],
+  }
+
+
+
 ];
 
 const FILTER_DEFS: { tag: FilterTag; label: string }[] = [
@@ -301,102 +289,13 @@ export function MoistureSupprimersPrimersIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Chemistry — two-part epoxy moisture-vapour suppression vs penetrating/consolidating epoxy (acrylic generally NOT suitable as a vapour barrier) and function (reduce slab moisture/vapour emission before flooring/coatings); in-situ relative humidity the system can be applied over (RH % per AS 1884 / ASTM F2170, e.g. up to ~95–98%) and the moisture-vapour-emission limit it brings the slab below for the flooring adhesive (MVER, g/m²/24h); film build / number of coats; bond/pull-off strength to damp concrete and to the subsequent levelling/topping (MPa); pot life, cure and overcoat window (min and max); viscosity/penetration for the slab porosity; aggregate broadcast for keying the topping; alkali and osmotic-blister resistance; surface preparation (mechanical abrasion to CSP, laitance removal); application temperature and dew-point/condensation control; NOT a structural/positive-side waterproofing membrane";
+
 export function MoistureSupprimersPrimersProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (tag: FilterTag) =>
-    setActiveFilters((prev) => {
-      const n = new Set(prev);
-      n.has(tag) ? n.delete(tag) : n.add(tag);
-      return n;
-    });
-
-  const filtered =
-    activeFilters.size === 0
-      ? PRODUCTS
-      : PRODUCTS.filter((p) => p.filterTags.some((t) => activeFilters.has(t)));
-
-  const scroll = (dir: "left" | "right") => {
-    if (scrollRef.current)
-      scrollRef.current.scrollBy({ left: dir === "left" ? -420 : 420, behavior: "smooth" });
-  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        {FILTER_DEFS.map(({ tag, label }) => {
-          const active = activeFilters.has(tag);
-          return (
-            <button
-              key={tag}
-              onClick={() => toggleFilter(tag)}
-              className={`rounded-full border px-3 py-1 text-xs font-bold transition ${
-                active
-                  ? "border-sky-600 bg-sky-600 text-white"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-sky-300"
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
-        {activeFilters.size > 0 && (
-          <button
-            onClick={() => setActiveFilters(new Set())}
-            className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-bold text-red-700 transition hover:bg-red-100"
-          >
-            Clear filters
-          </button>
-        )}
-      </div>
-
-      <div className="relative">
-        <button onClick={() => scroll("left")} className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronLeft size={16} /></button>
-        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scroll-smooth pb-2" style={{ scrollbarWidth: "none" }}>
-          {filtered.map((p) => (
-            <div key={p.name} className="w-80 shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeftWidth: 4, borderLeftColor: p.accentColor }}>
-              <div className="border-b border-slate-100 px-5 py-4">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{p.fullLabel}</span>
-                  <div className="flex gap-1">
-                    {p.tdsUrl && <a href={p.tdsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700"><FileText size={9} /> TDS</a>}
-                    <a href={p.brandUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700">Brand</a>
-                  </div>
-                </div>
-                <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{p.name}</h3>
-                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{p.productType}</p>
-                <CollapsibleCardDetails text={p.descriptionLine} chips={p.techChips} />
-              </div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                <CollapsibleDescription text={p.systemDescription} />
-              </div>
-              <div className="space-y-3 px-5 py-4">
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                  <CollapsibleList items={p.technicalProperties} icon="check" limit={3} />
-                </div>
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                  <CollapsibleList items={p.limitations} icon="x" limit={3} />
-                </div>
-              </div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                <CollapsibleSources sources={p.procurementSources} />
-              </div>
-            </div>
-          ))}
-          {filtered.length === 0 && (
-            <div className="flex w-full items-center justify-center py-12 text-sm text-slate-400">
-              No products match the selected filters.
-            </div>
-          )}
-        </div>
-        <button onClick={() => scroll("right")} className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronRight size={16} /></button>
-      </div>
-
+    <>
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <button onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left hover:bg-slate-50">
           <div>
@@ -421,33 +320,7 @@ export function MoistureSupprimersPrimersProductSection() {
         )}
       </div>
 
-      <div>
-        <h3 className="mb-4 text-lg font-extrabold text-sky-950">System Comparison</h3>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-5 py-3 text-left font-bold text-slate-700 whitespace-nowrap sticky left-0 bg-slate-50 border-r border-slate-200">Product</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Brand</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Type</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">RH rating</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Pack size</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 bg-inherit px-5 py-3 font-semibold text-slate-800 border-r border-slate-200 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.rh}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.packSize}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Magnesite flooring deterioration" cards={MS_CARDS} />
+    </>
   );
 }

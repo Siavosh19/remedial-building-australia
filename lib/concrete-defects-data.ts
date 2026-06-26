@@ -332,6 +332,42 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "notes": "Mask adjacent surfaces before sealant or coating. Remove while product still wet or uncured."
           }
         ]
+      },
+      {
+        "slug": "edge-forms-accessories",
+        "label": "Edge forms & accessories",
+        "materials": [
+          {
+            "materialName": "Edge form (steel/plastic angle)",
+            "productType": "Galvanised steel or PVC edge form angle",
+            "brandArdex": "Hy-Ten – galvanised steel edge form angle, m length",
+            "brandSika": "Rapid Formwork – PVC plastic edge form angle, m length",
+            "brandFosroc": "Dincel – PVC permanent structural edge and kicker form, m",
+            "brandTremco": "Fletcher Concrete – galvanised steel edge form angle, m",
+            "brandParchem": "Generic – 50x50x3 mm galvanised steel angle edge form, m",
+            "unitOfMeasure": "m",
+            "packSize": "various",
+            "notes": "Fix with concrete nails or screws. Leave in place or strip after cure. Ensures clean arris on repaired edge."
+          }
+        ]
+      },
+      {
+        "slug": "reinforcement-mesh",
+        "label": "Reinforcement mesh",
+        "materials": [
+          {
+            "materialName": "Stainless steel reinforcement mesh",
+            "productType": "316 SS welded wire reinforcement mesh",
+            "brandArdex": "InfraBuild (OneSteel) – 316 SS welded wire mesh, 2400x1200 mm sheet",
+            "brandSika": "Midalia Steel – SS welded reinforcement mesh 316 grade, various sheet sizes",
+            "brandFosroc": "Liberty OneSteel – 316 SS reinforcing mesh, sheet",
+            "brandTremco": "Stainless Steel Specialists Australia – 316 SS welded mesh, sheet",
+            "brandParchem": "Mtalex – stainless steel welded mesh 316, various sizes",
+            "unitOfMeasure": "sheet",
+            "packSize": "various",
+            "notes": "For supplementary reinforcement in edge repairs. 316 SS in chloride environments. Maintain min 30 mm cover."
+          }
+        ]
       }
     ]
   },
@@ -674,84 +710,6 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
             "notes": "Mask edges before sealant. Remove immediately after tooling before product skins over."
           }
         ]
-      }
-    ]
-  },
-  {
-    "slug": "settlement-cracks",
-    "label": "Settlement cracks",
-    "productCategories": [
-      {
-        "slug": "injection-resins-pu-flexible",
-        "label": "Injection resins (PU flexible)",
-        "materials": [
-          {
-            "materialName": "Polyurethane injection resin (expanding)",
-            "productType": "Expanding and hydrophilic polyurethane injection resin",
-            "brandArdex": "Ardex CE 300 – hydrophilic expanding polyurethane injection resin, 600 mL / 20 L drum",
-            "brandSika": "Sika Injection-107 – expanding hydrophilic PU injection resin, 600 mL / 20 L drum",
-            "brandFosroc": "Fosroc Nitofill PU150 – hydrophilic expanding polyurethane injection resin, 600 mL / 20 L drum",
-            "brandTremco": "Tremco THC Injection Resin – expanding PU foam injection, 600 mL / 20 L drum",
-            "brandParchem": "Parchem Nitofill PU Hydrophilic – expanding PU injection, 600 mL / 20 L drum",
-            "unitOfMeasure": "drum",
-            "packSize": "20 L",
-            "notes": "Reacts with water to expand and fill void. Use for active leaks or voids under slabs. Multiple stages."
-          }
-        ]
-      },
-      {
-        "slug": "injection-resins-epoxy-rigid",
-        "label": "Injection resins (epoxy rigid)",
-        "materials": [
-          {
-            "materialName": "Epoxy injection resin (rigid)",
-            "productType": "Rigid 2-part epoxy structural injection resin",
-            "brandArdex": null,
-            "brandSika": "Sika Injection-451 N / Sikadur-52 – low-viscosity rigid 2-part epoxy injection, 380 mL",
-            "brandFosroc": "Fosroc Nitofill Epoxy – rigid 2-part epoxy injection resin, 380 mL cartridge",
-            "brandTremco": null,
-            "brandParchem": "Parchem Nitofill Epoxy – rigid 2-part epoxy injection resin, 380 mL kit",
-            "unitOfMeasure": "cartridge/kit",
-            "packSize": "380 mL / 5 L",
-            "notes": "Structural reinstatement of dormant settlement cracks. Crack must be dry or pre-treat with PU first."
-          }
-        ]
-      },
-      {
-        "slug": "crack-injection-ports",
-        "label": "Crack injection ports",
-        "materials": [
-          {
-            "materialName": "Crack injection ports",
-            "productType": "Surface-mounted plastic crack injection ports",
-            "brandArdex": "Ardex – specify Desoi plastic surface injection port (complementary)",
-            "brandSika": "Sika Crack Port – plastic surface-mounted crack injection port, each",
-            "brandFosroc": "Fosroc Injection Packer – surface-mounted crack injection port, each",
-            "brandTremco": "Tremco – surface-mounted crack injection port, each",
-            "brandParchem": "Desoi Flat Port – plastic surface-mounted injection port, each",
-            "unitOfMeasure": "each",
-            "packSize": "various",
-            "notes": "Space at 1x crack depth or 100-150 mm. Bond with epoxy paste and allow to cure before injecting."
-          }
-        ]
-      },
-      {
-        "slug": "structural-anchors-dowels",
-        "label": "Structural anchors & dowels",
-        "materials": [
-          {
-            "materialName": "Helical stainless-steel tie bars (Helifix)",
-            "productType": "316 SS helical tie and stitching bar",
-            "brandArdex": "Helifix HeliBond / Helibond Plus – 316 SS helical tie bar, 6 mm dia, 225-1000 mm lengths",
-            "brandSika": "Ancon Teplo – 316 SS helical bar for masonry and concrete stitching, 6 mm dia",
-            "brandFosroc": "Thor Helical – 316 SS helical tie and stitching bar, 6 mm dia",
-            "brandTremco": "Simpson Strong-Tie Helix – 316 SS helical tie bar, 6 mm dia",
-            "brandParchem": "Tfix – 316 SS helical tie bar for masonry and concrete stitching, 6 mm dia",
-            "unitOfMeasure": "each/m",
-            "packSize": "various",
-            "notes": "Drill hole, inject resin, insert bar, allow to cure. Provides tensile stitching action across cracks."
-          }
-        ]
       },
       {
         "slug": "repair-mortars-polymer-modified",
@@ -772,190 +730,9 @@ export const CONCRETE_DEFECTS_DATA: SubcategoryData[] = [
         ]
       },
       {
-        "slug": "lime-repointing-mortars",
-        "label": "Lime & repointing mortars",
-        "materials": [
-          {
-            "materialName": "Lime mortar (repointing)",
-            "productType": "Natural hydraulic lime (NHL) repointing mortar",
-            "brandArdex": "Ardex – specify Surebuild 450 NHL natural hydraulic lime (complementary)",
-            "brandSika": "Sika – specify Surebuild 450 NHL or Unitex UniPoint (complementary)",
-            "brandFosroc": "Fosroc – specify Surebuild 450 NHL natural hydraulic lime (complementary)",
-            "brandTremco": "Surebuild 450 NHL – natural hydraulic lime mortar, 25 kg bag",
-            "brandParchem": "Unitex UniPoint – pre-blended NHL lime repointing mortar, 20 kg bag",
-            "unitOfMeasure": "bag",
-            "packSize": "20 kg",
-            "notes": "For heritage and soft brick only; must be weaker than substrate. Never use OPC as it traps moisture."
-          }
-        ]
-      },
-      {
-        "slug": "sealants-polyurethane",
-        "label": "Sealants (polyurethane)",
-        "materials": [
-          {
-            "materialName": "Polyurethane sealant",
-            "productType": "1-part polyurethane crack and joint sealant",
-            "brandArdex": "Ardex RA 040 – 1-part polyurethane sealant, 600 mL cartridge",
-            "brandSika": "Sika Sikaflex-11FC – 1-part polyurethane sealant, 600 mL cartridge",
-            "brandFosroc": "Fosroc Nitoseal MS600 – 1-part MS polymer sealant, 600 mL cartridge",
-            "brandTremco": "Tremco Dymonic 100 – 1-part polyurethane sealant, 600 mL cartridge",
-            "brandParchem": "Parchem Pro-Sealant PU600 – 1-part polyurethane sealant, 600 mL cartridge",
-            "unitOfMeasure": "cartridge",
-            "packSize": "600 mL",
-            "notes": "Surface-seal settlement cracks after injection or stitching. Apply with backer rod. Movement capacity +/-25%."
-          }
-        ]
-      },
-      {
-        "slug": "backer-rods",
-        "label": "Backer rods",
-        "materials": [
-          {
-            "materialName": "Backer rod",
-            "productType": "Closed-cell polyethylene foam backer rod",
-            "brandArdex": "Norseal V740 – closed-cell polyethylene backer rod, various dia",
-            "brandSika": "Sika – specify Norseal V740 backer rod (complementary)",
-            "brandFosroc": "Fosroc – specify Norseal V740 closed-cell backer rod (complementary)",
-            "brandTremco": "Norseal V740 – closed-cell polyethylene backer rod, various dia",
-            "brandParchem": "Rexnord Villex – closed-cell polyethylene backer rod, various dia",
-            "unitOfMeasure": "roll",
-            "packSize": "various",
-            "notes": "Insert before sealant to control depth. Prevents 3-point adhesion failure. Size slightly over joint width."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "slug": "slab-edge-deterioration",
-    "label": "Slab edge deterioration",
-    "productCategories": [
-      {
-        "slug": "repair-mortars-polymer-modified",
-        "label": "Repair mortars (polymer-modified)",
-        "materials": [
-          {
-            "materialName": "Concrete repair mortar",
-            "productType": "Polymer-modified slab edge repair mortar",
-            "brandArdex": "Ardex BR 340 – polymer-modified slab edge repair mortar, 20 kg bag",
-            "brandSika": "Sika MonoTop-612 / MonoTop-620 – polymer repair mortar for slab edge, 25 kg bag",
-            "brandFosroc": "Fosroc Renderoc HB / Renderoc LA – structural slab edge repair mortar, 25 kg bag",
-            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
-            "brandParchem": "Mapei Mapegrout SHB – structural polymer repair mortar, 25 kg bag",
-            "unitOfMeasure": "bag",
-            "packSize": "20 kg",
-            "notes": "Form edge with steel or PVC angle. Apply in lifts max 30 mm. Cure min 7 days. Protect from traffic."
-          }
-        ]
-      },
-      {
-        "slug": "epoxy-repair-mortars",
-        "label": "Epoxy repair mortars",
-        "materials": [
-          {
-            "materialName": "Epoxy repair mortar",
-            "productType": "2-part / 3-part epoxy slab edge repair mortar",
-            "brandArdex": "Ardex RA 88 Plus – 2-part structural epoxy repair mortar, 4.5 kg kit",
-            "brandSika": "Sika Sikadur-42 – 3-part epoxy mortar for slab edge, 5 kg kit",
-            "brandFosroc": "Fosroc Nitomortar 50 – 3-part epoxy slab edge repair mortar, 5 kg kit",
-            "brandTremco": "Tremco Eucocrete HBM – polymer-modified structural repair mortar, 25 kg bag",
-            "brandParchem": "Fosroc Nitomortar AP – 3-part structural epoxy repair mortar, 4.5 kg kit",
-            "unitOfMeasure": "kit",
-            "packSize": "5 kg",
-            "notes": "High-strength early return to service. Good abrasion and impact resistance for slab edges. Temp 10-35 deg C."
-          }
-        ]
-      },
-      {
-        "slug": "bonding-agents-sbr-latex",
-        "label": "Bonding agents & SBR latex",
-        "materials": [
-          {
-            "materialName": "Bonding agent / SBR latex",
-            "productType": "SBR polymer bonding agent and primer",
-            "brandArdex": "Ardex P 51 – water-based acrylic bonding primer, 5 L",
-            "brandSika": "Sika Latex SBR – SBR latex bonding agent, 5 L",
-            "brandFosroc": "Fosroc Nitobond SBR – SBR latex bonding agent, 5 L",
-            "brandTremco": "Tremco THC Bonding Agent – acrylic bonding primer, 5 L",
-            "brandParchem": "Fosroc Nitobond SBR – SBR latex bonding agent and admixture, 5 L",
-            "unitOfMeasure": "litre",
-            "packSize": "5 L",
-            "notes": "Essential for adhesion of repair mortar to existing slab edge. Apply, allow to become tacky, then apply mortar."
-          }
-        ]
-      },
-      {
-        "slug": "edge-forms-accessories",
-        "label": "Edge forms & accessories",
-        "materials": [
-          {
-            "materialName": "Edge form (steel/plastic angle)",
-            "productType": "Galvanised steel or PVC edge form angle",
-            "brandArdex": "Hy-Ten – galvanised steel edge form angle, m length",
-            "brandSika": "Rapid Formwork – PVC plastic edge form angle, m length",
-            "brandFosroc": "Dincel – PVC permanent structural edge and kicker form, m",
-            "brandTremco": "Fletcher Concrete – galvanised steel edge form angle, m",
-            "brandParchem": "Generic – 50x50x3 mm galvanised steel angle edge form, m",
-            "unitOfMeasure": "m",
-            "packSize": "various",
-            "notes": "Fix with concrete nails or screws. Leave in place or strip after cure. Ensures clean arris on repaired edge."
-          }
-        ]
-      },
-      {
-        "slug": "reinforcement-mesh",
-        "label": "Reinforcement mesh",
-        "materials": [
-          {
-            "materialName": "Stainless steel reinforcement mesh",
-            "productType": "316 SS welded wire reinforcement mesh",
-            "brandArdex": "InfraBuild (OneSteel) – 316 SS welded wire mesh, 2400x1200 mm sheet",
-            "brandSika": "Midalia Steel – SS welded reinforcement mesh 316 grade, various sheet sizes",
-            "brandFosroc": "Liberty OneSteel – 316 SS reinforcing mesh, sheet",
-            "brandTremco": "Stainless Steel Specialists Australia – 316 SS welded mesh, sheet",
-            "brandParchem": "Mtalex – stainless steel welded mesh 316, various sizes",
-            "unitOfMeasure": "sheet",
-            "packSize": "various",
-            "notes": "For supplementary reinforcement in edge repairs. 316 SS in chloride environments. Maintain min 30 mm cover."
-          }
-        ]
-      },
-      {
-        "slug": "curing-compounds",
-        "label": "Curing compounds",
-        "materials": [
-          {
-            "materialName": "Curing compound",
-            "productType": "Water-based acrylic concrete curing compound",
-            "brandArdex": null,
-            "brandSika": "Sika Antisol E – acrylic resin curing compound, 5 L",
-            "brandFosroc": "Fosroc Concure WB30 – water-based wax emulsion curing compound, 5 L",
-            "brandTremco": "Tremco Eucocrete WB Cure – water-based acrylic curing compound, 5 L",
-            "brandParchem": "Mapei Mapecure S – acrylic curing compound, 5 L",
-            "unitOfMeasure": "litre",
-            "packSize": "5 L",
-            "notes": "Apply immediately after repair mortar finishing. Cure minimum 7 days before any trafficking."
-          }
-        ]
-      },
-      {
-        "slug": "abrasives-blades-tools",
-        "label": "Abrasives, blades & tools",
-        "materials": [
-          {
-            "materialName": "Angle grinder disc (grinding)",
-            "productType": "Diamond and abrasive concrete grinding disc",
-            "brandArdex": "Husqvarna Vari-Cut – diamond grinding disc, 100/125 mm dia",
-            "brandSika": "Norton Bear-Tex – abrasive concrete grinding disc, 100/125 mm dia",
-            "brandFosroc": "Metabo – abrasive grinding wheel, 125 mm dia",
-            "brandTremco": "Makita – abrasive and diamond grinding disc, 125 mm dia",
-            "brandParchem": "Bosch Expert – concrete surface grinding disc, 125 mm dia",
-            "unitOfMeasure": "each",
-            "packSize": "100/125 mm",
-            "notes": "Prepare slab edge surface prior to repair. Achieve min CSP 3 profile per ICRI 310.2. Use with vacuum extraction."
-          }
-        ]
+        "slug": "structural-anchors-dowels",
+        "label": "Structural anchors & dowels",
+        "materials": []
       }
     ]
   },

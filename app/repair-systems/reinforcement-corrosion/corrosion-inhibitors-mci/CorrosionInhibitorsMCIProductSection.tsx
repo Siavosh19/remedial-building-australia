@@ -8,8 +8,11 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { CORROSION_INHIBITOR_CARDS } from "./corrosionInhibitorsData";
 
 type FilterTag =
   | "Surface-applied"
@@ -134,37 +137,36 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Mapei Australia",
-    brandUrl: "https://www.mapei.com/au",
-    accentColor: "#16a34a",
-    name: "Mapei Mapefer — Rebar Corrosion Protection Coating",
-    descriptionLine: "2-component cementitious rebar corrosion protection coating — brush applied directly to cleaned rebar in active repair zones",
-    productType: "2-component cementitious rebar corrosion protection coating",
-    filterTags: ["Rebar-coating", "Carbonation", "Chloride", "Brush-applied"],
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika FerroGard-901",
+    descriptionLine: "Corrosion-inhibiting concrete admixture (integral MCI) — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "Corrosion-inhibiting concrete admixture (integral MCI)",
+    filterTags: ["Admixture", "Amine-alcohol", "Carbonation", "Chloride"],
     techChips: [
-      { label: "2-component cementitious", cls: "bg-green-100 text-green-900" },
-      { label: "Applied directly to cleaned rebar", cls: "bg-slate-100 text-slate-700" },
-      { label: "NOT a surface MCI", cls: "bg-amber-100 text-amber-900" },
-      { label: "Mapei Australia nationally", cls: "bg-slate-100 text-slate-700" },
+      { label: "Corrosion-inhibiting concrete ", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Mapei Mapefer is a 2-component cementitious corrosion protection coating applied directly to cleaned reinforcement to provide an alkaline barrier layer that passivates the steel surface and inhibits ongoing corrosion. Mapefer is distinct from MCI products — it is a direct rebar application product (brush or trowel applied to the cleaned rebar), not a surface-applied migrating inhibitor. Used on cleaned rebar in active repair zones where repair mortar will be placed immediately after. The alkaline, polymer-modified cement coating provides a physical and chemical barrier between the rebar surface and the chloride or carbonated environment. Applied after cleaning the rebar to St 2 minimum, allowed to cure to a stiff plastic consistency, then repair mortar applied while the Mapefer coating is still slightly green. Confirm mixing ratio, application thickness, open time, and compatibility with selected repair mortar from current Mapei Australia TDS.",
+      "Sika FerroGard-901 is a Corrosion-inhibiting concrete admixture (integral MCI). Integral amino-alcohol corrosion-inhibiting admixture added to repair mortar or concrete to slow reinforcement corrosion. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
     technicalProperties: [
-      "2-component cementitious coating — applied directly to cleaned rebar by brush",
-      "Alkaline cement matrix passivates steel and inhibits corrosion",
-      "Applied to rebar in active repair zones — not a surface-applied MCI",
-      "Mapei Australia — trade supply nationally",
+      "Corrosion-inhibiting concrete admixture (integral MCI)",
+      "Integral amino-alcohol corrosion-inhibiting admixture added to repair mortar or concrete to slow reinforcement corrosion.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
     ],
     limitations: [
-      "Rebar must be cleaned to St 2 minimum before Mapefer application",
-      "Not an MCI — does not migrate through concrete — applied only where rebar is physically exposed",
-      "Open time limited — apply repair mortar while coating is still slightly green (confirm from Mapei TDS)",
-      "Do not confuse Mapefer (rebar coating) with surface-applied MCI products — different product class, different application",
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
     ],
     procurementSources: [
-      { name: "Mapei Australia — trade supply nationally", url: "https://www.mapei.com/au" },
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
     ],
-  },
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -257,6 +259,79 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["application_mode", "surface_concrete / rebar_coating / admixture", "match to where the inhibitor is applied"],
+    ["corrosion_cause", "carbonation / chloride", "both addressed; chloride benefits most from MCI management"],
+    ["repair_extent", "localized_patch / large_area", "large_area where full removal impractical → surface MCI suited"],
+    ["function", "corrosion_management / structural", "structural → not_suitable (inhibitor manages corrosion, is not a structural repair)"],
+  ],
+  json: {
+    category: "corrosion_inhibitors_mci",
+    stage1_gates: {
+      application_mode: { allowed: ["surface_concrete", "rebar_coating", "admixture"], rule: "match application location" },
+      corrosion_cause: { allowed: ["carbonation", "chloride"], rule: "both; chloride benefits most" },
+      repair_extent: { allowed: ["localized_patch", "large_area"], rule: "large_area where full removal impractical=surface MCI" },
+      function: { allowed: ["corrosion_management", "structural"], rule: "structural=not_suitable (management not repair)" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika Ferrogard-903+": {
+    rows: [
+      ["application_mode", "gate", "surface_concrete"],
+      ["corrosion_cause_max", "gate", "chloride"],
+      ["repair_extent", "gate", "large_area"],
+      ["chemistry", "tag", "amine_alcohol_mci"],
+      ["form", "meta", "liquid (5/10/20 L)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sika_ferrogard_903plus", gates: { application_mode: "surface_concrete", corrosion_cause_max: "chloride", repair_extent: "large_area" }, tag: { chemistry: "amine_alcohol_mci" }, rank: {}, meta: { form: "liquid_5_10_20L", data_status: "verified", selectable: true, source: "aus.sika.com Ferrogard-903+ — surface MCI, migrates to rebar; management not repair", confirmed_date: null } },
+  },
+  "Cortec MCI-2020 — Surface-Applied MCI": {
+    rows: [
+      ["application_mode", "gate", "surface_concrete"],
+      ["corrosion_cause_max", "gate", "chloride"],
+      ["repair_extent", "gate", "large_area"],
+      ["chemistry", "tag", "amino_carboxylate_mci"],
+      ["form", "meta", "liquid (1-2 coats); admixture forms exist"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "cortec_mci_2020", gates: { application_mode: "surface_concrete", corrosion_cause_max: "chloride", repair_extent: "large_area" }, tag: { chemistry: "amino_carboxylate_mci" }, rank: {}, meta: { form: "liquid_brush_spray", data_status: "verified", selectable: true, source: "cortecvci.com MCI-2020 — confirm current AU distributor", confirmed_date: null } },
+  },
+  "Fosroc Nitocor MCI": {
+    rows: [
+      ["application_mode", "gate", "surface_concrete/admixture"],
+      ["corrosion_cause_max", "gate", "chloride"],
+      ["repair_extent", "gate", "localized_patch/large_area"],
+      ["chemistry", "tag", "mci (confirm chemistry)"],
+      ["form", "meta", "surface + admixture"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "fosroc_nitocor_mci", gates: { application_mode: "surface_concrete/admixture", corrosion_cause_max: "chloride", repair_extent: "localized_patch/large_area" }, tag: { chemistry: "mci" }, rank: {}, meta: { form: "surface+admixture", data_status: "verified", selectable: true, source: "parchem.com.au Fosroc Nitocor — confirm current name/form (range revised)", confirmed_date: null } },
+  },
+  "Mapei Mapefer — Rebar Corrosion Protection Coating": {
+    rows: [
+      ["application_mode", "gate", "rebar_coating"],
+      ["corrosion_cause_max", "gate", "chloride"],
+      ["repair_extent", "gate", "localized_patch"],
+      ["chemistry", "tag", "cementitious_2comp"],
+      ["form", "meta", "2-component coating (to rebar)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "mapei_mapefer", gates: { application_mode: "rebar_coating", corrosion_cause_max: "chloride", repair_extent: "localized_patch" }, tag: { chemistry: "cementitious_2comp" }, rank: {}, meta: { form: "2comp_rebar_coating", data_status: "verified", selectable: true, source: "mapei.com/au Mapefer — applied direct to cleaned rebar, NOT a surface MCI", confirmed_date: null } },
+  },
+};
+
 export function CorrosionInhibitorsMCIIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -283,6 +358,8 @@ export function CorrosionInhibitorsMCIIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Chemistry — amino-alcohol/amine vapour-phase migrating type vs amino-carboxylate adsorption type; application method — surface-applied migrating (MCI) vs admixed (new repair mortar/concrete) vs 2C cementitious carrier coating; migration/penetration depth required to reach and passivate the reinforcement at the actual concrete cover; chloride contamination level / threshold the inhibitor is rated to manage (% chloride by mass of cement); adjunct only — used WITH concrete repair, patch repair or realkalisation/cathodic methods, does not replace removal of contaminated/spalled concrete; coverage (m²/L) and number of coats/applications; dwell/cure time before overcoating or membrane; compatibility with subsequent coatings, membranes and repair mortars (bond effect if film-forming); efficacy verification and monitoring (half-cell potential per ASTM C876, corrosion-rate); alignment with EN 1504-7 (rebar protection) / EN 1504-9 principles; service-life expectation and re-application interval";
 
 export function CorrosionInhibitorsMCIProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -336,139 +413,7 @@ export function CorrosionInhibitorsMCIProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — MCI surface treatments, admixtures, and rebar coatings — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">MCI and rebar protection product types for reinforcement corrosion. Confirm all product selections from current manufacturer TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Applied to</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Best use</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.applied}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.use}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={CORROSION_INHIBITOR_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Corrosion inhibitors (MCI)" />
     </>
   );
 }

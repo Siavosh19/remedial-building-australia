@@ -15,22 +15,12 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
+import { SUBSCRIBER_INTERESTS } from "@/lib/subscriber-interests";
+
+export { SUBSCRIBER_INTERESTS, type SubscriberInterest } from "@/lib/subscriber-interests";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export const SUBSCRIBER_INTERESTS = [
-  "All Topics",
-  "Concrete Repair & Spalling",
-  "Waterproofing & Membranes",
-  "Façade & External Envelope",
-  "Building Compliance & NCC",
-  "Strata & Class 2 Buildings",
-  "Fire Compliance",
-  "Repair Systems & Products",
-] as const;
-
-export type SubscriberInterest = (typeof SUBSCRIBER_INTERESTS)[number];
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
@@ -85,10 +75,17 @@ export async function POST(req: NextRequest) {
 
   // ── Send confirmation email ─────────────────────────────────────────────────
   const resend = new Resend(process.env.RESEND_API_KEY);
+  const unsubUrl = `https://www.remedialbuildingaustralia.com.au/api/unsubscribe?email=${encodeURIComponent(email)}`;
   const { data: emailData, error: emailError } = await resend.emails.send({
     from: "Remedial Building Australia <newsletter@remedialbuildingaustralia.com.au>",
     to: email,
     subject: "You're subscribed — Remedial Building Australia",
+    replyTo: "info@remedialbuildingaustralia.com.au",
+    headers: {
+      "List-Unsubscribe": `<${unsubUrl}>, <mailto:info@remedialbuildingaustralia.com.au?subject=unsubscribe>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    },
+    text: `Hi ${name},\n\nThanks for subscribing to the Weekly Remedial Building Update. You'll receive curated industry news, compliance updates and technical references directly to your inbox every week.\n\nYour interest area: ${interest}\n\nYou're receiving this because you subscribed at remedialbuildingaustralia.com.au.\nUnsubscribe: ${unsubUrl}`,
     html: `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#0c2340">
         <div style="background:#0c2340;padding:24px 32px;border-radius:12px 12px 0 0">
@@ -98,9 +95,9 @@ export async function POST(req: NextRequest) {
         <div style="background:#f8fafc;padding:32px;border-radius:0 0 12px 12px;border:1px solid #e2e8f0;border-top:none">
           <p style="margin:0 0 16px;font-size:15px;line-height:1.6">Hi ${name},</p>
           <p style="margin:0 0 16px;font-size:15px;line-height:1.6">
-            Thanks for subscribing to the <strong>Fortnightly Remedial Building Update</strong>.
+            Thanks for subscribing to the <strong>Weekly Remedial Building Update</strong>.
             You'll receive curated industry news, compliance updates and technical references
-            directly to your inbox every fortnight.
+            directly to your inbox every week.
           </p>
           <p style="margin:0 0 8px;font-size:13px;color:#64748b"><strong>Your interest area:</strong> ${interest}</p>
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0"/>

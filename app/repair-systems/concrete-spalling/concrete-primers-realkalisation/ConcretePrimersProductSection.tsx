@@ -1,56 +1,79 @@
 "use client";
 import { useState, useRef } from "react";
 import { CheckCircle, BookOpen, ExternalLink, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
+import { AISelectionStage1, AISelectionStage2 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { CONCRETE_PRIMER_CARDS } from "./concretePrimersData";
 
 type FilterTag = "Concrete-primer" | "Adhesive-primer" | "Re-alkalisation" | "Cementitious" | "Pre-bagged" | "Brush-applied" | "Westox";
 type Product = { fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string; name: string; descriptionLine: string; productType: string; filterTags: FilterTag[]; techChips: { label: string; cls: string }[]; systemDescription: string; technicalProperties: string[]; limitations: string[]; procurementSources: { name: string; url: string }[] };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
-    fullLabel: "Westox",
-    brandUrl: "https://www.westox.com.au",
-    accentColor: "#64748b",
-    name: "Westox RAP Adhesive",
-    descriptionLine: "Cementitious adhesive primer for concrete repair mortar bonding — brush-applied over prepared concrete substrate — confirm current formulation, coverage, and system specifications with Westox technical",
-    productType: "Cementitious adhesive primer — concrete repair mortar bonding",
-    filterTags: ["Concrete-primer", "Adhesive-primer", "Cementitious", "Brush-applied", "Westox"],
-    techChips: [{ label: "Adhesive primer", cls: "bg-slate-100 text-slate-700" }, { label: "Cementitious", cls: "bg-slate-100 text-slate-700" }, { label: "Brush-applied", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Westox RAP Adhesive is a cementitious adhesive primer for bonding repair mortar to prepared concrete substrates in spalling repair applications. Cementitious adhesive primers are applied wet-on-wet to the prepared concrete surface immediately before repair mortar application to improve adhesion between the existing concrete and the repair mortar.\n\nThe RAP (Remedial Adhesive Primer) system is part of the Westox concrete repair range. Confirm current product technical data sheet, mixing procedure, coverage, application method, and compatible repair mortar system with Westox technical before specifying.",
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    tdsUrl: "https://aus.sika.com/dam/dms/au01/2/sikatop_armatec_-110epocem.pdf",
+    accentColor: "#be123c",
+    name: "SikaTop Armatec-110 EpoCem",
+    descriptionLine: "Three-component cementitious, epoxy-modified bonding primer with corrosion inhibitor — brush-applied to the prepared substrate and to exposed reinforcement ahead of a Sika MonoTop repair mortar — EN 1504-7",
+    productType: "3-component cementitious epoxy-modified bonding primer + corrosion inhibitor (EN 1504-7)",
+    filterTags: ["Concrete-primer", "Adhesive-primer", "Cementitious", "Brush-applied"],
+    techChips: [
+      { label: "EN 1504-7", cls: "bg-rose-100 text-rose-800" },
+      { label: "Bonding primer", cls: "bg-slate-100 text-slate-700" },
+      { label: "Corrosion inhibitor", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "SikaTop Armatec-110 EpoCem is a three-component, cementitious epoxy-modified slurry that serves as a bonding primer and reinforcement corrosion-protection coat in concrete repair, meeting EN 1504-7. Built on Sika's EpoCem technology, it is brush-applied to exposed reinforcement and to the prepared concrete substrate, then overlaid with a Sika MonoTop or compatible repair mortar. Confirm the current coverage rate, number of coats, overcoat window and pack size against the current Sika Australia TDS before specifying.",
     technicalProperties: [
-      "Cementitious adhesive primer — improves bond between repair mortar and prepared concrete substrate",
-      "Brush-applied wet-on-wet immediately before repair mortar application — confirm application timing from current Westox TDS",
-      "Confirm mixing procedure, coverage, and compatible repair mortar system from current Westox RAP Adhesive TDS",
+      "Three-component cementitious, epoxy-modified bonding primer with integral corrosion inhibitor (EN 1504-7)",
+      "Brush-applied to exposed reinforcement and the prepared concrete substrate before the repair mortar",
+      "Part of the Sika MonoTop / SikaTop concrete repair system",
+      "Confirm coverage, coats, overcoat window and pot life from the current Sika Australia TDS — N/A — sought",
     ],
     limitations: [
-      "Confirm current product formulation and system specifications with Westox technical before specifying",
-      "Substrate must be prepared to current Westox specification before primer application — confirm preparation requirements with Westox",
-      "Apply repair mortar while adhesive primer is still green — do not allow primer to dry before applying repair mortar",
-      "Confirm current Australian product availability with Westox before specifying",
+      "Observe the overcoat window — apply the repair mortar within the time stated on the current TDS",
+      "Three-component product — mix complete units; do not split-batch outside the TDS ratios",
+      "Confirm substrate preparation, coverage rate and pack size with Sika Australia technical before specifying",
     ],
-    procurementSources: [{ name: "Westox — contact for trade supply", url: "https://www.westox.com.au" }],
+    procurementSources: [
+      { name: "Sika Australia — trade supply nationally", url: "https://aus.sika.com" },
+    ],
   },
   {
-    fullLabel: "Westox",
-    brandUrl: "https://www.westox.com.au",
-    accentColor: "#64748b",
-    name: "Westox RAP Primer DG",
-    descriptionLine: "Concrete re-alkalisation and adhesion primer for carbonated or contaminated concrete substrates — confirm current formulation, coverage, and system specifications with Westox technical",
-    productType: "Re-alkalisation and adhesion primer — carbonated concrete substrates",
-    filterTags: ["Concrete-primer", "Re-alkalisation", "Cementitious", "Brush-applied", "Westox"],
-    techChips: [{ label: "Re-alkalisation", cls: "bg-slate-100 text-slate-700" }, { label: "Primer", cls: "bg-slate-100 text-slate-700" }, { label: "Carbonated concrete", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Westox RAP Primer DG is a primer for carbonated or contaminated concrete substrates used in concrete spalling repair applications. Re-alkalisation primers are used to improve the substrate condition of carbonated concrete before repair mortar application, raising the pH at the repair interface to reduce ongoing corrosion risk to reinforcement.\n\nConfirm current product technical data sheet, application method, coverage, and system design with Westox technical before specifying. 'DG' designation may indicate a specific product grade — confirm current formulation with Westox.",
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.fosroc.com.au",
+    tdsUrl: "https://www.fosroc.com.au/sites/default/files/products_file_storage/Fosroc_Nitobond_HAR_TDS.pdf",
+    accentColor: "#7c2d12",
+    name: "Fosroc Nitobond HAR",
+    descriptionLine: "Single-component polymer emulsion bonding primer for Fosroc Renderoc repair mortars — scrubbed into the prepared substrate; the mortar is applied while the primer is tacky",
+    productType: "Single-component polymer emulsion bonding primer (for Renderoc repairs)",
+    filterTags: ["Concrete-primer", "Adhesive-primer", "Brush-applied"],
+    techChips: [
+      { label: "Polymer emulsion", cls: "bg-orange-100 text-orange-900" },
+      { label: "Bonding primer", cls: "bg-slate-100 text-slate-700" },
+      { label: "Apply mortar when tacky", cls: "bg-amber-50 text-amber-700" },
+      { label: "Parchem — national", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Fosroc Nitobond HAR is a single-component polymer emulsion bonding agent used as the substrate primer for Fosroc Renderoc repair mortars. It is scrubbed well into the prepared, saturated-surface-dry substrate and the Renderoc mortar is applied as soon as the primer becomes tacky, improving the bond between old concrete and the new repair. Non-flammable. Confirm the current coverage rate, open time and pack size against the current Fosroc / Parchem TDS before specifying.",
     technicalProperties: [
-      "Re-alkalisation and adhesion primer for carbonated or contaminated concrete — used before repair mortar application",
-      "Improves substrate condition and adhesion at repair interface on carbonated concrete",
-      "Confirm application method, coverage, and system design from current Westox RAP Primer DG TDS",
+      "Single-component polymer emulsion bonding primer for the Fosroc Renderoc repair system",
+      "Scrubbed into the prepared substrate; apply the repair mortar while the primer is tacky",
+      "Non-flammable — confirm coverage rate and open time from the current Fosroc / Parchem TDS — N/A — sought",
+      "Parchem (DuluxGroup) — national trade supply",
     ],
     limitations: [
-      "Confirm current product formulation and system specifications with Westox technical before specifying",
-      "Substrate must be prepared to current Westox specification before primer application",
-      "Confirm current Australian product availability with Westox before specifying",
+      "Apply the repair mortar within the tacky window — do not let the primer dry out fully before mortaring",
+      "Confirm suitability as a substrate primer vs other Nitobond grades for the specific duty with Parchem",
+      "Confirm current coverage rate and pack size with Parchem before specifying",
     ],
-    procurementSources: [{ name: "Westox — contact for trade supply", url: "https://www.westox.com.au" }],
-  },
+    procurementSources: [
+      { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
+    ],
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [{ id: "Concrete-primer", label: "Concrete primer" }, { id: "Adhesive-primer", label: "Adhesive primer" }, { id: "Re-alkalisation", label: "Re-alkalisation" }, { id: "Cementitious", label: "Cementitious" }, { id: "Brush-applied", label: "Brush-applied" }];
@@ -73,33 +96,83 @@ function CollapsibleDescription({ text }: { text: string }) {
   return (<div><p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p><button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button></div>);
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["function", "mortar_bond / realkalisation / waterproofing", "mortar_bond/realkalisation → this category; waterproofing → requires_alternative (different product)"],
+    ["substrate_condition", "porous_prepared / dense_smooth / carbonated", "carbonated → realkalisation primer; dense_smooth → epoxy bond coat instead"],
+    ["application_timing", "wet_on_wet / cured", "bonding primer applied wet-on-wet before mortar (do not let dry)"],
+    ["chemistry", "cementitious / acrylic / epoxy", "match repair mortar system compatibility"],
+    ["compatibility", "mortar_system_match / mismatch", "confirm compatible primer from the repair mortar manufacturer"],
+  ],
+  json: {
+    category: "concrete_primers_realkalisation",
+    stage1_gates: {
+      function: { allowed: ["mortar_bond", "realkalisation", "waterproofing"], rule: "mortar_bond/realkalisation=suitable; waterproofing=requires_alternative" },
+      substrate_condition: { allowed: ["porous_prepared", "dense_smooth", "carbonated"], rule: "carbonated=realkalisation primer; dense_smooth=epoxy bond coat" },
+      application_timing: { allowed: ["wet_on_wet", "cured"], rule: "bonding primer wet-on-wet before mortar (do not let dry)" },
+      chemistry: { allowed: ["cementitious", "acrylic", "epoxy"], rule: "match repair mortar system" },
+      compatibility: { allowed: ["mortar_system_match", "mismatch"], rule: "confirm compatible primer from mortar manufacturer" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Westox RAP Adhesive": {
+    rows: [
+      ["function", "gate", "mortar_bond"],
+      ["substrate_target", "gate", "porous_prepared"],
+      ["application", "gate", "brush_wet_on_wet"],
+      ["timing", "gate", "apply_while_green"],
+      ["chemistry", "tag", "cementitious"],
+      ["coverage_m2", "rank", "null (unconfirmed)"],
+      ["compatible_system", "meta", "westox_repair_mortar (confirm)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "westox_rap_adhesive",
+      gates: { function: "mortar_bond", substrate_target: "porous_prepared", application: "brush_wet_on_wet", timing: "apply_while_green" },
+      tag: { chemistry: "cementitious" },
+      rank: { coverage_m2: null },
+      meta: { compatible_system: "westox_repair_mortar", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "westox.com.au Westox RAP Adhesive — formulation/availability to confirm", confirmed_date: null },
+    },
+  },
+  "Westox RAP Primer DG": {
+    rows: [
+      ["function", "gate", "realkalisation"],
+      ["substrate_target", "gate", "carbonated"],
+      ["application", "gate", "brush"],
+      ["timing", "gate", "unconfirmed"],
+      ["chemistry", "tag", "cementitious"],
+      ["coverage_m2", "rank", "null (unconfirmed)"],
+      ["compatible_system", "meta", "westox_repair_mortar (confirm)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "westox_rap_primer_dg",
+      gates: { function: "realkalisation", substrate_target: "carbonated", application: "brush", timing: "unconfirmed" },
+      tag: { chemistry: "cementitious" },
+      rank: { coverage_m2: null },
+      meta: { compatible_system: "westox_repair_mortar", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "westox.com.au Westox RAP Primer DG — formulation/availability to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function ConcretePrimersIntroSection() {
-  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Concrete primers &amp; re-alkalisation</h3></div><p className="text-sm leading-7 text-slate-600">Concrete adhesive primers and re-alkalisation primers are applied to prepared concrete substrates before repair mortar application to improve adhesion and substrate condition. Adhesive primers are applied wet-on-wet immediately before mortar application. Re-alkalisation primers improve the pH at the repair interface on carbonated concrete to reduce ongoing corrosion risk. Westox RAP Adhesive and RAP Primer DG are primers for concrete repair in the Westox range. Confirm current specifications with Westox technical before specifying.</p></div>);
+  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Concrete primers &amp; re-alkalisation</h3></div><p className="text-sm leading-7 text-slate-600">Concrete adhesive primers and re-alkalisation primers are applied to prepared concrete substrates before repair mortar application to improve adhesion and substrate condition. Adhesive primers are applied wet-on-wet immediately before mortar application. Re-alkalisation primers improve the pH at the repair interface on carbonated concrete to reduce ongoing corrosion risk. Selection is driven by function, chemistry, wet-on-wet window and suitability over carbonated substrates.</p></div>);
 }
 
+const DESIGN_CRITERIA = "Function (anti-corrosion reinforcement primer vs cementitious bonding/adhesion primer vs re-alkalising primer for carbonated substrate); chemistry (polymer-cement, epoxy, alkaline cementitious); pot life & open/wet-on-wet window before mortar application; bond/pull-off strength developed (MPa); chloride/moisture tolerance & ability to passivate steel (pH, inhibitor content); compatibility with chosen repair mortar system; coverage (m²/L or kg) & coats; recoatable carbonation-front treatment depth; substrate moisture & SSD requirement; application temp; whether active corrosion inhibitor vs barrier only.";
+
 export function ConcretePrimersProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const toggleFilter = (id: FilterTag) => { setActiveFilters((prev) => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; }); };
-  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
   return (
-    <div>
-      <div className="mb-5 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">2 products — Westox — concrete primer and re-alkalisation systems</p></div></div>
-      <div className="mb-5 flex flex-wrap items-center gap-2"><span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>{FILTER_DEFS.map((f) => { const active = activeFilters.has(f.id); return <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>; })}{activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}</div>
-      <div className="mb-4 flex items-center justify-between"><span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""}</span><div className="flex items-center gap-2"><button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button><button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button></div></div>
-      <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-        {visibleProducts.map((product) => (
-          <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-              <div className="border-b border-slate-100 bg-slate-50 px-5 py-4"><div className="flex items-center justify-between gap-2"><span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span><div className="flex shrink-0 items-center gap-1"><a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a></div></div><h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3><p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p><CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} /></div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4"><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p><CollapsibleDescription text={product.systemDescription} /></div>
-              <div className="space-y-3 px-5 py-4"><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div></div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <AutoProductReference products={PRODUCTS} cards={CONCRETE_PRIMER_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete primers & re-alkalisation" />
   );
 }

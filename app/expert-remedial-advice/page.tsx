@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 
 const DISCLAIMER =
@@ -6,7 +7,6 @@ const DISCLAIMER =
 const services = [
   {
     title: "Preliminary Defect Assessment",
-    price: "From $149 + GST",
     description:
       "Desktop review of photos and building information to identify the defect type, risk level, and recommended next step.",
     href: "/expert-remedial-advice/preliminary-defect-assessment",
@@ -22,7 +22,6 @@ const services = [
   },
   {
     title: "Scope, Quote & Tender Review",
-    price: "From $495 + GST",
     description:
       "Independent review of a remedial scope, quote, or tender before you approve or sign — checking for missing items, vague wording, exclusions, and variation risk.",
     href: "/expert-remedial-advice/scope-quote-tender-review",
@@ -39,7 +38,6 @@ const services = [
   },
   {
     title: "Remedial Budget Estimate",
-    price: "From $395 + GST",
     description:
       "Indicative cost range for a remedial defect before committing to consultant fees, tenderers, or a full diagnosis.",
     href: "/expert-remedial-advice/remedial-budget-estimate",
@@ -56,7 +54,6 @@ const services = [
   },
   {
     title: "Building Repair Strategy Advice",
-    price: "From $750 + GST",
     description:
       "Independent advice on the best repair pathway when the approach is unclear or multiple options are being considered.",
     href: "/expert-remedial-advice/building-repair-strategy-advice",
@@ -74,7 +71,6 @@ const services = [
   },
   {
     title: "Pre-Purchase Apartment Defect Review",
-    price: "From $295 + GST",
     description:
       "Desktop review of strata records, AGM minutes, capital works fund status, and available defect information before buying an apartment.",
     href: "/expert-remedial-advice/pre-purchase-apartment-defect-review",
@@ -93,7 +89,6 @@ const services = [
   },
   {
     title: "Capital Works Forecast",
-    price: "By quote",
     description:
       "Preliminary forecast of future remedial building works and costs for strata capital works planning, with a 5–10 year budget range.",
     href: "/expert-remedial-advice/capital-works-forecast",
@@ -112,6 +107,13 @@ const services = [
     ),
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Expert Remedial Advice | Remedial Building Australia",
+  description:
+    "Independent desktop remedial advice for owners, strata managers and building stakeholders — defect assessments, scope, quote and tender reviews, budgets, repair strategy and capital works forecasts.",
+  alternates: { canonical: "/expert-remedial-advice" },
+};
 
 export default function ExpertRemedialAdvicePage() {
   return (
@@ -146,7 +148,6 @@ export default function ExpertRemedialAdvicePage() {
                   <h2 className="text-base font-bold leading-snug text-sky-950">
                     {service.title}
                   </h2>
-                  <p className="mt-1 text-xs font-semibold text-red-700">{service.price}</p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
                     {service.description}
                   </p>
@@ -183,15 +184,19 @@ export default function ExpertRemedialAdvicePage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

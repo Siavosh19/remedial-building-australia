@@ -7,9 +7,12 @@ import {
 } from "lucide-react";
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
-  CollapsibleCardDetails, TechCard,
+  CollapsibleCardDetails, TechCard, DataNote,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { EPOXY_LAMINATING_CARDS } from "./epoxyLaminatingData";
 
 type FilterTag =
   | "Paste-adhesive"
@@ -35,6 +38,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -75,8 +79,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.mapei.com/au",
     accentColor: "#dc2626",
     name: "Mapei Adesilex PG1",
-    descriptionLine: "TODO: owner confirm — Mapei AU site blocked (Cloudflare); could not verify product name, viscosity, or specifications from live source — 2-component low-viscosity epoxy impregnating resin for wet lay-up CFRP fabric strengthening — saturates fabric fibres for flexural and shear strengthening",
-    productType: "2-component epoxy impregnating resin — CFRP fabric wet lay-up — TODO: owner confirm from current Mapei AU TDS",
+    descriptionLine: "2-component low-viscosity epoxy impregnating resin for wet lay-up CFRP fabric strengthening — saturates fabric fibres for flexural and shear strengthening",
+    productType: "2-component epoxy impregnating resin — CFRP fabric wet lay-up",
+    dataNote: "Owner to confirm — the Mapei Australia site was blocked (Cloudflare) during audit; product name, viscosity, and specifications could not be verified from the live source. Confirm the current product name and specifications against the current Mapei Australia TDS before specifying.",
     filterTags: ["Liquid-resin", "Fabric-saturation", "2-component", "Overhead", "Vertical"],
     techChips: [
       { label: "Low-viscosity impregnating resin", cls: "bg-red-100 text-red-900" },
@@ -107,8 +112,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.parchem.com.au",
     accentColor: "#15803d",
     name: "Fosroc Nitowrap EP",
-    descriptionLine: "TODO: owner confirm — Parchem AU site is JS-rendered; could not verify product name or specifications from live source — 2-component epoxy laminating/impregnating resin for wet lay-up with Fosroc Nitowrap CF CFRP fabric — flexural and shear strengthening",
-    productType: "2-component epoxy impregnating resin — CFRP fabric wet lay-up — TODO: owner confirm from current Parchem TDS",
+    descriptionLine: "2-component epoxy laminating/impregnating resin for wet lay-up with Fosroc Nitowrap CF CFRP fabric — flexural and shear strengthening",
+    productType: "2-component epoxy impregnating resin — CFRP fabric wet lay-up",
+    dataNote: "Owner to confirm — the Parchem Australia site is JS-rendered; product name and specifications could not be verified from the live source. Confirm the current product name and specifications against the current Parchem/Fosroc TDS before specifying.",
     filterTags: ["Liquid-resin", "Fabric-saturation", "2-component", "Overhead"],
     techChips: [
       { label: "Epoxy impregnating resin", cls: "bg-green-100 text-green-900" },
@@ -220,6 +226,65 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["function", "strip_bonding / fabric_saturation", "paste for strip bonding; low-viscosity resin for fabric wet lay-up"],
+    ["pairs_with", "cfrp_strip / cfrp_fabric", "must match the CFRP system being used"],
+    ["orientation", "vertical / overhead", "overhead → thixotropic paste preferred over low-viscosity resin"],
+  ],
+  json: {
+    category: "epoxy_laminating_resins",
+    stage1_gates: {
+      function: { allowed: ["strip_bonding", "fabric_saturation"], rule: "paste=strip; low-viscosity=fabric" },
+      pairs_with: { allowed: ["cfrp_strip", "cfrp_fabric"], rule: "match the CFRP system" },
+      orientation: { allowed: ["vertical", "overhead"], rule: "overhead=thixotropic paste preferred" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika Sikadur-30": {
+    rows: [
+      ["function", "gate", "strip_bonding"],
+      ["pairs_with", "gate", "cfrp_strip (Sika CarboDur)"],
+      ["viscosity", "tag", "paste_thixotropic"],
+      ["chemistry", "tag", "epoxy_2comp"],
+      ["compatible_frp", "meta", "sika_carbodur"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sika_sikadur_30", gates: { function: "strip_bonding", pairs_with: "cfrp_strip" }, tag: { viscosity: "paste_thixotropic", chemistry: "epoxy_2comp" }, rank: {}, meta: { compatible_frp: "sika_carbodur", data_status: "verified", selectable: true, source: "aus.sika.com Sikadur-30 — high-modulus thixotropic paste for CarboDur strip bonding; not for fabric", confirmed_date: null } },
+  },
+  "Mapei Adesilex PG1": {
+    rows: [
+      ["function", "gate", "fabric_saturation"],
+      ["pairs_with", "gate", "cfrp_fabric (Mapewrap)"],
+      ["viscosity", "tag", "low_viscosity"],
+      ["chemistry", "tag", "epoxy_2comp"],
+      ["compatible_frp", "meta", "mapei_mapewrap"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: { id: "mapei_adesilex_pg1", gates: { function: "fabric_saturation", pairs_with: "cfrp_fabric" }, tag: { viscosity: "low_viscosity", chemistry: "epoxy_2comp" }, rank: {}, meta: { compatible_frp: "mapei_mapewrap", data_status: "unconfirmed", selectable: false, source: "mapei.com/au Cloudflare-blocked during audit — product name/viscosity/specs unverifiable", confirmed_date: null } },
+  },
+  "Fosroc Nitowrap EP": {
+    rows: [
+      ["function", "gate", "fabric_saturation"],
+      ["pairs_with", "gate", "cfrp_fabric (Nitowrap CF)"],
+      ["viscosity", "tag", "unconfirmed"],
+      ["chemistry", "tag", "epoxy_2comp"],
+      ["compatible_frp", "meta", "fosroc_nitowrap_cf"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: { id: "fosroc_nitowrap_ep", gates: { function: "fabric_saturation", pairs_with: "cfrp_fabric" }, tag: { viscosity: "unconfirmed", chemistry: "epoxy_2comp" }, rank: {}, meta: { compatible_frp: "fosroc_nitowrap_cf", data_status: "unconfirmed", selectable: false, source: "parchem.com.au JS-rendered during audit — product name/specs unverifiable", confirmed_date: null } },
+  },
+};
+
 export function EpoxyLaminatingResinsIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -246,6 +311,8 @@ export function EpoxyLaminatingResinsIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Function/viscosity — high-build thixotropic paste (strip bonding, gap filling) vs low-viscosity impregnating resin (fabric wet lay-up saturation); tensile, flexural & lap-shear bond strength (MPa) and bond to concrete (>1.5 MPa / concrete failure) per AS 5100 / fib design; E-modulus & elongation matched to CFRP and substrate; glass transition temperature Tg vs service temperature (and fire/elevated-temp limits); pot life & open time at application temp; cure schedule & gel time; mix ratio & sensitivity; substrate moisture tolerance & min concrete strength; layer/saturation coverage (g/m²) & fibre wet-out; thixotropy/sag resistance for overhead; AS 5100.8 / EN 1504-4 structural bonding compliance.";
 
 export function EpoxyLaminatingResinsProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -299,141 +366,7 @@ export function EpoxyLaminatingResinsProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — epoxy paste adhesive and laminating resins for CFRP strengthening systems — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Epoxy paste adhesives and laminating resins for CFRP strengthening systems. Always use paired CFRP product from the same manufacturer's system.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Viscosity</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Mix ratio</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Paired FRP</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Lap shear</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.viscosity}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mixRatio}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.pairedFRP}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.lapShear}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={EPOXY_LAMINATING_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Epoxy laminating resins" />
     </>
   );
 }

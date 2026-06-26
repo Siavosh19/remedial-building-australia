@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AuthHeader from "@/components/AuthHeader";
 
 export default function DirectoryForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -31,6 +32,7 @@ export default function DirectoryForgotPasswordPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+    <AuthHeader />
     <div className="mx-auto max-w-5xl px-6 py-10">
     <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
       <h1 className="text-3xl font-extrabold text-slate-950">Forgot password</h1>

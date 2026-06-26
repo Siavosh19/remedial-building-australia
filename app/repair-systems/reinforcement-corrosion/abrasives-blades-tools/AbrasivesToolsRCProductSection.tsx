@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "Diamond-blade"
@@ -256,6 +258,89 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["task", "cutting / breakout / rebar_cleaning / grinding_surface_prep", "match tool to the repair-sequence task"],
+    ["substrate", "reinforced_concrete / rebar_steel", "gate against tool suitability"],
+    ["power", "electric / pneumatic / either", "match available site power"],
+    ["dust_control", "hepa_required / open_air", "enclosed → HEPA extraction + P2/P3 mask"],
+    ["pt_tendon_present", "yes / no", "yes → keep heavy hammer/needle clear of PT tendons"],
+  ],
+  json: {
+    category: "abrasives_blades_tools",
+    stage1_gates: {
+      task: { allowed: ["cutting", "breakout", "rebar_cleaning", "grinding_surface_prep"], rule: "match tool to repair task" },
+      substrate: { allowed: ["reinforced_concrete", "rebar_steel"], rule: "gate against tool suitability" },
+      power: { allowed: ["electric", "pneumatic", "either"], rule: "match available site power" },
+      dust_control: { allowed: ["hepa_required", "open_air"], rule: "enclosed=HEPA extraction" },
+      pt_tendon_present: { allowed: ["yes", "no"], rule: "yes=keep clear of PT tendons" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Diamond Saw Blade — Perimeter Cutting": {
+    rows: [
+      ["task", "gate", "cutting"],
+      ["substrate", "gate", "reinforced_concrete"],
+      ["power", "gate", "electric"],
+      ["surface_profile", "tag", "n/a"],
+      ["dust_control", "gate", "dust_ppe (wet cut preferred)"],
+      ["pt_safe", "gate", "no_keep_clear"],
+      ["supply", "meta", "hilti/bosch/milwaukee (hire)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "diamond_saw_blade", gates: { task: "cutting", substrate: "reinforced_concrete", power: "electric", dust_control: "dust_ppe", pt_safe: "no_keep_clear" }, tag: { surface_profile: "n/a" }, rank: {}, meta: { supply: "hilti/bosch/milwaukee", data_status: "verified", selectable: true, source: "segmented diamond blade 230-350mm — saw-cut perimeter ≥10mm before break-out", confirmed_date: null } },
+  },
+  "SDS-MAX Demolition Hammer": {
+    rows: [
+      ["task", "gate", "breakout"],
+      ["substrate", "gate", "reinforced_concrete"],
+      ["power", "gate", "electric"],
+      ["surface_profile", "tag", "n/a"],
+      ["dust_control", "gate", "dust_ppe"],
+      ["pt_safe", "gate", "no_keep_clear"],
+      ["supply", "meta", "hilti/bosch/milwaukee (hire)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sds_max_demolition_hammer", gates: { task: "breakout", substrate: "reinforced_concrete", power: "electric", dust_control: "dust_ppe", pt_safe: "no_keep_clear" }, tag: { surface_profile: "n/a" }, rank: {}, meta: { supply: "hilti/bosch/milwaukee", data_status: "verified", selectable: true, source: "SDS-Max 5-15kg — break out within saw-cut, expose rebar +25mm clearance", confirmed_date: null } },
+  },
+  "Needle Gun / Wire Cup Wheel — Rebar Cleaning": {
+    rows: [
+      ["task", "gate", "rebar_cleaning"],
+      ["substrate", "gate", "rebar_steel"],
+      ["power", "gate", "either"],
+      ["surface_profile", "tag", "St2 (AS 1627.4)"],
+      ["dust_control", "gate", "dust_ppe"],
+      ["pt_safe", "gate", "no_keep_clear"],
+      ["supply", "meta", "hire/hardware"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "needle_gun_wire_cup", gates: { task: "rebar_cleaning", substrate: "rebar_steel", power: "either", dust_control: "dust_ppe", pt_safe: "no_keep_clear" }, tag: { surface_profile: "St2" }, rank: {}, meta: { supply: "hire/hardware", data_status: "verified", selectable: true, source: "needle gun / wire cup — clean rebar to St 2 (AS 1627.4); abrasive blast for Sa2.5", confirmed_date: null } },
+  },
+  "Diamond Cup Wheel — Substrate Preparation": {
+    rows: [
+      ["task", "gate", "grinding_surface_prep"],
+      ["substrate", "gate", "reinforced_concrete"],
+      ["power", "gate", "electric"],
+      ["surface_profile", "tag", "CSP2-3"],
+      ["dust_control", "gate", "hepa_required"],
+      ["pt_safe", "gate", "yes"],
+      ["supply", "meta", "hire/hardware"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "diamond_cup_wheel", gates: { task: "grinding_surface_prep", substrate: "reinforced_concrete", power: "electric", dust_control: "hepa_required", pt_safe: "yes" }, tag: { surface_profile: "CSP2-3" }, rank: {}, meta: { supply: "hire/hardware", data_status: "verified", selectable: true, source: "diamond cup wheel — substrate prep to CSP 2-3", confirmed_date: null } },
+  },
+};
+
 export function AbrasivesToolsRCIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -282,6 +367,8 @@ export function AbrasivesToolsRCIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Machine/drive compatibility (SDS-Plus vs SDS-Max shank, angle grinder 115/125mm, planetary grinder, scarifier drum); substrate suitability (tile, adhesive, screed, concrete, masonry); target concrete surface profile achieved (CSP 1-3 light grind to CSP 5-8 scabble per ICRI prep level required by overlay/membrane datasheet); diamond bond hardness matched to substrate (soft bond for hard/cured concrete, hard bond for green/abrasive); segment vs continuous rim and kerf width for crack-chasing vs cutting; wet vs dry cutting capability and cooling; cut depth and consumable life/grit; dust/slurry extraction and WHS Respirable Crystalline Silica control (on-tool extraction H-class or wet suppression per Safe Work Australia RCS WES 0.05 mg/m3); power demand/single vs 3-phase and hire vs owned; vibration (HAV) and noise exposure";
 
 export function AbrasivesToolsRCProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -335,137 +422,7 @@ export function AbrasivesToolsRCProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 tools — abrasives, blades, and prep tools for reinforcement corrosion repair — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Abrasives, blades, and tools in the reinforcement corrosion repair preparation sequence — from saw-cutting through substrate profiling.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Tool</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Purpose</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Prep standard</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Key note</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.tool} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.tool}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.purpose}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.prepStandard}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.keyNote}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Reinforcement corrosion" />
     </>
   );
 }

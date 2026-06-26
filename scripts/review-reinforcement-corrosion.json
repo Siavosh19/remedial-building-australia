@@ -1,0 +1,73 @@
+{
+  "section": "reinforcement-corrosion",
+  "flags": [
+    {
+      "subcategory": "Epoxy Zinc Rich Primers",
+      "name": "Mapei Mapefer 1K",
+      "reason": "misplaced -> Rebar Primers Inhibitors",
+      "evidence": "Mapefer 1K is a single-component, polymer-modified CEMENTITIOUS anti-corrosion primer with inhibitors (EN 1504-7), not an epoxy zinc-rich primer; it is already correctly listed under Rebar Primers Inhibitors so this entry is a misplaced duplicate. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapefer-1k"
+    },
+    {
+      "subcategory": "Epoxy Zinc Rich Primers",
+      "name": "SikaTop Armatec 110 EpoCem",
+      "reason": "misplaced -> Rebar Primers Inhibitors",
+      "evidence": "SikaTop Armatec-110 EpoCem is a 3-component cementitious-epoxy bonding primer / reinforcement corrosion protection coating (EN 1504-7) with corrosion inhibitor, NOT a zinc-rich primer; it is already correctly listed under Rebar Primers Inhibitors so this entry is a misplaced duplicate. https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/steel-reinforcmentprimers/sikatop-armatec-110epocem.html"
+    },
+    {
+      "subcategory": "Corrosion Inhibitors Mci",
+      "name": "Mapei Mapefer",
+      "reason": "misplaced -> Rebar Primers Inhibitors",
+      "evidence": "Mapefer / Mapefer 1K is a cementitious applied REBAR coating (EN 1504-7 reinforcement corrosion protection), not a surface-applied or migrating corrosion inhibitor (MCI) for concrete; belongs with rebar primers/coatings. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapefer-1k"
+    },
+    {
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "name": "Mapei Mapefox EW",
+      "reason": "not in AU market",
+      "evidence": "No 'Mapefox EW' product exists in Mapei's Australian range or global catalogue; Mapei's AU pure-epoxy chemical anchor for rebar/threaded rod is Mapefix EP 100 (the line is 'Mapefix', not 'Mapefox'). Likely a wrong/fabricated name. https://www.mapei.com/au/en/products-and-solutions/products/detail/9"
+    }
+  ],
+  "recommendations": [
+    {
+      "subcategory": "Epoxy Zinc Rich Primers",
+      "brand": "Sika",
+      "name": "Sika Armatec-10 ZR",
+      "type": "1-component zinc-rich rebar primer",
+      "reason": "Genuine Sika single-component zinc-rich rebar primer, fills the gap left when the two misplaced cementitious coatings are removed from this subcategory. https://usa.sika.com/en/construction/repair-protection/corrosion-protection/rebar-coatings/sika-armatec-10zr.html"
+    },
+    {
+      "subcategory": "Rebar Primers Inhibitors",
+      "brand": "Sika",
+      "name": "Sika Armatec 1C",
+      "type": "1-component cementitious bonding primer / rebar corrosion protection",
+      "reason": "Current Sika 1-component cementitious bonding primer and reinforcement corrosion protection coating; common AU alternative to the 3-component SikaTop Armatec-110 EpoCem. https://usa.sika.com/en/construction/repair-protection/corrosion-protection/rebar-coatings/sika-armatec-1c.html"
+    },
+    {
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "brand": "Mapei",
+      "name": "Mapei Mapefix EP 100",
+      "type": "pure epoxy chemical anchor (rebar / threaded rod)",
+      "reason": "Correct, real Mapei AU pure-epoxy chemical anchor (ETA / seismic C1-C2, rebar Ø8-Ø40) replacing the non-existent 'Mapefox EW'. https://cdnmedia.mapei.com/docs/librariesprovider8/products-documents/1_1_05809_mapefix-ep-100_en_ccdc260dc89843f68a849f86b383a9d7.pdf"
+    },
+    {
+      "subcategory": "Corrosion Inhibitors Mci",
+      "brand": "Sika",
+      "name": "Sika FerroGard-901",
+      "type": "corrosion-inhibiting concrete admixture (integral MCI)",
+      "reason": "Adds the integral/admixture MCI counterpart to the surface-applied FerroGard-903+ already listed; common AU Sika corrosion-inhibitor pairing. https://aus.sika.com/en/construction/concrete-repair-protection/corrosion-inhibitorssacrificialanodes.html"
+    },
+    {
+      "subcategory": "Cathodic Protection",
+      "brand": "Fosroc",
+      "name": "Vector Galvashield XP2",
+      "type": "embedded zinc galvanic discrete anode (higher output)",
+      "reason": "Higher-output discrete galvanic anode (twice the current of XPT), distributed in AU by Parchem/Fosroc; complements the base Galvashield XP entry. https://www.fosroc.com.au/product/vector-galvashield-xp"
+    },
+    {
+      "subcategory": "Repair Mortars Polymer Modified",
+      "brand": "Mapei",
+      "name": "Mapei Mapegrout T40",
+      "type": "polymer-modified structural repair mortar (EN 1504-3 R3)",
+      "reason": "Current AU Mapegrout structural repair mortar; broadens the Mapei range beyond Mapegrout Thixotropic. https://adheseal.com.au/products/mapegrout-t40"
+    }
+  ]
+}

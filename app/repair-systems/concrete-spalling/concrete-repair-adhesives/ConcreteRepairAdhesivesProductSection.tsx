@@ -1,34 +1,135 @@
 "use client";
 import { useState, useRef } from "react";
 import { CheckCircle, BookOpen, ExternalLink, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
+import { AISelectionStage1, AISelectionStage2 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag = "Repair-adhesive" | "Thickened" | "Cementitious" | "Pre-bagged" | "Brush-applied" | "Trowel-applied" | "Westox";
 type Product = { fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string; name: string; descriptionLine: string; productType: string; filterTags: FilterTag[]; techChips: { label: string; cls: string }[]; systemDescription: string; technicalProperties: string[]; limitations: string[]; procurementSources: { name: string; url: string }[] };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
-    fullLabel: "Westox",
-    brandUrl: "https://www.westox.com.au",
-    accentColor: "#64748b",
-    name: "Westox RAP Thickened Adhesive",
-    descriptionLine: "Thickened cementitious adhesive for bonding precast or separated concrete elements and repair sections — confirm current formulation, application method, and system specifications with Westox technical",
-    productType: "Thickened cementitious repair adhesive — concrete element bonding",
-    filterTags: ["Repair-adhesive", "Thickened", "Cementitious", "Pre-bagged", "Trowel-applied", "Westox"],
-    techChips: [{ label: "Thickened adhesive", cls: "bg-slate-100 text-slate-700" }, { label: "Cementitious", cls: "bg-slate-100 text-slate-700" }, { label: "Repair bonding", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Westox RAP Thickened Adhesive is a thickened cementitious adhesive for bonding precast or separated concrete elements, repair sections, and delaminated concrete in spalling repair applications. Unlike standard (brush-grade) cementitious adhesive primers, thickened adhesives have higher viscosity and can bridge small gaps between bonded surfaces.\n\nRAP Thickened Adhesive is part of the Westox RAP (Remedial Adhesive Primer) concrete repair system. Confirm current product technical data sheet, mixing procedure, coverage, application method, gap-filling capacity, and compatible repair mortar system with Westox technical before specifying.",
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sikadur-31 CF Normal",
+    descriptionLine: "Two-part, thixotropic structural epoxy adhesive for bonding concrete, masonry, steel and hardened-to-fresh concrete — trowel/spatula applied to vertical and overhead surfaces",
+    productType: "2-part thixotropic structural epoxy adhesive — bonding & repair",
+    filterTags: ["Repair-adhesive", "Thickened", "Trowel-applied"],
+    techChips: [
+      { label: "2-part epoxy", cls: "bg-rose-100 text-rose-800" },
+      { label: "Thixotropic", cls: "bg-slate-100 text-slate-700" },
+      { label: "Structural bonding", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Sikadur-31 CF Normal is a two-part, solvent-free, thixotropic structural epoxy adhesive for bonding a wide range of construction materials — concrete, masonry, steel and hardened-to-fresh concrete — and for localised concrete repair. Its non-sag consistency suits vertical and overhead application by trowel or spatula. Confirm the current pot life, bond/compressive strengths, layer thickness and pack size against the current Sika Australia TDS before specifying.",
     technicalProperties: [
-      "Thickened cementitious adhesive — suitable for bonding precast elements, repair sections, and delaminated concrete",
-      "Higher viscosity than standard brush-grade primers — can bridge small gaps between bonded surfaces",
-      "Confirm mixing procedure, coverage, application method, and compatible repair mortar from current Westox RAP Thickened Adhesive TDS",
+      "Two-part, solvent-free thixotropic structural epoxy adhesive (non-sag — vertical/overhead)",
+      "Bonds concrete, masonry, steel and hardened-to-fresh concrete; localised repair",
+      "Confirm pot life, bond and compressive strength, layer thickness from the current Sika Australia TDS — N/A — sought",
     ],
     limitations: [
-      "Confirm current product formulation and system specifications with Westox technical before specifying",
-      "Not a standalone structural repair — for structural bonding applications confirm structural suitability with Westox and structural engineer",
-      "Substrate must be prepared to current Westox specification before adhesive application",
-      "Confirm current Australian product availability with Westox before specifying",
+      "Observe pot life — mix only what can be placed within the working time on the current TDS",
+      "Substrate must be sound, clean and prepared to the TDS requirements",
+      "Confirm current pack size and application limits with Sika Australia technical before specifying",
     ],
-    procurementSources: [{ name: "Westox — contact for trade supply", url: "https://www.westox.com.au" }],
+    procurementSources: [
+      { name: "Sika Australia — trade supply nationally", url: "https://aus.sika.com" },
+    ],
   },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sikadur-33",
+    descriptionLine: "Two-part thixotropic epoxy adhesive paste for structural bonding and concrete reinstatement — trowel applied to vertical and overhead surfaces",
+    productType: "2-part thixotropic epoxy adhesive paste — structural bonding / reinstatement",
+    filterTags: ["Repair-adhesive", "Thickened", "Trowel-applied"],
+    techChips: [
+      { label: "2-part epoxy", cls: "bg-rose-100 text-rose-800" },
+      { label: "Thixotropic paste", cls: "bg-slate-100 text-slate-700" },
+      { label: "Structural bonding", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Sikadur-33 is a two-part, thixotropic epoxy adhesive paste for structural bonding and localised concrete reinstatement, including bonding fresh concrete/mortar to hardened concrete and adhering structural elements. Its paste consistency suits trowel application to vertical and overhead surfaces. Confirm the current pot life, bond and compressive strengths, layer thickness and pack size against the current Sika Australia TDS before specifying.",
+    technicalProperties: [
+      "Two-part thixotropic epoxy adhesive paste for structural bonding and reinstatement",
+      "Trowel applied; suits vertical and overhead surfaces",
+      "Confirm pot life, bond strength, layer thickness and pack size from the current Sika Australia TDS — N/A — sought",
+    ],
+    limitations: [
+      "Observe pot life — mix only what can be placed within the working time on the current TDS",
+      "Substrate must be sound, clean and prepared to the TDS requirements",
+      "Confirm current pack size and application limits with Sika Australia technical before specifying",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — trade supply nationally", url: "https://aus.sika.com" },
+    ],
+  },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Eporip",
+    descriptionLine: "Two-part, solvent-free epoxy adhesive for bonding fresh-to-hardened concrete (old-to-new construction joints) and for sealing dormant cracks before resin injection",
+    productType: "2-part solvent-free epoxy bonding adhesive — old-to-new concrete",
+    filterTags: ["Repair-adhesive", "Trowel-applied"],
+    techChips: [
+      { label: "2-part epoxy", cls: "bg-rose-100 text-rose-800" },
+      { label: "Solvent-free", cls: "bg-slate-100 text-slate-700" },
+      { label: "Old-to-new bonding", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Mapei Eporip is a two-component, solvent-free epoxy adhesive used to bond fresh concrete or mortar to hardened concrete at construction joints (old-to-new), and to seal-monolithically bond dormant cracks. It is brush or trowel applied to the prepared substrate; the fresh concrete/mortar is placed while it is still tacky. Confirm the current pot life, open time, bond strength and pack size against the current Mapei Australia TDS before specifying.",
+    technicalProperties: [
+      "Two-part, solvent-free epoxy bonding adhesive for old-to-new concrete construction joints",
+      "Also used to seal/bond dormant cracks; place fresh concrete while the adhesive is tacky",
+      "Confirm pot life, open time, bond strength and pack size from the current Mapei Australia TDS — N/A — sought",
+    ],
+    limitations: [
+      "Place fresh concrete/mortar within the open time while the adhesive is tacky",
+      "Not for actively moving or wet/leaking cracks — use a flexible injection resin there",
+      "Confirm current pack size and application limits with Mapei Australia technical before specifying",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — trade supply nationally", url: "https://www.mapei.com/au" },
+    ],
+  },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://ardexaustralia.com",
+    accentColor: "#0369a1",
+    name: "Ardex RA 88 Plus",
+    descriptionLine: "Two-component, rapid-setting structural epoxy repair adhesive supplied in cartridge format — for bonding and localised structural repair where fast strength gain is required",
+    productType: "2-component rapid-setting structural epoxy repair adhesive — cartridge",
+    filterTags: ["Repair-adhesive", "Trowel-applied"],
+    techChips: [
+      { label: "2-part epoxy", cls: "bg-rose-100 text-rose-800" },
+      { label: "Rapid-setting", cls: "bg-slate-100 text-slate-700" },
+      { label: "Cartridge", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ardex AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Ardex RA 88 Plus is a two-component, rapid-setting structural epoxy repair adhesive supplied in cartridge format, for bonding and localised structural concrete repair where fast strength gain and a controlled, gun-applied placement are required. Confirm the current pot life, set/strength-gain times, bond strength and cartridge size against the current Ardex Australia TDS before specifying.",
+    technicalProperties: [
+      "Two-component, rapid-setting structural epoxy repair adhesive (cartridge / gun-applied)",
+      "For bonding and localised structural repair requiring fast strength gain",
+      "Confirm pot life, set time, bond strength and cartridge size from the current Ardex Australia TDS — N/A — sought",
+    ],
+    limitations: [
+      "Rapid-setting — dispense and place only what can be worked within the pot life on the TDS",
+      "Substrate must be sound, clean and prepared to the TDS requirements",
+      "Confirm current cartridge size and application limits with Ardex Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "Ardex Australia — national trade supply", url: "https://ardexaustralia.com" },
+    ],
+  }
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [{ id: "Repair-adhesive", label: "Repair adhesive" }, { id: "Thickened", label: "Thickened" }, { id: "Cementitious", label: "Cementitious" }, { id: "Pre-bagged", label: "Pre-bagged" }, { id: "Trowel-applied", label: "Trowel-applied" }];
@@ -51,33 +152,62 @@ function CollapsibleDescription({ text }: { text: string }) {
   return (<div><p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p><button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button></div>);
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["function", "element_bonding / mortar_primer / structural_bonding", "element_bonding → this category; mortar_primer → use bonding primer; structural_bonding → confirm structural-rated product"],
+    ["chemistry", "cementitious / epoxy", "epoxy for high-strength/structural bonding; cementitious for general repair bonding"],
+    ["gap_bridging", "thickened / brush_grade", "gap present between surfaces → thickened grade"],
+    ["substrate", "prepared_concrete / contaminated", "contaminated → not_suitable (prepare substrate first)"],
+    ["compatibility", "system_match / mismatch", "confirm compatible repair mortar from manufacturer"],
+  ],
+  json: {
+    category: "concrete_repair_adhesives",
+    stage1_gates: {
+      function: { allowed: ["element_bonding", "mortar_primer", "structural_bonding"], rule: "element_bonding=suitable; mortar_primer=use primer; structural_bonding=confirm structural product" },
+      chemistry: { allowed: ["cementitious", "epoxy"], rule: "epoxy for structural; cementitious for general bonding" },
+      gap_bridging: { allowed: ["thickened", "brush_grade"], rule: "gap present=thickened grade" },
+      substrate: { allowed: ["prepared_concrete", "contaminated"], rule: "contaminated=not_suitable" },
+      compatibility: { allowed: ["system_match", "mismatch"], rule: "confirm compatible mortar from manufacturer" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Westox RAP Thickened Adhesive": {
+    rows: [
+      ["function", "gate", "element_bonding"],
+      ["structural", "gate", "non_structural (confirm)"],
+      ["gap_bridging", "gate", "thickened"],
+      ["substrate_prep", "gate", "prepared_concrete"],
+      ["chemistry", "tag", "cementitious"],
+      ["coverage_m2", "rank", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "westox_repair (confirm)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "westox_rap_thickened_adhesive",
+      gates: { function: "element_bonding", structural: "non_structural", gap_bridging: "thickened", substrate_prep: "prepared_concrete" },
+      tag: { chemistry: "cementitious" },
+      rank: { coverage_m2: null },
+      meta: { pack_size: null, compatible_system: "westox_repair", alternative_product: null, data_status: "verified", selectable: true, source: "westox.com.au Westox RAP Thickened Adhesive — formulation/availability to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function ConcreteRepairAdhesivesIntroSection() {
-  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Concrete repair adhesives</h3></div><p className="text-sm leading-7 text-slate-600">Concrete repair adhesives are thickened or paste-grade cementitious products used to bond precast elements, repair sections, and delaminated concrete in spalling repair applications. Unlike standard brush-grade adhesive primers, thickened repair adhesives have higher viscosity and can bridge small gaps between bonded surfaces. Westox RAP Thickened Adhesive is a thickened repair adhesive in the Westox concrete repair range. Confirm current specifications with Westox technical before specifying.</p></div>);
+  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Concrete repair adhesives</h3></div><p className="text-sm leading-7 text-slate-600">Concrete repair adhesives are thickened or paste-grade cementitious products used to bond precast elements, repair sections, and delaminated concrete in spalling repair applications. Unlike standard brush-grade adhesive primers, thickened repair adhesives have higher viscosity and can bridge small gaps between bonded surfaces. Selection is driven by adhesive type, structural vs non-structural use, gap-fill capability and service temperature.</p></div>);
 }
 
+const DESIGN_CRITERIA = "Adhesive type (epoxy bonding agent vs thickened cementitious) and structural vs non-structural use; bond/pull-off strength to concrete (MPa, concrete-failure mode) per EN 1504-4 structural bonding concept; open time / pot life and whether it must remain tacky for wet-on-wet placement of repair mortar/fresh concrete; gap-filling thickness and sag resistance; compressive and shear strength; SSD/dry substrate requirement and moisture tolerance; thermal expansion and E-modulus compatibility with substrate; application and cure temperature range; chloride/sulfate and chemical resistance; service temperature";
+
 export function ConcreteRepairAdhesivesProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const toggleFilter = (id: FilterTag) => { setActiveFilters((prev) => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; }); };
-  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
   return (
-    <div>
-      <div className="mb-5 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">1 product — Westox — concrete repair adhesive systems</p></div></div>
-      <div className="mb-5 flex flex-wrap items-center gap-2"><span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>{FILTER_DEFS.map((f) => { const active = activeFilters.has(f.id); return <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>; })}{activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}</div>
-      <div className="mb-4 flex items-center justify-between"><span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""}</span><div className="flex items-center gap-2"><button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button><button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button></div></div>
-      <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-        {visibleProducts.map((product) => (
-          <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-              <div className="border-b border-slate-100 bg-slate-50 px-5 py-4"><div className="flex items-center justify-between gap-2"><span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span><div className="flex shrink-0 items-center gap-1"><a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a></div></div><h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3><p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p><CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} /></div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4"><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p><CollapsibleDescription text={product.systemDescription} /></div>
-              <div className="space-y-3 px-5 py-4"><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div></div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" criteriaKey="concrete-spalling/concrete-repair-adhesives" />
   );
 }

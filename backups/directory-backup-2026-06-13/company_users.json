@@ -1,0 +1,20 @@
+[
+  {
+    "id": 5,
+    "company_id": 6737,
+    "user_id": 8,
+    "role": "owner",
+    "is_primary": true,
+    "invited_at": "2026-06-03T03:55:13.181Z",
+    "accepted_at": "2026-06-03T03:55:13.181Z"
+  },
+  {
+    "id": 6,
+    "company_id": 6738,
+    "user_id": 14,
+    "role": "owner",
+    "is_primary": true,
+    "invited_at": "2026-06-10T13:10:08.781Z",
+    "accepted_at": "2026-06-10T13:10:08.781Z"
+  }
+]

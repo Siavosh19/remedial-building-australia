@@ -7,9 +7,12 @@ import {
 } from "lucide-react";
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
-  CollapsibleCardDetails, TechCard,
+  CollapsibleCardDetails, TechCard, DataNote,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { CATHODIC_PROTECTION_CARDS } from "./cathodicProtectionData";
 
 type FilterTag =
   | "Galvanic-discrete"
@@ -35,6 +38,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -43,8 +47,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.vectorcorrosion.com",
     accentColor: "#0369a1",
     name: "Galvashield XP Discrete Anode",
-    descriptionLine: "TODO: owner confirm — vectorcorrosion.com returned TLS certificate error during audit; could not verify product name, specifications, or current AU distributor from live source — embedded discrete zinc galvanic anode — installed in drilled pockets adjacent to repaired rebar in patch repairs — no external power required",
-    productType: "Discrete embedded zinc galvanic anode — TODO: owner confirm from Vector Corrosion current AU distributor",
+    descriptionLine: "Embedded discrete zinc galvanic anode installed in drilled pockets adjacent to repaired rebar in patch repairs — no external power required",
+    productType: "Discrete embedded zinc galvanic anode",
+    dataNote: "Owner to confirm — vectorcorrosion.com returned a TLS certificate error during audit; product name, specifications, and the current Australian distributor could not be verified from the live source. Confirm the product designation and current AU distributor with Vector Corrosion Technologies before publishing.",
     filterTags: ["Galvanic-discrete", "Chloride", "Marine", "Carpark", "No-power"],
     techChips: [
       { label: "Discrete zinc galvanic anode", cls: "bg-sky-100 text-sky-800" },
@@ -75,8 +80,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.corrpro.com.au",
     accentColor: "#7c3aed",
     name: "Impressed Current Cathodic Protection (ICCP) System",
-    descriptionLine: "TODO: owner confirm — corrpro.com.au returned connection refused during audit; could not verify CorrPro AU current services or contact details from live source — engineered impressed current cathodic protection system — external power supply drives protective current through embedded anode mesh or ribbon — specialist design and installation",
-    productType: "Impressed current cathodic protection (ICCP) system — TODO: owner confirm CorrPro AU current",
+    descriptionLine: "Engineered impressed current cathodic protection system — external power supply drives protective current through embedded anode mesh or ribbon — specialist design and installation",
+    productType: "Impressed current cathodic protection (ICCP) system",
+    dataNote: "Owner to confirm — corrpro.com.au returned connection refused during audit; CorrPro Australia's current services and contact details could not be verified from the live source. ICCP is an engineered system, not a trade product — engage a NACE/AMPP-accredited corrosion engineer and confirm the specialist contractor before publishing.",
     filterTags: ["ICCP", "Chloride", "Marine", "Carpark", "Impressed-current"],
     techChips: [
       { label: "Impressed current system", cls: "bg-violet-100 text-violet-800" },
@@ -135,6 +141,37 @@ const PRODUCTS: Product[] = [
       { name: "Sika Australia — mesh anode systems", url: "https://aus.sika.com" },
     ],
   },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Vector Galvashield XP2",
+    descriptionLine: "Embedded zinc galvanic discrete anode (higher output) — confirm current specification and Australian availability with Fosroc technical before specifying",
+    productType: "Embedded zinc galvanic discrete anode (higher output)",
+    filterTags: ["Galvanic-discrete", "Chloride", "Marine", "Carpark", "No-power"],
+    techChips: [
+      { label: "Embedded zinc galvanic discret", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fosroc — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Fosroc Vector Galvashield XP2 is a Embedded zinc galvanic discrete anode (higher output). Embedded sacrificial zinc anode for incipient-anode (ring/halo) corrosion control around patch repairs, with higher output than XP. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Fosroc technical before specifying. TODO: verify specific performance figures from the current Fosroc TDS.",
+    technicalProperties: [
+      "Embedded zinc galvanic discrete anode (higher output)",
+      "Embedded sacrificial zinc anode for incipient-anode (ring/halo) corrosion control around patch repairs, with higher output than XP.",
+      "Confirm key performance values (strength / coverage / application) from the current Fosroc TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Fosroc",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Fosroc technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Fosroc",
+    ],
+    procurementSources: [
+      { name: "Fosroc — Australian trade supply", url: "https://www.parchem.com.au" },
+    ],
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -218,6 +255,64 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["chloride_level", "low / high", "cathodic protection suited to chloride-driven corrosion; low → MCI/coating may suffice"],
+    ["power_available", "mains / no_power", "no_power → galvanic (sacrificial); mains → ICCP possible"],
+    ["area", "patch_perimeter / large_area", "patch_perimeter → discrete anode (incipient/halo); large_area → mesh or ICCP"],
+    ["engineer_designed", "required / not_required", "always engineer-designed — confirm with corrosion engineer"],
+  ],
+  json: {
+    category: "cathodic_protection",
+    stage1_gates: {
+      chloride_level: { allowed: ["low", "high"], rule: "suited to chloride; low=MCI/coating may suffice" },
+      power_available: { allowed: ["mains", "no_power"], rule: "no_power=galvanic; mains=ICCP possible" },
+      area: { allowed: ["patch_perimeter", "large_area"], rule: "patch_perimeter=discrete anode; large_area=mesh/ICCP" },
+      engineer_designed: { allowed: ["required", "not_required"], rule: "always engineer-designed" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Galvashield XP Discrete Anode": {
+    rows: [
+      ["protection_type", "gate", "galvanic_discrete"],
+      ["power_required", "gate", "no_power"],
+      ["application", "gate", "patch_perimeter (incipient/halo)"],
+      ["chemistry", "tag", "zinc_galvanic"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: { id: "galvashield_xp", gates: { protection_type: "galvanic_discrete", power_required: "no_power", application: "patch_perimeter" }, tag: { chemistry: "zinc_galvanic" }, rank: {}, meta: { data_status: "unconfirmed", selectable: false, source: "vectorcorrosion.com — TLS cert error during audit; product name/specs/AU distributor unverifiable", confirmed_date: null } },
+  },
+  "Impressed Current Cathodic Protection (ICCP) System": {
+    rows: [
+      ["protection_type", "gate", "iccp"],
+      ["power_required", "gate", "mains"],
+      ["application", "gate", "large_area/high_chloride"],
+      ["chemistry", "tag", "titanium_anode (engineered)"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: { id: "iccp_system", gates: { protection_type: "iccp", power_required: "mains", application: "large_area" }, tag: { chemistry: "titanium_anode" }, rank: {}, meta: { data_status: "unconfirmed", selectable: false, source: "corrpro.com.au — connection refused during audit; engineered system, not a trade product — engage corrosion engineer", confirmed_date: null } },
+  },
+  "Galvanic Mesh Anode System": {
+    rows: [
+      ["protection_type", "gate", "galvanic_mesh"],
+      ["power_required", "gate", "no_power"],
+      ["application", "gate", "large_area (overlay)"],
+      ["chemistry", "tag", "zinc/aluminium_mesh"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "galvanic_mesh_anode", gates: { protection_type: "galvanic_mesh", power_required: "no_power", application: "large_area" }, tag: { chemistry: "zinc_aluminium_mesh" }, rank: {}, meta: { data_status: "verified", selectable: true, source: "Vector/Sika galvanic mesh — embedded in overlay; engineer-designed; confirm product + design life", confirmed_date: null } },
+  },
+};
+
 export function CathodicProtectionIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -244,6 +339,8 @@ export function CathodicProtectionIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "System type — galvanic/sacrificial (discrete zinc anode, embedded mesh) vs impressed-current ICCP; driving voltage & protective current density (mA/m² of steel — typ 2–20 for ICCP, lower for galvanic); chloride contamination level & concrete resistivity (governs anode spacing & life); anode capacity / charge (A·h or mass of zinc) & design life (typ 10–30+ yr galvanic, 25–50+ ICCP per ISO 12696); steel continuity & surface area to be protected; depassivation risk / incipient-anode (ring/halo) control around patch repairs; reference electrodes & monitoring (100 mV depolarisation criterion, ISO 12696); cover depth & embedment; power-supply/transformer-rectifier & zoning for ICCP; overlay/encapsulation compatibility with repair mortar; AS 3600 durability context.";
 
 export function CathodicProtectionProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -297,139 +394,7 @@ export function CathodicProtectionProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 cathodic protection system types — galvanic and impressed current — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Cathodic protection system types for reinforced concrete. All systems require corrosion engineering design — confirm from a qualified specialist before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">System</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Power required</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Best use</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.power}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.use}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={CATHODIC_PROTECTION_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Cathodic protection" />
     </>
   );
 }

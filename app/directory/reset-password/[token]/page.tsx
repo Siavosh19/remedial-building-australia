@@ -2,6 +2,7 @@
 
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
+import AuthHeader from "@/components/AuthHeader";
 
 export default function ResetPasswordPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = use(params);
@@ -35,6 +36,7 @@ export default function ResetPasswordPage({ params }: { params: Promise<{ token:
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+    <AuthHeader />
     <div className="mx-auto max-w-5xl px-6 py-10">
     <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
       <h1 className="text-3xl font-extrabold text-slate-950">Reset your password</h1>

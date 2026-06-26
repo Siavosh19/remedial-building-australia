@@ -35,6 +35,13 @@ const SECTIONS = [
     backHref: "/expert-remedial-advice",
     backLabel: "Expert Advice",
   },
+  {
+    dir: "app/defect-library",
+    backHref: "/defect-library",
+    backLabel: "Defect Library",
+    // Defect Library pages have no breadcrumb row; PageNav sits above the title.
+    requireBreadcrumb: false,
+  },
 ];
 
 /** Recursively collect page.tsx files under a directory, skipping dynamic ([..]) routes. */
@@ -60,8 +67,10 @@ const map = {};
 
 for (const section of SECTIONS) {
   const absSectionDir = path.join(ROOT, section.dir);
-  const files = collectPages(absSectionDir, []).filter((f) =>
-    fs.readFileSync(f, "utf8").includes(BREADCRUMB_SIGNATURE)
+  const files = collectPages(absSectionDir, []).filter(
+    (f) =>
+      section.requireBreadcrumb === false ||
+      fs.readFileSync(f, "utf8").includes(BREADCRUMB_SIGNATURE)
   );
 
   const routes = files.map(fileToRoute);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 import Link from "next/link";
 
 export default function DirectoryLoginPage() {
@@ -8,7 +9,6 @@ export default function DirectoryLoginPage() {
   const [rememberMe, setRememberMe] = useState(true);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,6 +30,7 @@ export default function DirectoryLoginPage() {
 
     const dest =
       result.role === "supplier_user" ? "/supplier-dashboard" :
+      result.role === "client_user" ? "/client/dashboard" :
       result.role === "admin" || result.role === "super_admin" ? "/directory/admin" :
       "/directory/dashboard";
     window.location.href = dest;
@@ -39,54 +40,7 @@ export default function DirectoryLoginPage() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-4">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">
-                Remedial Building Australia
-              </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Technical Remedial Building Platform
-              </div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-7 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          </nav>
-          <a
-            href="/directory/login"
-            className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 md:inline-flex"
-          >
-            Login / Create Account
-          </a>
-          <button
-            className="p-1 md:hidden"
-            onClick={() => setMobileNavOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
-        </div>
-        {mobileNavOpen && (
-          <div className="border-t border-sky-100 bg-white px-6 py-4 md:hidden">
-            <nav className="flex flex-col gap-4 text-sm font-semibold text-sky-800">
-              <a href="/" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Home</a>
-              <a href="/repair-systems" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Repair Systems</a>
-              <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">News &amp; Insights</a>
-              <a href="/directory" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">Directory</a>
-              <a href="/ai-scope-builder" onClick={() => setMobileNavOpen(false)} className="hover:text-red-700 transition">AI Scope Builder</a>
-              <a href="/directory/login" onClick={() => setMobileNavOpen(false)} className="mt-2 inline-flex rounded-xl bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800 transition">Login / Create Account</a>
-            </nav>
-          </div>
-        )}
-      </header>
+      <SiteHeader />
 
       <main className="flex-1">
 
@@ -210,6 +164,13 @@ export default function DirectoryLoginPage() {
                   Create account
                 </Link>
               </div>
+              <div className="rounded-xl border border-sky-100 bg-sky-50/60 px-4 py-3 text-sm text-sky-900">
+                Strata manager, owners corporation, building manager or property owner?{" "}
+                <Link href="/client/signup" className="font-semibold underline underline-offset-2 hover:text-sky-700">
+                  Create a client account
+                </Link>{" "}
+                to request quotes from listed businesses.
+              </div>
               <p className="text-center text-xs text-slate-400">
                 Need help?{" "}
                 <Link href="/contact" className="underline underline-offset-2 transition-colors hover:text-slate-600">
@@ -256,15 +217,19 @@ export default function DirectoryLoginPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

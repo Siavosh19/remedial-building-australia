@@ -13,7 +13,34 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://www.remedialbuildingaustralia.com.au";
+
+// Organisation + WebSite structured data (JSON-LD) for Remedial Building Australia.
+const organisationSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Remedial Building Australia",
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.png`,
+      description:
+        "Australian remedial building knowledge platform — remedial building advice, defect guidance, repair systems, remedial specifications and a directory of specialists.",
+      areaServed: "AU",
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Remedial Building Australia",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Remedial Building Australia",
   description: "Technical defect database and remedial building knowledge platform for Australian Class 2 buildings",
   icons: {
@@ -40,6 +67,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organisationSchema) }}
+        />
         {children}
         <Script
           src="https://app.termly.io/resource-blocker/cd648cb9-82de-4258-b9b6-13de590b2886"

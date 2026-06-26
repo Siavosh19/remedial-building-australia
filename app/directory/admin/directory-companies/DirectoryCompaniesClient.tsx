@@ -57,6 +57,34 @@ export default function DirectoryCompaniesClient({ companies }: { companies: Com
   const [edit, setEdit] = useState<EditModal>(null);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
+  const [refundAmount, setRefundAmount] = useState("");
+  const [refundCancel, setRefundCancel] = useState(false);
+  const [refunding, setRefunding] = useState(false);
+  const [refundMsg, setRefundMsg] = useState<string | null>(null);
+
+  async function doRefund() {
+    if (!edit) return;
+    const what = refundAmount ? `$${refundAmount}` : "the full last payment";
+    if (!confirm(`Refund ${what} to ${edit.company.name}?${refundCancel ? " This will ALSO cancel their subscription and revert the listing to Basic." : ""}`)) return;
+    setRefunding(true);
+    setRefundMsg(null);
+    const res = await fetch("/api/directory/admin/directory-refund", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        companyId: edit.company.id,
+        amountCents: refundAmount ? Math.round(parseFloat(refundAmount) * 100) : null,
+        alsoCancel: refundCancel,
+      }),
+    });
+    const data = await res.json();
+    setRefunding(false);
+    if (!res.ok) { setRefundMsg(data.error ?? "Refund failed."); return; }
+    setRefundMsg(`✓ Refunded $${(data.refundedCents / 100).toFixed(2)} ${data.currency}${data.cancelled ? " · subscription cancelled" : ""}.`);
+    if (data.cancelled) {
+      setList((prev) => prev.map((c) => c.id === edit.company.id ? { ...c, plan_type: "basic" as Company["plan_type"], is_featured: false } : c));
+    }
+  }
 
   const filtered = list.filter((c) => {
     if (filter === "featured" && c.plan_type !== "featured") return false;
@@ -235,12 +263,43 @@ export default function DirectoryCompaniesClient({ companies }: { companies: Com
                 className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none" />
             </label>
 
+            {edit.company.directory_subscription?.stripe_customer_id && (
+              <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 space-y-2">
+                <p className="text-sm font-bold text-rose-800">Refund</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-slate-500">$</span>
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={refundAmount}
+                    onChange={(e) => setRefundAmount(e.target.value)}
+                    placeholder="full amount"
+                    className="w-32 rounded-lg border border-rose-200 px-2 py-1 text-sm focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    disabled={refunding}
+                    onClick={doRefund}
+                    className="rounded-lg bg-rose-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-rose-500 disabled:opacity-60"
+                  >
+                    {refunding ? "Refunding…" : "Refund"}
+                  </button>
+                </div>
+                <label className="flex items-center gap-2 text-xs text-slate-600">
+                  <input type="checkbox" checked={refundCancel} onChange={(e) => setRefundCancel(e.target.checked)} className="h-3.5 w-3.5" />
+                  Also cancel subscription &amp; revert to Basic
+                </label>
+                <p className="text-[11px] text-slate-400">Leave the amount blank for a full refund of their most recent payment.</p>
+                {refundMsg && <p className="text-xs font-semibold text-rose-800">{refundMsg}</p>}
+              </div>
+            )}
+
             <div className="flex gap-3 pt-2">
               <button type="button" disabled={saving} onClick={saveEdit}
                 className="flex-1 rounded-xl bg-sky-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-60">
                 {saving ? "Saving…" : "Save changes"}
               </button>
-              <button type="button" onClick={() => setEdit(null)}
+              <button type="button" onClick={() => { setEdit(null); setRefundAmount(""); setRefundMsg(null); setRefundCancel(false); }}
                 className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">
                 Cancel
               </button>

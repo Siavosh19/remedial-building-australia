@@ -36,7 +36,17 @@ export default async function DashboardProfilePage() {
                 : "Keep your listing up to date. Changes take effect immediately."}
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            {company?.slug && (
+              <a
+                href={`/directory/company/${company.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-800 transition hover:bg-sky-100"
+              >
+                View my public profile ↗
+              </a>
+            )}
             <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">
               {company?.status ?? "draft"}
             </span>

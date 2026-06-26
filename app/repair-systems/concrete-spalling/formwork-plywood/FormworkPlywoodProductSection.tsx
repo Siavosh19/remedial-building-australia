@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "F11-structural"
@@ -38,7 +40,7 @@ type Product = {
   procurementSources: { name: string; url: string }[];
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Carter Holt Harvey / Tilling Timber",
     brandUrl: "https://www.chhwoodproducts.co.nz",
@@ -267,6 +269,113 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["application", "soffit / side_form / column_wall / boxing", "match form panel to the boxing task"],
+    ["reuse", "single_use / multi_reuse", "multi_reuse → film-faced formply (8-20+ pours)"],
+    ["finish_quality", "exposed_smooth / rough_hidden", "exposed_smooth → film-faced or clean F11 face"],
+    ["pressure_demand", "high_pressure / light_duty", "high_pressure (tall mortar fill) → 17mm+ with close bearers"],
+    ["certification", "F11_certified / unrated", "unrated → not_suitable for structural formwork"],
+  ],
+  json: {
+    category: "formwork_plywood",
+    stage1_gates: {
+      application: { allowed: ["soffit", "side_form", "column_wall", "boxing"], rule: "match panel to boxing task" },
+      reuse: { allowed: ["single_use", "multi_reuse"], rule: "multi_reuse=film-faced formply" },
+      finish_quality: { allowed: ["exposed_smooth", "rough_hidden"], rule: "exposed_smooth=film-faced or clean F11" },
+      pressure_demand: { allowed: ["high_pressure", "light_duty"], rule: "high_pressure=17mm+ close bearers" },
+      certification: { allowed: ["F11_certified", "unrated"], rule: "unrated=not_suitable (structural)" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Ecoply F11 — 17 mm Structural Formwork Plywood": {
+    rows: [
+      ["application", "gate", "soffit/side_form/column"],
+      ["finish_quality", "gate", "exposed_ok"],
+      ["certification", "gate", "F11 (AS/NZS 6669)"],
+      ["thickness_mm", "rank", "17"],
+      ["reuse_pours", "rank", "3-5"],
+      ["face_type", "tag", "uncoated_veneer"],
+      ["supply", "meta", "bowens/bunnings/chh"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "ecoply_f11_17mm",
+      gates: { application: "soffit/side_form/column", finish_quality: "exposed_ok", certification: "F11_AS6669" },
+      tag: { face_type: "uncoated_veneer" },
+      rank: { thickness_mm: 17, reuse_pours: "3-5" },
+      meta: { supply: "bowens/bunnings/chh", alternative_product: null, data_status: "verified", selectable: true, source: "Carter Holt Harvey Ecoply F11 17mm — AS/NZS 6669", confirmed_date: null },
+    },
+  },
+  "Austral Ply F11 — 12 mm Structural Formwork Plywood": {
+    rows: [
+      ["application", "gate", "side_form/boxing (light)"],
+      ["finish_quality", "gate", "rough_hidden"],
+      ["certification", "gate", "F11 (AS/NZS 6669)"],
+      ["thickness_mm", "rank", "12"],
+      ["reuse_pours", "rank", "3-5"],
+      ["face_type", "tag", "uncoated_veneer"],
+      ["supply", "meta", "australply/bunnings/bowens"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "austral_ply_f11_12mm",
+      gates: { application: "side_form/boxing_light", finish_quality: "rough_hidden", certification: "F11_AS6669" },
+      tag: { face_type: "uncoated_veneer" },
+      rank: { thickness_mm: 12, reuse_pours: "3-5" },
+      meta: { supply: "australply/bunnings/bowens", alternative_product: "17mm F11 (high-pressure forms)", data_status: "verified", selectable: true, source: "Austral Ply F11 12mm — limit bearer span 300-400mm", confirmed_date: null },
+    },
+  },
+  "Film-Faced Formply — 17/18 mm Reusable Form Panel": {
+    rows: [
+      ["application", "gate", "soffit/side_form/column"],
+      ["finish_quality", "gate", "exposed_smooth"],
+      ["certification", "gate", "structural_substrate"],
+      ["thickness_mm", "rank", "17-18"],
+      ["reuse_pours", "rank", "8-20+"],
+      ["face_type", "tag", "phenolic_film"],
+      ["supply", "meta", "bowens/formwork_suppliers"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "film_faced_formply_17_18mm",
+      gates: { application: "soffit/side_form/column", finish_quality: "exposed_smooth", certification: "structural_substrate" },
+      tag: { face_type: "phenolic_film" },
+      rank: { thickness_mm: "17-18", reuse_pours: "8-20+" },
+      meta: { supply: "bowens/formwork_suppliers", alternative_product: null, data_status: "verified", selectable: true, source: "Film-faced phenolic formply — seal cut edges; water-based release only", confirmed_date: null },
+    },
+  },
+  "Generic F11 Structural Plywood — Trade Supply": {
+    rows: [
+      ["application", "gate", "boxing/side_form (single-use)"],
+      ["finish_quality", "gate", "rough_hidden"],
+      ["certification", "gate", "F11 (verify cert)"],
+      ["thickness_mm", "rank", "12/17"],
+      ["reuse_pours", "rank", "1 (single-use)"],
+      ["face_type", "tag", "uncoated_veneer"],
+      ["supply", "meta", "mitre10/bunnings/merchants"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "generic_f11_plywood",
+      gates: { application: "boxing/side_form_single_use", finish_quality: "rough_hidden", certification: "F11_verify" },
+      tag: { face_type: "uncoated_veneer" },
+      rank: { thickness_mm: "12/17", reuse_pours: "1" },
+      meta: { supply: "mitre10/bunnings/merchants", alternative_product: null, data_status: "verified", selectable: true, source: "generic F11 trade ply — VERIFY F11 stress-grade cert before structural use", confirmed_date: null },
+    },
+  },
+};
+
 export function FormworkPlywoodIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -294,27 +403,10 @@ export function FormworkPlywoodIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Stress grade (F11/F14/F17) & face veneer quality (B/C/D) for finish; sheet thickness (12/17/19mm) vs stud/bearer spacing & concrete pressure (AS 3610 formwork & finish class 1–5); film-faced phenolic vs unfaced for reuse cycles & surface finish; bond/glue durability class (A-bond, marine/exterior) & moisture resistance; allowable bending/deflection at given pour rate & head of concrete; reuse count economy; release-agent compatibility & surface absorbency (blowhole/colour control); edge sealing; size/handling; single-use vs high-reuse selection.";
+
 export function FormworkPlywoodProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (id: FilterTag) => {
-    setActiveFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const visibleProducts = activeFilters.size === 0
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-
-  const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" });
-  };
 
   return (
     <>
@@ -346,139 +438,7 @@ export function FormworkPlywoodProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 formwork plywood grades — F11 17 mm, F11 12 mm, film-faced, and generic trade supply — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of formwork plywood grades for concrete spalling repair. Confirm F11 certification from supplier documentation before use.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Face Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Reuse</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Supply</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.facetype}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.reuse}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.supply}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" />
     </>
   );
 }

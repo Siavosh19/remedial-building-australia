@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "company_id": 6738,
+    "plan_type": "claimed",
+    "billing_cycle": "monthly",
+    "subscription_status": "trialing",
+    "stripe_customer_id": null,
+    "stripe_subscription_id": null,
+    "trial_started_at": "2026-06-10T13:57:28.504Z",
+    "trial_ends_at": "2026-08-09T13:57:27.670Z",
+    "current_period_start": null,
+    "current_period_end": null,
+    "cancel_at_period_end": false,
+    "cancelled_at": null,
+    "admin_override_plan": null,
+    "admin_override_by": null,
+    "admin_override_at": null,
+    "admin_notes": "Manual trial — Stripe not yet configured",
+    "created_at": "2026-06-10T13:56:09.872Z",
+    "updated_at": "2026-06-10T13:57:28.505Z"
+  }
+]

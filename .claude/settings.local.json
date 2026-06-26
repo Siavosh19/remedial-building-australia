@@ -1,7 +1,6 @@
 {
   "permissions": {
     "allow": [
-      "*",
       "Bash(npx tsc *)",
       "Bash(vercel --prod)",
       "Bash(npx vercel *)",
@@ -113,7 +112,31 @@
       "Bash(mkdir -p \"/Users/siasepehrara/remedial-building-australia/app/api/directory/company/media/[id]\")",
       "Bash(DATABASE_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true\" DIRECT_URL=\"postgresql://postgres.krttmsatnftkdnbtwouy:19%40Remedial%4019@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres\" npx prisma *)",
       "Bash(grep -v \"^--$\")",
-      "Bash(grep -v \"^\\\\\"https://[^/]*/\\\\?\\\\\"$\")"
+      "Bash(grep -v \"^\\\\\"https://[^/]*/\\\\?\\\\\"$\")",
+      "Bash(sort -k9)",
+      "Bash(awk -F/ '{print NF-2\" segments after app\"}')",
+      "Bash(awk -F/ '{print $1}')",
+      "Bash(log show *)",
+      "Bash(last reboot *)",
+      "Bash(last shutdown *)",
+      "Bash(pmset -g log)",
+      "Bash(sysctl -n kern.boottime)",
+      "Bash(sw_vers)",
+      "Bash(softwareupdate --history)",
+      "Bash(sort -nrk 3)",
+      "Bash(awk '{printf \"%-6s %5s%%cpu %5s%%mem  %s\\\\n\",$2,$3,$4,$11}')",
+      "Bash(lsof -nP -iTCP -sTCP:LISTEN)",
+      "Bash(nohup npm run dev)",
+      "Bash(echo \"started dev, pid $!\")",
+      "Bash(npx eslint *)",
+      "Bash(system_profiler SPHardwareDataType)",
+      "Read(//Users/siasepehrara/**)",
+      "Read(//Library/LaunchAgents/**)",
+      "Read(//Library/LaunchDaemons/**)",
+      "Bash(defaults read *)",
+      "Bash(npm view *)",
+      "Bash(grep -rn \"\\\\$\\\\|price\\\\|Price\\\\|fee\\\\|Fee\\\\|from \\\\$\\\\|GST\\\\|incl\" app/expert-remedial-advice/)",
+      "Bash(xargs ls -lt)"
     ]
   }
 }

@@ -50,9 +50,194 @@ const SECTION_LABELS: Record<string, string> = {
 function sectionLabel(s: string) {
   return SECTION_LABELS[s] ?? s;
 }
+
+// Top-level repair-system hierarchy, mirroring /repair-systems/library so the
+// "Repair System Page" filter reads as System → Defect section → Pages instead
+// of a flat alphabetical dump. Keys are the raw `section` values (first URL
+// segment, prettified). Any section not listed here falls into "Other Repair
+// Systems" automatically.
+const LIBRARY_SYSTEMS: { label: string; sections: string[] }[] = [
+  {
+    label: "Waterproofing",
+    sections: [
+      "Balcony Waterproofing Failure",
+      "Basement Water Ingress",
+      "Rising Damp",
+      "Penetrating Damp",
+    ],
+  },
+  {
+    label: "Concrete & Structural",
+    sections: [
+      "Concrete Spalling",
+      "Reinforcement Corrosion",
+      "Concrete Cracking",
+      "Settlement Cracks",
+      "Slab Edge Deterioration",
+      "Magnesite Flooring Deterioration",
+    ],
+  },
+  {
+    label: "Facade & External Envelope",
+    sections: ["Facade External Envelope"],
+  },
+  {
+    label: "Roofing",
+    sections: ["Roofing Defects"],
+  },
+];
 function formatTag(t: string) {
   return t.replace(/-/g, " ");
 }
+
+// ── Fuzzy / typo-tolerant search (mirrors the directory search behaviour) ──────
+// A visitor can look up a product by name; if it isn't in the index we still
+// surface the closest / equivalent materials rather than an empty result. Three
+// things are handled, in order: (a) synonym / word families, (b) spelling-typo
+// correction (Levenshtein onto the product vocabulary), (c) loose fuzzy ranking
+// for the "closest equivalent" fallback. To extend matching, edit SEARCH_SYNONYMS.
+
+const SEARCH_SYNONYMS: string[][] = [
+  ["waterproof", "waterproofing", "membrane", "membranes", "tanking"],
+  ["seal", "sealing", "sealant", "sealants", "caulk", "caulking", "mastic"],
+  ["epoxy", "resin", "resins", "resinous"],
+  ["primer", "primers", "priming"],
+  ["grout", "grouts", "grouting"],
+  ["mortar", "mortars", "patch", "patching"],
+  ["render", "rendering", "skim"],
+  ["coating", "coatings", "paint", "painting", "recoating"],
+  ["concrete", "concreting", "cementitious", "spalling", "carbonation"],
+  ["crack", "cracks", "cracking"],
+  ["repair", "repairs", "remedial", "remediation", "restoration"],
+  ["anchor", "anchors", "anchoring", "dowel", "fixing", "fixings"],
+  ["injection", "injecting", "injected"],
+  ["corrosion", "corroded", "rust", "rusted", "inhibitor", "inhibitors"],
+  ["adhesive", "adhesives", "bonding", "bond", "bonder"],
+  ["fibre", "fiber", "frp", "carbon"],
+  ["joint", "joints", "expansion"],
+  ["damp", "dampproof", "moisture"],
+  ["fire", "firestopping", "intumescent", "fireproofing"],
+  ["drain", "drainage", "cavity", "stormwater"],
+  ["balcony", "balconies", "podium", "deck"],
+  ["tile", "tiles", "tiling", "tiler"],
+  ["polyurethane", "puma", "pmma"],
+  ["acrylic", "acrylics"],
+  ["bitumen", "bituminous", "asphaltic"],
+];
+
+const SYNONYM_INDEX: Map<string, string[]> = (() => {
+  const m = new Map<string, string[]>();
+  for (const grp of SEARCH_SYNONYMS) {
+    for (const w of grp) {
+      m.set(w, (m.get(w) ?? []).concat(grp.filter((x) => x !== w)));
+    }
+  }
+  return m;
+})();
+
+function tokenize(s: string): string[] {
+  return s.toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length >= 2);
+}
+
+function levenshtein(a: string, b: string): number {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, i) => i);
+  const curr = new Array<number>(n + 1);
+  for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+    }
+    prev = curr.slice();
+  }
+  return prev[n];
+}
+
+// Snap a misspelt query word onto the closest real word in the product vocabulary.
+function correctTypo(token: string, vocab: string[]): string | null {
+  if (token.length < 4) return null;
+  const maxDist = token.length <= 5 ? 1 : 2;
+  let best: string | null = null;
+  let bestD = maxDist + 1;
+  for (const w of vocab) {
+    if (Math.abs(w.length - token.length) > maxDist) continue;
+    const d = levenshtein(token, w);
+    if (d < bestD) { bestD = d; best = w; if (d === 0) break; }
+  }
+  return bestD <= maxDist ? best : null;
+}
+
+// Expand one query word into the set of forms we'll accept as a match.
+function expandToken(token: string, vocab: string[]): string[] {
+  const forms = new Set<string>([token]);
+  for (const s of SYNONYM_INDEX.get(token) ?? []) forms.add(s);
+  const corrected = correctTypo(token, vocab);
+  if (corrected && corrected !== token) {
+    forms.add(corrected);
+    for (const s of SYNONYM_INDEX.get(corrected) ?? []) forms.add(s);
+  }
+  return [...forms];
+}
+
+function bestWordSimilarity(token: string, words: string[]): number {
+  let best = 0;
+  for (const w of words) {
+    if (w.length < 3) continue;
+    const sim = 1 - levenshtein(token, w) / Math.max(token.length, w.length);
+    if (sim > best) best = sim;
+  }
+  return best;
+}
+
+interface ExpandedTerm { token: string; forms: string[] }
+interface Scored { p: ProductRow; score: number; coverage: number; idx: number }
+
+// Weighted relevance score for one product against the expanded query terms.
+function scoreProduct(p: ProductRow, idx: number, rawQ: string, terms: ExpandedTerm[]): Scored {
+  const fields = [
+    { text: p.name.toLowerCase(), w: 6 },
+    { text: p.brand.toLowerCase(), w: 4 },
+    { text: p.productType.toLowerCase(), w: 4 },
+    { text: p.categoryLabel.toLowerCase(), w: 2 },
+    { text: p.topSection.toLowerCase(), w: 1 },
+    { text: p.filterTags.join(" ").replace(/-/g, " ").toLowerCase(), w: 3 },
+  ];
+  let score = 0;
+  if (rawQ.length >= 3) {
+    if (fields[0].text.includes(rawQ)) score += 60;
+    else if (fields.some((f) => f.text.includes(rawQ))) score += 28;
+  }
+  let matched = 0;
+  for (const { token, forms } of terms) {
+    let best = 0;
+    let isExact = false;
+    for (const f of fields) {
+      for (const form of forms) {
+        if (f.text.includes(form)) {
+          const w = f.w * (form === token ? 1 : 0.85);
+          if (w > best) best = w;
+          isExact = true;
+        }
+      }
+    }
+    if (isExact) {
+      matched++;
+      score += best + 5;
+    } else {
+      const words = fields.flatMap((f) => f.text.split(/[^a-z0-9]+/));
+      const sim = bestWordSimilarity(token, words);
+      if (sim >= 0.74) score += sim * 4;
+    }
+  }
+  const coverage = terms.length ? matched / terms.length : 1;
+  if (coverage === 1 && terms.length > 1) score += 15; // all words present
+  return { p, score, coverage, idx };
+}
+
+type SearchMode = "all" | "exact" | "closest" | "none";
 
 // ── SearchableSelect ──────────────────────────────────────────────────────────
 
@@ -220,15 +405,46 @@ function GroupedSearchableSelect({ options, value, onChange, className = "" }: G
     if (open) setTimeout(() => inputRef.current?.focus(), 40);
   }, [open]);
 
-  // Group options by section
+  // Group options into the repair-systems library hierarchy:
+  // top-level system → defect section → pages. Sections not mapped to one of
+  // the library systems collect under "Other Repair Systems" so nothing is lost.
   const groups = useMemo(() => {
-    const map = new Map<string, RepairPageOption[]>();
+    const bySection = new Map<string, RepairPageOption[]>();
     for (const o of options) {
-      const sec = sectionLabel(o.section);
-      if (!map.has(sec)) map.set(sec, []);
-      map.get(sec)!.push(o);
+      if (!bySection.has(o.section)) bySection.set(o.section, []);
+      bySection.get(o.section)!.push(o);
     }
-    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+    type Section = { label: string; raw: string; pages: RepairPageOption[] };
+    type System = { system: string; sections: Section[]; count: number };
+
+    const result: System[] = [];
+    const used = new Set<string>();
+
+    const buildSystem = (label: string, rawSections: string[]): System | null => {
+      const sections: Section[] = [];
+      for (const raw of rawSections) {
+        const pages = bySection.get(raw);
+        if (pages && pages.length) {
+          sections.push({ label: sectionLabel(raw), raw, pages });
+          used.add(raw);
+        }
+      }
+      if (!sections.length) return null;
+      sections.sort((a, b) => a.label.localeCompare(b.label));
+      return { system: label, sections, count: sections.reduce((n, s) => n + s.pages.length, 0) };
+    };
+
+    for (const sys of LIBRARY_SYSTEMS) {
+      const built = buildSystem(sys.label, sys.sections);
+      if (built) result.push(built);
+    }
+
+    const leftover = [...bySection.keys()].filter((raw) => !used.has(raw)).sort();
+    const other = buildSystem("Other Repair Systems", leftover);
+    if (other) result.push(other);
+
+    return result;
   }, [options]);
 
   // When searching, show flat filtered list; when not, show grouped
@@ -339,23 +555,24 @@ function GroupedSearchableSelect({ options, value, onChange, className = "" }: G
                 ))
               )
             ) : (
-              /* ── Grouped view ── */
-              groups.map(([sec, pages]) => {
-                const isExpanded = expanded.has(sec);
+              /* ── Grouped view: System → Defect section → Pages ── */
+              groups.map((grp) => {
+                const sysKey = `sys:${grp.system}`;
+                const sysOpen = expanded.has(sysKey);
                 return (
-                  <div key={sec}>
-                    {/* Section header */}
+                  <div key={grp.system}>
+                    {/* System header (top level) */}
                     <button
                       type="button"
-                      onClick={() => toggleSection(sec)}
-                      className="flex w-full items-center justify-between border-t border-slate-100 px-3 py-2 text-left transition hover:bg-slate-50"
+                      onClick={() => toggleSection(sysKey)}
+                      className="flex w-full items-center justify-between border-t border-slate-100 bg-slate-50/60 px-3 py-2.5 text-left transition hover:bg-slate-100"
                     >
-                      <span className="text-xs font-semibold text-slate-700">{sec}</span>
+                      <span className="text-xs font-bold text-sky-950">{grp.system}</span>
                       <span className="flex items-center gap-1.5">
-                        <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">
-                          {pages.length}
+                        <span className="rounded bg-slate-200 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
+                          {grp.count}
                         </span>
-                        {isExpanded ? (
+                        {sysOpen ? (
                           <Minus className="h-3.5 w-3.5 text-slate-400" />
                         ) : (
                           <Plus className="h-3.5 w-3.5 text-slate-400" />
@@ -363,22 +580,50 @@ function GroupedSearchableSelect({ options, value, onChange, className = "" }: G
                       </span>
                     </button>
 
-                    {/* Pages (only when expanded) */}
-                    {isExpanded &&
-                      pages.map((o) => (
-                        <button
-                          key={o.url}
-                          type="button"
-                          onClick={() => select(o.url)}
-                          className={`w-full py-1.5 pl-6 pr-3 text-left text-xs transition ${
-                            o.url === value
-                              ? "bg-sky-50 font-semibold text-sky-700"
-                              : "text-slate-600 hover:bg-slate-50 hover:text-sky-700"
-                          }`}
-                        >
-                          {o.label}
-                        </button>
-                      ))}
+                    {/* Defect sections (second level) */}
+                    {sysOpen &&
+                      grp.sections.map((sec) => {
+                        const secKey = `sec:${sec.raw}`;
+                        const secOpen = expanded.has(secKey);
+                        return (
+                          <div key={sec.raw}>
+                            <button
+                              type="button"
+                              onClick={() => toggleSection(secKey)}
+                              className="flex w-full items-center justify-between border-t border-slate-50 px-3 py-2 pl-6 text-left transition hover:bg-slate-50"
+                            >
+                              <span className="text-xs font-semibold text-slate-700">{sec.label}</span>
+                              <span className="flex items-center gap-1.5">
+                                <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">
+                                  {sec.pages.length}
+                                </span>
+                                {secOpen ? (
+                                  <Minus className="h-3.5 w-3.5 text-slate-400" />
+                                ) : (
+                                  <Plus className="h-3.5 w-3.5 text-slate-400" />
+                                )}
+                              </span>
+                            </button>
+
+                            {/* Pages (third level) */}
+                            {secOpen &&
+                              sec.pages.map((o) => (
+                                <button
+                                  key={o.url}
+                                  type="button"
+                                  onClick={() => select(o.url)}
+                                  className={`w-full py-1.5 pl-10 pr-3 text-left text-xs transition ${
+                                    o.url === value
+                                      ? "bg-sky-50 font-semibold text-sky-700"
+                                      : "text-slate-600 hover:bg-slate-50 hover:text-sky-700"
+                                  }`}
+                                >
+                                  {o.label}
+                                </button>
+                              ))}
+                          </div>
+                        );
+                      })}
                   </div>
                 );
               })
@@ -410,7 +655,7 @@ function Paginator({
   }
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-wrap items-center justify-center gap-1">
       <button
         onClick={() => onChange(Math.max(1, page - 1))}
         disabled={page === 1}
@@ -471,25 +716,42 @@ export default function MaterialsIndexClient({ products, dropdowns }: Props) {
     [dropdowns.applications]
   );
 
-  const filtered = useMemo(() => {
+  // Vocabulary of real product words — used to snap query typos onto a known word.
+  const vocab = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of products) {
+      const blob = `${p.name} ${p.brand} ${p.productType} ${p.categoryLabel} ${p.topSection} ${p.filterTags.join(" ").replace(/-/g, " ")}`;
+      for (const t of tokenize(blob)) if (t.length >= 4) set.add(t);
+    }
+    return [...set];
+  }, [products]);
+
+  const { filtered, searchMode } = useMemo(() => {
     let list = products;
     if (filterBrand) list = list.filter((p) => p.brand === filterBrand);
     if (filterType)  list = list.filter((p) => p.productType === filterType);
     if (filterApp)   list = list.filter((p) => p.filterTags.includes(filterApp));
     if (filterPage)  list = list.filter((p) => p.pageUrl === filterPage);
-    if (q) {
-      list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.brand.toLowerCase().includes(q) ||
-          p.productType.toLowerCase().includes(q) ||
-          p.categoryLabel.toLowerCase().includes(q) ||
-          p.topSection.toLowerCase().includes(q) ||
-          p.filterTags.some((t) => t.toLowerCase().includes(q.replace(/\s+/g, "-")))
-      );
+
+    if (!q) return { filtered: list, searchMode: "all" as SearchMode };
+
+    const terms: ExpandedTerm[] = tokenize(q).map((token) => ({ token, forms: expandToken(token, vocab) }));
+    const scored = list
+      .map((p, i) => scoreProduct(p, i, q, terms))
+      .filter((s) => s.score > 0)
+      .sort((a, b) => b.score - a.score || a.idx - b.idx);
+
+    // Products that matched every query word (incl. synonyms/typo fixes) = a real hit.
+    const strong = scored.filter((s) => s.coverage >= 1);
+    if (strong.length > 0) {
+      return { filtered: strong.map((s) => s.p), searchMode: "exact" as SearchMode };
     }
-    return list;
-  }, [products, filterBrand, filterType, filterApp, filterPage, q]);
+    // No exact hit — surface the closest equivalents instead of an empty result.
+    if (scored.length > 0) {
+      return { filtered: scored.slice(0, 30).map((s) => s.p), searchMode: "closest" as SearchMode };
+    }
+    return { filtered: [] as ProductRow[], searchMode: "none" as SearchMode };
+  }, [products, filterBrand, filterType, filterApp, filterPage, q, vocab]);
 
   const visible = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const from = filtered.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
@@ -571,6 +833,15 @@ export default function MaterialsIndexClient({ products, dropdowns }: Props) {
           </div>
         </div>
       </section>
+
+      {/* ── Closest-match notice ── */}
+      {searchMode === "closest" && (
+        <section className="mx-auto max-w-7xl px-8 pt-5">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            No exact match for <span className="font-semibold">“{query.trim()}”</span> — showing the closest equivalent products.
+          </div>
+        </section>
+      )}
 
       {/* ── Table ── */}
       <section className="mx-auto max-w-7xl px-8 py-6">

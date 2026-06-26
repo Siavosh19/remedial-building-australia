@@ -1,83 +1,101 @@
 "use client";
-import { useState, useRef } from "react";
-import { CheckCircle, BookOpen, ExternalLink, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
 
-type FilterTag = "Desalination" | "Salt-removal" | "Brick" | "Masonry" | "Stone" | "Poultice" | "Westox";
-type Product = { fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string; name: string; descriptionLine: string; productType: string; filterTags: FilterTag[]; techChips: { label: string; cls: string }[]; systemDescription: string; technicalProperties: string[]; limitations: string[]; procurementSources: { name: string; url: string }[] };
+import { useState } from "react";
+import { BookOpen, Layers, Ruler, SquareStack, ChevronDown, ChevronUp } from "lucide-react";
+import { TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { SALT_REMOVAL_CARDS } from "./saltRemovalDesalinationData";
 
-const PRODUCTS: Product[] = [
-  {
-    fullLabel: "Westox",
-    brandUrl: "https://www.westox.com.au",
-    accentColor: "#64748b",
-    name: "Westox Cocoon 20 Litre",
-    descriptionLine: "Salt removal and desalination poultice for masonry, brick, and stone facades subject to salt contamination — confirm current formulation, application method, and system specifications with Westox technical",
-    productType: "Desalination poultice — masonry, brick and stone",
-    filterTags: ["Desalination", "Salt-removal", "Brick", "Masonry", "Stone", "Poultice", "Westox"],
-    techChips: [{ label: "Desalination", cls: "bg-slate-100 text-slate-700" }, { label: "Poultice", cls: "bg-slate-100 text-slate-700" }, { label: "Salt removal", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Westox Cocoon is a desalination poultice for salt removal from masonry, brick, and stone surfaces. Desalination treatments are used in remedial works to reduce chloride and sulfate salt concentrations in walls affected by rising damp, marine exposure, or historical salt contamination before renovation plaster or coating application.\n\nPoultice desalination involves applying the product wet to the masonry surface where it draws soluble salts into the poultice material as it dries, which is then removed along with the extracted salts. Multiple applications may be required for heavily salt-contaminated substrates.\n\nConfirm current product technical data sheet, application method, coverage, number of applications required, and compatible subsequent system with Westox technical before specifying.",
-    technicalProperties: [
-      "Desalination poultice — draws soluble salts from brick, masonry, and stone surfaces as the poultice dries",
-      "Used prior to renovation plaster or coating to reduce salt contamination levels in the substrate",
-      "Confirm application method, coverage, number of treatment cycles, and subsequent system from current Westox Cocoon TDS",
-    ],
-    limitations: [
-      "Confirm current product formulation and system specifications with Westox technical before specifying",
-      "Desalination reduces but does not eliminate salt contamination in severely affected substrates — multiple applications may be needed",
-      "Not a substitute for addressing the source of moisture and salt ingress — rising damp and water ingress must be treated first",
-      "Confirm current Australian product availability with Westox before specifying",
-    ],
-    procurementSources: [{ name: "Westox — contact for trade supply", url: "https://www.westox.com.au" }],
-  },
-];
-
-const FILTER_DEFS: { id: FilterTag; label: string }[] = [{ id: "Desalination", label: "Desalination" }, { id: "Salt-removal", label: "Salt removal" }, { id: "Brick", label: "Brick" }, { id: "Masonry", label: "Masonry" }, { id: "Stone", label: "Stone" }];
-
-function CollapsibleList({ items, icon, limit = 3 }: { items: string[]; icon: "check" | "x"; limit?: number }) {
-  const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? items : items.slice(0, limit);
-  return (<div><ul className="space-y-1.5">{visible.map((item, i) => <li key={i} className="flex items-start gap-2 text-xs leading-5 text-slate-600">{icon === "check" ? <CheckCircle size={12} className="mt-0.5 shrink-0 text-green-500" /> : <XCircle size={12} className="mt-0.5 shrink-0 text-red-400" />}{item}</li>)}</ul>{items.length > limit && <button onClick={() => setExpanded((e) => !e)} className="mt-2 text-[10px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Show less ↑" : `+${items.length - limit} more ↓`}</button>}</div>);
-}
-function CollapsibleSources({ sources }: { sources: { name: string; url?: string }[] }) {
-  const [expanded, setExpanded] = useState(false);
-  return (<div><div className="flex items-center justify-between"><p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PROCUREMENT SOURCES</p><button onClick={() => setExpanded((e) => !e)} className="text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide ↑" : "See more ↓"}</button></div>{expanded && <div className="mt-2 space-y-1.5">{sources.map((src) => <div key={src.name} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs">{src.url ? <a href={src.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 font-semibold text-slate-700 hover:text-slate-900">{src.name}<ExternalLink size={9} className="text-slate-300" /></a> : <span className="font-semibold text-slate-600">{src.name}</span>}</div>)}</div>}<p className="mt-2 text-[10px] italic text-slate-400">Confirm suitability with the current manufacturer TDS before specifying or applying.</p></div>);
-}
-function CollapsibleCardDetails({ text, chips }: { text: string; chips: { label: string; cls: string }[] }) {
-  const [expanded, setExpanded] = useState(false);
-  return (<div>{expanded && <><p className="mt-1 text-[10px] leading-4 text-slate-500">{text}</p>{chips.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{chips.map((chip) => <span key={chip.label} className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${chip.cls}`}>{chip.label}</span>)}</div>}</>}<button onClick={() => setExpanded((e) => !e)} className="mt-0.5 text-[9px] font-bold text-slate-400 hover:text-slate-600">{expanded ? "Hide details ↑" : "Show details ↓"}</button></div>);
-}
-function CollapsibleDescription({ text }: { text: string }) {
-  const [expanded, setExpanded] = useState(false);
-  return (<div><p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p><button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button></div>);
-}
+const TECH_INFO = {
+  typicalApplications: [
+    "Reducing chloride / sulfate / nitrate salt concentration in masonry before renovation plaster or breathable render",
+    "Desalination of salt-affected facades and walls subject to rising damp, marine exposure or historical contamination",
+    "Heritage and conservation masonry where a non-destructive salt-reduction method is required",
+    "Salt tide-mark zones on lower walls after chemical DPC injection, before replastering",
+  ],
+  selectionCriteria: [
+    "Use a documented WTA 3-13-01 compress (Remmers) where a specifiable, certifiable method is required",
+    "Site-mixed clay / cellulose poultices are tailorable to the substrate but mix- and workmanship-dependent",
+    "Match poultice pore structure to the substrate so drying — and salt transport — occurs into the poultice, not back into the wall",
+    "Desalination follows moisture-source treatment (DPC injection / ingress repair) — it is not a moisture treatment",
+    "Pre- and post-treatment salt sampling confirms the reduction achieved",
+  ],
+  limitations: [
+    "Desalination reduces but does not eliminate salt — heavily contaminated masonry needs several cycles",
+    "Not a moisture treatment — the rising damp / water ingress source must be addressed first",
+    "Long dwell times (often weeks) may be required for heavy contamination",
+    "Effectiveness depends on substrate pore structure, salt type and poultice match",
+  ],
+  standardsNotes: [
+    "WTA Code of Practice 3-13-01 — non-destructive reduction of salt content by poultice / compress",
+    "Conservation guidance (e.g. building conservation literature) — clay / cellulose poultice practice",
+    "Confirm mix ratio, layer thickness, dwell time and number of cycles from the product TDS or conservation specification",
+  ],
+  suitableDefects: [
+    "Salt efflorescence and tide marks on lower masonry walls associated with rising damp",
+    "Salt-contaminated masonry requiring reduction before renovation plaster or breathable render",
+    "Sub-florescence / spalling driven by soluble salt crystallisation in brick and stone",
+  ],
+  typicalSubstrates: [
+    "Solid fired clay brick and sandstock brick",
+    "Sandstone and other porous natural stone masonry",
+    "Lime-mortared historic masonry — confirm method with a conservator",
+    "Calcium silicate brick — confirm suitability",
+  ],
+};
 
 export function SaltRemovalDesalinationIntroSection() {
-  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Salt removal &amp; desalination</h3></div><p className="text-sm leading-7 text-slate-600">Salt removal and desalination treatments are used to reduce chloride and sulfate salt concentrations in masonry walls affected by rising damp, marine exposure, or historical salt contamination. Desalination poultices draw soluble salts from the substrate as they dry. Salt removal is performed before renovation plaster or coating application to improve system performance. Westox Cocoon is a desalination poultice for this application. Confirm current specifications with Westox technical before specifying.</p></div>);
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <div className="mb-4 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div>
+        <h3 className="text-base font-extrabold text-sky-950">Salt removal &amp; desalination</h3>
+      </div>
+      <p className="text-sm leading-7 text-slate-600">
+        Salt removal and desalination treatments reduce chloride, nitrate and sulfate salt concentrations in masonry walls affected by rising damp, marine exposure or historical salt contamination. A capillary-active poultice or compress is applied wet to the substrate; as it dries it draws the salt-laden pore water outward and the salts crystallise within the poultice rather than the masonry, which is then removed with the extracted salts. Desalination is carried out after the moisture source is treated and before renovation plaster or breathable render. Options range from proprietary compresses (Westox Cocoon, Remmers Desalting Compress to WTA 3-13-01) to traditional site-mixed clay / cellulose poultices used in heritage conservation.
+      </p>
+    </div>
+  );
 }
 
+const DESIGN_CRITERIA =
+  "Confirm the moisture source has been treated first (desalination is not a moisture treatment); the method (WTA 3-13-01 compress vs site-mixed clay/cellulose poultice) and its active material; that the poultice pore structure is matched to the substrate so salts crystallise in the poultice, not the wall; the number of cycles and dwell time for the salt load; and pre/post salt sampling to confirm reduction. Confirm every value against the current AU manufacturer TDS or conservation specification.";
+
 export function SaltRemovalDesalinationProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const toggleFilter = (id: FilterTag) => { setActiveFilters((prev) => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; }); };
-  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
+  const [accordionOpen, setAccordionOpen] = useState(false);
+
   return (
-    <div>
-      <div className="mb-5 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">1 product — Westox — salt removal and desalination systems</p></div></div>
-      <div className="mb-5 flex flex-wrap items-center gap-2"><span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>{FILTER_DEFS.map((f) => { const active = activeFilters.has(f.id); return <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>; })}{activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}</div>
-      <div className="mb-4 flex items-center justify-between"><span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""}</span><div className="flex items-center gap-2"><button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button><button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button></div></div>
-      <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-        {visibleProducts.map((product) => (
-          <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-              <div className="border-b border-slate-100 bg-slate-50 px-5 py-4"><div className="flex items-center justify-between gap-2"><span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span><div className="flex shrink-0 items-center gap-1"><a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a></div></div><h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3><p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p><CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} /></div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4"><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p><CollapsibleDescription text={product.systemDescription} /></div>
-              <div className="space-y-3 px-5 py-4"><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div></div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
+    <>
+      {/* ── System Technical Reference ── */}
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setAccordionOpen((o) => !o)}
+          className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition hover:bg-slate-50"
+        >
+          <div>
+            <p className="text-base font-extrabold text-sky-950">System Technical Reference</p>
+            <p className="mt-0.5 text-xs text-slate-500">Applications, selection criteria, limitations, standards, suitable defects and substrates</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-500">
+            {accordionOpen ? (<>Hide detail <ChevronUp size={14} /></>) : (<>Show detail <ChevronDown size={14} /></>)}
+          </div>
+        </button>
+        {accordionOpen && (
+          <div className="border-t border-slate-100 px-7 pb-7 pt-6">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              <TechCard icon={<Layers size={15} />} title="Typical Applications" items={TECH_INFO.typicalApplications} style="bullet" />
+              <TechCard icon={<Ruler size={15} />} title="Selection Criteria" items={TECH_INFO.selectionCriteria} style="check" />
+              <TechCard icon={<AlertTriangle size={15} />} title="When NOT to Use" items={TECH_INFO.limitations} style="warn" />
+              <TechCard icon={<BookOpen size={15} />} title="Standards & Notes" items={TECH_INFO.standardsNotes} style="bullet" />
+              <TechCard icon={<CheckCircle size={15} />} title="Suitable Defects" items={TECH_INFO.suitableDefects} style="check" />
+              <TechCard icon={<SquareStack size={15} />} title="Typical Substrates" items={TECH_INFO.typicalSubstrates} style="bullet" />
             </div>
           </div>
-        ))}
+        )}
       </div>
-    </div>
+
+      <AutoProductReference products={[]} cards={SALT_REMOVAL_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Salt removal & desalination" pruneEmptyFacts />
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import SiteHeader from "@/components/SiteHeader";
 export const metadata: Metadata = {
   title: "Terms & Conditions | Remedial Building Australia",
   description: "Terms and conditions for using the Remedial Building Australia website — last updated June 2026.",
@@ -155,6 +156,23 @@ const sections: Section[] = [
   },
   {
     number: "17",
+    title: "Directory Subscriptions, Billing & Top Listing Placement",
+    bullets: [
+      "Directory listing plans are: Basic (free), Business and Premium. Paid plans are recurring subscriptions billed in advance, monthly or yearly, at the price shown at the time of purchase, in Australian dollars.",
+      "By subscribing you authorise Arasep Projects Pty Ltd, via our payment processor Stripe, to charge your nominated payment method for the recurring fee until you cancel. Subscriptions renew automatically at the end of each billing period.",
+      "Paid plans unlock the listing features described on the pricing page for that plan (claiming and managing your profile, logo and project photos, licence/insurance display, quote request button, and for Premium, Top Listing placement). Feature inclusions may change over time.",
+      "Top Listing / Premium placement: a maximum of three (3) Top Listing positions are available per category. Positions are filled strictly in order of subscription date — the first business to subscribe holds position one, the second holds position two, the third holds position three. No business is guaranteed any specific position other than its order of subscription, and no #1 or sole placement is promised. Top Listed businesses appear above standard results for their chosen category for the duration of the active subscription only.",
+      "Placement, ranking, visibility and the order of search results may change as our search, ranking and category logic evolves, and are not guaranteed.",
+      "We do not guarantee any leads, enquiries, quote requests, calls, clicks, sales, work or any commercial result from any listing or subscription. A listing is an advertising placement only.",
+      "Cancellation: you may cancel at any time from your dashboard. Your paid features remain active until the end of the period you have already paid for, after which the listing reverts to the free Basic plan. Yearly plans remain active until the end of the paid yearly term.",
+      "Refunds: fees are generally non-refundable. We may, at our sole discretion, issue a full or partial refund and, where we do, may cancel the subscription and revert the listing to Basic immediately. Nothing in these terms limits any non-excludable rights you may have under the Australian Consumer Law.",
+      "Prices are subject to change; any change applies from your next renewal. A receipt is issued by email for each successful payment.",
+      "We may suspend, downgrade, remove or decline any listing or subscription that breaches these terms, is fraudulent, or misrepresents the business.",
+      "You warrant that information you submit (business name, ABN, licence, insurance, description, logo and photos) is accurate, current, lawfully provided, and that you are authorised to publish it.",
+    ],
+  },
+  {
+    number: "18",
     title: "Contact",
     content: "Last updated: June 2026\n\nFor all enquiries contact: info@remedialbuildingaustralia.com.au",
   },
@@ -163,30 +181,7 @@ const sections: Section[] = [
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800">
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">
-                Remedial Building Australia
-              </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-900">
-                Technical Remedial Building Platform
-              </div>
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          </nav>
-
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="px-6 py-20">
         <section className="mx-auto max-w-4xl">
@@ -268,15 +263,19 @@ export default function TermsPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

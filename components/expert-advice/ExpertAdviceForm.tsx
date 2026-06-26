@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import FileUploadZone from "./FileUploadZone";
+import { FilesProvider, useFilesRegistry } from "./FilesContext";
 
 export const DISCLAIMER_VERSION = "v1.0-2026-06-13";
 
@@ -91,7 +92,7 @@ async function compressImage(file: File): Promise<File> {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function ExpertAdviceForm({
+function ExpertAdviceFormInner({
   service,
   serviceName,
   children,
@@ -100,18 +101,28 @@ export default function ExpertAdviceForm({
   descriptionLabel = "Description of the Issue",
   descriptionPlaceholder = "Describe the defect, problem, or what you need reviewed...",
 }: Props) {
+  const registry = useFilesRegistry();
   const formRef = useRef<HTMLFormElement>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [propertyType, setPropertyType] = useState("");
   const [otherPropertyType, setOtherPropertyType] = useState("");
-  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [modalAgreed, setModalAgreed] = useState(false);
 
   const isOther = propertyType === "Other — please specify";
 
-  async function handleSubmit(e: React.FormEvent) {
+  // The main submit button runs native required-field validation first, then
+  // opens the disclaimer popup. Actual submission happens from the popup.
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
+    setModalAgreed(false);
+    setShowDisclaimer(true);
+  }
+
+  async function doSubmit() {
     if (!formRef.current) return;
     setError(null);
     setSubmitting(true);
@@ -124,11 +135,13 @@ export default function ExpertAdviceForm({
         rawFd.set("propertyType", `Other — ${otherPropertyType.trim()}`);
       }
 
+      // Files from the upload boxes come from the shared registry (reliable),
+      // NOT from the DOM inputs — browsers drop programmatically-set input.files.
+      const zoneFiles = registry?.get() ?? new Map<string, File[]>();
+
       // Validate required photos when the section is visible
       if (!hideFilesSection && !hideGeneralPhotos) {
-        const photoFiles = rawFd.getAll("photos").filter(
-          (v) => v instanceof File && (v as File).size > 0
-        );
+        const photoFiles = (zoneFiles.get("photos") ?? []).filter((f) => f.size > 0);
         if (photoFiles.length === 0) {
           setError("Please attach at least one photo.");
           setSubmitting(false);
@@ -136,21 +149,34 @@ export default function ExpertAdviceForm({
         }
       }
 
-      // Compress images, copy everything else unchanged
+      // Build the payload: text fields (+ any plain file inputs like strataPlan)
+      // come from the form; upload-box files come from the registry. Compress
+      // images along the way.
       const newFd = new FormData();
       const tasks: Promise<void>[] = [];
-      for (const [key, value] of rawFd.entries()) {
-        if (value instanceof File && value.size > 0 && value.type.startsWith("image/")) {
+      const appendFile = (key: string, file: File) => {
+        if (file.size <= 0) return;
+        if (file.type.startsWith("image/")) {
           tasks.push(
-            compressImage(value).then((compressed) =>
+            compressImage(file).then((compressed) =>
               newFd.append(key, compressed, compressed.name)
             )
           );
         } else {
-          newFd.append(key, value);
+          newFd.append(key, file);
         }
+      };
+      for (const [key, value] of rawFd.entries()) {
+        if (value instanceof File) appendFile(key, value);
+        else newFd.append(key, value);
+      }
+      for (const [name, list] of zoneFiles.entries()) {
+        for (const file of list) appendFile(name, file);
       }
       await Promise.all(tasks);
+
+      // Disclaimer was accepted in the popup before this runs.
+      newFd.set("disclaimerAccepted", "true");
 
       // Validate post-compression sizes
       const MAX_FILE = 4 * 1024 * 1024;
@@ -323,37 +349,9 @@ export default function ExpertAdviceForm({
         </div>
       )}
 
-      {/* Disclaimer gate — must be accepted before submit */}
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
-        <div className="mb-4 flex items-start gap-3">
-          <svg viewBox="0 0 20 20" fill="currentColor" className="mt-0.5 h-5 w-5 shrink-0 text-amber-600">
-            <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-          </svg>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-800">
-            Service Disclaimer — Please Read Before Submitting
-          </p>
-        </div>
-        <div className="space-y-3 rounded-xl border border-amber-200 bg-white px-5 py-4 text-sm leading-7 text-slate-700">
-          {DISCLAIMER_TEXT.split("\n\n").map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
-        <label className="mt-5 flex cursor-pointer items-start gap-3">
-          <input
-            type="checkbox"
-            name="disclaimerAccepted"
-            value="true"
-            checked={disclaimerAccepted}
-            onChange={(e) => setDisclaimerAccepted(e.target.checked)}
-            className="mt-1 h-4 w-4 shrink-0 cursor-pointer rounded border-amber-400 accent-red-700"
-          />
-          <span className="text-sm font-semibold leading-6 text-slate-800">
-            I have read, understood, and agree to the service scope, limitations, disclaimer, refund terms, and terms and conditions for this service.
-          </span>
-        </label>
-        <input type="hidden" name="disclaimerVersion" value={DISCLAIMER_VERSION} />
-        <input type="hidden" name="disclaimerText" value={DISCLAIMER_TEXT} />
-      </div>
+      {/* Disclaimer is captured in a popup on submit (see below) */}
+      <input type="hidden" name="disclaimerVersion" value={DISCLAIMER_VERSION} />
+      <input type="hidden" name="disclaimerText" value={DISCLAIMER_TEXT} />
 
       {error && (
         <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700">
@@ -363,17 +361,82 @@ export default function ExpertAdviceForm({
 
       <button
         type="submit"
-        disabled={submitting || !disclaimerAccepted}
+        disabled={submitting}
         className="w-full rounded-2xl bg-red-700 px-8 py-4 text-base font-extrabold text-white shadow-sm transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
-        title={!disclaimerAccepted ? "Please accept the disclaimer above before submitting" : undefined}
       >
         {submitting ? "Submitting…" : "Request This Advice"}
       </button>
-      {!disclaimerAccepted && (
-        <p className="text-center text-xs text-slate-400">
-          Tick the checkbox above to enable this button.
-        </p>
+      <p className="text-center text-xs text-slate-400">
+        Before submitting, you&apos;ll be asked to read and agree to our short service disclaimer.
+      </p>
+
+      {/* Disclaimer popup — appears on submit; submission proceeds only after agreeing */}
+      {showDisclaimer && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Service disclaimer"
+        >
+          <div className="flex max-h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-start gap-3 border-b border-amber-200 bg-amber-50 px-5 py-4">
+              <svg viewBox="0 0 20 20" fill="currentColor" className="mt-0.5 h-5 w-5 shrink-0 text-amber-600">
+                <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+              </svg>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-800">
+                Service Disclaimer — Please Read Before Submitting
+              </p>
+            </div>
+            <div className="overflow-y-auto px-5 py-4">
+              <div className="space-y-3 text-sm leading-6 text-slate-700">
+                {DISCLAIMER_TEXT.split("\n\n").map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+              <label className="mt-4 flex cursor-pointer items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={modalAgreed}
+                  onChange={(e) => setModalAgreed(e.target.checked)}
+                  className="mt-1 h-4 w-4 shrink-0 cursor-pointer rounded border-amber-400 accent-red-700"
+                />
+                <span className="text-sm font-semibold leading-6 text-slate-800">
+                  I have read, understood, and agree to the service scope, limitations, disclaimer, refund terms, and terms and conditions for this service.
+                </span>
+              </label>
+            </div>
+            <div className="flex gap-3 border-t border-slate-200 px-5 py-4">
+              <button
+                type="button"
+                onClick={() => setShowDisclaimer(false)}
+                className="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={!modalAgreed || submitting}
+                onClick={async () => {
+                  setShowDisclaimer(false);
+                  await doSubmit();
+                }}
+                className="flex-1 rounded-xl bg-red-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {submitting ? "Submitting…" : "Agree & Submit Request"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </form>
+  );
+}
+
+export default function ExpertAdviceForm(props: Props) {
+  // The form and all its upload boxes must share one files registry.
+  return (
+    <FilesProvider>
+      <ExpertAdviceFormInner {...props} />
+    </FilesProvider>
   );
 }

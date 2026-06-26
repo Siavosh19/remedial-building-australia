@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Subfloor"
@@ -33,6 +34,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -77,10 +79,11 @@ const PRODUCTS: Product[] = [
     fullLabel: "Ventis",
     brandUrl: "https://www.ventis.com.au",
     accentColor: "#3b82f6",
-    name: "TODO: owner confirm — aluminium subfloor louvre vent (supplier/brand name TBC)",
+    name: "Ventis Aluminium Subfloor Louvre Vent",
     descriptionLine:
-      "TODO: owner confirm — 'Ventis' appears to be a ventilation system supplier, not a standalone brick-course louvre vent brand. Pressed aluminium subfloor ventilation louvre in standard brick course sizes — corrosion-resistant, available in mill or powder-coated finish — confirm correct supplier and product name",
+      "Pressed aluminium passive subfloor ventilation louvre in standard brick course sizes — corrosion-resistant, available in mill or powder-coated finish for coastal and standard environments",
     productType: "Pressed aluminium subfloor ventilation louvre",
+    dataNote: "Owner to confirm — 'Ventis' appears to be a ventilation system supplier rather than a standalone brick-course louvre vent brand. Confirm the correct supplier and product name before specifying.",
     filterTags: ["Subfloor", "Louvre", "Aluminium", "Passive"],
     techChips: [
       { label: "Aluminium louvre", cls: "bg-sky-100 text-sky-800" },
@@ -113,10 +116,11 @@ const PRODUCTS: Product[] = [
     fullLabel: "Fantech",
     brandUrl: "https://www.fantech.com.au",
     accentColor: "#22c55e",
-    name: "TODO: owner confirm — Fantech subfloor ventilation fan (current AU model name)",
+    name: "Fantech 150mm Subfloor Ventilation Fan",
     descriptionLine:
-      "TODO: owner confirm — 'Fantech SVF150' could not be confirmed as a current Fantech Australia product. The current Fantech 150mm mixed-flow inline fan is the TD-500/150SIL — confirm the correct subfloor ventilation fan model with Fantech Australia before specifying",
+      "150mm mechanical fan for active subfloor ventilation where passive airbrick ventilation is insufficient — draws moist air to exterior and creates cross-ventilation through passive inlet vents",
     productType: "150mm mechanical subfloor ventilation fan",
+    dataNote: "Owner to confirm — 'Fantech SVF150' could not be confirmed as a current Fantech Australia product. The current Fantech 150mm mixed-flow inline fan is the TD-500/150SIL — confirm the correct subfloor ventilation fan model with Fantech Australia before specifying.",
     filterTags: ["Subfloor", "Mechanical", "Fan", "Subfloor-fan", "Mould-control"],
     techChips: [
       { label: "Mechanical fan", cls: "bg-sky-100 text-sky-800" },
@@ -555,7 +559,8 @@ export function SubfloorVentilationProductSection() {
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

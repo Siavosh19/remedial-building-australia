@@ -9,6 +9,7 @@ import { getArticleImage, formatDate } from "@/lib/news-categories";
 import { ArticleDisclaimer } from "@/components/industry-news/ArticleDisclaimer";
 import { NewsLegalFooter } from "@/components/industry-news/NewsLegalFooter";
 
+import SiteHeader from "@/components/SiteHeader";
 export const revalidate = 3600;
 
 const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
@@ -247,10 +248,10 @@ export default async function IndustryNewsArticlePage({
   if (!article) notFound();
 
   const imagePool = getNewsImagePool();
-  const heroImage = getArticleImage(article.category, article.title, imagePool);
+  const heroImage = getArticleImage(article.category, article.title, imagePool, article.tags);
   const relatedArticlesWithImages = relatedArticles.map((r) => ({
     ...r,
-    featured_image: getArticleImage(r.category, r.title, imagePool),
+    featured_image: getArticleImage(r.category, r.title, imagePool, r.tags),
   }));
   const paragraphs = summaryToParagraphs(article.summary);
   const whyItMatters = article.industry_impact?.trim() || null;
@@ -261,44 +262,17 @@ export default async function IndustryNewsArticlePage({
     <div className="min-h-screen bg-white text-slate-800">
 
       {/* ── Header ────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-4">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">
-                Remedial Building Australia
-              </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Independent Remedial Building Information Platform
-              </div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-7 text-sm font-semibold text-sky-800 md:flex">
-                        <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          
-          </nav>
-          <a
-            href="/directory/login"
-            className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 md:inline-flex"
-          >
-            Login / Create Account
-          </a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
 
         {/* ── Hero image ─────────────────────────────────────────────────── */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-200 md:aspect-[3/1]">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-200 md:aspect-[2/1]">
           <Image
             src={heroImage}
             alt={article.title}
             fill
-            className="object-cover"
+            className="object-cover object-center"
             sizes="100vw"
             priority
           />
@@ -366,11 +340,6 @@ export default async function IndustryNewsArticlePage({
             </div>
           )}
 
-          {/* ── Disclaimer ────────────────────────────────────────────── */}
-          <div className="mt-7">
-            <ArticleDisclaimer />
-          </div>
-
           <hr className="mt-7 border-slate-100" />
 
           {/* ── Editorial summary ──────────────────────────────────────── */}
@@ -411,18 +380,18 @@ export default async function IndustryNewsArticlePage({
 
           {/* ── Why It Matters ─────────────────────────────────────────── */}
           {whyItMatters && (
-            <div className="mt-10">
-              <div className="mb-3 flex items-center gap-2">
+            <div className="mt-8">
+              <div className="mb-2 flex items-center gap-2">
                 <span className="h-3 w-0.5 rounded-full bg-red-500" />
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-700">
                   Why It Matters
                 </p>
               </div>
-              <div className="rounded-2xl border-l-4 border-red-600 bg-red-50 px-7 py-6">
-                <p className="text-base leading-8 text-slate-800">
+              <div className="rounded-lg border-l-4 border-red-600 bg-red-50 px-3.5 py-2.5">
+                <p className="text-[13px] leading-relaxed text-slate-800">
                   {whyItMatters}
                 </p>
-                <p className="mt-3 text-[11px] text-red-400">
+                <p className="mt-1.5 text-[10px] text-red-400">
                   General observation only — not professional, legal, or engineering advice.
                 </p>
               </div>
@@ -452,35 +421,42 @@ export default async function IndustryNewsArticlePage({
 
           {/* ── Source & Attribution ───────────────────────────────────── */}
           {article.source_url && (
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">
+            <div className="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">
                 Source &amp; Attribution
               </p>
-              <div className="space-y-2 text-sm text-slate-600">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-slate-600">
                 {article.source_name && (
-                  <p>
-                    <span className="font-semibold text-slate-700">Original publisher:</span>{" "}
+                  <span>
+                    <span className="font-semibold text-slate-700">Publisher:</span>{" "}
                     {article.source_name}
-                  </p>
+                  </span>
                 )}
-                <p>
+                {article.source_name && <span className="text-slate-300">·</span>}
+                <span>
                   <span className="font-semibold text-slate-700">Published:</span>{" "}
                   {formatDate(article.published_date)}
-                </p>
-                <p>
-                  <a
-                    href={article.source_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-semibold text-sky-700 hover:text-sky-900 transition"
-                  >
-                    View original article <ExternalLink size={11} />
-                  </a>
-                </p>
+                </span>
+                <span className="text-slate-300">·</span>
+                <a
+                  href={article.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-semibold text-sky-700 hover:text-sky-900 transition"
+                >
+                  View original article <ExternalLink size={11} />
+                </a>
               </div>
-              <p className="mt-4 text-[11px] leading-relaxed text-slate-500 border-t border-slate-200 pt-4">
-                This article contains an editorial summary and industry commentary prepared by Remedial Building Australia. It does not reproduce original article wording. Remedial Building Australia is an independent industry information platform and is not affiliated with the original publisher. Content is general information only — not professional, legal, or engineering advice.
+              <p className="mt-3 text-[10px] leading-relaxed text-slate-500 border-t border-slate-200 pt-3">
+                Editorial summary and industry commentary prepared by Remedial Building Australia. Original article wording is not reproduced. We are an independent platform, not affiliated with the original publisher. General information only — not professional, legal, or engineering advice.
               </p>
+            </div>
+          )}
+
+          {/* ── General Information Disclaimer ─────────────────────────── */}
+          {article.source_url && (
+            <div className="mt-3">
+              <ArticleDisclaimer />
             </div>
           )}
 
@@ -577,15 +553,19 @@ export default async function IndustryNewsArticlePage({
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

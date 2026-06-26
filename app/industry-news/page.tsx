@@ -8,6 +8,7 @@ import { NewsLegalFooter } from "@/components/industry-news/NewsLegalFooter";
 import { assignUniqueImages } from "@/lib/news-categories";
 import { InsightsSidebar, type InsightCard } from "@/components/rba-insights/InsightsSidebar";
 
+import SiteHeader from "@/components/SiteHeader";
 export const revalidate = 300;
 
 const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
@@ -50,7 +51,7 @@ async function getInsights(): Promise<InsightCard[]> {
   const rows = await prisma.rbaInsightsArticle.findMany({
     where: { status: "published" },
     orderBy: [{ is_featured: "desc" }, { published_date: "desc" }],
-    take: 6,
+    take: 100,
     select: {
       id: true,
       title: true,
@@ -76,39 +77,33 @@ export default async function IndustryNewsPage() {
     Promise.resolve(getNewsImagePool()),
     getInsights(),
   ]);
-  const articles = assignUniqueImages(rawArticles, [], imagePool);
+  const newsArticles = assignUniqueImages(rawArticles, [], imagePool);
+
+  // RBA insights are mixed into the main feed (date-ordered, badged "RBA Insight")
+  // AND kept in the sidebar. They link internally to their /rba-insights page.
+  const insightArticles = insights.map((i) => ({
+    id: `insight-${i.id}`,
+    title: i.title,
+    slug: i.slug,
+    summary: i.summary ?? "",
+    category: i.category,
+    tags: [] as string[],
+    source_name: i.author || "Remedial Building Australia",
+    source_url: "",
+    published_date: i.published_date ?? "",
+    priority: 2 as const,
+    featured_image: i.featured_image_url ?? "",
+    kind: "insight" as const,
+    href: `/rba-insights/${i.slug}`,
+  }));
+
+  const articles = [...newsArticles, ...insightArticles];
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-4">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">
-                Remedial Building Australia
-              </div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Technical Remedial Building Platform
-              </div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-7 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap transition hover:text-red-700">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap hover:text-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap text-red-700">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700">AI Scope Builder</a>
-          </nav>
-          <a
-            href="/directory/login"
-            className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 md:inline-flex"
-          >
-            Login / Create Account
-          </a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
 
@@ -145,7 +140,7 @@ export default async function IndustryNewsPage() {
 
             {/* Right sidebar — RBA Insights */}
             <div className="w-full border-t border-slate-200 bg-slate-50 px-6 py-8 lg:w-80 lg:shrink-0 lg:border-l lg:border-t-0 lg:bg-transparent lg:pt-8">
-              <InsightsSidebar insights={insights} />
+              <InsightsSidebar insights={insights.slice(0, 6)} />
             </div>
 
           </div>
@@ -177,15 +172,19 @@ export default async function IndustryNewsPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

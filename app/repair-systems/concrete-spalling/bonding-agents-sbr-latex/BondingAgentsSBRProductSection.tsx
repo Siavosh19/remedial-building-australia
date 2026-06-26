@@ -8,8 +8,11 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { BONDING_AGENT_CARDS } from "./bondingAgentsData";
 
 type FilterTag =
   | "SBR-latex"
@@ -38,7 +41,7 @@ type Product = {
   procurementSources: { name: string; url?: string }[];
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
@@ -75,29 +78,33 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Ardex Australia",
     brandUrl: "https://www.ardex.com.au",
+    tdsUrl: "https://ardexaustralia.com/pdf/products/datasheets/waterproofing/ARDEX%20WPM%20405%20Datasheet.pdf",
     accentColor: "#0369a1",
-    name: "Ardex P 51 — TODO: owner confirm application",
-    descriptionLine: "TODO: owner confirm — ARDEX P 51 is described as a 'Universal Flooring Primer' for internal use with floor levelling compounds and adhesives on ardexaustralia.com — not confirmed as a bonding primer for concrete structural repair mortars. Confirm with Ardex Australia whether P 51 is the correct primer for BR 340 / BR 345 or whether a different Ardex product is specified",
-    productType: "TODO: owner confirm — Ardex P 51 is described as an internal flooring primer on ardexaustralia.com — not confirmed as a concrete repair bonding primer",
-    filterTags: ["Acrylic-primer", "Brush-applied", "Roller-applied", "Porous-concrete"],
+    name: "Ardex WPM 405 (Sheltercrete Additive)",
+    descriptionLine: "Concentrated SBR (styrene-butadiene rubber) polymer liquid — used as a cement-gauged bonding slurry coat before repair mortar and as a mortar/screed admixture. General-purpose SBR latex; confirm compatibility with the chosen repair mortar system. Not a rebar primer",
+    productType: "SBR latex bonding agent and mortar admixture",
+    filterTags: ["SBR-latex", "Brush-applied", "Porous-concrete", "Slurry-coat", "Admixture"],
     techChips: [
-      { label: "TODO: confirm — internal flooring primer per ardexaustralia.com", cls: "bg-sky-100 text-sky-800" },
-      { label: "Allow to become tacky (if applicable)", cls: "bg-slate-100 text-slate-700" },
-      { label: "TODO: confirm for Ardex BR 340 / BR 345", cls: "bg-amber-50 text-amber-700" },
-      { label: "TODO: Ardex BE not confirmed on ardexaustralia.com", cls: "bg-slate-100 text-slate-700" },
+      { label: "SBR latex (Sheltercrete)", cls: "bg-rose-100 text-rose-800" },
+      { label: "Bonding slurry + admixture", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mix with cement — apply while tacky", cls: "bg-slate-100 text-slate-700" },
+      { label: "Also 2-coat temp. waterproof sealer", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "TODO: owner confirm — ARDEX P 51 is described on ardexaustralia.com as a 'Universal Flooring Primer' — a low VOC, concentrated, solvent-free synthetic resin dispersion designed for priming and sealing porous floor and wall substrates prior to ARDEX levelling and smoothing compounds. It is listed as internal use only and for use with floor levelling compounds and tile adhesives — not as a bonding primer for structural concrete repair mortars. The card's claim that P 51 is used before BR 340 / BR 345 has not been verified from a live Ardex AU source. Owner must confirm with Ardex Australia whether P 51 is the correct primer for concrete repair mortar applications or whether a different Ardex primer applies. Available in 5 L and 20 L containers confirmed on ardexaustralia.com. 'Ardex BE' is not confirmed as a current Ardex AU product — not found on ardexaustralia.com product listing during this audit.",
+      "Ardex WPM 405 (Sheltercrete Additive) is a concentrated SBR (styrene-butadiene rubber) polymer liquid admixture used to improve the bond strength, flexibility, and water resistance of site-batched sand-cement mortars, screeds, and renders. In concrete spalling patch repair it has two roles: (1) as a bonding slurry coat — gauged with cement and water to a slurry, scrubbed firmly into the prepared, saturated-surface-dry concrete substrate, with the repair mortar placed into the slurry while it is still fresh and tacky; and (2) as a polymer admixture added to the gauging water of a site-batched cementitious repair mortar to improve adhesion and workability. It is the same SBR latex family as Fosroc Nitobond SBR and LANKO 751 Lankolatex SBR, so it is a like-for-like equivalent on this page.\n\nNote on positioning: Ardex markets WPM 405 as a general-purpose multipurpose SBR additive (and, as a 2-coat cement-gauged surface treatment at ~12 m² per litre per coat, a temporary waterproofing sealer) — it is not badged as Ardex's dedicated bonding primer for a specific proprietary repair mortar. Many modern proprietary EN 1504-3 repair mortars are designed to be applied without a separate bonding bridge (a scratch coat of the same mortar into an SSD substrate) — so a separate SBR slurry is system-dependent, not mandatory. Confirm the required bond coat from the chosen repair mortar's TDS, and confirm current dosage and dilution from the Ardex WPM 405 TDS before specifying.",
     technicalProperties: [
-      "TODO: owner confirm — P 51 role as concrete repair mortar bonding primer — ardexaustralia.com describes it as a flooring primer (internal only)",
-      "ARDEX P 51 available in 5 L (product no. 10231) and 20 L (product no. 16534) — confirmed on ardexaustralia.com",
-      "Described on ardexaustralia.com as for: porous concrete substrates, structural particleboard and ply, sanded ceramic tiles, plasterboard — internal use only",
-      "TODO: owner confirm — Ardex BE (epoxy) — not found as a current product on ardexaustralia.com product listing",
+      "Ardex WPM 405 — concentrated SBR latex — dual use: cement-gauged bonding slurry coat and mortar/screed gauging-water admixture",
+      "Bonding slurry: gauge with cement (and water) — scrub into prepared SSD substrate — place mortar while slurry is still fresh/tacky",
+      "As admixture: added to gauging water of site-batched cementitious mortars to improve adhesion, flexibility, and water resistance",
+      "Same SBR chemistry as Fosroc Nitobond SBR and LANKO 751 Lankolatex SBR — like-for-like equivalent bonding agent",
+      "Confirm current dilution and dosage rates from the Ardex WPM 405 (Sheltercrete) TDS — do not rely on international data",
     ],
     limitations: [
-      "TODO: owner confirm — P 51 suitability for concrete repair mortar bonding with Ardex Australia — the ardexaustralia.com product page specifies internal flooring use only",
-      "TODO: owner confirm — Ardex BE epoxy bond coat — not found on ardexaustralia.com — confirm whether this product is still current or has been replaced",
-      "Confirm primer selection for specific substrate with Ardex Australia technical",
+      "Do not allow the SBR slurry coat to dry before placing the repair mortar — a dried slurry becomes a bond breaker, not a bonding agent",
+      "System-dependent — not mandatory: many proprietary repair mortars require no separate bonding bridge (scratch coat into SSD substrate) — confirm the required bond coat from the mortar TDS",
+      "Not a rebar primer — exposed reinforcement must first be treated with a corrosion-inhibiting / zinc-rich rebar primer (see Rebar primers & inhibitors)",
+      "Not a standalone waterproofing product for structural repair — the 2-coat temporary sealer function is a weather-protection measure only; confirm with Ardex technical",
+      "Apply to a saturated-surface-dry (not wet) substrate — surface water dilutes the slurry and reduces adhesion",
     ],
     procurementSources: [
       { name: "Ardex Australia — trade supply nationally", url: "https://www.ardex.com.au" },
@@ -166,6 +173,103 @@ const PRODUCTS: Product[] = [
       { name: "Bayset — nationally available", url: "https://www.bayset.com.au" },
     ],
   },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Nitobond EP",
+    descriptionLine: "Two-component epoxy bonding agent — confirm current specification and Australian availability with Fosroc technical before specifying",
+    productType: "Two-component epoxy bonding agent",
+    filterTags: ["Epoxy-bond", "Brush-applied", "Roller-applied", "Dense-concrete"],
+    techChips: [
+      { label: "Two-component epoxy bonding ag", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fosroc — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Fosroc Nitobond EP is a Two-component epoxy bonding agent. Two-component epoxy bonding bridge for old-to-new concrete where a high-strength structural bond is required. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Fosroc technical before specifying. TODO: verify specific performance figures from the current Fosroc TDS.",
+    technicalProperties: [
+      "Two-component epoxy bonding agent",
+      "Two-component epoxy bonding bridge for old-to-new concrete where a high-strength structural bond is required.",
+      "Confirm key performance values (strength / coverage / application) from the current Fosroc TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Fosroc",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Fosroc technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Fosroc",
+    ],
+    procurementSources: [
+      { name: "Fosroc — Australian trade supply", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://www.ardexaustralia.com",
+    tdsUrl: "https://ardexaustralia.com/product/ardex-brp-30-ep",
+    accentColor: "#0369a1",
+    name: "Ardex BRP 30 EP",
+    descriptionLine: "Two-component epoxy resin bonding coat for concrete repair mortars — suitable on damp or wet substrates — also an epoxy mortar binder with added aggregate",
+    productType: "Two-component epoxy bonding coat / epoxy mortar binder",
+    filterTags: ["Epoxy-bond", "Brush-applied", "Roller-applied", "Dense-concrete"],
+    techChips: [
+      { label: "2-part epoxy bonding coat", cls: "bg-sky-100 text-sky-800" },
+      { label: "Works on damp / wet substrates", cls: "bg-green-50 text-green-700" },
+      { label: "Epoxy mortar binder (with aggregate)", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ardex AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Ardex BRP 30 EP is a two-component (Part A resin + Part B hardener) epoxy used as a bonding coat for concrete repair mortars. Unlike most epoxy bond coats it can be used where the substrate is likely to remain damp or wet, which suits it to bridges, roads, wharves, loading docks, warehouses and factories. It also acts as an epoxy resin binder for epoxy mortar patching and overlay of interior surfaces by adding graded aggregate. The repair mortar is placed into the bonding coat within its open time per the Ardex system. Confirm mixing ratio, pot life, coverage, substrate preparation and overcoat window from the current Ardex Australia TDS before specifying. Source: ardexaustralia.com product page (ardex-brp-30-ep) and product SDS (Part A / Part B).",
+    technicalProperties: [
+      "Two-component epoxy (Part A resin + Part B hardener) — bonding coat for concrete repair mortars",
+      "Suitable for use where the substrate is likely to remain damp or wet — unusual tolerance for an epoxy bond coat",
+      "Also an epoxy resin binder for epoxy mortar patching/overlay with the addition of graded aggregate",
+      "Used on bridges, roads, wharves, loading docks, warehouses and factories",
+      "Ardex Australia — trade supply nationally — confirm pack sizes from TDS",
+    ],
+    limitations: [
+      "Confirm mixing ratio, pot life, coverage and overcoat window from the current Ardex Australia TDS",
+      "Place the repair mortar into the bonding coat within the open time — do not allow it to cure first",
+      "For epoxy mortar use, confirm the correct aggregate type and grading with Ardex",
+      "Confirm current product specification and compliance with Ardex Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "Ardex Australia — trade supply nationally", url: "https://www.ardexaustralia.com" },
+    ],
+  },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika SikaBond SBR+",
+    descriptionLine: "Waterproof SBR latex bonding agent and mortar admixture — gauges site-mixed repair mortars, screeds and bonding slurries; water- and frost-resistant, suited to exterior use",
+    productType: "Waterproof SBR latex bonding agent and mortar admixture",
+    filterTags: ["SBR-latex", "Brush-applied", "Roller-applied", "Porous-concrete", "Admixture", "Slurry-coat"],
+    techChips: [
+      { label: "SBR latex", cls: "bg-orange-100 text-orange-900" },
+      { label: "Waterproof / frost-resistant", cls: "bg-slate-100 text-slate-700" },
+      { label: "Admixture + bonding agent", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Sika SikaBond SBR+ is a styrene-butadiene rubber (SBR) latex used as an admixture for mortars, screeds and renders, as a bonding agent for screeds and renders, and as a primer/sealer. Unlike PVA bonding aids it is not adversely affected by wet conditions, giving improved water, water-vapour and frost resistance, which suits exterior concrete repair. Confirm the current mix ratios, coverage and pack sizes against the current Sika Australia TDS before specifying.",
+    technicalProperties: [
+      "SBR latex admixture / bonding agent for site-mixed repair mortars, screeds, renders and bonding slurries",
+      "Water-resistant (not affected in wet conditions) — improved water-vapour and frost resistance for exterior use",
+      "Confirm mix ratios, coverage and pack sizes from the current Sika Australia TDS — N/A — sought",
+    ],
+    limitations: [
+      "Confirm dosage/gauging ratio for the intended mortar or slurry from the current Sika Australia TDS",
+      "Protect freshly bonded work from rapid drying per the TDS",
+      "Confirm current pack sizes with Sika Australia technical before specifying",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — trade supply nationally", url: "https://aus.sika.com" },
+    ],
+  }
+
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -182,7 +286,7 @@ const FILTER_DEFS: { id: FilterTag; label: string }[] = [
 
 const SYSTEM_COMPARISON = [
   { brand: "Sika", product: "LANKO 751 Lankolatex SBR", type: "SBR latex", use: "Bonding slurry + admixture", substrate: "Porous concrete and masonry", epoxy: "TODO: owner confirm — Sika Icosit EP Primer not found on aus.sika.com — confirm current Sika AU epoxy bond coat product name" },
-  { brand: "Ardex", product: "Ardex P 51 — TODO: confirm role", type: "Acrylic primer (flooring per AU site)", use: "TODO: owner confirm — ardexaustralia.com lists P 51 as internal flooring primer — confirm if applicable to concrete repair", substrate: "TODO: confirm substrate", epoxy: "TODO: owner confirm — Ardex BE not found on ardexaustralia.com" },
+  { brand: "Ardex", product: "Ardex WPM 405 (Sheltercrete)", type: "SBR latex", use: "Bonding slurry + admixture", substrate: "Porous/prepared concrete (SSD)", epoxy: "Ardex WPM 300 HydrEpoxy / confirm Ardex epoxy bond coat from AU TDS" },
   { brand: "Fosroc / Parchem", product: "Fosroc Nitobond SBR", type: "SBR latex", use: "Bonding slurry + admixture", substrate: "Porous/prepared concrete", epoxy: "Fosroc Nitobond EP" },
   { brand: "Mapei", product: "Mapei Planicrete AC", type: "Acrylic copolymer", use: "Bonding slurry + admixture", substrate: "Porous/prepared concrete", epoxy: "Mapei Eporip" },
 ];
@@ -197,7 +301,7 @@ const TECH_INFO = {
   ],
   selectionCriteria: [
     "SBR latex (Sika Latex, Nitobond SBR): suitable for porous concrete and masonry — dual use as slurry coat and admixture — most commonly specified",
-    "Acrylic primer (Ardex P 51): brush or roller applied — allows more working time before mortar compared to SBR slurry coat — for Ardex repair mortar systems",
+    "Acrylic copolymer bonding agent (Mapei Planicrete AC): brush applied as a cement-gauged slurry — used with the matched proprietary repair mortar system",
     "For smooth, dense, or low-absorption concrete: specify epoxy bond coat (Ardex BE, Fosroc Nitobond EP, Mapei Eporip, Sika Icosit EP) instead of SBR or acrylic",
     "Confirm primer type with the repair mortar manufacturer — not all bonding agents are compatible with all repair mortars across brands",
     "In wet or humid conditions: SBR slurry coat degrades rapidly on a wet substrate — ensure SSD (not wet) before applying",
@@ -229,6 +333,198 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — see AI Selection Data rollout pack ──────
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["substrate_porosity", "porous / dense_smooth", "porous → this category; dense_smooth → requires_alternative (epoxy bond coat)"],
+    ["substrate_type", "porous_concrete/masonry/steel", "concrete/masonry → ok; steel → requires_alternative (epoxy)"],
+    ["wet_service", "dry / damp / submerged", "submerged → not_suitable for SBR/acrylic category"],
+    ["location", "internal / external / both", "gate against product location capability"],
+    ["bond_purpose", "mortar_bond / waterproofing", "waterproofing → different product, not this category"],
+  ],
+  json: {
+    category: "bonding_agents_sbr",
+    stage1_gates: {
+      substrate_porosity: { allowed: ["porous", "dense_smooth"], rule: "porous=suitable; dense_smooth=requires_alternative" },
+      substrate_type: { allowed: ["porous_concrete", "dense_concrete", "masonry", "steel"], rule: "concrete/masonry=suitable; steel=requires_alternative" },
+      wet_service: { allowed: ["dry", "damp", "submerged"], rule: "submerged=not_suitable" },
+      location: { allowed: ["internal", "external", "both"], rule: "match product location capability" },
+      bond_purpose: { allowed: ["mortar_bond", "waterproofing"], rule: "waterproofing=not_suitable" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+// Keyed by product.name. Same fields/order/units across all four products.
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Fosroc Nitobond SBR": {
+    rows: [
+      ["substrate_porous", "gate", "suitable"],
+      ["substrate_dense_smooth", "gate", "requires_alternative"],
+      ["substrate_steel", "gate", "requires_alternative"],
+      ["location", "gate", "both"],
+      ["wet_service_max", "gate", "damp"],
+      ["role", "gate", "both"],
+      ["application_method", "gate", "brush"],
+      ["application_window", "gate", "must_be_tacky"],
+      ["chemistry", "tag", "sbr_latex"],
+      ["bond_strength_mpa", "rank", "null (unconfirmed)"],
+      ["alternative_product", "meta", "fosroc_nitobond_ep"],
+      ["compatible_system", "meta", "[renderoc]"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fosroc_nitobond_sbr",
+      gates: {
+        substrate_porous: "suitable",
+        substrate_dense_smooth: "requires_alternative",
+        substrate_steel: "requires_alternative",
+        location: "both",
+        wet_service_max: "damp",
+        role: "both",
+        application_method: "brush",
+        application_window: "must_be_tacky",
+      },
+      tag: { chemistry: "sbr_latex" },
+      rank: { bond_strength_mpa: null },
+      meta: {
+        alternative_product: "fosroc_nitobond_ep",
+        compatible_system: ["renderoc"],
+        data_status: "verified",
+        selectable: true,
+        source: "Parchem/Fosroc Nitobond SBR product page",
+        confirmed_date: null,
+      },
+    },
+  },
+  "Mapei Planicrete AC": {
+    rows: [
+      ["substrate_porous", "gate", "suitable"],
+      ["substrate_dense_smooth", "gate", "requires_alternative"],
+      ["substrate_steel", "gate", "requires_alternative"],
+      ["location", "gate", "both"],
+      ["wet_service_max", "gate", "damp"],
+      ["role", "gate", "both"],
+      ["application_method", "gate", "brush"],
+      ["application_window", "gate", "must_be_tacky"],
+      ["chemistry", "tag", "acrylic_copolymer"],
+      ["bond_strength_mpa", "rank", "null (unconfirmed)"],
+      ["alternative_product", "meta", "mapei_eporip"],
+      ["compatible_system", "meta", "[mapegrout]"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "mapei_planicrete_ac",
+      gates: {
+        substrate_porous: "suitable",
+        substrate_dense_smooth: "requires_alternative",
+        substrate_steel: "requires_alternative",
+        location: "both",
+        wet_service_max: "damp",
+        role: "both",
+        application_method: "brush",
+        application_window: "must_be_tacky",
+      },
+      tag: { chemistry: "acrylic_copolymer" },
+      rank: { bond_strength_mpa: null },
+      meta: {
+        alternative_product: "mapei_eporip",
+        compatible_system: ["mapegrout"],
+        data_status: "verified",
+        selectable: true,
+        source: "Mapei Planicrete AC product page",
+        confirmed_date: null,
+      },
+    },
+  },
+  "LANKO 751 Lankolatex SBR": {
+    rows: [
+      ["substrate_porous", "gate", "suitable"],
+      ["substrate_dense_smooth", "gate", "requires_alternative"],
+      ["substrate_steel", "gate", "requires_alternative"],
+      ["location", "gate", "both"],
+      ["wet_service_max", "gate", "damp"],
+      ["role", "gate", "both"],
+      ["application_method", "gate", "brush"],
+      ["application_window", "gate", "must_be_tacky"],
+      ["chemistry", "tag", "sbr_latex"],
+      ["bond_strength_mpa", "rank", "null (unconfirmed)"],
+      ["alternative_product", "meta", "null (unconfirmed)"],
+      ["compatible_system", "meta", "[lanko, davco]"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: {
+      id: "lanko_751_lankolatex_sbr",
+      gates: {
+        substrate_porous: "suitable",
+        substrate_dense_smooth: "requires_alternative",
+        substrate_steel: "requires_alternative",
+        location: "both",
+        wet_service_max: "damp",
+        role: "both",
+        application_method: "brush",
+        application_window: "must_be_tacky",
+      },
+      tag: { chemistry: "sbr_latex" },
+      rank: { bond_strength_mpa: null },
+      meta: {
+        alternative_product: null,
+        compatible_system: ["lanko", "davco"],
+        data_status: "unconfirmed",
+        selectable: false,
+        source: "Sika AU page (dilution/admixture ratios not verified)",
+        confirmed_date: null,
+      },
+    },
+  },
+  "Ardex WPM 405 (Sheltercrete Additive)": {
+    rows: [
+      ["substrate_porous", "gate", "suitable"],
+      ["substrate_dense_smooth", "gate", "requires_alternative"],
+      ["substrate_steel", "gate", "requires_alternative"],
+      ["location", "gate", "both"],
+      ["wet_service_max", "gate", "damp"],
+      ["role", "gate", "both"],
+      ["application_method", "gate", "brush"],
+      ["application_window", "gate", "must_be_tacky"],
+      ["chemistry", "tag", "sbr_latex"],
+      ["bond_strength_mpa", "rank", "null (unconfirmed)"],
+      ["alternative_product", "meta", "ardex_wpm_300_hydrepoxy (confirm)"],
+      ["compatible_system", "meta", "[site_batched_cementitious]"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "ardex_wpm_405",
+      gates: {
+        substrate_porous: "suitable",
+        substrate_dense_smooth: "requires_alternative",
+        substrate_steel: "requires_alternative",
+        location: "both",
+        wet_service_max: "damp",
+        role: "both",
+        application_method: "brush",
+        application_window: "must_be_tacky",
+      },
+      tag: { chemistry: "sbr_latex" },
+      rank: { bond_strength_mpa: null },
+      meta: {
+        alternative_product: "ardex_wpm_300_hydrepoxy",
+        compatible_system: ["site_batched_cementitious"],
+        data_status: "verified",
+        selectable: true,
+        source: "ardexaustralia.com Ardex WPM 405 product page + datasheet (SBR multipurpose additive / Sheltercrete)",
+        confirmed_date: null,
+      },
+    },
+  },
+};
+
 export function BondingAgentsSBRIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -255,6 +551,8 @@ export function BondingAgentsSBRIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Chemistry \u2014 SBR (styrene-butadiene) latex vs acrylic copolymer (SBR = better water/abrasion resistance; acrylic = better UV/non-yellowing); re-emulsifiable vs water-resistant (non-redispersible) cured film \u2014 critical for wet/external/immersed use where re-emulsifiable products fail; intended use \u2014 bonding bridge/slurry coat vs cement-mortar gauging admixture; total solids content (%); dilution ratio & coverage (m\u00b2/L); open/tack time window before mortar must be applied (wet-on-wet vs dry-film bonding); bond/pull-off strength improvement to substrate (MPa, AS 1012.10 / EN 1542); effect on flexural/tensile strength, drying shrinkage & permeability of the modified mortar; admixture compatibility per AS 1478.1; minimum application & curing temperature; substrate prep & saturated-surface-dry (SSD) condition";
 
 export function BondingAgentsSBRProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -308,141 +606,7 @@ export function BondingAgentsSBRProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 brands — SBR latex and acrylic bonding agents — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Bonding agents for concrete spalling repair — SBR, acrylic, and epoxy alternatives per brand. Confirm primer selection from current mortar manufacturer TDS.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Use</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Substrate</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Epoxy alternative</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.use}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.substrate}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.epoxy}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={BONDING_AGENT_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Bonding agents & SBR latex" />
     </>
   );
 }

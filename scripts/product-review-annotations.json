@@ -1,0 +1,544 @@
+{
+  "flags": {
+    "concrete-spalling|Form Release Agents|Fosroc Ronaform": "red",
+    "concrete-spalling|Curing Compounds|Tremco Eucocrete WB Cure": "red",
+    "concrete-spalling|Concrete Primers Realkalisation|Westox RAP Adhesive": "red",
+    "concrete-spalling|Concrete Primers Realkalisation|Westox RAP Primer DG": "red",
+    "concrete-spalling|Concrete Repair Adhesives|Westox RAP Thickened Adhesive": "red",
+    "concrete-spalling|Cementitious Repair Mortars|Sika MonoTop FC": "red",
+    "concrete-spalling|Cementitious Repair Mortars|Sika MonoTop-723 N": "red",
+    "reinforcement-corrosion|Epoxy Zinc Rich Primers|Mapei Mapefer 1K": "red",
+    "reinforcement-corrosion|Epoxy Zinc Rich Primers|SikaTop Armatec 110 EpoCem": "red",
+    "reinforcement-corrosion|Corrosion Inhibitors Mci|Mapei Mapefer": "red",
+    "reinforcement-corrosion|Epoxy Anchoring Adhesives|Mapei Mapefox EW": "red",
+    "concrete-cracking|Injection Resins PU Flexible|Sika Injection-107": "red",
+    "concrete-cracking|Injection Resins PU Flexible|Mapei Mapeject PU 25H / PU 25HD": "red",
+    "concrete-cracking|Sealants Polyurethane|Fosroc Nitoseal MS250 / MS400": "red",
+    "concrete-cracking|Sealants Polyurethane|Mapei Mapesil AC": "red",
+    "concrete-cracking|Sealants Polyurethane|Ardex RA 54": "red",
+    "concrete-cracking|Structural Anchors Dowels|Hilti HIT-RE 500 V3 + N12 Bar": "red",
+    "concrete-cracking|Structural Anchors Dowels|Ramset Chemset Reo 502 PLUS": "red",
+    "concrete-cracking|Repair Mortars Polymer Modified|Ardex RA55": "red",
+    "magnesite-flooring-deterioration|Floor Patching Compounds|Parchem Speed Rep": "red",
+    "magnesite-flooring-deterioration|Moisture Suppression Primers|Mapei Eco Prim T Plus": "red",
+    "magnesite-flooring-deterioration|Moisture Suppression Primers|Fosroc Nitoprime 28": "red",
+    "magnesite-flooring-deterioration|Moisture Suppression Primers|Parchem Epirez 510": "red",
+    "magnesite-flooring-deterioration|Self Levelling Underlayments|Parchem Flowfill RS": "red"
+  },
+  "flagDetails": [
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Form Release Agents",
+      "name": "Fosroc Ronaform",
+      "reason": "not in AU market",
+      "evidence": "No 'Ronaform' product exists on fosroc.com.au, fosroc.com or the AU catalogue; name is a confusion. Fosroc AU release agents are the 'Form Release Agent' SKU and the global Reebol Emulsion line. https://www.fosroc.com.au/product/form-release-agent ; https://www.fosroc.com/product/show/reebol-emulsion"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Curing Compounds",
+      "name": "Tremco Eucocrete WB Cure",
+      "reason": "not in AU market",
+      "evidence": "No 'Eucocrete WB Cure' in Tremco CPG Australia catalogue; 'Eucocrete' is their repair-mortar family, not a curing compound. The genuine AU water-based acrylic curing compound is Tremco Evencure AC (AS 3799). https://www.tremco.com.au/products/surface-treatments/curing-compounds"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Concrete Primers Realkalisation",
+      "name": "Westox RAP Adhesive",
+      "reason": "misplaced -> Concrete Repair Adhesives",
+      "evidence": "Westox RAP is a heritage plaster-lath-ceiling reinstatement system, not a concrete re-alkalisation product. RAP Adhesive is a liquid water-based acrylic adhesive/primer (5/20 L), not a cementitious primer. https://westox.com/product/rap-adhesive/"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Concrete Primers Realkalisation",
+      "name": "Westox RAP Primer DG",
+      "reason": "misplaced -> Concrete Repair Adhesives",
+      "evidence": "Westox's own page describes RAP Primer DG as a penetrating primer for wood-lath ceiling reinstatement / re-establishing adhesion of drummy plaster, NOT a carbonated-concrete re-alkalisation primer. https://westox.com/product/rap-primer-dg/"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Concrete Repair Adhesives",
+      "name": "Westox RAP Thickened Adhesive",
+      "reason": "misplaced -> heritage plaster-lath ceiling system (not a cementitious repair adhesive)",
+      "evidence": "Gun-grade thickened member of the Westox RAP plaster-lath-ceiling system; it is a thickened acrylic adhesive, not a cementitious concrete repair adhesive. https://westox.com/product/rap-thickened-adhesive/"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Cementitious Repair Mortars",
+      "name": "Sika MonoTop FC",
+      "reason": "misplaced -> Fairing Finishing Coats",
+      "evidence": "Sika AU PDS: polymer-modified cementitious fairing/finishing mortar, fine aggregates, max 3 mm/layer, off-form-concrete finish; Sika markets it as a Fairing Coat. https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-fc.html"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Cementitious Repair Mortars",
+      "name": "Sika MonoTop-723 N",
+      "reason": "misplaced -> Fairing Finishing Coats",
+      "evidence": "Sika AU PDS: polymer-modified surfacing/finishing mortar, R3, pore-sealer/levelling mortar for minor defects (pores, honeycombing), up to 5 mm/layer - a fairing/levelling coat rather than a structural patch mortar. https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-723n.html"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Epoxy Zinc Rich Primers",
+      "name": "Mapei Mapefer 1K",
+      "reason": "misplaced -> Rebar Primers Inhibitors",
+      "evidence": "Mapefer 1K is a single-component, polymer-modified CEMENTITIOUS anti-corrosion primer with inhibitors (EN 1504-7), not an epoxy zinc-rich primer; it is already correctly listed under Rebar Primers Inhibitors so this entry is a misplaced duplicate. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapefer-1k"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Epoxy Zinc Rich Primers",
+      "name": "SikaTop Armatec 110 EpoCem",
+      "reason": "misplaced -> Rebar Primers Inhibitors",
+      "evidence": "SikaTop Armatec-110 EpoCem is a 3-component cementitious-epoxy bonding primer / reinforcement corrosion protection coating (EN 1504-7) with corrosion inhibitor, NOT a zinc-rich primer; it is already correctly listed under Rebar Primers Inhibitors so this entry is a misplaced duplicate. https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/steel-reinforcmentprimers/sikatop-armatec-110epocem.html"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Corrosion Inhibitors Mci",
+      "name": "Mapei Mapefer",
+      "reason": "misplaced -> Rebar Primers Inhibitors",
+      "evidence": "Mapefer / Mapefer 1K is a cementitious applied REBAR coating (EN 1504-7 reinforcement corrosion protection), not a surface-applied or migrating corrosion inhibitor (MCI) for concrete; belongs with rebar primers/coatings. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapefer-1k"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "name": "Mapei Mapefox EW",
+      "reason": "not in AU market",
+      "evidence": "No 'Mapefox EW' product exists in Mapei's Australian range or global catalogue; Mapei's AU pure-epoxy chemical anchor for rebar/threaded rod is Mapefix EP 100 (the line is 'Mapefix', not 'Mapefox'). Likely a wrong/fabricated name. https://www.mapei.com/au/en/products-and-solutions/products/detail/9"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Injection Resins PU Flexible",
+      "name": "Sika Injection-107",
+      "reason": "not in AU market",
+      "evidence": "Sika Injection-107 does not appear on the Sika Australia injection catalogue (which lists Injection-111/-111C/-222/-306 and SikaInject-867); it is only catalogued on overseas Sika regional sites. Also mislabelled: the global PDS describes it as a 1-component HYDROPHOBIC water-reactive foaming PU, not a hydrophilic resin. https://aus.sika.com/en/construction/waterproofing/injections-and-hydrophilic-systems.html"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Injection Resins PU Flexible",
+      "name": "Mapei Mapeject PU 25H / PU 25HD",
+      "reason": "not in AU market",
+      "evidence": "'Mapeject' is not a Mapei product line and 'PU 25H/PU 25HD' match no Mapei SKU. Mapei's PU injection resins are the Resfoam (1-comp) and Foamjet (2-comp) ranges. https://www.mapei.com/au/en/products-and-solutions"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Sealants Polyurethane",
+      "name": "Fosroc Nitoseal MS250 / MS400",
+      "reason": "misplaced -> Sealants MS Polymer Hybrid",
+      "evidence": "Nitoseal MS250/MS400 are silyl-modified-polymer (MS/SMP hybrid) sealants containing no isocyanates; they are not polyurethane. https://www.fosroc.com.au/product/nitoseal-ms250"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Sealants Polyurethane",
+      "name": "Mapei Mapesil AC",
+      "reason": "misplaced -> Sealants Silicone",
+      "evidence": "Mapesil AC is an acetoxy (acetic-cure) silicone sealant, not a polyurethane. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapesil-ac"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Sealants Polyurethane",
+      "name": "Ardex RA 54",
+      "reason": "misplaced -> Sealants Polyurea Joint Fillers",
+      "evidence": "ARDEX RA 54 is a semi-rigid polyurea control/construction-joint filler for trafficable floors, not a polyurethane sealant. https://ardexaustralia.com/product/ardex-ra-54/"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Structural Anchors Dowels",
+      "name": "Hilti HIT-RE 500 V3 + N12 Bar",
+      "reason": "misplaced -> Epoxy Anchoring Adhesives",
+      "evidence": "This is the same HIT-RE 500 epoxy adhesive already listed under Epoxy Anchoring Adhesives, paired with a rebar dowel (a rebar-dowelling application, not a distinct product) - duplicate. Also superseded: Hilti AU now supplies HIT-RE 500 V4, not V3. https://www.hilti.com.au/c/CLS_FASTENER_7135/CLS_INJECTABLE_HY200_ADHESIVE_ANCHORS_7135"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Structural Anchors Dowels",
+      "name": "Ramset Chemset Reo 502 PLUS",
+      "reason": "misplaced -> Epoxy Anchoring Adhesives",
+      "evidence": "Ramset ChemSet Reo502 PLUS is a pure-epoxy anchoring adhesive - it IS an epoxy anchoring adhesive and duplicates that subcategory rather than being a distinct dowel product. https://www.ramset.com.au/product/chemset-reo502-plus"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Repair Mortars Polymer Modified",
+      "name": "Ardex RA55",
+      "reason": "not in AU market",
+      "evidence": "No 'RA55' exists in the ARDEX Australia catalogue; ARDEX RA-series codes around this number (RA 54, RA 56) are PU/polyurea crack and joint products, not polymer-modified repair mortars. https://ardexaustralia.com/products/"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Floor Patching Compounds",
+      "name": "Parchem Speed Rep",
+      "reason": "not in AU market",
+      "evidence": "No product named 'Speed Rep' exists in the current Parchem/Fosroc AU catalogue. Parchem's actual rapid cementitious repair mortars are the Renderoc range (Renderoc HB / HB40 / HB70). https://www.fosroc.com.au/product/renderoc-hb40 ; https://www.parchem.com.au/technical-data/"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Moisture Suppression Primers",
+      "name": "Mapei Eco Prim T Plus",
+      "reason": "misplaced -> Self Levelling Underlayments",
+      "evidence": "Eco Prim T Plus is a single-component acrylic universal/levelling primer for absorbent and non-absorbent substrates ahead of smoothing/levelling compounds. It is NOT a moisture-suppression DPM (which must be a 2-part epoxy). Belongs with the levelling system, not moisture barriers. https://www.mapei.com/au/en/products-and-solutions/products/detail/eco-prim-t-plus"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Moisture Suppression Primers",
+      "name": "Fosroc Nitoprime 28",
+      "reason": "misplaced -> Floor Patching Compounds",
+      "evidence": "Nitoprime 28 is a two-component solvent-containing modified-epoxy bonding primer used with Fosroc repair compounds (Nitomortar HB, Nitocote ET550). It is an adhesion/bonding primer for repair mortars, not a moisture-suppression DPM. https://www.fosroc.com/product/show/nitoprime-28"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Moisture Suppression Primers",
+      "name": "Parchem Epirez 510",
+      "reason": "not in AU market",
+      "evidence": "No current Parchem/Epirez product 'Epirez 510' could be verified in the AU catalogue. Current Epirez epoxy primer/sealer offerings carry other codes (e.g. Epirez 123 Primer/Sealer). Conservative flag pending a valid TDS. https://www.parchem.com.au/technical-data/ ; https://www.itwpf.com.au/epirez/technical-data/technical-data-sheets/"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Self Levelling Underlayments",
+      "name": "Parchem Flowfill RS",
+      "reason": "not in AU market",
+      "evidence": "No self-levelling floor underlayment named 'Flowfill RS' is listed by Parchem/Fosroc AU. Parchem's actual self-smoothing floor underlayment is Durafloor Leveltop Rapid; 'Flowfill' in the Fosroc range denotes flowable void-fill/grout, not a flooring self-leveller. http://www.parchem.com.au/construction/product/concrete-underlayment-mortars/durafloor-leveltop-rapid/i/92"
+    }
+  ],
+  "recommendations": [
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Cementitious Repair Mortars",
+      "brand": "Sika",
+      "name": "Sika MonoTop-412 NFG",
+      "type": "R4 fibre-reinforced structural repair mortar (with corrosion inhibitor)",
+      "reason": "Sika AU's flagship structural patch mortar; notable gap in the cementitious range. https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-412nfg.html"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Cementitious Repair Mortars",
+      "brand": "Sika",
+      "name": "Sika MonoTop-352 NFG",
+      "type": "R3 fibre-reinforced lightweight hand-applied repair mortar",
+      "reason": "Common vertical/overhead R3 patch mortar; complements the R4 412 NFG. https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-352nfg.html"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Cementitious Repair Mortars",
+      "brand": "Fosroc",
+      "name": "Renderoc HB40",
+      "type": "high-build cementitious repair mortar, R3, ~45 MPa",
+      "reason": "Core current Fosroc AU structural patch mortar; widely specified. https://www.fosroc.com.au/product/renderoc-hb40"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Cementitious Repair Mortars",
+      "brand": "Mapei",
+      "name": "Mapegrout T60",
+      "type": "R4 sulphate-resistant fibre-reinforced thixotropic repair mortar",
+      "reason": "Mapei AU's principal R4 structural repair mortar; should be represented. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapegrout-t60"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Repair Mortars Polymer Modified",
+      "brand": "Fosroc",
+      "name": "Renderoc GP",
+      "type": "general-purpose polymer-modified cementitious repair mortar",
+      "reason": "The true general-purpose Fosroc PM repair mortar (the listed 'Renderoc G' is actually a geopolymer corrosion-resistant lining mortar). https://www.fosroc.com.au/product/renderoc-gp"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Fairing Finishing Coats",
+      "brand": "Fosroc",
+      "name": "Renderoc FC",
+      "type": "cementitious fairing coat (<=3 mm) for fair-faced finish",
+      "reason": "Standard Fosroc AU fairing coat; this subcategory currently has only one Westox product. https://www.fosroc.com.au/product/renderoc-fc"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Fairing Finishing Coats",
+      "brand": "Mapei",
+      "name": "Mapefinish",
+      "type": "two-component cementitious fairing/finishing coat",
+      "reason": "Mapei AU smoothing/fairing mortar for fair-faced concrete; broadens brand coverage. https://www.mapei.com/au/en/products-and-solutions/products"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Epoxy Repair Mortars",
+      "brand": "Fosroc",
+      "name": "Nitomortar S",
+      "type": "standard 2-part epoxy repair mortar",
+      "reason": "Ready-mixed Fosroc epoxy repair mortar (the listed Nitomortar 903 is an epoxy binder/screed system, not a ready repair mortar). https://www.fosroc.com.au/product/nitomortar-s"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Epoxy Repair Mortars",
+      "brand": "Mapei",
+      "name": "Eporip",
+      "type": "solvent-free 2-part epoxy adhesive for old-to-new concrete bonding",
+      "reason": "Widely used Mapei AU structural epoxy bonding adhesive; no Mapei epoxy present in this subcategory. https://www.mapei.com/au/en/products-and-solutions/products/detail/eporip"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Rebar Primers Inhibitors",
+      "brand": "Mapei",
+      "name": "Mapefer 1K",
+      "type": "single-component cementitious corrosion-inhibiting rebar primer",
+      "reason": "Mapei AU's standard anti-rust rebar primer; no Mapei rebar primer currently listed. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapefer-1k"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Rebar Primers Inhibitors",
+      "brand": "Sika",
+      "name": "Sika MonoTop-1010",
+      "type": "bonding primer + reinforcement corrosion-protection slurry",
+      "reason": "Sika AU successor/companion to MonoTop-910 N; dual rebar-protection + bonding role. https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Bonding Agents Sbr Latex",
+      "brand": "Mapei",
+      "name": "Mapei Planicrete",
+      "type": "SBR synthetic-rubber latex bonding agent / mortar admixture",
+      "reason": "Correct Mapei AU SBR bonding agent (the listed 'Planicrete AC' is the North American name; AU SKUs are Planicrete / Planicrete SP). https://www.mapei.com/au/en/products-and-solutions/products/detail/planicrete"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Bonding Agents Sbr Latex",
+      "brand": "Fosroc",
+      "name": "Nitobond EP",
+      "type": "two-component epoxy bonding agent",
+      "reason": "Common Fosroc AU epoxy bonding agent; the subcategory holds only SBR/acrylic latex products. https://www.fosroc.com.au/product/nitobond-ep"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Structural Grouts",
+      "brand": "Fosroc",
+      "name": "Conbextra GP",
+      "type": "general-purpose shrinkage-compensated cementitious grout, ~65 MPa",
+      "reason": "Most widely specified Fosroc AU structural grout; no Fosroc grout currently listed. https://www.fosroc.com.au/product/conbextra-gp"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Structural Grouts",
+      "brand": "Fosroc",
+      "name": "Conbextra HF",
+      "type": "high-flow dual-expansion cementitious precision grout",
+      "reason": "Standard high-flow Fosroc AU precision grout for tight clearances. https://www.fosroc.com.au/product/conbextra-hf"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Structural Grouts",
+      "brand": "Sika",
+      "name": "SikaGrout-212 HP",
+      "type": "non-shrink dual-expansion high-performance cementitious structural grout",
+      "reason": "Sika AU's principal structural grout (anchor bolts, bearing pads, 10-100 mm). https://aus.sika.com/en/construction/grouts-anchoring/cementitious-grouts/sikagrout-212-hpau.html"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Micro Concrete",
+      "brand": "Sika",
+      "name": "Sika MonoTop-436N",
+      "type": "pourable self-compacting R4 micro-concrete repair mortar",
+      "reason": "Sika AU's pourable/flowable R4 mortar - the nearest Sika equivalent to a micro-concrete; complements the single Mapei entry in this subcategory. (Currently listed under Cementitious Repair Mortars.) https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-436n.html"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Curing Compounds",
+      "brand": "Tremco",
+      "name": "Tremco Evencure AC",
+      "type": "water-based acrylic curing compound (AS 3799)",
+      "reason": "Correct Tremco CPG Australia curing compound (replaces the non-existent 'Eucocrete WB Cure'). https://www.tremco.com.au/products/evencure-ac"
+    },
+    {
+      "section": "concrete-spalling",
+      "subcategory": "Curing Compounds",
+      "brand": "Sika",
+      "name": "Sika Antisol AC",
+      "type": "water-based acrylic curing compound (AS 3799)",
+      "reason": "Genuine Sika AU acrylic curing compound (the listed Antisol-15 SF is a curing/dustproofing/hardening membrane, not specifically acrylic). https://aus.sika.com/en/construction/concrete/admixture-technology/special-admixtures/sika-antisol-ac.html"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Epoxy Zinc Rich Primers",
+      "brand": "Sika",
+      "name": "Sika Armatec-10 ZR",
+      "type": "1-component zinc-rich rebar primer",
+      "reason": "Genuine Sika single-component zinc-rich rebar primer, fills the gap left when the two misplaced cementitious coatings are removed from this subcategory. https://usa.sika.com/en/construction/repair-protection/corrosion-protection/rebar-coatings/sika-armatec-10zr.html"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Rebar Primers Inhibitors",
+      "brand": "Sika",
+      "name": "Sika Armatec 1C",
+      "type": "1-component cementitious bonding primer / rebar corrosion protection",
+      "reason": "Current Sika 1-component cementitious bonding primer and reinforcement corrosion protection coating; common AU alternative to the 3-component SikaTop Armatec-110 EpoCem. https://usa.sika.com/en/construction/repair-protection/corrosion-protection/rebar-coatings/sika-armatec-1c.html"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "brand": "Mapei",
+      "name": "Mapei Mapefix EP 100",
+      "type": "pure epoxy chemical anchor (rebar / threaded rod)",
+      "reason": "Correct, real Mapei AU pure-epoxy chemical anchor (ETA / seismic C1-C2, rebar Ø8-Ø40) replacing the non-existent 'Mapefox EW'. https://cdnmedia.mapei.com/docs/librariesprovider8/products-documents/1_1_05809_mapefix-ep-100_en_ccdc260dc89843f68a849f86b383a9d7.pdf"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Corrosion Inhibitors Mci",
+      "brand": "Sika",
+      "name": "Sika FerroGard-901",
+      "type": "corrosion-inhibiting concrete admixture (integral MCI)",
+      "reason": "Adds the integral/admixture MCI counterpart to the surface-applied FerroGard-903+ already listed; common AU Sika corrosion-inhibitor pairing. https://aus.sika.com/en/construction/concrete-repair-protection/corrosion-inhibitorssacrificialanodes.html"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Cathodic Protection",
+      "brand": "Other / Generic",
+      "name": "Vector Galvashield XP2",
+      "type": "embedded zinc galvanic discrete anode (higher output)",
+      "reason": "Higher-output discrete galvanic anode (twice the current of XPT), distributed in AU by Parchem/Fosroc; complements the base Galvashield XP entry. https://www.fosroc.com.au/product/vector-galvashield-xp"
+    },
+    {
+      "section": "reinforcement-corrosion",
+      "subcategory": "Repair Mortars Polymer Modified",
+      "brand": "Mapei",
+      "name": "Mapei Mapegrout T40",
+      "type": "polymer-modified structural repair mortar (EN 1504-3 R3)",
+      "reason": "Current AU Mapegrout structural repair mortar; broadens the Mapei range beyond Mapegrout Thixotropic. https://adheseal.com.au/products/mapegrout-t40"
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Injection Resins Epoxy Rigid",
+      "brand": "Mapei",
+      "name": "Mapei Epojet LV",
+      "type": "Very-low-viscosity 2-comp epoxy injection resin (microcracks / damp substrates)",
+      "reason": "Fills the sub-LV microcrack gap below standard low-viscosity epoxies; confirmed on mapei.com/au."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Injection Resins Epoxy Rigid",
+      "brand": "Sika",
+      "name": "Sika Sikadur-52 LP",
+      "type": "Long-pot-life low-viscosity 2-comp epoxy injection resin",
+      "reason": "AU-available hot-weather / deep-penetration companion to Sikadur-52 AU."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Injection Resins PU Flexible",
+      "brand": "Sika",
+      "name": "Sika Injection-111 + Injection-111C",
+      "type": "1-comp hydrophobic MDI water-reactive PU foam (+ catalyst)",
+      "reason": "Core current Sika Australia hydrophobic PU foam injection SKU; replaces the non-AU Injection-107."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Injection Resins PU Flexible",
+      "brand": "Mapei",
+      "name": "Mapei Resfoam 1KM",
+      "type": "1-comp water-reactive foaming PU injection resin",
+      "reason": "Real current Mapei Australia PU injection product; replaces the fabricated Mapeject entry."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Sealants Polyurethane",
+      "brand": "Fosroc",
+      "name": "Fosroc Nitoseal PU400",
+      "type": "1-comp polyurethane trafficable expansion-joint sealant (AS 4020 potable water)",
+      "reason": "Genuine PU expansion-joint sealant; fills the gap left when the MS/silicone products are moved out."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "brand": "Sika",
+      "name": "Sika AnchorFix-3030",
+      "type": "2-part pure-epoxy injectable anchoring adhesive (AS 5216)",
+      "reason": "Current Sika Australia high-performance epoxy anchoring SKU."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "brand": "Other / Generic",
+      "name": "Ramset ChemSet Reo502 XTREM",
+      "type": "High-strength pure-epoxy anchoring adhesive (seismic C1/C2)",
+      "reason": "Current Ramset Australia high-performance epoxy for cracked concrete / seismic dowelling."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Repair Mortars Polymer Modified",
+      "brand": "Sika",
+      "name": "Sika MonoTop-412 NFG",
+      "type": "1-comp polymer-modified fibre-reinforced structural repair mortar (EN 1504-3 R4)",
+      "reason": "Current Sika Australia R4 structural repair mortar; like-for-like replacement for the questionable SikaTop-121 entry."
+    },
+    {
+      "section": "concrete-cracking",
+      "subcategory": "Repair Mortars Polymer Modified",
+      "brand": "Other / Generic",
+      "name": "ARDEX BR 340",
+      "type": "Polymer-modified cementitious concrete repair / patching mortar",
+      "reason": "Real ARDEX Australia repair mortar to replace the non-existent RA55 entry."
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Floor Grinding Preparation",
+      "brand": "Other / Generic",
+      "name": "Scanmaskin Scan Combiflex 650",
+      "type": "Triple-head planetary diamond grinder",
+      "reason": "Widely used AU contractor-grade planetary grinder for removing old magnesite/adhesive residues and profiling concrete prior to DPM application."
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Floor Grinding Preparation",
+      "brand": "Other / Generic",
+      "name": "Husqvarna PG 450",
+      "type": "Single-phase diamond floor grinder",
+      "reason": "Common AU-available planetary grinder one step up from the PG 280; suited to larger magnesite removal/preparation areas. https://www.husqvarnaconstruction.com"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Floor Patching Compounds",
+      "brand": "Parchem",
+      "name": "Fosroc Renderoc HB40",
+      "type": "Polymer-modified high-build cementitious repair mortar (EN 1504-3 R3)",
+      "reason": "Real current Parchem/Fosroc AU repair mortar to replace the fabricated 'Speed Rep'. https://www.fosroc.com.au/product/renderoc-hb40"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Floor Patching Compounds",
+      "brand": "Ardex",
+      "name": "Ardex A 38",
+      "type": "Rapid-set cementitious patching/screed mortar",
+      "reason": "Fast-setting AU patch/screed for filling magnesite removal voids before levelling; complements Feather Finish for deeper fills. https://ardexaustralia.com"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Moisture Suppression Primers",
+      "brand": "Mapei",
+      "name": "Mapei Mapeproof Primer",
+      "type": "Two-part epoxy moisture barrier / DPM primer",
+      "reason": "Current Mapei AU epoxy moisture-barrier primer; correct DPM class product for chloride/moisture-laden magnesite slabs (replaces the misplaced acrylic Eco Prim T Plus). https://www.mapei.com/au/en/products-and-solutions/products/detail/mapeproof-primer"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Moisture Suppression Primers",
+      "brand": "Mapei",
+      "name": "Mapei Triblock P",
+      "type": "Three-component epoxy-cementitious moisture/DPM primer",
+      "reason": "Epoxy-cementitious DPM primer for damp substrates with high residual humidity; well suited to magnesite-affected slabs. https://www.mapei.com/au/en/products-and-solutions/lines/screeds-and-preparation-of-floor-substrates/category/moisture-barriers"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Moisture Suppression Primers",
+      "brand": "Ardex",
+      "name": "Ardex WPM 300",
+      "type": "Two-part epoxy moisture vapour barrier",
+      "reason": "AU-available Ardex epoxy moisture-barrier alternative/back-up to MC Rapid for suppressing high RH/MVER on remediated slabs. https://ardexaustralia.com"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Self Levelling Underlayments",
+      "brand": "Parchem",
+      "name": "Parchem Durafloor Leveltop Rapid",
+      "type": "Rapid trowellable/self-smoothing floor levelling underlayment",
+      "reason": "Real current Parchem/Fosroc AU self-levelling underlayment to replace the unverified 'Flowfill RS'. http://www.parchem.com.au/construction/product/concrete-underlayment-mortars/durafloor-leveltop-rapid/i/92"
+    },
+    {
+      "section": "magnesite-flooring-deterioration",
+      "subcategory": "Self Levelling Underlayments",
+      "brand": "Ardex",
+      "name": "Ardex K 55",
+      "type": "Rapid-drying cementitious self-levelling and smoothing compound",
+      "reason": "Current AU Ardex self-leveller suited over moisture-barrier-primed magnesite-remediated slabs. https://ardexaustralia.com/product/ardex-k-55/"
+    }
+  ]
+}

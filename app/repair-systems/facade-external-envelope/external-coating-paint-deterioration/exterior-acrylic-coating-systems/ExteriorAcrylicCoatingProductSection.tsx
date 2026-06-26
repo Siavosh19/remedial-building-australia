@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Acrylic"
@@ -34,6 +35,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -114,9 +116,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
     accentColor: "#7c3aed",
-    name: "TODO: owner confirm — Haymes Extreme Shield Exterior Acrylic (WRONG PRODUCT NAME — 'Extreme Shield' is not an active Haymes exterior acrylic product — the correct current Haymes exterior acrylic is 'Exterior Solashield®' available in Low Sheen, Matt, Satin, and Gloss finishes — confirm correct product name is 'Haymes Exterior Solashield' and update this card with current Haymes TDS data)",
-    descriptionLine: "TODO: owner confirm — Australian-made premium acrylic exterior topcoat with weatherguard technology — strong UV, mould and algae resistance for masonry and render facades — independently tested for Australian conditions (product name incorrect — correct Haymes exterior acrylic is 'Exterior Solashield®' — see name field)",
-    productType: "TODO: owner confirm — Premium acrylic exterior topcoat — masonry and render — Australian-made (product name unconfirmed — correct name appears to be 'Haymes Exterior Solashield' — see name field)",
+    name: "Haymes Exterior Solashield",
+    descriptionLine: "Australian-made premium acrylic exterior topcoat with strong UV, mould and algae resistance for masonry and render facades — independently tested for Australian conditions",
+    productType: "Premium acrylic exterior topcoat — masonry and render — Australian-made",
+    dataNote: "Owner to confirm — the product name shown was previously 'Haymes Extreme Shield', which is not an active Haymes exterior acrylic; the correct current Haymes exterior acrylic is 'Exterior Solashield®' (available in Low Sheen, Matt, Satin and Gloss). Confirm the correct product name and source all technical data (DFT, coverage, primer requirements, VOC, anti-fungal properties) from the current Haymes Exterior Solashield TDS before publishing.",
     filterTags: ["Acrylic", "Two-coat", "Exterior-topcoat", "Masonry", "Render", "UV-resistant", "Water-based", "Weatherproof", "Anti-fungal"],
     techChips: [
       { label: "Australian-made", cls: "bg-purple-100 text-purple-800" },
@@ -323,7 +326,7 @@ const SYSTEM_COMPARISON: {
     primaryUse: "High UV environments — QLD / tropical — masonry and render",
   },
   {
-    product: "Extreme Shield Exterior Acrylic",
+    product: "Exterior Solashield",
     brand: "Haymes",
     binder: "Premium acrylic",
     uvSystem: "Weatherguard Technology",
@@ -788,7 +791,8 @@ export function ExteriorAcrylicCoatingProductSection() {
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

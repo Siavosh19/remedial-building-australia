@@ -301,24 +301,12 @@
   },
   "/repair-systems/services-drainage": {
     "prevHref": "/repair-systems/sealants-joint-systems",
-    "nextHref": "/repair-systems/settlement-cracks",
-    "backHref": "/repair-systems/library",
-    "backLabel": "Repair Systems Library"
-  },
-  "/repair-systems/settlement-cracks": {
-    "prevHref": "/repair-systems/services-drainage",
-    "nextHref": "/repair-systems/slab-edge-deterioration",
-    "backHref": "/repair-systems/library",
-    "backLabel": "Repair Systems Library"
-  },
-  "/repair-systems/slab-edge-deterioration": {
-    "prevHref": "/repair-systems/settlement-cracks",
     "nextHref": "/repair-systems/system-selector",
     "backHref": "/repair-systems/library",
     "backLabel": "Repair Systems Library"
   },
   "/repair-systems/system-selector": {
-    "prevHref": "/repair-systems/slab-edge-deterioration",
+    "prevHref": "/repair-systems/services-drainage",
     "nextHref": "/repair-systems/waterproofing-water-ingress",
     "backHref": "/repair-systems/library",
     "backLabel": "Repair Systems Library"
@@ -2428,5 +2416,347 @@
     "nextHref": null,
     "backHref": "/expert-remedial-advice",
     "backLabel": "Expert Advice"
+  },
+  "/defect-library/balconies-podiums/balcony-leaks": {
+    "prevHref": null,
+    "nextHref": "/defect-library/balconies-podiums/concrete-deterioration",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/balconies-podiums/concrete-deterioration": {
+    "prevHref": "/defect-library/balconies-podiums/balcony-leaks",
+    "nextHref": "/defect-library/balconies-podiums/failed-screeds",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/balconies-podiums/failed-screeds": {
+    "prevHref": "/defect-library/balconies-podiums/concrete-deterioration",
+    "nextHref": "/defect-library/balconies-podiums/rusted-balustrades",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/balconies-podiums/rusted-balustrades": {
+    "prevHref": "/defect-library/balconies-podiums/failed-screeds",
+    "nextHref": "/defect-library/balconies-podiums/tile-delamination",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/balconies-podiums/tile-delamination": {
+    "prevHref": "/defect-library/balconies-podiums/rusted-balustrades",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/balconies-podiums": {
+    "prevHref": null,
+    "nextHref": "/defect-library/basements-substructure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/basements-substructure": {
+    "prevHref": "/defect-library/balconies-podiums",
+    "nextHref": "/defect-library/concrete-structural-defects",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/concrete-structural-defects": {
+    "prevHref": "/defect-library/basements-substructure",
+    "nextHref": "/defect-library/facade-external-envelope",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope": {
+    "prevHref": "/defect-library/concrete-structural-defects",
+    "nextHref": "/defect-library/internal-defects-finishes",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/internal-defects-finishes": {
+    "prevHref": "/defect-library/facade-external-envelope",
+    "nextHref": "/defect-library/miscellaneous-other",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/miscellaneous-other": {
+    "prevHref": "/defect-library/internal-defects-finishes",
+    "nextHref": "/defect-library/roofing-defects",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/roofing-defects": {
+    "prevHref": "/defect-library/miscellaneous-other",
+    "nextHref": "/defect-library/services-drainage",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/services-drainage": {
+    "prevHref": "/defect-library/roofing-defects",
+    "nextHref": "/defect-library/waterproofing-water-ingress",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress": {
+    "prevHref": "/defect-library/services-drainage",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/basements-substructure/crack-injection-failures": {
+    "prevHref": null,
+    "nextHref": "/defect-library/basements-substructure/hydrostatic-pressure-issues",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/basements-substructure/hydrostatic-pressure-issues": {
+    "prevHref": "/defect-library/basements-substructure/crack-injection-failures",
+    "nextHref": "/defect-library/basements-substructure/joint-leaks",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/basements-substructure/joint-leaks": {
+    "prevHref": "/defect-library/basements-substructure/hydrostatic-pressure-issues",
+    "nextHref": "/defect-library/basements-substructure/negative-side-waterproofing-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/basements-substructure/negative-side-waterproofing-failure": {
+    "prevHref": "/defect-library/basements-substructure/joint-leaks",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/concrete-structural-defects/concrete-cracking": {
+    "prevHref": null,
+    "nextHref": "/defect-library/concrete-structural-defects/concrete-spalling",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/concrete-structural-defects/concrete-spalling": {
+    "prevHref": "/defect-library/concrete-structural-defects/concrete-cracking",
+    "nextHref": "/defect-library/concrete-structural-defects/magnesite-flooring-deterioration",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/concrete-structural-defects/magnesite-flooring-deterioration": {
+    "prevHref": "/defect-library/concrete-structural-defects/concrete-spalling",
+    "nextHref": "/defect-library/concrete-structural-defects/reinforcement-corrosion",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/concrete-structural-defects/reinforcement-corrosion": {
+    "prevHref": "/defect-library/concrete-structural-defects/magnesite-flooring-deterioration",
+    "nextHref": "/defect-library/concrete-structural-defects/settlement-cracks",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/concrete-structural-defects/settlement-cracks": {
+    "prevHref": "/defect-library/concrete-structural-defects/reinforcement-corrosion",
+    "nextHref": "/defect-library/concrete-structural-defects/slab-edge-deterioration",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/concrete-structural-defects/slab-edge-deterioration": {
+    "prevHref": "/defect-library/concrete-structural-defects/settlement-cracks",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/brickwork-deterioration": {
+    "prevHref": null,
+    "nextHref": "/defect-library/facade-external-envelope/cladding-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/cladding-failure": {
+    "prevHref": "/defect-library/facade-external-envelope/brickwork-deterioration",
+    "nextHref": "/defect-library/facade-external-envelope/defective-non-compliant-balustrades",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/defective-non-compliant-balustrades": {
+    "prevHref": "/defect-library/facade-external-envelope/cladding-failure",
+    "nextHref": "/defect-library/facade-external-envelope/external-coating-paint-deterioration",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/external-coating-paint-deterioration": {
+    "prevHref": "/defect-library/facade-external-envelope/defective-non-compliant-balustrades",
+    "nextHref": "/defect-library/facade-external-envelope/facade-cracking",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/facade-cracking": {
+    "prevHref": "/defect-library/facade-external-envelope/external-coating-paint-deterioration",
+    "nextHref": "/defect-library/facade-external-envelope/failed-sealants-joints",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/failed-sealants-joints": {
+    "prevHref": "/defect-library/facade-external-envelope/facade-cracking",
+    "nextHref": "/defect-library/facade-external-envelope/render-cracking-delamination",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/render-cracking-delamination": {
+    "prevHref": "/defect-library/facade-external-envelope/failed-sealants-joints",
+    "nextHref": "/defect-library/facade-external-envelope/window-door-perimeter-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/facade-external-envelope/window-door-perimeter-failure": {
+    "prevHref": "/defect-library/facade-external-envelope/render-cracking-delamination",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/internal-defects-finishes/ceiling-water-damage": {
+    "prevHref": null,
+    "nextHref": "/defect-library/internal-defects-finishes/internal-cracking",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/internal-defects-finishes/internal-cracking": {
+    "prevHref": "/defect-library/internal-defects-finishes/ceiling-water-damage",
+    "nextHref": "/defect-library/internal-defects-finishes/mould-moisture-damage",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/internal-defects-finishes/mould-moisture-damage": {
+    "prevHref": "/defect-library/internal-defects-finishes/internal-cracking",
+    "nextHref": "/defect-library/internal-defects-finishes/paint-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/internal-defects-finishes/paint-failure": {
+    "prevHref": "/defect-library/internal-defects-finishes/mould-moisture-damage",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/miscellaneous-other/acoustic-issues": {
+    "prevHref": null,
+    "nextHref": "/defect-library/miscellaneous-other/fire-compliance-defects",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/miscellaneous-other/fire-compliance-defects": {
+    "prevHref": "/defect-library/miscellaneous-other/acoustic-issues",
+    "nextHref": "/defect-library/miscellaneous-other/thermal-condensation-issues",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/miscellaneous-other/thermal-condensation-issues": {
+    "prevHref": "/defect-library/miscellaneous-other/fire-compliance-defects",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/roofing-defects/box-gutter-failure": {
+    "prevHref": null,
+    "nextHref": "/defect-library/roofing-defects/flashing-failures",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/roofing-defects/flashing-failures": {
+    "prevHref": "/defect-library/roofing-defects/box-gutter-failure",
+    "nextHref": "/defect-library/roofing-defects/overflow-issues",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/roofing-defects/overflow-issues": {
+    "prevHref": "/defect-library/roofing-defects/flashing-failures",
+    "nextHref": "/defect-library/roofing-defects/poor-falls-ponding",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/roofing-defects/poor-falls-ponding": {
+    "prevHref": "/defect-library/roofing-defects/overflow-issues",
+    "nextHref": "/defect-library/roofing-defects/roof-leaks",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/roofing-defects/roof-leaks": {
+    "prevHref": "/defect-library/roofing-defects/poor-falls-ponding",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/services-drainage/blocked-undersized-stormwater": {
+    "prevHref": null,
+    "nextHref": "/defect-library/services-drainage/downpipe-defects",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/services-drainage/downpipe-defects": {
+    "prevHref": "/defect-library/services-drainage/blocked-undersized-stormwater",
+    "nextHref": "/defect-library/services-drainage/inadequate-drainage-design",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/services-drainage/inadequate-drainage-design": {
+    "prevHref": "/defect-library/services-drainage/downpipe-defects",
+    "nextHref": "/defect-library/services-drainage/pipe-penetrations-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/services-drainage/pipe-penetrations-failure": {
+    "prevHref": "/defect-library/services-drainage/inadequate-drainage-design",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure": {
+    "prevHref": null,
+    "nextHref": "/defect-library/waterproofing-water-ingress/basement-water-ingress",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/basement-water-ingress": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure",
+    "nextHref": "/defect-library/waterproofing-water-ingress/facade-water-ingress",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/facade-water-ingress": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/basement-water-ingress",
+    "nextHref": "/defect-library/waterproofing-water-ingress/failed-screeds-tile-delamination",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/failed-screeds-tile-delamination": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/facade-water-ingress",
+    "nextHref": "/defect-library/waterproofing-water-ingress/penetrating-damp",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/penetrating-damp": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/failed-screeds-tile-delamination",
+    "nextHref": "/defect-library/waterproofing-water-ingress/planter-box-waterproofing-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/planter-box-waterproofing-failure": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/penetrating-damp",
+    "nextHref": "/defect-library/waterproofing-water-ingress/podium-waterproofing-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/podium-waterproofing-failure": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/planter-box-waterproofing-failure",
+    "nextHref": "/defect-library/waterproofing-water-ingress/rising-damp",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/rising-damp": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/podium-waterproofing-failure",
+    "nextHref": "/defect-library/waterproofing-water-ingress/roof-waterproofing-failure",
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
+  },
+  "/defect-library/waterproofing-water-ingress/roof-waterproofing-failure": {
+    "prevHref": "/defect-library/waterproofing-water-ingress/rising-damp",
+    "nextHref": null,
+    "backHref": "/defect-library",
+    "backLabel": "Defect Library"
   }
 }

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
+import { sendSubscriptionStatusEmail } from "@/lib/directory-email";
+import { tierLabel } from "@/lib/directory-tier";
 import type Stripe from "stripe";
 import type { DirectoryPlanType, DirectoryBillingCycle } from "@prisma/client";
 
@@ -32,6 +34,20 @@ export async function POST(request: NextRequest) {
     const subId = typeof rawSub === "string" ? rawSub : (rawSub as { id?: string } | null)?.id ?? null;
     if (subId) {
       await activateSubscription(companyId, subId, stripe);
+      // Confirmation email to the business owner (best-effort).
+      try {
+        const c = await prisma.company.findUnique({
+          where: { id: companyId },
+          select: { name: true, plan_type: true, users: { where: { role: "owner" }, include: { user: { select: { email: true, full_name: true } } } } },
+        });
+        const owner = c?.users[0]?.user;
+        if (owner?.email) {
+          await sendSubscriptionStatusEmail({
+            ownerName: owner.full_name ?? c!.name, ownerEmail: owner.email, companyName: c!.name,
+            status: "active", planLabel: tierLabel(c!.plan_type),
+          });
+        }
+      } catch { /* email optional */ }
     }
   }
 

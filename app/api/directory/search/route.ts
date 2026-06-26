@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import type { LocationState } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { lookupSuburb, toStateCode, postcodeToState } from "@/lib/au-locations";
+import { resolveAuLocation } from "@/lib/au-suburbs";
 
 const PAGE_SIZE = 20;
+const MATCH_CAP = 3000; // max rows pulled for in-memory relevance scoring
 
 const VALID_STATES: LocationState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 
@@ -17,59 +20,7 @@ const PROFILE_STATUS_RANK: Record<string, number> = {
   basic: 0,
 };
 
-// ─── Location scoring ─────────────────────────────────────────────────────────
-// Returns 0–500. Higher = closer/better location match.
-// Does NOT override keyword/category relevance — those are handled by WHERE clause.
-
-function locationScore(
-  distKm: number | null,
-  loc: {
-    services_nationwide: boolean;
-    services_statewide: boolean;
-    state: string;
-    suburb: string | null;
-    postcode: string | null;
-    service_radius_km: number | null;
-  } | null,
-  searchSuburb: string,
-  searchPostcode: string,
-  searchState: string,
-): number {
-  if (!loc) return 10;
-
-  // Exact suburb match (works even when business has no coordinates)
-  if (searchSuburb && loc.suburb && loc.suburb.toLowerCase() === searchSuburb.toLowerCase()) {
-    return 500;
-  }
-
-  // Exact postcode match (works even when business has no coordinates)
-  if (searchPostcode && loc.postcode && loc.postcode === searchPostcode) {
-    return 450;
-  }
-
-  const radius = loc.service_radius_km ?? 50;
-
-  if (distKm !== null) {
-    if (distKm <= 5)  return 450;
-    if (distKm <= 10) return 400;
-    if (distKm <= 25) return 350;
-    if (distKm <= 50) return 300;
-    if (distKm <= radius) return 250;
-    if (distKm <= 150) {
-      return loc.state === searchState ? 200 : 130;
-    }
-    if (loc.services_statewide && loc.state === searchState) return 150;
-    if (loc.state === searchState) return 100;
-    if (loc.services_nationwide) return 60;
-    return 20;
-  }
-
-  // No lat/lng — fall back to service coverage flags
-  if (loc.services_nationwide) return 60;
-  if (loc.services_statewide && loc.state === searchState) return 150;
-  if (loc.state === searchState) return 80;
-  return 20;
-}
+// ─── Trust / completeness ───────────────────────────────────────────────────────
 
 function trustBoost(row: {
   is_featured: boolean;
@@ -85,12 +36,50 @@ function trustBoost(row: {
   );
 }
 
-// ─── Synonym expansion ────────────────────────────────────────────────────────
+// Reward more complete profiles (a real description, a phone number).
+function completenessBoost(row: { description: string | null; phone: string | null }): number {
+  return (row.description && row.description.trim().length > 30 ? 12 : 0) + (row.phone ? 6 : 0);
+}
+
+// ─── Paid plan priority (future-ready, not faked) ───────────────────────────────
+// Paid tiers should rank above free listings ONLY among results that already match
+// relevance. This is the highest sort key, but it is gated on a GENUINELY ACTIVE
+// paid plan (is_featured + unexpired featured_until). While no subscriptions are
+// active, planRank returns 0 for everyone, so ranking is driven purely by
+// relevance, location and trust — nothing is faked. Extend PLAN_PRIORITY later.
+const PLAN_PRIORITY: Record<string, number> = {
+  featured: 2,
+  claimed: 1,
+  basic: 0,
+};
+
+function planRank(
+  row: { plan_type?: string | null; is_featured: boolean; featured_until?: Date | null },
+  now: Date,
+): number {
+  const activePaid = row.is_featured && row.featured_until != null && row.featured_until > now;
+  if (!activePaid) return 0;
+  return PLAN_PRIORITY[row.plan_type ?? "basic"] ?? 0;
+}
+
+// ─── Synonym + typo-tolerant query analysis ─────────────────────────────────────
+// Three things are handled here, in JS, before the Prisma WHERE clause is built:
+//   (a) spelling mistakes / typos      → Levenshtein correction onto a vocabulary
+//   (b) similar words / word families  → SYNONYM_GROUPS (treated as STRONG terms)
+//   (c) related trades / intent        → CONCEPT_EXPANSIONS (treated as WEAK terms)
+//                                        + CATEGORY_INTENT (maps a query to the
+//                                          directory categories it should surface)
+// STRONG terms score much higher than WEAK terms, so a query like "remedial
+// builder" ranks actual remedial/facade/waterproofing businesses above a general
+// builder or a lawyer that merely mentions "construction" in its description.
+//
+// To extend matching later, just add entries to the lists below.
 
 const STOPWORDS = new Set([
   "building", "buildings", "service", "services", "management", "australia",
   "australian", "company", "companies", "group", "pty", "ltd", "the", "and",
   "for", "with", "our", "all", "new", "south", "wales", "victoria", "queensland",
+  "near", "around",
 ]);
 
 const SYNONYM_GROUPS: string[][] = [
@@ -99,7 +88,7 @@ const SYNONYM_GROUPS: string[][] = [
   ["cleaner", "cleaners", "cleaning", "washing", "hygiene"],
   ["waterproof", "waterproofing", "membrane", "membranes", "tanking"],
   ["seal", "sealing", "sealant", "sealants", "caulk", "caulking"],
-  ["concrete", "concreting", "spalling", "carbonation"],
+  ["concrete", "concreting", "concreter", "concretor", "spalling", "carbonation"],
   ["remedial", "remediation", "restoration"],
   ["repair", "repairs"],
   ["engineer", "engineers", "engineering"],
@@ -117,114 +106,530 @@ const SYNONYM_GROUPS: string[][] = [
   ["tiling", "tiles", "tile", "tiler", "tilers"],
   ["timber", "carpentry", "carpenter"],
   ["structural", "structure"],
+  ["window", "windows", "glazier", "glazing", "glazed"],
+  ["fire door", "fire doors", "firedoor", "fire-rated door", "fire rated door"],
+  ["passive fire", "firestopping", "fire stopping", "fire stop", "intumescent", "penetration seal", "fire collar", "fireproofing"],
+  ["leak", "leaks", "leaking"],
+  ["balustrade", "balustrades", "handrail", "handrails", "balustrading"],
+  ["crack", "cracks", "cracking"],
+  ["brick", "bricks", "bricklayer", "bricklaying", "brickwork", "repointing", "pointing"],
 ];
 
-function expandQuery(q: string): string[] {
-  const qLower = q.toLowerCase().trim();
-  const terms = new Set<string>([qLower]);
+// Directed concept / occupation expansions (WEAK related terms).
+const CONCEPT_EXPANSIONS: Record<string, string[]> = {
+  "remedial builder": ["building repair", "remediation", "facade repair", "concrete repair", "remedial"],
+  "remedial building": ["building repair", "remediation", "facade repair", "concrete repair", "remedial"],
+  builder: ["building repair", "remedial", "construction"],
+  engineer: ["structural engineer", "civil engineer", "remedial consultant", "structural", "engineering"],
+  engineering: ["structural engineer", "civil engineer", "structural"],
+  "water leak": ["waterproofing", "leak detection", "membrane repair", "membrane"],
+  leak: ["waterproofing", "leak detection", "membrane repair"],
+  leaking: ["waterproofing", "leak detection", "membrane repair"],
+  window: ["window contractor", "glazier", "aluminium windows", "window replacement", "glazing"],
+  windows: ["window contractor", "glazier", "aluminium windows", "window replacement", "glazing"],
+  glazier: ["window contractor", "glazing", "aluminium windows", "window replacement"],
+  facade: ["facade repair", "cladding", "render"],
+  concrete: ["concrete repair", "spalling", "concrete cancer"],
+  "concrete cancer": ["concrete repair", "spalling", "carbonation", "remedial"],
+  waterproofing: ["membrane", "tanking", "leak detection", "membrane repair"],
+};
 
-  const words = qLower.split(/\s+/).filter((w) => w.length >= 3 && !STOPWORDS.has(w));
+// Maps a user query (by substring) to the directory CATEGORIES it should surface.
+// Category names must match the live category names exactly (case-insensitive).
+// This is what makes "remedial builder" return the "Remedial & Facade Building"
+// category strongly, even though those words never appear verbatim in the name.
+type CategoryIntent = { patterns: string[]; categories: string[] };
+const CATEGORY_INTENT: CategoryIntent[] = [
+  {
+    patterns: ["remedial builder", "remedial builders", "remedial contractor", "remedial contractors", "remedial construction", "remedial building", "remedial", "facade builder", "facade building"],
+    categories: ["Remedial & Facade Building", "Building & Construction (General)"],
+  },
+  {
+    patterns: ["waterproofing", "waterproof", "water leak", "leaking balcony", "balcony leak", "leaking shower", "membrane", "tanking", "leak detection", "water ingress", "rising damp", "penetrating damp"],
+    categories: ["Waterproofing"],
+  },
+  {
+    patterns: ["facade", "façade", "cladding", "external wall", "external envelope", "render", "rendering"],
+    categories: ["Remedial & Facade Building", "Cladding", "Rendering"],
+  },
+  {
+    patterns: ["engineer", "engineering", "structural engineer", "structural assessment", "structural", "civil engineer", "geotechnical"],
+    categories: ["Engineering Services"],
+  },
+  {
+    patterns: ["concrete repair", "spalling", "concrete cancer", "carbonation", "concrete remediation", "reinforcement corrosion"],
+    categories: ["Remedial & Facade Building", "Concretors / Concrete Placement"],
+  },
+  {
+    patterns: ["concreter", "concretor", "concreting", "concrete placement"],
+    categories: ["Concretors / Concrete Placement"],
+  },
+  {
+    patterns: ["roof leak", "roof repair", "roofing", "roof restoration", "roof leaks"],
+    categories: ["Roofing & Roof Restoration", "Roof Plumbing"],
+  },
+  {
+    patterns: ["roof plumber", "roof plumbing", "box gutter", "gutter"],
+    categories: ["Roof Plumbing", "Guttering (Installation & Repairs)", "Roofing & Roof Restoration"],
+  },
+  {
+    patterns: ["strata manager", "strata management", "oc manager", "owners corporation", "body corporate", "strata"],
+    categories: ["Strata & Property Management"],
+  },
+  {
+    patterns: ["builder", "building repair", "construction", "renovation", "renovations"],
+    categories: ["Building & Construction (General)", "Remedial & Facade Building", "Renovations & Extensions"],
+  },
+  {
+    patterns: ["balustrade", "handrail", "balustrading"],
+    categories: ["Balustrades & Handrails"],
+  },
+  {
+    // Passive fire protection (fire-stopping, penetrations, collars/dampers,
+    // intumescent, fire-rated construction) — distinct from active fire (sprinklers/
+    // alarms/extinguishers under "Fire Protection & Safety") and from fire doors.
+    patterns: ["passive fire", "passive fire protection", "fire stopping", "firestopping", "fire-stopping", "fire stop", "intumescent", "penetration seal", "penetration sealing", "fire collar", "fire damper", "fireproofing", "fire proofing", "fire rated systems"],
+    categories: ["Passive Fire Protection"],
+  },
+  {
+    // Fire doors are a distinct fire-rated trade (AS 1905) — keep them out of the
+    // general window/door bucket. Listed BEFORE the window intent; "fire door" never
+    // matches the window patterns below, so the two stay cleanly separated.
+    patterns: ["fire door", "fire doors", "firedoor", "fire-door", "fire-rated door", "fire rated door", "fire door installer", "fire door supplier", "fire door inspection", "fire door maintenance"],
+    categories: ["Fire Doors (Supply & Installation)"],
+  },
+  {
+    patterns: ["window", "glazier", "glazing", "windows and doors", "window and door", "sliding door", "aluminium door", "timber door", "entry door"],
+    categories: ["Glass & Glazing", "Windows & Doors"],
+  },
+  {
+    patterns: ["painter", "painting", "protective coating", "epoxy"],
+    categories: ["Painting", "Protective Coatings & Epoxy"],
+  },
+  {
+    patterns: ["scaffold", "scaffolding"],
+    categories: ["Scaffolding"],
+  },
+  {
+    patterns: ["fire safety", "fire protection", "fire compliance"],
+    categories: ["Fire Protection & Safety"],
+  },
+];
+
+// Extra known-good words the typo corrector can snap a misspelling onto.
+const EXTRA_VOCAB = [
+  "expansion", "joint", "joints", "rectification", "balcony", "stormwater",
+  "epoxy", "grout", "grouting", "anchor", "anchors", "corrosion", "efflorescence",
+];
+
+// ─── Typo correction (Levenshtein) ─────────────────────────────────────────────
+
+function levenshtein(a: string, b: string): number {
+  const m = a.length;
+  const n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, i) => i);
+  let curr = new Array<number>(n + 1);
+  for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+    }
+    [prev, curr] = [curr, prev];
+  }
+  return prev[n];
+}
+
+const VOCAB: string[] = (() => {
+  const set = new Set<string>();
+  const add = (phrase: string) =>
+    phrase.toLowerCase().split(/\s+/).forEach((w) => { if (w.length >= 4) set.add(w); });
+  SYNONYM_GROUPS.forEach((g) => g.forEach(add));
+  Object.keys(CONCEPT_EXPANSIONS).forEach(add);
+  Object.values(CONCEPT_EXPANSIONS).forEach((arr) => arr.forEach(add));
+  CATEGORY_INTENT.forEach((ci) => ci.patterns.forEach(add));
+  EXTRA_VOCAB.forEach(add);
+  return Array.from(set);
+})();
+
+function correctWord(word: string): string | null {
+  if (word.length < 4 || VOCAB.includes(word)) return null;
+  const maxDist = word.length <= 6 ? 1 : 2;
+  let best: string | null = null;
+  let bestDist = Infinity;
+  for (const term of VOCAB) {
+    if (Math.abs(term.length - word.length) > maxDist) continue;
+    const d = levenshtein(word, term);
+    if (d < bestDist) { bestDist = d; best = term; }
+    if (bestDist === 1) break;
+  }
+  return bestDist <= maxDist ? best : null;
+}
+
+// ─── Query analysis ─────────────────────────────────────────────────────────────
+
+type QueryAnalysis = {
+  phrase: string;        // the raw lowercased query
+  strong: string[];      // query words, synonyms, typo corrections (high weight)
+  weak: string[];        // broader related/concept terms (low weight)
+  intentCategories: string[]; // category names this query should surface (lowercased)
+};
+
+const MAX_TERMS = 20;
+
+function analyzeQuery(q: string): QueryAnalysis {
+  const phrase = q.toLowerCase().trim();
+  const strong = new Set<string>();
+  const weak = new Set<string>();
+
+  if (phrase) strong.add(phrase);
+
+  // Multi-word concept phrases (e.g. "remedial builder", "water leak")
+  for (const [key, vals] of Object.entries(CONCEPT_EXPANSIONS)) {
+    if (key.includes(" ") && phrase.includes(key)) vals.forEach((t) => weak.add(t));
+  }
+
+  const words = phrase.split(/\s+/).filter((w) => w.length >= 3 && !STOPWORDS.has(w));
   for (const word of words) {
-    terms.add(word);
-    for (const group of SYNONYM_GROUPS) {
-      if (group.some((syn) => syn === word || syn.includes(word) || word.includes(syn))) {
-        group.forEach((syn) => terms.add(syn));
+    strong.add(word);
+    const corrected = correctWord(word);
+    const forms = corrected ? [word, corrected] : [word];
+    for (const form of forms) {
+      strong.add(form);
+      // synonym families → strong
+      for (const group of SYNONYM_GROUPS) {
+        if (group.includes(form)) group.forEach((syn) => strong.add(syn));
       }
+      // concept expansions → weak
+      (CONCEPT_EXPANSIONS[form] ?? []).forEach((t) => weak.add(t));
     }
   }
 
-  return Array.from(terms);
+  // Category intents
+  const intent = new Set<string>();
+  for (const ci of CATEGORY_INTENT) {
+    if (ci.patterns.some((p) => phrase.includes(p))) {
+      ci.categories.forEach((c) => intent.add(c.toLowerCase()));
+    }
+  }
+
+  // Don't double-count: a weak term that is already strong is dropped.
+  for (const s of strong) weak.delete(s);
+
+  return {
+    phrase,
+    strong: [...strong].filter((t) => t.length >= 3).slice(0, MAX_TERMS),
+    weak: [...weak].filter((t) => t.length >= 3).slice(0, MAX_TERMS),
+    intentCategories: [...intent],
+  };
 }
 
-// ─── WHERE builder ─────────────────────────────────────────────────────────────
+// ─── Relevance scoring ──────────────────────────────────────────────────────────
 
-function buildWhere(params: {
-  q: string;
-  category: string;
-  stateFilter: string;
+function relevanceScore(
+  row: {
+    name: string;
+    description: string | null;
+    main_category: { name: string } | null;
+    company_categories?: { category: { name: string } | null }[];
+  },
+  A: QueryAnalysis,
+): number {
+  if (!A.phrase) return 0;
+  const name = row.name.toLowerCase();
+  const desc = (row.description ?? "").toLowerCase();
+  const cat = (row.main_category?.name ?? "").toLowerCase();
+  // Approved secondary trades — additional categories the business operates in.
+  const secCats = (row.company_categories ?? [])
+    .map((cc) => (cc.category?.name ?? "").toLowerCase())
+    .filter((c) => c && c !== cat);
+
+  let s = 0;
+
+  // Whole-phrase name match (strongest signal)
+  if (name === A.phrase) s += 1000;
+  else if (name.startsWith(A.phrase)) s += 450;
+  else if (A.phrase.length >= 4 && name.includes(A.phrase)) s += 320;
+
+  // Category intent — the query maps to this business's category. The primary
+  // category is the strongest signal; an approved SECONDARY category counts too,
+  // a notch below primary (so a genuine secondary trade surfaces, but a business
+  // whose main trade matches still ranks ahead).
+  if (cat) {
+    if (A.intentCategories.includes(cat)) s += 600;
+    else if (A.intentCategories.some((ic) => cat.includes(ic) || ic.includes(cat))) s += 320;
+  }
+  for (const sc of secCats) {
+    if (A.intentCategories.includes(sc)) { s += 360; break; }
+    if (A.intentCategories.some((ic) => sc.includes(ic) || ic.includes(sc))) { s += 200; break; }
+  }
+
+  // Strong terms (query words + synonyms + typo fixes)
+  for (const t of A.strong) {
+    if (cat.includes(t)) s += 130;
+    if (secCats.some((sc) => sc.includes(t))) s += 75;
+    if (name.includes(t)) s += 90;
+    if (desc.includes(t)) s += 22;
+  }
+
+  // Weak terms (broader related trades / concepts)
+  for (const t of A.weak) {
+    if (cat.includes(t)) s += 32;
+    if (secCats.some((sc) => sc.includes(t))) s += 18;
+    if (name.includes(t)) s += 20;
+    if (desc.includes(t)) s += 6;
+  }
+
+  return s;
+}
+
+// ─── Location resolution ────────────────────────────────────────────────────────
+// Resolve whatever the visitor gave us (picked-suggestion coords, an explicit
+// suburb/postcode/state, or a free-text location box) into a single shape:
+//   { state, lat, lng, suburb, postcode }
+// `state` is the KEY field — when present, results are HARD-FILTERED to that state
+// (a Sydney search never shows VIC/SA businesses). `lat`/`lng` drive the
+// closest-first distance ranking. Coordinates come from (in priority order):
+//   1. coords already supplied by the front-end (picked suggestion / geocode)
+//   2. our hardcoded city/suburb table (accurate city centres)
+//   3. the directory's own location data (avg coords for that suburb/postcode)
+
+type ResolvedLocation = {
+  state?: LocationState;
+  lat?: number;
+  lng?: number;
+  suburb?: string;
+  postcode?: string;
+};
+
+// ─── Distance + proximity tiers ─────────────────────────────────────────────────
+// Great-circle distance in km between two lat/lng points. Now that ~99% of valid
+// business locations are geocoded, we rank genuinely nearest-first instead of by
+// crude postcode-number distance.
+
+function haversineKm(aLat: number, aLng: number, bLat: number, bLng: number): number {
+  const R = 6371;
+  const dLat = ((bLat - aLat) * Math.PI) / 180;
+  const dLng = ((bLng - aLng) * Math.PI) / 180;
+  const la1 = (aLat * Math.PI) / 180;
+  const la2 = (bLat * Math.PI) / 180;
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
+// Translate a business location into a proximity tier relative to the searched
+// point. Lower tier = closer / should appear first. Tiers map directly to the
+// requested behaviour: same suburb → nearby suburbs → metro/region → wider →
+// elsewhere-in-state. A business whose SERVICE AREA covers the search (statewide /
+// nationwide) is kept eligible (capped at the "wider region" tier) so it isn't
+// buried below far-flung locals, but genuine locals still rank ahead of it.
+type ProxInfo = { km: number | null; tier: number };
+
+function proximityInfo(
+  loc: {
+    suburb: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    services_statewide: boolean;
+    services_nationwide: boolean;
+  } | null,
+  searchLat: number | undefined,
+  searchLng: number | undefined,
+  searchSuburb: string,
+): ProxInfo {
+  const exactSuburb = Boolean(searchSuburb && loc?.suburb && loc.suburb.toLowerCase() === searchSuburb);
+
+  let km: number | null = null;
+  if (loc?.latitude != null && loc?.longitude != null && searchLat != null && searchLng != null) {
+    km = haversineKm(searchLat, searchLng, loc.latitude, loc.longitude);
+  }
+
+  let tier: number;
+  if (exactSuburb) tier = 0;
+  else if (km != null) {
+    if (km <= 5) tier = 0;          // same suburb / immediate vicinity
+    else if (km <= 15) tier = 1;    // nearby suburbs
+    else if (km <= 50) tier = 2;    // metro / city region
+    else if (km <= 150) tier = 3;   // wider region
+    else tier = 4;                  // far, but still in-state
+  } else {
+    tier = 5;                       // unknown location (bad/missing coords) — last
+  }
+
+  // Service-area override: a statewide/nationwide servicer is relevant locally even
+  // if its office is far — lift it to the "wider region" tier at worst, never above
+  // genuine locals (tiers 0–2).
+  if ((loc?.services_statewide || loc?.services_nationwide) && tier > 3) tier = 3;
+
+  return { km, tier };
+}
+
+const asState = (s: string | undefined): LocationState | undefined =>
+  s && (VALID_STATES as string[]).includes(s) ? (s as LocationState) : undefined;
+
+async function resolveLocation(opts: {
+  lat: number;
+  lng: number;
+  hasCoords: boolean;
+  locationState: string;
   suburb: string;
   postcode: string;
+  stateFilter: string;
+  rawLocation: string;
+}): Promise<ResolvedLocation> {
+  // 1. Front-end already supplied coordinates.
+  if (opts.hasCoords) {
+    return {
+      lat: opts.lat,
+      lng: opts.lng,
+      state: asState((opts.locationState || opts.stateFilter).toUpperCase()),
+      suburb: opts.suburb || undefined,
+      postcode: opts.postcode || undefined,
+    };
+  }
+
+  // 2. Work out the target from explicit params or the free-text location box.
+  let suburb = opts.suburb;
+  let postcode = opts.postcode;
+  let state = opts.stateFilter ? asState(opts.stateFilter.toUpperCase()) : undefined;
+
+  if (!suburb && !postcode && !state && opts.rawLocation) {
+    const t = opts.rawLocation.trim();
+    if (/^\d{4}$/.test(t)) postcode = t;
+    else {
+      const sc = toStateCode(t);
+      if (sc) state = sc as LocationState;
+      else suburb = t;
+    }
+  }
+
+  // 3a. Postcode → state (+ representative coords from our data).
+  if (postcode) {
+    const row = await prisma.location.findFirst({
+      where: { postcode, latitude: { not: null }, longitude: { not: null } },
+      select: { state: true, latitude: true, longitude: true },
+    });
+    if (row) {
+      return { state: row.state, postcode, lat: Number(row.latitude), lng: Number(row.longitude) };
+    }
+    return { state: asState(postcodeToState(postcode) ?? undefined), postcode };
+  }
+
+  // 3b. Suburb / city → state (+ representative coords for nearest-first ranking).
+  if (suburb) {
+    const hc = lookupSuburb(suburb);
+    const hcState = hc ? asState(hc.stateCode) : undefined;
+
+    if (hc) {
+      // Accurate city/suburb centre from our curated table.
+      const pcRow = await prisma.location.findFirst({
+        where: { suburb: { equals: suburb, mode: "insensitive" }, NOT: { postcode: "" }, ...(hcState ? { state: hcState } : {}) },
+        select: { postcode: true },
+      });
+      return { state: hcState, lat: hc.lat, lng: hc.lng, suburb, postcode: pcRow?.postcode };
+    }
+
+    // Full AU place list — resolves ANY real suburb or region (Katoomba, Marsden
+    // Park, Blue Mountains, Central Coast, …) to a state + coordinates, even when
+    // no business is listed there yet. This is what lets a search anywhere return
+    // the nearest businesses instead of nothing.
+    const au = resolveAuLocation(suburb, opts.stateFilter || undefined);
+    if (au) {
+      return { state: asState(au.state), suburb: au.suburb, postcode: au.postcode, lat: au.lat, lng: au.lng };
+    }
+
+    // Not in the dataset — derive a representative coordinate from the
+    // geocoded directory itself (a real listing in that suburb).
+    const geo = await prisma.location.findFirst({
+      where: {
+        suburb: { equals: suburb, mode: "insensitive" },
+        latitude: { not: null },
+        longitude: { not: null },
+      },
+      select: { state: true, latitude: true, longitude: true, postcode: true },
+    });
+    if (geo) {
+      return {
+        state: geo.state, suburb, postcode: geo.postcode || undefined,
+        lat: geo.latitude == null ? undefined : Number(geo.latitude),
+        lng: geo.longitude == null ? undefined : Number(geo.longitude),
+      };
+    }
+
+    // Suburb exists but no coords — still hard-filter by its state if known.
+    const stateOnly = await prisma.location.findFirst({
+      where: { suburb: { equals: suburb, mode: "insensitive" } },
+      select: { state: true },
+    });
+    if (stateOnly) return { state: stateOnly.state, suburb };
+
+    // Unknown suburb — can't determine a state; fall back to a soft suburb match.
+    return { suburb };
+  }
+
+  // 3c. State only.
+  return { state };
+}
+
+// ─── WHERE builder ──────────────────────────────────────────────────────────────
+
+function buildWhere(params: {
+  A: QueryAnalysis;
+  category: string;
   featured: boolean;
   licenceVerified: boolean;
   claimed: boolean;
-  hasCoords: boolean;
+  enforcedState?: LocationState;
+  softSuburb?: string;
 }): Prisma.CompanyWhereInput {
-  const { q, category, stateFilter, suburb, postcode, featured, licenceVerified, claimed, hasCoords } = params;
+  const { A, category, featured, licenceVerified, claimed, enforcedState, softSuburb } = params;
 
   const where: Prisma.CompanyWhereInput = { status: "published" };
   const AND: Prisma.CompanyWhereInput[] = [];
 
-  // ── Keyword search — with synonym expansion ─────────────────────────────────
-  if (q) {
-    const terms = expandQuery(q);
-    AND.push({
-      OR: terms.flatMap((term) => [
-        { name: { contains: term, mode: "insensitive" } },
-        { description: { contains: term, mode: "insensitive" } },
-        { main_category: { name: { contains: term, mode: "insensitive" } } },
-        {
-          company_categories: {
-            some: {
-              is_approved: true,
-              category: { name: { contains: term, mode: "insensitive" } },
-            },
-          },
-        },
-        {
-          company_tags: {
-            some: {
-              is_approved: true,
-              tag: {
-                name: { contains: term, mode: "insensitive" },
-                tag_type: { in: ["service", "defect", "repair_system"] },
-              },
-            },
-          },
-        },
-      ]),
-    });
+  // ── Keyword search — recall across all terms + intent categories ──────────────
+  if (A.phrase) {
+    const terms = [...new Set([...A.strong, ...A.weak])];
+    const or: Prisma.CompanyWhereInput[] = terms.flatMap((term) => [
+      { name: { contains: term, mode: "insensitive" } },
+      { description: { contains: term, mode: "insensitive" } },
+      { main_category: { name: { contains: term, mode: "insensitive" } } },
+      // Approved secondary trades are searchable too.
+      { company_categories: { some: { is_approved: true, category: { name: { contains: term, mode: "insensitive" } } } } },
+    ]);
+    // Intent categories — surface the right category even with no literal text match.
+    for (const ic of A.intentCategories) {
+      or.push({ main_category: { name: { contains: ic, mode: "insensitive" } } });
+      or.push({ company_categories: { some: { is_approved: true, category: { name: { contains: ic, mode: "insensitive" } } } } });
+    }
+    AND.push({ OR: or });
   }
 
-  // ── Category filter ─────────────────────────────────────────────────────────
+  // ── Category filter (explicit dropdown/slug) ──────────────────────────────────
   if (category) {
     AND.push({
       OR: [
         { main_category: { slug: category } },
-        { company_categories: { some: { category: { slug: category } } } },
         { main_category: { parent: { slug: category } } },
       ],
     });
   }
 
-  // ── Location filters — only when NOT using coordinate-based ranking ─────────
-  // When hasCoords=true, location sorting is done by scoring, not hard WHERE filters.
-  // State-only searches still use a hard filter.
-  if (!hasCoords) {
-    const validDropdownState = VALID_STATES.find((s) => s === stateFilter.toUpperCase());
-    if (suburb && validDropdownState) {
-      AND.push({
-        locations: {
-          some: {
-            suburb: { contains: suburb, mode: "insensitive" },
-            state: validDropdownState,
-          },
-        },
-      });
-    } else if (suburb) {
-      AND.push({ locations: { some: { suburb: { contains: suburb, mode: "insensitive" } } } });
-    } else if (validDropdownState) {
-      AND.push({ locations: { some: { state: validDropdownState } } });
-    }
-    if (postcode) {
-      AND.push({ locations: { some: { postcode } } });
-    }
-  } else {
-    // When coords present, still optionally filter by state to keep result set manageable
-    // Only apply if there's a state hint but no specific suburb/postcode
-    // (suburb/postcode searches need broader results for nearest-first ranking)
+  // ── Location restriction ──────────────────────────────────────────────────────
+  // A resolved state HARD-FILTERS results to that state (a Sydney search never
+  // returns VIC/SA businesses). If we couldn't resolve a state but have a suburb,
+  // fall back to a soft suburb match so the search still narrows sensibly.
+  if (enforcedState) {
+    AND.push({ locations: { some: { state: enforcedState } } });
+  } else if (softSuburb) {
+    AND.push({ locations: { some: { suburb: { contains: softSuburb, mode: "insensitive" } } } });
   }
 
-  // ── Verification filters ────────────────────────────────────────────────────
+  // ── Verification filters ──────────────────────────────────────────────────────
   if (featured) AND.push({ is_featured: true });
   if (claimed) AND.push({ is_claimed: true });
   if (licenceVerified) AND.push({ licences: { some: { status: "verified" } } });
@@ -233,7 +638,39 @@ function buildWhere(params: {
   return where;
 }
 
-// ─── SELECT shape ──────────────────────────────────────────────────────────────
+// ─── SELECT shapes ──────────────────────────────────────────────────────────────
+
+const MATCH_SELECT = {
+  id: true,
+  name: true,
+  description: true,
+  phone: true,
+  plan_type: true,
+  featured_until: true,
+  is_featured: true,
+  confidence_score: true,
+  is_claimed: true,
+  profile_status: true,
+  main_category_id: true,
+  main_category: { select: { name: true } },
+  company_categories: {
+    where: { is_approved: true },
+    select: { category: { select: { name: true } } },
+  },
+  locations: {
+    take: 1,
+    select: {
+      suburb: true,
+      postcode: true,
+      state: true,
+      latitude: true,
+      longitude: true,
+      services_nationwide: true,
+      services_statewide: true,
+      service_radius_km: true,
+    },
+  },
+} satisfies Prisma.CompanySelect;
 
 const COMPANY_SELECT = {
   id: true,
@@ -241,10 +678,12 @@ const COMPANY_SELECT = {
   name: true,
   description: true,
   phone: true,
+  plan_type: true,
   profile_status: true,
   confidence_score: true,
   is_featured: true,
   is_claimed: true,
+  logo_url: true,
   main_category: { select: { id: true, name: true, slug: true } },
   locations: {
     take: 1,
@@ -256,11 +695,7 @@ const COMPANY_SELECT = {
       services_statewide: true,
     },
   },
-  licences: {
-    where: { status: "verified" },
-    take: 1,
-    select: { status: true },
-  },
+  licences: { where: { status: "verified" }, take: 1, select: { status: true } },
   company_tags: {
     where: { is_approved: true },
     take: 5,
@@ -268,150 +703,200 @@ const COMPANY_SELECT = {
   },
 } satisfies Prisma.CompanySelect;
 
+// ─── Top Listing section ─────────────────────────────────────────────────────
+// Premium subscribers for the search's category, ordered by subscription date
+// (first to subscribe = position 1), max 3. Returns [] when the category can't be
+// determined or nobody has subscribed.
+async function getTopListings(
+  category: string,
+  matchingRows: { id: number; main_category_id: number | null }[],
+  resolved: ResolvedLocation,
+) {
+  let sectionCatId: number | null = null;
+  if (category) {
+    const cat = await prisma.category.findUnique({ where: { slug: category }, select: { id: true } });
+    sectionCatId = cat?.id ?? null;
+  }
+  if (sectionCatId == null) {
+    // Most common category among the matched results = what this search is about.
+    const counts = new Map<number, number>();
+    for (const r of matchingRows) if (r.main_category_id != null) counts.set(r.main_category_id, (counts.get(r.main_category_id) ?? 0) + 1);
+    let best: number | null = null, bestN = 0;
+    for (const [id, n] of counts) if (n > bestN) { bestN = n; best = id; }
+    sectionCatId = best;
+  }
+  if (sectionCatId == null) return { items: [] as TopListingCard[], eligible: false };
+
+  const tops = await prisma.company.findMany({
+    where: {
+      status: "published",
+      // Eligible for this category's Top 3 via the main category OR an approved
+      // secondary trade — so synonym/secondary selections fold into the same
+      // canonical bucket and a paid listing isn't dropped from a category it serves.
+      OR: [
+        { main_category_id: sectionCatId },
+        { company_categories: { some: { is_approved: true, category_id: sectionCatId } } },
+      ],
+      plan_type: { in: ["premium", "featured"] },
+      directory_subscription: { is: { subscription_status: { in: ["active", "trialing"] } } },
+    },
+    orderBy: { directory_subscription: { created_at: "asc" } }, // first to subscribe first
+    take: 3,
+    select: {
+      id: true, slug: true, name: true, logo_url: true, description: true,
+      main_category: { select: { name: true } },
+      locations: { take: 1, select: { suburb: true, state: true, latitude: true, longitude: true } },
+    },
+  });
+
+  const items = tops.map((t) => {
+    const loc = t.locations[0];
+    let km: number | null = null;
+    if (resolved.lat != null && resolved.lng != null && loc?.latitude != null && loc?.longitude != null) {
+      km = Math.round(haversineKm(resolved.lat, resolved.lng, loc.latitude, loc.longitude));
+    }
+    return {
+      id: t.id, slug: t.slug, name: t.name, logo_url: t.logo_url, description: t.description,
+      main_category: t.main_category,
+      locations: t.locations.map((l) => ({ suburb: l.suburb, state: l.state })),
+      distance_km: km,
+    };
+  });
+  // eligible = a real category was determined → show the promo card when items is empty.
+  return { items, eligible: true };
+}
+
+type TopListingCard = {
+  id: number; slug: string; name: string; logo_url: string | null; description: string | null;
+  main_category: { name: string } | null;
+  locations: { suburb: string | null; state: string }[];
+  distance_km: number | null;
+};
+
 // ─── Handler ───────────────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
 
-  const q           = sp.get("q")?.trim() ?? "";
-  const lat         = parseFloat(sp.get("lat") ?? "");
-  const lng         = parseFloat(sp.get("lng") ?? "");
+  // Accept both `q` and `search` for the keyword.
+  const q = (sp.get("q") ?? sp.get("search") ?? "").trim();
+  const lat = parseFloat(sp.get("lat") ?? "");
+  const lng = parseFloat(sp.get("lng") ?? "");
   const locationState = sp.get("locationState")?.trim() ?? "";
-  const category    = sp.get("category")?.trim() ?? "";
-  const stateFilter = sp.get("state")?.trim() ?? "";
-  const suburb      = sp.get("suburb")?.trim() ?? "";
-  const postcode    = sp.get("postcode")?.trim() ?? "";
-  const featured    = sp.get("featured") === "true";
+  const category = sp.get("category")?.trim() ?? "";
+  const featured = sp.get("featured") === "true";
   const licenceVerified = sp.get("licenceVerified") === "true";
-  const claimed     = sp.get("claimed") === "true";
-  const page        = Math.max(1, parseInt(sp.get("page") ?? "1") || 1);
-  const offset      = (page - 1) * PAGE_SIZE;
+  const claimed = sp.get("claimed") === "true";
+  const page = Math.max(1, parseInt(sp.get("page") ?? "1") || 1);
+  const offset = (page - 1) * PAGE_SIZE;
 
-  const hasCoords = !isNaN(lat) && !isNaN(lng);
+  // Location inputs: explicit suburb/postcode/state params, coords, or free-text box.
+  const suburbParam = sp.get("suburb")?.trim() ?? "";
+  const postcodeParam = sp.get("postcode")?.trim() ?? "";
+  const stateParam = sp.get("state")?.trim() ?? "";
+  const rawLocation = sp.get("location")?.trim() ?? "";
+  const hasCoordsParam = !isNaN(lat) && !isNaN(lng);
+  const locationRequested = Boolean(
+    suburbParam || postcodeParam || stateParam || rawLocation || hasCoordsParam,
+  );
 
-  // Determine search state for scoring (prefer explicit locationState over stateFilter)
-  const searchState = locationState || stateFilter;
+  // ── Relevance guard — no listings without a search intent ─────────────────────
+  const hasAnyCriteria = Boolean(
+    q || category || locationRequested || featured || licenceVerified || claimed,
+  );
+  if (!hasAnyCriteria) {
+    return NextResponse.json({
+      companies: [], total: 0, page, pageSize: PAGE_SIZE, totalPages: 0, isLocalFallback: false,
+    });
+  }
 
-  const where = buildWhere({
-    q, category, stateFilter, suburb, postcode,
-    featured, licenceVerified, claimed,
-    hasCoords,
-  });
+  const A = analyzeQuery(q);
+  const now = new Date();
 
   try {
-    // ── No location coords: pure Prisma with simple sort ──────────────────────
-    if (!hasCoords) {
-      const [total, rows] = await Promise.all([
-        prisma.company.count({ where }),
-        prisma.company.findMany({
-          where,
-          select: COMPANY_SELECT,
-          orderBy: [
-            { is_featured: "desc" },
-            { confidence_score: "desc" },
-            { is_claimed: "desc" },
-          ],
-          take: PAGE_SIZE,
-          skip: offset,
-        }),
-      ]);
+    // Resolve the requested location → state (hard filter) + coordinates (ranking).
+    const resolved: ResolvedLocation = locationRequested
+      ? await resolveLocation({
+          lat, lng, hasCoords: hasCoordsParam, locationState,
+          suburb: suburbParam, postcode: postcodeParam, stateFilter: stateParam, rawLocation,
+        })
+      : {};
 
-      return NextResponse.json({
-        companies: rows,
-        total,
-        page,
-        pageSize: PAGE_SIZE,
-        totalPages: Math.ceil(total / PAGE_SIZE),
-        isLocalFallback: false,
-      });
-    }
+    const enforcedState = resolved.state;
+    // Soft suburb match only when we couldn't pin a state (unknown suburb).
+    const softSuburb = !enforcedState ? (resolved.suburb ?? "") : "";
 
-    // ── Coordinate-based distance + scoring path ──────────────────────────────
+    const where = buildWhere({ A, category, featured, licenceVerified, claimed, enforcedState, softSuburb });
 
-    // Step 1: All keyword/category-matching companies (no location hard filter)
+    // Pull matching rows for in-memory relevance + proximity scoring.
     const matchingRows = await prisma.company.findMany({
       where,
-      select: {
-        id: true,
-        is_featured: true,
-        confidence_score: true,
-        is_claimed: true,
-        profile_status: true,
-        locations: {
-          take: 1,
-          select: {
-            suburb: true,
-            postcode: true,
-            state: true,
-            services_nationwide: true,
-            services_statewide: true,
-            service_radius_km: true,
-          },
-        },
-      },
+      select: MATCH_SELECT,
+      take: MATCH_CAP,
     });
 
     if (matchingRows.length === 0) {
       return NextResponse.json({
-        companies: [],
-        total: 0,
-        page,
-        pageSize: PAGE_SIZE,
-        totalPages: 0,
-        isLocalFallback: false,
+        companies: [], total: 0, page, pageSize: PAGE_SIZE, totalPages: 0, isLocalFallback: false,
       });
     }
 
-    // Step 2: Haversine distances for companies that have coordinates
-    type DistRow = { company_id: number; distance_km: number };
-    const ids = matchingRows.map((r) => r.id);
+    // Proximity ranking. Business locations are now geocoded, so we rank by TRUE
+    // great-circle distance from the searched point, bucketed into tiers
+    // (same suburb → nearby → metro → wider → elsewhere-in-state). An exact suburb
+    // name match still counts as closest of all.
+    const searchSuburb = (resolved.suburb ?? "").toLowerCase();
 
-    const distRows = await prisma.$queryRaw<DistRow[]>(
-      Prisma.sql`
-        SELECT l.company_id,
-          MIN(6371.0 * acos(LEAST(1.0,
-            cos(radians(${lat})) * cos(radians(l.latitude)) *
-            cos(radians(l.longitude) - radians(${lng})) +
-            sin(radians(${lat})) * sin(radians(l.latitude))
-          ))) AS distance_km
-        FROM locations l
-        WHERE l.company_id IN (${Prisma.join(ids)})
-          AND l.latitude IS NOT NULL
-          AND l.longitude IS NOT NULL
-        GROUP BY l.company_id
-      `
-    );
+    // Coarse relevance tiers keep strong category/name matches above weak
+    // description-only matches; within a tier we order nearest-first.
+    const relTier = (rel: number) => (rel >= 400 ? 3 : rel >= 200 ? 2 : rel >= 80 ? 1 : 0);
 
-    const distMap = new Map<number, number>(
-      distRows.map((r) => [Number(r.company_id), Number(r.distance_km)])
-    );
-
-    // Step 3: Score every company — no hard radius cutoff
-    type ScoredRow = {
-      id: number;
-      is_featured: boolean;
-      confidence_score: number;
-      is_claimed: boolean;
-      profile_status: string;
-      distance_km: number | null;
-      locScore: number;
-      totalScore: number;
-    };
-
-    const scored: ScoredRow[] = matchingRows.map((row) => {
+    const scored = matchingRows.map((row) => {
       const loc = row.locations[0] ?? null;
-      const distKm = distMap.get(row.id) ?? null;
-      const locScoreVal = locationScore(distKm, loc ? { ...loc, suburb: loc.suburb ?? null, postcode: loc.postcode ?? null } : null, suburb, postcode, searchState);
-      const total = locScoreVal + trustBoost(row);
-      return { ...row, distance_km: distKm, locScore: locScoreVal, totalScore: total };
+      const rel = relevanceScore(row, A);
+      const trust = trustBoost(row) + completenessBoost(row);
+
+      let distTier = 0;
+      let distKm: number | null = null;
+      if (locationRequested) {
+        const p = proximityInfo(loc, resolved.lat, resolved.lng, searchSuburb);
+        distTier = p.tier;
+        distKm = p.km;
+      }
+
+      return {
+        id: row.id, rel, tier: relTier(rel), distTier, distKm, trust,
+        planScore: planRank(row, now),
+        keywordScore: rel + trust,
+      };
     });
 
-    // Step 4: Sort by totalScore descending
-    scored.sort((a, b) => b.totalScore - a.totalScore);
+    if (locationRequested) {
+      // Location search ordering:
+      //   1. paid & relevant (featured) first
+      //   2. relevance tier — strong service matches above weak ones
+      //   3. proximity tier — closest first (suburb → nearby → metro → wider → state)
+      //   4. exact distance within a tier
+      //   5. relevance, then trust as final tie-breakers
+      const kmOf = (x: { distKm: number | null }) => (x.distKm == null ? Number.MAX_SAFE_INTEGER : x.distKm);
+      scored.sort((a, b) =>
+        (b.planScore - a.planScore) ||
+        (b.tier - a.tier) ||
+        (a.distTier - b.distTier) ||
+        (kmOf(a) - kmOf(b)) ||
+        (b.rel - a.rel) ||
+        (b.trust - a.trust)
+      );
+    } else {
+      // Keyword-only search: pure relevance (then trust).
+      scored.sort((a, b) => (b.planScore - a.planScore) || (b.keywordScore - a.keywordScore));
+    }
 
-    // Determine if top results are all "fallback" (no local businesses found)
-    const topLocScore = scored[0]?.locScore ?? 0;
-    const isLocalFallback = suburb !== "" && topLocScore < 200;
+    // Keep each result's computed distance so the UI can show "~N km away".
+    const distById = new Map(scored.map((s) => [s.id, s.distKm]));
+
+    // Hard state filter means results are always in-region — no cross-state fallback.
+    const isLocalFallback = false;
 
     const totalCount = scored.length;
     const pageSlice = scored.slice(offset, offset + PAGE_SIZE);
@@ -419,27 +904,26 @@ export async function GET(request: NextRequest) {
 
     if (pageIds.length === 0) {
       return NextResponse.json({
-        companies: [],
-        total: totalCount,
-        page,
-        pageSize: PAGE_SIZE,
-        totalPages: Math.ceil(totalCount / PAGE_SIZE),
-        isLocalFallback,
+        companies: [], total: totalCount, page, pageSize: PAGE_SIZE,
+        totalPages: Math.ceil(totalCount / PAGE_SIZE), isLocalFallback,
       });
     }
 
-    // Step 5: Fetch full data for page IDs
+    // Fetch full data for the page, preserve ranking order.
     const fullRows = await prisma.company.findMany({
       where: { id: { in: pageIds } },
       select: COMPANY_SELECT,
     });
-
-    // Step 6: Re-order + attach distance
-    const distByPage = new Map(pageSlice.map((r) => [r.id, r.distance_km]));
     const companies = pageIds.map((id) => {
       const row = fullRows.find((r) => r.id === id)!;
-      return { ...row, distance_km: distByPage.get(id) ?? null };
+      const km = distById.get(id);
+      return { ...row, distance_km: km == null ? null : Math.round(km) };
     });
+
+    // Top Listing section — only meaningful on the first page.
+    const topData = page === 1
+      ? await getTopListings(category, matchingRows, resolved)
+      : { items: [] as TopListingCard[], eligible: false };
 
     return NextResponse.json({
       companies,
@@ -448,16 +932,13 @@ export async function GET(request: NextRequest) {
       pageSize: PAGE_SIZE,
       totalPages: Math.ceil(totalCount / PAGE_SIZE),
       isLocalFallback,
+      topListings: topData.items,
+      topListingEligible: topData.eligible,
     });
   } catch (err) {
     console.error("Directory search error:", err);
     return NextResponse.json({
-      companies: [],
-      total: 0,
-      page,
-      pageSize: PAGE_SIZE,
-      totalPages: 0,
-      isLocalFallback: false,
+      companies: [], total: 0, page, pageSize: PAGE_SIZE, totalPages: 0, isLocalFallback: false,
     });
   }
 }

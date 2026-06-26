@@ -1,0 +1,118 @@
+{
+  "section": "concrete-cracking",
+  "flags": [
+    {
+      "subcategory": "Injection Resins PU Flexible",
+      "name": "Sika Injection-107",
+      "reason": "not in AU market",
+      "evidence": "Sika Injection-107 does not appear on the Sika Australia injection catalogue (which lists Injection-111/-111C/-222/-306 and SikaInject-867); it is only catalogued on overseas Sika regional sites. Also mislabelled: the global PDS describes it as a 1-component HYDROPHOBIC water-reactive foaming PU, not a hydrophilic resin. https://aus.sika.com/en/construction/waterproofing/injections-and-hydrophilic-systems.html"
+    },
+    {
+      "subcategory": "Injection Resins PU Flexible",
+      "name": "Mapei Mapeject PU 25H / PU 25HD",
+      "reason": "not in AU market",
+      "evidence": "'Mapeject' is not a Mapei product line and 'PU 25H/PU 25HD' match no Mapei SKU. Mapei's PU injection resins are the Resfoam (1-comp) and Foamjet (2-comp) ranges. https://www.mapei.com/au/en/products-and-solutions"
+    },
+    {
+      "subcategory": "Sealants Polyurethane",
+      "name": "Fosroc Nitoseal MS250 / MS400",
+      "reason": "misplaced -> Sealants MS Polymer Hybrid",
+      "evidence": "Nitoseal MS250/MS400 are silyl-modified-polymer (MS/SMP hybrid) sealants containing no isocyanates; they are not polyurethane. https://www.fosroc.com.au/product/nitoseal-ms250"
+    },
+    {
+      "subcategory": "Sealants Polyurethane",
+      "name": "Mapei Mapesil AC",
+      "reason": "misplaced -> Sealants Silicone",
+      "evidence": "Mapesil AC is an acetoxy (acetic-cure) silicone sealant, not a polyurethane. https://www.mapei.com/au/en/products-and-solutions/products/detail/mapesil-ac"
+    },
+    {
+      "subcategory": "Sealants Polyurethane",
+      "name": "Ardex RA 54",
+      "reason": "misplaced -> Sealants Polyurea Joint Fillers",
+      "evidence": "ARDEX RA 54 is a semi-rigid polyurea control/construction-joint filler for trafficable floors, not a polyurethane sealant. https://ardexaustralia.com/product/ardex-ra-54/"
+    },
+    {
+      "subcategory": "Structural Anchors Dowels",
+      "name": "Hilti HIT-RE 500 V3 + N12 Bar",
+      "reason": "misplaced -> Epoxy Anchoring Adhesives",
+      "evidence": "This is the same HIT-RE 500 epoxy adhesive already listed under Epoxy Anchoring Adhesives, paired with a rebar dowel (a rebar-dowelling application, not a distinct product) - duplicate. Also superseded: Hilti AU now supplies HIT-RE 500 V4, not V3. https://www.hilti.com.au/c/CLS_FASTENER_7135/CLS_INJECTABLE_HY200_ADHESIVE_ANCHORS_7135"
+    },
+    {
+      "subcategory": "Structural Anchors Dowels",
+      "name": "Ramset Chemset Reo 502 PLUS",
+      "reason": "misplaced -> Epoxy Anchoring Adhesives",
+      "evidence": "Ramset ChemSet Reo502 PLUS is a pure-epoxy anchoring adhesive - it IS an epoxy anchoring adhesive and duplicates that subcategory rather than being a distinct dowel product. https://www.ramset.com.au/product/chemset-reo502-plus"
+    },
+    {
+      "subcategory": "Repair Mortars Polymer Modified",
+      "name": "Ardex RA55",
+      "reason": "not in AU market",
+      "evidence": "No 'RA55' exists in the ARDEX Australia catalogue; ARDEX RA-series codes around this number (RA 54, RA 56) are PU/polyurea crack and joint products, not polymer-modified repair mortars. https://ardexaustralia.com/products/"
+    }
+  ],
+  "recommendations": [
+    {
+      "subcategory": "Injection Resins Epoxy Rigid",
+      "brand": "Mapei",
+      "name": "Mapei Epojet LV",
+      "type": "Very-low-viscosity 2-comp epoxy injection resin (microcracks / damp substrates)",
+      "reason": "Fills the sub-LV microcrack gap below standard low-viscosity epoxies; confirmed on mapei.com/au."
+    },
+    {
+      "subcategory": "Injection Resins Epoxy Rigid",
+      "brand": "Sika",
+      "name": "Sika Sikadur-52 LP",
+      "type": "Long-pot-life low-viscosity 2-comp epoxy injection resin",
+      "reason": "AU-available hot-weather / deep-penetration companion to Sikadur-52 AU."
+    },
+    {
+      "subcategory": "Injection Resins PU Flexible",
+      "brand": "Sika",
+      "name": "Sika Injection-111 + Injection-111C",
+      "type": "1-comp hydrophobic MDI water-reactive PU foam (+ catalyst)",
+      "reason": "Core current Sika Australia hydrophobic PU foam injection SKU; replaces the non-AU Injection-107."
+    },
+    {
+      "subcategory": "Injection Resins PU Flexible",
+      "brand": "Mapei",
+      "name": "Mapei Resfoam 1KM",
+      "type": "1-comp water-reactive foaming PU injection resin",
+      "reason": "Real current Mapei Australia PU injection product; replaces the fabricated Mapeject entry."
+    },
+    {
+      "subcategory": "Sealants Polyurethane",
+      "brand": "Fosroc",
+      "name": "Fosroc Nitoseal PU400",
+      "type": "1-comp polyurethane trafficable expansion-joint sealant (AS 4020 potable water)",
+      "reason": "Genuine PU expansion-joint sealant; fills the gap left when the MS/silicone products are moved out."
+    },
+    {
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "brand": "Sika",
+      "name": "Sika AnchorFix-3030",
+      "type": "2-part pure-epoxy injectable anchoring adhesive (AS 5216)",
+      "reason": "Current Sika Australia high-performance epoxy anchoring SKU."
+    },
+    {
+      "subcategory": "Epoxy Anchoring Adhesives",
+      "brand": "Other / Generic",
+      "name": "Ramset ChemSet Reo502 XTREM",
+      "type": "High-strength pure-epoxy anchoring adhesive (seismic C1/C2)",
+      "reason": "Current Ramset Australia high-performance epoxy for cracked concrete / seismic dowelling."
+    },
+    {
+      "subcategory": "Repair Mortars Polymer Modified",
+      "brand": "Sika",
+      "name": "Sika MonoTop-412 NFG",
+      "type": "1-comp polymer-modified fibre-reinforced structural repair mortar (EN 1504-3 R4)",
+      "reason": "Current Sika Australia R4 structural repair mortar; like-for-like replacement for the questionable SikaTop-121 entry."
+    },
+    {
+      "subcategory": "Repair Mortars Polymer Modified",
+      "brand": "Other / Generic",
+      "name": "ARDEX BR 340",
+      "type": "Polymer-modified cementitious concrete repair / patching mortar",
+      "reason": "Real ARDEX Australia repair mortar to replace the non-existent RA55 entry."
+    }
+  ]
+}

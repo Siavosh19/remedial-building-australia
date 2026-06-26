@@ -1,39 +1,48 @@
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
-import ExpertAdviceForm from "@/components/expert-advice/ExpertAdviceForm";
-import DefectEntryList from "@/components/expert-advice/DefectEntryList";
+import ServiceSchema from "@/components/expert-advice/ServiceSchema";
+import PageNav from "@/components/PageNav";
 
 const suitableFor = [
-  "Balcony waterproofing leaks",
-  "Window and door frame leaks",
+  "Owners who can see damage inside their apartment but are unsure where it is coming from",
+  "Strata managers needing an early view before arranging quotes or inspections",
+  "Committees unsure whether a defect needs urgent attention",
+  "Balcony leaks, window leaks and door frame water damage",
+  "Mould, dampness, swollen skirting boards or internal water staining",
   "Concrete spalling and reinforcement corrosion",
-  "Roof leaks",
-  "Planter box waterproofing failures",
-  "Façade cracks and render defects",
-  "Rising damp or penetrating damp",
-  "Mould and moisture damage",
-  "Drummy or delaminated tiles",
+  "Roof membrane deterioration or suspected roof leaks",
+  "Planter box leaks and waterproofing failures",
+  "Façade cracks, render defects and external wall leaks",
+  "Drummy tiles, delaminated finishes or visible deterioration",
 ];
 
 const includes = [
-  "Photo review and likely defect category assessment",
-  "Defect category classification",
-  "Risk rating — Low, Medium, or High",
-  "Next-step recommendation",
-  "Guidance on which trade or consultant to engage",
+  "Review of supplied photos and background information",
+  "Preliminary assessment of the likely defect type",
+  "Comment on possible causes or contributing issues",
+  "General risk rating: Low, Medium or High",
+  "Practical next-step recommendation",
+  "Guidance on whether you may need a builder, remedial consultant, waterproofing specialist, structural engineer, façade consultant, architect, roofer or other specialist",
+  "Advice on what further investigation or information may be required",
+  "General technical comments to help you understand the issue before arranging repairs or formal inspections",
 ];
 
-const RAIN_OPTIONS = ["During rain only", "All the time", "Intermittent — no clear pattern", "Unknown"];
-
-const fieldClass =
-  "w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20";
-const labelClass = "mb-1.5 block text-sm font-semibold text-slate-700";
-const fileClass =
-  "w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-sky-50 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-sky-700 hover:file:bg-sky-100";
+export const metadata: Metadata = {
+  title: "Preliminary Defect Assessment | Expert Remedial Advice",
+  description:
+    "Independent desktop review of photos and building information to identify the likely defect, its causes, a risk rating and a recommended next step.",
+  alternates: { canonical: "/expert-remedial-advice/preliminary-defect-assessment" },
+};
 
 export default function PreliminaryDefectAssessmentPage() {
   return (
     <div className="min-h-screen bg-slate-100">
       <SiteHeader />
+      <ServiceSchema
+        name="Preliminary Defect Assessment"
+        description="Independent desktop review of photos and building information to identify the likely defect, its causes, a risk rating and a recommended next step."
+        path="/expert-remedial-advice/preliminary-defect-assessment"
+      />
 
       <main className="px-6 py-10">
         <section className="mx-auto max-w-4xl">
@@ -43,6 +52,7 @@ export default function PreliminaryDefectAssessmentPage() {
             <span>›</span>
             <span className="text-sky-800">Preliminary Defect Assessment</span>
           </div>
+          <PageNav />
 
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-700">Expert Remedial Advice</p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight text-sky-950 sm:text-3xl md:text-4xl">
@@ -55,10 +65,13 @@ export default function PreliminaryDefectAssessmentPage() {
               <div className="mb-3 h-1 w-10 rounded-full bg-red-700" />
               <h2 className="text-base font-bold text-sky-950">What It Is</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                A desktop review of photos and available building information to provide a preliminary view on the likely defect category, assess the risk level, and recommend a clear next step — without the cost of a full site inspection or consultant engagement.
+                A preliminary desktop review for visible building defects where you are unsure what the problem is, how serious it may be, or who should be engaged next.
               </p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                This service is designed for situations where you can see a problem but are unsure what it is, how serious it is, or who you should be calling to fix it.
+                This service is designed for situations such as mould near skirting boards, damp carpet, water staining around balcony doors, swollen or delaminated door frames, visible concrete spalling, roof membrane deterioration, leaking windows, façade cracks, planter box leaks, or other signs of water ingress and building deterioration.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                We review the photos, description and available information you provide and give a preliminary view on the likely defect type, possible contributing cause, general risk level, and the most practical next step before you spend money on the wrong trade, consultant or inspection.
               </p>
             </div>
 
@@ -79,9 +92,9 @@ export default function PreliminaryDefectAssessmentPage() {
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:col-span-2">
               <div className="mb-3 h-1 w-10 rounded-full bg-red-700" />
               <h2 className="text-base font-bold text-sky-950">What It Includes</h2>
-              <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+              <ul className="mt-3 sm:columns-2 sm:gap-x-8">
                 {includes.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
+                  <li key={item} className="mb-2 flex break-inside-avoid items-start gap-2.5 text-sm text-slate-600">
                     <svg viewBox="0 0 16 16" fill="none" className="mt-0.5 h-4 w-4 shrink-0 text-sky-700" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l3.5 3.5L13 4.5" />
                     </svg>
@@ -93,68 +106,18 @@ export default function PreliminaryDefectAssessmentPage() {
 
           </div>
 
-          {/* Pricing */}
+          {/* Call to action */}
           <div className="mt-6 rounded-xl bg-sky-950 px-6 py-5 text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">Pricing</p>
-            <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-2xl font-extrabold text-white">From $149</span>
-              <span className="text-base font-semibold text-sky-300">+ GST</span>
-            </div>
-            <p className="mt-2 text-sm leading-6 text-sky-200">
-              Prices shown are starting prices. Final pricing will be confirmed after we review the information, photos and documents provided.
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">How It Works</p>
+            <p className="mt-2 text-sm leading-6 text-sky-100">
+              Submit your details, photos and documents on the next page. We will review your submission and confirm a fixed fee before any work begins.
             </p>
             <a
-              href="#request-form"
+              href="/expert-remedial-advice/preliminary-defect-assessment/request"
               className="mt-4 inline-flex rounded-xl bg-red-700 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-red-600"
             >
               Request This Advice
             </a>
-          </div>
-
-          {/* Request form */}
-          <div id="request-form" className="mt-6 scroll-mt-24">
-            <div className="mb-4">
-              <h2 className="text-xl font-extrabold text-sky-950">Request This Advice</h2>
-              <p className="mt-1 text-sm text-slate-500">
-                Fill in the details below. We will review your submission and confirm the fee before starting.
-              </p>
-            </div>
-
-            <ExpertAdviceForm
-              service="preliminary-defect-assessment"
-              serviceName="Preliminary Defect Assessment"
-              hideGeneralPhotos
-            >
-              <DefectEntryList />
-
-              <div>
-                <label className={labelClass}>When did the Issue Start?</label>
-                <input type="text" name="whenIssueStarted" className={fieldClass} placeholder="e.g. 6 months ago, after last winter" />
-              </div>
-              <div>
-                <label className={labelClass}>Does it happen during rain or all the time?</label>
-                <select name="rainPattern" className={fieldClass}>
-                  <option value="">Select one</option>
-                  {RAIN_OPTIONS.map((o) => (
-                    <option key={o} value={o}>{o}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3">
-                <p className="text-sm font-semibold text-sky-900">Strata plan recommended</p>
-                <p className="mt-1 text-xs leading-5 text-sky-700">
-                  If this is a strata or apartment building, please attach the strata plan below. It helps us pinpoint which lot and area is affected.
-                </p>
-              </div>
-              <div>
-                <label className={labelClass}>
-                  Strata Plan <span className="text-xs font-normal text-slate-400">(optional)</span>
-                </label>
-                <input type="file" name="strataPlan" accept=".pdf,image/jpeg,image/png" className={fileClass} />
-                <p className="mt-1 text-xs text-slate-400">PDF or image of the strata plan</p>
-              </div>
-            </ExpertAdviceForm>
           </div>
 
         </section>
@@ -174,12 +137,19 @@ export default function PreliminaryDefectAssessmentPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

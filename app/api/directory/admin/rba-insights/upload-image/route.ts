@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminFromRequest } from "@/lib/directory-auth";
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+// URL is a public project identifier (not a secret) — hardcode a fallback so
+// this route does not depend on NEXT_PUBLIC_SUPABASE_URL being set in the env,
+// matching the other working upload routes.
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://krttmsatnftkdnbtwouy.supabase.co";
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
 const BUCKET = "article-images";
 
@@ -29,6 +33,12 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+
+  // Ensure the bucket exists and is public so getPublicUrl() returns a URL that
+  // actually loads. Both calls are idempotent and safe to run on every upload.
+  await supabase.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+  await supabase.storage.updateBucket(BUCKET, { public: true }).catch(() => {});
+
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
   const path = `insights/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 

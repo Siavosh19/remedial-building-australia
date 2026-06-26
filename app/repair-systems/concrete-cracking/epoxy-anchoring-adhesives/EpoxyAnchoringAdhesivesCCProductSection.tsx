@@ -2,7 +2,9 @@
 
 import { useState, useRef } from "react";
 import { Layers, SquareStack, Ruler, ExternalLink, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, FileText, BookOpen } from "lucide-react";
-import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle, DataNote } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { EPOXY_ANCHORING_CARDS } from "../../reinforcement-corrosion/epoxy-anchoring-adhesives/epoxyAnchoringData";
 
 type FilterTag =
   | "AS-5216"
@@ -28,6 +30,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -36,8 +39,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.hilti.com.au",
     accentColor: "#be123c",
     name: "Hilti HIT-RE 500 V3 — Epoxy Adhesive for Structural Stitching and Dowels",
-    descriptionLine: "TODO: owner confirm — Hilti AU site shows HIT-RE 500 V4 as current; V3 not listed — 2-part injectable epoxy — AS 5216 compliant — crack stitching bars N12/N16 — 500 mL cartridge — 3-stage cleaning mandatory",
-    productType: "2-part injectable epoxy anchoring adhesive — AS 5216 — Hilti Australia — TODO: owner confirm V3 vs V4",
+    descriptionLine: "2-part injectable epoxy — AS 5216 compliant — crack stitching bars N12/N16 — 500 mL cartridge — 3-stage cleaning mandatory",
+    productType: "2-part injectable epoxy anchoring adhesive — AS 5216 — Hilti Australia",
+    dataNote: "Owner to confirm — the Hilti Australia site shows HIT-RE 500 V4 as the current product; V3 is not listed. Confirm the current product version with Hilti Australia before specifying.",
     filterTags: ["AS-5216", "Epoxy", "Dry-Hole", "Crack-Stitching", "Rebar-Dowelling"],
     techChips: [
       { label: "AS 5216 compliant", cls: "bg-red-100 text-red-800" },
@@ -69,8 +73,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://aus.sika.com",
     accentColor: "#0369a1",
     name: "Sika AnchorFix-3+ — Epoxy Acrylate for Structural Stitch Bars and Dowels",
-    descriptionLine: "TODO: owner confirm — AnchorFix-3+ not found on current Sika AU chemical anchoring page (current lineup is AnchorFix-1, AnchorFix-3001, AnchorFix-3030); chemistry described as 'epoxy acrylate' is also unconfirmed for current product — 2-part epoxy acrylate — crack stitching and rebar dowelling — dry and damp holes — 330 mL cartridge — 0°C to 40°C installation range",
-    productType: "2-part epoxy acrylate injectable adhesive — structural crack stitching — TODO: owner confirm product name and chemistry current on Sika AU",
+    descriptionLine: "2-part epoxy acrylate — crack stitching and rebar dowelling — dry and damp holes — 330 mL cartridge — 0°C to 40°C installation range",
+    productType: "2-part epoxy acrylate injectable adhesive — structural crack stitching — Sika Australia",
+    dataNote: "Owner to confirm — AnchorFix-3+ is not found on the current Sika Australia chemical anchoring page (current lineup is AnchorFix-1, AnchorFix-3001, AnchorFix-3030), and the 'epoxy acrylate' chemistry and 330 mL cartridge size are unconfirmed for the current product (AnchorFix-3001 is 250 mL). Confirm the correct current product name, chemistry, and cartridge size with Sika Australia before specifying.",
     filterTags: ["Epoxy-Acrylate", "Dry-Hole", "Damp-Hole", "Crack-Stitching", "Rebar-Dowelling"],
     techChips: [
       { label: "Epoxy acrylate chemistry", cls: "bg-sky-100 text-sky-800" },
@@ -103,8 +108,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.ramset.com.au",
     accentColor: "#78716c",
     name: "Ramset Chemset Epoxy 500+ — Crack Stitching and Structural Dowelling",
-    descriptionLine: "TODO: owner confirm — Chemset Epoxy 500+ URL returns 404 on current Ramset AU site; current product appears to be ChemSet Reo 502 XTREM (600 mL cartridge — not 380/585 mL as stated; rated for dry/wet/flooded holes; AS 5216; seismic C1 and C2) — confirm product name, cartridge size, and wet-hole capability before specifying",
-    productType: "2-part epoxy anchoring adhesive — AS 5216 — TODO: owner confirm current Ramset product name — Ramset Australia",
+    descriptionLine: "2-part epoxy anchoring adhesive — AS 5216 compliant — crack stitching and rebar dowelling — dry and damp concrete — 380/585 mL cartridges",
+    productType: "2-part epoxy anchoring adhesive — AS 5216 — Ramset Australia",
+    dataNote: "Owner to confirm — Chemset Epoxy 500+ returns a 404 on the current Ramset Australia site; the current product appears to be ChemSet Reo 502 XTREM (600 mL cartridge, not 380/585 mL as stated; rated for dry/wet/flooded holes; AS 5216; seismic C1 and C2). Confirm the product name, cartridge size, and wet-hole capability with Ramset Australia before specifying.",
     filterTags: ["AS-5216", "Epoxy", "Dry-Hole", "Damp-Hole", "Crack-Stitching", "Rebar-Dowelling"],
     techChips: [
       { label: "AS 5216 compliant", cls: "bg-stone-100 text-stone-700" },
@@ -135,8 +141,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.mapei.com/au",
     accentColor: "#dc2626",
     name: "Mapei Mapefox EW — Epoxy Adhesive for Crack Stitching in Wet Conditions",
-    descriptionLine: "TODO: owner confirm — Mapei AU site blocked (Cloudflare); could not verify product name, EW wet-hole rating, or availability from live source — 2-part epoxy — EW variant rated for damp and wet holes — crack stitching in basements and retaining walls — dispenser gun with static mixing nozzle",
-    productType: "2-part epoxy anchoring adhesive — damp / wet hole variant — TODO: owner confirm from current Mapei AU TDS — Mapei Australia",
+    descriptionLine: "2-part epoxy — EW variant rated for damp and wet holes — crack stitching in basements and retaining walls — dispenser gun with static mixing nozzle",
+    productType: "2-part epoxy anchoring adhesive — damp / wet hole variant — Mapei Australia",
+    dataNote: "Owner to confirm — the Mapei Australia site was blocked (Cloudflare) at the time of writing, so the product name, EW wet-hole rating, and availability could not be verified from a live source. Confirm all details against the current Mapei Australia TDS before specifying.",
     filterTags: ["Epoxy", "Damp-Hole", "Wet-Hole", "Crack-Stitching", "Rebar-Dowelling"],
     techChips: [
       { label: "EW — wet-hole rated", cls: "bg-red-100 text-red-800" },
@@ -163,6 +170,68 @@ const PRODUCTS: Product[] = [
       { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
     ],
   },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika AnchorFix-3030",
+    descriptionLine: "2-part pure-epoxy injectable anchoring adhesive (AS 5216) — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "2-part pure-epoxy injectable anchoring adhesive (AS 5216)",
+    filterTags: ["AS-5216", "Epoxy", "Dry-Hole", "Damp-Hole", "Crack-Stitching", "Rebar-Dowelling"],
+    techChips: [
+      { label: "2-part pure-epoxy injectable a", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Sika AnchorFix-3030 is a 2-part pure-epoxy injectable anchoring adhesive (AS 5216). High-performance pure-epoxy injection adhesive for crack-stitching dowels and rebar dowelling per AS 5216. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
+    technicalProperties: [
+      "2-part pure-epoxy injectable anchoring adhesive (AS 5216)",
+      "High-performance pure-epoxy injection adhesive for crack-stitching dowels and rebar dowelling per AS 5216.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
+    ],
+    procurementSources: [
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
+    ],
+  },
+  {
+    fullLabel: "Ramset",
+    brandUrl: "https://www.ramset.com.au",
+    accentColor: "#475569",
+    name: "Ramset ChemSet Reo502 XTREM",
+    descriptionLine: "High-strength pure-epoxy anchoring adhesive (seismic C1/C2) — confirm current specification and Australian availability with Ramset technical before specifying",
+    productType: "High-strength pure-epoxy anchoring adhesive (seismic C1/C2)",
+    filterTags: ["AS-5216", "Epoxy", "Dry-Hole", "Damp-Hole", "Crack-Stitching", "Rebar-Dowelling"],
+    techChips: [
+      { label: "High-strength pure-epoxy ancho", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ramset — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Ramset ChemSet Reo502 XTREM is a High-strength pure-epoxy anchoring adhesive (seismic C1/C2). Pure-epoxy seismic-rated (C1/C2) anchoring adhesive for rebar dowelling and crack-stitching in cracked concrete. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Ramset technical before specifying. TODO: verify specific performance figures from the current Ramset TDS.",
+    technicalProperties: [
+      "High-strength pure-epoxy anchoring adhesive (seismic C1/C2)",
+      "Pure-epoxy seismic-rated (C1/C2) anchoring adhesive for rebar dowelling and crack-stitching in cracked concrete.",
+      "Confirm key performance values (strength / coverage / application) from the current Ramset TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Ramset",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Ramset technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Ramset",
+    ],
+    procurementSources: [
+      { name: "Ramset — Australian trade supply", url: "https://www.ramset.com.au" },
+    ],
+  }
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -254,6 +323,8 @@ export function EpoxyAnchoringAdhesivesCCIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Compliance/qualification to AS 5216 (ETA-equivalent design data) — bond strength (MPa) & characteristic resistance for rebar/threaded rod; base type (pure epoxy vs epoxy-acrylate/hybrid — pure epoxy highest load & creep performance, sustained-load qualified); embedment depth & drill diameter per anchor size; concrete condition — dry / damp / water-filled hole variant & cracked vs uncracked concrete rating; gel (working) time & full cure time vs temperature; service & installation temperature range; sustained-load (creep) & seismic (C1/C2) category; chemical/fire resistance & elevated-temperature performance; bond to post-installed rebar (development length design); edge distance & spacing; hole-cleaning regime sensitivity.";
+
 export function EpoxyAnchoringAdhesivesCCProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -302,114 +373,7 @@ export function EpoxyAnchoringAdhesivesCCProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — epoxy anchoring adhesives for crack stitching — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll to view all</span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
-          </div>
-        </div>
-
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of epoxy anchoring adhesives for crack stitching. Confirm all product selections from current manufacturer TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Standard</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Hole condition</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Cartridge size</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Availability</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.standard}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.holeCondition}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.cartridge}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.availability}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={EPOXY_ANCHORING_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Epoxy anchoring & crack-stitching adhesives" />
     </>
   );
 }

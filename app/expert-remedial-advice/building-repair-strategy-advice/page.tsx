@@ -1,44 +1,50 @@
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
-import ExpertAdviceForm from "@/components/expert-advice/ExpertAdviceForm";
-import FileUploadZone from "@/components/expert-advice/FileUploadZone";
+import ServiceSchema from "@/components/expert-advice/ServiceSchema";
+import PageNav from "@/components/PageNav";
 
 const suitableFor = [
-  "Balcony waterproofing defects",
-  "Concrete spalling and reinforcement corrosion",
-  "Façade defects — render, cladding, cracks",
-  "Roof defects and membrane failures",
-  "Window and door perimeter failures",
-  "Planter box waterproofing issues",
-  "Basement and substructure water ingress",
-  "Mixed or multi-defect buildings with competing priorities",
-  "Façade building upgrades and refurbishments",
+  "Owners corporations considering different remedial repair options",
+  "Strata managers needing early technical direction before obtaining quotes",
+  "Committees unsure whether to repair, replace, stage or upgrade building elements",
+  "Buildings with balcony waterproofing, hob, balustrade or door threshold issues",
+  "Projects where the correct membrane system or repair system is unclear",
+  "Buildings with lintel corrosion, façade cracking, render failure or concrete spalling",
+  "Projects involving roof membranes, planter boxes, window leaks or external envelope defects",
+  "Clients unsure whether they need a builder, engineer, architect, façade consultant, waterproofing consultant or other specialist",
+  "Situations where previous repairs have failed and a better long-term strategy is needed",
+  "Projects where multiple repair options exist and the client wants practical guidance before proceeding",
 ];
 
 const includes = [
-  "Review of available photos, reports, quotes, and repair history",
-  "Identification of available repair options and pathways",
-  "Pros and cons of each approach",
-  "Patch repair vs. full replacement analysis",
-  "Staged vs. full rectification assessment",
-  "Temporary vs. long-term repair options",
-  "Priority and risk ranking across multiple defects",
-  "Guidance on which trade or consultant to engage first",
+  "Review of supplied photos, reports, drawings, scopes or background information",
+  "Strategic advice on possible repair approaches",
+  "Comment on suitable repair systems or construction methods",
+  "Preliminary comments on waterproofing, membranes, drainage, hobs, thresholds and balcony detailing where applicable",
+  "Review of balustrade, façade, lintel, window, door, roof or concrete repair strategy where relevant",
+  "Comment on whether repair, replacement, upgrade or staged works may be more appropriate",
+  "Identification of key risks that may affect cost, durability, access, sequencing or future maintenance",
+  "Advice on likely consultant, engineer, architect, builder or specialist involvement required",
+  "Comment on issues that may need further investigation before final design or tendering",
+  "Practical recommendations to help the client decide the next step before spending money on detailed documentation or construction pricing",
 ];
 
-const PRICING_GUIDE = [
-  { label: "Simple strategy review",         price: "from $750 + GST" },
-  { label: "Detailed strategy review",       price: "from $1,250 + GST" },
-  { label: "Complex / multi-defect review",  price: "from $1,500 + GST" },
-];
-
-const fieldClass =
-  "w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20";
-const labelClass = "mb-1.5 block text-sm font-semibold text-slate-700";
+export const metadata: Metadata = {
+  title: "Building Repair Strategy Advice | Expert Remedial Advice",
+  description:
+    "Tailored, risk-based repair strategy advice that prioritises the right remedial works in the right order to protect your building and its value.",
+  alternates: { canonical: "/expert-remedial-advice/building-repair-strategy-advice" },
+};
 
 export default function BuildingRepairStrategyAdvicePage() {
   return (
     <div className="min-h-screen bg-slate-100">
       <SiteHeader />
+      <ServiceSchema
+        name="Building Repair Strategy Advice"
+        description="Tailored, risk-based repair strategy advice that prioritises the right remedial works in the right order to protect your building and its value."
+        path="/expert-remedial-advice/building-repair-strategy-advice"
+      />
 
       <main className="px-6 py-10">
         <section className="mx-auto max-w-4xl">
@@ -48,6 +54,7 @@ export default function BuildingRepairStrategyAdvicePage() {
             <span>›</span>
             <span className="text-sky-800">Building Repair Strategy Advice</span>
           </div>
+          <PageNav />
 
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-700">Expert Remedial Advice</p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight text-sky-950 sm:text-3xl md:text-4xl">
@@ -60,10 +67,16 @@ export default function BuildingRepairStrategyAdvicePage() {
               <div className="mb-3 h-1 w-10 rounded-full bg-red-700" />
               <h2 className="text-base font-bold text-sky-950">What It Is</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                Independent desktop advice on the best repair pathway when the right approach is unclear, when multiple options are being considered, or when competing repair priorities need to be sorted out.
+                Building Repair Strategy Advice is for owners, strata managers and committees who need guidance on the best practical repair approach before committing to design, tendering or construction.
               </p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                This service is for situations where there is already some information available — photos, reports, quotes, or repair history — and what is needed is an independent view on what to do, in what order, and why.
+                This service is suitable where there may be more than one possible repair method, system or design approach, and the client needs help understanding which option may be more suitable, practical or cost-effective.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                We review the supplied photos, reports, drawings, scope information or background details and provide strategic advice on possible repair approaches. This may include comments on waterproofing systems, balcony detailing, balustrade options, hobs, lintels, façade repairs, window and door interfaces, concrete spalling repairs, roof membranes, planter boxes, drainage, access and staging.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                The aim is to help clients understand the likely repair pathway, avoid poor system selection, reduce future variation risk, and make better decisions before engaging consultants, engineers, architects, builders or specialist contractors.
               </p>
             </div>
 
@@ -98,89 +111,18 @@ export default function BuildingRepairStrategyAdvicePage() {
 
           </div>
 
-          {/* Pricing */}
+          {/* Call to action */}
           <div className="mt-6 rounded-xl bg-sky-950 px-6 py-5 text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">Pricing</p>
-            <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-2xl font-extrabold text-white">From $750</span>
-              <span className="text-base font-semibold text-sky-300">+ GST</span>
-            </div>
-            <ul className="mt-3 space-y-1.5">
-              {PRICING_GUIDE.map((g) => (
-                <li key={g.label} className="flex items-center justify-between gap-4 text-sm">
-                  <span className="text-sky-200">{g.label}</span>
-                  <span className="shrink-0 font-semibold text-white">{g.price}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-3 text-sm leading-6 text-sky-200">
-              Prices shown are starting prices. Final pricing will be confirmed after we review the information, photos and documents provided.
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">How It Works</p>
+            <p className="mt-2 text-sm leading-6 text-sky-100">
+              Submit your details, photos and documents on the next page. We will review your submission and confirm a fixed fee before any work begins.
             </p>
             <a
-              href="#request-form"
+              href="/expert-remedial-advice/building-repair-strategy-advice/request"
               className="mt-4 inline-flex rounded-xl bg-red-700 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-red-600"
             >
               Request This Advice
             </a>
-          </div>
-
-          {/* Request form */}
-          <div id="request-form" className="mt-6 scroll-mt-24">
-            <div className="mb-4">
-              <h2 className="text-xl font-extrabold text-sky-950">Request This Advice</h2>
-              <p className="mt-1 text-sm text-slate-500">
-                Fill in the details below. We will review your submission and confirm the fee before starting.
-              </p>
-            </div>
-
-            <ExpertAdviceForm service="building-repair-strategy-advice" serviceName="Building Repair Strategy Advice">
-              <div>
-                <label className={labelClass}>Identified Defect</label>
-                <input type="text" name="identifiedDefect" className={fieldClass} placeholder="e.g. Balcony waterproofing failure, concrete spalling, façade cracks" />
-              </div>
-              <FileUploadZone
-                name="reportsInvestigation"
-                label="Reports / Investigation Results"
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                hint="Inspection reports, engineering reports, photos, investigation results"
-                maxFiles={10}
-              />
-              <div>
-                <label className={labelClass}>
-                  Proposed Repair Options <span className="text-xs font-normal text-slate-400">(if any)</span>
-                </label>
-                <textarea name="proposedRepairOptions" rows={3} className={`${fieldClass} resize-y`} placeholder="List any repair options already being considered..." />
-              </div>
-              <div>
-                <label className={labelClass}>
-                  Previous Repair History <span className="text-xs font-normal text-slate-400">(if any)</span>
-                </label>
-                <textarea name="previousRepairHistory" rows={3} className={`${fieldClass} resize-y`} placeholder="Describe any previous repair attempts and their outcome..." />
-              </div>
-              <div>
-                <label className={labelClass}>Main Decision Needed</label>
-                <textarea name="mainDecisionNeeded" rows={2} className={`${fieldClass} resize-y`} placeholder="What is the key decision you need help with? e.g. patch vs. full replacement, sequencing of works, which trade to engage first" />
-              </div>
-              <div>
-                <label className={labelClass}>
-                  Urgency or Safety Concern <span className="text-xs font-normal text-slate-400">(optional)</span>
-                </label>
-                <input type="text" name="urgencySafetyConcern" className={fieldClass} placeholder="e.g. Active leak, safety hazard, approaching AGM deadline" />
-              </div>
-              <div className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3">
-                <p className="text-sm font-semibold text-sky-900">Strata plan recommended</p>
-                <p className="mt-1 text-xs leading-5 text-sky-700">
-                  If this is a strata or apartment building, please attach the strata plan below. It helps us pinpoint which lot and area is affected.
-                </p>
-              </div>
-              <FileUploadZone
-                name="strataPlan"
-                label="Strata Plan"
-                accept=".pdf,image/jpeg,image/png,image/heic"
-                hint="PDF or image of the strata plan (optional)"
-                maxFiles={2}
-              />
-            </ExpertAdviceForm>
           </div>
 
         </section>
@@ -200,12 +142,19 @@ export default function BuildingRepairStrategyAdvicePage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

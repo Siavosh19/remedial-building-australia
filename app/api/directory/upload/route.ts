@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
 const BUCKET = "directory-media";
 
 const PHOTO_LIMITS: Record<string, number> = {
@@ -44,11 +42,14 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return NextResponse.json({ error: "File storage not configured." }, { status: 503 });
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+  const supabase = supabaseAdmin;
+  // Ensure the bucket exists (idempotent — self-heals on first upload).
+  await supabase.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
   const safeName = `${company.id}/${mediaType}-${Date.now()}.${ext}`;
 

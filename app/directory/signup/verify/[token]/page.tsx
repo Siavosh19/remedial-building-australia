@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import AuthHeader from "@/components/AuthHeader";
 
 export default function VerifyEmailPage() {
   const params = useParams<{ token: string }>();
@@ -39,7 +40,9 @@ export default function VerifyEmailPage() {
   }, [params.token, router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+    <div className="min-h-screen bg-slate-50">
+      <AuthHeader />
+      <div className="flex min-h-[calc(100vh-57px)] items-center justify-center px-6">
       <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 shadow-sm text-center">
 
         {state === "loading" && (
@@ -91,6 +94,7 @@ export default function VerifyEmailPage() {
           </>
         )}
 
+      </div>
       </div>
     </div>
   );

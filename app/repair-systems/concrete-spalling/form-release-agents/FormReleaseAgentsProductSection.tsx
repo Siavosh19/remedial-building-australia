@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "Water-based"
@@ -38,7 +40,7 @@ type Product = {
   procurementSources: { name: string; url: string }[];
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
@@ -74,107 +76,38 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Fosroc Australia (via Parchem)",
-    brandUrl: "https://www.parchem.com.au",
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.fosroc.com.au",
+    tdsUrl: "https://www.fosroc.com.au/sites/default/files/products_file_storage/Fosroc_Form_Release_Agent_TDS.pdf",
     accentColor: "#7c2d12",
-    name: "Fosroc Ronaform — Water-Based Release Agent",
-    descriptionLine: "Water-based low-stain release agent for steel, plywood, and coated formwork — good coverage rate and low transfer to concrete face",
-    productType: "Water-based release agent — steel, plywood, and coated steel formwork",
-    filterTags: ["Water-based", "Spray-applied", "Brush-applied", "Steel-forms", "Plywood-forms", "Low-staining"],
+    name: "Fosroc Form Release Agent",
+    descriptionLine: "Chemical-reactive form release agent for steel, plywood and coated formwork — thin even coat by spray or brush — gives a clean strip and low staining of the concrete face",
+    productType: "Chemical-reactive form release agent — steel, plywood and coated formwork",
+    filterTags: ["Spray-applied", "Brush-applied", "Steel-forms", "Plywood-forms", "Low-staining"],
     techChips: [
-      { label: "Water-based", cls: "bg-orange-100 text-orange-900" },
-      { label: "Low transfer", cls: "bg-green-50 text-green-700" },
-      { label: "Steel and plywood", cls: "bg-slate-100 text-slate-700" },
+      { label: "Chemical release agent", cls: "bg-orange-100 text-orange-900" },
+      { label: "Steel / plywood / coated", cls: "bg-slate-100 text-slate-700" },
       { label: "Spray or brush", cls: "bg-slate-100 text-slate-700" },
+      { label: "Parchem — national", cls: "bg-slate-100 text-slate-700" },
     ],
     systemDescription:
-      "Fosroc Ronaform is a water-based release agent designed for steel and plywood formwork in concrete construction and repair applications. It is applied to clean formwork faces before repair mortar placement and provides a reliable release film that allows formwork to strip cleanly from the set mortar without damage to the mortar surface. Ronaform has a low transfer characteristic — the release film remains largely on the formwork face rather than transferring to the concrete surface — resulting in minimal staining or surface contamination on the finished mortar. Apply by brush, roller, or spray in a thin, even coat. In remedial repair work, Ronaform is commonly used on the plywood or steel side forms used to form up slab edge repairs, column base repairs, and beam soffit boxing. Available through Parchem Construction Supplies nationally. Coverage rate is typically 30–50 m2/L depending on surface texture and application method.",
+      "Fosroc Form Release Agent is the current Parchem-distributed form release agent for concrete formwork (the older Reebol WB is discontinued in Australia). It is applied as a thin, even film by spray or brush to steel, plywood and coated formwork faces before placement, giving a clean strip from the set concrete/mortar with low staining of the formed face. Confirm the current coverage rate, application method and pack size against the current Fosroc / Parchem TDS before specifying.",
     technicalProperties: [
-      "Water-based release agent — low VOC — for indoor and enclosed use",
-      "Suitable for steel formwork, coated steel, and plywood formwork faces",
-      "Low transfer to concrete face — minimal staining of repair mortar surface",
-      "Coverage 30–50 m2/L by spray or brush — apply in thin, even coat",
+      "Chemical-reactive form release agent for steel, plywood and coated formwork",
+      "Applied as a thin even coat by spray or brush before placing concrete or repair mortar",
+      "Low staining / clean strip of the formed face",
+      "Confirm coverage rate and pack size from the current Fosroc / Parchem TDS — N/A — sought",
     ],
     limitations: [
-      "Apply to dry formwork only — do not apply to wet or damp form faces",
-      "Allow to dry before placing mortar — typically 15–30 minutes at 23°C — do not place mortar onto wet release agent",
-      "Not suitable for uncoated foam or polystyrene formwork — use a mineral-oil-based or purpose-made release agent for polystyrene",
-      "Re-apply for each pour on reused formwork — do not rely on residual release agent from a previous pour",
+      "Apply to clean, dry formwork — a thin even film only; avoid pooling",
+      "Re-apply for each pour on reused formwork",
+      "Confirm coverage rate and current pack size with Parchem before specifying",
     ],
     procurementSources: [
-      { name: "Parchem Construction Supplies — nationally", url: "https://www.parchem.com.au" },
-      { name: "Fosroc via Parchem — concrete repair trade supply", url: "https://www.parchem.com.au" },
-      { name: "Trade concrete and formwork suppliers nationally", url: "https://www.parchem.com.au" },
+      { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
     ],
-  },
-  {
-    fullLabel: "Generic Supply — Workshop / Fuel Supplier",
-    brandUrl: "https://www.bunnings.com.au/trade",
-    accentColor: "#374151",
-    name: "Diesel Fuel / Mineral Oil — Non-Reactive Release",
-    descriptionLine: "Common site-mixed alternative — diesel fuel or light mineral oil applied to steel formwork — low cost but high staining and environmental risk",
-    productType: "Non-reactive petroleum-based release — diesel or mineral oil on steel forms",
-    filterTags: ["Solvent-based", "Mineral-oil", "Brush-applied", "Steel-forms"],
-    techChips: [
-      { label: "Diesel / mineral oil", cls: "bg-slate-700 text-white" },
-      { label: "Steel forms only", cls: "bg-slate-100 text-slate-700" },
-      { label: "High staining risk", cls: "bg-red-50 text-red-700" },
-      { label: "Not for exposed finishes", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "Diesel fuel and light mineral oil are non-reactive petroleum-based release agents that have been used in Australian construction as a low-cost alternative to purpose-made release agents, particularly on steel forms. Applied by brush or rag to a clean steel formwork face before placing mortar or concrete, they form a physical oil barrier that prevents the mortar from bonding to the steel. However, petroleum-based release agents have significant disadvantages compared to purpose-made water-based reactive products: they are high-staining — the oil transfers to the concrete face and leaves brown staining that cannot be removed easily; they are not reactive and do not bond to the form face, so they transfer more readily to the concrete surface; and they are environmental and fire hazards on site. Diesel and mineral oil release agents are not recommended for use in remedial repair work where the mortar surface will be visible, will receive a coating, or where staining will affect appearance or bond of subsequent finishes. Their use on sites with stormwater drainage must be managed carefully to prevent petroleum contamination.",
-    technicalProperties: [
-      "Non-reactive — oil film only — higher transfer to concrete face than reactive products",
-      "Low cost — widely available — suitable for rough steel formwork where staining is acceptable",
-      "Apply by brush or rag in thin coat — excess oil causes severe surface voids and staining",
-      "Suitable for steel forms only — damages plywood face and causes delamination of ply",
-    ],
-    limitations: [
-      "High staining of concrete and mortar face — the oil film transfers to the concrete surface and causes brown/grey staining — do not use where the mortar surface will be visible or will receive a coating",
-      "Environmental risk — do not allow diesel or mineral oil to drain to stormwater or soil — manage waste rags and spills as petroleum waste",
-      "Not suitable for plywood formwork — oil damages the ply adhesive and face veneer, causing delamination",
-      "Fire hazard — diesel fuel is a class C1 flammable liquid — do not use near hot work, open flame, or ignition sources",
-    ],
-    procurementSources: [
-      { name: "Service stations and fuel suppliers — nationally", url: "https://www.bunnings.com.au/trade" },
-      { name: "Hardware and trade supply — mineral oil", url: "https://www.bunnings.com.au/trade" },
-      { name: "Not recommended — use purpose-made water-based release agent instead", url: "https://aus.sika.com" },
-    ],
-  },
-  {
-    fullLabel: "Generic — Trade Plastics / Specialty Supply",
-    brandUrl: "https://www.construction-chemicals.com.au",
-    accentColor: "#d97706",
-    name: "Wax Emulsion Release Agent",
-    descriptionLine: "Wax-in-water emulsion release agent — better than diesel for release quality and staining — suitable for polished or architectural concrete surface finishes",
-    productType: "Wax emulsion release agent — steel, plywood, and FRP formwork",
-    filterTags: ["Water-based", "Wax-emulsion", "Spray-applied", "Brush-applied", "Steel-forms", "Plywood-forms", "Low-staining"],
-    techChips: [
-      { label: "Wax emulsion", cls: "bg-amber-100 text-amber-900" },
-      { label: "Lower staining than oil", cls: "bg-green-50 text-green-700" },
-      { label: "Steel, plywood, FRP", cls: "bg-slate-100 text-slate-700" },
-      { label: "Architectural finishes", cls: "bg-slate-100 text-slate-700" },
-    ],
-    systemDescription:
-      "Wax-in-water emulsion release agents are a step above petroleum oils in quality — they consist of a wax compound emulsified in water that is applied to formwork and dries to a thin wax film that provides physical release without significant transfer to the concrete face. Wax emulsion release agents are suitable for steel, plywood, and FRP (fibreglass) formwork and produce a cleaner concrete surface with less staining than petroleum-based products. They are used in applications where the finished concrete or mortar surface quality matters — in remedial work, this includes exposed column repairs, architectural concrete repairs, and precast concrete component reinstatement. Apply by spray or brush to clean, dry formwork and allow to dry before placing mortar. Available from specialist concrete chemicals suppliers including Construction Chemicals Australia. Wax emulsion release agents are not as technically advanced as modern reactive water-based products (such as Sika Separol WB or Fosroc Ronaform) but are a reasonable intermediate option and are widely used in precast production.",
-    technicalProperties: [
-      "Wax-in-water emulsion — dries to thin wax film — physical release without reactive chemistry",
-      "Lower staining than petroleum oils — better surface finish on exposed concrete faces",
-      "Suitable for steel, plywood, and FRP fibreglass formwork",
-      "Apply by spray or brush — allow to dry before placing mortar — re-apply each pour",
-    ],
-    limitations: [
-      "Not as technically advanced as modern reactive water-based products — modern reactive release agents (Sika Separol WB, Fosroc Ronaform) provide better release and lower staining on high-reuse formwork",
-      "Apply to dry formwork only — wax emulsion does not adhere to wet form faces",
-      "Allow full dry time before placing mortar — wet wax emulsion transfers to concrete face and can cause surface voids",
-      "Do not use on polystyrene or expanded foam formwork inserts — wax emulsion can attack the surface of some foam types",
-    ],
-    procurementSources: [
-      { name: "Construction Chemicals Australia — specialty supply", url: "https://www.construction-chemicals.com.au" },
-      { name: "Sika, Fosroc, Mapei — purpose-made alternatives preferred", url: "https://aus.sika.com" },
-      { name: "Trade concrete chemical suppliers — nationally available", url: "https://www.construction-chemicals.com.au" },
-    ],
-  },
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -267,6 +200,117 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["formwork_material", "steel / plywood / frp / polystyrene_foam", "polystyrene_foam → mineral-oil/purpose-made; petroleum oils damage plywood"],
+    ["finish_quality", "exposed_architectural / hidden", "exposed → low-staining reactive/wax (NOT diesel/oil)"],
+    ["environment", "enclosed_indoor / outdoor", "enclosed_indoor → low-VOC water-based only (no petroleum fumes)"],
+    ["chemistry", "water_based_reactive / wax_emulsion / petroleum_oil", "water_based_reactive preferred; petroleum_oil last resort"],
+    ["reuse", "single_pour / high_reuse", "high_reuse → confirm multi-pour suitability"],
+  ],
+  json: {
+    category: "form_release_agents",
+    stage1_gates: {
+      formwork_material: { allowed: ["steel", "plywood", "frp", "polystyrene_foam"], rule: "polystyrene_foam=mineral-oil/purpose-made; oils damage plywood" },
+      finish_quality: { allowed: ["exposed_architectural", "hidden"], rule: "exposed=low-staining reactive/wax; not diesel/oil" },
+      environment: { allowed: ["enclosed_indoor", "outdoor"], rule: "enclosed_indoor=low-VOC water-based only" },
+      chemistry: { allowed: ["water_based_reactive", "wax_emulsion", "petroleum_oil"], rule: "water_based_reactive preferred; petroleum_oil last resort" },
+      reuse: { allowed: ["single_pour", "high_reuse"], rule: "high_reuse=confirm multi-pour" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika Separol WB — Water-Based Form Release Agent": {
+    rows: [
+      ["formwork_compat", "gate", "steel/plywood"],
+      ["chemistry", "tag", "water_based_reactive"],
+      ["finish_quality", "gate", "exposed_ok"],
+      ["voc", "gate", "low_voc"],
+      ["application", "gate", "spray/brush/roller"],
+      ["coverage_m2_l", "rank", "null (unconfirmed)"],
+      ["staining_risk", "meta", "low"],
+      ["supply", "meta", "sika/parchem"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_separol_wb",
+      gates: { formwork_compat: "steel/plywood", finish_quality: "exposed_ok", voc: "low_voc", application: "spray/brush/roller" },
+      tag: { chemistry: "water_based_reactive" },
+      rank: { coverage_m2_l: null },
+      meta: { staining_risk: "low", supply: "sika/parchem", alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sika Separol WB", confirmed_date: null },
+    },
+  },
+  "Fosroc Ronaform — Water-Based Release Agent": {
+    rows: [
+      ["formwork_compat", "gate", "steel/plywood/coated_steel"],
+      ["chemistry", "tag", "water_based_reactive"],
+      ["finish_quality", "gate", "exposed_ok"],
+      ["voc", "gate", "low_voc"],
+      ["application", "gate", "spray/brush/roller"],
+      ["coverage_m2_l", "rank", "30-50"],
+      ["staining_risk", "meta", "low"],
+      ["supply", "meta", "parchem"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fosroc_ronaform",
+      gates: { formwork_compat: "steel/plywood/coated_steel", finish_quality: "exposed_ok", voc: "low_voc", application: "spray/brush/roller" },
+      tag: { chemistry: "water_based_reactive" },
+      rank: { coverage_m2_l: "30-50" },
+      meta: { staining_risk: "low", supply: "parchem", alternative_product: null, data_status: "verified", selectable: true, source: "parchem.com.au Fosroc Ronaform", confirmed_date: null },
+    },
+  },
+  "Diesel Fuel / Mineral Oil — Non-Reactive Release": {
+    rows: [
+      ["formwork_compat", "gate", "steel_only"],
+      ["chemistry", "tag", "petroleum_oil"],
+      ["finish_quality", "gate", "hidden_only"],
+      ["voc", "gate", "high"],
+      ["application", "gate", "brush/rag"],
+      ["coverage_m2_l", "rank", "null (unconfirmed)"],
+      ["staining_risk", "meta", "high"],
+      ["supply", "meta", "fuel/hardware"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "diesel_mineral_oil_release",
+      gates: { formwork_compat: "steel_only", finish_quality: "hidden_only", voc: "high", application: "brush/rag" },
+      tag: { chemistry: "petroleum_oil" },
+      rank: { coverage_m2_l: null },
+      meta: { staining_risk: "high", supply: "fuel/hardware", alternative_product: "water_based_reactive (preferred)", data_status: "verified", selectable: true, source: "generic site method — NOT recommended for remedial/exposed work (staining + environmental + fire risk)", confirmed_date: null },
+    },
+  },
+  "Wax Emulsion Release Agent": {
+    rows: [
+      ["formwork_compat", "gate", "steel/plywood/frp"],
+      ["chemistry", "tag", "wax_emulsion"],
+      ["finish_quality", "gate", "exposed_ok"],
+      ["voc", "gate", "low_voc"],
+      ["application", "gate", "spray/brush"],
+      ["coverage_m2_l", "rank", "null (unconfirmed)"],
+      ["staining_risk", "meta", "low_moderate"],
+      ["supply", "meta", "specialty_chemicals"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "wax_emulsion_release",
+      gates: { formwork_compat: "steel/plywood/frp", finish_quality: "exposed_ok", voc: "low_voc", application: "spray/brush" },
+      tag: { chemistry: "wax_emulsion" },
+      rank: { coverage_m2_l: null },
+      meta: { staining_risk: "low_moderate", supply: "specialty_chemicals", alternative_product: "water_based_reactive (more advanced)", data_status: "verified", selectable: true, source: "construction-chemicals.com.au wax emulsion release agent", confirmed_date: null },
+    },
+  },
+};
+
 export function FormReleaseAgentsIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -294,27 +338,10 @@ export function FormReleaseAgentsIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Reactive (chemically-active, water-based) vs non-reactive (barrier oil) type; surface-finish quality / off-form class (AS 3610 Class 1–5) & blowhole/staining control; compatibility with formwork face (steel/ply/FRP/coated) — staining/reaction risk; effect on subsequent bond — adhesives, coatings, renders, paint (must not impair); coverage rate (m²/L); VOC & WHS/environmental (water-based low-VOC preferred); application method & film thickness; reuse cycles; temperature range; rust-inhibition for steel forms; no concrete retardation/dusting";
+
 export function FormReleaseAgentsProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (id: FilterTag) => {
-    setActiveFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const visibleProducts = activeFilters.size === 0
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-
-  const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" });
-  };
 
   return (
     <>
@@ -346,139 +373,7 @@ export function FormReleaseAgentsProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 release agent products — reactive water-based, wax emulsion, and petroleum alternatives — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of form release agents for concrete spalling repair. Always apply to dry formwork in thin, even coat — allow to dry before placing mortar.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Staining</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Suitable Forms</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.staining}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.suitableforms}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" />
     </>
   );
 }

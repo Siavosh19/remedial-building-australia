@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 import CategoryFilter from "./CategoryFilter";
+import PageNav from "@/components/PageNav";
 
+import SiteHeader from "@/components/SiteHeader";
+import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 export const metadata: Metadata = {
   title: "Reinforcement Corrosion — Concrete & Structural Defects — Remedial Building Australia",
   description: "Product category reference for reinforcement corrosion repair systems — corrosion inhibitors, epoxy zinc-rich primers, cathodic protection, CFRP strengthening, and repair mortars from Sika, Fosroc, Mapei, Vector Corrosion and more.",
@@ -12,7 +15,6 @@ const GROUPS = [
     heading: "Corrosion Protection",
     categories: [
       { label: "Corrosion inhibitors (MCI)", count: 4, slug: "corrosion-inhibitors-mci" },
-      { label: "Epoxy zinc-rich primers", count: 4, slug: "epoxy-zinc-rich-primers" },
       { label: "Rebar primers & inhibitors", count: 4, slug: "rebar-primers-inhibitors" },
       { label: "Cathodic protection", count: 3, slug: "cathodic-protection" },
     ],
@@ -45,19 +47,7 @@ const BASE = "/repair-systems/reinforcement-corrosion";
 export default function ReinforcementCorrosionPage() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3"><div><div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div><div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Technical Remedial Building Platform</div></div></a>
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap text-sky-950 underline underline-offset-4 decoration-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
-          </nav>
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
         <section className="border-b border-slate-200 bg-white px-8 py-14">
@@ -68,6 +58,7 @@ export default function ReinforcementCorrosionPage() {
               <a href="/repair-systems/concrete-structural-defects" className="hover:text-sky-700 transition">Concrete &amp; Structural Defects</a><span>/</span>
               <span className="text-sky-950">Reinforcement corrosion</span>
             </nav>
+            <PageNav />
             <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 02 — Concrete &amp; Structural Defects</p>
@@ -114,9 +105,9 @@ export default function ReinforcementCorrosionPage() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { href: "/repair-systems/concrete-spalling", label: "Concrete Spalling", desc: "Repair mortars, rebar primers, curing, formwork — 13 product categories" },
-                { href: "/repair-systems/concrete-cracking", label: "Concrete Cracking", desc: "PU and epoxy injection resins, crack ports, sealants — 7 product categories" },
-                { href: "/repair-systems/settlement-cracks", label: "Settlement Cracks", desc: "Injection resins, structural anchors, lime mortars — 8 product categories" },
+                { href: "/repair-systems/concrete-spalling", label: "Concrete Spalling", desc: "Repair mortars, rebar primers, curing, slab-edge repair — 11 product categories" },
+                { href: "/repair-systems/concrete-cracking", label: "Concrete Cracking", desc: "PU and epoxy injection, crack ports, anchors, sealants — 9 product categories" },
+                { href: "/repair-systems/magnesite-flooring-deterioration", label: "Magnesite Flooring", desc: "Moisture suppression primers, self-levellers, patching — 4 product categories" },
                 { href: "/repair-systems/concrete-structural-defects", label: "All Subcategories", desc: "Full concrete and structural defects repair system index" },
               ].map(card => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-sky-200 hover:bg-white hover:shadow-md">
@@ -130,16 +121,26 @@ export default function ReinforcementCorrosionPage() {
         </section>
       </main>
 
+      <SeoCrossPromo />
+
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10"><a href="/repair-systems/concrete-structural-defects" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">← Concrete &amp; Structural Defects</a></div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div><div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div><p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p></div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a><a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a><a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a><a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a><a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">© 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.</div>

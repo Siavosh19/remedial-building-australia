@@ -23,6 +23,8 @@ import {
   List,
   Pencil,
   Lightbulb,
+  Newspaper,
+  Tags,
 } from "lucide-react";
 
 const NAV = [
@@ -30,13 +32,17 @@ const NAV = [
   { href: "/directory/admin/directory-companies", label: "Directory Companies", icon: List },
   { href: "/directory/admin/claims", label: "Claim Requests", icon: FileCheck },
   { href: "/directory/admin/quote-requests", label: "Quote Requests", icon: MessageSquare },
+  { href: "/directory/admin/client-quote-requests", label: "Client Quote Requests", icon: ClipboardList },
+  { href: "/directory/admin/client-users", label: "Client Users", icon: Users },
   { href: "/directory/admin/expert-advice-requests", label: "Expert Advice Requests", icon: Lightbulb },
   { href: "/directory/admin/suppliers", label: "Suppliers", icon: Building2 },
   { href: "/directory/admin/supplier-marketing", label: "Promotions", icon: Megaphone },
   { href: "/directory/admin/billing", label: "Billing", icon: CreditCard },
+  { href: "/directory/admin/plans", label: "Plans & Pricing", icon: Tags },
   { href: "/directory/admin/ai-scope-users", label: "AI Scope Users", icon: Bot },
   { href: "/directory/admin/analytics", label: "Analytics", icon: BarChart2 },
   { href: "/directory/admin/audit-log", label: "Audit Log", icon: ClipboardList },
+  { href: "/directory/admin/news-articles", label: "News Articles", icon: Newspaper },
   { href: "/directory/admin/rba-insights", label: "RBA Insights", icon: Pencil },
   { href: "/directory/admin/update-requests", label: "Update Requests", icon: RefreshCw },
   { href: "/directory/admin/news-subscribers", label: "Subscribers", icon: Mail },

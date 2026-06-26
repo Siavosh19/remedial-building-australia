@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Biocide"
@@ -33,6 +34,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -40,9 +42,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
     accentColor: "#e2003a",
-    name: "TODO: owner confirm — Dulux Weathershield Mould & Mildew Cleaner (exact current AU product name unconfirmed — could not confirm a dedicated 'Weathershield Mould & Mildew Cleaner' product on dulux.com.au at time of verification — Dulux AU surface preparation guidance references generic bleach solution or Sugar Soap for pre-paint cleaning — confirm whether a dedicated Dulux biocide surface wash product exists in the current AU range with Dulux technical)",
+    name: "Dulux Weathershield Mould & Mildew Cleaner",
     descriptionLine: "Concentrated biocide surface wash for exterior masonry and render — kills mould, mildew and algae before repainting — widely available nationally",
-    productType: "TODO: owner confirm — Biocide pre-paint surface wash — masonry and render (product name unconfirmed — see name field)",
+    productType: "Biocide pre-paint surface wash — masonry and render",
+    dataNote: "Owner to confirm — exact current AU product name unconfirmed: a dedicated 'Weathershield Mould & Mildew Cleaner' product could not be confirmed on dulux.com.au at the time of verification, and Dulux AU surface preparation guidance references a generic bleach solution or Sugar Soap for pre-paint cleaning. Confirm whether a dedicated Dulux biocide surface wash product exists in the current AU range with Dulux technical before publishing.",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Dilutable", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Mould kill", cls: "bg-red-100 text-red-800" },
@@ -112,9 +115,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Taubmans Australia",
     brandUrl: "https://www.taubmans.com.au",
     accentColor: "#7c3aed",
-    name: "TODO: owner confirm — Taubmans Mould Killer (CRITICAL: the current Taubmans mould product appears to be 'Taubmans Advanced Adhesion & Mould Blocker' which is a PRIMER/PREPCOAT that is applied and LEFT ON — it is NOT a biocide rinse-off wash — the card describes a concentrated dilutable wash product, which does not match the current product type — confirm with Taubmans technical whether a separate biocide rinse-off wash product exists in the current Taubmans AU range)",
-    descriptionLine: "TODO: owner confirm — Concentrated mould, mildew and algae surface treatment for exterior facades — dilutable biocide wash as mandatory pre-paint preparation before exterior recoating (product type may differ from current Taubmans AU product — see name field)",
-    productType: "TODO: owner confirm — Concentrated biocide surface wash — exterior pre-paint prep (current Taubmans mould product may be a primer/prepcoat, not a rinse-off wash — confirm product type with Taubmans technical)",
+    name: "Taubmans Mould Killer",
+    descriptionLine: "Concentrated mould, mildew and algae surface treatment for exterior facades — dilutable biocide wash as mandatory pre-paint preparation before exterior recoating",
+    productType: "Concentrated biocide surface wash — exterior pre-paint prep",
+    dataNote: "Owner to confirm — critical product-type mismatch: the current Taubmans mould product appears to be 'Taubmans Advanced Adhesion & Mould Blocker', a primer/prepcoat that is applied and left on, NOT a biocide rinse-off wash as described on this card. Confirm with Taubmans technical whether a separate biocide rinse-off wash product exists in the current Taubmans AU range before publishing.",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Dilutable", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Concentrated", cls: "bg-purple-100 text-purple-800" },
@@ -148,9 +152,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
     accentColor: "#b45309",
-    name: "TODO: owner confirm — Haymes Mould Wash (exact current AU product name unconfirmed — could not confirm a product named 'Haymes Mould Wash' on haymespaint.com.au at time of verification — confirm current biocide surface wash product name in the Haymes range with Haymes technical)",
+    name: "Haymes Mould Wash",
     descriptionLine: "Australian-made biocide surface wash for mould and algae treatment on exterior facades — part of the Haymes surface preparation system ahead of exterior topcoat repainting",
-    productType: "TODO: owner confirm — Biocide surface wash — exterior masonry and render — Australian-made (product name unconfirmed — see name field)",
+    productType: "Biocide surface wash — exterior masonry and render — Australian-made",
+    dataNote: "Owner to confirm — exact current AU product name unconfirmed: a product named 'Haymes Mould Wash' could not be confirmed on haymespaint.com.au at the time of verification. Confirm the current biocide surface wash product name in the Haymes range with Haymes technical before publishing.",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Dilutable", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Australian-made", cls: "bg-amber-100 text-amber-800" },
@@ -183,9 +188,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
     accentColor: "#059669",
-    name: "TODO: owner confirm — Mapei Mapecide (WRONG PRODUCT NAME — 'Mapecide' not found on mapei.com/au at time of verification — the Mapei AU biocide/mould product found is 'Mapei Ultracare Mould Remover' (tile and surface product) — confirm whether 'Mapecide' exists in the current Mapei AU range or whether the correct product for facade biocide preparation is a different Mapei product — confirm with Mapei Australia technical)",
+    name: "Mapei Mapecide",
     descriptionLine: "Professional-grade biocidal wash for mould, algae, moss and lichen on exterior masonry, render and concrete — specialist remedial product for building restoration and facade repainting preparation",
-    productType: "TODO: owner confirm — Professional biocidal wash — exterior masonry and concrete surfaces (product name 'Mapecide' not confirmed on Mapei AU — see name field)",
+    productType: "Professional biocidal wash — exterior masonry and concrete surfaces",
+    dataNote: "Owner to confirm — product name unverified: 'Mapecide' could not be found on mapei.com/au at the time of verification, and the Mapei AU biocide/mould product found is 'Mapei Ultracare Mould Remover' (a tile and surface product). Confirm whether 'Mapecide' exists in the current Mapei AU range, or whether the correct product for facade biocide preparation is a different Mapei product, with Mapei Australia technical before publishing.",
     filterTags: ["Biocide", "Mould-kill", "Algae-kill", "Pre-paint", "Surface-wash", "Chlorine-based", "Exterior", "Pre-coat-prep"],
     techChips: [
       { label: "Professional grade", cls: "bg-green-100 text-green-800" },
@@ -762,7 +768,8 @@ export function BiocideSurfacePrepProductSection() {
                     <CollapsibleList items={product.limitations} icon="x" limit={3} />
                   </div>
                 </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

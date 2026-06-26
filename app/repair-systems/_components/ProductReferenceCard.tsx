@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckCircle, XCircle, ExternalLink, FileText, ArrowRight } from "lucide-react";
+import { DataNote } from "./ProductPageShared";
 
 // ── Shared types ──────────────────────────────────────────────────────────────
 
@@ -20,6 +21,7 @@ export type ProductCardData = {
   technicalProperties?: string[];
   limitations?: string[];
   procurementSources?: { name: string; url?: string }[];
+  dataNote?: string;
   // Selector-specific additions — rendered around the card, not inside it
   selected?: boolean;
   onSelect?: () => void;
@@ -147,6 +149,7 @@ export function ProductReferenceCard({
   name, brand, brandUrl, tdsUrl, accentColor,
   descriptionLine, techChips, productType,
   systemDescription, technicalProperties, limitations, procurementSources,
+  dataNote,
   selected, onSelect, sponsored, referenceUrl,
 }: ProductCardData) {
   const hasRichContent = !!(systemDescription || technicalProperties?.length || limitations?.length);
@@ -233,8 +236,13 @@ export function ProductReferenceCard({
 
       {/* ── Procurement sources ── */}
       {procurementSources?.length ? (
-        <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+        <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+          {dataNote && <DataNote text={dataNote} />}
           <CollapsibleSources sources={procurementSources} />
+        </div>
+      ) : dataNote ? (
+        <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+          <DataNote text={dataNote} />
         </div>
       ) : null}
 

@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "PVDF"
@@ -35,6 +36,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -207,9 +209,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Wattyl Industrial Coatings",
     brandUrl: "https://www.wattyl.com.au",
     accentColor: "#059669",
-    name: "TODO: owner confirm — Wattyl Industrial Fluorocoat (exact current AU product name unconfirmed — 'Wattyl Industrial Fluorocoat' not found on wattyl.com.au Protective Coatings range at time of verification — confirm current site-applied fluoropolymer product name in the Wattyl industrial/protective range with Wattyl technical)",
+    name: "Wattyl Industrial Fluorocoat",
     descriptionLine: "Site-applied fluoropolymer coating for metal cladding recoating — Wattyl's high-performance architectural metal recoat system — suitable for site application to existing aluminium, steel, and ACP panels where factory PVDF recoating is impractical",
-    productType: "TODO: owner confirm — Site-applied fluoropolymer topcoat — architectural metal recoating (product name unconfirmed — see name field)",
+    productType: "Site-applied fluoropolymer topcoat — architectural metal recoating",
+    dataNote: "Owner to confirm — exact current AU product name unconfirmed: 'Wattyl Industrial Fluorocoat' was not found on the wattyl.com.au Protective Coatings range at the time of verification. Confirm the current site-applied fluoropolymer product name in the Wattyl industrial/protective range with Wattyl technical before publishing.",
     filterTags: ["Fluoropolymer", "Metal-cladding", "Aluminium", "ACP-recoating", "UV-resistant", "Coastal", "Site-applied", "High-performance", "2-pack"],
     techChips: [
       { label: "Site-Applied", cls: "bg-emerald-100 text-emerald-800" },
@@ -453,6 +456,7 @@ function ProductCard({ product }: { product: Product }) {
               ))}
             </ul>
           </div>
+          {product.dataNote && <DataNote text={product.dataNote} />}
           <div>
             <p className="font-semibold text-slate-700 mb-1">Procurement</p>
             <ul className="space-y-1">

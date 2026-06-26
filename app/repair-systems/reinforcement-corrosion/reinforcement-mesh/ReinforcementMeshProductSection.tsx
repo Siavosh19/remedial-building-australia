@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "Welded-mesh"
@@ -256,6 +258,79 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["need", "section_loss_replacement / overlay_reinforcement / not_required", "only where reinforcement is lost or supplementary reinforcement is specified"],
+    ["ductility", "D500L / D500N", "primary structural → D500N; light overlay/topping → D500L (as specified)"],
+    ["form", "mesh / bar", "mesh for overlays/slabs; bar for starter bars/dowels/structural"],
+    ["engineer_specified", "required / not_required", "grade/diameter taken from structural drawings — engineer-specified"],
+  ],
+  json: {
+    category: "reinforcement_mesh",
+    stage1_gates: {
+      need: { allowed: ["section_loss_replacement", "overlay_reinforcement", "not_required"], rule: "only where reinforcement lost/supplementary specified" },
+      ductility: { allowed: ["D500L", "D500N"], rule: "primary structural=D500N; light overlay=D500L" },
+      form: { allowed: ["mesh", "bar"], rule: "mesh=overlays/slabs; bar=starter/dowels/structural" },
+      engineer_specified: { allowed: ["required", "not_required"], rule: "grade/diameter from structural drawings" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "SL62 Welded Mesh — 6 mm D500L": {
+    rows: [
+      ["form", "gate", "mesh"],
+      ["ductility", "gate", "D500L"],
+      ["application", "gate", "overlay_reinforcement (thin overlays/toppings)"],
+      ["diameter", "meta", "6 mm @ 200×200"],
+      ["sheet_size", "meta", "6.0 × 2.4 m"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sl62_welded_mesh", gates: { form: "mesh", ductility: "D500L", application: "overlay_reinforcement" }, tag: {}, rank: {}, meta: { diameter: "6mm@200x200", sheet_size: "6.0x2.4m", data_status: "verified", selectable: true, source: "InfraBuild SL62 — D500L low-ductility; not for D500N applications", confirmed_date: null } },
+  },
+  "SL81 Welded Mesh — 8 mm D500L": {
+    rows: [
+      ["form", "gate", "mesh"],
+      ["ductility", "gate", "D500L"],
+      ["application", "gate", "overlay_reinforcement (thicker overlays/pours)"],
+      ["diameter", "meta", "8 mm @ 200×200"],
+      ["sheet_size", "meta", "standard sheet"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sl81_welded_mesh", gates: { form: "mesh", ductility: "D500L", application: "overlay_reinforcement" }, tag: {}, rank: {}, meta: { diameter: "8mm@200x200", sheet_size: "standard", data_status: "verified", selectable: true, source: "InfraBuild SL81 — D500L; heavier than SL62 for thicker overlays/repair pours", confirmed_date: null } },
+  },
+  "N12 / N16 Deformed Bar — D500N": {
+    rows: [
+      ["form", "gate", "bar"],
+      ["ductility", "gate", "D500N"],
+      ["application", "gate", "section_loss_replacement / starter_bars / dowels"],
+      ["diameter", "meta", "12 mm or 16 mm"],
+      ["sheet_size", "meta", "12 m lengths (cut/bent to order)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "n12_n16_deformed_bar", gates: { form: "bar", ductility: "D500N", application: "section_loss_replacement" }, tag: {}, rank: {}, meta: { diameter: "12mm/16mm", sheet_size: "12m_cut_bent", data_status: "verified", selectable: true, source: "InfraBuild N12/N16 D500N — normal ductility; starter bars, dowels, structural repair pours", confirmed_date: null } },
+  },
+  "Trench Mesh L8TM / L11TM": {
+    rows: [
+      ["form", "gate", "mesh (strip)"],
+      ["ductility", "gate", "D500L"],
+      ["application", "gate", "overlay_reinforcement (strip/edge beams)"],
+      ["diameter", "meta", "L8TM / L11TM — 3-bar"],
+      ["sheet_size", "meta", "trench mesh strip"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "trench_mesh_l8tm_l11tm", gates: { form: "mesh", ductility: "D500L", application: "overlay_reinforcement" }, tag: {}, rank: {}, meta: { diameter: "L8TM/L11TM_3bar", sheet_size: "trench_strip", data_status: "verified", selectable: true, source: "InfraBuild trench mesh L8TM/L11TM — D500L 3-bar strip", confirmed_date: null } },
+  },
+};
+
 export function ReinforcementMeshIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -282,6 +357,8 @@ export function ReinforcementMeshIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Steel type & corrosion duty — carbon D500 (welded mesh / deformed bar) vs 316 stainless (chloride-exposed, splash/coastal supplementary reinforcement); grade & ductility class to AS/NZS 4671 (D500L mesh / D500N bar, L vs N ductility); bar diameter & pitch (6/8 mm mesh, N12/N16 bar, trench mesh L8/L11TM); cross-sectional steel area (mm²/m) to engineer design (AS 3600); cover requirement & exposure classification (AS 3600 Table — A1–C2 / cover for durability); lap/development length & tie/weld detailing; compatibility/galvanic isolation when stainless adjacent to carbon steel; chloride & carbonation environment; bend/fabrication & sheet/bar size; concrete cover vs repair depth in patch repairs.";
 
 export function ReinforcementMeshProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -335,139 +412,7 @@ export function ReinforcementMeshProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — welded mesh, deformed bar, and trench mesh for concrete repair reinforcement — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Reinforcing mesh and bar options for concrete repair. Grade and specification are determined by the structural engineer — do not substitute without written approval.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Bar size</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Grade</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Spacing</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.bar}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.grade}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.spacing}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Reinforcement corrosion" criteriaKey="reinforcement-corrosion/reinforcement-mesh" />
     </>
   );
 }

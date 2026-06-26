@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { FormworkPlywoodIntroSection, FormworkPlywoodProductSection } from "./FormworkPlywoodProductSection";
+import PageNav from "@/components/PageNav";
 
+import SiteHeader from "@/components/SiteHeader";
+import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 export const metadata: Metadata = {
   title: "Structural Formwork Plywood — Concrete Spalling — Remedial Building Australia",
   description:
@@ -15,16 +18,20 @@ const SIBLING_TABS = [
   { label: "Repair mortars (PM)", slug: "repair-mortars-polymer-modified" },
   { label: "Cementitious mortars", slug: "cementitious-repair-mortars" },
   { label: "Epoxy mortars", slug: "epoxy-repair-mortars" },
+  { label: "Structural grouts", slug: "structural-grouts" },
+  { label: "Micro-concrete", slug: "micro-concrete" },
+  { label: "High-build mortars", slug: "high-build-repair-mortars" },
+  { label: "Fairing & finishing", slug: "fairing-finishing-coats" },
   { label: "Bonding agents & SBR", slug: "bonding-agents-sbr-latex" },
   { label: "Rebar primers", slug: "rebar-primers-inhibitors" },
+  { label: "Primers & realkalisation", slug: "concrete-primers-realkalisation" },
+  { label: "Repair adhesives", slug: "concrete-repair-adhesives" },
+  { label: "Edge forms", slug: "edge-forms-accessories" },
+  { label: "Reinforcement mesh", slug: "reinforcement-mesh" },
   { label: "Curing compounds", slug: "curing-compounds" },
   { label: "Curing sheeting", slug: "curing-sheeting" },
-  { label: "Formwork timber", slug: "formwork-timber" },
-  { label: "Formwork plywood", slug: "formwork-plywood" },
   { label: "Form release agents", slug: "form-release-agents" },
-  { label: "Tie wire & fixings", slug: "tie-wire-fixings" },
   { label: "Cement & aggregates", slug: "cement-aggregates" },
-  { label: "Abrasives & tools", slug: "abrasives-blades-tools" },
 ];
 
 export default function FormworkPlywoodPage() {
@@ -32,24 +39,7 @@ export default function FormworkPlywoodPage() {
     <div className="min-h-screen bg-slate-50">
 
       {/* ── Header ── */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Technical Remedial Building Platform</div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap text-sky-950 underline underline-offset-4 decoration-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
-          </nav>
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
 
@@ -67,6 +57,7 @@ export default function FormworkPlywoodPage() {
               <span>/</span>
               <span className="text-sky-950">Formwork plywood</span>
             </nav>
+            <PageNav />
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 02 — Concrete &amp; Structural Defects</p>
@@ -189,6 +180,8 @@ export default function FormworkPlywoodPage() {
       </main>
 
       {/* ── Footer ── */}
+      <SeoCrossPromo />
+
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
           <a href={BASE} className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
@@ -201,15 +194,19 @@ export default function FormworkPlywoodPage() {
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

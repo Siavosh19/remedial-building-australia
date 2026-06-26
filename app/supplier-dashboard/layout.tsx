@@ -40,6 +40,12 @@ export default async function SupplierDashboardLayout({ children }: { children: 
             >
               Sign out
             </a>
+            <a
+              href="/directory/login"
+              className="rounded-lg bg-red-700 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-red-800"
+            >
+              Login / Create Account
+            </a>
           </div>
         </div>
         <nav className="mx-auto max-w-7xl px-6">

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 import type { ProjectData, Defect, OutputType, ProjectDataV2, WorkItemState } from "@/lib/scope-builder-types";
 
 export const maxDuration = 120;

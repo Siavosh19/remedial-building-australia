@@ -2,7 +2,9 @@
 
 import { useState, useRef } from "react";
 import { Layers, SquareStack, Ruler, ExternalLink, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, FileText, BookOpen } from "lucide-react";
-import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle, DataNote } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { INJECTION_PU_CARDS } from "./injectionPUData";
 
 type FilterTag =
   | "Hydrophilic"
@@ -28,6 +30,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -35,30 +38,32 @@ const PRODUCTS: Product[] = [
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
     accentColor: "#0369a1",
-    name: "Sika Injection-107 — Single-Component Hydrophilic PU Injection Resin",
-    descriptionLine: "1-component hydrophilic PU — water-reactive expanding foam — wet and actively leaking cracks, joints, and honeycombs — free foaming factor ~22× on contact with water",
-    productType: "1-component hydrophilic polyurethane injection resin — water-reactive — Sika Australia",
-    filterTags: ["Hydrophilic", "1-Component", "Water-Active", "Foaming", "Flexible"],
+    name: "Sika Injection-111 + Injection-111C — Single-Component Hydrophobic PU Foam Injection Resin",
+    descriptionLine: "1-component hydrophobic MDI water-reactive PU foam (+ Injection-111C catalyst) — wet and actively leaking cracks, joints, and honeycombs — fast-reacting closed-cell foam water-stop",
+    productType: "1-component hydrophobic polyurethane foam injection resin (+ catalyst) — water-reactive — Sika Australia",
+    filterTags: ["Hydrophobic", "1-Component", "Water-Active", "Foaming", "Flexible"],
     techChips: [
-      { label: "Hydrophilic — water-reactive", cls: "bg-sky-100 text-sky-800" },
-      { label: "Free foaming factor ~22×", cls: "bg-slate-100 text-slate-700" },
+      { label: "Hydrophobic MDI — water-reactive", cls: "bg-sky-100 text-sky-800" },
+      { label: "+ Injection-111C catalyst", cls: "bg-slate-100 text-slate-700" },
       { label: "1-component pump", cls: "bg-green-50 text-green-700" },
       { label: "Not structural", cls: "bg-amber-50 text-amber-700" },
     ],
     systemDescription:
-      "Sika Injection-107 is a single-component, low-viscosity, hydrophilic polyurethane injection resin for sealing water-active (wet or actively leaking) cracks, construction joints, and voids in concrete. On contact with water, Injection-107 foams and expands — free foaming factor approximately 22× volume — to form a flexible, closed-cell foam that blocks water passage. The hydrophilic reaction is the mechanism: the more water present, the faster and more completely it reacts. It is used to stop active water ingress through cracks, cold joints, and honeycombs from the positive or negative side. Injected through low-pressure surface ports (typically 0.2–0.5 MPa) using a single-component PU injection pump. Sika Injection-107 remains flexible after curing, accommodating minor crack movement. It is NOT structural — the foam seal fills the void and stops water but does not bond or reinstate concrete tensile strength. For cracks that are both wet and structural, the correct protocol is to inject PU first to stop water, allow the crack to dry, then inject low-viscosity epoxy for structural reinstatement. Confirm application rates and injection pressure limits from the current Sika Australia TDS.",
+      "Sika Injection-111 is a single-component, low-viscosity, hydrophobic MDI-based polyurethane injection resin that reacts with water to form an expanding, closed-cell foam for sealing water-active (wet or actively leaking) cracks, construction joints, and voids in concrete. On contact with water it foams and expands to block water passage; being hydrophobic, the cured closed-cell foam is more dimensionally stable than a hydrophilic foam when the crack subsequently dries. The reaction rate is tuned by adding Sika Injection-111C, the matched accelerator/catalyst — more catalyst gives a faster reaction and foam rise, useful where there is heavy flowing water and a fast set is needed. Injected through low-pressure surface or drilled packers using a single-component PU injection pump. Injection-111 is part of the current Sika Australia injection range. It is NOT structural — the foam seal fills the void and stops water but does not bond or reinstate concrete tensile strength. For cracks that are both wet and structural, the correct protocol is to inject PU first to stop water, allow the crack to dry, then inject low-viscosity epoxy for structural reinstatement. TODO: confirm free-rise foaming/expansion factor, catalyst dosage range, viscosity, and injection pressure limits from the current Sika Australia Injection-111 / Injection-111C TDS before publishing.",
     technicalProperties: [
-      "1-component hydrophilic PU — water-reactive — free foaming factor approximately 22× volume on contact with water",
-      "Forms flexible closed-cell foam — accommodates minor crack movement after cure",
+      "1-component hydrophobic MDI PU — water-reactive — forms an expanding closed-cell foam on contact with water",
+      "Reaction speed and foam rise adjusted by adding Sika Injection-111C catalyst — more catalyst = faster set (TODO: confirm dosage range from Sika AU TDS)",
       "Suitable for wet and actively leaking cracks, construction joints, and honeycombed sections",
-      "Injected at low pressure 0.2–0.5 MPa through surface ports — single-component injection pump",
+      "Injected at low pressure through surface or drilled packers — single-component injection pump",
       "Available nationally through Sika Australia — trade and contractor supply",
+      "TODO: confirm free-rise expansion factor and viscosity from the current Sika Australia Injection-111 TDS",
     ],
     limitations: [
       "NOT structural — PU foam does not restore concrete tensile strength — use epoxy rigid injection for structural crack reinstatement",
-      "Hydrophilic foam may shrink over time if crack subsequently dries out — not suitable as a permanent seal in intermittently dry conditions",
-      "Crack must be accessible for port installation — injection through surface ports only — blind or inaccessible cracks may not receive full injection",
+      "Hydrophobic foam is more dimensionally stable on drying than hydrophilic foam, but is not a substitute for a permanent rigid seal where the crack is dormant and dry — confirm suitability from the TDS",
+      "Crack must be accessible for packer installation — blind or inaccessible cracks may not receive full injection",
       "Do not inject at pressures exceeding manufacturer recommendation — over-pressure can cause foam to bypass the crack and cause surface spalling",
+      "Two-part procurement — order both Injection-111 resin and Injection-111C catalyst; confirm catalyst is on hand before mobilising",
     ],
     procurementSources: [
       { name: "Sika Australia — national trade and contractor supply", url: "https://aus.sika.com" },
@@ -69,9 +74,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Fosroc / Parchem",
     brandUrl: "https://www.parchem.com.au",
     accentColor: "#15803d",
-    name: "TODO: owner confirm — Fosroc Nitoflex PU is not listed on the current fosroc.com.au product range; current Fosroc AU PU injection products are Nitofill PU130 (hydrophobic, semi-flexible, 20 kg) and Nitofill PU150 (hydrophilic, flexible, 20 kg) — confirm correct product and update",
-    descriptionLine: "TODO: owner confirm — Nitoflex PU not found on fosroc.com.au (June 2026); Fosroc AU current hydrophobic PU injection product is Nitofill PU130 (mixed with accelerator, expands up to 25×) — verify from current Fosroc AU TDS",
-    productType: "2-component polyurethane flexible injection resin — elastic rubber cure — Fosroc / Parchem Australia",
+    name: "Fosroc Nitofill PU130 — Hydrophobic Semi-Flexible PU Injection Resin",
+    descriptionLine: "Hydrophobic semi-flexible PU injection resin — mixed with accelerator — expands up to 25× — dry and damp stable cracks — 20 kg",
+    productType: "Hydrophobic polyurethane flexible injection resin — elastic rubber cure — Fosroc / Parchem Australia",
+    dataNote: "Owner to confirm — Fosroc Nitoflex PU (the product these specs were originally written for) is not found on the current fosroc.com.au range; the current Fosroc Australia PU injection products are Nitofill PU130 (hydrophobic, semi-flexible, expands up to 25×, 20 kg) and Nitofill PU150 (hydrophilic, flexible, expands up to 25×, 20 kg). Confirm the correct product, component count, pump type, and maximum crack width against the current Fosroc Australia TDS before publishing.",
     filterTags: ["Hydrophobic", "2-Component", "Dormant-Crack", "Flexible"],
     techChips: [
       { label: "TODO: owner confirm — components (Nitoflex PU not on AU range)", cls: "bg-emerald-100 text-emerald-800" },
@@ -97,40 +103,6 @@ const PRODUCTS: Product[] = [
     procurementSources: [
       { name: "Parchem Construction Supplies — national distribution", url: "https://www.parchem.com.au" },
       { name: "Fosroc Australia — product information", url: "https://www.fosroc.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Mapei Australia",
-    brandUrl: "https://www.mapei.com/au",
-    accentColor: "#dc2626",
-    name: "TODO: owner confirm — Mapei Mapeject PU 25H / PU 25HD product names not confirmed on current mapei.com/au product listing; verify that these PU injection formulations are available in Australia and update product name if different",
-    descriptionLine: "TODO: owner confirm — Mapeject PU 25H and PU 25HD not confirmed on mapei.com/au (June 2026); Mapei AU PU injection product availability requires direct confirmation — all specs below are unverified for the Australian market",
-    productType: "1-component polyurethane injection resin — two formulations — Mapei Australia",
-    filterTags: ["Hydrophilic", "Hydrophobic", "1-Component", "Water-Active", "Dormant-Crack", "Foaming", "Flexible"],
-    techChips: [
-      { label: "PU 25H — hydrophilic/foaming", cls: "bg-red-100 text-red-800" },
-      { label: "PU 25HD — hydrophobic/rubber", cls: "bg-slate-100 text-slate-700" },
-      { label: "1-component — low-pressure ports", cls: "bg-green-50 text-green-700" },
-      { label: "Matched Mapei port system", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "Mapei Mapeject PU is available in two 1-component formulations for different crack conditions. Mapeject PU 25H (hydrophilic) reacts with water to foam and seal actively leaking cracks — the same mechanism as Sika Injection-107; used for wet, active water ingress where speed of reaction and void filling are the priority. Mapeject PU 25HD (hydrophobic) cures to a flexible rubber regardless of water presence — similar to the 2-component flexible PU products but in a 1-component pump-compatible format. The hydrophobic variant gives a more controlled, homogeneous flexible seal without the volume uncertainty of foaming. Both are 1-component, injected at low pressure through surface ports. Mapeject PU is part of Mapei's complete crack injection system — matched ports, port adhesive (Mapegrout Rapido or Eporip Turbo), and injection equipment. Using matched system components reduces compatibility issues and simplifies procurement. Available nationally through Mapei Australia. Confirm formulation selection (25H vs 25HD) based on crack moisture condition from the Mapei TDS.",
-    technicalProperties: [
-      "Mapeject PU 25H — hydrophilic/foaming — reactive with water — wet and actively leaking cracks",
-      "Mapeject PU 25HD — hydrophobic/rubber — uniform cure without foaming — damp or dry stable cracks",
-      "Both formulations: 1-component — low-pressure surface port injection",
-      "Part of Mapei complete system — matched ports, adhesive, and pumps available",
-      "Mapei Australia — national trade supply",
-    ],
-    limitations: [
-      "PU 25H hydrophilic variant not suitable for dry or partially dry cracks — insufficient water to activate the foaming reaction reliably",
-      "PU 25HD hydrophobic variant requires dry or damp crack — not for actively flowing water without pre-treatment",
-      "Neither formulation is structural — reinstatement of tensile capacity requires epoxy rigid injection",
-      "Mapei ports and adhesive recommended for system compatibility — confirm with Mapei technical if using non-Mapei hardware",
-    ],
-    procurementSources: [
-      { name: "Mapei Australia — national trade supply", url: "https://www.mapei.com/au" },
-      { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
     ],
   },
   {
@@ -165,6 +137,68 @@ const PRODUCTS: Product[] = [
       { name: "Parchem Construction Supplies — national distribution", url: "https://www.parchem.com.au" },
     ],
   },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika Injection-111 + Injection-111C",
+    descriptionLine: "1-component hydrophobic water-reactive PU foam (with catalyst) — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "1-component hydrophobic water-reactive PU foam (with catalyst)",
+    filterTags: ["Hydrophobic", "1-Component", "Water-Active", "Foaming", "Flexible"],
+    techChips: [
+      { label: "1-component hydrophobic water-", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Sika Injection-111 + Injection-111C is a 1-component hydrophobic water-reactive PU foam (with catalyst). Water-reactive hydrophobic PU foam (with Injection-111C catalyst) for sealing actively leaking cracks and water ingress. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
+    technicalProperties: [
+      "1-component hydrophobic water-reactive PU foam (with catalyst)",
+      "Water-reactive hydrophobic PU foam (with Injection-111C catalyst) for sealing actively leaking cracks and water ingress.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
+    ],
+    procurementSources: [
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
+    ],
+  },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    accentColor: "#1d4ed8",
+    name: "Mapei Resfoam 1KM",
+    descriptionLine: "1-component water-reactive foaming PU injection resin — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "1-component water-reactive foaming PU injection resin",
+    filterTags: ["Hydrophilic", "1-Component", "Water-Active", "Foaming", "Flexible"],
+    techChips: [
+      { label: "1-component water-reactive foa", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Mapei Resfoam 1KM is a 1-component water-reactive foaming PU injection resin. Water-reactive foaming PU resin for rapid water cut-off in wet, actively leaking cracks. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
+    technicalProperties: [
+      "1-component water-reactive foaming PU injection resin",
+      "Water-reactive foaming PU resin for rapid water cut-off in wet, actively leaking cracks.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
+    ],
+    procurementSources: [
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
+    ],
+  }
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -259,6 +293,8 @@ export function InjectionResinsPUFlexibleIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Hydrophilic (water-reactive, swells/foams) vs hydrophobic (closed-cell, water-resistant) PU — for active water-bearing/wet cracks; viscosity (mPa·s) vs crack width & penetration; minimum injectable crack width (mm); reaction/expansion ratio & foaming behaviour; gel & full-cure time; flexible/elastic cured properties (elongation %) for moving joints; damp/water tolerance during injection; injection pressure & packer spacing; chemical/alkali resistance; shrinkage on cure; suited to flexible/wet seepage NOT load-transfer (use epoxy for structural); temperature range; potable-water contact (AS/NZS 4020 if applicable)";
+
 export function InjectionResinsPUFlexibleProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -307,116 +343,7 @@ export function InjectionResinsPUFlexibleProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — PU flexible injection resins — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll to view all</span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
-          </div>
-        </div>
-
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of PU flexible injection resins. Confirm all product selections against the current manufacturer TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Components</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Cure mechanism</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Crack condition</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Structural?</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Flexibility</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.components}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.mechanism}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.crackCondition}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.structural}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.flexibility}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={INJECTION_PU_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Flexible PU injection resins" />
     </>
   );
 }

@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "LDPE"
@@ -38,7 +40,7 @@ type Product = {
   procurementSources: { name: string; url: string }[];
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Packline Australia",
     brandUrl: "https://www.packline.com.au",
@@ -270,6 +272,117 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["function", "moisture_retention_curing / vapour_barrier", "moisture_retention_curing → this category"],
+    ["thickness_min", "200um / below_200um", "below_200um (drop sheet) → not_suitable (tears, unreliable)"],
+    ["surface", "horizontal / vertical_overhead", "vertical/overhead → secure edges; heavier grade preferred"],
+    ["exposure", "indoor_sheltered / outdoor_summer_sun", "outdoor_summer_sun → black sheeting or shade (avoid overheating under clear)"],
+    ["cure_duration", "short_3_7d / extended_7_28d", "extended → 250um heavy-duty grade"],
+  ],
+  json: {
+    category: "curing_sheeting",
+    stage1_gates: {
+      function: { allowed: ["moisture_retention_curing", "vapour_barrier"], rule: "moisture_retention_curing=suitable" },
+      thickness_min: { allowed: ["200um", "below_200um"], rule: "below_200um=not_suitable (drop sheet)" },
+      surface: { allowed: ["horizontal", "vertical_overhead"], rule: "vertical/overhead=secure edges, heavier grade" },
+      exposure: { allowed: ["indoor_sheltered", "outdoor_summer_sun"], rule: "outdoor_summer_sun=black or shaded" },
+      cure_duration: { allowed: ["short_3_7d", "extended_7_28d"], rule: "extended=250um heavy-duty" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Packline 200 µm Clear LDPE Builder's Plastic": {
+    rows: [
+      ["thickness_um", "rank", "200"],
+      ["colour", "gate", "clear"],
+      ["surface", "gate", "horizontal/vertical"],
+      ["cure_period", "gate", "short_3_7d"],
+      ["material", "tag", "ldpe"],
+      ["standard", "tag", "AS3799-compliant"],
+      ["roll_width_m", "meta", "2/3/4"],
+      ["supply", "meta", "packline/bunnings_trade"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "packline_200um_clear_ldpe",
+      gates: { colour: "clear", surface: "horizontal/vertical", cure_period: "short_3_7d" },
+      tag: { material: "ldpe", standard: "AS3799-compliant" },
+      rank: { thickness_um: 200 },
+      meta: { roll_width_m: "2/3/4", supply: "packline/bunnings_trade", alternative_product: null, data_status: "verified", selectable: true, source: "packline.com.au 200µm clear LDPE", confirmed_date: null },
+    },
+  },
+  "Tuff Wrap 200 µm Black LDPE Builder's Plastic": {
+    rows: [
+      ["thickness_um", "rank", "200"],
+      ["colour", "gate", "black"],
+      ["surface", "gate", "horizontal"],
+      ["cure_period", "gate", "short_3_7d"],
+      ["material", "tag", "ldpe"],
+      ["standard", "tag", "unconfirmed"],
+      ["roll_width_m", "meta", "2/3/4"],
+      ["supply", "meta", "national_plastics/bunnings_trade"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "tuff_wrap_200um_black_ldpe",
+      gates: { colour: "black", surface: "horizontal", cure_period: "short_3_7d" },
+      tag: { material: "ldpe", standard: "unconfirmed" },
+      rank: { thickness_um: 200 },
+      meta: { roll_width_m: "2/3/4", supply: "national_plastics/bunnings_trade", alternative_product: null, data_status: "verified", selectable: true, source: "nationalplastics.com.au Tuff Wrap 200µm black LDPE", confirmed_date: null },
+    },
+  },
+  "Builder's Plastic Sheeting — 200 µm Clear (Generic Supply)": {
+    rows: [
+      ["thickness_um", "rank", "200"],
+      ["colour", "gate", "clear"],
+      ["surface", "gate", "horizontal"],
+      ["cure_period", "gate", "short_3_7d"],
+      ["material", "tag", "ldpe"],
+      ["standard", "tag", "unconfirmed"],
+      ["roll_width_m", "meta", "unconfirmed"],
+      ["supply", "meta", "bunnings_trade/mitre10"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "generic_200um_clear_builders_plastic",
+      gates: { colour: "clear", surface: "horizontal", cure_period: "short_3_7d" },
+      tag: { material: "ldpe", standard: "unconfirmed" },
+      rank: { thickness_um: 200 },
+      meta: { roll_width_m: null, supply: "bunnings_trade/mitre10", alternative_product: null, data_status: "verified", selectable: true, source: "trade hardware generic 200µm builder's plastic (verify ≥200µm, not drop sheet)", confirmed_date: null },
+    },
+  },
+  "Heavy Duty 250 µm LDPE Sheeting": {
+    rows: [
+      ["thickness_um", "rank", "250"],
+      ["colour", "gate", "clear/black"],
+      ["surface", "gate", "horizontal/vertical/overhead"],
+      ["cure_period", "gate", "extended_7_28d"],
+      ["material", "tag", "ldpe"],
+      ["standard", "tag", "AS3799-ref"],
+      ["roll_width_m", "meta", "up_to_4"],
+      ["supply", "meta", "packline/national_plastics"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "heavy_duty_250um_ldpe",
+      gates: { colour: "clear/black", surface: "horizontal/vertical/overhead", cure_period: "extended_7_28d" },
+      tag: { material: "ldpe", standard: "AS3799-ref" },
+      rank: { thickness_um: 250 },
+      meta: { roll_width_m: "up_to_4", supply: "packline/national_plastics", alternative_product: null, data_status: "verified", selectable: true, source: "packline.com.au 250µm heavy-duty LDPE", confirmed_date: null },
+    },
+  },
+};
+
 export function CuringSheetingIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -296,6 +409,8 @@ export function CuringSheetingIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Film thickness/gauge (um \u2014 200 um general, 250 um heavy-duty for protection) and tensile/tear strength for site durability; LDPE polyethylene to AS 2870 / vapour-barrier grade where used under slabs; clear vs black (black for shade/UV but heat gain; clear to monitor surface) \u2014 selection for curing per AS 3600 curing requirement to limit plastic-shrinkage cracking; water-vapour transmission / impermeability to retain mix water; lap width and taping for continuity; UV stabilisation if temporary weather protection; cleanliness/reflectivity to avoid surface staining/mottling; suitability as alternative to curing compound where subsequent coatings/adhesives must bond; coverage and reuse";
 
 export function CuringSheetingProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -349,141 +464,7 @@ export function CuringSheetingProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 sheeting products — 200 µm and 250 µm LDPE in clear and black — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of curing sheeting options for concrete spalling repair. Confirm curing method and duration from repair mortar TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Thickness</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Cure Period</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Supply</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.thickness}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.cureperiod}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.supply}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" />
     </>
   );
 }

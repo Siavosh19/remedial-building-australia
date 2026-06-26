@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "MGP10"
@@ -38,7 +40,7 @@ type Product = {
   procurementSources: { name: string; url: string }[];
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "BGC Timber / Bowens / Bunnings",
     brandUrl: "https://www.bowens.com.au",
@@ -267,6 +269,113 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["role", "framing_bearer / soldier / vertical_prop", "match member to its formwork-framing role"],
+    ["load", "structural_rated_shoring / light", "structural_rated_shoring → AS 3610 rated steel prop (not timber)"],
+    ["grade", "stress_graded / appearance", "structural framing → stress_graded (MGP10) only; appearance grade not_suitable"],
+    ["application", "horizontal_form_support / vertical_support / boxing", "gate against member capability"],
+    ["access", "confined / open", "confined → timber props / smaller sections may be needed"],
+  ],
+  json: {
+    category: "formwork_timber",
+    stage1_gates: {
+      role: { allowed: ["framing_bearer", "soldier", "vertical_prop"], rule: "match member to framing role" },
+      load: { allowed: ["structural_rated_shoring", "light"], rule: "structural_rated_shoring=AS3610 steel prop" },
+      grade: { allowed: ["stress_graded", "appearance"], rule: "structural framing=stress_graded (MGP10) only" },
+      application: { allowed: ["horizontal_form_support", "vertical_support", "boxing"], rule: "gate against member capability" },
+      access: { allowed: ["confined", "open"], rule: "confined=timber props/smaller sections" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "MGP10 Pine — 70x45 / 90x45 mm Formwork Framing": {
+    rows: [
+      ["role", "gate", "framing_bearer/soldier"],
+      ["load_rated", "gate", "not_rated (framing)"],
+      ["grade", "gate", "stress_graded (MGP10/AS1748)"],
+      ["application", "gate", "bearers/soldiers/walers"],
+      ["material", "tag", "mgp10_pine"],
+      ["section_mm", "rank", "70x45 / 90x45"],
+      ["supply", "meta", "bowens/bunnings/merchants"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "mgp10_pine_framing",
+      gates: { role: "framing_bearer/soldier", load_rated: "not_rated", grade: "stress_graded_MGP10", application: "bearers/soldiers/walers" },
+      tag: { material: "mgp10_pine" },
+      rank: { section_mm: "70x45/90x45" },
+      meta: { supply: "bowens/bunnings/merchants", alternative_product: "Acrow props (vertical load)", data_status: "verified", selectable: true, source: "MGP10 AS 1748 stress-graded pine — not for vertical props", confirmed_date: null },
+    },
+  },
+  "DAR Pine — 90x35 mm Soldierboard": {
+    rows: [
+      ["role", "gate", "soldier"],
+      ["load_rated", "gate", "not_rated"],
+      ["grade", "gate", "appearance_or_stress (confirm)"],
+      ["application", "gate", "soldiers_behind_ply"],
+      ["material", "tag", "dar_pine"],
+      ["section_mm", "rank", "90x35"],
+      ["supply", "meta", "bowens/bunnings/merchants"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "dar_pine_soldierboard",
+      gates: { role: "soldier", load_rated: "not_rated", grade: "appearance_or_stress_confirm", application: "soldiers_behind_ply" },
+      tag: { material: "dar_pine" },
+      rank: { section_mm: "90x35" },
+      meta: { supply: "bowens/bunnings/merchants", alternative_product: "MGP10 DAR if structural role", data_status: "verified", selectable: true, source: "DAR pine 90x35 — confirm MGP10 grade if structural", confirmed_date: null },
+    },
+  },
+  "100x50 mm Hardwood Timber Props": {
+    rows: [
+      ["role", "gate", "vertical_prop"],
+      ["load_rated", "gate", "not_rated (no calibrated rating)"],
+      ["grade", "gate", "hardwood"],
+      ["application", "gate", "vertical_support_confined"],
+      ["material", "tag", "hardwood"],
+      ["section_mm", "rank", "100x50"],
+      ["supply", "meta", "hardwood_merchants_eastern"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "hardwood_timber_props",
+      gates: { role: "vertical_prop", load_rated: "not_rated", grade: "hardwood", application: "vertical_support_confined" },
+      tag: { material: "hardwood" },
+      rank: { section_mm: "100x50" },
+      meta: { supply: "hardwood_merchants_eastern", alternative_product: "Acrow props (rated/engineered shoring)", data_status: "verified", selectable: true, source: "hardwood props (spotted gum/messmate) — no calibrated load rating; engineer for high load", confirmed_date: null },
+    },
+  },
+  "Acrow Props — Adjustable Steel Formwork Props": {
+    rows: [
+      ["role", "gate", "vertical_prop"],
+      ["load_rated", "gate", "AS3610_rated"],
+      ["grade", "gate", "n/a (steel)"],
+      ["application", "gate", "vertical_support_rated_shoring"],
+      ["material", "tag", "steel"],
+      ["section_mm", "rank", "adjustable 1.8-3.8m"],
+      ["supply", "meta", "coates/kennards (hire)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "acrow_steel_props",
+      gates: { role: "vertical_prop", load_rated: "AS3610_rated", grade: "n/a", application: "vertical_support_rated_shoring" },
+      tag: { material: "steel" },
+      rank: { section_mm: "adjustable_1.8-3.8m" },
+      meta: { supply: "coates/kennards_hire", alternative_product: null, data_status: "verified", selectable: true, source: "Acrow adjustable steel props — AS 3610 load-rated; brace above 2.5m", confirmed_date: null },
+    },
+  },
+};
+
 export function FormworkTimberIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -294,27 +403,10 @@ export function FormworkTimberIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Member function (framing/bearer, soldier/boxing, prop) & required load capacity; timber stress grade (e.g. MGP10) & species/durability to AS 1720.1 / AS 1684; section size (e.g. 90x35, 100x50) & span/spacing to resist concrete pressure; reusability & form-face finish class (off-form vs structural); for props: rated working load, adjustable height range & buckling capacity (AS 3610 formwork, working platform/temporary works); moisture/treatment for contact; deflection limit for surface tolerance; strike/strip time compatibility with repair-mortar gain; release agent compatibility.";
+
 export function FormworkTimberProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (id: FilterTag) => {
-    setActiveFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const visibleProducts = activeFilters.size === 0
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-
-  const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" });
-  };
 
   return (
     <>
@@ -346,139 +438,7 @@ export function FormworkTimberProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 formwork timber products — MGP10 pine, DAR pine, hardwood props, and Acrow props — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of formwork timber and props for concrete spalling repair. Confirm structural grade from supplier documentation.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Use</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Grade</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Availability</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.use}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.grade}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.availability}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" />
     </>
   );
 }

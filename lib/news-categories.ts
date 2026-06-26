@@ -315,18 +315,16 @@ function extractKeywords(title: string): string[] {
     .slice(0, 7);
 }
 
-// ─── Score a filename against a set of title keywords ────────────────────────
-// Returns the number of keywords (0–7) that have at least one synonym present
-// in the filename. Each keyword scores at most 1 point regardless of how many
-// synonyms match.
-function scoreFilename(filename: string, keywords: string[]): number {
-  const fname = filename.toLowerCase().replace(/\.\w+$/, "").replace(/[-_]/g, " ");
-  let score = 0;
-  for (const kw of keywords) {
-    const synonyms = KEYWORD_SYNONYMS[kw] ?? [kw];
-    if (synonyms.some((s) => fname.includes(s))) score++;
-  }
-  return score;
+const basename = (path: string): string => path.split("/").pop() ?? "";
+
+// ─── Word-aware keyword match ────────────────────────────────────────────────
+// True when any synonym of `kw` matches a whole word (or word-prefix) in the
+// filename. Word-aware matching avoids false positives a naive substring check
+// would catch — e.g. "water" must not match inside "stormwater".
+function keywordMatchesFilename(filename: string, kw: string): boolean {
+  const words = filename.toLowerCase().replace(/\.\w+$/, "").split(/[-_\s]+/);
+  const synonyms = KEYWORD_SYNONYMS[kw] ?? [kw];
+  return synonyms.some((s) => words.some((w) => w === s || w.startsWith(s)));
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -352,39 +350,56 @@ function getTopicsForFile(filename: string): PhotoTopic[] {
  * automatically discovered and matched by filename keywords, no code changes needed.
  */
 export function getArticleImage(
-  _category: string,
+  category: string,
   title: string,
-  imagePool: string[]
+  imagePool: string[],
+  tags: string[] = []
 ): string {
   const FALLBACK_NAME = "building-industry-news-desk-laptop.jpg";
-  const basename = (path: string) => path.split("/").pop() ?? "";
-
   if (!imagePool.length) return `/Images/News/${FALLBACK_NAME}`;
 
-  const fallbackPath =
-    imagePool.find((p) => basename(p) === FALLBACK_NAME) ??
-    `/Images/News/${FALLBACK_NAME}`;
+  const hash = titleHash(title ?? "");
+  const catTopics = CATEGORY_TOPIC_ORDER[category as NewsCategory] ?? ["general"];
 
-  // Extract up to 7 keywords from the article title
-  const keywords = extractKeywords(title ?? "");
-  if (keywords.length === 0) return fallbackPath;
+  // Weighted keyword signals. The AI-assigned tags are curated and topical, so
+  // they weigh more than raw title words.
+  const kwWeights = new Map<string, number>();
+  for (const k of extractKeywords(title ?? "")) kwWeights.set(k, Math.max(kwWeights.get(k) ?? 0, 1));
+  for (const t of tags) for (const k of extractKeywords(t)) kwWeights.set(k, Math.max(kwWeights.get(k) ?? 0, 2));
 
-  // Score every image in the pool — count how many title keywords have at
-  // least one synonym present in the filename
-  let bestScore = 0;
-  const scored: { path: string; score: number }[] = imagePool.map((path) => {
-    const score = scoreFilename(basename(path), keywords);
-    if (score > bestScore) bestScore = score;
-    return { path, score };
+  // Score every image: weighted keyword/synonym hits + a bonus when the image's
+  // own topics fit the article's category (earlier category topic = bigger bonus).
+  let best = 0;
+  const scored = imagePool.map((path) => {
+    const fname = basename(path);
+    const imgTopics = getTopicsForFile(fname);
+    let score = 0;
+    for (const [kw, w] of kwWeights) {
+      if (keywordMatchesFilename(fname, kw)) score += w;
+    }
+    const catIdx = imgTopics.reduce((b, t) => {
+      const i = catTopics.indexOf(t);
+      return i >= 0 && i < b ? i : b;
+    }, catTopics.length);
+    if (catIdx < catTopics.length) score += Math.max(3 - catIdx, 1);
+    if (score > best) best = score;
+    return { path, score, catIdx };
   });
 
-  // If no image matched even a single keyword synonym → return fallback
-  if (bestScore === 0) return fallbackPath;
+  // Nothing matched the article at all → pick from the generic news set
+  // (the "general" topic photos), varied per article but deterministic so the
+  // list card and the article hero always show the same image.
+  if (best === 0) {
+    const generic = imagePool.filter((p) => getTopicsForFile(basename(p)).includes("general"));
+    const pool = generic.length ? generic : imagePool;
+    return pool[hash % pool.length];
+  }
 
-  // Among the top-scoring images, pick deterministically by title hash
-  const hash = titleHash(title ?? "");
-  const topImages = scored.filter((s) => s.score === bestScore).map((s) => s.path);
-  return topImages[hash % topImages.length];
+  // Among the top scorers, prefer the best category fit, then pick deterministically.
+  const top = scored.filter((s) => s.score === best);
+  const bestCatIdx = Math.min(...top.map((s) => s.catIdx));
+  const bestFit = top.filter((s) => s.catIdx === bestCatIdx);
+  return bestFit[hash % bestFit.length].path;
 }
 
 // ─── Batch assignment ─────────────────────────────────────────────────────────
@@ -392,7 +407,7 @@ export function getArticleImage(
  * Assigns images to an array of articles. Each article is processed with
  * getArticleImage — deterministic and consistent with the article hero image.
  */
-export function assignUniqueImages<T extends { title: string; category: string }>(
+export function assignUniqueImages<T extends { title: string; category: string; tags?: string[] }>(
   articles: T[],
   _reservedImages: string[] = [],
   imagePool?: string[]
@@ -400,7 +415,7 @@ export function assignUniqueImages<T extends { title: string; category: string }
   if (imagePool && imagePool.length > 0) {
     return articles.map((article) => ({
       ...article,
-      featured_image: getArticleImage(article.category, article.title, imagePool),
+      featured_image: getArticleImage(article.category, article.title, imagePool, article.tags ?? []),
     }));
   }
 

@@ -1,0 +1,55 @@
+// Linear grates & channel drains. Hardware → no Class-2/warranty. Lighter treatment.
+// appInfo: Type · Material · Format / width · Finish / insert · Membrane connection · Notes.
+import type { RefCard } from "../../_components/ProductSpecCardV2";
+const KEYS = ["Type", "Material", "Format / width", "Finish / insert", "Membrane connection", "Notes"];
+const kp = (vals: string[]) => KEYS.map((label, i) => ({ label, value: vals[i] ?? "" }));
+const card = (brand: string, rangeName: string, shortType: string, vals: string[], bestFor: string[], avoidWhere: string[], warnings: string[], description: string): RefCard => ({
+  brand, rangeName, shortType, badges: [{ label: "Linear drain", tone: "navy" }],
+  appInfo: kp(vals), bestFor, avoidWhere, warnings,
+  advanced: { description, designCriteria: "", techData: [{ label: "Type", value: vals[0], source: brand }, { label: "Material", value: vals[1], source: brand }] },
+});
+
+export const LINEAR_DRAIN_CARDS: RefCard[] = [
+  card("Schlüter-Systems Australia", "Schlüter KERDI-LINE", "Tileable linear drain with bonded waterproofing flange",
+    ["Linear floor drain (tileable)", "Stainless steel body", "Various lengths; low profile", "Tile-insert or grate frame", "Bonded KERDI flange — sealed to the KERDI membrane", "Part of the Schlüter sheet-membrane system"],
+    ["Low-profile linear drain with an integral bonded waterproofing flange that seals directly to the Schlüter KERDI membrane", "Tile-insert option for a near-seamless tiled finish"],
+    ["Use within a non-Schlüter membrane system without confirming the flange seal"],
+    ["Confirm fall, flow rate and the membrane-to-flange seal detail with Schlüter Australia"],
+    "Schlüter KERDI-LINE is a low-profile tileable linear floor drain with a stainless body and an integral bonded flange that seals to the Schlüter KERDI membrane, with tile-insert or grate options. Confirm fall and flow rate with Schlüter Australia."),
+  card("ACO Australia", "ACO Stainless Linear Channel Drain", "Stainless linear channel drain",
+    ["Linear channel drain", "Stainless steel", "Channel widths/lengths to suit (confirm)", "Grate (various patterns)", "Puddle flange / membrane connection (confirm detail)", "Engineered hydraulic capacity"],
+    ["Robust stainless channel drain with engineered hydraulic capacity for balcony/podium and threshold drainage", "Wide grate range for the architectural finish and load class"],
+    ["Light-duty domestic where a simple PVC channel suffices"],
+    ["Confirm the channel size, grate load class and membrane connection with ACO / the hydraulic engineer"],
+    "ACO Stainless Linear Channel Drain is a robust stainless channel drainage system with engineered hydraulic capacity and a wide grate range for balcony, podium and threshold drainage. Confirm channel size, grate load class and the membrane connection with ACO Australia / the hydraulic engineer."),
+  card("Geberit Australia", "Geberit CleanLine Linear Drain", "Slimline tileable shower/balcony linear drain",
+    ["Linear floor drain (slimline)", "Stainless steel", "Trimmable to length; low profile", "Tile-insert or slot grate", "Membrane collar / seal (confirm detail)", "Slimline for shower/wet-area thresholds"],
+    ["Slimline trimmable linear drain with tile-insert or slot-grate finish for showers, wet areas and balcony thresholds"],
+    ["High-flow podium drainage (use a heavy-duty channel)"],
+    ["Confirm the membrane seal detail and flow rate with Geberit / Reece"],
+    "Geberit CleanLine is a slimline, trimmable stainless linear floor drain with tile-insert or slot-grate finishes for showers, wet areas and balcony thresholds. Confirm the membrane seal detail and flow rate with Geberit Australia."),
+  card("Infinity Drain", "Infinity Drain Tile-Insert Linear Drain", "Architectural tile-insert linear drain",
+    ["Architectural linear drain (tile-insert)", "Stainless steel", "Custom lengths", "Tile-insert (near-seamless)", "Membrane connection (confirm detail)", "Confirm current Australian distributor"],
+    ["Architectural tile-insert linear drain for a near-seamless tiled finish in high-end balcony/wet-area design"],
+    ["Where a standard stocked drain meets the design (imported/architectural product)"],
+    ["Confirm current Australian distributor, lengths and the membrane connection detail"],
+    "Infinity Drain tile-insert linear drains are architectural stainless drains with a near-seamless tiled finish. Confirm current Australian distributor, custom lengths and the membrane connection detail."),
+  card("Generic", "PVC Channel Drain — Standard", "Standard PVC channel drain",
+    ["PVC channel drain", "PVC", "Standard channel widths", "Removable grate", "Puddle/floor-waste connection (confirm detail)", "Light-duty / domestic balcony drainage"],
+    ["Economical PVC channel for light-duty domestic balcony and threshold drainage"],
+    ["Heavy-duty / podium or vehicular loading (use an HDPE or stainless channel)"],
+    ["Confirm the grate load class and the membrane/floor-waste connection for the application"],
+    "A standard PVC channel drain is an economical light-duty channel for domestic balcony and threshold drainage. Confirm the grate load class and the membrane/floor-waste connection."),
+  card("ACO Australia", "HDPE Channel Drain — Podium & Heavy Duty", "Heavy-duty HDPE channel drain (podium)",
+    ["HDPE channel drain (heavy-duty)", "HDPE body", "Wide channels; engineered runs", "Load-class grate (to vehicular)", "Engineered membrane / outlet connection", "Confirm with the hydraulic engineer"],
+    ["Heavy-duty HDPE channel for podium decks and trafficable areas with engineered hydraulic capacity and load-class grates", "Long runs and high flows where a domestic PVC channel is inadequate"],
+    ["Light-duty domestic balconies where a simple channel suffices"],
+    ["Confirm channel size, grate load class and the membrane/outlet connection with the hydraulic engineer"],
+    "An HDPE podium/heavy-duty channel drain provides engineered hydraulic capacity and load-class grates (to vehicular) for podium decks and trafficable areas. Confirm channel size, grate load class and the membrane/outlet connection with the hydraulic engineer."),
+  card("SPS — Speciality Plumbing Supplies", "SPS 316 S/S Strip Drain — Wedgewire", "316 stainless flat-bottom strip / channel drain with wedgewire grate",
+    ["Stainless strip / channel drain", "316 stainless steel", "110 mm wide × 40 mm deep flat-bottom channel", "Wedgewire grate (stainless)", "Discharges to a floor waste; seal the membrane at the outlet (confirm)", "316 grade suits coastal; threshold & balcony / terrace strip drainage"],
+    ["Threshold and balcony / terrace strip drainage in 316 stainless with a wedgewire grate, discharging to a floor waste", "Coastal / marine exposure — 316 stainless"],
+    ["High-flow podium / vehicular channels (confirm capacity or use a deeper engineered channel)"],
+    ["Confirm channel length, the outlet / floor-waste connection and the membrane seal at the outlet"],
+    "The SPS 316 stainless strip drain is a 110 mm wide × 40 mm deep flat-bottom channel with a wedgewire grate, discharging to a floor waste — for threshold and balcony / terrace drainage. 316 stainless suits coastal exposure. Speciality Plumbing Supplies (spsdrains.com.au)."),
+];

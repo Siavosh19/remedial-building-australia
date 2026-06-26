@@ -1,6 +1,7 @@
 import { Resend } from "resend";
+import { RBA_DISCLAIMER, RBA_DISCLAIMER_SHORT } from "./legal";
 
-const FROM = process.env.DIRECTORY_EMAIL_FROM ?? "Remedial Building Australia <no-reply@remedialbuildingaustralia.com.au>";
+const FROM = process.env.DIRECTORY_EMAIL_FROM ?? "Remedial Building Australia <info@remedialbuildingaustralia.com.au>";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
 
 function safeHtml(value: string) {
@@ -22,14 +23,25 @@ function emailWrapper(title: string, body: string) {
 }
 
 async function sendEmail(subject: string, to: string, html: string, text: string) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error(`[directory-email] RESEND_API_KEY is not set — cannot send "${subject}" to ${to}`);
+    throw new Error("Email service is not configured.");
+  }
   const resend = new Resend(process.env.RESEND_API_KEY);
-  await resend.emails.send({
+  // The Resend SDK resolves with { data, error } instead of throwing, so an
+  // unverified domain / disallowed recipient would otherwise fail silently.
+  const { data, error } = await resend.emails.send({
     from: FROM,
     to,
     subject,
     html,
     text,
   });
+  if (error) {
+    console.error(`[directory-email] Resend rejected "${subject}" to ${to} (from ${FROM}):`, error);
+    throw new Error(`Email send failed: ${error.message ?? "unknown error"}`);
+  }
+  return data;
 }
 
 export async function sendDirectoryVerificationEmail(name: string, email: string, token: string) {
@@ -362,4 +374,104 @@ export async function sendAdminSignupNotification(name: string, email: string, a
   );
   const text = `New signup: ${name} (${email})\nAccount type: ${typeLabel}\n\nAdmin panel: ${adminLink}`;
   await sendEmail(`New signup — ${typeLabel}`, "info@remedialbuildingaustralia.com.au", html, text);
+}
+
+export async function sendSubscriptionStatusEmail(opts: {
+  ownerName: string;
+  ownerEmail: string;
+  companyName: string;
+  status: "active" | "cancelled" | "resumed";
+  planLabel: string;
+  accessUntil?: Date | null;
+}) {
+  const { ownerName, ownerEmail, companyName, status, planLabel, accessUntil } = opts;
+  const until = accessUntil ? new Date(accessUntil).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : null;
+  const dash = `${SITE_URL}/directory/dashboard/subscription`;
+
+  const headline =
+    status === "active" ? `Your ${planLabel} subscription is active`
+    : status === "resumed" ? `Your ${planLabel} subscription has been resumed`
+    : `Your ${planLabel} subscription has been cancelled`;
+
+  const intro =
+    status === "active"
+      ? `Thanks ${safeHtml(ownerName)} — the <strong>${safeHtml(planLabel)}</strong> plan for <strong>${safeHtml(companyName)}</strong> is now active. Your upgraded listing features are live.`
+    : status === "resumed"
+      ? `Good news ${safeHtml(ownerName)} — the cancellation for <strong>${safeHtml(companyName)}</strong> has been reversed and your <strong>${safeHtml(planLabel)}</strong> plan will keep renewing.`
+      : `Hi ${safeHtml(ownerName)}, we've cancelled the <strong>${safeHtml(planLabel)}</strong> plan for <strong>${safeHtml(companyName)}</strong>.${until ? ` Your features stay active until <strong>${until}</strong>, after which the listing reverts to the free Basic plan.` : ""}`;
+
+  const html = emailWrapper(
+    status === "cancelled" ? "Subscription cancelled" : "Subscription confirmed",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">${intro}</p>
+     <p style="margin:0;"><a href="${dash}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">View your subscription →</a></p>`
+  );
+  const text = `${headline}\n\n${companyName}\n${until ? `Access until: ${until}\n` : ""}\nManage your subscription: ${dash}`;
+  await sendEmail(headline, ownerEmail, html, text);
+}
+
+// ── Client quote-request platform ────────────────────────────────────────────
+
+// Sent to each matched paid business when a client submits a quote request.
+// Deliberately withholds full client contact details — those are visible once
+// the business logs in to its dashboard.
+export async function sendQuoteRequestBroadcastBusinessEmail(opts: {
+  to: string;
+  businessName?: string | null;
+  suburb: string;
+  category: string;
+  description: string;
+  urgency: string;
+  dashboardUrl: string;
+}) {
+  const shortDesc = opts.description.length > 280 ? `${opts.description.slice(0, 280)}…` : opts.description;
+  const greeting = opts.businessName ? `Hi ${safeHtml(opts.businessName)},` : "Hello,";
+  const row = (label: string, value: string) =>
+    `<tr><td style="padding:6px 0;font-size:13px;color:#64748b;width:120px;vertical-align:top;">${safeHtml(label)}</td>
+      <td style="padding:6px 0;font-size:14px;color:#0f172a;font-weight:600;">${safeHtml(value)}</td></tr>`;
+
+  const html = emailWrapper(
+    "New quote request",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">${greeting}</p>
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A client has submitted a quote request that matches your listing. Log in to your dashboard to view the full details and the client's contact information, then contact them directly.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 18px;">
+       ${row("Suburb", opts.suburb)}
+       ${row("Work category", opts.category)}
+       ${row("Urgency", opts.urgency)}
+     </table>
+     <p style="margin:0 0 6px;font-size:13px;color:#64748b;">Summary</p>
+     <p style="margin:0 0 22px;font-size:14px;line-height:1.7;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;">${safeHtml(shortDesc)}</p>
+     <p style="margin:0 0 24px;"><a href="${opts.dashboardUrl}" style="display:inline-block;padding:14px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;">View request &amp; client details →</a></p>
+     <p style="margin:0;font-size:12px;color:#64748b;line-height:1.7;">${safeHtml(RBA_DISCLAIMER_SHORT)}</p>`
+  );
+
+  const text = `${opts.businessName ? `Hi ${opts.businessName},` : "Hello,"}\n\nA client has submitted a quote request matching your listing.\n\nSuburb: ${opts.suburb}\nWork category: ${opts.category}\nUrgency: ${opts.urgency}\n\nSummary:\n${shortDesc}\n\nLog in to view the full request and the client's contact details: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER_SHORT}`;
+
+  await sendEmail("New quote request matching your listing", opts.to, html, text);
+}
+
+// Confirmation to the client after their request is matched and sent out.
+export async function sendClientQuoteConfirmationEmail(opts: {
+  to: string;
+  name: string;
+  category: string;
+  suburb: string;
+  matchedCount: number;
+  dashboardUrl: string;
+}) {
+  const matchedLine =
+    opts.matchedCount > 0
+      ? `${opts.matchedCount} matching ${opts.matchedCount === 1 ? "business has" : "businesses have"} been notified and may contact you directly.`
+      : `We could not find a matching listed business in your area for this category just yet. We'll keep your request on record — you can review it any time from your dashboard.`;
+
+  const html = emailWrapper(
+    "Quote request submitted",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Hi ${safeHtml(opts.name)},</p>
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Your quote request for <strong>${safeHtml(opts.category)}</strong> in <strong>${safeHtml(opts.suburb)}</strong> has been submitted. ${safeHtml(matchedLine)}</p>
+     <p style="margin:0 0 24px;"><a href="${opts.dashboardUrl}" style="display:inline-block;padding:14px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;">View your request →</a></p>
+     <p style="margin:0;font-size:12px;color:#64748b;line-height:1.7;">${safeHtml(RBA_DISCLAIMER)}</p>`
+  );
+
+  const text = `Hi ${opts.name},\n\nYour quote request for ${opts.category} in ${opts.suburb} has been submitted. ${matchedLine}\n\nView your request: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER}`;
+
+  await sendEmail("Your quote request has been submitted", opts.to, html, text);
 }

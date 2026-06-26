@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Primer"
@@ -32,6 +33,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -76,10 +78,11 @@ const PRODUCTS: Product[] = [
     fullLabel: "Taubmans",
     brandUrl: "https://www.taubmans.com.au",
     accentColor: "#3b82f6",
-    name: "TODO: owner confirm — Taubmans Moisture Shield Interior Paint",
+    name: "Taubmans Moisture Shield Interior Paint",
     descriptionLine:
-      "TODO: owner confirm — product name could not be verified on the current Taubmans Australia website. Taubmans moisture-resistant interior ceiling/wall paint — confirm current product name with Taubmans before specifying",
+      "Premium water-based interior paint with a built-in mould inhibitor for ceilings and walls in wet-area-adjacent rooms and high-humidity environments",
     productType: "Mould-inhibiting interior ceiling and wall paint",
+    dataNote: "Owner to confirm — the product name 'Taubmans Moisture Shield Interior Paint' could not be verified on the current Taubmans Australia website. Taubmans does offer interior paints for high-humidity environments; confirm the correct current product name, colour range, sheen options and specification with Taubmans Australia before publishing.",
     filterTags: ["Paint", "Mould-resistant", "Water-based", "Ceiling", "Interior", "Low-sheen"],
     techChips: [
       { label: "Mould-resistant paint", cls: "bg-sky-100 text-sky-800" },
@@ -507,7 +510,8 @@ export function CeilingWaterDamageProductSection() {
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

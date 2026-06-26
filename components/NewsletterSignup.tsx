@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Mail, User, Tag, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
-import { SUBSCRIBER_INTERESTS } from "@/app/api/subscribe/route";
+import { SUBSCRIBER_INTERESTS } from "@/lib/subscriber-interests";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -166,7 +166,7 @@ export function NewsletterSignup({ variant = "section" }: Props) {
                 Stay Informed
               </p>
               <h2 className="mt-3 text-3xl font-extrabold leading-tight text-white md:text-4xl">
-                Get the Fortnightly<br className="hidden sm:block" /> Remedial Building Update
+                Get the Weekly<br className="hidden sm:block" /> Remedial Building Update
               </h2>
               <p className="mt-4 max-w-lg text-base leading-7 text-sky-300">
                 Industry news, defect trends, compliance updates, product releases and technical
@@ -204,10 +204,10 @@ export function NewsletterSignup({ variant = "section" }: Props) {
       <div className="mb-5">
         <p className="text-[10px] font-bold uppercase tracking-widest text-red-700">Newsletter</p>
         <h3 className="mt-1 text-xl font-extrabold text-sky-950">
-          Fortnightly Remedial Building Update
+          Weekly Remedial Building Update
         </h3>
         <p className="mt-1.5 text-sm leading-6 text-slate-500">
-          Industry news and technical updates — delivered fortnightly, no spam.
+          Industry news and technical updates — delivered weekly, no spam.
         </p>
       </div>
       {formContent}
@@ -233,7 +233,7 @@ function SuccessCard({
         You&apos;re subscribed!
       </h3>
       <p className={`mt-2 max-w-xs text-sm leading-6 ${variant === "section" ? "text-sky-300" : "text-slate-500"}`}>
-        Thanks for subscribing. You&apos;ll receive the next fortnightly update in your inbox.
+        Thanks for subscribing. You&apos;ll receive the next weekly update in your inbox.
       </p>
       <button
         onClick={onReset}

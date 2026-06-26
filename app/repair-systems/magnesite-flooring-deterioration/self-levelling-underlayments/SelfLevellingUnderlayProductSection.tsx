@@ -2,6 +2,8 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Layers, Ruler, SquareStack, FileText } from "lucide-react";
 import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { SELF_LEVELLING_CARDS } from "./selfLevellingData";
 
 type FilterTag = "Cementitious" | "Rapid-Set" | "Standard-Set" | "3-20mm" | "2-30mm" | "Pumpable" | "Floor-Levelling" | "Magnesite";
 
@@ -133,41 +135,6 @@ const PRODUCTS: Product[] = [
     ],
   },
   {
-    fullLabel: "Parchem Construction Products",
-    brandUrl: "https://www.parchem.com.au",
-    accentColor: "#78716c",
-    name: "Parchem Flowfill RS — Rapid-Set Self-Levelling Floor Compound",
-    descriptionLine: "Rapid-setting pumpable self-levelling floor compound, trafficable 3–4 hrs, 2–30 mm — 25 kg bag",
-    productType: "Rapid-setting self-levelling floor compound",
-    filterTags: ["Cementitious", "Rapid-Set", "2-30mm", "Pumpable", "Floor-Levelling", "Magnesite"],
-    techChips: [
-      { label: "Rapid-set", cls: "bg-stone-100 text-stone-800" },
-      { label: "2–30 mm", cls: "bg-zinc-100 text-zinc-800" },
-      { label: "Pumpable", cls: "bg-slate-100 text-slate-700" },
-    ],
-    systemDescription:
-      "Parchem Flowfill RS is a rapid-setting self-levelling floor compound that can be pump or hand-mixed and applied at 2–30 mm depth. Its rapid-setting chemistry provides trafficability within 3–4 hours, making it suitable for commercial renovations and strata projects where long outage periods are not acceptable. Pumpable application suits large-area and multi-unit floor remediation projects.",
-    technicalProperties: [
-      "Pack size: 25 kg bag",
-      "Application thickness: 2–30 mm",
-      "Trafficable: approximately 3–4 hrs",
-      "Pumpable application available for larger areas",
-      "Must be applied over compatible moisture primer on magnesite",
-      "Contact Parchem for current TDS and coverage rates",
-    ],
-    limitations: [
-      "Working time is short in warm conditions — batch accordingly",
-      "Pumpable application requires compatible pump equipment",
-      "Moisture primer mandatory over magnesite — do not apply without primer",
-      "Do not walk on surface within trafficable period",
-      "Close openings during application to prevent draughts",
-      "Follow-up floor coverings installation timing — check TDS",
-    ],
-    procurementSources: [
-      { name: "Parchem Construction Products", url: "https://www.parchem.com.au" },
-    ],
-  },
-  {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au/",
     tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/smoothing-agents-and-renovation-of-floors/detail/ultraplan-eco",
@@ -204,6 +171,68 @@ const PRODUCTS: Product[] = [
       { name: "Mapei distributors", url: "https://www.mapei.com/au/en/contact-us/where-to-buy" },
     ],
   },
+  {
+    fullLabel: "Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#7c2d12",
+    name: "Parchem Durafloor Leveltop Rapid",
+    descriptionLine: "Rapid trowellable / self-smoothing floor levelling underlayment — confirm current specification and Australian availability with Parchem technical before specifying",
+    productType: "Rapid trowellable / self-smoothing floor levelling underlayment",
+    filterTags: ["Cementitious", "Rapid-Set", "Floor-Levelling", "Magnesite", "3-20mm"],
+    techChips: [
+      { label: "Rapid trowellable / self-smoot", cls: "bg-slate-100 text-slate-700" },
+      { label: "Parchem — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Parchem Durafloor Leveltop Rapid is a Rapid trowellable / self-smoothing floor levelling underlayment. Rapid self-smoothing underlayment to level an encapsulated/primed magnesite substrate before floor finishes. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Parchem technical before specifying. TODO: verify specific performance figures from the current Parchem TDS.",
+    technicalProperties: [
+      "Rapid trowellable / self-smoothing floor levelling underlayment",
+      "Rapid self-smoothing underlayment to level an encapsulated/primed magnesite substrate before floor finishes.",
+      "Confirm key performance values (strength / coverage / application) from the current Parchem TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Parchem",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Parchem technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Parchem",
+    ],
+    procurementSources: [
+      { name: "Parchem — Australian trade supply", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://ardexaustralia.com",
+    accentColor: "#0369a1",
+    name: "Ardex K 55",
+    descriptionLine: "Rapid-drying cementitious self-levelling and smoothing compound — confirm current specification and Australian availability with Ardex technical before specifying",
+    productType: "Rapid-drying cementitious self-levelling and smoothing compound",
+    filterTags: ["Cementitious", "Rapid-Set", "Floor-Levelling", "Magnesite", "3-20mm"],
+    techChips: [
+      { label: "Rapid-drying cementitious self", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ardex — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Ardex K 55 is a Rapid-drying cementitious self-levelling and smoothing compound. Rapid-drying self-levelling compound for smoothing primed magnesite substrates ahead of resilient or tiled finishes. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Ardex technical before specifying. TODO: verify specific performance figures from the current Ardex TDS.",
+    technicalProperties: [
+      "Rapid-drying cementitious self-levelling and smoothing compound",
+      "Rapid-drying self-levelling compound for smoothing primed magnesite substrates ahead of resilient or tiled finishes.",
+      "Confirm key performance values (strength / coverage / application) from the current Ardex TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Ardex",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Ardex technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Ardex",
+    ],
+    procurementSources: [
+      { name: "Ardex — Australian trade supply", url: "https://ardexaustralia.com" },
+    ],
+  }
+
+
 ];
 
 const FILTER_DEFS: { tag: FilterTag; label: string }[] = [
@@ -305,102 +334,13 @@ export function SelfLevellingUnderlayIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Binder type (cement-based — wet-area capable — vs calcium-sulfate/gypsum which is NOT for wet/external areas) and rapid-set vs standard set; compressive and flexural strength (MPa) for the floor loading and finish; flow/self-levelling consistency and self-smoothing; minimum and maximum application thickness per pour (e.g. 2–10 mm neat, deeper with aggregate); set time / walk-on and time-to-cover/overlay (rapid for fast-track); drying-shrinkage and cracking control and dimensional stability; bond/pull-off to substrate and primer requirement (including over a moisture-suppression primer on a damp slab); substrate moisture limit and MVER/RH; feather-edge capability; compatibility with the floor-finish adhesive and trafficability; pump vs hand application; abrasion/point-load resistance for exposed/wear use; ambient and substrate temperature window";
+
 export function SelfLevellingUnderlayProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (tag: FilterTag) =>
-    setActiveFilters((prev) => {
-      const n = new Set(prev);
-      n.has(tag) ? n.delete(tag) : n.add(tag);
-      return n;
-    });
-
-  const filtered =
-    activeFilters.size === 0
-      ? PRODUCTS
-      : PRODUCTS.filter((p) => p.filterTags.some((t) => activeFilters.has(t)));
-
-  const scroll = (dir: "left" | "right") => {
-    if (scrollRef.current)
-      scrollRef.current.scrollBy({ left: dir === "left" ? -420 : 420, behavior: "smooth" });
-  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        {FILTER_DEFS.map(({ tag, label }) => {
-          const active = activeFilters.has(tag);
-          return (
-            <button
-              key={tag}
-              onClick={() => toggleFilter(tag)}
-              className={`rounded-full border px-3 py-1 text-xs font-bold transition ${
-                active
-                  ? "border-sky-600 bg-sky-600 text-white"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-sky-300"
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
-        {activeFilters.size > 0 && (
-          <button
-            onClick={() => setActiveFilters(new Set())}
-            className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-bold text-red-700 transition hover:bg-red-100"
-          >
-            Clear filters
-          </button>
-        )}
-      </div>
-
-      <div className="relative">
-        <button onClick={() => scroll("left")} className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronLeft size={16} /></button>
-        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scroll-smooth pb-2" style={{ scrollbarWidth: "none" }}>
-          {filtered.map((p) => (
-            <div key={p.name} className="w-80 shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeftWidth: 4, borderLeftColor: p.accentColor }}>
-              <div className="border-b border-slate-100 px-5 py-4">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{p.fullLabel}</span>
-                  <div className="flex gap-1">
-                    {p.tdsUrl && <a href={p.tdsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700"><FileText size={9} /> TDS</a>}
-                    <a href={p.brandUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700">Brand</a>
-                  </div>
-                </div>
-                <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{p.name}</h3>
-                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{p.productType}</p>
-                <CollapsibleCardDetails text={p.descriptionLine} chips={p.techChips} />
-              </div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                <CollapsibleDescription text={p.systemDescription} />
-              </div>
-              <div className="space-y-3 px-5 py-4">
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                  <CollapsibleList items={p.technicalProperties} icon="check" limit={3} />
-                </div>
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                  <CollapsibleList items={p.limitations} icon="x" limit={3} />
-                </div>
-              </div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                <CollapsibleSources sources={p.procurementSources} />
-              </div>
-            </div>
-          ))}
-          {filtered.length === 0 && (
-            <div className="flex w-full items-center justify-center py-12 text-sm text-slate-400">
-              No products match the selected filters.
-            </div>
-          )}
-        </div>
-        <button onClick={() => scroll("right")} className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronRight size={16} /></button>
-      </div>
-
+    <>
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <button onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left hover:bg-slate-50">
           <div>
@@ -425,35 +365,7 @@ export function SelfLevellingUnderlayProductSection() {
         )}
       </div>
 
-      <div>
-        <h3 className="mb-4 text-lg font-extrabold text-sky-950">System Comparison</h3>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-5 py-3 text-left font-bold text-slate-700 whitespace-nowrap sticky left-0 bg-slate-50 border-r border-slate-200">Product</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Brand</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Set type</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Range</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Trafficable</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Pumpable</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 bg-inherit px-5 py-3 font-semibold text-slate-800 border-r border-slate-200 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.setType}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.range}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.trafficable}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.pumpable}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <AutoProductReference products={PRODUCTS} cards={SELF_LEVELLING_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Self-levelling underlayments" />
+    </>
   );
 }

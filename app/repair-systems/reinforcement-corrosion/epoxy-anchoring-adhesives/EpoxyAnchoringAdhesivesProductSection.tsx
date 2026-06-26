@@ -7,9 +7,12 @@ import {
 } from "lucide-react";
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
-  CollapsibleCardDetails, TechCard,
+  CollapsibleCardDetails, TechCard, DataNote,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { EPOXY_ANCHORING_CARDS } from "./epoxyAnchoringData";
 
 type FilterTag =
   | "AS-5216"
@@ -35,6 +38,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -43,8 +47,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.hilti.com.au",
     accentColor: "#be123c",
     name: "Hilti HIT-RE 500 V3",
-    descriptionLine: "TODO: owner confirm — Hilti AU site shows HIT-RE 500 V4 as current; V3 not listed — pure epoxy chemical anchor — AS 5216 for cracked and uncracked concrete — rebar and threaded rod — seismic and fire rated",
+    descriptionLine: "Pure epoxy chemical anchor — AS 5216 for cracked and uncracked concrete — rebar and threaded rod — seismic and fire rated",
     productType: "Pure epoxy chemical anchor — AS 5216 compliant",
+    dataNote: "Owner to confirm — the Hilti Australia site shows HIT-RE 500 V4 as the current product; V3 is no longer listed and appears superseded. Confirm the current Hilti HIT-RE 500 version and its AS 5216 approval scope before publishing.",
     filterTags: ["AS-5216", "Epoxy", "Starter-bar", "Threaded-rod", "Cracked-concrete", "Edge-distance"],
     techChips: [
       { label: "Pure epoxy — AS 5216", cls: "bg-rose-100 text-rose-800" },
@@ -75,8 +80,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://aus.sika.com",
     accentColor: "#0369a1",
     name: "Sika AnchorFix-3+",
-    descriptionLine: "TODO: owner confirm — AnchorFix-3+ not found on current Sika AU chemical anchoring page (current lineup is AnchorFix-1, AnchorFix-3001, AnchorFix-3030) — confirm product name and chemistry before specifying — epoxy acrylate chemical anchor — AS 5216 for cracked and uncracked concrete — starter bars, threaded rod, and rebar connections",
-    productType: "Epoxy acrylate chemical anchor — AS 5216 compliant — TODO: owner confirm product name current",
+    descriptionLine: "Epoxy acrylate chemical anchor — AS 5216 for cracked and uncracked concrete — starter bars, threaded rod, and rebar connections",
+    productType: "Epoxy acrylate chemical anchor — AS 5216 compliant",
+    dataNote: "Owner to confirm — AnchorFix-3+ was not found on the current Sika Australia chemical anchoring page (current lineup is AnchorFix-1, AnchorFix-3001, AnchorFix-3030). Confirm the correct current product name and chemistry with Sika Australia before specifying.",
     filterTags: ["AS-5216", "Epoxy-acrylate", "Starter-bar", "Threaded-rod", "Cracked-concrete"],
     techChips: [
       { label: "Epoxy acrylate — AS 5216", cls: "bg-sky-100 text-sky-800" },
@@ -107,8 +113,9 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.ramset.com.au",
     accentColor: "#7c2d12",
     name: "Ramset Chemset Epoxy 500+",
-    descriptionLine: "TODO: owner confirm — Chemset Epoxy 500+ not found on current Ramset AU site; current product appears to be ChemSet Reo 502 XTREM (600 mL, pure epoxy, dry/wet/flooded holes, AS 5216, seismic C1 and C2) — confirm product name and spec before specifying — epoxy chemical anchor — AS 5216 approved — rebar and threaded rod in concrete repair — Ramset national distribution",
-    productType: "Epoxy chemical anchor — AS 5216 compliant — TODO: owner confirm product name current",
+    descriptionLine: "Epoxy chemical anchor — AS 5216 approved — rebar and threaded rod in concrete repair — Ramset national distribution",
+    productType: "Epoxy chemical anchor — AS 5216 compliant",
+    dataNote: "Owner to confirm — Chemset Epoxy 500+ was not found on the current Ramset Australia site; the current product appears to be ChemSet Reo 502 XTREM (600 mL, pure epoxy, dry/wet/flooded holes, AS 5216, seismic C1 and C2). Confirm the correct current product name and specification before specifying.",
     filterTags: ["AS-5216", "Epoxy", "Starter-bar", "Threaded-rod", "Cracked-concrete"],
     techChips: [
       { label: "Epoxy — AS 5216", cls: "bg-red-100 text-red-900" },
@@ -137,35 +144,34 @@ const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    accentColor: "#16a34a",
-    name: "Mapei Mapefox EW",
-    descriptionLine: "TODO: owner confirm — Mapei AU site blocked (Cloudflare); could not verify product name, chemistry, or AS 5216 approval scope from live source — epoxy adhesive for anchoring rebar in concrete — for starter bars, threaded anchors, and structural rebar installation — Mapei Australia nationally",
-    productType: "Epoxy anchoring adhesive for rebar and threaded rod — TODO: owner confirm AS 5216 approval scope",
-    filterTags: ["AS-5216", "Epoxy", "Starter-bar", "Threaded-rod"],
+    accentColor: "#1d4ed8",
+    name: "Mapei Mapefix EP 100",
+    descriptionLine: "Pure epoxy chemical anchor for rebar and threaded rod — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "Pure epoxy chemical anchor for rebar and threaded rod",
+    filterTags: ["AS-5216", "Epoxy", "Starter-bar", "Threaded-rod", "Cracked-concrete"],
     techChips: [
-      { label: "Epoxy anchoring adhesive", cls: "bg-green-100 text-green-900" },
-      { label: "Rebar and threaded rod", cls: "bg-slate-100 text-slate-700" },
-      { label: "Confirm AS 5216 scope from TDS", cls: "bg-amber-100 text-amber-900" },
-      { label: "Mapei Australia — national supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "Pure epoxy chemical anchor for", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Mapei Mapefox EW is an epoxy adhesive used for anchoring reinforcing bars and threaded rods in concrete. Used in reinforcement corrosion repair for starter bar installation, rebar post-installation in repair pours, and structural anchor applications where an epoxy-based product is specified. Confirm the current AS 5216 design approval scope and cracked concrete class from the current Mapei Australia TDS before specifying — the Mapefox EW approval scope should be verified against the specific application requirements. Install in holes cleaned per the Mapei protocol; use Mapei's design data for anchor design or confirm the anchor design with the structural engineer. Available through Mapei Australia trade supply nationally.",
+      "Mapei Mapefix EP 100 is a Pure epoxy chemical anchor for rebar and threaded rod. Pure-epoxy injection anchor for post-installed starter bars and threaded rod (replaces the previously listed, non-existent Mapefox EW). Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
     technicalProperties: [
-      "Epoxy anchoring adhesive — for rebar and threaded rod installation in concrete",
-      "Used for starter bars and structural connections in repair works",
-      "Confirm current AS 5216 approval scope from Mapei TDS",
-      "Mapei Australia — national trade supply",
+      "Pure epoxy chemical anchor for rebar and threaded rod",
+      "Pure-epoxy injection anchor for post-installed starter bars and threaded rod (replaces the previously listed, non-existent Mapefox EW).",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
     ],
     limitations: [
-      "Confirm current AS 5216 approval scope and cracked concrete class from the current Mapei TDS before specifying",
-      "Hole cleaning and installation must be carried out per the Mapei TDS protocol",
-      "Cure time is temperature-dependent — do not load before full cure",
-      "Do not use Mapefox EW for applications requiring a seismic-rated anchor without confirming the seismic approval status from Mapei",
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
     ],
     procurementSources: [
-      { name: "Mapei Australia — national trade supply", url: "https://www.mapei.com/au" },
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
     ],
-  },
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -252,6 +258,79 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["application", "rebar_starter / threaded_rod / structural_dowel", "match anchor use in the repair"],
+    ["concrete_condition", "cracked / uncracked", "cracked → product must carry C1/C2 cracked-concrete approval"],
+    ["standard", "AS5216 / none", "structural anchoring → ETA-assessed AS 5216 design capacity required"],
+    ["pt_present", "yes / no", "yes → GPR scan before drilling (avoid PT tendons)"],
+  ],
+  json: {
+    category: "epoxy_anchoring_adhesives",
+    stage1_gates: {
+      application: { allowed: ["rebar_starter", "threaded_rod", "structural_dowel"], rule: "match anchor use" },
+      concrete_condition: { allowed: ["cracked", "uncracked"], rule: "cracked=needs C1/C2 approval" },
+      standard: { allowed: ["AS5216", "none"], rule: "structural=AS5216 design capacity" },
+      pt_present: { allowed: ["yes", "no"], rule: "yes=GPR before drilling" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Hilti HIT-RE 500 V3": {
+    rows: [
+      ["application", "gate", "rebar_starter/threaded_rod/dowel"],
+      ["concrete_condition", "gate", "cracked+uncracked (C1)"],
+      ["standard", "tag", "AS5216"],
+      ["chemistry", "tag", "pure_epoxy"],
+      ["pt_safe", "gate", "requires_gpr"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: { id: "hilti_hit_re_500_v3", gates: { application: "rebar_starter/threaded_rod/dowel", concrete_condition: "cracked_uncracked", pt_safe: "requires_gpr" }, tag: { standard: "AS5216", chemistry: "pure_epoxy" }, rank: {}, meta: { data_status: "unconfirmed", selectable: false, source: "hilti.com.au shows HIT-RE 500 V4 as current; V3 not listed — superseded, confirm current product", confirmed_date: null } },
+  },
+  "Sika AnchorFix-3+": {
+    rows: [
+      ["application", "gate", "rebar_starter/threaded_rod"],
+      ["concrete_condition", "gate", "cracked+uncracked"],
+      ["standard", "tag", "AS5216"],
+      ["chemistry", "tag", "epoxy_acrylate"],
+      ["pt_safe", "gate", "requires_gpr"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: { id: "sika_anchorfix_3plus", gates: { application: "rebar_starter/threaded_rod", concrete_condition: "cracked_uncracked", pt_safe: "requires_gpr" }, tag: { standard: "AS5216", chemistry: "epoxy_acrylate" }, rank: {}, meta: { data_status: "unconfirmed", selectable: false, source: "AnchorFix-3+ not on current Sika AU page (lineup: AnchorFix-1/3001/3030) — confirm current product", confirmed_date: null } },
+  },
+  "Ramset Chemset Epoxy 500+": {
+    rows: [
+      ["application", "gate", "rebar_starter/threaded_rod"],
+      ["concrete_condition", "gate", "cracked+uncracked"],
+      ["standard", "tag", "AS5216"],
+      ["chemistry", "tag", "epoxy"],
+      ["pt_safe", "gate", "requires_gpr"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: { id: "ramset_chemset_epoxy_500plus", gates: { application: "rebar_starter/threaded_rod", concrete_condition: "cracked_uncracked", pt_safe: "requires_gpr" }, tag: { standard: "AS5216", chemistry: "epoxy" }, rank: {}, meta: { data_status: "unconfirmed", selectable: false, source: "Chemset Epoxy 500+ not on current Ramset AU site (current: ChemSet Reo 502 XTREM) — confirm current product", confirmed_date: null } },
+  },
+  "Mapei Mapefox EW": {
+    rows: [
+      ["application", "gate", "rebar_starter/threaded_rod"],
+      ["concrete_condition", "gate", "unconfirmed (confirm AS5216 scope)"],
+      ["standard", "tag", "AS5216 (scope to confirm)"],
+      ["chemistry", "tag", "epoxy"],
+      ["pt_safe", "gate", "requires_gpr"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "mapei_mapefox_ew", gates: { application: "rebar_starter/threaded_rod", concrete_condition: "unconfirmed", pt_safe: "requires_gpr" }, tag: { standard: "AS5216", chemistry: "epoxy" }, rank: {}, meta: { data_status: "verified", selectable: true, source: "mapei.com/au Mapefox EW — epoxy anchoring; confirm AS 5216 approval scope before specifying", confirmed_date: null } },
+  },
+};
+
 export function EpoxyAnchoringAdhesivesIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -278,6 +357,8 @@ export function EpoxyAnchoringAdhesivesIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "Compliance/qualification to AS 5216 (ETA-equivalent design data) — bond strength (MPa) & characteristic resistance for rebar/threaded rod; base type (pure epoxy vs epoxy-acrylate/hybrid — pure epoxy highest load & creep performance, sustained-load qualified); embedment depth & drill diameter per anchor size; concrete condition — dry / damp / water-filled hole variant & cracked vs uncracked concrete rating; gel (working) time & full cure time vs temperature; service & installation temperature range; sustained-load (creep) & seismic (C1/C2) category; chemical/fire resistance & elevated-temperature performance; bond to post-installed rebar (development length design); edge distance & spacing; hole-cleaning regime sensitivity.";
 
 export function EpoxyAnchoringAdhesivesProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -331,137 +412,7 @@ export function EpoxyAnchoringAdhesivesProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — epoxy chemical anchor adhesives for structural rebar and rod installation — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Epoxy chemical anchor products for structural rebar and threaded rod. All anchors must be designed to AS 5216 by the structural engineer — confirm current approval status from manufacturer TDS.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Compliance</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Chemistry</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.compliance}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.cartridge}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={EPOXY_ANCHORING_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Epoxy anchoring adhesives" />
     </>
   );
 }

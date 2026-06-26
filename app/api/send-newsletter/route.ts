@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 const SITE    = "https://www.remedialbuildingaustralia.com.au";
 const FROM    = "Remedial Building Australia <newsletter@remedialbuildingaustralia.com.au>";
@@ -84,26 +84,19 @@ function buildHtml(articles: Article[], sub: Subscriber): string {
     : articles.map((a, i) => `
   <!-- Article ${i + 1} -->
   <tr>
-    <td style="padding:0 32px ${i < articles.length - 1 ? "20px" : "28px"} 32px;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0"
-        style="border-left:4px solid #b91c1c;background-color:#f9fafb;">
-        <tr>
-          <td style="padding:18px 20px;">
-            <p style="margin:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:2px;color:#b91c1c;">${esc(a.category)}</p>
-            <h2 style="margin:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#0f1f3d;line-height:1.35;">
-              <a href="${articleUrl(a.slug)}" style="color:#0f1f3d;text-decoration:none;">${esc(a.title)}</a>
-            </h2>
-            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#9ca3af;">
-              ${fmtDate(a.published_date)}${a.source_name ? ` &middot; ${esc(a.source_name)}` : ""}
-            </p>
-            <p style="margin:0 0 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#374151;line-height:1.65;">${excerpt(a.summary, 200)}</p>
-            <a href="${articleUrl(a.slug)}"
-              style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#b91c1c;text-decoration:none;">
-              Read full article &#8594;
-            </a>
-          </td>
-        </tr>
-      </table>
+    <td style="padding:11px 32px 12px 32px;${i < articles.length - 1 ? "border-bottom:1px solid #eceef1;" : ""}">
+      <p style="margin:0 0 3px 0;font-family:Arial,Helvetica,sans-serif;font-size:9px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#b91c1c;">${esc(a.category)}</p>
+      <h2 style="margin:0 0 3px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#0f1f3d;line-height:1.3;">
+        <a href="${articleUrl(a.slug)}" style="color:#0f1f3d;text-decoration:none;">${esc(a.title)}</a>
+      </h2>
+      <p style="margin:0 0 5px 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#9ca3af;">
+        ${fmtDate(a.published_date)}${a.source_name ? ` &middot; ${esc(a.source_name)}` : ""}
+      </p>
+      <p style="margin:0 0 7px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#374151;line-height:1.5;">${excerpt(a.summary, 200)}</p>
+      <a href="${articleUrl(a.slug)}"
+        style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#b91c1c;text-decoration:none;">
+        Read full article &#8594;
+      </a>
     </td>
   </tr>`).join("");
 
@@ -301,7 +294,7 @@ function buildPlainText(articles: Article[], sub: Subscriber): string {
 
 // ─── Route handler ─────────────────────────────────────────────────────────────
 
-export async function POST(request: NextRequest) {
+async function handle(request: NextRequest) {
   const secret = process.env.CRON_SECRET;
   const auth   = request.headers.get("authorization");
   if (!secret || auth !== `Bearer ${secret}`) {
@@ -319,14 +312,14 @@ export async function POST(request: NextRequest) {
   if (!subs || subs.length === 0)
     return NextResponse.json({ error: "No subscribers found" }, { status: 404 });
 
-  // Latest 10 published articles with summaries — no date restriction
+  // Up to 20 latest published articles with summaries — no date restriction
   const { data: raw, error: artError } = await supabase
     .from("industry_news")
     .select("title, slug, summary, category, source_name, published_date")
     .eq("status", "published")
     .not("summary", "is", null)
     .order("published_date", { ascending: false })
-    .limit(10);
+    .limit(20);
 
   if (artError)
     return NextResponse.json({ error: artError.message }, { status: 500 });
@@ -376,4 +369,15 @@ export async function POST(request: NextRequest) {
     article_count: articles.length,
     errors: errors.length ? errors : undefined,
   });
+}
+
+// Vercel Cron Jobs invoke the path with a GET request (and inject the
+// `Authorization: Bearer ${CRON_SECRET}` header automatically). We also keep
+// POST so the endpoint can be triggered manually with the same Bearer token.
+export async function GET(request: NextRequest) {
+  return handle(request);
+}
+
+export async function POST(request: NextRequest) {
+  return handle(request);
 }

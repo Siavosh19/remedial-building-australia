@@ -1,0 +1,5162 @@
+[
+  {
+    "id": 399,
+    "name": "Box Gutter Contractors",
+    "slug": "box-gutter-contractors",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 400,
+    "name": "Flashing Contractors",
+    "slug": "flashing-contractors",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 401,
+    "name": "Skylight Installers",
+    "slug": "skylight-installers",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 402,
+    "name": "Roof Ventilation Installers",
+    "slug": "roof-ventilation-installers",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 403,
+    "name": "Roof Leak Repair Contractors",
+    "slug": "roof-leak-repair-contractors",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 404,
+    "name": "Facade & External Envelope",
+    "slug": "facade-external-envelope",
+    "description": null,
+    "parent_id": null,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 405,
+    "name": "Cladding Contractors",
+    "slug": "cladding-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 406,
+    "name": "ACP Replacement Contractors",
+    "slug": "acp-replacement-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 407,
+    "name": "Renderers",
+    "slug": "renderers",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 408,
+    "name": "Render Repair Contractors",
+    "slug": "render-repair-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 409,
+    "name": "Facade Coating Contractors",
+    "slug": "facade-coating-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 410,
+    "name": "Facade Access Contractors",
+    "slug": "facade-access-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 411,
+    "name": "External Insulation Contractors (EIFS)",
+    "slug": "external-insulation-contractors-eifs",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 412,
+    "name": "Stone Cladding Contractors",
+    "slug": "stone-cladding-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 413,
+    "name": "Terracotta Cladding Contractors",
+    "slug": "terracotta-cladding-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 414,
+    "name": "Precast Concrete Panel Contractors",
+    "slug": "precast-concrete-panel-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 415,
+    "name": "Aluminium Window Contractors",
+    "slug": "aluminium-window-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 416,
+    "name": "Window Replacement Contractors",
+    "slug": "window-replacement-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 417,
+    "name": "Timber Window Contractors",
+    "slug": "timber-window-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 418,
+    "name": "Timber Window Restoration Specialists",
+    "slug": "timber-window-restoration-specialists",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 419,
+    "name": "Heritage Window Contractors",
+    "slug": "heritage-window-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 420,
+    "name": "Window Waterproofing Specialists",
+    "slug": "window-waterproofing-specialists",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 421,
+    "name": "Window Leak Repair Contractors",
+    "slug": "window-leak-repair-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 422,
+    "name": "Glaziers",
+    "slug": "glaziers",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 423,
+    "name": "Curtain Wall Contractors",
+    "slug": "curtain-wall-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 424,
+    "name": "Balustrade Contractors",
+    "slug": "balustrade-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 425,
+    "name": "Handrail Contractors",
+    "slug": "handrail-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 21,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 426,
+    "name": "Louvres / Screens Contractors",
+    "slug": "louvres-screens-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 22,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 427,
+    "name": "Awning Installers",
+    "slug": "awning-installers",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 23,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 428,
+    "name": "Shading System Contractors",
+    "slug": "shading-system-contractors",
+    "description": null,
+    "parent_id": 404,
+    "display_order": 24,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 429,
+    "name": "Masonry & Brick Repair",
+    "slug": "masonry-brick-repair",
+    "description": null,
+    "parent_id": null,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 430,
+    "name": "Bricklayers",
+    "slug": "bricklayers",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 431,
+    "name": "Blocklayers",
+    "slug": "blocklayers",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 432,
+    "name": "Brick Repointing Contractors",
+    "slug": "brick-repointing-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 433,
+    "name": "Brick Replacement Contractors",
+    "slug": "brick-replacement-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 434,
+    "name": "Brick Crack Repair Specialists",
+    "slug": "brick-crack-repair-specialists",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 435,
+    "name": "Tuckpointing Specialists",
+    "slug": "tuckpointing-specialists",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 436,
+    "name": "Masonry Stitching / Helifix Installers",
+    "slug": "masonry-stitching-helifix-installers",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 437,
+    "name": "Heritage Masonry Contractors",
+    "slug": "heritage-masonry-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 438,
+    "name": "Cavity Flashing Repair Contractors",
+    "slug": "cavity-flashing-repair-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 439,
+    "name": "Corroded Lintel Repair Contractors",
+    "slug": "corroded-lintel-repair-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 440,
+    "name": "Parapet Repair Contractors",
+    "slug": "parapet-repair-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 441,
+    "name": "Stone Restoration Contractors",
+    "slug": "stone-restoration-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 442,
+    "name": "Stonemasons",
+    "slug": "stonemasons",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 443,
+    "name": "Masonry Cleaning Contractors",
+    "slug": "masonry-cleaning-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 444,
+    "name": "Efflorescence Treatment Contractors",
+    "slug": "efflorescence-treatment-contractors",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 445,
+    "name": "Renderers",
+    "slug": "masonry-brick-repair-renderers",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 446,
+    "name": "Plasterers",
+    "slug": "plasterers",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 447,
+    "name": "Fibrous Plasterers",
+    "slug": "fibrous-plasterers",
+    "description": null,
+    "parent_id": 429,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 448,
+    "name": "Joints & Movement",
+    "slug": "joints-movement",
+    "description": null,
+    "parent_id": null,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 449,
+    "name": "Expansion Joint Contractors",
+    "slug": "expansion-joint-contractors",
+    "description": null,
+    "parent_id": 448,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 450,
+    "name": "Control Joint Contractors",
+    "slug": "control-joint-contractors",
+    "description": null,
+    "parent_id": 448,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 451,
+    "name": "Movement Joint System Suppliers",
+    "slug": "movement-joint-system-suppliers",
+    "description": null,
+    "parent_id": 448,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 452,
+    "name": "Architectural Joint Specialists",
+    "slug": "architectural-joint-specialists",
+    "description": null,
+    "parent_id": 448,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 453,
+    "name": "Access Systems",
+    "slug": "access-systems",
+    "description": null,
+    "parent_id": null,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 454,
+    "name": "Scaffold Companies",
+    "slug": "scaffold-companies",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 455,
+    "name": "Swing Stage Providers",
+    "slug": "swing-stage-providers",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 456,
+    "name": "Mast Climber Providers",
+    "slug": "mast-climber-providers",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 457,
+    "name": "Hoist Providers",
+    "slug": "hoist-providers",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 458,
+    "name": "Rope Access Contractors",
+    "slug": "rope-access-contractors",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 459,
+    "name": "BMU Providers",
+    "slug": "bmu-providers",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 460,
+    "name": "Height Safety Contractors",
+    "slug": "height-safety-contractors",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 461,
+    "name": "Anchor Point Installers",
+    "slug": "anchor-point-installers",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 462,
+    "name": "Static Line Installers",
+    "slug": "static-line-installers",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 463,
+    "name": "Temporary Edge Protection",
+    "slug": "temporary-edge-protection",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 464,
+    "name": "Traffic Control",
+    "slug": "traffic-control",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 465,
+    "name": "Hoarding Companies",
+    "slug": "hoarding-companies",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 466,
+    "name": "Gantry Contractors",
+    "slug": "gantry-contractors",
+    "description": null,
+    "parent_id": 453,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 467,
+    "name": "Investigation & Testing",
+    "slug": "investigation-testing",
+    "description": null,
+    "parent_id": null,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 468,
+    "name": "Leak Detection Specialists",
+    "slug": "leak-detection-specialists",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 469,
+    "name": "Concrete Scanning",
+    "slug": "concrete-scanning",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 470,
+    "name": "NDT Testing",
+    "slug": "ndt-testing",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 471,
+    "name": "Corrosion Testing",
+    "slug": "corrosion-testing",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 472,
+    "name": "Concrete Testing Labs",
+    "slug": "concrete-testing-labs",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 473,
+    "name": "Drone Inspection",
+    "slug": "drone-inspection",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 474,
+    "name": "Thermographic / Infrared Inspection",
+    "slug": "thermographic-infrared-inspection",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 475,
+    "name": "Geotechnical Testing",
+    "slug": "geotechnical-testing",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 476,
+    "name": "Structural Monitoring",
+    "slug": "structural-monitoring",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 477,
+    "name": "Moisture Testing",
+    "slug": "moisture-testing",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 478,
+    "name": "CCTV Drain Inspection",
+    "slug": "cctv-drain-inspection",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 479,
+    "name": "Waterproofing Inspectors",
+    "slug": "investigation-testing-waterproofing-inspectors",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 480,
+    "name": "Land Surveyors",
+    "slug": "land-surveyors",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 481,
+    "name": "Measured Survey Contractors",
+    "slug": "measured-survey-contractors",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 482,
+    "name": "3D Scanning Contractors",
+    "slug": "3d-scanning-contractors",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 483,
+    "name": "Laser Scanning Contractors",
+    "slug": "laser-scanning-contractors",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 484,
+    "name": "As Built Survey Contractors",
+    "slug": "as-built-survey-contractors",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 485,
+    "name": "Air Quality Testing",
+    "slug": "air-quality-testing",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 486,
+    "name": "Soil Testing Contractors",
+    "slug": "soil-testing-contractors",
+    "description": null,
+    "parent_id": 467,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 487,
+    "name": "Hazardous Materials",
+    "slug": "hazardous-materials",
+    "description": null,
+    "parent_id": null,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 488,
+    "name": "Asbestos Consultants",
+    "slug": "asbestos-consultants",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 489,
+    "name": "Asbestos Removal Contractors",
+    "slug": "asbestos-removal-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 490,
+    "name": "Mould Remediation Contractors",
+    "slug": "mould-remediation-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 491,
+    "name": "Lead Paint Contractors",
+    "slug": "lead-paint-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 492,
+    "name": "Hazardous Materials Consultants",
+    "slug": "hazardous-materials-consultants",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 493,
+    "name": "Contaminated Materials Disposal",
+    "slug": "contaminated-materials-disposal",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 494,
+    "name": "Contaminated Soil Contractors",
+    "slug": "contaminated-soil-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 495,
+    "name": "Chemical Waste Contractors",
+    "slug": "chemical-waste-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 496,
+    "name": "Bird Control Contractors",
+    "slug": "bird-control-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 497,
+    "name": "Rodent Control Contractors",
+    "slug": "rodent-control-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 498,
+    "name": "Termite Treatment Contractors",
+    "slug": "termite-treatment-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 499,
+    "name": "Pest Control Contractors",
+    "slug": "pest-control-contractors",
+    "description": null,
+    "parent_id": 487,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 500,
+    "name": "Demolition & Strip-Out",
+    "slug": "demolition-strip-out",
+    "description": null,
+    "parent_id": null,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 501,
+    "name": "Selective Demolition Contractors",
+    "slug": "selective-demolition-contractors",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 502,
+    "name": "Tile & Screed Strip-Out Contractors",
+    "slug": "tile-and-screed-strip-out-contractors",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 503,
+    "name": "Concrete Breaking Contractors",
+    "slug": "concrete-breaking-contractors",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 504,
+    "name": "Hydro-Demolition Contractors",
+    "slug": "hydro-demolition-contractors",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 505,
+    "name": "Concrete Saw Cutting",
+    "slug": "concrete-saw-cutting",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 506,
+    "name": "Core Drilling",
+    "slug": "core-drilling",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 507,
+    "name": "Earthmoving Contractors",
+    "slug": "earthmoving-contractors",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 508,
+    "name": "Excavators",
+    "slug": "excavators",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 509,
+    "name": "Bobcat Operators",
+    "slug": "bobcat-operators",
+    "description": null,
+    "parent_id": 500,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 510,
+    "name": "Plumbing & Drainage",
+    "slug": "plumbing-drainage",
+    "description": null,
+    "parent_id": null,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 511,
+    "name": "General Plumbers",
+    "slug": "general-plumbers",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 512,
+    "name": "Emergency Plumbers",
+    "slug": "emergency-plumbers",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 513,
+    "name": "Commercial Plumbers",
+    "slug": "commercial-plumbers",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 514,
+    "name": "Industrial Plumbers",
+    "slug": "industrial-plumbers",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 515,
+    "name": "Remedial Plumbers",
+    "slug": "remedial-plumbers",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 516,
+    "name": "Roof Plumbers",
+    "slug": "plumbing-drainage-roof-plumbers",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 517,
+    "name": "Gas Fitters",
+    "slug": "gas-fitters",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 518,
+    "name": "Mechanical Plumbers",
+    "slug": "mechanical-plumbers",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 519,
+    "name": "Hot Water System Contractors",
+    "slug": "hot-water-system-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 520,
+    "name": "Backflow Prevention Specialists",
+    "slug": "backflow-prevention-specialists",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 521,
+    "name": "Pipe Relining Contractors",
+    "slug": "pipe-relining-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 522,
+    "name": "Drainage Contractors",
+    "slug": "drainage-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 523,
+    "name": "Stormwater Contractors",
+    "slug": "stormwater-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 524,
+    "name": "Stormwater Pit & Grate Contractors",
+    "slug": "stormwater-pit-and-grate-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 525,
+    "name": "Stormwater Harvesting Contractors",
+    "slug": "stormwater-harvesting-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 526,
+    "name": "Stormwater Detention System Contractors",
+    "slug": "stormwater-detention-system-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 527,
+    "name": "Stormwater Design Consultants",
+    "slug": "stormwater-design-consultants",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 528,
+    "name": "Civil Drainage Contractors",
+    "slug": "civil-drainage-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 529,
+    "name": "Downpipe Contractors",
+    "slug": "downpipe-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 530,
+    "name": "Pump System Contractors",
+    "slug": "pump-system-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 531,
+    "name": "Sewer Contractors",
+    "slug": "sewer-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 21,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 532,
+    "name": "Grease Trap Contractors",
+    "slug": "grease-trap-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 22,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 533,
+    "name": "Water Filtration Contractors",
+    "slug": "water-filtration-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 23,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 534,
+    "name": "Rainwater Harvesting Contractors",
+    "slug": "rainwater-harvesting-contractors",
+    "description": null,
+    "parent_id": 510,
+    "display_order": 24,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 535,
+    "name": "Electrical",
+    "slug": "electrical",
+    "description": null,
+    "parent_id": null,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 536,
+    "name": "General Electricians",
+    "slug": "general-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 666,
+    "name": "Waste Management Contractors",
+    "slug": "waste-management-contractors",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 667,
+    "name": "Solar & Renewables",
+    "slug": "solar-renewables",
+    "description": null,
+    "parent_id": null,
+    "display_order": 24,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 668,
+    "name": "Solar Panel Installers",
+    "slug": "solar-panel-installers",
+    "description": null,
+    "parent_id": 667,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 669,
+    "name": "Battery Storage Installers",
+    "slug": "battery-storage-installers",
+    "description": null,
+    "parent_id": 667,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 670,
+    "name": "EV Charging Installers",
+    "slug": "solar-renewables-ev-charging-installers",
+    "description": null,
+    "parent_id": 667,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 671,
+    "name": "Solar Hot Water Installers",
+    "slug": "solar-hot-water-installers",
+    "description": null,
+    "parent_id": 667,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 672,
+    "name": "Greywater System Contractors",
+    "slug": "greywater-system-contractors",
+    "description": null,
+    "parent_id": 667,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 673,
+    "name": "Rainwater Tank Installers",
+    "slug": "rainwater-tank-installers",
+    "description": null,
+    "parent_id": 667,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 674,
+    "name": "Wind Energy Contractors",
+    "slug": "wind-energy-contractors",
+    "description": null,
+    "parent_id": 667,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 675,
+    "name": "Strata Management & Advisory",
+    "slug": "strata-management-advisory",
+    "description": null,
+    "parent_id": null,
+    "display_order": 25,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 676,
+    "name": "Strata Managers",
+    "slug": "strata-management-advisory-strata-managers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 677,
+    "name": "Owners Corporation Managers",
+    "slug": "strata-management-advisory-owners-corporation-managers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 678,
+    "name": "Community Association Managers",
+    "slug": "strata-management-advisory-community-association-managers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 679,
+    "name": "Building Managers",
+    "slug": "strata-management-advisory-building-managers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 680,
+    "name": "Facilities Managers",
+    "slug": "facilities-managers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 681,
+    "name": "Strata Lawyers",
+    "slug": "strata-lawyers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 682,
+    "name": "Owners Corporation Lawyers",
+    "slug": "owners-corporation-lawyers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 683,
+    "name": "Strata Mediators",
+    "slug": "strata-mediators",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 684,
+    "name": "Strata Adjudicators",
+    "slug": "strata-adjudicators",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 685,
+    "name": "NCAT Representatives",
+    "slug": "ncat-representatives",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 686,
+    "name": "Strata Financial Advisors",
+    "slug": "strata-financial-advisors",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 687,
+    "name": "Strata Insurance Brokers",
+    "slug": "strata-insurance-brokers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 688,
+    "name": "Strata Loan Providers",
+    "slug": "strata-loan-providers",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 689,
+    "name": "Strata Finance Consultants",
+    "slug": "strata-finance-consultants",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 690,
+    "name": "Strata Search Agents",
+    "slug": "strata-search-agents",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 691,
+    "name": "Strata By-Law Consultants",
+    "slug": "strata-by-law-consultants",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 692,
+    "name": "Strata Dispute Consultants",
+    "slug": "strata-dispute-consultants",
+    "description": null,
+    "parent_id": 675,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 693,
+    "name": "Planning & Development",
+    "slug": "planning-development",
+    "description": null,
+    "parent_id": null,
+    "display_order": 26,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 694,
+    "name": "Town Planners",
+    "slug": "town-planners",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 695,
+    "name": "Urban Designers",
+    "slug": "urban-designers",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 696,
+    "name": "Heritage Consultants",
+    "slug": "planning-development-heritage-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 537,
+    "name": "Commercial Electricians",
+    "slug": "commercial-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 538,
+    "name": "Industrial Electricians",
+    "slug": "industrial-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 539,
+    "name": "Emergency Electricians",
+    "slug": "emergency-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 540,
+    "name": "Strata Electricians",
+    "slug": "strata-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 541,
+    "name": "High Voltage Electricians",
+    "slug": "high-voltage-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 542,
+    "name": "Switchboard Upgrades",
+    "slug": "switchboard-upgrades",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 543,
+    "name": "Lighting Contractors",
+    "slug": "lighting-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 544,
+    "name": "Emergency Lighting Contractors",
+    "slug": "emergency-lighting-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 545,
+    "name": "Exit Sign Contractors",
+    "slug": "exit-sign-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 546,
+    "name": "Data & Communications Electricians",
+    "slug": "data-and-communications-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 547,
+    "name": "Solar & Battery Installers",
+    "slug": "solar-and-battery-installers",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 548,
+    "name": "EV Charging Installers",
+    "slug": "ev-charging-installers",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 549,
+    "name": "Security Electricians",
+    "slug": "security-electricians",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 550,
+    "name": "Intercom & CCTV Contractors",
+    "slug": "intercom-and-cctv-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 551,
+    "name": "Test & Tag Contractors",
+    "slug": "test-and-tag-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 552,
+    "name": "Building Automation Contractors",
+    "slug": "building-automation-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 553,
+    "name": "Smart Building Contractors",
+    "slug": "smart-building-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 554,
+    "name": "AV Installers",
+    "slug": "av-installers",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 555,
+    "name": "NBN Installers",
+    "slug": "nbn-installers",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 556,
+    "name": "Antenna Installers",
+    "slug": "antenna-installers",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 21,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 557,
+    "name": "Fibre Optic Contractors",
+    "slug": "fibre-optic-contractors",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 22,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 558,
+    "name": "IoT Installers",
+    "slug": "iot-installers",
+    "description": null,
+    "parent_id": 535,
+    "display_order": 23,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 559,
+    "name": "HVAC & Mechanical",
+    "slug": "hvac-mechanical",
+    "description": null,
+    "parent_id": null,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 560,
+    "name": "Air Conditioning Contractors",
+    "slug": "air-conditioning-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 561,
+    "name": "Mechanical Services Contractors",
+    "slug": "mechanical-services-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 562,
+    "name": "Ventilation Contractors",
+    "slug": "ventilation-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 563,
+    "name": "Ductwork Contractors",
+    "slug": "ductwork-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 564,
+    "name": "Chiller Contractors",
+    "slug": "chiller-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 565,
+    "name": "Boiler Contractors",
+    "slug": "boiler-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 566,
+    "name": "Hydronic Heating Contractors",
+    "slug": "hydronic-heating-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 567,
+    "name": "Split System Installers",
+    "slug": "split-system-installers",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 568,
+    "name": "BMS Contractors",
+    "slug": "bms-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 569,
+    "name": "Refrigeration Contractors",
+    "slug": "refrigeration-contractors",
+    "description": null,
+    "parent_id": 559,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 570,
+    "name": "Fire Services",
+    "slug": "fire-services",
+    "description": null,
+    "parent_id": null,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 571,
+    "name": "Passive Fire Contractors",
+    "slug": "passive-fire-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 572,
+    "name": "Fire Stopping Contractors",
+    "slug": "fire-stopping-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 573,
+    "name": "Fire Door Contractors",
+    "slug": "fire-door-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 574,
+    "name": "Fire Sprinkler Contractors",
+    "slug": "fire-sprinkler-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 575,
+    "name": "Fire Hydrant Contractors",
+    "slug": "fire-hydrant-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 576,
+    "name": "Fire Alarm Contractors",
+    "slug": "fire-alarm-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 577,
+    "name": "Fire Suppression Contractors",
+    "slug": "fire-suppression-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 578,
+    "name": "Smoke Control System Contractors",
+    "slug": "smoke-control-system-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 579,
+    "name": "Fire Safety Officers",
+    "slug": "fire-safety-officers",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 580,
+    "name": "Intumescent Coating Contractors",
+    "slug": "intumescent-coating-contractors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 581,
+    "name": "Annual Fire Safety Statement Inspectors",
+    "slug": "fire-services-annual-fire-safety-statement-inspectors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 582,
+    "name": "AS1851 Compliance Inspectors",
+    "slug": "as1851-compliance-inspectors",
+    "description": null,
+    "parent_id": 570,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 583,
+    "name": "Security & Access Control",
+    "slug": "security-access-control",
+    "description": null,
+    "parent_id": null,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 584,
+    "name": "Security System Installers",
+    "slug": "security-system-installers",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 585,
+    "name": "CCTV Installers",
+    "slug": "cctv-installers",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 586,
+    "name": "Access Control System Installers",
+    "slug": "access-control-system-installers",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 587,
+    "name": "Intercom Installers",
+    "slug": "intercom-installers",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 588,
+    "name": "Boom Gate Installers",
+    "slug": "boom-gate-installers",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 589,
+    "name": "Perimeter Security Contractors",
+    "slug": "perimeter-security-contractors",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 590,
+    "name": "Alarm Monitoring Services",
+    "slug": "alarm-monitoring-services",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 591,
+    "name": "Locksmiths",
+    "slug": "locksmiths",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 592,
+    "name": "Master Key System Installers",
+    "slug": "master-key-system-installers",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 593,
+    "name": "Biometric Access Installers",
+    "slug": "biometric-access-installers",
+    "description": null,
+    "parent_id": 583,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 594,
+    "name": "Lifts & Vertical Transport",
+    "slug": "lifts-vertical-transport",
+    "description": null,
+    "parent_id": null,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 595,
+    "name": "Lift Installers",
+    "slug": "lift-installers",
+    "description": null,
+    "parent_id": 594,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 596,
+    "name": "Lift Maintenance Contractors",
+    "slug": "lift-maintenance-contractors",
+    "description": null,
+    "parent_id": 594,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 597,
+    "name": "Escalator Contractors",
+    "slug": "escalator-contractors",
+    "description": null,
+    "parent_id": 594,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 598,
+    "name": "Dumbwaiter Installers",
+    "slug": "dumbwaiter-installers",
+    "description": null,
+    "parent_id": 594,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 599,
+    "name": "Platform Lift Installers",
+    "slug": "platform-lift-installers",
+    "description": null,
+    "parent_id": 594,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 600,
+    "name": "Stair Lift Installers",
+    "slug": "stair-lift-installers",
+    "description": null,
+    "parent_id": 594,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 601,
+    "name": "Specialist Trades",
+    "slug": "specialist-trades",
+    "description": null,
+    "parent_id": null,
+    "display_order": 21,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 602,
+    "name": "Painters",
+    "slug": "painters",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 603,
+    "name": "Commercial Painters",
+    "slug": "commercial-painters",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 604,
+    "name": "Industrial Painters",
+    "slug": "industrial-painters",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 605,
+    "name": "Sandblasters / Abrasive Blasters",
+    "slug": "sandblasters-abrasive-blasters",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 606,
+    "name": "Line Marking Contractors",
+    "slug": "line-marking-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 607,
+    "name": "Carpenters",
+    "slug": "carpenters",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 608,
+    "name": "Joiners",
+    "slug": "joiners",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 609,
+    "name": "Cabinet Makers",
+    "slug": "cabinet-makers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 610,
+    "name": "Door Installers",
+    "slug": "door-installers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 611,
+    "name": "Staircase Contractors",
+    "slug": "staircase-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 612,
+    "name": "Decking Contractors",
+    "slug": "decking-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 613,
+    "name": "Pergola Builders",
+    "slug": "pergola-builders",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 614,
+    "name": "Tilers",
+    "slug": "tilers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 615,
+    "name": "Screeders",
+    "slug": "screeders",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 616,
+    "name": "Vinyl Floor Layers",
+    "slug": "vinyl-floor-layers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 617,
+    "name": "Carpet Layers",
+    "slug": "carpet-layers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 618,
+    "name": "Timber Floor Layers",
+    "slug": "timber-floor-layers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 619,
+    "name": "Epoxy Flooring Contractors",
+    "slug": "epoxy-flooring-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 620,
+    "name": "Polished Concrete Contractors",
+    "slug": "polished-concrete-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 621,
+    "name": "Anti Slip Coating Contractors",
+    "slug": "anti-slip-coating-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 622,
+    "name": "Floor Grinding Contractors",
+    "slug": "floor-grinding-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 21,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 623,
+    "name": "Concreters",
+    "slug": "concreters",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 22,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 624,
+    "name": "Concrete Pumping",
+    "slug": "concrete-pumping",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 23,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 354,
+    "name": "Builders",
+    "slug": "builders",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 625,
+    "name": "Caulking Contractors",
+    "slug": "caulking-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 24,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 626,
+    "name": "Steel Fabricators",
+    "slug": "steel-fabricators",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 25,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 627,
+    "name": "Structural Steel Erectors",
+    "slug": "structural-steel-erectors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 26,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 628,
+    "name": "Aluminium Fabricators",
+    "slug": "aluminium-fabricators",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 27,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 629,
+    "name": "Stainless Steel Contractors",
+    "slug": "stainless-steel-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 28,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 630,
+    "name": "Sheet Metal Workers",
+    "slug": "sheet-metal-workers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 29,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 631,
+    "name": "Welders",
+    "slug": "welders",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 30,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 632,
+    "name": "Fence Installers",
+    "slug": "fence-installers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 31,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 633,
+    "name": "Gate Installers",
+    "slug": "gate-installers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 32,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 634,
+    "name": "Pool Builders",
+    "slug": "pool-builders",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 33,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 635,
+    "name": "Signage Contractors",
+    "slug": "signage-contractors",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 34,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 636,
+    "name": "Blinds & Window Covering Installers",
+    "slug": "blinds-and-window-covering-installers",
+    "description": null,
+    "parent_id": 601,
+    "display_order": 35,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 637,
+    "name": "Landscaping & Grounds",
+    "slug": "landscaping-grounds",
+    "description": null,
+    "parent_id": null,
+    "display_order": 22,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 638,
+    "name": "Landscape Contractors",
+    "slug": "landscape-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 639,
+    "name": "Landscape Designers",
+    "slug": "landscape-designers",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 640,
+    "name": "Irrigation Contractors",
+    "slug": "irrigation-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 273,
+    "name": "Consultants & Practitioners",
+    "slug": "consultants-practitioners",
+    "description": null,
+    "parent_id": null,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 275,
+    "name": "Building Consultants",
+    "slug": "building-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 277,
+    "name": "Dilapidation Consultants",
+    "slug": "dilapidation-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 278,
+    "name": "Forensic Building Consultants",
+    "slug": "forensic-building-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 279,
+    "name": "Defects Consultants",
+    "slug": "defects-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 280,
+    "name": "Asset Management Consultants",
+    "slug": "asset-management-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 281,
+    "name": "Facilities Management Consultants",
+    "slug": "facilities-management-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 282,
+    "name": "Building Managers",
+    "slug": "building-managers",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 283,
+    "name": "Owners Corporation Managers",
+    "slug": "owners-corporation-managers",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 284,
+    "name": "Strata Managers",
+    "slug": "strata-managers",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 285,
+    "name": "Community Association Managers",
+    "slug": "community-association-managers",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 286,
+    "name": "NCC / BCA Compliance Consultants",
+    "slug": "ncc-bca-compliance-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 287,
+    "name": "Accessibility Consultants (DDA)",
+    "slug": "accessibility-consultants-dda",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 288,
+    "name": "Heritage Consultants",
+    "slug": "heritage-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 289,
+    "name": "Sustainability Consultants",
+    "slug": "sustainability-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 290,
+    "name": "Energy Efficiency Consultants",
+    "slug": "energy-efficiency-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 291,
+    "name": "NatHERS Assessors",
+    "slug": "nathers-assessors",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 292,
+    "name": "NABERS Assessors",
+    "slug": "nabers-assessors",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 293,
+    "name": "Green Star Consultants",
+    "slug": "green-star-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 294,
+    "name": "BASIX Consultants",
+    "slug": "basix-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 21,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 295,
+    "name": "Expert Witnesses (Building)",
+    "slug": "expert-witnesses-building",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 22,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 296,
+    "name": "Dispute Resolution Consultants",
+    "slug": "dispute-resolution-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 23,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 297,
+    "name": "Quantity Surveyors",
+    "slug": "quantity-surveyors",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 24,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 298,
+    "name": "Project Managers",
+    "slug": "project-managers",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 25,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 299,
+    "name": "Construction Managers",
+    "slug": "construction-managers",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 26,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 300,
+    "name": "Development Managers",
+    "slug": "development-managers",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 27,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 301,
+    "name": "Development Consultants",
+    "slug": "development-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 28,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 302,
+    "name": "Engineering Services",
+    "slug": "engineering-services",
+    "description": null,
+    "parent_id": null,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 303,
+    "name": "Structural Engineers",
+    "slug": "structural-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 304,
+    "name": "Civil Engineers",
+    "slug": "civil-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 305,
+    "name": "Facade Engineers",
+    "slug": "facade-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 306,
+    "name": "Geotechnical Engineers",
+    "slug": "geotechnical-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 307,
+    "name": "Environmental Engineers",
+    "slug": "environmental-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 308,
+    "name": "Hydraulic Engineers",
+    "slug": "hydraulic-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 309,
+    "name": "Mechanical Engineers",
+    "slug": "mechanical-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 310,
+    "name": "Electrical Engineers",
+    "slug": "electrical-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 311,
+    "name": "Fire Engineers",
+    "slug": "fire-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 312,
+    "name": "Acoustic Engineers",
+    "slug": "acoustic-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 313,
+    "name": "Wind Engineers",
+    "slug": "wind-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 314,
+    "name": "Traffic Engineers",
+    "slug": "traffic-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 315,
+    "name": "Corrosion Engineers",
+    "slug": "corrosion-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 316,
+    "name": "Materials Engineers",
+    "slug": "materials-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 317,
+    "name": "Forensic Engineers",
+    "slug": "forensic-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 318,
+    "name": "Sustainability Engineers",
+    "slug": "sustainability-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 319,
+    "name": "Building Services Engineers",
+    "slug": "building-services-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 320,
+    "name": "Vertical Transport Engineers",
+    "slug": "vertical-transport-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 321,
+    "name": "Telecommunications Engineers",
+    "slug": "telecommunications-engineers",
+    "description": null,
+    "parent_id": 302,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 322,
+    "name": "DBP Practitioners",
+    "slug": "dbp-practitioners",
+    "description": null,
+    "parent_id": null,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 323,
+    "name": "DBP Design Practitioner - Class 1",
+    "slug": "dbp-design-practitioner-class-1",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 324,
+    "name": "DBP Design Practitioner - Class 2",
+    "slug": "dbp-design-practitioner-class-2",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 325,
+    "name": "DBP Design Practitioner - Facade",
+    "slug": "dbp-design-practitioner-facade",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 326,
+    "name": "DBP Design Practitioner - Structural",
+    "slug": "dbp-design-practitioner-structural",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 327,
+    "name": "DBP Design Practitioner - Mechanical",
+    "slug": "dbp-design-practitioner-mechanical",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 328,
+    "name": "DBP Design Practitioner - Electrical",
+    "slug": "dbp-design-practitioner-electrical",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 329,
+    "name": "DBP Design Practitioner - Fire Safety",
+    "slug": "dbp-design-practitioner-fire-safety",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 330,
+    "name": "DBP Design Practitioner - Waterproofing",
+    "slug": "dbp-design-practitioner-waterproofing",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 331,
+    "name": "DBP Building Practitioner - Class 1",
+    "slug": "dbp-building-practitioner-class-1",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 332,
+    "name": "DBP Building Practitioner - Class 2",
+    "slug": "dbp-building-practitioner-class-2",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 333,
+    "name": "DBP Building Practitioner - Facade",
+    "slug": "dbp-building-practitioner-facade",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 334,
+    "name": "DBP Building Practitioner - Structural",
+    "slug": "dbp-building-practitioner-structural",
+    "description": null,
+    "parent_id": 322,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 335,
+    "name": "Building Surveyors & Certifiers",
+    "slug": "building-surveyors-certifiers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 336,
+    "name": "Building Surveyors",
+    "slug": "building-surveyors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 337,
+    "name": "Principal Certifiers (PCA)",
+    "slug": "principal-certifiers-pca",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 338,
+    "name": "Construction Certificate Certifiers",
+    "slug": "construction-certificate-certifiers",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 339,
+    "name": "Occupation Certificate Certifiers",
+    "slug": "occupation-certificate-certifiers",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 641,
+    "name": "Garden Maintenance Contractors",
+    "slug": "garden-maintenance-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 276,
+    "name": "Strata Consultants",
+    "slug": "strata-consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 274,
+    "name": "Consultants",
+    "slug": "consultants",
+    "description": null,
+    "parent_id": 273,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 340,
+    "name": "Complying Development Certifiers",
+    "slug": "complying-development-certifiers",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 341,
+    "name": "Building Inspectors",
+    "slug": "building-inspectors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 342,
+    "name": "Swimming Pool Inspectors",
+    "slug": "swimming-pool-inspectors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 343,
+    "name": "Plumbing Inspectors",
+    "slug": "plumbing-inspectors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 344,
+    "name": "Drainage Inspectors",
+    "slug": "drainage-inspectors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 345,
+    "name": "Essential Services Inspectors",
+    "slug": "essential-services-inspectors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 346,
+    "name": "Annual Fire Safety Statement Inspectors",
+    "slug": "annual-fire-safety-statement-inspectors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 347,
+    "name": "Asbestos Assessors",
+    "slug": "asbestos-assessors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 348,
+    "name": "Hazardous Materials Assessors",
+    "slug": "hazardous-materials-assessors",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 349,
+    "name": "WHS Consultants",
+    "slug": "whs-consultants",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 350,
+    "name": "SafeWork Consultants",
+    "slug": "safework-consultants",
+    "description": null,
+    "parent_id": 335,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 351,
+    "name": "Remedial Contractors",
+    "slug": "remedial-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 355,
+    "name": "Specialist Remedial Contractors",
+    "slug": "specialist-remedial-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 356,
+    "name": "Facade Remediation Contractors",
+    "slug": "facade-remediation-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 357,
+    "name": "Structural Remediation Contractors",
+    "slug": "structural-remediation-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 358,
+    "name": "Concrete Cancer Repair Contractors",
+    "slug": "concrete-cancer-repair-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 359,
+    "name": "Concrete Spalling Contractors",
+    "slug": "concrete-spalling-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 360,
+    "name": "Crack Injection Contractors",
+    "slug": "crack-injection-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 361,
+    "name": "Carbon Fibre / FRP Contractors",
+    "slug": "carbon-fibre-frp-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 362,
+    "name": "Shotcrete Contractors",
+    "slug": "shotcrete-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 363,
+    "name": "Micro-Concrete Contractors",
+    "slug": "micro-concrete-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 364,
+    "name": "Grouting Contractors",
+    "slug": "grouting-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 365,
+    "name": "Cathodic Protection Specialists",
+    "slug": "cathodic-protection-specialists",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 366,
+    "name": "Galvanic Anode Installers",
+    "slug": "galvanic-anode-installers",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 367,
+    "name": "Balcony Repair Contractors",
+    "slug": "balcony-repair-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 368,
+    "name": "Basement Remediation Contractors",
+    "slug": "basement-remediation-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 369,
+    "name": "Protective Coating Contractors",
+    "slug": "protective-coating-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 370,
+    "name": "Sealant Contractors",
+    "slug": "sealant-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 371,
+    "name": "Structural Steel Contractors",
+    "slug": "structural-steel-contractors",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 372,
+    "name": "Waterproofing",
+    "slug": "waterproofing",
+    "description": null,
+    "parent_id": null,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 373,
+    "name": "Licensed Waterproofers",
+    "slug": "licensed-waterproofers",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 374,
+    "name": "Remedial Waterproofing Contractors",
+    "slug": "remedial-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 375,
+    "name": "Balcony Waterproofing Contractors",
+    "slug": "balcony-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 376,
+    "name": "Roof Waterproofing Contractors",
+    "slug": "roof-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 377,
+    "name": "Podium Waterproofing Contractors",
+    "slug": "podium-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 378,
+    "name": "Basement Waterproofing Contractors",
+    "slug": "basement-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 379,
+    "name": "Planter Box Waterproofing Contractors",
+    "slug": "planter-box-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 380,
+    "name": "Negative Side Waterproofing Contractors",
+    "slug": "negative-side-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 381,
+    "name": "Injection Waterproofing Contractors",
+    "slug": "injection-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 382,
+    "name": "Liquid Membrane Contractors",
+    "slug": "liquid-membrane-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 383,
+    "name": "Sheet Membrane Contractors",
+    "slug": "sheet-membrane-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 384,
+    "name": "Waterproofing Inspectors",
+    "slug": "waterproofing-inspectors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 385,
+    "name": "Flood Testing Services",
+    "slug": "flood-testing-services",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 386,
+    "name": "Dampproofing Contractors",
+    "slug": "dampproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 387,
+    "name": "Tanking Contractors",
+    "slug": "tanking-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 388,
+    "name": "Crystalline Waterproofing Contractors",
+    "slug": "crystalline-waterproofing-contractors",
+    "description": null,
+    "parent_id": 372,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 389,
+    "name": "Roofing",
+    "slug": "roofing",
+    "description": null,
+    "parent_id": null,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 390,
+    "name": "Roofing Contractors",
+    "slug": "roofing-contractors",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 391,
+    "name": "Roof Plumbers",
+    "slug": "roof-plumbers",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 392,
+    "name": "Metal Roofing Contractors",
+    "slug": "metal-roofing-contractors",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 393,
+    "name": "Tile Roofers",
+    "slug": "tile-roofers",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 394,
+    "name": "Membrane Roofing Contractors",
+    "slug": "membrane-roofing-contractors",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 395,
+    "name": "Torch-On Membrane Contractors",
+    "slug": "torch-on-membrane-contractors",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 396,
+    "name": "Slate Roofers",
+    "slug": "slate-roofers",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 397,
+    "name": "Green Roof Installers",
+    "slug": "green-roof-installers",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 398,
+    "name": "Solar Roof Installers",
+    "slug": "solar-roof-installers",
+    "description": null,
+    "parent_id": 389,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 642,
+    "name": "Tree Services / Arborists",
+    "slug": "tree-services-arborists",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 643,
+    "name": "Tree Surgeons",
+    "slug": "tree-surgeons",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 644,
+    "name": "Turf Suppliers & Installers",
+    "slug": "turf-suppliers-and-installers",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 645,
+    "name": "Retaining Wall Contractors",
+    "slug": "retaining-wall-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 646,
+    "name": "Paving Contractors",
+    "slug": "paving-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 647,
+    "name": "Outdoor Drainage Contractors",
+    "slug": "outdoor-drainage-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 648,
+    "name": "Outdoor Lighting Contractors",
+    "slug": "outdoor-lighting-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 649,
+    "name": "Pool & Water Feature Contractors",
+    "slug": "pool-and-water-feature-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 650,
+    "name": "Pool Maintenance Contractors",
+    "slug": "pool-maintenance-contractors",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 651,
+    "name": "Strata Grounds Maintenance",
+    "slug": "strata-grounds-maintenance",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 652,
+    "name": "Deck Builders",
+    "slug": "deck-builders",
+    "description": null,
+    "parent_id": 637,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 653,
+    "name": "Cleaning & Maintenance",
+    "slug": "cleaning-maintenance",
+    "description": null,
+    "parent_id": null,
+    "display_order": 23,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 654,
+    "name": "Strata Cleaning Companies",
+    "slug": "strata-cleaning-companies",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 655,
+    "name": "Commercial Cleaners",
+    "slug": "commercial-cleaners",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 656,
+    "name": "Window Cleaners",
+    "slug": "window-cleaners",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 657,
+    "name": "High-Rise Window Cleaning (Rope Access)",
+    "slug": "high-rise-window-cleaning-rope-access",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 658,
+    "name": "Pressure Washing Contractors",
+    "slug": "pressure-washing-contractors",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 659,
+    "name": "Car Park Cleaners",
+    "slug": "car-park-cleaners",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 660,
+    "name": "Bin Room Cleaners",
+    "slug": "bin-room-cleaners",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 661,
+    "name": "Common Area Cleaners",
+    "slug": "common-area-cleaners",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 662,
+    "name": "Graffiti Removal Contractors",
+    "slug": "graffiti-removal-contractors",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 663,
+    "name": "Carpet Cleaners",
+    "slug": "carpet-cleaners",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 664,
+    "name": "Rubbish Removal Contractors",
+    "slug": "rubbish-removal-contractors",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 665,
+    "name": "Skip Bin Hire",
+    "slug": "skip-bin-hire",
+    "description": null,
+    "parent_id": 653,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 353,
+    "name": "Class 2 Builders",
+    "slug": "class-2-builders",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 697,
+    "name": "Environmental Impact Consultants",
+    "slug": "environmental-impact-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 698,
+    "name": "Flood Consultants",
+    "slug": "flood-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 699,
+    "name": "Bushfire Consultants",
+    "slug": "bushfire-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 700,
+    "name": "Acoustic Planning Consultants",
+    "slug": "acoustic-planning-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 701,
+    "name": "Traffic and Parking Consultants",
+    "slug": "traffic-and-parking-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 702,
+    "name": "Arborist Report Consultants",
+    "slug": "arborist-report-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 703,
+    "name": "Contamination Report Consultants",
+    "slug": "contamination-report-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 704,
+    "name": "Planning Lawyers",
+    "slug": "planning-lawyers",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 705,
+    "name": "Aboriginal Heritage Consultants",
+    "slug": "aboriginal-heritage-consultants",
+    "description": null,
+    "parent_id": 693,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 706,
+    "name": "Legal, Insurance & Finance",
+    "slug": "legal-insurance-finance",
+    "description": null,
+    "parent_id": null,
+    "display_order": 27,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 707,
+    "name": "Building Defect Lawyers",
+    "slug": "building-defect-lawyers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 708,
+    "name": "Construction Lawyers",
+    "slug": "construction-lawyers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 709,
+    "name": "Strata Lawyers",
+    "slug": "legal-insurance-finance-strata-lawyers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 710,
+    "name": "Owners Corporation Lawyers",
+    "slug": "legal-insurance-finance-owners-corporation-lawyers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 711,
+    "name": "Planning Lawyers",
+    "slug": "legal-insurance-finance-planning-lawyers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 712,
+    "name": "Insurance Brokers",
+    "slug": "insurance-brokers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 713,
+    "name": "Strata Insurance Brokers",
+    "slug": "legal-insurance-finance-strata-insurance-brokers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 714,
+    "name": "Construction Finance Providers",
+    "slug": "construction-finance-providers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 715,
+    "name": "Strata Loan Providers",
+    "slug": "legal-insurance-finance-strata-loan-providers",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 716,
+    "name": "Expert Witnesses (Building)",
+    "slug": "legal-insurance-finance-expert-witnesses-building",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 717,
+    "name": "Mediators / Adjudicators",
+    "slug": "mediators-adjudicators",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 718,
+    "name": "Arbitrators",
+    "slug": "arbitrators",
+    "description": null,
+    "parent_id": 706,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 719,
+    "name": "Technology & Software",
+    "slug": "technology-software",
+    "description": null,
+    "parent_id": null,
+    "display_order": 28,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 720,
+    "name": "BIM / Digital Twin Consultants",
+    "slug": "bim-digital-twin-consultants",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 721,
+    "name": "Asset Management Software",
+    "slug": "asset-management-software",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 722,
+    "name": "Defect Management Platforms",
+    "slug": "defect-management-platforms",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 723,
+    "name": "Strata Reporting Software",
+    "slug": "strata-reporting-software",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 724,
+    "name": "Building Information Platforms",
+    "slug": "building-information-platforms",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 725,
+    "name": "Smart Building Software",
+    "slug": "smart-building-software",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 726,
+    "name": "IoT Platform Providers",
+    "slug": "iot-platform-providers",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 727,
+    "name": "Drone Survey Software",
+    "slug": "drone-survey-software",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 728,
+    "name": "Building Compliance Software",
+    "slug": "building-compliance-software",
+    "description": null,
+    "parent_id": 719,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 729,
+    "name": "Suppliers & Materials",
+    "slug": "suppliers-materials",
+    "description": null,
+    "parent_id": null,
+    "display_order": 29,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 730,
+    "name": "Waterproofing Suppliers",
+    "slug": "waterproofing-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 731,
+    "name": "Concrete Repair Suppliers",
+    "slug": "concrete-repair-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 2,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 732,
+    "name": "Sealant Suppliers",
+    "slug": "sealant-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 3,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 733,
+    "name": "Coating Suppliers",
+    "slug": "coating-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 4,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 734,
+    "name": "Roofing Material Suppliers",
+    "slug": "roofing-material-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 5,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 735,
+    "name": "Facade Material Suppliers",
+    "slug": "facade-material-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 6,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 736,
+    "name": "Brick / Masonry Suppliers",
+    "slug": "brick-masonry-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 7,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 737,
+    "name": "Timber Suppliers",
+    "slug": "timber-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 8,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 738,
+    "name": "Steel Suppliers",
+    "slug": "steel-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 9,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 739,
+    "name": "Glass Suppliers",
+    "slug": "glass-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 10,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 740,
+    "name": "Insulation Suppliers",
+    "slug": "insulation-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 11,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 741,
+    "name": "Flooring Suppliers",
+    "slug": "flooring-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 12,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 742,
+    "name": "Paint Suppliers",
+    "slug": "paint-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 13,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 743,
+    "name": "Chemical Suppliers",
+    "slug": "chemical-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 14,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 744,
+    "name": "Fastener Suppliers",
+    "slug": "fastener-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 15,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 745,
+    "name": "Access Equipment Suppliers",
+    "slug": "access-equipment-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 16,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 746,
+    "name": "Safety Equipment Suppliers",
+    "slug": "safety-equipment-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 17,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 747,
+    "name": "Testing Equipment Suppliers",
+    "slug": "testing-equipment-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 18,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 748,
+    "name": "Epoxy / Injection Resin Suppliers",
+    "slug": "epoxy-injection-resin-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 19,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 749,
+    "name": "Expansion Joint Suppliers",
+    "slug": "expansion-joint-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 20,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 750,
+    "name": "Carbon Fibre / FRP Suppliers",
+    "slug": "carbon-fibre-frp-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 21,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 751,
+    "name": "Formwork Suppliers",
+    "slug": "formwork-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 22,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 752,
+    "name": "Signage / Hoarding Suppliers",
+    "slug": "signage-hoarding-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 23,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 753,
+    "name": "Concrete Suppliers",
+    "slug": "concrete-suppliers",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 24,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 754,
+    "name": "Tool Hire Companies",
+    "slug": "tool-hire-companies",
+    "description": null,
+    "parent_id": 729,
+    "display_order": 25,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 755,
+    "name": "Builders (General / Licensed)",
+    "slug": "builders-general-licensed",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 756,
+    "name": "Residential Builders",
+    "slug": "residential-builders",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 757,
+    "name": "Commercial Builders",
+    "slug": "commercial-builders",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 758,
+    "name": "Renovation Builders",
+    "slug": "renovation-builders",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 759,
+    "name": "Owner-Builder Consultants",
+    "slug": "owner-builder-consultants",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 760,
+    "name": "Construction Contractors",
+    "slug": "construction-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 761,
+    "name": "Wall Framers",
+    "slug": "wall-framers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 762,
+    "name": "Roof Framers",
+    "slug": "roof-framers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 763,
+    "name": "Steel Frame Contractors",
+    "slug": "steel-frame-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 764,
+    "name": "Formwork Contractors",
+    "slug": "formwork-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 765,
+    "name": "Shed Builders",
+    "slug": "shed-builders",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 766,
+    "name": "Plasterboard / Gyprocking Contractors",
+    "slug": "plasterboard-gyprocking-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 767,
+    "name": "Cornice Contractors",
+    "slug": "cornice-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 768,
+    "name": "Insulation Installers",
+    "slug": "insulation-installers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 769,
+    "name": "Floor Sanders & Finishers",
+    "slug": "floor-sanders-finishers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 770,
+    "name": "Polished Plaster Contractors",
+    "slug": "polished-plaster-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 771,
+    "name": "Shopfitters",
+    "slug": "shopfitters",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 772,
+    "name": "Bathroom Renovators",
+    "slug": "bathroom-renovators",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 773,
+    "name": "Kitchen Renovators",
+    "slug": "kitchen-renovators",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 774,
+    "name": "Wet Area Waterproofers",
+    "slug": "wet-area-waterproofers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 775,
+    "name": "Shower Regrouting Contractors",
+    "slug": "shower-regrouting-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 776,
+    "name": "Stone Benchtop Fabricators",
+    "slug": "stone-benchtop-fabricators",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 777,
+    "name": "Furniture Makers",
+    "slug": "furniture-makers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 778,
+    "name": "Driveway & Path Concreters",
+    "slug": "driveway-path-concreters",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 779,
+    "name": "Garage Door Installers",
+    "slug": "garage-door-installers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 780,
+    "name": "Patio Builders",
+    "slug": "patio-builders",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 781,
+    "name": "Shade Structure Installers",
+    "slug": "shade-structure-installers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 782,
+    "name": "Interior Designers",
+    "slug": "interior-designers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 783,
+    "name": "Interior Decorators",
+    "slug": "interior-decorators",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 784,
+    "name": "Colour Consultants",
+    "slug": "colour-consultants",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 785,
+    "name": "Kitchen Designers",
+    "slug": "kitchen-designers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 786,
+    "name": "Bathroom Designers",
+    "slug": "bathroom-designers",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 787,
+    "name": "Handymen / Maintenance Contractors",
+    "slug": "handymen-maintenance-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 788,
+    "name": "Property Maintenance Contractors",
+    "slug": "property-maintenance-contractors",
+    "description": null,
+    "parent_id": null,
+    "display_order": 0,
+    "icon": null,
+    "is_active": true
+  },
+  {
+    "id": 352,
+    "name": "Class 1 Builders",
+    "slug": "class-1-builders",
+    "description": null,
+    "parent_id": 351,
+    "display_order": 1,
+    "icon": null,
+    "is_active": true
+  }
+]

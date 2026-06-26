@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Enamel"
@@ -35,6 +36,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -148,9 +150,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Haymes Paint Australia",
     brandUrl: "https://www.haymespaint.com.au",
     accentColor: "#b45309",
-    name: "TODO: owner confirm — Haymes Ultra Trim Exterior Gloss (product name may be incorrect — the current Haymes trim product is 'Ultratrim® Acrylic' (available in Semi Gloss and High Gloss — NOT a specific 'Exterior Gloss' grade) — 'Ultra Trim Exterior Gloss' is not confirmed as the exact current Haymes product name — confirm correct current product name with Haymes technical and confirm whether Ultratrim® Acrylic is water-based and exterior-rated)",
-    descriptionLine: "Australian-made premium exterior gloss enamel for timber trim — UV-resistant hard gloss finish for doors, window frames and exterior timber elements — Haymes exterior system",
-    productType: "TODO: owner confirm — Premium exterior gloss enamel — timber trim — Australian-made (product name unconfirmed — current Haymes trim product appears to be 'Ultratrim® Acrylic' — see name field)",
+    name: "Haymes Ultratrim Acrylic",
+    descriptionLine: "Australian-made premium acrylic gloss trim enamel for timber — UV-resistant hard gloss finish for doors, window frames and exterior timber elements — Haymes trim system",
+    productType: "Premium acrylic gloss trim enamel — timber trim — Australian-made",
+    dataNote: "Owner to confirm — the product name shown was previously 'Haymes Ultra Trim Exterior Gloss'; the current Haymes trim product is 'Ultratrim® Acrylic' (Semi Gloss and High Gloss variants — water-based, non-yellowing, Global GreenTag certified). Confirm the exact current product name, whether it is exterior-rated for facade trim, and source all technical data (DFT, coverage, primer requirements) from the current Haymes Ultratrim TDS before publishing.",
     filterTags: ["Enamel", "Timber", "Exterior", "Gloss", "UV-resistant", "Water-based", "Trim", "Door", "Window-frame"],
     techChips: [
       { label: "Australian-made", cls: "bg-amber-100 text-amber-800" },
@@ -277,7 +280,7 @@ const SYSTEM_COMPARISON: {
   { product: "Weathershield Exterior Gloss", brand: "Dulux", binder: "Acrylic — water-based", finish: "Gloss", uvSystem: "UV stabilisers", coastal: "Yes", primer: "Dulux exterior primer + undercoat", primaryUse: "Benchmark exterior trim enamel — wide national availability" },
   { product: "Solagard Exterior Gloss", brand: "Wattyl", binder: "Acrylic — water-based", finish: "Gloss", uvSystem: "Advanced UV stabilisers", coastal: "Yes", primer: "Wattyl exterior primer + undercoat", primaryUse: "High UV — QLD/tropical — advanced UV stability" },
   { product: "Exterior Enamel Gloss", brand: "Cabot's", binder: "Confirm TDS", finish: "Gloss", uvSystem: "UV stabilisers", coastal: "Confirm TDS", primer: "Cabot's timber primer", primaryUse: "Timber specialist brand — strong Bunnings distribution" },
-  { product: "Ultra Trim Exterior Gloss", brand: "Haymes", binder: "Acrylic — water-based", finish: "Gloss", uvSystem: "UV stabilisers", coastal: "Confirm TDS", primer: "Haymes exterior primer + undercoat", primaryUse: "Australian-made — Haymes system — VIC/regional" },
+  { product: "Ultratrim Acrylic", brand: "Haymes", binder: "Acrylic — water-based", finish: "Gloss", uvSystem: "UV stabilisers", coastal: "Confirm TDS", primer: "Haymes exterior primer + undercoat", primaryUse: "Australian-made — Haymes system — VIC/regional" },
   { product: "Super Trim Exterior Gloss", brand: "Solver", binder: "Acrylic — water-based", finish: "Gloss", uvSystem: "UV stabilisers", coastal: "Confirm TDS", primer: "Solver exterior primer + undercoat", primaryUse: "Solver system — VIC and eastern Australia" },
   { product: "Classic Exterior Gloss", brand: "British Paints", binder: "Confirm TDS", finish: "Gloss", uvSystem: "UV stabilisers", coastal: "Confirm TDS", primer: "Compatible exterior primer", primaryUse: "Wide retail availability — accessible specification — Bunnings" },
 ];
@@ -526,7 +529,7 @@ export function ExteriorEnamelTimberProductSection() {
                   <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div>
                   <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div>
                 </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">{product.dataNote && <DataNote text={product.dataNote} />}<CollapsibleSources sources={product.procurementSources} /></div>
               </div>
             </div>
           ))}

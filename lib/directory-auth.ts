@@ -70,6 +70,7 @@ export async function getCurrentDirectoryUser() {
   });
 
   if (!user) return null;
+  if (user.suspended) return null;
   // Admin roles bypass email verification — they are created directly
   if (!user.is_verified && !ADMIN_ROLES.has(user.role)) return null;
   return user;
@@ -105,6 +106,20 @@ export async function getCurrentAdminUser() {
   return user;
 }
 
+// Strata / client users (quote-request platform). Same session + cookie as the
+// directory, gated on the client_user role.
+export async function getCurrentClientUser() {
+  const user = await getCurrentDirectoryUser();
+  if (!user || user.role !== "client_user") return null;
+  return user;
+}
+
+export async function getClientUserFromRequest(request: Request) {
+  const user = await getDirectoryUserFromRequest(request);
+  if (!user || user.role !== "client_user") return null;
+  return user;
+}
+
 export async function getAdminFromRequest(request: Request) {
   const user = await getDirectoryUserFromRequest(request);
   if (!user || !ADMIN_ROLES.has(user.role)) return null;
@@ -121,6 +136,7 @@ export async function getDirectoryUserFromRequest(request: Request) {
   if (!payload) return null;
   const user = await prisma.user.findUnique({ where: { id: payload.userId } });
   if (!user) return null;
+  if (user.suspended) return null;
   if (!user.is_verified && !ADMIN_ROLES.has(user.role)) return null;
   return user;
 }

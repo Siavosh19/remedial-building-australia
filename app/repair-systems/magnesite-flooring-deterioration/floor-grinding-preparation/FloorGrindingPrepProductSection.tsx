@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Layers, Ruler, SquareStack, FileText } from "lucide-react";
 import { CollapsibleList, CollapsibleDescription, CollapsibleSources, CollapsibleCardDetails, TechCard, CheckCircle, AlertTriangle } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag = "Floor-Grinder" | "HEPA-Vacuum" | "M-Class" | "H-Class" | "250-280mm" | "Wet-Method" | "Dry-Method" | "Magnesite-Prep";
 
@@ -128,6 +129,78 @@ const PRODUCTS: Product[] = [
     procurementSources: [
       { name: "HTC Floor Systems Australia", url: "https://www.htc-floorsystems.com/en/" },
       { name: "Diamond Tool Warehouse (HTC stockist)", url: "https://www.diamondtoolwarehouse.com.au/" },
+    ],
+  },
+  {
+    fullLabel: "Scanmaskin Australia (Other / Generic)",
+    brandUrl: "https://www.scanmaskin.com/",
+    accentColor: "#475569",
+    name: "Scanmaskin Scan Combiflex 650 — Triple-Head Planetary Diamond Grinder",
+    descriptionLine: "Triple-head planetary diamond floor grinder for large-area magnesite and adhesive removal — approximately 650 mm working width",
+    productType: "Triple-head planetary diamond floor grinding machine",
+    filterTags: ["Floor-Grinder", "Dry-Method", "Magnesite-Prep"],
+    techChips: [
+      { label: "Planetary", cls: "bg-slate-100 text-slate-700" },
+      { label: "Triple-head", cls: "bg-slate-100 text-slate-700" },
+      { label: "Large-area", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Scanmaskin Scan Combiflex 650 is a contractor-grade triple-head planetary diamond grinder used in the Australian market for removing old magnesite and adhesive residues and profiling concrete prior to moisture primer and self-levelling underlayment application. At approximately 650 mm working width with three counter-rotating heads, it suits larger open floor areas where the 250–280 mm single-head machines are too slow. Must be connected to an M or H-class HEPA dust extractor at all times when grinding magnesite. Confirm current model specification, power supply, and tooling availability with Scanmaskin technical.",
+    technicalProperties: [
+      "Working width: approximately 650 mm (triple planetary heads)",
+      "TODO: owner confirm — machine weight, motor power, and phase (single- vs three-phase) with current Scanmaskin AU specification",
+      "Planetary counter-rotating heads — even removal and surface profiling, accepts a range of diamond segments",
+      "Dust shroud connection for M/H-class HEPA extractor — required for magnesite grinding",
+      "Suitable for CSP 1–3 surface profiles depending on diamond segment selection",
+      "Typically hired from surface preparation specialist hire companies — confirm availability by state",
+    ],
+    limitations: [
+      "CAUTION: Magnesite contains magnesium chloride — dry grinding without connected M/H-class HEPA extraction is a WHS violation and must never occur",
+      "Larger triple-head machine — less manoeuvrable than 250–280 mm single-head grinders; may not pass through standard doorways or suit small rooms",
+      "Cannot grind right into corners and edges — angle grinder follow-up required at perimeters",
+      "Operator must be experienced with three-phase / large planetary grinders — confirm site power supply before hire",
+      "Magnesite dust must be disposed of as classified chemical waste per state EPA requirements",
+      "Confirm current model, tooling, and dust-extraction compatibility with Scanmaskin before specifying",
+    ],
+    procurementSources: [
+      { name: "Scanmaskin Australia", url: "https://www.scanmaskin.com/" },
+      { name: "Surface preparation hire specialists", url: "https://www.kennards.com.au/" },
+    ],
+  },
+  {
+    fullLabel: "Husqvarna Construction",
+    brandUrl: "https://www.husqvarnacp.com/au/",
+    accentColor: "#d97706",
+    name: "Husqvarna PG 450 — Single-Phase Diamond Floor Grinder",
+    descriptionLine: "Single-phase planetary diamond floor grinder for larger magnesite removal and preparation areas — 450 mm working width",
+    productType: "Planetary diamond floor grinding machine for surface preparation",
+    filterTags: ["Floor-Grinder", "Dry-Method", "Magnesite-Prep"],
+    techChips: [
+      { label: "450 mm", cls: "bg-amber-100 text-amber-800" },
+      { label: "Single-phase", cls: "bg-orange-100 text-orange-800" },
+      { label: "Planetary", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Husqvarna PG 450 is a single-phase planetary diamond floor grinder, one step up in working width from the PG 280, suited to larger magnesite removal and floor preparation areas while still running on a standard single-phase supply. Its 450 mm working width improves throughput on open apartment and commercial floors when achieving a minimum CSP 2 profile prior to moisture primer and self-levelling underlayment. Must be connected to an M or H-class HEPA dust extractor at all times when grinding magnesite. Confirm current model specification and tooling with Husqvarna Construction.",
+    technicalProperties: [
+      "Working width: 450 mm (planetary head)",
+      "Single-phase electric supply — suitable for sites without three-phase power",
+      "TODO: owner confirm — machine weight and motor power rating with current Husqvarna AU specification",
+      "Planetary grinding head — accepts a range of diamond segments for magnesite, adhesive, and concrete",
+      "Dust shroud connection for M/H-class HEPA extractor — required for magnesite grinding",
+      "Suitable for CSP 1–3 surface profiles depending on diamond segment selection",
+    ],
+    limitations: [
+      "CAUTION: Magnesite contains magnesium chloride — dry grinding without connected M/H-class HEPA extraction is a WHS violation and must never occur",
+      "Larger than the PG 280 — confirm it passes through doorways and suits the room sizes on the project",
+      "Cannot grind right into corners and edges — angle grinder follow-up required at perimeters",
+      "Hire machine — check current availability and compatibility with required diamond segments",
+      "Operator must wear P2 respirator minimum, safety glasses, hearing protection, and gloves",
+      "Magnesite dust must be disposed of as classified chemical waste per state EPA requirements",
+    ],
+    procurementSources: [
+      { name: "Husqvarna Construction Products", url: "https://www.husqvarnacp.com/au/" },
+      { name: "Kennards Hire", url: "https://www.kennards.com.au/" },
     ],
   },
   {
@@ -304,102 +377,13 @@ export function FloorGrindingPrepIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Machine type matched to task (planetary diamond grinder for open areas, edge grinder for perimeters) with machine weight/head down-pressure and motor power for productivity; diamond tooling — metal-bond vs resin-bond and grit/segment hardness matched to floor hardness (soft magnesite/old adhesive vs hard concrete) and removal aggression; cut/removal depth and resulting surface profile (ICRI CSP for coatings/overlays); single- vs three-phase power and floor-area throughput; on-board dust shroud and extraction-port compatibility; mandatory H-class (or M-class as rated) HEPA dust extractor with adequate airflow (m³/h) for WHS Respirable Crystalline Silica control (silica plus magnesite/asbestos check before grinding); wet vs dry capability; manoeuvrability and edge reach; consumable life and changeover; vibration/noise and operator WHS";
+
 export function FloorGrindingPrepProductSection() {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (tag: FilterTag) =>
-    setActiveFilters((prev) => {
-      const n = new Set(prev);
-      n.has(tag) ? n.delete(tag) : n.add(tag);
-      return n;
-    });
-
-  const filtered =
-    activeFilters.size === 0
-      ? PRODUCTS
-      : PRODUCTS.filter((p) => p.filterTags.some((t) => activeFilters.has(t)));
-
-  const scroll = (dir: "left" | "right") => {
-    if (scrollRef.current)
-      scrollRef.current.scrollBy({ left: dir === "left" ? -420 : 420, behavior: "smooth" });
-  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        {FILTER_DEFS.map(({ tag, label }) => {
-          const active = activeFilters.has(tag);
-          return (
-            <button
-              key={tag}
-              onClick={() => toggleFilter(tag)}
-              className={`rounded-full border px-3 py-1 text-xs font-bold transition ${
-                active
-                  ? "border-sky-600 bg-sky-600 text-white"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-sky-300"
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
-        {activeFilters.size > 0 && (
-          <button
-            onClick={() => setActiveFilters(new Set())}
-            className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-bold text-red-700 transition hover:bg-red-100"
-          >
-            Clear filters
-          </button>
-        )}
-      </div>
-
-      <div className="relative">
-        <button onClick={() => scroll("left")} className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronLeft size={16} /></button>
-        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scroll-smooth pb-2" style={{ scrollbarWidth: "none" }}>
-          {filtered.map((p) => (
-            <div key={p.name} className="w-80 shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeftWidth: 4, borderLeftColor: p.accentColor }}>
-              <div className="border-b border-slate-100 px-5 py-4">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{p.fullLabel}</span>
-                  <div className="flex gap-1">
-                    {p.tdsUrl && <a href={p.tdsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700"><FileText size={9} /> TDS</a>}
-                    <a href={p.brandUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 hover:text-slate-700">Brand</a>
-                  </div>
-                </div>
-                <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{p.name}</h3>
-                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{p.productType}</p>
-                <CollapsibleCardDetails text={p.descriptionLine} chips={p.techChips} />
-              </div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                <CollapsibleDescription text={p.systemDescription} />
-              </div>
-              <div className="space-y-3 px-5 py-4">
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                  <CollapsibleList items={p.technicalProperties} icon="check" limit={3} />
-                </div>
-                <div>
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                  <CollapsibleList items={p.limitations} icon="x" limit={3} />
-                </div>
-              </div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                <CollapsibleSources sources={p.procurementSources} />
-              </div>
-            </div>
-          ))}
-          {filtered.length === 0 && (
-            <div className="flex w-full items-center justify-center py-12 text-sm text-slate-400">
-              No products match the selected filters.
-            </div>
-          )}
-        </div>
-        <button onClick={() => scroll("right")} className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm hover:bg-slate-50"><ChevronRight size={16} /></button>
-      </div>
-
+    <>
       <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <button onClick={() => setAccordionOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left hover:bg-slate-50">
           <div>
@@ -424,33 +408,7 @@ export function FloorGrindingPrepProductSection() {
         )}
       </div>
 
-      <div>
-        <h3 className="mb-4 text-lg font-extrabold text-sky-950">System Comparison</h3>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="px-5 py-3 text-left font-bold text-slate-700 whitespace-nowrap sticky left-0 bg-slate-50 border-r border-slate-200">Product</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Brand</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Type</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Width</th>
-                <th className="px-4 py-3 text-left font-bold text-slate-600 whitespace-nowrap">Extraction</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 bg-inherit px-5 py-3 font-semibold text-slate-800 border-r border-slate-200 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.width}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.extraction}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Magnesite flooring deterioration" criteriaKey="magnesite-flooring-deterioration/floor-grinding-preparation" />
+    </>
   );
 }

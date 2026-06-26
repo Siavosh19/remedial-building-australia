@@ -19,7 +19,7 @@
 */
 
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 import { getCategoryImage, VALID_CATEGORIES } from "@/lib/news-categories";
 
 export const maxDuration = 300;
@@ -188,6 +188,21 @@ function normTitle(title: string): string {
   return title.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 80);
 }
 
+// ─── Recency filter ───────────────────────────────────────────────────────────
+// Google News `search?q=` feeds return matching articles from ALL time, not just
+// recent ones. Without this gate the pipeline keeps ingesting years-old articles
+// (2019, 2021, 2022…), so the news page fills with stale content and never feels
+// like it's updating. Only let through articles published within MAX_AGE_DAYS.
+const MAX_AGE_DAYS = 30;
+const MAX_AGE_MS = MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
+
+function isRecent(pubDate: string): boolean {
+  if (!pubDate) return false; // no date → can't confirm freshness → drop
+  const t = new Date(pubDate).getTime();
+  if (isNaN(t)) return false;
+  return Date.now() - t <= MAX_AGE_MS;
+}
+
 // ─── AI classification + enrichment ──────────────────────────────────────────
 
 interface EnrichResult {
@@ -231,7 +246,7 @@ For PRIORITY_1, PRIORITY_2, or PRIORITY_3:
 PRIORITY: priority_1
 CATEGORY: <exactly one of: Building Commission NSW | DBP Act | Class 2 Buildings | Waterproofing Defects | Façade Defects | Concrete Repair | Strata Defects | Building Defects | Remedial Construction | Product & Material Updates | New Construction Systems | Other>
 TAGS: <3–5 comma-separated keywords>
-SUMMARY: <Write exactly two paragraphs, separated by a blank line. Total 145–215 words. Rules: write as an experienced industry person briefing colleagues after reading the article — direct, plain, conversational; fully rewrite in your own words, do not copy or paraphrase the opening sentence or any wording from the source; do not use "reportedly", "appears to", "understood to", "highlights", "underscores", "reflects", "it is worth noting", "it is important", "this article", "the report", or "in conclusion"; do not start sentences with "This"; do not add facts not in the source; use active voice where possible; the first paragraph covers what happened and the key details; the second paragraph explains why it matters to Australian remedial building professionals, strata managers, waterproofing contractors, or the construction sector. For priority_3: one paragraph of 75–105 words, same rules.>
+SUMMARY: <Write exactly two paragraphs, separated by a blank line. The first paragraph is up to 350 words and covers what happened and the key details; the second paragraph is 75 words maximum and explains why it matters to Australian remedial building professionals, strata managers, waterproofing contractors, or the construction sector. Rules: write as an experienced industry person briefing colleagues after reading the article — direct, plain, conversational; fully rewrite in your own words, do not copy or paraphrase the opening sentence or any wording from the source; do not use "reportedly", "appears to", "understood to", "highlights", "underscores", "reflects", "it is worth noting", "it is important", "this article", "the report", or "in conclusion"; do not start sentences with "This"; do not add facts not in the source; use active voice where possible. For priority_3: one paragraph of 75–105 words, same rules.>
 IMPACT: <One short paragraph, 45–75 words. State plainly why this is relevant to Australian building professionals — remedial consultants, strata managers, waterproofing contractors, engineers, or certifiers. Neutral, practical tone. No hype, no marketing language, no legal or engineering advice. Do not start with "It is important", "This highlights", "This underscores", or "This reflects". Write as a plain professional observation.>
 
 For REJECT:
@@ -247,7 +262,7 @@ PRIORITY: reject`;
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 800,
+        max_tokens: 1400,
         messages: [{ role: "user", content: prompt }],
       }),
     });
@@ -299,6 +314,7 @@ export async function GET() {
     errors: [] as string[],
     total_fetched: 0,
     new_candidates: 0,
+    skipped_stale: 0,
   };
 
   // 1. Fetch all RSS feeds simultaneously
@@ -326,7 +342,14 @@ export async function GET() {
       stats.errors.push(`Feed ${i + 1}: ${(result.reason as Error)?.message ?? "Unknown error"}`);
       continue;
     }
-    for (const item of result.value.slice(0, 5)) {
+    // Keep only recent articles, THEN cap per feed — otherwise a feed's first 5
+    // items (often old) would crowd out genuinely fresh ones further down.
+    const fresh = result.value.filter((item) => {
+      if (isRecent(item.pubDate)) return true;
+      stats.skipped_stale++;
+      return false;
+    });
+    for (const item of fresh.slice(0, 5)) {
       const nt = normTitle(item.title);
       if (!seenLinks.has(item.link) && !seenTitles.has(nt)) {
         seenLinks.add(item.link);

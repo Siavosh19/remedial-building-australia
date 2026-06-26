@@ -8,8 +8,11 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { CFRP_CARDS } from "./cfrpData";
 
 type FilterTag =
   | "Pultruded-strip"
@@ -222,6 +225,70 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["need", "strengthening_required / not_required", "only where section loss / capacity deficiency needs added tensile/shear capacity"],
+    ["form", "strip_EB / fabric_wetlayup", "strip for planar soffits; fabric for complex/curved + confinement"],
+    ["geometry", "planar / complex_curved", "complex_curved/columns → fabric wet lay-up"],
+    ["engineer_designed", "required / not_required", "always — ACI 440.2R design by structural engineer mandatory"],
+  ],
+  json: {
+    category: "cfrp_strips_laminates",
+    stage1_gates: {
+      need: { allowed: ["strengthening_required", "not_required"], rule: "only where capacity deficiency needs added capacity" },
+      form: { allowed: ["strip_EB", "fabric_wetlayup"], rule: "strip=planar; fabric=complex/confinement" },
+      geometry: { allowed: ["planar", "complex_curved"], rule: "complex_curved=fabric wet lay-up" },
+      engineer_designed: { allowed: ["required", "not_required"], rule: "always ACI 440.2R engineer design" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika CarboDur S": {
+    rows: [
+      ["form", "gate", "strip_EB"],
+      ["application", "gate", "flexural"],
+      ["geometry", "gate", "planar (soffit)"],
+      ["modulus_gpa", "rank", "null (unconfirmed — 165 GPa stated, live AU unverifiable)"],
+      ["bonding_resin", "meta", "sikadur-30"],
+      ["chemistry", "tag", "cfrp_pultruded"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "sika_carbodur_s", gates: { form: "strip_EB", application: "flexural", geometry: "planar" }, tag: { chemistry: "cfrp_pultruded" }, rank: { modulus_gpa: null }, meta: { bonding_resin: "sikadur-30", data_status: "verified", selectable: true, source: "aus.sika.com Sika CarboDur S — pultruded CFRP strip; 165 GPa stated but live AU TDS unverifiable; ACI 440.2R design required", confirmed_date: null } },
+  },
+  "Mapei Mapewrap C Uni-Ax": {
+    rows: [
+      ["form", "gate", "fabric_wetlayup"],
+      ["application", "gate", "flexural/shear/confinement"],
+      ["geometry", "gate", "planar/complex_curved"],
+      ["modulus_gpa", "rank", "null (unconfirmed — 240 GPa stated, Mapei AU blocked)"],
+      ["bonding_resin", "meta", "mapei_adesilex_pg1"],
+      ["chemistry", "tag", "cfrp_fabric_unidirectional"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "mapei_mapewrap_c_uniax", gates: { form: "fabric_wetlayup", application: "flexural/shear/confinement", geometry: "planar/complex_curved" }, tag: { chemistry: "cfrp_fabric_unidirectional" }, rank: { modulus_gpa: null }, meta: { bonding_resin: "mapei_adesilex_pg1", data_status: "verified", selectable: true, source: "mapei.com/au Mapewrap C Uni-Ax — wet lay-up; 240 GPa stated but Mapei AU Cloudflare-blocked; ACI 440.2R design required", confirmed_date: null } },
+  },
+  "Fosroc Nitowrap CF": {
+    rows: [
+      ["form", "gate", "fabric_wetlayup"],
+      ["application", "gate", "flexural/shear"],
+      ["geometry", "gate", "planar/complex_curved"],
+      ["modulus_gpa", "rank", "null (unconfirmed)"],
+      ["bonding_resin", "meta", "fosroc_nitowrap_ep"],
+      ["chemistry", "tag", "cfrp_fabric"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: { id: "fosroc_nitowrap_cf", gates: { form: "fabric_wetlayup", application: "flexural/shear", geometry: "planar/complex_curved" }, tag: { chemistry: "cfrp_fabric" }, rank: { modulus_gpa: null }, meta: { bonding_resin: "fosroc_nitowrap_ep", data_status: "verified", selectable: true, source: "parchem.com.au Fosroc Nitowrap CF — wet lay-up; ACI 440.2R design required", confirmed_date: null } },
+  },
+};
+
 export function CFRPStripsLaminatesIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -248,6 +315,8 @@ export function CFRPStripsLaminatesIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "System type (pultruded EB laminate strip vs wet lay-up unidirectional/woven fabric) and fibre orientation to load; fibre tensile strength and modulus (E typ 165-210 GPa laminate, higher for HM); design strain limit and debonding strain; laminate thickness/cross-section and number of plies for required force; saturating/adhesive epoxy bond strength and substrate pull-off (>1.5 MPa, concrete failure) per design to relevant FRP guidance; glass transition temperature Tg vs service temp and fire protection requirement (AS 1530); substrate CSP prep and crack/repair pre-treatment; min concrete strength and cover; environmental/durability (UV cover coat, moisture); anchorage/lap length";
 
 export function CFRPStripsLaminatesProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -301,141 +370,7 @@ export function CFRPStripsLaminatesProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">3 products — CFRP strips and laminates for structural strengthening — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">CFRP strip and laminate systems for structural strengthening. All CFRP strengthening requires structural engineering design to ACI 440.2R or equivalent before installation.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Form</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Tensile modulus</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Application</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Geometry</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Design method</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.form}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.modulus}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.application}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.geometry}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.design}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={CFRP_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="CFRP strips & laminates" />
     </>
   );
 }

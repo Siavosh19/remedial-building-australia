@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
 import { TwoCoatPMRenderIntroSection, TwoCoatPMRenderProductSection } from "./TwoCoatPMRenderProductSection";
+import PageNav from "@/components/PageNav";
 
+import SiteHeader from "@/components/SiteHeader";
+import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 export const metadata: Metadata = {
   title: "Two-Coat Polymer-Modified Render Systems — Render Repair, Removal & Reinstallation — Remedial Building Australia",
   description:
-    "Technical product reference for two-coat polymer-modified cementitious render systems used in full render removal and replacement, render repair, and facade re-render works on Australian Class 2 strata and commercial buildings — Mapei, Rockcote, Sika, and Fosroc system comparisons.",
+    "Technical product reference for two-coat polymer-modified cementitious render systems used in full render removal and replacement, render repair, and facade re-render works on Australian Class 2 strata and commercial buildings — Dulux Acratex, Rockcote, Mapei, Sto and Boral system comparisons.",
 };
 
 const ACTIVE_SLUG = "two-coat-polymer-modified-render";
@@ -26,22 +29,9 @@ const SIBLING_GROUPS = [
       { label: "Bonding agents", slug: "bonding-agent-primer-systems" },
       { label: "Salt-retardant treatment", slug: "salt-retardant-substrate-treatment" },
       { label: "Saline primer / slurry", slug: "saline-resistant-primer-slurry" },
+      { label: "Arris & render beads", slug: "", href: BASE_ARRIS },
     ],
     base: BASE_RENDER,
-  },
-  {
-    heading: "Arris & Render Beads",
-    tabs: [
-      { label: "Aluminium arris", slug: "aluminium-arris-corner-angle-beads" },
-      { label: "Stainless arris", slug: "stainless-steel-arris-corner-angle-beads" },
-      { label: "PVC arris", slug: "pvc-arris-corner-angle-beads" },
-      { label: "Render stop beads", slug: "render-stop-beads" },
-      { label: "Bellcast / drip beads", slug: "bellcast-drip-beads" },
-      { label: "Movement beads", slug: "movement-expansion-beads" },
-      { label: "Reveal beads", slug: "reveal-beads" },
-      { label: "Mesh-wing beads", slug: "mesh-wing-render-beads" },
-    ],
-    base: BASE_ARRIS,
   },
 ];
 
@@ -50,24 +40,7 @@ export default function TwoCoatPMRenderPage() {
     <div className="min-h-screen bg-slate-50">
 
       {/* ── Header ── */}
-      <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div>
-              <div className="text-lg font-extrabold tracking-tight text-sky-950">Remedial Building Australia</div>
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Technical Remedial Building Platform</div>
-            </div>
-          </a>
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
-            <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
-            <a href="/repair-systems" className="whitespace-nowrap text-sky-950 underline underline-offset-4 decoration-red-700">Repair Systems</a>
-            <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
-            <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
-            <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
-          </nav>
-          <a href="/directory/login" className="hidden shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-800 transition md:inline-flex">Login / Create Account</a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
 
@@ -85,6 +58,7 @@ export default function TwoCoatPMRenderPage() {
               <span>/</span>
               <span className="text-sky-950">Two-coat polymer-modified render systems</span>
             </nav>
+            <PageNav />
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
@@ -92,15 +66,15 @@ export default function TwoCoatPMRenderPage() {
                   Two-coat polymer-modified render systems
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-                  Technical product reference for two-coat polymer-modified cementitious render systems used in full render removal and replacement, render repair, and facade re-render works on Australian Class 2 strata and commercial buildings. Covers product classification, system selection, application requirements, and brand comparisons.
+                  Technical product reference for two-coat polymer-modified cementitious render systems used in full render removal and replacement, render repair, and facade re-render works on Australian Class 2 strata and commercial buildings. Covers product classification, system selection, substrate requirements, application sequence, coat thicknesses, standards compliance, and brand comparisons for specifying engineers and building consultants.
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 {[
-                  { label: "Products listed", value: "4" },
-                  { label: "Brands covered", value: "4" },
-                  { label: "System type", value: "Two-coat" },
-                  { label: "Standards", value: "AS 3700 / AS 4858" },
+                  { label: "Products listed", value: "5" },
+                  { label: "Brands covered", value: "5" },
+                  { label: "System type", value: "Two-coat (base + finish)" },
+                  { label: "Standards", value: "AS 3700 / NCC Section B" },
                 ].map((s) => (
                   <div key={s.label} className="rounded-xl border border-slate-100 bg-white p-3 text-center">
                     <div className="text-lg font-extrabold leading-tight text-sky-950">{s.value}</div>
@@ -129,8 +103,8 @@ export default function TwoCoatPMRenderPage() {
                       const active = tab.slug === ACTIVE_SLUG;
                       return (
                         <a
-                          key={tab.slug}
-                          href={`${group.base}/${tab.slug}`}
+                          key={tab.label}
+                          href={tab.href ?? `${group.base}/${tab.slug}`}
                           className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
                             active
                               ? "border-red-700 text-sky-950"
@@ -172,12 +146,19 @@ export default function TwoCoatPMRenderPage() {
                   "Salt-resistant renovating render — systems specifically formulated with reduced portland cement content and specialist polymer admixtures to resist chloride and sulfate attack in coastal and salt-affected environments — listed on the salt-resistant render page",
                   "Elastomeric crack-bridging coatings — applied over cured render as a topcoat to bridge hairline movement cracks — not render systems — listed under external coating and paint deterioration",
                   "Structural repair mortars — polymer-modified cementitious mortars formulated specifically for concrete repair (spalling, delamination, carbonation) — such as ARDEX WPM series, Sika MonoTop, Fosroc Renderoc HS — different product class from render systems",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-amber-900">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
-                    {item}
-                  </li>
-                ))}
+                ].map((item) => {
+                  const [label, ...rest] = item.split(" — ");
+                  const desc = rest.join(" — ");
+                  return (
+                    <li key={item} className="flex items-start gap-3 rounded-lg border border-amber-100 bg-white/60 px-3 py-2 text-sm leading-6 text-amber-900">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600" />
+                      <span>
+                        <span className="font-bold text-amber-900">{label}</span>
+                        {desc && <span className="text-amber-800"> — {desc}</span>}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
@@ -235,6 +216,8 @@ export default function TwoCoatPMRenderPage() {
       </main>
 
       {/* ── Footer ── */}
+      <SeoCrossPromo />
+
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
           <a href={BASE_RENDER} className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
@@ -249,15 +232,19 @@ export default function TwoCoatPMRenderPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-            <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

@@ -25,6 +25,18 @@ export default async function AdminBillingPage() {
     include: { supplier: { select: { brand_name: true, slug: true, contact_email: true } } },
   });
 
+  // Directory businesses that have transacted (a Stripe customer) — for the
+  // payments & refunds section. Click a name to open their financial page.
+  const dirSubscribers = await prisma.company.findMany({
+    where: { directory_subscription: { is: { stripe_customer_id: { not: null } } } },
+    select: {
+      id: true, name: true, plan_type: true,
+      directory_subscription: { select: { subscription_status: true, current_period_end: true } },
+    },
+    orderBy: { name: "asc" },
+    take: 500,
+  });
+
   const mrr = Number(totalRevenue._sum.monthly_fee ?? 0);
 
   const dirTrialing = dirSubs.filter((s) => s.subscription_status === "trialing").length;
@@ -56,6 +68,33 @@ export default async function AdminBillingPage() {
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">ARR (est.)</div>
           <div className="text-3xl font-black text-slate-900 mt-1">${(mrr * 12).toFixed(0)}</div>
         </div>
+      </div>
+
+      {/* Directory subscribers — payments & refunds */}
+      <div className="mb-8 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <div className="px-5 py-4 border-b border-slate-200">
+          <h2 className="text-sm font-bold text-slate-700">Directory Subscribers</h2>
+          <p className="text-xs text-slate-500 mt-0.5">Click a business to view its payments / receipts and issue a refund.</p>
+        </div>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase text-slate-500">
+              <th className="px-4 py-3">Business</th><th className="px-4 py-3">Plan</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Renews</th><th className="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {dirSubscribers.map((c) => (
+              <tr key={c.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                <td className="px-4 py-3"><Link href={`/directory/admin/billing/${c.id}`} className="font-semibold text-sky-800 hover:underline">{c.name}</Link></td>
+                <td className="px-4 py-3 text-slate-600">{c.plan_type === "claimed" ? "Business" : c.plan_type === "featured" ? "Premium" : c.plan_type}</td>
+                <td className="px-4 py-3"><span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-600">{c.directory_subscription?.subscription_status ?? "—"}</span></td>
+                <td className="px-4 py-3 text-slate-500">{c.directory_subscription?.current_period_end ? new Date(c.directory_subscription.current_period_end).toLocaleDateString("en-AU") : "—"}</td>
+                <td className="px-4 py-3 text-right"><Link href={`/directory/admin/billing/${c.id}`} className="text-xs font-semibold text-sky-700 hover:underline">Payments &amp; refund →</Link></td>
+              </tr>
+            ))}
+            {dirSubscribers.length === 0 && <tr><td colSpan={5} className="px-4 py-4 text-slate-400">No directory subscribers yet.</td></tr>}
+          </tbody>
+        </table>
       </div>
 
       {overdue.length > 0 && (

@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 import { getNewsImage, formatDate } from "@/lib/news-categories";
 
 const BASE_URL =

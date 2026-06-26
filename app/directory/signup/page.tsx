@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import AuthHeader from "@/components/AuthHeader";
+import TurnstileWidget from "@/components/TurnstileWidget";
+import { validateAuPhone } from "@/lib/phone-au";
 
 type AccountType = "directory" | "supplier" | "ai_scope";
 
@@ -51,6 +54,9 @@ export default function DirectorySignupPage() {
   });
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+
+  const phoneCheck = form.phone ? validateAuPhone(form.phone) : null;
 
   function selectType(type: AccountType) {
     setAccountType(type);
@@ -63,13 +69,17 @@ export default function DirectorySignupPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (phoneCheck && !phoneCheck.valid) {
+      setStatus({ type: "error", message: phoneCheck.message });
+      return;
+    }
     setStatus(null);
     setLoading(true);
 
     const response = await fetch("/api/directory/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, accountType }),
+      body: JSON.stringify({ ...form, accountType, turnstileToken }),
     });
 
     const result = await response.json();
@@ -87,6 +97,7 @@ export default function DirectorySignupPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+      <AuthHeader />
       <div className="mx-auto max-w-5xl px-6 py-10">
         <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
 
@@ -198,6 +209,8 @@ export default function DirectorySignupPage() {
                     type="email"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    autoComplete="email"
+                    placeholder="you@company.com"
                     className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
                     required
                   />
@@ -209,9 +222,15 @@ export default function DirectorySignupPage() {
                     type="tel"
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+                    placeholder="02 9876 5432 or 0412 345 678"
+                    className={`w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${
+                      phoneCheck && !phoneCheck.valid ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"
+                    }`}
                     required
                   />
+                  {phoneCheck && !phoneCheck.valid && (
+                    <span className="block text-xs font-medium text-rose-600">{phoneCheck.message}</span>
+                  )}
                 </label>
 
                 {(accountType === "supplier" || accountType === "ai_scope") ? (
@@ -247,6 +266,7 @@ export default function DirectorySignupPage() {
                     type="password"
                     value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    autoComplete="new-password"
                     className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
                     minLength={8}
                     required
@@ -259,11 +279,14 @@ export default function DirectorySignupPage() {
                     type="password"
                     value={form.confirmPassword}
                     onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                    autoComplete="new-password"
                     className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
                     minLength={8}
                     required
                   />
                 </label>
+
+                <TurnstileWidget onToken={setTurnstileToken} />
 
                 {status?.type === "error" ? (
                   <div className="rounded-2xl bg-rose-100 px-4 py-3 text-sm text-rose-900">

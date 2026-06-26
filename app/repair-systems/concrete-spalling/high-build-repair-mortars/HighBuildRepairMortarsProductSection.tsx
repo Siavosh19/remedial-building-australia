@@ -1,11 +1,14 @@
 "use client";
 import { useState, useRef } from "react";
 import { CheckCircle, BookOpen, ExternalLink, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
+import { AISelectionStage1, AISelectionStage2 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { HIGH_BUILD_CARDS } from "./highBuildData";
 
 type FilterTag = "High-build" | "Cementitious" | "Pre-bagged" | "Hand-applied" | "Westox" | "Structural" | "Polymer-modified";
 type Product = { fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string; name: string; descriptionLine: string; productType: string; filterTags: FilterTag[]; techChips: { label: string; cls: string }[]; systemDescription: string; technicalProperties: string[]; limitations: string[]; procurementSources: { name: string; url: string }[] };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Westox",
     brandUrl: "https://www.westox.com.au",
@@ -29,6 +32,132 @@ const PRODUCTS: Product[] = [
     ],
     procurementSources: [{ name: "Westox — contact for trade supply", url: "https://www.westox.com.au" }],
   },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-612n.html",
+    accentColor: "#be123c",
+    name: "Sika MonoTop-612 N",
+    descriptionLine: "One-component, silica-fume and polymer-modified cementitious high-build repair mortar — EN 1504-3 R4 — high-build up to 100 mm in one application on horizontal, vertical and overhead surfaces",
+    productType: "R4 high-build cementitious repair mortar — to 100 mm, low-permeability (silica fume + polymer)",
+    filterTags: ["High-build", "Cementitious", "Polymer-modified", "Structural", "Hand-applied", "Pre-bagged"],
+    techChips: [
+      { label: "EN 1504-3 R4", cls: "bg-rose-100 text-rose-800" },
+      { label: "High build to 100 mm", cls: "bg-slate-100 text-slate-700" },
+      { label: "Silica fume + polymer", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Sika MonoTop-612 N is a one-component, cement-based, low-permeability concrete repair mortar containing silica fume and polymer, meeting EN 1504-3 Class R4. It is designed for high-build application up to 100 mm in a single pass on horizontal, vertical and overhead surfaces, for high-strength (>45 MPa) repairs including exterior, marine and trafficable applications. Confirm the current compressive strength, exact maximum layer, primer requirement and pack size against the current Sika Australia TDS before specifying.",
+    technicalProperties: [
+      "One-component cementitious high-build repair mortar — EN 1504-3 R4 — silica fume + polymer modified",
+      "High build up to 100 mm in one application; horizontal, vertical and overhead",
+      "Suited to high-strength (>45 MPa), exterior, marine and trafficable repairs",
+      "Confirm compressive strength, max layer, primer and pack size from the current Sika Australia TDS — N/A — sought",
+    ],
+    limitations: [
+      "Confirm primer / bonding-coat and rebar-priming requirement from the current Sika Australia TDS",
+      "Observe minimum and maximum layer thickness per the TDS",
+      "Confirm current pack size and application temperature range with Sika Australia technical before specifying",
+    ],
+    procurementSources: [
+      { name: "Sika Australia — trade supply nationally", url: "https://aus.sika.com" },
+    ],
+  },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.fosroc.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Renderoc HB",
+    descriptionLine: "Hand-applied, polymer-modified, fibre-reinforced high-build cementitious repair mortar — up to 80 mm vertical / 50 mm overhead per layer — primed with Nitobond HAR",
+    productType: "High-build polymer-modified cementitious repair mortar (to 80 mm V / 50 mm OH)",
+    filterTags: ["High-build", "Cementitious", "Polymer-modified", "Structural", "Hand-applied", "Pre-bagged"],
+    techChips: [
+      { label: "High build", cls: "bg-rose-100 text-rose-800" },
+      { label: "Fibre-reinforced", cls: "bg-slate-100 text-slate-700" },
+      { label: "Vertical / overhead", cls: "bg-slate-100 text-slate-700" },
+      { label: "Parchem — national", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Fosroc Renderoc HB is a hand-applied, polymer-modified, fibre-reinforced high-build cementitious structural repair mortar distributed by Parchem, applied up to 80 mm on vertical and 50 mm on overhead surfaces per layer. It is reported to Australian Standards (no EN 1504-3 class — specify Renderoc HB40 where an R3 classification is required) and is primed with Nitobond HAR, with rebar primed by Nitoprime Zincrich. Confirm current compressive strength, exact layer limits and pack size against the current Fosroc / Parchem TDS before specifying.",
+    technicalProperties: [
+      "Hand-applied polymer-modified, fibre-reinforced high-build cementitious repair mortar",
+      "Up to 80 mm vertical / 50 mm overhead per layer; reported to Australian Standards (no EN class)",
+      "Substrate primer Nitobond HAR; rebar primer Nitoprime Zincrich",
+      "Confirm compressive strength and pack size from the current Fosroc / Parchem TDS — N/A — sought",
+    ],
+    limitations: [
+      "Where an EN 1504-3 R3 class is required, specify Renderoc HB40 instead",
+      "Do not apply without Nitobond HAR primer / Nitoprime Zincrich on exposed rebar",
+      "Confirm application temperature range and pack size with Parchem before specifying",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.fosroc.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Renderoc HB40",
+    descriptionLine: "Polymer-modified, fibre-reinforced high-build cementitious repair mortar — EN 1504-3 R3 — for hand-applied vertical and overhead structural patching",
+    productType: "High-build cementitious repair mortar — EN 1504-3 R3 (~45 MPa)",
+    filterTags: ["High-build", "Cementitious", "Polymer-modified", "Structural", "Hand-applied", "Pre-bagged"],
+    techChips: [
+      { label: "EN 1504-3 R3", cls: "bg-rose-100 text-rose-800" },
+      { label: "High build", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fibre-reinforced", cls: "bg-slate-100 text-slate-700" },
+      { label: "Parchem — national", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Fosroc Renderoc HB40 is a polymer-modified, fibre-reinforced high-build cementitious structural repair mortar meeting EN 1504-3 Class R3, for hand-applied patch repair on vertical and overhead surfaces. It is the EN-classified high-build option in the Renderoc range. Confirm the current compressive strength, exact maximum layer, primer requirement and pack size against the current Fosroc / Parchem TDS before specifying.",
+    technicalProperties: [
+      "Polymer-modified, fibre-reinforced high-build cementitious repair mortar — EN 1504-3 R3",
+      "Hand-applied to vertical and overhead surfaces",
+      "Substrate primer Nitobond HAR; rebar primer Nitoprime Zincrich",
+      "Confirm compressive strength, max layer and pack size from the current Fosroc / Parchem TDS — N/A — sought",
+    ],
+    limitations: [
+      "Do not apply without Nitobond HAR primer / Nitoprime Zincrich on exposed rebar",
+      "Observe minimum and maximum layer thickness per the TDS",
+      "Confirm application temperature range and pack size with Parchem before specifying",
+    ],
+    procurementSources: [
+      { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Ardex Australia",
+    brandUrl: "https://ardexaustralia.com",
+    accentColor: "#0369a1",
+    name: "Ardex BR 340",
+    descriptionLine: "MICROTEC fibre-reinforced, polymer-modified high-build structural repair mortar — up to 80 mm on vertical, horizontal and overhead surfaces — with active corrosion inhibitor",
+    productType: "High-build polymer-modified structural repair mortar (to 80 mm) with corrosion inhibitor",
+    filterTags: ["High-build", "Cementitious", "Polymer-modified", "Structural", "Hand-applied", "Pre-bagged"],
+    techChips: [
+      { label: "High build to 80 mm", cls: "bg-rose-100 text-rose-800" },
+      { label: "Fibre-reinforced (MICROTEC)", cls: "bg-slate-100 text-slate-700" },
+      { label: "Corrosion inhibitor", cls: "bg-slate-100 text-slate-700" },
+      { label: "Ardex AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Ardex BR 340 is a MICROTEC fibre-reinforced, polymer-modified high-build structural repair mortar for hand application up to 80 mm on vertical, horizontal and overhead surfaces, incorporating an active corrosion inhibitor. It is a low-resistivity mortar (galvanic-anode compatible). Confirm the current EN 1504-3 class, compressive strength, exact layer limits, primer requirement and pack size against the current Ardex Australia TDS before specifying.",
+    technicalProperties: [
+      "MICROTEC fibre-reinforced, polymer-modified high-build structural repair mortar with active corrosion inhibitor",
+      "Up to 80 mm on vertical, horizontal and overhead surfaces (minimum ~10 mm, square edges)",
+      "Low-resistivity — compatible with galvanic anodes (e.g. Ardex BRX 60 LO)",
+      "Confirm EN class, compressive strength and pack size from the current Ardex Australia TDS — N/A — sought",
+    ],
+    limitations: [
+      "Minimum ~10 mm with square edges — not for feather-edging",
+      "Where high electrical resistivity is required, BR 340 is low-resistivity — confirm suitability",
+      "Confirm primer requirement, application temperature and pack size with Ardex Australia before specifying",
+    ],
+    procurementSources: [
+      { name: "Ardex Australia — national trade supply", url: "https://ardexaustralia.com" },
+    ],
+  }
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [{ id: "High-build", label: "High-build" }, { id: "Polymer-modified", label: "Polymer-modified" }, { id: "Cementitious", label: "Cementitious" }, { id: "Pre-bagged", label: "Pre-bagged" }, { id: "Hand-applied", label: "Hand-applied" }];
@@ -51,9 +180,63 @@ function CollapsibleDescription({ text }: { text: string }) {
   return (<div><p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p><button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button></div>);
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["defect_type", "spalling / honeycombing / active_crack / cosmetic_only", "spalling/honeycombing → this category; active_crack → not_suitable (rigid, re-cracks); cosmetic_only → requires_alternative (fine-finish mortar)"],
+    ["repair_depth", "shallow / deep", "deep spall → high-build grade; shallow → standard repair mortar may suffice"],
+    ["structural_demand", "structural / non_structural", "structural → requires EN 1504-3 R3/R4 grade"],
+    ["element_orientation", "horizontal / vertical / overhead", "gate against product application capability"],
+    ["substrate_condition", "ssd_porous / dense_smooth / exposed_rebar", "dense_smooth → epoxy bond coat; exposed_rebar → rebar primer first"],
+  ],
+  json: {
+    category: "high_build_repair_mortars",
+    stage1_gates: {
+      defect_type: { allowed: ["spalling", "honeycombing", "active_crack", "cosmetic_only"], rule: "spalling/honeycombing=suitable; active_crack=not_suitable; cosmetic_only=requires_alternative" },
+      repair_depth: { allowed: ["shallow", "deep"], rule: "deep=high-build grade; shallow=standard mortar may suffice" },
+      structural_demand: { allowed: ["structural", "non_structural"], rule: "structural=requires EN1504-3 R3/R4" },
+      element_orientation: { allowed: ["horizontal", "vertical", "overhead"], rule: "match product application capability" },
+      substrate_condition: { allowed: ["ssd_porous", "dense_smooth", "exposed_rebar"], rule: "dense_smooth=epoxy bond coat; exposed_rebar=rebar primer first" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Westox Plastalite High Build Repair Mortar A 15kg": {
+    rows: [
+      ["structural_demand", "gate", "unconfirmed"],
+      ["setting", "gate", "unconfirmed"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "unconfirmed"],
+      ["substrate_prep", "gate", "unconfirmed"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "polymer_modified_cementitious"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "null (unconfirmed)"],
+      ["pack_size", "meta", "15kg"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "westox_plastalite_high_build_a",
+      gates: { structural_demand: "unconfirmed", setting: "unconfirmed", exposure_max: "unconfirmed", orientation: "unconfirmed", substrate_prep: "unconfirmed" },
+      tag: { chemistry: "polymer_modified_cementitious", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null },
+      meta: { primer: null, pack_size: "15kg", alternative_product: null, data_status: "verified", selectable: true, source: "westox.com.au Westox Plastalite High Build Repair Mortar A", confirmed_date: null },
+    },
+  },
+};
+
 export function HighBuildRepairMortarsIntroSection() {
-  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">High-build repair mortars</h3></div><p className="text-sm leading-7 text-slate-600">High-build repair mortars are polymer-modified cementitious products designed for application in thicker sections than standard repair mortars, used in deep concrete spalling repairs where multiple coats of standard mortar would otherwise be required. Westox Plastalite High Build Repair Mortar A is a high-build mortar for concrete spalling repair. Confirm current specifications with Westox technical before specifying.</p></div>);
+  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">High-build repair mortars</h3></div><p className="text-sm leading-7 text-slate-600">High-build repair mortars are polymer-modified cementitious products designed for application in thicker sections than standard repair mortars, used in deep concrete spalling repairs where multiple coats of standard mortar would otherwise be required. They are applied in thicker single passes, reducing the number of coats and the total application time; very deep repairs may require reinforcing mesh.</p></div>);
 }
+
+const DESIGN_CRITERIA = "Compressive / flexural / tensile-bond strength (MPa) and EN 1504-3 class (R3/R4 structural); single-pass build thickness \u2014 min & max (mm) and max total build for deep spalls (often 50\u2013100+ mm with build-out coats); shrinkage class (low/compensated) & cracking resistance; E-modulus / thermal-expansion match to parent concrete (structural compatibility); set times & early strength (overhead/vertical workability \u2014 thixotropy, sag resistance); chloride & sulfate resistance and carbonation resistance (durability); rebar-primer / bonding-bridge requirement & SSD substrate prep; aggregate top-size vs build depth; application temp range & pot life; fibre reinforcement; overcoat/curing regime; AS 3600 durability & AS 1478 admixture context.";
 
 export function HighBuildRepairMortarsProductSection() {
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -62,22 +245,6 @@ export function HighBuildRepairMortarsProductSection() {
   const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
   const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
   return (
-    <div>
-      <div className="mb-5 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">1 product — Westox — high-build repair mortar systems</p></div></div>
-      <div className="mb-5 flex flex-wrap items-center gap-2"><span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>{FILTER_DEFS.map((f) => { const active = activeFilters.has(f.id); return <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>; })}{activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}</div>
-      <div className="mb-4 flex items-center justify-between"><span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""}</span><div className="flex items-center gap-2"><button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button><button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button></div></div>
-      <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-        {visibleProducts.map((product) => (
-          <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-              <div className="border-b border-slate-100 bg-slate-50 px-5 py-4"><div className="flex items-center justify-between gap-2"><span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span><div className="flex shrink-0 items-center gap-1"><a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a></div></div><h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3><p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p><CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} /></div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4"><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p><CollapsibleDescription text={product.systemDescription} /></div>
-              <div className="space-y-3 px-5 py-4"><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div></div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <AutoProductReference products={PRODUCTS} cards={HIGH_BUILD_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="High-build repair mortars" />
   );
 }

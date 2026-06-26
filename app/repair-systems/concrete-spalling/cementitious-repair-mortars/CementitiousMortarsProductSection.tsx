@@ -6,6 +6,9 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { AISelectionStage1, AISelectionStage2, DataNote } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { CEMENTITIOUS_CARDS } from "./cementitiousData";
 
 type FilterTag =
   | "Cementitious"
@@ -32,204 +35,138 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-436n.html",
     accentColor: "#be123c",
-    name: "Sika MonoTop-436N",
-    descriptionLine: "R4 pourable self-compacting micro-concrete repair mortar — 20 kg bag — placed from 20 mm to 300 mm in one pour — structural concrete spalling repair — Sika trade supply",
-    productType: "R4 pourable micro-concrete repair mortar — self-compacting — EN 1504-3 Class R4",
-    filterTags: ["Cementitious", "General-use", "Pre-bagged", "Hand-applied", "Trowel-grade"],
+    name: "Sika MonoTop-412 NFG",
+    descriptionLine: "R4 fibre-reinforced structural repair mortar with corrosion inhibitor — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "R4 fibre-reinforced structural repair mortar with corrosion inhibitor",
+    filterTags: ["Cementitious", "Pre-bagged", "Hand-applied", "Trowel-grade"],
     techChips: [
-      { label: "EN 1504-3 Class R4", cls: "bg-rose-100 text-rose-800" },
-      { label: "20 kg bag", cls: "bg-slate-100 text-slate-700" },
-      { label: "Pourable — self-compacting", cls: "bg-green-50 text-green-700" },
-      { label: "20 mm to 300 mm in one pour", cls: "bg-amber-50 text-amber-700" },
+      { label: "R4 fibre-reinforced structural", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Sika MonoTop-436N is a 1-component pre-bagged, pourable, self-compacting repair mortar meeting the requirements of class R4 of EN 1504-3. It is used for structural reinstatement of concrete spalling and damaged concrete on buildings, bridges, and infrastructure. As a pourable self-compacting micro-concrete it is placed into formwork from 20 mm to 300 mm depth in a single pour — it is not a trowel-grade repair mortar. MonoTop-436N is chloride-free, carbonation-resistant, and has low water and chloride permeability and low shrinkage. It is approved for Queensland Roads (TMR) and is approved to AS4020:2018 for potable water contact. It is compatible with the Sika FerroGard Sacrificial Anode System. Confirm current TDS, formwork requirements, primer requirements, and coverage with Sika Australia before specifying — do not use international TDS for Australian projects. Source: aus.sika.com — product page confirmed 20 kg bag, EN 1504-3 R4, 20 mm–300 mm layer.",
+      "Sika MonoTop-412 NFG is a R4 fibre-reinforced structural repair mortar with corrosion inhibitor. EN 1504-3 R4 structural patch repair mortar with an integral corrosion inhibitor for hand/trowel application. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
     technicalProperties: [
-      "EN 1504-3 Class R4 — pourable self-compacting micro-concrete — 1-component pre-bagged",
-      "Placed from 20 mm to 300 mm depth in one pour — requires formwork for vertical and overhead applications",
-      "Chloride-free, carbonation-resistant, low water and chloride permeability, low shrinkage",
-      "Approved AS4020:2018 potable water — QLD Roads (TMR) Section 5.34 Repair Mortars approved",
-      "Compatible with Sika FerroGard Sacrificial Anode System — 20 kg bags — Sika trade supply nationally",
+      "R4 fibre-reinforced structural repair mortar with corrosion inhibitor",
+      "EN 1504-3 R4 structural patch repair mortar with an integral corrosion inhibitor for hand/trowel application.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
     ],
     limitations: [
-      "Pourable product — requires formwork for vertical and overhead applications — not a trowel-applied patch mortar",
-      "Not suitable for thin-section cosmetic repair — minimum 20 mm placement depth",
-      "TODO: owner confirm — primer and bonding coat requirements for MonoTop-436N from current Sika Australia TDS",
-      "Not recommended for active or moving cracks — confirm crack activity before specifying",
-      "Do not use international Sika TDS for Australian projects — confirm all data from current aus.sika.com TDS",
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
     ],
     procurementSources: [
-      { name: "Sika Australia — trade supply", url: "https://aus.sika.com" },
-      { name: "Bayset — national Sika distribution", url: "https://www.bayset.com.au" },
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
     ],
   },
   {
-    fullLabel: "Ardex Australia",
-    brandUrl: "https://www.ardexaustralia.com",
-    tdsUrl: "https://ardexaustralia.com/product/ardex-br-340/",
-    accentColor: "#0369a1",
-    name: "Ardex BR 340",
-    descriptionLine: "MICROTEC® Fibre-Reinforced Polymer Modified Structural Concrete Patching and Repair Mortar — 20 kg bag — high build up to 80 mm — low resistivity — active corrosion inhibitor — Ardex trade supply",
-    productType: "MICROTEC® Fibre-Reinforced Polymer Modified structural concrete repair mortar — Ardex Australia",
-    filterTags: ["Cementitious", "General-use", "Pre-bagged", "Hand-applied", "Trowel-grade"],
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika MonoTop-352 NFG",
+    descriptionLine: "R3 fibre-reinforced lightweight hand-applied repair mortar — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "R3 fibre-reinforced lightweight hand-applied repair mortar",
+    filterTags: ["Cementitious", "Pre-bagged", "Hand-applied", "Trowel-grade"],
     techChips: [
-      { label: "Fibre-reinforced / polymer-modified", cls: "bg-sky-100 text-sky-800" },
-      { label: "20 kg bag", cls: "bg-slate-100 text-slate-700" },
-      { label: "Up to 80 mm high build", cls: "bg-green-50 text-green-700" },
-      { label: "Ardex trade supply", cls: "bg-amber-50 text-amber-700" },
+      { label: "R3 fibre-reinforced lightweigh", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Ardex BR 340 is a MICROTEC® Fibre-Reinforced, Polymer Modified, Structural Concrete Patching and Repair Mortar designed for reinstating concrete structures damaged through concrete spalling and other chemical or mechanical causes. It is a high-build patching mortar capable of being applied up to 80 mm thickness on vertical, horizontal, and overhead surfaces. BR 340 contains low resistivity (less than 10,000 Ω cm) and an active corrosion inhibitor, making it suitable for use with the Ardex BRX 60 LO Sacrificial Anode System for cathodic prevention. Pack size is 20 kg bag. Confirm current Ardex Australia TDS for primer selection, EN 1504-3 class, and current compressive strength data before specifying. Source: ardexaustralia.com product page confirmed 20 kg bag, up to 80 mm, MICROTEC fibre-reinforced polymer modified, low resistivity, active corrosion inhibitor.",
+      "Sika MonoTop-352 NFG is a R3 fibre-reinforced lightweight hand-applied repair mortar. EN 1504-3 R3 lightweight fibre-reinforced repair mortar for general hand-applied patching. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
     technicalProperties: [
-      "MICROTEC® Fibre-Reinforced, Polymer Modified — 20 kg bag — structural concrete spalling repair",
-      "High-build — up to 80 mm thickness on vertical, horizontal, and overhead surfaces",
-      "Low resistivity (< 10,000 Ω cm) — contains active corrosion inhibitor",
-      "Compressive strength: ~10 MPa (1 day) / 20–30 MPa (7 days) / 30–40 MPa (28 days)",
-      "Suitable for use with Ardex BRX 60 LO Anodes — Ardex trade supply nationally",
+      "R3 fibre-reinforced lightweight hand-applied repair mortar",
+      "EN 1504-3 R3 lightweight fibre-reinforced repair mortar for general hand-applied patching.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
     ],
     limitations: [
-      "TODO: owner confirm — primer required (P 51 or similar) for BR 340 from current Ardex Australia TDS — not stated on product page",
-      "Maximum single-coat layer confirmed as 80 mm — confirm from current TDS for overhead applications",
-      "Confirm EN 1504-3 class compliance from current Ardex Australia TDS",
-      "Not a fine cosmetic mortar — use Ardex Feather Finish for thin-section profiling",
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
     ],
     procurementSources: [
-      { name: "Ardex Australia — trade supply", url: "https://www.ardex.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Fosroc / Parchem Construction Supplies",
-    brandUrl: "https://www.parchem.com.au",
-    tdsUrl: "https://www.fosroc.com.au/product/renderoc-hb",
-    accentColor: "#7c2d12",
-    name: "Fosroc Renderoc HB",
-    descriptionLine: "TODO: owner confirm — Renderoc GP does not appear in the current Fosroc AU product range (fosroc.com.au sitemap confirmed Jun 2026) — nearest general-use cementitious mortar is Renderoc HB — verify correct product with Parchem technical before specifying",
-    productType: "TODO: owner confirm — Renderoc GP not found in AU range — verify replacement product with Parchem",
-    filterTags: ["Cementitious", "General-use", "Pre-bagged", "Hand-applied", "Trowel-grade"],
-    techChips: [
-      { label: "TODO: confirm product name", cls: "bg-orange-100 text-orange-900" },
-      { label: "TODO: confirm pack size", cls: "bg-slate-100 text-slate-700" },
-      { label: "Nitobond SBR primer", cls: "bg-green-50 text-green-700" },
-      { label: "Parchem nationally", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "TODO: owner confirm — 'Fosroc Renderoc GP' was listed in this card but does not appear in the current Fosroc Australia product range (checked fosroc.com.au sitemap June 2026 — no Renderoc GP found). The current Fosroc AU cementitious mortar range includes Renderoc HB, HB25, HB40, HB70, HB70 Plus, LA55, LA55 Plus, Rapid, FC, BB, CAC, and ST-06 — but no 'GP' grade. Renderoc HB is a lightweight high-build cementitious repair mortar for vertical and overhead concrete patches 10–80 mm deep on structures up to 25 MPa. It is pre-bagged and applied with Nitobond SBR or Nitobond HAR primer. Confirm the correct product name, pack size, EN 1504-3 class, and primer from the current Fosroc/Parchem TDS before specifying. Source: fosroc.com.au sitemap confirmed no Renderoc GP — Renderoc HB confirmed. Nitobond SBR confirmed in parchem.com.au sitemap.",
-    technicalProperties: [
-      "TODO: owner confirm — Renderoc GP not found in AU range — verify correct product name with Parchem",
-      "Renderoc HB (nearest confirmed AU product): lightweight high-build — 10–80 mm — vertical and overhead",
-      "Nitobond SBR or Nitobond HAR bonding primer required before application",
-      "Parchem (DuluxGroup) — national trade supply with technical support branches in metropolitan centres",
-      "Confirm pack size, EN 1504-3 class, and current product name from Parchem before specifying",
-    ],
-    limitations: [
-      "TODO: owner confirm — Renderoc GP does not appear in the current Fosroc AU range — this card must be updated with a confirmed AU product",
-      "Not recommended for high-exposure or coastal applications without confirming exposure classification from Parchem TDS",
-      "Nitobond SBR primer is mandatory — do not apply directly to dry or unprimed concrete",
-      "Confirm current product name and EN 1504-3 class with Parchem — Fosroc product range is subject to periodic revision",
-    ],
-    procurementSources: [
-      { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
-      { name: "Fosroc Australia — product information", url: "https://www.fosroc.com.au" },
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
     ],
   },
   {
     fullLabel: "Mapei Australia",
     brandUrl: "https://www.mapei.com/au",
-    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/mapegrout-fast-set",
     accentColor: "#1d4ed8",
-    name: "Mapei Mapegrout Fast-Set",
-    descriptionLine: "Rapid-setting cementitious repair mortar — 25 kg bag — for fast-track concrete spalling repair where traffic reinstatement or time-critical programme is required — Mapei trade and Bayset",
-    productType: "Rapid-setting cementitious repair mortar — Mapei Australia",
-    filterTags: ["Cementitious", "Rapid-set", "Pre-bagged", "Hand-applied", "Trowel-grade"],
+    name: "Mapei Mapegrout T60",
+    descriptionLine: "R4 sulphate-resistant fibre-reinforced thixotropic repair mortar — confirm current specification and Australian availability with Mapei technical before specifying",
+    productType: "R4 sulphate-resistant fibre-reinforced thixotropic repair mortar",
+    filterTags: ["Cementitious", "Pre-bagged", "Hand-applied", "Trowel-grade"],
     techChips: [
-      { label: "Rapid-setting", cls: "bg-blue-100 text-blue-900" },
-      { label: "25 kg bag", cls: "bg-slate-100 text-slate-700" },
-      { label: "Fast-track programme", cls: "bg-green-50 text-green-700" },
-      { label: "Mapei trade + Bayset", cls: "bg-amber-50 text-amber-700" },
+      { label: "R4 sulphate-resistant fibre-re", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
     ],
     systemDescription:
-      "Mapei Mapegrout Fast-Set is a rapid-setting cementitious repair mortar suited to time-critical concrete spalling repair applications where traffic reinstatement, production access, or tight programme constraints require high early strength development. It achieves sufficient strength for foot traffic within a few hours of application — confirm early strength from the current Mapei Australia TDS. It is a pre-bagged product mixed with clean water and applied with Mapei Planicrete AC bonding slurry or Eporip epoxy bond coat on the prepared substrate. The rapid-setting characteristic makes it well-suited for carpark deck repairs and structural repairs requiring early return to service but requires careful batch mixing to avoid premature stiffening in hot or windy conditions. Confirm all early strength values, maximum layer thickness, primer requirements, and compatibility with subsequent coating systems from the current Mapei Australia TDS — rapid-set mortars behave differently from normal-set products in hot weather and must be mixed in smaller batches with reduced pot life.",
+      "Mapei Mapegrout T60 is a R4 sulphate-resistant fibre-reinforced thixotropic repair mortar. EN 1504-3 R4 sulphate-resistant thixotropic repair mortar for structural reinstatement on vertical and overhead surfaces. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Mapei technical before specifying. TODO: verify specific performance figures from the current Mapei TDS.",
     technicalProperties: [
-      "Rapid-setting cementitious repair mortar — high early strength — foot traffic within hours (confirm from TDS)",
-      "Pre-bagged — 25 kg — mixed with clean water only — Planicrete AC or Eporip primer required",
-      "Suitable for carpark deck repairs, structural repairs with tight programme requirements",
-      "Compatible with Mapei coating and waterproofing systems applied over cured repair",
-      "Available through Mapei Australia trade supply and Bayset nationally",
+      "R4 sulphate-resistant fibre-reinforced thixotropic repair mortar",
+      "EN 1504-3 R4 sulphate-resistant thixotropic repair mortar for structural reinstatement on vertical and overhead surfaces.",
+      "Confirm key performance values (strength / coverage / application) from the current Mapei TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Mapei",
     ],
     limitations: [
-      "Rapid-setting characteristic requires experienced applicators — reduced pot life, especially in hot weather — mix in small batches only",
-      "Not suitable for large-area placements — rapid set may cause premature stiffening before placement is complete",
-      "Primer coat (Planicrete AC or Eporip) is mandatory — confirm primer type for substrate from Mapei TDS",
-      "Do not apply over active or moving cracks — rapid-set mortars are rigid and brittle and will re-crack under live movement",
-      "Confirm early strength, traffic reinstatement timing, and temperature limitations from current Mapei Australia TDS — not from Mapei European or international TDS",
-      "TODO: owner confirm — Mapegrout Fast-Set availability and current Australian product name with Mapei Australia technical",
+      "Confirm current product formulation and system suitability with Mapei technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Mapei",
     ],
     procurementSources: [
-      { name: "Mapei Australia — trade supply", url: "https://www.mapei.com/au" },
+      { name: "Mapei — Australian trade supply", url: "https://www.mapei.com/au" },
+    ],
+  },
+  {
+    fullLabel: "Mapei Australia",
+    brandUrl: "https://www.mapei.com/au",
+    tdsUrl: "https://www.mapei.com/au/en/products-and-solutions/products/detail/mapegrout-t40",
+    accentColor: "#1d4ed8",
+    name: "Mapei Mapegrout T40",
+    descriptionLine: "Thixotropic, fibre-reinforced cementitious repair mortar — EN 1504-3 R3 (40 MPa) — hand-applied to vertical and overhead surfaces up to 30–35 mm per coat",
+    productType: "R3 thixotropic fibre-reinforced cementitious repair mortar (40 MPa)",
+    filterTags: ["Cementitious", "Pre-bagged", "Hand-applied", "Trowel-grade"],
+    techChips: [
+      { label: "EN 1504-3 R3", cls: "bg-rose-100 text-rose-800" },
+      { label: "40 MPa", cls: "bg-slate-100 text-slate-700" },
+      { label: "Thixotropic / fibre-reinforced", cls: "bg-slate-100 text-slate-700" },
+      { label: "Mapei AU trade supply", cls: "bg-slate-100 text-slate-700" },
+    ],
+    systemDescription:
+      "Mapei Mapegrout T40 is a thixotropic, fibre-reinforced cementitious repair mortar meeting EN 1504-3 Class R3 with a compressive strength of about 40 MPa, for hand-applied repair of vertical and overhead concrete surfaces such as balconies, columns and beams up to 30–35 mm per coat. Supplied in 25 kg bags. Confirm the current primer/SSD requirement, exact layer limits and rebar-protection compatibility against the current Mapei Australia TDS before specifying.",
+    technicalProperties: [
+      "Thixotropic, fibre-reinforced cementitious repair mortar — EN 1504-3 R3, ~40 MPa @28d",
+      "Hand-applied to vertical and overhead surfaces up to 30–35 mm per coat",
+      "Supplied in 25 kg bags",
+      "Confirm primer/SSD prep and rebar-protection compatibility from the current Mapei Australia TDS — N/A — sought",
+    ],
+    limitations: [
+      "Observe maximum per-coat thickness (30–35 mm) — build up in coats per the TDS",
+      "Prepare substrate to SSD and confirm primer requirement with Mapei before specifying",
+      "Confirm application temperature range and pack size with Mapei Australia",
+    ],
+    procurementSources: [
+      { name: "Mapei Australia — trade supply nationally", url: "https://www.mapei.com/au" },
       { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
     ],
-  },
-  {
-    fullLabel: "Sika",
-    brandUrl: "https://www.sika.com.au",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-fc.html",
-    accentColor: "#be123c",
-    name: "Sika MonoTop FC",
-    descriptionLine: "Fine-finish cementitious repair mortar for surface profiling and cosmetic finishing of concrete surfaces — confirm current formulation, coverage, and system design with Sika Australia technical",
-    productType: "Fine-finish cementitious mortar — surface profiling and cosmetic repair",
-    filterTags: ["Cementitious", "Non-structural", "Pre-bagged", "Hand-applied"],
-    techChips: [{ label: "Fine finish", cls: "bg-red-100 text-red-700" }, { label: "Cosmetic", cls: "bg-slate-100 text-slate-700" }, { label: "Cementitious", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Sika MonoTop FC is a fine-finish cementitious repair mortar for surface profiling and cosmetic finishing of concrete surfaces. It is used as a thin-section finishing coat over structural repair mortars or to restore surface texture and profile after spalling repair works.\n\nSika MonoTop FC is part of the Sika MonoTop concrete repair system. It is not a structural repair mortar — it is a finishing product used over an already structurally repaired substrate.\n\nConfirm current product technical data sheet, maximum application thickness, coverage, and compatible substrate from current Sika MonoTop FC TDS before specifying.",
-    technicalProperties: [
-      "Fine-finish cementitious mortar — for surface profiling and cosmetic finishing over repaired concrete",
-      "Part of the Sika MonoTop concrete repair system — confirm compatible base layer product from current Sika documentation",
-      "Confirm maximum thickness, coverage, and application method from current Sika MonoTop FC TDS",
-    ],
-    limitations: [
-      "Confirm current product formulation and system design with Sika Australia technical before specifying",
-      "Not a structural repair product — must only be applied over sound, structurally repaired concrete substrate",
-      "Not suitable as a standalone repair over active spalling or delamination — structural repair must be completed first",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
-      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Sika",
-    brandUrl: "https://www.sika.com.au",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/cementitious-repairmortars/sika-monotop-723n.html",
-    accentColor: "#be123c",
-    name: "Sika MonoTop-723 N",
-    descriptionLine: "Cementitious repair mortar for general concrete spalling repair — one-coat application for shallow to medium-depth spall repair — confirm current formulation, coverage, and system design with Sika Australia technical",
-    productType: "Cementitious repair mortar — general concrete spalling repair",
-    filterTags: ["Cementitious", "General-use", "Pre-bagged", "Hand-applied", "Trowel-grade"],
-    techChips: [{ label: "Cementitious", cls: "bg-red-100 text-red-700" }, { label: "General use", cls: "bg-slate-100 text-slate-700" }, { label: "Pre-bagged", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Sika MonoTop-723 N is a cementitious repair mortar for general concrete spalling repair applications. It is a pre-bagged, hand-applied trowel-grade mortar suitable for shallow to medium-depth concrete spall repairs on balconies, facades, columns, beams, and slab soffits.\n\nSika MonoTop-723 N is part of the Sika MonoTop concrete repair system. Confirm current product technical data sheet, maximum application thickness, coverage, primer requirements (typically Sika MonoTop-910 N or Sika Icosit KC220/50), and compatible system design with Sika Australia technical before specifying.",
-    technicalProperties: [
-      "Pre-bagged cementitious repair mortar — suitable for shallow to medium-depth concrete spalling repair",
-      "Hand-applied trowel-grade — part of the Sika MonoTop repair system",
-      "Confirm maximum application thickness, coverage, and primer specification from current Sika MonoTop-723 N TDS",
-    ],
-    limitations: [
-      "Confirm current product formulation and system design with Sika Australia technical before specifying",
-      "Rebar anti-corrosion primer (Sika MonoTop-910 N) is typically required before mortar application — confirm current primer specification with Sika",
-      "Not suitable for application over wet or contaminated concrete — substrate preparation to current Sika specification is mandatory",
-      "Do not apply in temperatures below +5°C or above +35°C — confirm temperature limitations from current TDS",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
-      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
-    ],
-  },
+  }
+
+
+
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -392,6 +329,183 @@ function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title:
   );
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["defect_type", "spalling / honeycombing / active_crack / cosmetic_only", "spalling/honeycombing → this category; active_crack → not_suitable (rigid, re-cracks); cosmetic_only → requires_alternative (fine-finish mortar)"],
+    ["structural_demand", "structural / non_structural", "structural → requires EN 1504-3 R3/R4 grade"],
+    ["exposure", "sheltered / moderate / coastal_high_chloride", "coastal_high_chloride → requires_alternative (polymer-modified, not basic cementitious)"],
+    ["element_orientation", "horizontal / vertical / overhead / formwork_pour", "gate against product application capability"],
+    ["substrate_condition", "ssd_porous / dense_smooth / exposed_rebar", "dense_smooth → epoxy bond coat; exposed_rebar → rebar primer first"],
+  ],
+  json: {
+    category: "cementitious_repair_mortars",
+    stage1_gates: {
+      defect_type: { allowed: ["spalling", "honeycombing", "active_crack", "cosmetic_only"], rule: "spalling/honeycombing=suitable; active_crack=not_suitable; cosmetic_only=requires_alternative" },
+      structural_demand: { allowed: ["structural", "non_structural"], rule: "structural=requires EN1504-3 R3/R4" },
+      exposure: { allowed: ["sheltered", "moderate", "coastal_high_chloride"], rule: "coastal_high_chloride=requires_alternative (polymer-modified)" },
+      element_orientation: { allowed: ["horizontal", "vertical", "overhead", "formwork_pour"], rule: "match product application capability" },
+      substrate_condition: { allowed: ["ssd_porous", "dense_smooth", "exposed_rebar"], rule: "dense_smooth=epoxy bond coat; exposed_rebar=rebar primer first" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Sika MonoTop-436N": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "formwork_pour (vertical/overhead need formwork)"],
+      ["substrate_prep", "gate", "unconfirmed"],
+      ["min_layer_mm", "rank", "20"],
+      ["max_layer_mm", "rank", "300"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "cementitious_microconcrete"],
+      ["en1504_class", "tag", "R4"],
+      ["primer", "meta", "unconfirmed"],
+      ["pack_size", "meta", "20kg"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_monotop_436n",
+      gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "formwork_pour", substrate_prep: "unconfirmed" },
+      tag: { chemistry: "cementitious_microconcrete", en1504_class: "R4" },
+      rank: { min_layer_mm: 20, max_layer_mm: 300, compressive_28d_mpa: null },
+      meta: { primer: null, pack_size: "20kg", alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sika MonoTop-436N product page", confirmed_date: null },
+    },
+  },
+  "Ardex BR 340": {
+    rows: [
+      ["structural_demand", "gate", "structural"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/horizontal/overhead"],
+      ["substrate_prep", "gate", "unconfirmed"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "80"],
+      ["compressive_28d_mpa", "rank", "30-40"],
+      ["chemistry", "tag", "polymer_modified_fibre_reinforced"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "unconfirmed"],
+      ["pack_size", "meta", "20kg"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "ardex_br_340",
+      gates: { structural_demand: "structural", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/horizontal/overhead", substrate_prep: "unconfirmed" },
+      tag: { chemistry: "polymer_modified_fibre_reinforced", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: 80, compressive_28d_mpa: "30-40" },
+      meta: { primer: null, pack_size: "20kg", alternative_product: null, data_status: "verified", selectable: true, source: "ardexaustralia.com Ardex BR 340 product page", confirmed_date: null },
+    },
+  },
+  "Fosroc Renderoc HB": {
+    rows: [
+      ["structural_demand", "gate", "unconfirmed"],
+      ["setting", "gate", "unconfirmed"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "unconfirmed"],
+      ["substrate_prep", "gate", "unconfirmed"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "unconfirmed"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: {
+      id: "fosroc_renderoc_hb",
+      gates: { structural_demand: "unconfirmed", setting: "unconfirmed", exposure_max: "unconfirmed", orientation: "unconfirmed", substrate_prep: "unconfirmed" },
+      tag: { chemistry: "unconfirmed", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null },
+      meta: { primer: null, pack_size: null, alternative_product: null, data_status: "unconfirmed", selectable: false, source: "fosroc.com.au — Renderoc GP not in AU range; correct product unverified", confirmed_date: null },
+    },
+  },
+  "Mapei Mapegrout Fast-Set": {
+    rows: [
+      ["structural_demand", "gate", "unconfirmed"],
+      ["setting", "gate", "rapid_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "unconfirmed"],
+      ["substrate_prep", "gate", "unconfirmed"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "rapid_set_cementitious"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "planicrete_ac_or_eporip"],
+      ["pack_size", "meta", "25kg"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: {
+      id: "mapei_mapegrout_fast_set",
+      gates: { structural_demand: "unconfirmed", setting: "rapid_set", exposure_max: "unconfirmed", orientation: "unconfirmed", substrate_prep: "unconfirmed" },
+      tag: { chemistry: "rapid_set_cementitious", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null },
+      meta: { primer: "planicrete_ac_or_eporip", pack_size: "25kg", alternative_product: null, data_status: "unconfirmed", selectable: false, source: "mapei.com/au — AU availability/product name not confirmed", confirmed_date: null },
+    },
+  },
+  "Sika MonoTop FC": {
+    rows: [
+      ["structural_demand", "gate", "cosmetic"],
+      ["setting", "gate", "unconfirmed"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "unconfirmed"],
+      ["substrate_prep", "gate", "over_repaired_concrete"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "cementitious_fine_finish"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_monotop_fc",
+      gates: { structural_demand: "cosmetic", setting: "unconfirmed", exposure_max: "unconfirmed", orientation: "unconfirmed", substrate_prep: "over_repaired_concrete" },
+      tag: { chemistry: "cementitious_fine_finish", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null },
+      meta: { primer: null, pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sika MonoTop FC — formulation/system to confirm", confirmed_date: null },
+    },
+  },
+  "Sika MonoTop-723 N": {
+    rows: [
+      ["structural_demand", "gate", "unconfirmed"],
+      ["setting", "gate", "normal_set"],
+      ["exposure_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "vertical/horizontal/overhead"],
+      ["substrate_prep", "gate", "exposed_rebar (rebar primer first)"],
+      ["min_layer_mm", "rank", "null (unconfirmed)"],
+      ["max_layer_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "cementitious"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["primer", "meta", "sika_monotop-910n (rebar) — confirm"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sika_monotop_723n",
+      gates: { structural_demand: "unconfirmed", setting: "normal_set", exposure_max: "unconfirmed", orientation: "vertical/horizontal/overhead", substrate_prep: "exposed_rebar" },
+      tag: { chemistry: "cementitious", en1504_class: "unconfirmed" },
+      rank: { min_layer_mm: null, max_layer_mm: null, compressive_28d_mpa: null },
+      meta: { primer: "sika_monotop-910n", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sika MonoTop-723 N — formulation/system to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function CementitiousMortarsIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -419,17 +533,10 @@ export function CementitiousMortarsIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "EN 1504-3 class (R1–R4) & structural vs non-structural use; compressive, flexural & bond (pull-off) strength (MPa); min & max single-layer thickness and max total build; pourable/flowable (micro-concrete) vs hand-applied trowel grade vs fine finishing grade; shrinkage class / dimensional stability & cracking resistance; fibre/polymer modification; E-modulus & thermal-expansion match to parent concrete; initial/final set & strength-gain rate (rapid vs standard); chloride/sulfate resistance & low-permeability for cover restoration to AS 3600; primer/bonding-coat & SSD saturated substrate prep; overhead/vertical sag resistance; application & curing temp range; aggregate size vs section.";
+
 export function CementitiousMortarsProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (id: FilterTag) => {
-    setActiveFilters((prev) => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
-  };
-
-  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
 
   return (
     <>
@@ -457,113 +564,7 @@ export function CementitiousMortarsProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 products — cementitious repair mortars — general-use and rapid-set grades</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button key={f.id} type="button" onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll to view all</span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
-          </div>
-        </div>
-
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of cementitious repair mortars. Confirm all selections against the current manufacturer TDS before specifying.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Setting</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">EN 1504-3</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Primer</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Max layer</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Best for</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.brand} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.setting}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.en1504}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.primer}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.maxLayer}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.bestFor}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" criteriaKey="concrete-spalling/cementitious-repair-mortars" cards={CEMENTITIOUS_CARDS} />
     </>
   );
 }

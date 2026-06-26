@@ -1,44 +1,48 @@
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
-import ExpertAdviceForm from "@/components/expert-advice/ExpertAdviceForm";
-import FileUploadZone from "@/components/expert-advice/FileUploadZone";
+import ServiceSchema from "@/components/expert-advice/ServiceSchema";
+import PageNav from "@/components/PageNav";
 
 const whoFor = [
-  "Apartment buyers conducting pre-purchase due diligence",
-  "Conveyancers wanting a defect risk summary for a client",
-  "Buyers' agents assessing building condition risk before purchase",
-  "Strata due diligence reviews for investment or owner-occupier purchases",
+  "Buyers considering purchasing an apartment in a strata building",
+  "Buyers who have received a strata report but are unsure what the building issues mean",
+  "Buyers concerned about future special levies or capital works costs",
+  "Buyers looking at older apartment buildings",
+  "Buyers considering apartments in buildings with past leaks, façade issues, balcony issues, roof issues, concrete spalling or window problems",
+  "Buyers concerned about magnesite, damp flooring, mould, water staining or previous water ingress",
+  "Buyers who want to understand whether the property may carry future repair risk",
+  "Buyers who want a second opinion before exchange or before making a final purchase decision",
+  "Buyers who want to know what questions to ask the agent, vendor, strata manager or solicitor before proceeding",
 ];
 
 const includes = [
-  "Strata report review",
-  "AGM and general meeting minutes review",
-  "Capital works fund status and commentary",
-  "Review of any available defect, inspection, or repair photos",
-  "Red flags for waterproofing defects",
-  "Red flags for concrete and structural issues",
-  "Red flags for cladding, windows, roof, and façade",
-  "Special levy risk commentary",
-  "Plain-English risk summary",
+  "Review of supplied strata report, meeting minutes, capital works records, photos and available purchase documents",
+  "Review of known defects, previous repairs and planned future works",
+  "Comment on likely future repair or cost exposure based on the available information",
+  "Identification of warning signs that may indicate future special levies or major capital works",
+  "Comment on common apartment building risks such as façade deterioration, balcony defects, waterproofing issues, roof membrane ageing, window leaks, concrete spalling, magnesite, dampness and water ingress",
+  "Practical explanation of what the issues may mean for a buyer",
+  "General purchase risk rating: Low, Medium or High",
+  "Suggested questions to ask the agent, vendor, strata manager or solicitor before proceeding",
+  "Practical advice to help the buyer decide whether to proceed, proceed cautiously, ask for more information, renegotiate, or reconsider the purchase",
 ];
 
-const CONCERN_OPTIONS = [
-  "Waterproofing",
-  "Concrete cancer",
-  "Cladding",
-  "Roof",
-  "Windows",
-  "Façade",
-  "Levies",
-];
-
-const fieldClass =
-  "w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20";
-const labelClass = "mb-1.5 block text-sm font-semibold text-slate-700";
+export const metadata: Metadata = {
+  title: "Pre-Purchase Apartment Defect Review | Expert Remedial Advice",
+  description:
+    "Independent defect and building-risk review before you buy an apartment — surfacing the red flags that affect value, liveability and future repair costs.",
+  alternates: { canonical: "/expert-remedial-advice/pre-purchase-apartment-defect-review" },
+};
 
 export default function PrePurchaseApartmentDefectReviewPage() {
   return (
     <div className="min-h-screen bg-slate-100">
       <SiteHeader />
+      <ServiceSchema
+        name="Pre-Purchase Apartment Defect Review"
+        description="Independent defect and building-risk review before you buy an apartment — surfacing the red flags that affect value, liveability and future repair costs."
+        path="/expert-remedial-advice/pre-purchase-apartment-defect-review"
+      />
 
       <main className="px-6 py-10">
         <section className="mx-auto max-w-4xl">
@@ -48,6 +52,7 @@ export default function PrePurchaseApartmentDefectReviewPage() {
             <span>›</span>
             <span className="text-sky-800">Pre-Purchase Apartment Defect Review</span>
           </div>
+          <PageNav />
 
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-700">Expert Remedial Advice</p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight text-sky-950 sm:text-3xl md:text-4xl">
@@ -60,10 +65,16 @@ export default function PrePurchaseApartmentDefectReviewPage() {
               <div className="mb-3 h-1 w-10 rounded-full bg-red-700" />
               <h2 className="text-base font-bold text-sky-950">What It Is</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                A desktop review of strata records and available building information to identify building defect risk before purchasing an apartment in a strata scheme.
+                Pre-Purchase Apartment Defect Review is a desktop review for buyers who are considering purchasing an apartment and want to better understand potential building-related risks before committing to the purchase.
               </p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                Strata reports and meeting minutes often contain early warning signs of defects, repair backlogs, unfunded capital works, and upcoming special levies. This service is designed to interpret that information through a remedial building lens — identifying what a standard conveyancer or solicitor review may miss.
+                We review the available purchase information, such as strata reports, meeting minutes, capital works records, past repair history, defect reports, photos, building age and known issues, to identify warning signs that may affect the buyer after purchase.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                The review focuses on whether the building may have future repair exposure, possible special levy risk, unresolved defects, ageing building systems, planned remedial works, or signs that the owners corporation may need to spend significant money in the future.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                The aim is to help buyers make a more informed purchase decision before exchange, renegotiation or final commitment.
               </p>
             </div>
 
@@ -97,99 +108,18 @@ export default function PrePurchaseApartmentDefectReviewPage() {
 
           </div>
 
-          {/* Pricing */}
+          {/* Call to action */}
           <div className="mt-6 rounded-xl bg-sky-950 px-6 py-5 text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">Pricing</p>
-            <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-2xl font-extrabold text-white">From $295</span>
-              <span className="text-base font-semibold text-sky-300">+ GST</span>
-            </div>
-            <p className="mt-2 text-sm leading-6 text-sky-200">
-              Prices shown are starting prices. Final pricing will be confirmed after we review the information, photos and documents provided.
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">How It Works</p>
+            <p className="mt-2 text-sm leading-6 text-sky-100">
+              Submit your details and available strata records on the next page. We will review your submission and confirm a fixed fee before any work begins.
             </p>
             <a
-              href="#request-form"
+              href="/expert-remedial-advice/pre-purchase-apartment-defect-review/request"
               className="mt-4 inline-flex rounded-xl bg-red-700 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-red-600"
             >
               Request This Advice
             </a>
-          </div>
-
-          {/* Request form */}
-          <div id="request-form" className="mt-6 scroll-mt-24">
-            <div className="mb-4">
-              <h2 className="text-xl font-extrabold text-sky-950">Request This Advice</h2>
-              <p className="mt-1 text-sm text-slate-500">
-                Fill in the details below. We will review your submission and confirm the fee before starting.
-              </p>
-            </div>
-
-            <ExpertAdviceForm service="pre-purchase-apartment-defect-review" serviceName="Pre-Purchase Apartment Defect Review">
-              <FileUploadZone
-                name="strataReport"
-                label="Strata Report"
-                accept=".pdf,.doc,.docx"
-                hint="The strata inspection or due diligence report"
-                maxFiles={4}
-              />
-              <FileUploadZone
-                name="agmMinutes"
-                label="AGM / Committee Minutes"
-                accept=".pdf,.doc,.docx"
-                hint="Recent AGM minutes — useful for identifying known defects and levy history"
-                maxFiles={4}
-              />
-              <FileUploadZone
-                name="capitalWorksFund"
-                label="Capital Works Fund / Levy Information"
-                accept=".pdf,.doc,.docx"
-                hint="Capital works fund statement or levy schedule"
-                maxFiles={4}
-              />
-              <FileUploadZone
-                name="buildingInspectionReport"
-                label="Building Inspection Report"
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                hint="Any building or pest inspection report obtained"
-                maxFiles={4}
-              />
-              <div>
-                <label className={labelClass}>
-                  Listing Link <span className="text-xs font-normal text-slate-400">(optional)</span>
-                </label>
-                <input type="url" name="listingLink" className={fieldClass} placeholder="https://www.realestate.com.au/..." />
-              </div>
-              <div>
-                <label className={labelClass}>
-                  Auction / Offer Deadline <span className="text-xs font-normal text-slate-400">(optional)</span>
-                </label>
-                <input type="date" name="auctionDeadline" className={fieldClass} />
-              </div>
-              <fieldset>
-                <legend className={`${labelClass} mb-3`}>Main Concern <span className="text-xs font-normal text-slate-400">(select all that apply)</span></legend>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 sm:grid-cols-3">
-                  {CONCERN_OPTIONS.map((o) => (
-                    <label key={o} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
-                      <input type="checkbox" name="mainConcern" value={o} className="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-500" />
-                      {o}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <div className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3">
-                <p className="text-sm font-semibold text-sky-900">Strata plan recommended</p>
-                <p className="mt-1 text-xs leading-5 text-sky-700">
-                  If available, please attach the strata plan for the building. It helps us identify the lot boundaries, common property areas, and likely areas of risk.
-                </p>
-              </div>
-              <FileUploadZone
-                name="strataPlan"
-                label="Strata Plan"
-                accept=".pdf,image/jpeg,image/png,image/heic"
-                hint="PDF or image of the strata plan (optional)"
-                maxFiles={2}
-              />
-            </ExpertAdviceForm>
           </div>
 
         </section>
@@ -209,12 +139,19 @@ export default function PrePurchaseApartmentDefectReviewPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

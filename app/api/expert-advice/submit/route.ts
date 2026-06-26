@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
+import { renderEmail, esc, type SubmittedFile } from "@/lib/expert-advice/email-templates";
 
 const FROM    = "Remedial Building Australia <info@remedialbuildingaustralia.com.au>";
 const TO      = "info@remedialbuildingaustralia.com.au";
@@ -25,18 +26,6 @@ function toLabel(key: string): string {
     .replace(/\bEwp\b/g, "EWP")
     .replace(/\bNcc\b/g, "NCC")
     .trim();
-}
-
-function esc(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-function row(label: string, value: string): string {
-  if (!value) return "";
-  return `<tr>
-    <td style="padding:7px 12px;background:#f8fafc;font-size:12px;font-weight:bold;color:#64748b;vertical-align:top;width:180px;border:1px solid #e2e8f0;">${esc(label)}</td>
-    <td style="padding:7px 12px;font-size:14px;color:#0f172a;border:1px solid #e2e8f0;white-space:pre-wrap;">${esc(value)}</td>
-  </tr>`;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -71,37 +60,65 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   for (const [k] of formData.entries()) allKeys.add(k);
 
   // Service-specific text/select fields
-  const extraFields: { label: string; value: string }[] = [];
+  const extraFields: { key: string; label: string; value: string }[] = [];
+  const fieldMap: Record<string, string> = {};
   for (const key of allKeys) {
     if (COMMON_KEYS.has(key)) continue;
     const values = formData.getAll(key);
     const textVals = values.filter((v) => !(v instanceof File)).map((v) => String(v)).filter(Boolean);
     if (textVals.length > 0) {
-      extraFields.push({ label: toLabel(key), value: textVals.join(", ") });
+      const value = textVals.join(", ");
+      extraFields.push({ key, label: toLabel(key), value });
+      fieldMap[key] = value;
     }
   }
 
-  // Collect all files
-  type UploadedFile = { label: string; filename: string; url: string };
-  const uploadedFiles: UploadedFile[] = [];
+  // Collect all files (structured, so the email template can group them)
+  const uploadedFiles: SubmittedFile[] = [];
+
+  // Files attached directly to the notification email. IMPORTANT: Resend
+  // serialises the request body as JSON, so attachment `content` MUST be a
+  // base64 string — a raw Buffer gets mangled into {"type":"Buffer",...} and
+  // the attachment won't open. Inline Supabase links are the primary channel;
+  // attachments are a convenience copy.
+  type Attachment = { filename: string; content: string; contentType?: string };
+  const attachments: Attachment[] = [];
+  const MAX_ATTACH_TOTAL = 18 * 1024 * 1024; // keep total email well under Resend's 40 MB cap
+  let attachTotal = 0;
 
   const sbKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? SUPABASE_ANON;
   const sb = createClient(SUPABASE_URL, sbKey);
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
-  async function uploadFile(file: File, fieldLabel: string) {
+  async function uploadFile(file: File, fieldKey: string, fieldLabel: string) {
     const ext  = file.name.split(".").pop() ?? "bin";
     const slug = Math.random().toString(36).slice(2, 8);
     const path = `${service}/${timestamp}/${slug}.${ext}`;
     const buf  = await file.arrayBuffer();
+    const contentType = file.type || "application/octet-stream";
+    const isImage = contentType.startsWith("image/");
+
+    // Attach to the email as base64 (within the size ceiling).
+    if (attachTotal + buf.byteLength <= MAX_ATTACH_TOTAL) {
+      attachments.push({
+        filename: file.name,
+        content: Buffer.from(buf).toString("base64"),
+        contentType,
+      });
+      attachTotal += buf.byteLength;
+    }
+
     const { error } = await sb.storage.from(BUCKET).upload(path, buf, {
-      contentType: file.type || "application/octet-stream",
+      contentType,
       upsert: false,
     });
+    if (error) {
+      console.error(`[expert-advice/submit] Storage upload failed for "${file.name}":`, error.message);
+    }
     const url = error
       ? ""
       : sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
-    uploadedFiles.push({ label: fieldLabel, filename: file.name, url });
+    uploadedFiles.push({ key: fieldKey, label: fieldLabel, filename: file.name, contentType, url, isImage });
   }
 
   const uploadTasks: Promise<void>[] = [];
@@ -111,7 +128,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       (v): v is File => v instanceof File && v.size > 0
     );
     for (const file of files) {
-      uploadTasks.push(uploadFile(file, toLabel(key)));
+      uploadTasks.push(uploadFile(file, key, toLabel(key)));
     }
   }
   await Promise.allSettled(uploadTasks);
@@ -154,94 +171,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const requestId = dbRecord?.id ?? null;
 
-  // Build internal notification email
+  // Build the internal notification email from the per-service template.
   const submittedAt = new Date().toLocaleString("en-AU", { timeZone: "Australia/Sydney" });
 
-  const extraRows = extraFields.map((f) => row(f.label, f.value)).join("");
-
-  const fileRows = uploadedFiles.length
-    ? uploadedFiles
-        .map(
-          (f) =>
-            `<tr>
-              <td style="padding:7px 12px;background:#f8fafc;font-size:12px;font-weight:bold;color:#64748b;vertical-align:top;width:180px;border:1px solid #e2e8f0;">${esc(f.label)}</td>
-              <td style="padding:7px 12px;font-size:14px;color:#0f172a;border:1px solid #e2e8f0;">
-                ${f.url ? `<a href="${f.url}" style="color:#1d4ed8;">${esc(f.filename)}</a>` : esc(f.filename)}
-              </td>
-            </tr>`
-        )
-        .join("")
-    : "";
-
-  const notifyHtml = `
-<div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;color:#1e293b;">
-  <div style="background:#0f1f3d;padding:20px 28px;border-bottom:3px solid #b91c1c;">
-    <p style="margin:0;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:2px;color:#93c5fd;">Expert Advice Request</p>
-    <p style="margin:4px 0 0;font-size:18px;font-weight:bold;color:#ffffff;">${esc(serviceName)}</p>
-    <p style="margin:4px 0 0;font-size:12px;color:#94a3b8;">${esc(submittedAt)}${requestId ? ` · Request #${requestId}` : ""}</p>
-  </div>
-  <div style="padding:28px;background:#ffffff;border:1px solid #e2e8f0;border-top:none;">
-
-    <p style="margin:0 0 16px;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#64748b;">Customer Details</p>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
-      ${row("Request ID", requestId ? String(requestId) : "")}
-      ${row("Service", serviceName)}
-      ${row("Name", name)}
-      ${row("Email", email)}
-      ${phone ? row("Phone", phone) : ""}
-      ${propType ? row("Property type", propType) : ""}
-      ${row("Building address / suburb", address)}
-      ${urgency ? row("Urgency", urgency) : ""}
-    </table>
-
-    <p style="margin:0 0 10px;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#64748b;">Issue Description</p>
-    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:14px;font-size:14px;line-height:1.7;color:#1e293b;white-space:pre-wrap;margin-bottom:24px;">${esc(description)}</div>
-
-    ${extraRows ? `<p style="margin:0 0 16px;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#64748b;">Additional Information</p><table style="width:100%;border-collapse:collapse;margin-bottom:24px;">${extraRows}</table>` : ""}
-
-    ${fileRows ? `<p style="margin:0 0 16px;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#64748b;">Uploaded Files</p><table style="width:100%;border-collapse:collapse;margin-bottom:24px;">${fileRows}</table>` : ""}
-
-    <div style="background:#fefce8;border:1px solid #fde047;border-radius:8px;padding:16px;margin-bottom:24px;">
-      <p style="margin:0 0 8px;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#92400e;">Disclaimer Acceptance</p>
-      <table style="width:100%;border-collapse:collapse;">
-        ${row("Disclaimer accepted", "Yes")}
-        ${row("Accepted at", submittedAt)}
-        ${row("Disclaimer version", disclaimerVersion || "1.0")}
-        ${ipAddress ? row("IP address", ipAddress) : ""}
-      </table>
-    </div>
-
-    <hr style="border:none;border-top:1px solid #e2e8f0;margin:0 0 14px;" />
-    <p style="margin:0;font-size:12px;color:#94a3b8;">Submitted via ${SITE} · Reply to: <a href="mailto:${email}" style="color:#94a3b8;">${email}</a></p>
-  </div>
-</div>`;
-
-  const notifyText = [
-    `Expert Advice Request — ${serviceName}`,
-    `Submitted: ${submittedAt}`,
-    requestId ? `Request ID: ${requestId}` : "",
-    ``,
-    `Service: ${serviceName}`,
-    `Name: ${name}`,
-    `Email: ${email}`,
-    phone ? `Phone: ${phone}` : "",
-    propType ? `Property type: ${propType}` : "",
-    `Building address: ${address}`,
-    urgency ? `Urgency: ${urgency}` : "",
-    ``,
-    `Description:`,
+  const { html: notifyHtml, text: notifyText } = renderEmail({
+    service,
+    serviceName,
+    name,
+    email,
+    phone,
+    propertyType: propType,
+    address,
     description,
-    ``,
-    ...extraFields.map((f) => `${f.label}: ${f.value}`),
-    ``,
-    ...uploadedFiles.map((f) => `File (${f.label}): ${f.filename}${f.url ? ` — ${f.url}` : ""}`),
-    ``,
-    `Disclaimer accepted: Yes`,
-    `Disclaimer version: ${disclaimerVersion || "1.0"}`,
-    ipAddress ? `IP address: ${ipAddress}` : "",
-  ]
-    .filter((l) => l !== "")
-    .join("\n");
+    urgency,
+    extraFields,
+    fieldMap,
+    files: uploadedFiles,
+    requestId: requestId != null ? String(requestId) : null,
+    submittedAt,
+    ipAddress,
+    disclaimerVersion,
+  });
 
   const confirmHtml = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1e293b;">
@@ -271,26 +221,56 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const [notifyResult] = await Promise.allSettled([
-    resend.emails.send({
-      from: FROM,
-      to: TO,
-      replyTo: email,
-      subject: `Expert Advice Request: ${serviceName} — ${name}`,
-      html: notifyHtml,
-      text: notifyText,
-    }),
-    resend.emails.send({
+  const notifyBase = {
+    from: FROM,
+    to: TO,
+    replyTo: email,
+    subject: `Expert Advice Request: ${serviceName} — ${name}`,
+    html: notifyHtml,
+    text: notifyText,
+  };
+
+  // NOTE: resend.emails.send() does NOT throw on an API error — it resolves
+  // with { data, error }. We must inspect `error`, not just catch throws.
+  // If attachments push the message over Resend's size limit the send fails;
+  // in that case retry WITHOUT attachments so the email (with Supabase links
+  // to the uploaded files) still reaches us.
+  let notify = await resend.emails
+    .send(attachments.length ? { ...notifyBase, attachments } : notifyBase)
+    .catch((err) => ({ data: null, error: err }));
+
+  if (notify?.error && attachments.length) {
+    console.error(
+      "[expert-advice/submit] Notify email with attachments failed, retrying without attachments:",
+      notify.error,
+    );
+    notify = await resend.emails
+      .send(notifyBase)
+      .catch((err) => ({ data: null, error: err }));
+  }
+
+  // Confirmation to the customer (best-effort — never blocks the response).
+  const confirm = await resend.emails
+    .send({
       from: FROM,
       to: email,
       subject: "We received your remedial advice request",
       html: confirmHtml,
       text: confirmText,
-    }),
-  ]);
+    })
+    .catch((err) => ({ data: null, error: err }));
+  if (confirm?.error) {
+    console.error("[expert-advice/submit] Confirmation email failed:", confirm.error);
+  }
 
-  if (notifyResult.status === "rejected") {
-    console.error("[expert-advice/submit] Resend error:", notifyResult.reason);
+  console.log(
+    `[expert-advice/submit] request #${requestId ?? "?"} files=${uploadedFiles.length} ` +
+      `uploadedOk=${uploadedFiles.filter((f) => f.url).length} attachments=${attachments.length} ` +
+      `attachBytes=${attachTotal} notifyId=${(notify as { data?: { id?: string } })?.data?.id ?? "none"}`,
+  );
+
+  if (notify?.error) {
+    console.error("[expert-advice/submit] Notify email failed:", notify.error);
     return NextResponse.json({ error: "Failed to submit request. Please email us directly." }, { status: 500 });
   }
 

@@ -89,6 +89,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 });
   }
 
+  // ── SEO landing pages ──
+  for (const path of [
+    "/remedial-building-services",
+    "/building-remediation",
+    "/remedial-repair-specifications",
+    "/remedial-building-solutions",
+    "/remedial-builders",
+    "/remedial-building-sydney",
+  ]) {
+    entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 });
+  }
+
+  // ── Expert Remedial Advice (index + services) ──
+  for (const path of [
+    "/expert-remedial-advice",
+    "/expert-remedial-advice/preliminary-defect-assessment",
+    "/expert-remedial-advice/scope-quote-tender-review",
+    "/expert-remedial-advice/remedial-budget-estimate",
+    "/expert-remedial-advice/building-repair-strategy-advice",
+    "/expert-remedial-advice/pre-purchase-apartment-defect-review",
+    "/expert-remedial-advice/capital-works-forecast",
+  ]) {
+    entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 });
+  }
+
+  // ── Other indexable section pages ──
+  for (const path of ["/materials-products-index", "/useful-resources"]) {
+    entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 });
+  }
+
   // ── Legal ──
   for (const path of ["/terms", "/privacy-policy"]) {
     entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 });

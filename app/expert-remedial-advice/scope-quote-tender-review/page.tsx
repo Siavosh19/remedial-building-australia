@@ -1,57 +1,52 @@
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
-import ExpertAdviceForm from "@/components/expert-advice/ExpertAdviceForm";
-import FileUploadZone from "@/components/expert-advice/FileUploadZone";
+import ServiceSchema from "@/components/expert-advice/ServiceSchema";
+import PageNav from "@/components/PageNav";
 
 const whoFor = [
-  "Building owners receiving a first remedial quote",
-  "Strata managers reviewing contractor submissions",
-  "Owners corporation committees approving scope and budget",
-  "Property managers assessing maintenance contractor proposals",
-  "Developers reviewing rectification tenders",
-  "Anyone unsure whether a remedial scope is complete, fair, or well-scoped",
+  "Owners corporations reviewing remedial repair quotes before approval",
+  "Strata managers preparing to issue or compare tender documents",
+  "Committees unsure whether a scope properly covers the defect",
+  "Owners who have received a contractor quote and want it reviewed before proceeding",
+  "Projects involving balcony repairs, waterproofing, façade works, concrete spalling, roof membranes, windows, planter boxes or render repairs",
+  "Situations where quotes are difficult to compare because each contractor has allowed for different items",
+  "Tender packages with provisional sums, exclusions, unclear access assumptions or vague repair descriptions",
+  "Projects where the committee wants to reduce variation risk before appointing a contractor",
+  "Cases where a cheaper quote may be missing important scope items",
+  "Cases where a more expensive quote may include unnecessary or excessive allowances",
 ];
 
 const includes = [
-  "Review for missing scope items or gaps in coverage",
-  "Identification of vague wording, undefined methods, or ambiguous exclusions",
-  "Flag on provisional sums, daywork allowances, and PC items",
-  "Access and scaffold assumption review",
-  "Programme and sequencing concerns",
-  "Variation risk commentary",
-  "Multi-quote comparison (if multiple quotes provided)",
-  "List of questions to raise with the contractor before signing",
+  "Review of the proposed scope of works, quote, tender schedule or specification",
+  "Check of repair methodology and proposed remedial system",
+  "Review of specified products, membranes, coatings, sealants, mortars or repair materials where applicable",
+  "Comment on whether the scope appears clear, complete and suitable for the visible defect or described issue",
+  "Identification of missing items that may later become variations",
+  "Review of provisional sums, lump sum items, exclusions and qualifications",
+  "Review of access assumptions, including scaffold, EWP, rope access, internal access or staged access",
+  "Comment on whether items are likely to be under-allowed, duplicated or unclear",
+  "Practical comments on alternative repair methods or more cost-effective options where appropriate",
+  "Review of tender comparison issues where multiple quotes are provided",
+  "Identification of likely commercial risks before approval or contract award",
+  "Recommended questions to ask the contractor, consultant or tenderer before proceeding",
 ];
 
-const PRICING_GUIDE = [
-  { label: "Single scope or quote review", price: "from $495 + GST" },
-  { label: "2–3 quote comparison",         price: "from $750 + GST" },
-  { label: "Complex tender review",         price: "from $950 + GST" },
-];
-
-const CONCERN_OPTIONS = [
-  "Price",
-  "Missing items",
-  "Vague scope",
-  "Exclusions",
-  "Provisional sums",
-  "Access",
-  "Scaffold",
-  "Programme",
-  "Variations",
-];
-
-const QUOTE_COUNT = ["1", "2", "3", "4+"];
-const REVIEW_PURPOSE = ["Approval before signing", "Quote comparison", "Dispute or variation"];
-const WORKS_STARTED = ["Not started", "In progress", "Complete"];
-
-const fieldClass =
-  "w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20";
-const labelClass = "mb-1.5 block text-sm font-semibold text-slate-700";
+export const metadata: Metadata = {
+  title: "Scope, Quote & Tender Review | Expert Remedial Advice",
+  description:
+    "Independent review of a remedial scope, quote or tender before you approve or sign — checking for missing items, vague wording, exclusions and variation risk.",
+  alternates: { canonical: "/expert-remedial-advice/scope-quote-tender-review" },
+};
 
 export default function ScopeQuoteTenderReviewPage() {
   return (
     <div className="min-h-screen bg-slate-100">
       <SiteHeader />
+      <ServiceSchema
+        name="Scope, Quote & Tender Review"
+        description="Independent review of a remedial scope, quote or tender before you approve or sign — checking for missing items, vague wording, exclusions and variation risk."
+        path="/expert-remedial-advice/scope-quote-tender-review"
+      />
 
       <main className="px-6 py-10">
         <section className="mx-auto max-w-4xl">
@@ -61,6 +56,7 @@ export default function ScopeQuoteTenderReviewPage() {
             <span>›</span>
             <span className="text-sky-800">Scope, Quote &amp; Tender Review</span>
           </div>
+          <PageNav />
 
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-700">Expert Remedial Advice</p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight text-sky-950 sm:text-3xl md:text-4xl">
@@ -73,10 +69,16 @@ export default function ScopeQuoteTenderReviewPage() {
               <div className="mb-3 h-1 w-10 rounded-full bg-red-700" />
               <h2 className="text-base font-bold text-sky-950">What It Is</h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                An independent desktop review of a remedial scope of works, quote, or tender before you approve it or sign a contract.
+                A detailed desktop review of a proposed scope of works, contractor quote, tender package or repair methodology before works are approved or awarded.
               </p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                Remedial building scopes are notoriously incomplete. Missing items, vague repair descriptions, unstated exclusions, and open-ended provisional sums are common — and can lead to significant variation costs once work begins. This service is designed to help you understand what you are agreeing to before committing.
+                This service is for situations where a client already has a scope, quote, tender schedule, specification or contractor proposal, but needs an experienced remedial review to check whether the proposed works are clear, complete, practical and commercially sensible.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                We review the scope wording, repair systems, specified products, access assumptions, tender breakdown, provisional sums, lump sum items, exclusions, hidden cost risks and likely variation triggers. The aim is to identify what may be missing, unclear, over-specified, under-specified, duplicated, risky or likely to cause cost increases once the project starts.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                We can also comment on whether alternative repair approaches, staging, access methods or specification changes may provide a more practical or cost-effective outcome.
               </p>
             </div>
 
@@ -110,101 +112,18 @@ export default function ScopeQuoteTenderReviewPage() {
 
           </div>
 
-          {/* Pricing */}
+          {/* Call to action */}
           <div className="mt-6 rounded-xl bg-sky-950 px-6 py-5 text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">Pricing</p>
-            <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-2xl font-extrabold text-white">From $495</span>
-              <span className="text-base font-semibold text-sky-300">+ GST</span>
-            </div>
-            <ul className="mt-3 space-y-1.5">
-              {PRICING_GUIDE.map((g) => (
-                <li key={g.label} className="flex items-center justify-between gap-4 text-sm">
-                  <span className="text-sky-200">{g.label}</span>
-                  <span className="shrink-0 font-semibold text-white">{g.price}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-3 text-sm leading-6 text-sky-200">
-              Prices shown are starting prices. Final pricing will be confirmed after we review the information, photos and documents provided.
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-sky-300">How It Works</p>
+            <p className="mt-2 text-sm leading-6 text-sky-100">
+              Submit your details, documents and any quotes on the next page. We will review your submission and confirm a fixed fee before any work begins.
             </p>
             <a
-              href="#request-form"
+              href="/expert-remedial-advice/scope-quote-tender-review/request"
               className="mt-4 inline-flex rounded-xl bg-red-700 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-red-600"
             >
               Request This Advice
             </a>
-          </div>
-
-          {/* Request form */}
-          <div id="request-form" className="mt-6 scroll-mt-24">
-            <div className="mb-4">
-              <h2 className="text-xl font-extrabold text-sky-950">Request This Advice</h2>
-              <p className="mt-1 text-sm text-slate-500">
-                Fill in the details below. We will review your submission and confirm the fee before starting.
-              </p>
-            </div>
-
-            <ExpertAdviceForm service="scope-quote-tender-review" serviceName="Scope, Quote & Tender Review">
-              <FileUploadZone
-                name="scopeDocument"
-                label="Scope / Quote / Tender Document"
-                accept=".pdf,.doc,.docx"
-                hint="Upload the scope of works, quote, or tender document for review"
-                maxFiles={10}
-              />
-              <div>
-                <label className={labelClass}>Number of Quotes Being Reviewed</label>
-                <select name="quoteCount" className={fieldClass}>
-                  <option value="">Select</option>
-                  {QUOTE_COUNT.map((o) => (
-                    <option key={o} value={o}>{o}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>Purpose of Review</label>
-                <select name="reviewPurpose" className={fieldClass}>
-                  <option value="">Select</option>
-                  {REVIEW_PURPOSE.map((o) => (
-                    <option key={o} value={o}>{o}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>Have the Works Started?</label>
-                <select name="worksStarted" className={fieldClass}>
-                  <option value="">Select</option>
-                  {WORKS_STARTED.map((o) => (
-                    <option key={o} value={o}>{o}</option>
-                  ))}
-                </select>
-              </div>
-              <fieldset>
-                <legend className={`${labelClass} mb-3`}>Main Concern <span className="text-xs font-normal text-slate-400">(select all that apply)</span></legend>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 sm:grid-cols-3">
-                  {CONCERN_OPTIONS.map((o) => (
-                    <label key={o} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
-                      <input type="checkbox" name="mainConcern" value={o} className="h-4 w-4 rounded border-slate-300 text-sky-700 focus:ring-sky-500" />
-                      {o}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <div className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3">
-                <p className="text-sm font-semibold text-sky-900">Strata plan recommended</p>
-                <p className="mt-1 text-xs leading-5 text-sky-700">
-                  If this is a strata or apartment building, please attach the strata plan below. It helps us pinpoint which lot and area is affected.
-                </p>
-              </div>
-              <FileUploadZone
-                name="strataPlan"
-                label="Strata Plan"
-                accept=".pdf,image/jpeg,image/png,image/heic"
-                hint="PDF or image of the strata plan (optional)"
-                maxFiles={2}
-              />
-            </ExpertAdviceForm>
           </div>
 
         </section>
@@ -224,12 +143,19 @@ export default function ScopeQuoteTenderReviewPage() {
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <div className="flex flex-col gap-2">
+              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
+              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
+              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
+              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
+              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
+            </div>
           </div>
         </div>
         <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">

@@ -6,6 +6,9 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { AISelectionStage1, AISelectionStage2, DataNote } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { EPOXY_MORTAR_CARDS } from "./epoxyMortarsData";
 
 type FilterTag = "Epoxy" | "2-part" | "3-part" | "High-strength" | "Chemical-resistant" | "Thin-section" | "Rapid-strength" | "Pre-bagged";
 
@@ -15,44 +18,10 @@ type Product = {
   techChips: { label: string; cls: string }[];
   systemDescription: string; technicalProperties: string[]; limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
-const PRODUCTS: Product[] = [
-  {
-    fullLabel: "Ardex Australia",
-    brandUrl: "https://www.ardexaustralia.com",
-    tdsUrl: "https://ardexaustralia.com/product/ardex-ra-88-plus/",
-    accentColor: "#0369a1",
-    name: "Ardex RA 88 Plus",
-    descriptionLine: "2-component non-sag epoxy repair adhesive — 627 mL and 254 mL cartridges — high strength (> 55 MPa) — horizontal, vertical, and overhead use — fast cure approx. 2 hours — Ardex trade supply",
-    productType: "2-component epoxy repair adhesive — cartridge format — Ardex Australia",
-    filterTags: ["Epoxy", "2-part", "High-strength", "Chemical-resistant", "Thin-section", "Rapid-strength"],
-    techChips: [
-      { label: "2-component epoxy adhesive", cls: "bg-sky-100 text-sky-800" },
-      { label: "627 mL and 254 mL cartridges", cls: "bg-slate-100 text-slate-700" },
-      { label: "High strength > 55 MPa", cls: "bg-green-50 text-green-700" },
-      { label: "Non-sag — vertical and overhead", cls: "bg-amber-50 text-amber-700" },
-    ],
-    systemDescription:
-      "Ardex RA 88 Plus is a two-component, high-performance ceramic blend epoxy repair adhesive — not a bulk epoxy mortar in the traditional Nitomortar/Sikadur sense. It is supplied in cartridge format (627 mL and 254 mL cartridges) and is designed as a non-drip, non-sag repair adhesive suitable for horizontal, vertical, and overhead use. It achieves high strength greater than 55 MPa — described as stronger than standard concrete. Fast cure time of approximately 2 hours allows open traffic reinstatement within 2–3 hours of application. It can repair holes, spalls, and cracks in concrete, repair rotted wood, install anchor bolts, repair handrails, and bond precast concrete. Unlike bulk epoxy repair mortars which use a bag of aggregate, RA 88 Plus is applied by cartridge dispensing gun in a bead format. Confirm current TDS, coverage rates, and suitable applications from the current Ardex Australia TDS before specifying. Source: ardexaustralia.com product page confirmed cartridge format, two-component, > 55 MPa, 2-3 hour cure.",
-    technicalProperties: [
-      "2-component ceramic blend epoxy — supplied as 627 mL and 254 mL cartridges — dispensed by gun",
-      "Non-drip, non-sag — suitable for horizontal, vertical, and overhead repair applications",
-      "High strength > 55 MPa — stronger than standard concrete — fast cure approximately 2 hours",
-      "Open to full traffic in 2–3 hours — ready to receive paint in 2–3 hours",
-      "Can repair holes, spalls, cracks in concrete, bond anchor bolts — multi-substrate adhesive",
-    ],
-    limitations: [
-      "Cartridge format — not a bulk epoxy repair mortar — not suitable for large-area structural repair pours",
-      "Working time 20 minutes — mix in small quantities — confirm pot life in hot conditions from Ardex TDS",
-      "Not suitable for active or moving cracks — epoxy is rigid and will re-crack under live structural movement",
-      "Confirm whether RA 88 Plus meets EN 1504-3 requirements for structural repair mortar classification — Ardex AU page does not state EN 1504-3 compliance",
-      "Confirm correct application for structural spalling repair vs crack injection vs anchor adhesive — product has multiple stated uses",
-    ],
-    procurementSources: [
-      { name: "Ardex Australia — trade supply", url: "https://www.ardex.com.au" },
-    ],
-  },
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Sika Australia",
     brandUrl: "https://aus.sika.com",
@@ -95,8 +64,9 @@ const PRODUCTS: Product[] = [
     tdsUrl: "https://www.fosroc.com.au/product/nitomortar-903",
     accentColor: "#7c2d12",
     name: "Fosroc Nitomortar 903",
-    descriptionLine: "TODO: owner confirm — Nitomortar 50 does not appear in the current Fosroc AU product range (fosroc.com.au sitemap confirmed Jun 2026) — confirmed AU epoxy mortars are Nitomortar AP, 903, 908, EL-HB — verify correct product with Parchem technical before specifying",
-    productType: "TODO: owner confirm — Nitomortar 50 not found in AU range — verify replacement product with Parchem",
+    descriptionLine: "Epoxy repair mortar for carpark deck and structural concrete repair — confirmed AU Fosroc epoxy mortar — confirm pack size, primer, pot life, and EN 1504 class with Parchem technical before specifying",
+    productType: "Epoxy repair mortar — Fosroc / Parchem Australia",
+    dataNote: "Owner to confirm — 'Fosroc Nitomortar 50' was previously listed on this card but does not appear in the current Fosroc Australia product range (fosroc.com.au sitemap, June 2026). The confirmed AU Fosroc epoxy mortar range is Nitomortar AP, 903, 908, and EL-HB; Nitomortar 903 is the nearest confirmed equivalent for carpark deck and structural repair. Confirm the correct product, pack size, primer, and application requirements with Parchem technical before specifying.",
     filterTags: ["Epoxy", "3-part", "High-strength", "Chemical-resistant", "Thin-section"],
     techChips: [
       { label: "TODO: confirm product name", cls: "bg-orange-100 text-orange-900" },
@@ -159,61 +129,7 @@ const PRODUCTS: Product[] = [
     procurementSources: [
       { name: "Parchem Construction Supplies — national (DuluxGroup)", url: "https://www.parchem.com.au" },
     ],
-  },
-  {
-    fullLabel: "Sika",
-    brandUrl: "https://www.sika.com.au",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/epoxy-repair-mortarsandrigidbonding/sikadur-31-cf-normal.html",
-    accentColor: "#be123c",
-    name: "Sikadur-31 CF Normal",
-    descriptionLine: "Two-part thixotropic epoxy repair mortar for concrete spalling, crack filling, and structural bonding — confirm current formulation, pot life, coverage, and system design with Sika Australia technical",
-    productType: "Two-part thixotropic epoxy repair mortar — concrete repair and bonding",
-    filterTags: ["Epoxy", "2-part", "High-strength", "Chemical-resistant", "Thin-section"],
-    techChips: [{ label: "Epoxy", cls: "bg-red-100 text-red-700" }, { label: "2-part", cls: "bg-slate-100 text-slate-700" }, { label: "Thixotropic", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Sikadur-31 CF Normal is a two-part thixotropic epoxy paste adhesive and repair mortar for concrete repair, crack filling, and structural bonding applications. It is used in concrete spalling repair for bonding precast concrete elements, filling cracks, anchoring bolts, and bonding repair sections.\n\nSikadur-31 CF Normal is formulated for normal temperature working conditions — confirm that the CF Normal grade is appropriate for site temperatures and that CF Rapid or other grades are not required. Confirm current product technical data sheet, pot life, mixing ratio, surface preparation, and system design with Sika Australia technical before specifying.",
-    technicalProperties: [
-      "Two-part thixotropic epoxy paste — suitable for concrete repair, crack filling, structural bonding, and bolt anchoring",
-      "Confirms excellent adhesion to concrete, masonry, steel, and most construction materials",
-      "Confirm mixing ratio, pot life, temperature range, and application method from current Sikadur-31 CF Normal TDS",
-    ],
-    limitations: [
-      "Confirm current product formulation and system design with Sika Australia technical before specifying",
-      "Pot life is temperature-sensitive — shorter at higher temperatures — confirm working time for site conditions",
-      "Rigid cure — not suitable for active cracks or moving joints — use a flexible system for movement joints",
-      "Substrate must be clean, dry, and sound — do not apply over weak or contaminated concrete",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
-      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
-    ],
-  },
-  {
-    fullLabel: "Sika",
-    brandUrl: "https://www.sika.com.au",
-    tdsUrl: "https://aus.sika.com/en/construction/concrete-repair-protection/concrete-repair-mortars/epoxy-repair-mortarsandrigidbonding/sikadur-33.html",
-    accentColor: "#be123c",
-    name: "Sikadur-33",
-    descriptionLine: "High-strength two-part epoxy repair mortar paste for structural repair, concrete reinstatement, and bonding — confirm current formulation, coverage, pot life, and system design with Sika Australia technical",
-    productType: "Two-part epoxy repair paste — structural repair and concrete reinstatement",
-    filterTags: ["Epoxy", "2-part", "High-strength", "Chemical-resistant"],
-    techChips: [{ label: "Epoxy", cls: "bg-red-100 text-red-700" }, { label: "2-part", cls: "bg-slate-100 text-slate-700" }, { label: "High-strength", cls: "bg-slate-100 text-slate-700" }],
-    systemDescription: "Sikadur-33 is a high-strength two-part epoxy repair mortar paste for structural concrete reinstatement, bonding of precast elements, anchoring, and crack filling on concrete structures. It is used where high compressive and tensile bond strength is required in concrete spalling repair.\n\nConfirm current product technical data sheet, mixing ratio, pot life, application method, and system design with Sika Australia technical before specifying. Confirm the appropriate Sikadur grade for the specific application from the Sika Australia Sikadur product range documentation.",
-    technicalProperties: [
-      "Two-part high-strength epoxy paste — suitable for structural concrete reinstatement, bonding, anchoring, and crack filling",
-      "Provides high compressive and bond strength suitable for structural concrete repair applications",
-      "Confirm mixing ratio, pot life, temperature range, and application method from current Sikadur-33 TDS",
-    ],
-    limitations: [
-      "Confirm current product formulation and system design with Sika Australia technical before specifying",
-      "Pot life is temperature-sensitive — shorter at higher temperatures — confirm working time for site conditions",
-      "Rigid cure — not suitable for active cracks or moving joints",
-      "Substrate must be clean, dry, and structurally sound — do not apply over weak, contaminated, or carbonated concrete without prior assessment",
-    ],
-    procurementSources: [
-      { name: "Sika Australia — national distribution", url: "https://www.sika.com.au" },
-      { name: "Sika trade branches — contact Sika Australia for nearest", url: "https://www.sika.com.au" },
-    ],
-  },
+  }
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [
@@ -336,6 +252,177 @@ function TechCard({ icon, title, items, style }: { icon: React.ReactNode; title:
   );
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["defect_type", "spalling / thin_section / chemical_exposure / active_crack / anchor_grout", "spalling/thin_section/chemical_exposure → this category; active_crack → not_suitable (rigid); anchor_grout → requires_alternative (structural grout)"],
+    ["substrate_moisture", "dry / ssd / wet", "wet → not_suitable (epoxy won't cure); dry required unless product states SSD"],
+    ["chemical_exposure", "none / fuel_oil / chemical", "fuel_oil/chemical → epoxy suited; none → cementitious may suffice (cost)"],
+    ["repair_depth_mm", "min 10 mm typical", "< 10 mm feather → requires_alternative (fine cementitious)"],
+    ["movement", "static / active", "active → not_suitable (rigid high-modulus cure)"],
+  ],
+  json: {
+    category: "epoxy_repair_mortars",
+    stage1_gates: {
+      defect_type: { allowed: ["spalling", "thin_section", "chemical_exposure", "active_crack", "anchor_grout"], rule: "spalling/thin_section/chemical_exposure=suitable; active_crack=not_suitable; anchor_grout=requires_alternative" },
+      substrate_moisture: { allowed: ["dry", "ssd", "wet"], rule: "wet=not_suitable; dry required unless product states SSD" },
+      chemical_exposure: { allowed: ["none", "fuel_oil", "chemical"], rule: "fuel_oil/chemical=suitable; none=cementitious may suffice" },
+      repair_depth_mm: { allowed: ["min_10mm_typical"], rule: "<10mm feather=requires_alternative (fine cementitious)" },
+      movement: { allowed: ["static", "active"], rule: "active=not_suitable" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Ardex RA 88 Plus": {
+    rows: [
+      ["defect_role", "gate", "repair_adhesive"],
+      ["parts", "gate", "2_part"],
+      ["substrate_moisture_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "horizontal/vertical/overhead"],
+      ["movement", "gate", "static_only"],
+      ["min_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_mpa", "rank", "55 (>55)"],
+      ["chemistry", "tag", "epoxy"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["format", "meta", "cartridge"],
+      ["pack_size", "meta", "627mL/254mL"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "ardex_ra_88_plus",
+      gates: { defect_role: "repair_adhesive", parts: "2_part", substrate_moisture_max: "unconfirmed", orientation: "horizontal/vertical/overhead", movement: "static_only" },
+      tag: { chemistry: "epoxy", en1504_class: "unconfirmed" },
+      rank: { min_depth_mm: null, compressive_mpa: 55 },
+      meta: { format: "cartridge", pack_size: "627mL/254mL", alternative_product: null, data_status: "verified", selectable: true, source: "ardexaustralia.com Ardex RA 88 Plus product page", confirmed_date: null },
+    },
+  },
+  "Sikadur-41 CF Normal": {
+    rows: [
+      ["defect_role", "gate", "bulk_mortar"],
+      ["parts", "gate", "3_part"],
+      ["substrate_moisture_max", "gate", "dry"],
+      ["orientation", "gate", "vertical/overhead (thixotropic)"],
+      ["movement", "gate", "static_only"],
+      ["min_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "epoxy"],
+      ["en1504_class", "tag", "tested (EN1504-3, CE)"],
+      ["format", "meta", "kit"],
+      ["pack_size", "meta", "11kg"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sikadur_41_cf_normal",
+      gates: { defect_role: "bulk_mortar", parts: "3_part", substrate_moisture_max: "dry", orientation: "vertical/overhead", movement: "static_only" },
+      tag: { chemistry: "epoxy", en1504_class: "tested" },
+      rank: { min_depth_mm: null, compressive_mpa: null },
+      meta: { format: "kit", pack_size: "11kg", alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sikadur-41 CF Normal product page", confirmed_date: null },
+    },
+  },
+  "Fosroc Nitomortar 903": {
+    rows: [
+      ["defect_role", "gate", "unconfirmed"],
+      ["parts", "gate", "unconfirmed"],
+      ["substrate_moisture_max", "gate", "unconfirmed"],
+      ["orientation", "gate", "unconfirmed"],
+      ["movement", "gate", "unconfirmed"],
+      ["min_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "epoxy"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["format", "meta", "null (unconfirmed)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "unconfirmed"],
+      ["selectable", "meta", "false"],
+    ],
+    json: {
+      id: "fosroc_nitomortar_903",
+      gates: { defect_role: "unconfirmed", parts: "unconfirmed", substrate_moisture_max: "unconfirmed", orientation: "unconfirmed", movement: "unconfirmed" },
+      tag: { chemistry: "epoxy", en1504_class: "unconfirmed" },
+      rank: { min_depth_mm: null, compressive_mpa: null },
+      meta: { format: null, pack_size: null, alternative_product: null, data_status: "unconfirmed", selectable: false, source: "fosroc.com.au — Nitomortar 50 not in AU range; correct product unverified", confirmed_date: null },
+    },
+  },
+  "Fosroc Nitomortar AP": {
+    rows: [
+      ["defect_role", "gate", "bonding"],
+      ["parts", "gate", "2_part"],
+      ["substrate_moisture_max", "gate", "ssd"],
+      ["orientation", "gate", "unconfirmed"],
+      ["movement", "gate", "static_only"],
+      ["min_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "epoxy"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["format", "meta", "paste"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fosroc_nitomortar_ap",
+      gates: { defect_role: "bonding", parts: "2_part", substrate_moisture_max: "ssd", orientation: "unconfirmed", movement: "static_only" },
+      tag: { chemistry: "epoxy", en1504_class: "unconfirmed" },
+      rank: { min_depth_mm: null, compressive_mpa: null },
+      meta: { format: "paste", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "fosroc.com.au Nitomortar AP — SSD/potable confirmed", confirmed_date: null },
+    },
+  },
+  "Sikadur-31 CF Normal": {
+    rows: [
+      ["defect_role", "gate", "bonding"],
+      ["parts", "gate", "2_part"],
+      ["substrate_moisture_max", "gate", "dry"],
+      ["orientation", "gate", "vertical/overhead (thixotropic)"],
+      ["movement", "gate", "static_only"],
+      ["min_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "epoxy"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["format", "meta", "paste"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sikadur_31_cf_normal",
+      gates: { defect_role: "bonding", parts: "2_part", substrate_moisture_max: "dry", orientation: "vertical/overhead", movement: "static_only" },
+      tag: { chemistry: "epoxy", en1504_class: "unconfirmed" },
+      rank: { min_depth_mm: null, compressive_mpa: null },
+      meta: { format: "paste", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sikadur-31 CF Normal — formulation/system to confirm", confirmed_date: null },
+    },
+  },
+  "Sikadur-33": {
+    rows: [
+      ["defect_role", "gate", "bonding"],
+      ["parts", "gate", "2_part"],
+      ["substrate_moisture_max", "gate", "dry"],
+      ["orientation", "gate", "unconfirmed"],
+      ["movement", "gate", "static_only"],
+      ["min_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "epoxy"],
+      ["en1504_class", "tag", "unconfirmed"],
+      ["format", "meta", "paste"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "sikadur_33",
+      gates: { defect_role: "bonding", parts: "2_part", substrate_moisture_max: "dry", orientation: "unconfirmed", movement: "static_only" },
+      tag: { chemistry: "epoxy", en1504_class: "unconfirmed" },
+      rank: { min_depth_mm: null, compressive_mpa: null },
+      meta: { format: "paste", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "aus.sika.com Sikadur-33 — formulation/system to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function EpoxyMortarsIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -353,13 +440,10 @@ export function EpoxyMortarsIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Component count (2-pt paste/adhesive vs 3-pt aggregate-filled mortar for structural reinstatement); compressive/flexural/tensile bond strength (MPa, epoxy typ >50 MPa compressive); min/max layer thickness & max build per pass; E-modulus & thermal expansion mismatch vs concrete (high E/CTE — limit thickness, NOT for thin overlays or thermal cycling exposure); pot life & cure time at temp; application/cure temperature window (epoxy sensitive <10°C); substrate moisture tolerance (most need dry, SSD not suitable); chemical/chloride resistance; non-sag (vertical/overhead) vs flowable; bond/primer requirement; EN 1504-3/-4 structural class; service temp limit (epoxy softens / not for fire/high-temp).";
+
 export function EpoxyMortarsProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const toggleFilter = (id: FilterTag) => { setActiveFilters(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; }); };
-  const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter(p => Array.from(activeFilters).every(f => p.filterTags.includes(f)));
-  const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
 
   return (
     <>
@@ -382,82 +466,7 @@ export function EpoxyMortarsProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">4 products — epoxy repair mortars — 2-part and 3-part grades</p></div></div>
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map(f => { const active = activeFilters.has(f.id); return (<button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>); })}
-          {activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}
-        </div>
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll to view all</span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button>
-          </div>
-        </div>
-        <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-          {visibleProducts.map(product => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><FileText size={9} /> TDS</a>}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div>
-                  <div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2><p className="mt-1 text-sm text-slate-500">Side-by-side comparison of epoxy repair mortars. Confirm all selections against the current manufacturer TDS before specifying.</p></div></div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left font-bold whitespace-nowrap text-slate-700">Brand</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Parts</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Kit size</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Primer</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Strength</th>
-                <th className="px-4 py-3 text-left font-bold whitespace-nowrap text-slate-700">Best for</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.brand}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.parts}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.kit}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.primer}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.strength}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.bestFor}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} cards={EPOXY_MORTAR_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Epoxy repair mortars" />
     </>
   );
 }

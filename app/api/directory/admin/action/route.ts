@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import type { AdminReviewStatus, CompanyStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/directory-auth";
@@ -88,14 +89,22 @@ export async function POST(request: NextRequest) {
     });
 
     if (companyStatus) {
-      await tx.company.update({
-        where: { id: queueItem.company_id },
-        data: {
-          status: companyStatus,
-          // Ensure claimed flag is set on approval — owner submitted so they are the claimer
-          ...(companyStatus === "published" ? { is_claimed: true } : {}),
-        },
-      });
+      const data: Prisma.CompanyUpdateInput = { status: companyStatus };
+      if (companyStatus === "published") {
+        // The owner submitted this listing → it is a CLAIMED (owned) listing.
+        // Set every claim signal so the UI never shows "Claim this profile" for it.
+        data.is_claimed = true;
+        data.listing_claim_status = "claimed";
+        data.claimed_at = new Date();
+        // Promote a free/basic listing to the claimed tier (which the UI reads to
+        // unlock the owner's profile). Never downgrade a paid Featured listing.
+        const current = await tx.company.findUnique({
+          where: { id: queueItem.company_id },
+          select: { plan_type: true },
+        });
+        if (current?.plan_type !== "featured") data.plan_type = "claimed";
+      }
+      await tx.company.update({ where: { id: queueItem.company_id }, data });
     }
   });
 

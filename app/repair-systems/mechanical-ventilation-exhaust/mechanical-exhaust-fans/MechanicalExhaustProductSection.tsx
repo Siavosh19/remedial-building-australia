@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Exhaust-fan"
@@ -36,6 +37,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -43,9 +45,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Fantech",
     brandUrl: "https://www.fantech.com.au",
     accentColor: "#ef4444",
-    name: "TODO: owner confirm — Fantech 150mm inline duct fan (current AU model name)",
-    descriptionLine: "TODO: owner confirm — 'Fantech DVA150' could not be confirmed as a current Fantech Australia product. Current Fantech 150mm inline fans include the TD-500/150SIL and WhisperJet 150 series — confirm the correct model name with Fantech before specifying",
+    name: "Fantech 150mm Inline Duct Fan",
+    descriptionLine: "150mm inline centrifugal duct fan for kitchen range hood and bathroom exhaust where long duct runs and multiple bends generate high static pressure",
     productType: "150mm inline centrifugal duct fan — kitchen and bathroom exhaust",
+    dataNote: "Owner to confirm — 'Fantech DVA150' could not be confirmed as a current Fantech Australia product. Current Fantech 150mm inline fans include the TD-500/150SIL and WhisperJet 150 series — confirm the correct model name with Fantech before specifying.",
     filterTags: ["Exhaust-fan", "Inline", "Centrifugal", "Duct-fan", "150mm"],
     techChips: [
       { label: "Inline centrifugal", cls: "bg-sky-100 text-sky-800" },
@@ -116,9 +119,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Clipsal",
     brandUrl: "https://www.clipsal.com",
     accentColor: "#22c55e",
-    name: "TODO: owner confirm — Clipsal Airflow wall exhaust fan (current AU model name)",
-    descriptionLine: "TODO: owner confirm — 'Clipsal Airflow GX' could not be confirmed as a current Clipsal Australia model. Clipsal does offer wall-mounted Airflow exhaust fans in Australia — confirm the correct current model name with Clipsal before specifying",
+    name: "Clipsal Airflow Wall Exhaust Fan",
+    descriptionLine: "Wall-mounted axial exhaust fan with integral backdraft shutter for direct wall exhaust in bathrooms, toilets and laundries with access to an external wall",
     productType: "Wall-mounted exhaust fan with backdraft shutter",
+    dataNote: "Owner to confirm — 'Clipsal Airflow GX' could not be confirmed as a current Clipsal Australia model. Clipsal does offer wall-mounted Airflow exhaust fans in Australia — confirm the correct current model name with Clipsal before specifying.",
     filterTags: ["Exhaust-fan", "Wall-mounted", "Axial", "Backdraft-shutter", "100mm"],
     techChips: [
       { label: "Wall-mounted axial", cls: "bg-sky-100 text-sky-800" },
@@ -608,7 +612,8 @@ export function MechanicalExhaustProductSection() {
                 </div>
 
                 {/* Procurement Sources */}
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

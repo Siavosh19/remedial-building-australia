@@ -1,7 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CategorySearch from "@/components/directory/CategorySearch";
+import SuburbAutocomplete from "@/components/directory/SuburbAutocomplete";
+import { postcodeToState } from "@/lib/au-locations";
+import { validateAuPhone } from "@/lib/phone-au";
+
+const OTHER_CATEGORY_ID = -1;
+
+type AbnResult = {
+  validFormat: boolean;
+  active: boolean | null;
+  entityName: string | null;
+  state: string | null;
+  postcode: string | null;
+  status: "active" | "cancelled" | "invalid" | "not_found" | "unknown";
+  source: "abr" | "checksum";
+  message: string;
+};
 
 export default function CompanySetupForm({ categories }: { categories: { id: number; name: string }[] }) {
   const [form, setForm] = useState({
@@ -16,13 +32,74 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
     businessEmail: "",
     description: "",
   });
+  const [otherCategory, setOtherCategory] = useState("");
+  const [newsletterOptIn, setNewsletterOptIn] = useState(true);
+  const [suburbVerified, setSuburbVerified] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const categoryOptions = [...categories, { id: OTHER_CATEGORY_ID, name: "Other (my category isn't listed)" }];
+  const isOtherCategory = form.mainCategoryId === String(OTHER_CATEGORY_ID);
+
+  // ── Live ABN verification (green/red) ──────────────────────────────────────────
+  const [abnChecking, setAbnChecking] = useState(false);
+  const [abnResult, setAbnResult] = useState<AbnResult | null>(null);
+
+  useEffect(() => {
+    const abn = form.abn;
+    if (abn.length !== 11) {
+      setAbnResult(null);
+      setAbnChecking(false);
+      return;
+    }
+    let cancelled = false;
+    setAbnChecking(true);
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/directory/abn-verify?abn=${abn}`);
+        const data = await res.json();
+        if (!cancelled) setAbnResult(res.ok ? data : null);
+      } catch {
+        if (!cancelled) setAbnResult(null);
+      } finally {
+        if (!cancelled) setAbnChecking(false);
+      }
+    }, 500);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [form.abn]);
+
+  // Derived client-side hints (instant, no network)
+  const pcState = form.postcode.length === 4 ? postcodeToState(form.postcode) : undefined;
+  const postcodeMismatch = pcState && pcState !== form.state;
+  const phoneCheck = form.phone ? validateAuPhone(form.phone) : null;
+
+  // The ABN is "bad" (block) only when we positively know it's cancelled/not found
+  // or fails the checksum. Unknown (no live key / lookup down) is allowed.
+  const abnIsBad =
+    abnResult != null &&
+    (abnResult.status === "invalid" || abnResult.status === "cancelled" || abnResult.status === "not_found");
+  const abnVerified = abnResult?.status === "active";
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!form.mainCategoryId) {
       setStatus({ type: "error", message: "Please select a primary category." });
+      return;
+    }
+    if (isOtherCategory && !otherCategory.trim()) {
+      setStatus({ type: "error", message: "Please specify your category." });
+      return;
+    }
+    if (abnIsBad) {
+      setStatus({ type: "error", message: abnResult?.message || "Please enter a valid, active ABN." });
+      return;
+    }
+    if (phoneCheck && !phoneCheck.valid) {
+      setStatus({ type: "error", message: phoneCheck.message });
+      return;
+    }
+    if (postcodeMismatch) {
+      setStatus({ type: "error", message: `Postcode ${form.postcode} is in ${pcState}, not ${form.state}.` });
       return;
     }
     setStatus(null);
@@ -34,6 +111,7 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
       body: JSON.stringify({
         ...form,
         mainCategoryId: Number(form.mainCategoryId),
+        otherCategory: isOtherCategory ? otherCategory.trim() : "",
       }),
     });
 
@@ -43,6 +121,22 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
     if (!response.ok) {
       setStatus({ type: "error", message: result.error ?? "Unable to submit company details." });
       return;
+    }
+
+    // Opt the business into the Weekly Remedial Building Update (best-effort —
+    // never block a successful signup if the newsletter call fails or is a dup).
+    if (newsletterOptIn && form.businessEmail.trim()) {
+      try {
+        await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: form.companyName.trim() || "Directory member",
+            email: form.businessEmail.trim(),
+            interest: "All Topics",
+          }),
+        });
+      } catch { /* ignore — newsletter is optional */ }
     }
 
     setStatus({ type: "success", message: "Your listing has been submitted for review. We will notify you when it goes live. Redirecting…" });
@@ -65,15 +159,42 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
 
         <label className="block text-sm font-semibold text-slate-800">
           <span>ABN</span>
-          <input
-            type="text"
-            value={form.abn}
-            onChange={(event) => setForm({ ...form, abn: event.target.value.replace(/\D/g, "") })}
-            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-            required
-            maxLength={11}
-            placeholder="11 digits"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={form.abn}
+              onChange={(event) => setForm({ ...form, abn: event.target.value.replace(/\D/g, "") })}
+              className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 pr-10 text-sm focus:outline-none ${
+                abnIsBad
+                  ? "border-rose-400 focus:border-rose-500"
+                  : abnVerified
+                  ? "border-emerald-400 focus:border-emerald-500"
+                  : "border-slate-300 focus:border-sky-600"
+              }`}
+              required
+              maxLength={11}
+              placeholder="11 digits"
+            />
+            {form.abn.length === 11 && (
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-base">
+                {abnChecking ? "⏳" : abnIsBad ? "❌" : abnVerified ? "✅" : ""}
+              </span>
+            )}
+          </div>
+          {/* ABN status line */}
+          {form.abn.length === 11 && !abnChecking && abnResult && (
+            <p className={`mt-1.5 text-xs font-medium ${abnIsBad ? "text-rose-600" : abnVerified ? "text-emerald-600" : "text-slate-500"}`}>
+              {abnIsBad
+                ? abnResult.status === "not_found"
+                  ? "This ABN does not exist in the Australian Business Register."
+                  : abnResult.status === "cancelled"
+                  ? "This ABN is recorded as cancelled with the ABR."
+                  : "Enter a valid 11-digit ABN."
+                : abnVerified
+                ? `ABN verified${abnResult.entityName ? ` — ${abnResult.entityName}` : ""}`
+                : "We'll verify this ABN with the ABR when you submit."}
+            </p>
+          )}
         </label>
       </div>
 
@@ -81,10 +202,20 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         <div className="block text-sm font-semibold text-slate-800">
           <span>Primary category</span>
           <CategorySearch
-            categories={categories}
+            categories={categoryOptions}
             value={form.mainCategoryId}
             onChange={(id) => setForm({ ...form, mainCategoryId: id })}
           />
+          {isOtherCategory && (
+            <input
+              type="text"
+              value={otherCategory}
+              onChange={(e) => setOtherCategory(e.target.value)}
+              placeholder="Specify your trade / service"
+              className="mt-2 w-full rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm focus:border-amber-500 focus:outline-none"
+              required
+            />
+          )}
         </div>
 
         <label className="block text-sm font-semibold text-slate-800">
@@ -103,26 +234,36 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <label className="block text-sm font-semibold text-slate-800">
+        <div className="block text-sm font-semibold text-slate-800">
           <span>Suburb</span>
-          <input
-            type="text"
+          <SuburbAutocomplete
             value={form.suburb}
-            onChange={(event) => setForm({ ...form, suburb: event.target.value })}
-            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-            required
+            verified={suburbVerified}
+            onType={(suburb) => { setForm((f) => ({ ...f, suburb })); setSuburbVerified(false); }}
+            onSelect={(s) => {
+              setForm((f) => ({ ...f, suburb: s.suburb, postcode: s.postcode, state: s.state }));
+              setSuburbVerified(true);
+            }}
           />
-        </label>
+        </div>
 
         <label className="block text-sm font-semibold text-slate-800">
           <span>Postcode</span>
           <input
             type="text"
+            inputMode="numeric"
             value={form.postcode}
-            onChange={(event) => setForm({ ...form, postcode: event.target.value })}
-            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+            onChange={(event) => setForm({ ...form, postcode: event.target.value.replace(/\D/g, "").slice(0, 4) })}
+            className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${
+              postcodeMismatch ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"
+            }`}
             required
           />
+          {postcodeMismatch && (
+            <p className="mt-1.5 text-xs font-medium text-rose-600">
+              Postcode {form.postcode} is in {pcState}, not {form.state}.
+            </p>
+          )}
         </label>
       </div>
 
@@ -133,9 +274,18 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
             type="tel"
             value={form.phone}
             onChange={(event) => setForm({ ...form, phone: event.target.value })}
-            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+            placeholder="02 9876 5432 or 0412 345 678"
+            className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${
+              phoneCheck && !phoneCheck.valid ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"
+            }`}
             required
           />
+          {phoneCheck && !phoneCheck.valid && (
+            <p className="mt-1.5 text-xs font-medium text-rose-600">{phoneCheck.message}</p>
+          )}
+          {phoneCheck?.valid && (
+            <p className="mt-1.5 text-xs font-medium text-emerald-600">Valid Australian {phoneCheck.type} number ✓</p>
+          )}
         </label>
 
         <label className="block text-sm font-semibold text-slate-800">
@@ -172,6 +322,18 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         />
       </label>
 
+      <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+        <input
+          type="checkbox"
+          checked={newsletterOptIn}
+          onChange={(event) => setNewsletterOptIn(event.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-sky-700 focus:ring-sky-600"
+        />
+        <span className="text-sm text-slate-700">
+          <span className="font-semibold text-slate-800">Send me weekly updates</span> — receive the free Weekly Remedial Building Update (industry news, compliance and technical references) to your business email. Unsubscribe anytime.
+        </span>
+      </label>
+
       {status ? (
         <div className={`rounded-2xl px-4 py-3 text-sm ${status.type === "success" ? "bg-emerald-100 text-emerald-900" : "bg-rose-100 text-rose-900"}`}>
           {status.message}
@@ -180,7 +342,7 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
 
       <button
         type="submit"
-        disabled={loading || status?.type === "success"}
+        disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
         className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loading ? "Submitting…" : "Submit company for review"}

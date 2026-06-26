@@ -6,6 +6,7 @@ import {
   Ruler, ExternalLink, ChevronDown, ChevronUp,
   XCircle, ChevronLeft, ChevronRight, FileText,
 } from "lucide-react";
+import { DataNote } from "@/app/repair-systems/_components/ProductPageShared";
 
 type FilterTag =
   | "Elastomeric"
@@ -35,6 +36,7 @@ type Product = {
   technicalProperties: string[];
   limitations: string[];
   procurementSources: { name: string; url: string }[];
+  dataNote?: string;
 };
 
 const PRODUCTS: Product[] = [
@@ -42,9 +44,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Dulux Australia",
     brandUrl: "https://www.dulux.com.au",
     accentColor: "#e2003a",
-    name: "TODO: owner confirm — Dulux Acratex Weathershield Flex (PRODUCT NOT FOUND — 'Dulux Acratex Weathershield Flex' does not appear in the current Dulux Acratex product range on dulux.com.au — confirmed Acratex elastomeric products include AcraShield Advance, Elastomeric 201, Acraskin, and AcraGuard — no 'Weathershield Flex' product found — confirm correct current Dulux Acratex elastomeric facade coating product name with Dulux Acratex technical)",
-    descriptionLine: "TODO: owner confirm — High-build elastomeric acrylic exterior coating for masonry and render — flexible, waterproof, UV-resistant — two-coat system for facades with minor crack movement and moisture exposure (product name not confirmed — see name field)",
-    productType: "TODO: owner confirm — High-build elastomeric acrylic — masonry and render facades (product name unconfirmed — see name field)",
+    name: "Dulux Acratex Weathershield Flex",
+    descriptionLine: "High-build elastomeric acrylic exterior coating for masonry and render — flexible, waterproof, UV-resistant — two-coat system for facades with minor crack movement and moisture exposure",
+    productType: "High-build elastomeric acrylic — masonry and render facades",
+    dataNote: "Owner to confirm — product name not found: 'Dulux Acratex Weathershield Flex' does not appear in the current Dulux Acratex range on dulux.com.au; confirmed Acratex elastomeric products include AcraShield Advance, Elastomeric 201, Acraskin, and AcraGuard. Confirm the correct current Dulux Acratex elastomeric facade coating product name and its primer (AcraPrime 501 for render cured 28+ days, or Green Render Sealer for render cured under 28 days) with Dulux Acratex technical before publishing.",
     filterTags: ["Elastomeric", "High-build", "Waterproof", "Crack-tolerant", "Masonry", "Render", "Water-based", "UV-resistant", "Coastal", "Anti-fungal", "Two-coat"],
     techChips: [
       { label: "Elastomeric", cls: "bg-red-100 text-red-800" },
@@ -115,9 +118,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Taubmans Australia",
     brandUrl: "https://www.taubmans.com.au",
     accentColor: "#7c3aed",
-    name: "TODO: owner confirm — Taubmans Endure Exterior Flex (product appears discontinued — 'Taubmans Endure Exterior' range has been discontinued per trade sources — confirm whether a current Taubmans flexible/elastomeric exterior facade coating exists in the current AU range — confirm with Taubmans technical)",
-    descriptionLine: "TODO: owner confirm — Flexible exterior acrylic topcoat with elastomeric properties for masonry and render facades — enhanced waterproofing and crack tolerance in a durable two-coat exterior system (product appears discontinued — see name field)",
-    productType: "TODO: owner confirm — Flexible acrylic exterior topcoat — masonry and render (product appears discontinued — see name field)",
+    name: "Taubmans Endure Exterior Flex",
+    descriptionLine: "Flexible exterior acrylic topcoat with elastomeric properties for masonry and render facades — enhanced waterproofing and crack tolerance in a durable two-coat exterior system",
+    productType: "Flexible acrylic exterior topcoat — masonry and render",
+    dataNote: "Owner to confirm — product appears discontinued: the 'Taubmans Endure Exterior' range has been discontinued per trade sources. Confirm whether a current Taubmans flexible/elastomeric exterior facade coating exists in the current AU range with Taubmans technical before publishing.",
     filterTags: ["Elastomeric", "Waterproof", "Crack-tolerant", "Masonry", "Render", "Water-based", "UV-resistant", "Anti-fungal", "Two-coat"],
     techChips: [
       { label: "Flexible acrylic", cls: "bg-purple-100 text-purple-800" },
@@ -151,9 +155,10 @@ const PRODUCTS: Product[] = [
     fullLabel: "Nutech Paints Australia",
     brandUrl: "https://www.nutechpaint.com.au",
     accentColor: "#b45309",
-    name: "TODO: owner confirm — Nutech Nuvol Elastomeric Coating (PRODUCT NOT FOUND — 'Nutech Nuvol' not found on nutechpaint.com.au at time of verification — Nutech product range includes roof coatings (NuFlex, TileFlex), concrete sealers, and sports surface coatings — no facade elastomeric product called 'Nuvol' found — confirm whether a Nutech facade elastomeric coating product exists in the current AU range with Nutech technical)",
-    descriptionLine: "TODO: owner confirm — High-performance elastomeric coating for masonry and render — specialist remedial product designed for waterproofing, UV resistance and crack accommodation on Australian strata facades (product name 'Nuvol' not confirmed on Nutech AU — see name field)",
-    productType: "TODO: owner confirm — High-performance elastomeric coating — specialist remedial facade system (product name unconfirmed — see name field)",
+    name: "Nutech Nuvol Elastomeric Coating",
+    descriptionLine: "High-performance elastomeric coating for masonry and render — specialist remedial product designed for waterproofing, UV resistance and crack accommodation on Australian strata facades",
+    productType: "High-performance elastomeric coating — specialist remedial facade system",
+    dataNote: "Owner to confirm — product name not found: 'Nutech Nuvol' was not found on nutechpaint.com.au at the time of verification; the Nutech range includes roof coatings (NuFlex, TileFlex), concrete sealers, and sports surface coatings, with no facade elastomeric product called 'Nuvol'. Confirm whether a Nutech facade elastomeric coating product exists in the current AU range with Nutech technical before publishing.",
     filterTags: ["Elastomeric", "High-build", "Waterproof", "Crack-tolerant", "Masonry", "Render", "Concrete", "UV-resistant", "Coastal", "Two-coat"],
     techChips: [
       { label: "Specialist remedial", cls: "bg-amber-100 text-amber-800" },
@@ -188,9 +193,10 @@ const PRODUCTS: Product[] = [
     brandUrl: "https://www.sika.com/en/construction/solutions/waterproofing-protection.html",
     tdsUrl: "https://aus.sika.com/en/solutions_products/02/02a015/02a015sa01/sikagard-545-w-elastocolor.html",
     accentColor: "#059669",
-    name: "TODO: owner confirm — Sika Sikagard 545 W Elastocolor (PRODUCT DOES NOT EXIST IN SIKA AU — the URL for this product on aus.sika.com returns 404 confirming it is not an active AU product — the Sika AU elastomeric coating is 'Sikagard 550 W Elastic' which is a crack-bridging product (see the crack-bridging file) — 'Sikagard 545 W Elastocolor' appears to be a European product not sold in Australia — confirm whether any Sika elastomeric (non-crack-bridging) facade coating product exists in the current Sika AU range with Sika technical)",
-    descriptionLine: "TODO: owner confirm — Specialist elastomeric waterproof coating for concrete and masonry facades — Sika professional remedial system with high elongation, UV resistance and waterproofing for strata and commercial buildings (product name 'Sikagard 545 W Elastocolor' not found on Sika AU — see name field)",
-    productType: "TODO: owner confirm — Specialist elastomeric waterproof facade coating — concrete and masonry (product does not exist in Sika AU range — see name field)",
+    name: "Sika Sikagard 545 W Elastocolor",
+    descriptionLine: "Specialist elastomeric waterproof coating for concrete and masonry facades — Sika professional remedial system with high elongation, UV resistance and waterproofing for strata and commercial buildings",
+    productType: "Specialist elastomeric waterproof facade coating — concrete and masonry",
+    dataNote: "Owner to confirm — product does not exist in the Sika AU range: the product URL on aus.sika.com returns 404, and 'Sikagard 545 W Elastocolor' appears to be a European product not sold in Australia. The Sika AU elastomeric coating is 'Sikagard 550 W Elastic' (a crack-bridging product — see the crack-bridging file). Confirm whether any Sika elastomeric (non-crack-bridging) facade coating product exists in the current Sika AU range with Sika technical before publishing.",
     filterTags: ["Elastomeric", "High-build", "Waterproof", "Crack-tolerant", "Masonry", "Concrete", "Water-based", "UV-resistant", "Coastal"],
     techChips: [
       { label: "Sika professional", cls: "bg-green-100 text-green-800" },
@@ -644,7 +650,8 @@ export function ElastomericCoatingProductSection() {
                     <CollapsibleList items={product.limitations} icon="x" limit={3} />
                   </div>
                 </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
+                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3 space-y-2">
+                  {product.dataNote && <DataNote text={product.dataNote} />}
                   <CollapsibleSources sources={product.procurementSources} />
                 </div>
               </div>

@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "Tie-wire"
@@ -38,7 +40,7 @@ type Product = {
   procurementSources: { name: string; url: string }[];
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "National Reinforcing / Generic Supply",
     brandUrl: "https://www.nationwidereinforcing.com.au",
@@ -267,6 +269,113 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["function", "rebar_tying / cover_spacing / structural_anchoring / formwork_fixing", "match consumable/fixing to its role in the repair"],
+    ["structural_role", "positioning_only / structural_rated", "structural_rated → AS 5216 chemical anchor (NOT tie wire/chairs)"],
+    ["environment", "standard / chloride_marine", "chloride_marine → galvanised/plastic only; no bare steel in cover zone"],
+    ["pt_present", "yes / no", "yes → GPR scan before any drilling (avoid PT tendons)"],
+    ["standard", "AS5216 / none", "structural anchoring → ETA-assessed AS 5216 capacity"],
+  ],
+  json: {
+    category: "tie_wire_fixings",
+    stage1_gates: {
+      function: { allowed: ["rebar_tying", "cover_spacing", "structural_anchoring", "formwork_fixing"], rule: "match fixing to role" },
+      structural_role: { allowed: ["positioning_only", "structural_rated"], rule: "structural_rated=AS5216 chemical anchor" },
+      environment: { allowed: ["standard", "chloride_marine"], rule: "chloride_marine=galvanised/plastic; no bare steel in cover" },
+      pt_present: { allowed: ["yes", "no"], rule: "yes=GPR scan before drilling" },
+      standard: { allowed: ["AS5216", "none"], rule: "structural anchoring=ETA-assessed AS5216" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Annealed Tie Wire — 1.0 mm / 1.6 mm Galvanised or Black": {
+    rows: [
+      ["function", "gate", "rebar_tying"],
+      ["structural_role", "gate", "positioning_only"],
+      ["environment_max", "gate", "standard (galv for chloride)"],
+      ["pt_safe", "gate", "yes"],
+      ["material", "tag", "annealed_steel"],
+      ["standard", "tag", "none"],
+      ["supply", "meta", "national_reinforcing/bunnings"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "annealed_tie_wire",
+      gates: { function: "rebar_tying", structural_role: "positioning_only", environment_max: "standard", pt_safe: "yes" },
+      tag: { material: "annealed_steel", standard: "none" },
+      rank: {},
+      meta: { supply: "national_reinforcing/bunnings", alternative_product: "galvanised tie wire (chloride/marine)", data_status: "verified", selectable: true, source: "annealed tie wire 1.0/1.6mm — bend ends back below cover zone", confirmed_date: null },
+    },
+  },
+  "Plastic Bar Chairs and Rebar Spacers": {
+    rows: [
+      ["function", "gate", "cover_spacing"],
+      ["structural_role", "gate", "positioning_only"],
+      ["environment_max", "gate", "chloride_marine (plastic, no rust)"],
+      ["pt_safe", "gate", "yes"],
+      ["material", "tag", "plastic"],
+      ["standard", "tag", "none"],
+      ["supply", "meta", "national_reinforcing/bunnings"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "plastic_bar_chairs_spacers",
+      gates: { function: "cover_spacing", structural_role: "positioning_only", environment_max: "chloride_marine", pt_safe: "yes" },
+      tag: { material: "plastic", standard: "none" },
+      rank: { cover_heights_mm: "20/25/30/40/50" },
+      meta: { supply: "national_reinforcing/bunnings", alternative_product: null, data_status: "verified", selectable: true, source: "plastic bar chairs/spacers 20-50mm — no rust staining; not concrete nib spacers in marine", confirmed_date: null },
+    },
+  },
+  "Chemical Anchor — Epoxy or Hybrid Injection System": {
+    rows: [
+      ["function", "gate", "structural_anchoring"],
+      ["structural_role", "gate", "structural_rated"],
+      ["environment_max", "gate", "standard (confirm)"],
+      ["pt_safe", "gate", "requires_gpr"],
+      ["material", "tag", "epoxy_or_hybrid_resin"],
+      ["standard", "tag", "AS5216 (ETA-assessed)"],
+      ["supply", "meta", "hilti/ramset/fischer"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "chemical_anchor_injection",
+      gates: { function: "structural_anchoring", structural_role: "structural_rated", environment_max: "standard", pt_safe: "requires_gpr" },
+      tag: { material: "epoxy_or_hybrid_resin", standard: "AS5216" },
+      rank: {},
+      meta: { supply: "hilti/ramset/fischer", alternative_product: null, data_status: "verified", selectable: true, source: "Hilti HIT-RE 500 V4 / HIT-HY 200 etc — clean+dry holes; temperature-dependent cure", confirmed_date: null },
+    },
+  },
+  "Formwork Fixings — Through-Ties, Wing Nuts, and Clamps": {
+    rows: [
+      ["function", "gate", "formwork_fixing"],
+      ["structural_role", "gate", "structural_rated (mortar head load)"],
+      ["environment_max", "gate", "n/a"],
+      ["pt_safe", "gate", "requires_gpr"],
+      ["material", "tag", "steel_fixing"],
+      ["standard", "tag", "system_specific"],
+      ["supply", "meta", "peri/doka"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "formwork_fixings_through_ties",
+      gates: { function: "formwork_fixing", structural_role: "structural_rated", environment_max: "n/a", pt_safe: "requires_gpr" },
+      tag: { material: "steel_fixing", standard: "system_specific" },
+      rank: {},
+      meta: { supply: "peri/doka", alternative_product: "surface-fixed props + chemical anchors (no through-tie)", data_status: "verified", selectable: true, source: "Peri/Doka through-ties, she-bolt/cone, clamps — GPR before drilling; fill tie holes", confirmed_date: null },
+    },
+  },
+};
+
 export function TieWireFixingsIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -293,6 +402,8 @@ export function TieWireFixingsIntroSection() {
     </div>
   );
 }
+
+const DESIGN_CRITERIA = "For each ancillary, the governing spec: tie wire \u2014 annealed soft steel gauge/diameter & temper for tying rebar without snapping (galv for durability/cover zone); bar chairs/spacers \u2014 height to maintain design concrete cover (AS 3600 durability cover) & load/stability, plastic vs concrete vs wire (avoid corrosion path to surface); chemical anchors \u2014 epoxy/hybrid bond strength, embedment depth, edge distance & seismic/cracked-concrete rating (AS 5216 / ETA), hole cleaning & cure time; formwork ties \u2014 safe working load, cone/seal & water-tightness; corrosion compatibility & cover-zone suitability of any embedded steel.";
 
 export function TieWireFixingsProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
@@ -346,139 +457,7 @@ export function TieWireFixingsProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 tie wire and fixing products — tie wire, bar chairs, chemical anchors, and formwork ties — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Brand Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Side-by-side comparison of tie wire, bar chairs, and fixings used in concrete spalling repair. Confirm structural requirements with engineer before specifying chemical anchors.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Use</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Supply</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.use}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.type}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.supply}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" />
     </>
   );
 }

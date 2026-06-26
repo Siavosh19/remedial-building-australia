@@ -1,11 +1,14 @@
 "use client";
 import { useState, useRef } from "react";
 import { CheckCircle, BookOpen, ExternalLink, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
+import { AISelectionStage1, AISelectionStage2 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
+import { STRUCTURAL_GROUT_CARDS } from "./structuralGroutsData";
 
 type FilterTag = "Structural-grout" | "Cementitious" | "Non-shrink" | "Free-flow" | "Pre-bagged" | "Mapei" | "High-strength" | "Rapid-set";
 type Product = { fullLabel: string; brandUrl: string; tdsUrl?: string; accentColor: string; name: string; descriptionLine: string; productType: string; filterTags: FilterTag[]; techChips: { label: string; cls: string }[]; systemDescription: string; technicalProperties: string[]; limitations: string[]; procurementSources: { name: string; url: string }[] };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Mapei",
     brandUrl: "https://www.mapei.com/au",
@@ -58,6 +61,99 @@ const PRODUCTS: Product[] = [
       { name: "Bayset — national Mapei distribution", url: "https://www.bayset.com.au" },
     ],
   },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Conbextra GP",
+    descriptionLine: "General-purpose shrinkage-compensated cementitious grout (~65 MPa) — confirm current specification and Australian availability with Fosroc technical before specifying",
+    productType: "General-purpose shrinkage-compensated cementitious grout (~65 MPa)",
+    filterTags: ["Structural-grout", "Cementitious", "Non-shrink", "Free-flow", "Pre-bagged"],
+    techChips: [
+      { label: "General-purpose shrinkage-comp", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fosroc — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Fosroc Conbextra GP is a General-purpose shrinkage-compensated cementitious grout (~65 MPa). Free-flow grout for base plates, anchors and void filling where dimensional stability and load transfer are required. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Fosroc technical before specifying. TODO: verify specific performance figures from the current Fosroc TDS.",
+    technicalProperties: [
+      "General-purpose shrinkage-compensated cementitious grout (~65 MPa)",
+      "Free-flow grout for base plates, anchors and void filling where dimensional stability and load transfer are required.",
+      "Confirm key performance values (strength / coverage / application) from the current Fosroc TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Fosroc",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Fosroc technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Fosroc",
+    ],
+    procurementSources: [
+      { name: "Fosroc — Australian trade supply", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Fosroc / Parchem",
+    brandUrl: "https://www.parchem.com.au",
+    accentColor: "#7c2d12",
+    name: "Fosroc Conbextra HF",
+    descriptionLine: "High-flow dual-expansion cementitious precision grout — confirm current specification and Australian availability with Fosroc technical before specifying",
+    productType: "High-flow dual-expansion cementitious precision grout",
+    filterTags: ["Structural-grout", "Cementitious", "Non-shrink", "Free-flow", "Pre-bagged", "High-strength"],
+    techChips: [
+      { label: "High-flow dual-expansion cemen", cls: "bg-slate-100 text-slate-700" },
+      { label: "Fosroc — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Fosroc Conbextra HF is a High-flow dual-expansion cementitious precision grout. High-flow precision grout for congested base plates and deeper pours requiring controlled expansion. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Fosroc technical before specifying. TODO: verify specific performance figures from the current Fosroc TDS.",
+    technicalProperties: [
+      "High-flow dual-expansion cementitious precision grout",
+      "High-flow precision grout for congested base plates and deeper pours requiring controlled expansion.",
+      "Confirm key performance values (strength / coverage / application) from the current Fosroc TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Fosroc",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Fosroc technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Fosroc",
+    ],
+    procurementSources: [
+      { name: "Fosroc — Australian trade supply", url: "https://www.parchem.com.au" },
+    ],
+  },
+  {
+    fullLabel: "Sika Australia",
+    brandUrl: "https://aus.sika.com",
+    accentColor: "#be123c",
+    name: "Sika SikaGrout-212 HP",
+    descriptionLine: "Non-shrink dual-expansion high-performance cementitious structural grout — confirm current specification and Australian availability with Sika technical before specifying",
+    productType: "Non-shrink dual-expansion high-performance cementitious structural grout",
+    filterTags: ["Structural-grout", "Cementitious", "Non-shrink", "Free-flow", "Pre-bagged", "High-strength"],
+    techChips: [
+      { label: "Non-shrink dual-expansion high", cls: "bg-slate-100 text-slate-700" },
+      { label: "Sika — AU supply", cls: "bg-slate-100 text-slate-700" },
+      { label: "TODO: confirm specs from TDS", cls: "bg-rose-100 text-rose-800" },
+    ],
+    systemDescription:
+      "Sika SikaGrout-212 HP is a Non-shrink dual-expansion high-performance cementitious structural grout. Non-shrink high-performance grout for structural base plates, anchors and machinery bases. Confirm the current product data sheet, key performance values (such as strength, coverage and application limits) and Australian availability with Sika technical before specifying. TODO: verify specific performance figures from the current Sika TDS.",
+    technicalProperties: [
+      "Non-shrink dual-expansion high-performance cementitious structural grout",
+      "Non-shrink high-performance grout for structural base plates, anchors and machinery bases.",
+      "Confirm key performance values (strength / coverage / application) from the current Sika TDS — TODO",
+      "Australian-market product — confirm current availability and pack sizes with Sika",
+    ],
+    limitations: [
+      "Confirm current product formulation and system suitability with Sika technical before specifying",
+      "TODO: confirm application limits, substrate preparation and temperature range from the current TDS",
+      "Verify current Australian availability and pack sizes with Sika",
+    ],
+    procurementSources: [
+      { name: "Sika — Australian trade supply", url: "https://aus.sika.com" },
+    ],
+  }
+
+
+
 ];
 
 const FILTER_DEFS: { id: FilterTag; label: string }[] = [{ id: "Structural-grout", label: "Structural grout" }, { id: "Non-shrink", label: "Non-shrink" }, { id: "Free-flow", label: "Free-flow" }, { id: "High-strength", label: "High-strength" }, { id: "Rapid-set", label: "Rapid-set" }];
@@ -80,9 +176,86 @@ function CollapsibleDescription({ text }: { text: string }) {
   return (<div><p className={`whitespace-pre-line text-xs leading-6 text-slate-700 ${expanded ? "" : "line-clamp-4"}`}>{text}</p><button onClick={() => setExpanded((e) => !e)} className="mt-1.5 text-[10px] font-bold text-sky-700 hover:text-sky-900">{expanded ? "Show less ↑" : "Show more ↓"}</button></div>);
 }
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["application", "base_plate / void_fill / anchor_install / pt_duct / surface_patch", "base_plate/void_fill/anchor/pt_duct → this category; surface_patch → requires_alternative (repair mortar)"],
+    ["shrinkage_requirement", "non_shrink / standard", "load-transfer/bearing → non_shrink required"],
+    ["placement", "free_flow_pour / dry_pack", "gate against product flow consistency"],
+    ["strength_demand", "high_early / standard", "high_early/early-load → HES grade"],
+    ["temperature", "5_to_35C / outside_range", "outside_range → hot/cold-weather precautions required"],
+  ],
+  json: {
+    category: "structural_grouts",
+    stage1_gates: {
+      application: { allowed: ["base_plate", "void_fill", "anchor_install", "pt_duct", "surface_patch"], rule: "base_plate/void_fill/anchor/pt_duct=suitable; surface_patch=requires_alternative (repair mortar)" },
+      shrinkage_requirement: { allowed: ["non_shrink", "standard"], rule: "load-transfer/bearing=non_shrink required" },
+      placement: { allowed: ["free_flow_pour", "dry_pack"], rule: "match product flow consistency" },
+      strength_demand: { allowed: ["high_early", "standard"], rule: "high_early/early-load=HES grade" },
+      temperature: { allowed: ["5_to_35C", "outside_range"], rule: "outside_range=hot/cold-weather precautions" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "Mapei Mapefill SP": {
+    rows: [
+      ["application_role", "gate", "base_plate/void_fill/anchor/pt_duct"],
+      ["shrinkage", "gate", "non_shrink"],
+      ["flow", "gate", "free_flow"],
+      ["setting", "gate", "normal_set"],
+      ["structural_demand", "gate", "structural"],
+      ["pour_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["compressive_early_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "cementitious_nonshrink"],
+      ["temp_range_c", "meta", "5-35"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "mapei_mapefill_sp",
+      gates: { application_role: "base_plate/void_fill/anchor/pt_duct", shrinkage: "non_shrink", flow: "free_flow", setting: "normal_set", structural_demand: "structural" },
+      tag: { chemistry: "cementitious_nonshrink" },
+      rank: { pour_depth_mm: null, compressive_28d_mpa: null, compressive_early_mpa: null },
+      meta: { temp_range_c: "5-35", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "mapei.com/au Mapei Mapefill SP — formulation/availability to confirm", confirmed_date: null },
+    },
+  },
+  "Mapei Mapefill HES": {
+    rows: [
+      ["application_role", "gate", "base_plate/anchor"],
+      ["shrinkage", "gate", "non_shrink"],
+      ["flow", "gate", "free_flow"],
+      ["setting", "gate", "rapid_high_early"],
+      ["structural_demand", "gate", "structural"],
+      ["pour_depth_mm", "rank", "null (unconfirmed)"],
+      ["compressive_28d_mpa", "rank", "null (unconfirmed)"],
+      ["compressive_early_mpa", "rank", "null (unconfirmed)"],
+      ["chemistry", "tag", "cementitious_nonshrink"],
+      ["temp_range_c", "meta", "min_5 (confirm upper)"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "mapei_mapefill_hes",
+      gates: { application_role: "base_plate/anchor", shrinkage: "non_shrink", flow: "free_flow", setting: "rapid_high_early", structural_demand: "structural" },
+      tag: { chemistry: "cementitious_nonshrink" },
+      rank: { pour_depth_mm: null, compressive_28d_mpa: null, compressive_early_mpa: null },
+      meta: { temp_range_c: "min_5", pack_size: null, alternative_product: null, data_status: "verified", selectable: true, source: "mapei.com/au Mapei Mapefill HES — name/availability to confirm", confirmed_date: null },
+    },
+  },
+};
+
 export function StructuralGroutsIntroSection() {
-  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Structural grouts</h3></div><p className="text-sm leading-7 text-slate-600">Structural grouts are non-shrink cementitious or epoxy-based products used to fill voids, grout column bases, machinery bases, post-tensioning ducts, and anchor bolt installations in concrete structures. Non-shrink grouts maintain full contact with the bearing surface during curing through controlled expansion. Mapei Mapefill SP and Mapefill HES are non-shrink structural grouts in the Mapei range. Confirm current specifications with Mapei Australia or Bayset before specifying.</p></div>);
+  return (<div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"><div className="mb-4 flex items-center gap-2.5"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-950 text-white"><BookOpen size={15} /></div><h3 className="text-base font-extrabold text-sky-950">Structural grouts</h3></div><p className="text-sm leading-7 text-slate-600">Structural grouts are non-shrink cementitious or epoxy-based products used to fill voids, grout column bases, machinery bases, post-tensioning ducts, and anchor bolt installations in concrete structures. Non-shrink grouts maintain full contact with the bearing surface during curing through controlled expansion. Selection is driven by flow/consistency, compressive strength class, maximum pour depth and set speed.</p></div>);
 }
+
+const DESIGN_CRITERIA = "Compressive strength & age (e.g. \u226560 MPa 28-day, plus 1/3/7-day early strength) for the structural duty; non-shrink/expansive class (positive expansion, no settlement \u2014 ASTM C1107 / EN 1504-6 anchoring); flowable vs flowable/pourable consistency & max placement gap/clearance (typ. 10\u2013100mm) & max aggregate size; flexural & bond strength to concrete/steel; effective bearing area achieved (no voids \u2014 flow & exotherm control for deep pours); max placement thickness per lift; working/flow time & set at temp; E-modulus & dimensional stability; chloride/sulfate & chemical resistance; application temperature range; cable/anchor/baseplate grouting suitability vs structural patch.";
 
 export function StructuralGroutsProductSection() {
   const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
@@ -91,22 +264,6 @@ export function StructuralGroutsProductSection() {
   const visibleProducts = activeFilters.size === 0 ? PRODUCTS : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
   const scroll = (dir: "left" | "right") => { scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" }); };
   return (
-    <div>
-      <div className="mb-5 flex items-start gap-3"><div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" /><div><h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2><p className="mt-1 text-sm text-slate-500">2 products — Mapei — structural grout systems</p></div></div>
-      <div className="mb-5 flex flex-wrap items-center gap-2"><span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>{FILTER_DEFS.map((f) => { const active = activeFilters.has(f.id); return <button key={f.id} type="button" onClick={() => toggleFilter(f.id)} className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"}`}>{f.label}</button>; })}{activeFilters.size > 0 && <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">Clear filters</button>}</div>
-      <div className="mb-4 flex items-center justify-between"><span className="text-xs font-semibold text-slate-400">{visibleProducts.length} product{visibleProducts.length !== 1 ? "s" : ""}</span><div className="flex items-center gap-2"><button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronLeft size={16} /></button><button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950"><ChevronRight size={16} /></button></div></div>
-      <div ref={scrollRef} className="flex gap-5 overflow-x-auto pb-4 scroll-smooth" style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}>
-        {visibleProducts.map((product) => (
-          <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-              <div className="border-b border-slate-100 bg-slate-50 px-5 py-4"><div className="flex items-center justify-between gap-2"><span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">{product.fullLabel}</span><div className="flex shrink-0 items-center gap-1"><a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700"><ExternalLink size={9} /> Brand Site</a></div></div><h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3><p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p><CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} /></div>
-              <div className="border-b border-sky-100 bg-sky-50 px-5 py-4"><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p><CollapsibleDescription text={product.systemDescription} /></div>
-              <div className="space-y-3 px-5 py-4"><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p><CollapsibleList items={product.technicalProperties} icon="check" limit={3} /></div><div><p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p><CollapsibleList items={product.limitations} icon="x" limit={3} /></div></div>
-              <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3"><CollapsibleSources sources={product.procurementSources} /></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <AutoProductReference products={PRODUCTS} cards={STRUCTURAL_GROUT_CARDS} designCriteria={DESIGN_CRITERIA} sectionLabel="Structural grouts" />
   );
 }

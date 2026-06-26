@@ -8,8 +8,10 @@ import {
 import {
   CollapsibleList, CollapsibleDescription, CollapsibleSources,
   CollapsibleCardDetails, TechCard,
+  AISelectionStage1, AISelectionStage2,
   CheckCircle, AlertTriangle,
 } from "../../_components/ProductPageShared";
+import { AutoProductReference } from "../../_components/AutoProductReference";
 
 type FilterTag =
   | "GP-cement"
@@ -38,7 +40,7 @@ type Product = {
   procurementSources: { name: string; url?: string }[];
 };
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     fullLabel: "Boral / Holcim / Adbri",
     brandUrl: "https://www.adbri.com.au",
@@ -234,6 +236,117 @@ const TECH_INFO = {
   ],
 };
 
+// ── AI Selection Data (review mode) — derived from this page; unverified = unconfirmed/null ──
+export const AI_STAGE1 = {
+  headers: ["Gate", "Demand (allowed values)", "Pass rule"],
+  rows: [
+    ["role", "binder / scm / aggregate", "select component for site-batched mix (binder + scm + aggregate)"],
+    ["batching", "site_batched / pre_bagged", "this category = site-batched raw materials; critical/structural → pre-bagged factory mortar preferred"],
+    ["strength_demand", "early / standard / long_term", "early → GP/silica fume; SCM (fly ash) alone is slow-strength"],
+    ["exposure", "standard / chloride_coastal", "chloride_coastal → add SCM (fly ash / silica fume) for permeability/chloride resistance"],
+    ["standard", "AS3972 / AS3582 / AS2758", "confirm component compliance to relevant Australian Standard"],
+  ],
+  json: {
+    category: "cement_aggregates",
+    stage1_gates: {
+      role: { allowed: ["binder", "scm", "aggregate"], rule: "select component for site-batched mix" },
+      batching: { allowed: ["site_batched", "pre_bagged"], rule: "raw materials=site_batched; critical=pre-bagged factory mortar preferred" },
+      strength_demand: { allowed: ["early", "standard", "long_term"], rule: "early=GP/silica fume; fly ash alone slow-strength" },
+      exposure: { allowed: ["standard", "chloride_coastal"], rule: "chloride_coastal=add SCM for permeability/chloride resistance" },
+      standard: { allowed: ["AS3972", "AS3582", "AS2758"], rule: "confirm component compliance" },
+    },
+  },
+};
+
+const AI_STAGE2_HEADERS = ["Field", "Type", "Value"];
+
+export const AI_STAGE2: Record<string, { rows: string[][]; json: unknown }> = {
+  "General Purpose (GP) Portland Cement — 20 kg": {
+    rows: [
+      ["role", "gate", "binder"],
+      ["batching", "gate", "site_batched"],
+      ["early_strength", "gate", "yes"],
+      ["exposure_benefit", "gate", "none"],
+      ["standard", "tag", "AS3972_GP"],
+      ["replacement_rate_pct", "rank", "null (primary binder)"],
+      ["pack_size", "meta", "20kg"],
+      ["supply", "meta", "boral/holcim/adbri"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "gp_portland_cement_20kg",
+      gates: { role: "binder", batching: "site_batched", early_strength: "yes", exposure_benefit: "none" },
+      tag: { standard: "AS3972_GP" },
+      rank: { replacement_rate_pct: null },
+      meta: { pack_size: "20kg", supply: "boral/holcim/adbri", alternative_product: "pre-bagged PM repair mortar (critical repairs)", data_status: "verified", selectable: true, source: "AS 3972 Type GP — Boral/Holcim/Adbri bagged cement", confirmed_date: null },
+    },
+  },
+  "Fly Ash — Supplementary Cementitious Material (SCM)": {
+    rows: [
+      ["role", "gate", "scm"],
+      ["batching", "gate", "site_batched"],
+      ["early_strength", "gate", "slow"],
+      ["exposure_benefit", "gate", "chloride_resistance"],
+      ["standard", "tag", "AS3582.1_ClassF"],
+      ["replacement_rate_pct", "rank", "20-30"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["supply", "meta", "flyash_australia/holcim (regional)"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "fly_ash_class_f",
+      gates: { role: "scm", batching: "site_batched", early_strength: "slow", exposure_benefit: "chloride_resistance" },
+      tag: { standard: "AS3582.1_ClassF" },
+      rank: { replacement_rate_pct: "20-30" },
+      meta: { pack_size: null, supply: "flyash_australia/holcim", alternative_product: null, data_status: "verified", selectable: true, source: "AS 3582.1 Class F fly ash — regional availability varies", confirmed_date: null },
+    },
+  },
+  "Silica Fume (Microsilica) — Densified": {
+    rows: [
+      ["role", "gate", "scm"],
+      ["batching", "gate", "site_batched"],
+      ["early_strength", "gate", "yes (increased)"],
+      ["exposure_benefit", "gate", "chloride_resistance (high)"],
+      ["standard", "tag", "AS3582.3"],
+      ["replacement_rate_pct", "rank", "5-10"],
+      ["pack_size", "meta", "null (unconfirmed)"],
+      ["supply", "meta", "elkem/admixture_suppliers"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "silica_fume_densified",
+      gates: { role: "scm", batching: "site_batched", early_strength: "yes", exposure_benefit: "chloride_resistance_high" },
+      tag: { standard: "AS3582.3" },
+      rank: { replacement_rate_pct: "5-10" },
+      meta: { pack_size: null, supply: "elkem/admixture_suppliers", alternative_product: "factory silica-fume repair mortar (more consistent)", data_status: "verified", selectable: true, source: "AS 3582.3 densified silica fume — requires superplasticiser", confirmed_date: null },
+    },
+  },
+  "Washed Concrete Sand and 10 mm Crushed Aggregate": {
+    rows: [
+      ["role", "gate", "aggregate"],
+      ["batching", "gate", "site_batched"],
+      ["early_strength", "gate", "n/a"],
+      ["exposure_benefit", "gate", "none"],
+      ["standard", "tag", "AS2758.1"],
+      ["replacement_rate_pct", "rank", "null (n/a)"],
+      ["pack_size", "meta", "20kg/bulk"],
+      ["supply", "meta", "boral/quarries"],
+      ["data_status", "meta", "verified"],
+      ["selectable", "meta", "true"],
+    ],
+    json: {
+      id: "washed_sand_10mm_aggregate",
+      gates: { role: "aggregate", batching: "site_batched", early_strength: "n/a", exposure_benefit: "none" },
+      tag: { standard: "AS2758.1" },
+      rank: { replacement_rate_pct: null },
+      meta: { pack_size: "20kg/bulk", supply: "boral/quarries", alternative_product: null, data_status: "verified", selectable: true, source: "AS 2758.1 washed concrete sand + 10mm crushed aggregate (must be clean/washed)", confirmed_date: null },
+    },
+  },
+};
+
 export function CementAggregatesIntroSection() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -261,27 +374,10 @@ export function CementAggregatesIntroSection() {
   );
 }
 
+const DESIGN_CRITERIA = "Cement type & strength class (AS 3972 GP/GB/HE); supplementary cementitious material type & spec (fly ash Class F to AS 3582.1, slag AS 3582.2, silica fume AS 3582.3) and replacement % for durability/sulfate resistance; aggregate grading, nominal size & soundness (AS 2758.1); aggregate cleanliness, fines/silt content & water absorption; alkali-aggregate (AAR) reactivity; chloride & sulfate content limits for reinforced repair (AS 3600 durability); target w/c ratio & cementitious content; bulk density & yield; bagged/bulk supply & shelf life.";
+
 export function CementAggregatesProductSection() {
   const [accordionOpen, setAccordionOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<Set<FilterTag>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const toggleFilter = (id: FilterTag) => {
-    setActiveFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const visibleProducts = activeFilters.size === 0
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => Array.from(activeFilters).every((f) => p.filterTags.includes(f)));
-
-  const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({ left: dir === "right" ? 400 : -400, behavior: "smooth" });
-  };
 
   return (
     <>
@@ -313,139 +409,7 @@ export function CementAggregatesProductSection() {
         )}
       </div>
 
-      <div>
-        <div className="mb-5 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">Product Reference</h2>
-            <p className="mt-1 text-sm text-slate-500">4 materials — GP cement, fly ash, silica fume, and aggregate for site-batched repair — scroll to view all</p>
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-wrap items-center gap-2">
-          <span className="shrink-0 text-xs font-semibold text-slate-500">Filter by:</span>
-          {FILTER_DEFS.map((f) => {
-            const active = activeFilters.has(f.id);
-            return (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => toggleFilter(f.id)}
-                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
-                  active ? "border-sky-950 bg-sky-950 text-white" : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {f.label}
-              </button>
-            );
-          })}
-          {activeFilters.size > 0 && (
-            <button type="button" onClick={() => setActiveFilters(new Set())} className="text-xs text-slate-400 underline hover:text-slate-600">
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-400">
-            {visibleProducts.length} material{visibleProducts.length !== 1 ? "s" : ""} — scroll for more
-          </span>
-          <div className="flex items-center gap-2">
-            <button onClick={() => scroll("left")} aria-label="Scroll left" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronLeft size={16} />
-            </button>
-            <button onClick={() => scroll("right")} aria-label="Scroll right" className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-sky-300 hover:text-sky-950">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" } as React.CSSProperties}
-        >
-          {visibleProducts.map((product) => (
-            <div key={product.name} className="flex-none" style={{ width: "calc(33.333% - 14px)", minWidth: "300px" }}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" style={{ borderLeft: `4px solid ${product.accentColor}` }}>
-                <div className="border-b border-slate-100 bg-slate-50 px-5 py-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                      {product.fullLabel}
-                    </span>
-                    <div className="flex shrink-0 items-center gap-1">
-                      {product.tdsUrl && (
-                        <a href={product.tdsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <FileText size={9} /> TDS
-                        </a>
-                      )}
-                      <a href={product.brandUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <ExternalLink size={9} /> Supplier Site
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="mt-2 text-sm font-extrabold leading-snug text-sky-950">{product.name}</h3>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">{product.productType}</p>
-                  </div>
-                  <CollapsibleCardDetails text={product.descriptionLine} chips={product.techChips} />
-                </div>
-                <div className="border-b border-sky-100 bg-sky-50 px-5 py-4">
-                  <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-sky-700">System Description</p>
-                  <CollapsibleDescription text={product.systemDescription} />
-                </div>
-                <div className="space-y-3 px-5 py-4">
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-green-700">Technical Properties</p>
-                    <CollapsibleList items={product.technicalProperties} icon="check" limit={3} />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">Limitations</p>
-                    <CollapsibleList items={product.limitations} icon="x" limit={3} />
-                  </div>
-                </div>
-                <div className="mt-auto border-t border-slate-100 bg-slate-50 px-5 py-3">
-                  <CollapsibleSources sources={product.procurementSources} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="mb-6 flex items-start gap-3">
-          <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />
-          <div>
-            <h2 className="text-2xl font-extrabold text-sky-950">System Comparison</h2>
-            <p className="mt-1 text-sm text-slate-500">Cement and aggregate materials for site-batched repair mortars. Confirm mix design from specification before batching on site.</p>
-          </div>
-        </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
-          <table className="min-w-full text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                <th className="sticky left-0 border-r border-slate-200 bg-slate-50 px-5 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Standard</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Role in mix</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Strength note</th>
-                <th className="px-4 py-3 text-left text-xs font-bold whitespace-nowrap text-slate-700">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SYSTEM_COMPARISON.map((row, i) => (
-                <tr key={row.product} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                  <td className="sticky left-0 border-r border-slate-200 bg-inherit px-5 py-3 font-semibold whitespace-nowrap text-sky-950">{row.product}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.standard}</td>
-                  <td className="px-4 py-3 text-slate-600">{row.role}</td>
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.strength}</td>
-                  <td className="px-4 py-3 text-slate-500 text-[11px] italic">{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AutoProductReference products={PRODUCTS} designCriteria={DESIGN_CRITERIA} sectionLabel="Concrete spalling" />
     </>
   );
 }
