@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Building2, Package, UserCog, ClipboardList, type LucideIcon } from "lucide-react";
+import { Building2, Package, UserCog, ClipboardList, ChevronRight, type LucideIcon } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import TurnstileWidget from "@/components/TurnstileWidget";
 import { validateAuPhone } from "@/lib/phone-au";
@@ -18,6 +18,14 @@ type CardDef = {
   Icon: LucideIcon;
   href?: string; // client card routes to the separate client signup
   badge?: string;
+};
+
+// Soft accent tile per card (matches the colour-coded mockup look)
+const ACCENTS: Record<CardId, { tile: string; icon: string }> = {
+  client: { tile: "bg-sky-100", icon: "text-sky-700" },
+  directory: { tile: "bg-emerald-100", icon: "text-emerald-700" },
+  supplier: { tile: "bg-amber-100", icon: "text-amber-700" },
+  ai_scope: { tile: "bg-violet-100", icon: "text-violet-700" },
 };
 
 const CARDS: CardDef[] = [
@@ -163,26 +171,32 @@ export default function DirectorySignupPage() {
                   Choose the option that matches how you want to use the platform. We'll take you to the right place.
                 </p>
 
-                <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="mt-10 grid gap-6 sm:grid-cols-2">
                   {CARDS.map((card) => {
                     const Icon = card.Icon;
+                    const accent = ACCENTS[card.id];
                     return (
                       <button
                         key={card.id}
                         onClick={() => selectCard(card)}
-                        className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-400 hover:shadow-md"
+                        className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-7 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-400 hover:shadow-md"
                       >
+                        <div className="flex items-center gap-3">
+                          <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${accent.tile} ${accent.icon}`}>
+                            <Icon size={22} />
+                          </span>
+                          <span className="text-lg font-bold text-slate-900 group-hover:text-sky-900">{card.title}</span>
+                        </div>
+                        <span className="mt-3 flex-1 text-sm leading-relaxed text-slate-500">{card.subtitle}</span>
                         {card.badge ? (
-                          <span className="mb-3 inline-block self-start rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+                          <span className="mt-3 inline-block self-start rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
                             {card.badge}
                           </span>
                         ) : null}
-                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-950 text-white transition group-hover:bg-sky-800">
-                          <Icon size={22} />
+                        <span className="mt-5 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-950 px-4 py-2.5 text-sm font-semibold text-sky-950 transition group-hover:bg-sky-950 group-hover:text-white">
+                          Create Your Account
+                          <ChevronRight size={16} />
                         </span>
-                        <span className="mt-4 text-base font-bold text-slate-900 group-hover:text-sky-900">{card.title}</span>
-                        <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-500">{card.subtitle}</span>
-                        <span className="mt-4 text-xs font-semibold text-red-700 group-hover:underline">Get started &rarr;</span>
                       </button>
                     );
                   })}

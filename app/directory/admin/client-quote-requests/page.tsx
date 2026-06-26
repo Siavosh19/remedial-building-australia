@@ -35,8 +35,8 @@ export default async function AdminClientQuoteRequestsPage() {
         <p className="mt-1 text-sm text-slate-500">{requests.length} total · broadcast requests from strata / client users</p>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+        <table className="w-full min-w-[680px] text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50 text-left">
               <th className="px-4 py-3 font-semibold text-slate-700">Client</th>
