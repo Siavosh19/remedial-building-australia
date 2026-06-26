@@ -653,7 +653,7 @@ function LocationAutocomplete({
         onChange={(e) => handleInput(e.target.value)}
         onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); setOpen(false); onEnter?.(); } }}
         placeholder="Suburb, postcode or state…"
-        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-10 text-sm text-sky-800 placeholder:text-slate-400 shadow-[0_2px_10px_rgba(15,37,64,0.10)] focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-100"
+        className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-10 text-base text-sky-800 placeholder:text-slate-400 shadow-[0_2px_10px_rgba(15,37,64,0.10)] focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-100"
         autoComplete="off"
       />
       {fetching && (
@@ -907,7 +907,7 @@ export default function DirectoryListing({ categories }: Props) {
           {/* Controls — keyword + location + Search + Clear all, all on one line */}
           <div className="relative z-10 flex flex-wrap items-center gap-3">
             {/* Keyword */}
-            <div className="relative w-full sm:flex-1">
+            <div className="relative w-full sm:flex-[1.7]">
               <svg
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                 width={15} height={15} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden
@@ -921,7 +921,7 @@ export default function DirectoryListing({ categories }: Props) {
                 onChange={(e) => setQInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") applySearch(); }}
                 placeholder="Company, service or defect type…"
-                className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-sky-800 placeholder:text-slate-400 shadow-[0_2px_10px_rgba(15,37,64,0.10)] focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-100"
+                className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-base text-sky-800 placeholder:text-slate-400 shadow-[0_2px_10px_rgba(15,37,64,0.10)] focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-100"
               />
             </div>
 
@@ -941,7 +941,7 @@ export default function DirectoryListing({ categories }: Props) {
             <button
               type="button"
               onClick={applySearch}
-              className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
+              className="rounded-xl bg-sky-950 px-6 py-3 text-base font-semibold text-white transition hover:bg-sky-800"
             >
               Search
             </button>
@@ -955,6 +955,19 @@ export default function DirectoryListing({ categories }: Props) {
                 Clear all
               </button>
             )}
+          </div>
+          {/* Client quote-request entry point */}
+          <div className="mt-3 flex flex-col items-start justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-3 sm:flex-row sm:items-center">
+            <p className="text-sm text-sky-950">
+              <span className="font-bold">Strata manager, owners corporation or building owner?</span>{" "}
+              Request quotes for building works from listed businesses.
+            </p>
+            <a
+              href="/request-quotes"
+              className="shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 sm:whitespace-nowrap"
+            >
+              Request Quotes →
+            </a>
           </div>
           </div>
         </div>
