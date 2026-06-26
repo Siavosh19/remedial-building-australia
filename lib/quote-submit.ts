@@ -42,7 +42,9 @@ export async function processQuoteRequestSubmission(requestId: number) {
   await prisma.clientQuoteRequest.update({
     where: { id: requestId },
     data: {
-      status: "sent_to_businesses",
+      // Only "sent to businesses" if at least one matched; otherwise it stays
+      // "submitted" (recorded, awaiting matching businesses).
+      status: matches.length > 0 ? "sent_to_businesses" : "submitted",
       matched_count: matches.length,
       submitted_at: request.submitted_at ?? new Date(),
     },

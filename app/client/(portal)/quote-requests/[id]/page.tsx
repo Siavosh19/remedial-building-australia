@@ -122,7 +122,9 @@ export default async function QuoteRequestDetailPage({ params }: { params: Promi
           <p className="mt-1 text-sm text-slate-500">
             {r.status === "draft"
               ? "This request is a draft. Submit it to notify matching businesses."
-              : `${r.deliveries.length} matching ${r.deliveries.length === 1 ? "business" : "businesses"} received your request and may contact you directly.`}
+              : r.deliveries.length === 0
+                ? "No matching businesses yet. Your request has been recorded — matching businesses in your category and area will be notified as they become available, and they'll contact you directly."
+                : `${r.deliveries.length} matching ${r.deliveries.length === 1 ? "business" : "businesses"} received your request and may contact you directly.`}
           </p>
 
           {r.deliveries.length > 0 && (
