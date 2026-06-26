@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import TurnstileWidget from "@/components/TurnstileWidget";
@@ -40,8 +40,37 @@ export default function ClientSignupPage() {
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [resendIn, setResendIn] = useState(60);
+  const [resending, setResending] = useState(false);
+  const [resendMsg, setResendMsg] = useState<string | null>(null);
 
   const phoneCheck = form.phone ? validateAuPhone(form.phone) : null;
+
+  // Start a 60s cooldown once the account is created, after which the user can
+  // request another verification email.
+  useEffect(() => {
+    if (status?.type !== "success") return;
+    setResendIn(60);
+    const t = setInterval(() => setResendIn((s) => (s <= 1 ? 0 : s - 1)), 1000);
+    return () => clearInterval(t);
+  }, [status?.type]);
+
+  async function resendVerification() {
+    setResending(true);
+    setResendMsg(null);
+    const res = await fetch("/api/client/resend-verification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: form.email }),
+    });
+    setResending(false);
+    if (!res.ok) {
+      setResendMsg("Couldn't resend just now. Please try again shortly.");
+      return;
+    }
+    setResendMsg("Verification email re-sent. Check your inbox — and your spam/junk folder.");
+    setResendIn(60);
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -89,6 +118,24 @@ export default function ClientSignupPage() {
                 <p className="font-semibold">Check your inbox</p>
                 <p className="mt-1 text-sm">{status.message}</p>
               </div>
+
+              <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm">
+                {resendIn > 0 ? (
+                  <p className="text-slate-500">
+                    Didn't receive it? You can request another email in <span className="font-semibold text-slate-700">{resendIn}s</span>. Check your spam/junk folder too.
+                  </p>
+                ) : (
+                  <button
+                    onClick={resendVerification}
+                    disabled={resending}
+                    className="font-semibold text-sky-950 underline underline-offset-2 hover:text-sky-700 disabled:opacity-60"
+                  >
+                    {resending ? "Resending…" : "Resend verification email"}
+                  </button>
+                )}
+                {resendMsg && <p className="mt-2 font-medium text-emerald-700">{resendMsg}</p>}
+              </div>
+
               <p className="mt-6 text-sm text-slate-500">
                 <Link href="/directory/login" className="font-semibold text-sky-950 hover:text-sky-700">
                   Back to sign in

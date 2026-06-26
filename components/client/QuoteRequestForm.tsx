@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { PROPERTY_TYPE_OPTIONS, URGENCY_OPTIONS, FILE_TYPE_OPTIONS } from "@/lib/quote-options";
 import { RBA_DISCLAIMER } from "@/lib/legal";
@@ -8,6 +8,22 @@ import { RBA_DISCLAIMER } from "@/lib/legal";
 type Category = { id: number; name: string; children: { id: number; name: string }[] };
 type Defaults = { contactName: string; contactEmail: string; contactPhone: string; companyName: string };
 type PickedFile = { file: File; fileType: string };
+
+const inputClass =
+  "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm focus:border-sky-600 focus:outline-none";
+const labelClass = "block space-y-1.5 text-sm font-semibold text-slate-800";
+
+// Defined at module scope (NOT inside the component) so its identity is stable
+// across re-renders — otherwise every keystroke would remount the section and
+// the inputs would lose focus.
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+      <h2 className="mb-5 text-base font-bold text-slate-900">{title}</h2>
+      <div className="space-y-5">{children}</div>
+    </section>
+  );
+}
 
 export default function QuoteRequestForm({ categories, defaults }: { categories: Category[]; defaults: Defaults }) {
   const router = useRouter();
@@ -22,7 +38,6 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
     strataPlanNumber: "",
     propertyType: "",
     workCategoryId: "",
-    workSubcategoryId: "",
     description: "",
     urgency: "",
     preferredInspection: "",
@@ -34,12 +49,36 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<null | "draft" | "submit">(null);
 
-  const set = (key: keyof typeof form, value: string | boolean) => setForm((f) => ({ ...f, [key]: value }));
-  const subcategories = categories.find((c) => String(c.id) === form.workCategoryId)?.children ?? [];
+  // ── Searchable work-category combobox ──────────────────────────────────────
+  const flatCategories = useMemo(() => {
+    const out: { id: number; label: string; search: string }[] = [];
+    for (const c of categories) {
+      out.push({ id: c.id, label: c.name, search: c.name.toLowerCase() });
+      for (const ch of c.children) {
+        out.push({ id: ch.id, label: `${c.name} › ${ch.name}`, search: `${c.name} ${ch.name}`.toLowerCase() });
+      }
+    }
+    return out;
+  }, [categories]);
 
-  const inputClass =
-    "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm focus:border-sky-600 focus:outline-none";
-  const labelClass = "block space-y-1.5 text-sm font-semibold text-slate-800";
+  const [catText, setCatText] = useState("");
+  const [catOpen, setCatOpen] = useState(false);
+  const catBoxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onDown(e: MouseEvent) {
+      if (catBoxRef.current && !catBoxRef.current.contains(e.target as Node)) setCatOpen(false);
+    }
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, []);
+
+  const filteredCats = (catText.trim()
+    ? flatCategories.filter((c) => c.search.includes(catText.trim().toLowerCase()))
+    : flatCategories
+  ).slice(0, 60);
+
+  const set = (key: keyof typeof form, value: string | boolean) => setForm((f) => ({ ...f, [key]: value }));
 
   function addFiles(selected: FileList | null) {
     if (!selected) return;
@@ -69,6 +108,10 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
 
   async function handle(action: "draft" | "submit") {
     setError(null);
+    if (!form.workCategoryId) {
+      setError("Please choose a work category.");
+      return;
+    }
     if (action === "submit" && !termsAccepted) {
       setError("You must accept the platform terms and disclaimer to submit.");
       return;
@@ -102,13 +145,6 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
       setBusy(null);
     }
   }
-
-  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-      <h2 className="mb-5 text-base font-bold text-slate-900">{title}</h2>
-      <div className="space-y-5">{children}</div>
-    </section>
-  );
 
   return (
     <div className="space-y-6">
@@ -174,36 +210,43 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
       </Section>
 
       <Section title="Works required">
-        <div className="grid gap-5 sm:grid-cols-2">
-          <label className={labelClass}>
-            <span>Work category</span>
-            <select
+        {/* Searchable work-category picker */}
+        <div className={labelClass} ref={catBoxRef}>
+          <span>Work category</span>
+          <div className="relative">
+            <input
               className={inputClass}
-              value={form.workCategoryId}
-              onChange={(e) => { set("workCategoryId", e.target.value); set("workSubcategoryId", ""); }}
-              required
-            >
-              <option value="">Select…</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-          </label>
-          <label className={labelClass}>
-            <span>Work subcategory <span className="font-normal text-slate-400">(optional)</span></span>
-            <select
-              className={inputClass}
-              value={form.workSubcategoryId}
-              onChange={(e) => set("workSubcategoryId", e.target.value)}
-              disabled={subcategories.length === 0}
-            >
-              <option value="">{subcategories.length === 0 ? "None available" : "Select…"}</option>
-              {subcategories.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-          </label>
+              value={catText}
+              onChange={(e) => { setCatText(e.target.value); set("workCategoryId", ""); setCatOpen(true); }}
+              onFocus={() => setCatOpen(true)}
+              placeholder="Search a work category…"
+              autoComplete="off"
+            />
+            {catOpen && (
+              <ul className="absolute z-20 mt-1 max-h-64 w-full overflow-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
+                {filteredCats.length === 0 ? (
+                  <li className="px-4 py-2 text-sm text-slate-400">No matching category</li>
+                ) : (
+                  filteredCats.map((c) => (
+                    <li key={c.id}>
+                      <button
+                        type="button"
+                        onClick={() => { set("workCategoryId", String(c.id)); setCatText(c.label); setCatOpen(false); }}
+                        className={`block w-full px-4 py-2 text-left text-sm hover:bg-sky-50 ${
+                          String(c.id) === form.workCategoryId ? "bg-sky-50 font-semibold text-sky-900" : "text-slate-700"
+                        }`}
+                      >
+                        {c.label}
+                      </button>
+                    </li>
+                  ))
+                )}
+              </ul>
+            )}
+          </div>
+          {!form.workCategoryId && catText && <span className="block text-xs font-medium text-amber-600">Select a category from the list.</span>}
         </div>
+
         <label className={labelClass}>
           <span>Description of issue / required works</span>
           <textarea
