@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, createAuthToken } from "@/lib/directory-auth";
-import { sendDirectoryVerificationEmail, sendAdminSignupNotification } from "@/lib/directory-email";
+import { sendClientVerificationEmail, sendAdminSignupNotification } from "@/lib/directory-email";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { validateAuPhone } from "@/lib/phone-au";
 import { TERMS_VERSION } from "@/lib/legal";
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
   const verificationToken = createAuthToken(user.id, "email_verification");
   try {
-    await sendDirectoryVerificationEmail(fullName, email, verificationToken);
+    await sendClientVerificationEmail(fullName, email, verificationToken);
   } catch (err) {
     // Don't leave an unverified account behind (it would block re-signup with
     // "email already registered"). Roll back and surface the real failure.

@@ -9,6 +9,7 @@ export default function VerifyEmailPage() {
   const router = useRouter();
   const [state, setState] = useState<"loading" | "success" | "error">("loading");
   const [errorMsg, setErrorMsg] = useState("");
+  const [dest, setDest] = useState("/directory/dashboard");
 
   useEffect(() => {
     const token = decodeURIComponent(params.token);
@@ -22,12 +23,15 @@ export default function VerifyEmailPage() {
         const data = await res.json();
         if (res.ok) {
           setState("success");
-          const dest = data.role === "supplier_user"
+          const d = data.role === "supplier_user"
             ? "/supplier-dashboard/setup"
             : data.role === "ai_scope_user"
             ? "/ai-scope-builder"
+            : data.role === "client_user"
+            ? "/client/dashboard"
             : "/directory/dashboard";
-          setTimeout(() => router.push(dest), 2500);
+          setDest(d);
+          setTimeout(() => router.push(d), 2500);
         } else {
           setState("error");
           setErrorMsg(data.error ?? "Verification failed.");
@@ -62,7 +66,7 @@ export default function VerifyEmailPage() {
             <p className="text-xl font-bold text-slate-950">Email verified!</p>
             <p className="mt-3 text-slate-500">Your account is confirmed. Taking you to your dashboard…</p>
             <a
-              href="/directory/dashboard"
+              href={dest}
               className="mt-6 inline-flex rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
             >
               Go to dashboard →

@@ -60,6 +60,22 @@ export async function sendDirectoryVerificationEmail(name: string, email: string
   await sendEmail("Verify your directory account", email, html, text);
 }
 
+// Client (strata / building owner) account — separate wording + lands on the
+// client dashboard after verifying.
+export async function sendClientVerificationEmail(name: string, email: string, token: string) {
+  const link = `${SITE_URL}/directory/signup/verify/${encodeURIComponent(token)}`;
+  const html = emailWrapper(
+    "Verify your account",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Hi ${safeHtml(name)},</p>
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Thanks for creating an account to request quotes for building works. Click the button below to verify your email and access your client dashboard.</p>
+     <p style="margin:0 0 24px;"><a href="${link}" style="display:inline-block;padding:14px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;">Verify email</a></p>
+     <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">If the button does not work, paste this URL into your browser:</p>
+     <p style="margin:8px 0 0;font-size:13px;line-height:1.7;color:#475569;word-break:break-all;">${safeHtml(link)}</p>`
+  );
+  const text = `Hi ${name},\n\nThanks for creating an account to request quotes for building works. Verify your email by visiting this link: ${link}\n\nIf you did not request this, ignore this message.`;
+  await sendEmail("Verify your Remedial Building Australia account", email, html, text);
+}
+
 export async function sendDirectoryPasswordResetEmail(name: string, email: string, token: string) {
   const link = `${SITE_URL}/directory/reset-password/${encodeURIComponent(token)}`;
   const html = emailWrapper(

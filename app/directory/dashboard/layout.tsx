@@ -15,6 +15,8 @@ const STATUS_COLOR: Record<string, string> = {
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const user = await getCurrentDirectoryUser();
   if (!user) redirect("/directory/login");
+  // Strata/client users have their own dashboard — never the business setup.
+  if (user.role === "client_user") redirect("/client/dashboard");
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },

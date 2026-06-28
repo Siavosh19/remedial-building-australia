@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { createAuthToken } from "@/lib/directory-auth";
-import { sendDirectoryVerificationEmail } from "@/lib/directory-email";
+import { sendClientVerificationEmail } from "@/lib/directory-email";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   if (user && user.role === "client_user" && !user.is_verified) {
     const token = createAuthToken(user.id, "email_verification");
     try {
-      await sendDirectoryVerificationEmail(user.full_name ?? "there", email, token);
+      await sendClientVerificationEmail(user.full_name ?? "there", email, token);
     } catch (err) {
       console.error(`[client resend-verification] send to ${email} failed:`, err);
       return NextResponse.json({ error: "We couldn't resend the email just now. Please try again shortly." }, { status: 502 });
