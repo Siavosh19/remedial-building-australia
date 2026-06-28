@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { PROPERTY_TYPE_OPTIONS, URGENCY_OPTIONS, FILE_TYPE_OPTIONS } from "@/lib/quote-options";
+import { PROPERTY_TYPE_OPTIONS, URGENCY_OPTIONS, FILE_TYPE_OPTIONS, formatMoneyInput } from "@/lib/quote-options";
 import { RBA_DISCLAIMER } from "@/lib/legal";
 
 type Category = { id: number; name: string; children: { id: number; name: string }[] };
@@ -268,8 +268,14 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
             </select>
           </label>
           <label className={labelClass}>
-            <span>Budget range <span className="font-normal text-slate-400">(optional)</span></span>
-            <input className={inputClass} value={form.budgetRange} onChange={(e) => set("budgetRange", e.target.value)} placeholder="e.g. $20,000 – $50,000" />
+            <span>Budget <span className="font-normal text-slate-400">(optional)</span></span>
+            <input
+              className={inputClass}
+              value={form.budgetRange}
+              onChange={(e) => set("budgetRange", formatMoneyInput(e.target.value))}
+              inputMode="numeric"
+              placeholder="e.g. $50,000"
+            />
           </label>
         </div>
         <label className={labelClass}>

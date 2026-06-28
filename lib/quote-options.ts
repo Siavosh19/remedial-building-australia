@@ -63,3 +63,23 @@ export const FILE_TYPE_OPTIONS = [
   { id: "document", label: "Document" },
 ] as const;
 export const FILE_TYPE_IDS = FILE_TYPE_OPTIONS.map((o) => o.id);
+
+// Money helpers for the budget field.
+// formatMoneyInput: live-format digits as the user types → "$10,000".
+export function formatMoneyInput(raw: string): string {
+  const digits = raw.replace(/[^\d]/g, "");
+  if (!digits) return "";
+  return `$${Number(digits).toLocaleString("en-AU")}`;
+}
+
+// formatBudget: normalise a stored budget for display. Plain numbers (incl.
+// commas) become "$10,000"; ranges / already-formatted text are shown as-is.
+export function formatBudget(value: string | null | undefined): string {
+  if (!value) return "";
+  const v = value.trim();
+  if (/^\d[\d,]*$/.test(v)) {
+    const n = Number(v.replace(/,/g, ""));
+    if (Number.isFinite(n)) return `$${n.toLocaleString("en-AU")}`;
+  }
+  return v;
+}

@@ -7,6 +7,7 @@ import {
   PROPERTY_TYPE_LABELS,
   URGENCY_LABELS,
   FILE_TYPE_OPTIONS,
+  formatBudget,
 } from "@/lib/quote-options";
 import { RequestStatusBadge, ResponseStatusBadge } from "@/components/client/badges";
 import RequestActions from "@/components/client/RequestActions";
@@ -80,7 +81,7 @@ export default async function QuoteRequestDetailPage({ params }: { params: Promi
             {field("Building address", r.building_address)}
             {field("Suburb / postcode", `${r.suburb} ${r.postcode}`)}
             {field("Strata plan number", r.strata_plan_number)}
-            {field("Budget range", r.budget_range)}
+            {field("Budget", formatBudget(r.budget_range))}
             {field("Preferred inspection", r.preferred_inspection)}
             {field("Consultant scope available", r.consultant_scope_available ? "Yes" : "No")}
           </dl>

@@ -9,6 +9,7 @@ import {
   REQUEST_STATUS_LABELS,
   RESPONSE_STATUS_LABELS,
   FILE_TYPE_OPTIONS,
+  formatBudget,
 } from "@/lib/quote-options";
 import DeleteRequestButton from "@/components/admin/DeleteRequestButton";
 
@@ -81,7 +82,7 @@ export default async function AdminClientQuoteRequestDetail({ params }: { params
             {field("Urgency", URGENCY_LABELS[r.urgency])}
             {field("Building address", r.building_address)}
             {field("Strata plan", r.strata_plan_number)}
-            {field("Budget", r.budget_range)}
+            {field("Budget", formatBudget(r.budget_range))}
             {field("Preferred inspection", r.preferred_inspection)}
             {field("Consultant scope", r.consultant_scope_available ? "Yes" : "No")}
             {field("Subcategory", r.subcategory?.name)}

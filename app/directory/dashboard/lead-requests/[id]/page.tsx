@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
-import { PROPERTY_TYPE_LABELS, URGENCY_LABELS, FILE_TYPE_OPTIONS } from "@/lib/quote-options";
+import { PROPERTY_TYPE_LABELS, URGENCY_LABELS, FILE_TYPE_OPTIONS, formatBudget } from "@/lib/quote-options";
 import { ResponseStatusBadge } from "@/components/client/badges";
 import LeadResponseActions from "@/components/directory/LeadResponseActions";
 
@@ -77,7 +77,7 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
             {field("Building address", r.building_address)}
             {field("Suburb / postcode", `${r.suburb} ${r.postcode}`)}
             {field("Strata plan number", r.strata_plan_number)}
-            {field("Budget range", r.budget_range)}
+            {field("Budget", formatBudget(r.budget_range))}
             {field("Preferred inspection", r.preferred_inspection)}
             {field("Consultant scope available", r.consultant_scope_available ? "Yes" : "No")}
           </dl>
