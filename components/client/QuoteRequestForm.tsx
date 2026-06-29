@@ -347,7 +347,7 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
           disabled={busy !== null}
           className="rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {busy === "submit" ? "Finding businesses…" : "Submit & find businesses"}
+          {busy === "submit" ? "Finding businesses…" : "Explore available businesses"}
         </button>
         <button
           type="button"
