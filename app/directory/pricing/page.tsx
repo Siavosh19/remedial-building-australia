@@ -21,13 +21,15 @@ const fmtDollars = (cents: number) => {
   return Number.isInteger(d) ? `$${d.toLocaleString("en-AU")}` : `$${d.toFixed(2)}`;
 };
 
-type TierPricing = { monthly?: { cents: number; trial: number }; yearly?: { cents: number; trial: number } };
+type Slot = { cents: number; trial: number; compareAt?: number | null; promo?: string | null };
+type TierPricing = { monthly?: Slot; yearly?: Slot };
 
 export default async function PricingPage() {
-  // Defaults mirror the seeded plans so the page renders even before plans load.
+  // Defaults mirror the founding offer so the page renders correctly even before
+  // plans load from the DB.
   const fallback: Record<string, TierPricing> = {
-    claimed:  { monthly: { cents: 2900, trial: 60 }, yearly: { cents: 27000, trial: 60 } },
-    featured: { monthly: { cents: 7900, trial: 60 }, yearly: { cents: 75000, trial: 60 } },
+    claimed:  { monthly: { cents: 2900, trial: 60, compareAt: 4900, promo: "Limited time" }, yearly: { cents: 29000, trial: 60, compareAt: 49000, promo: "Limited time" } },
+    featured: { monthly: { cents: 4900, trial: 60, compareAt: 9900, promo: "Limited time" }, yearly: { cents: 49000, trial: 60, compareAt: 99000, promo: "Limited time" } },
   };
   let pricing = fallback;
   try {
@@ -39,7 +41,7 @@ export default async function PricingPage() {
       for (const p of plans) {
         const slot = p.billing_interval === "year" ? "yearly" : p.billing_interval === "month" ? "monthly" : null;
         if (!slot) continue;
-        (map[p.tier] ??= {})[slot] = { cents: p.amount_cents, trial: p.trial_days };
+        (map[p.tier] ??= {})[slot] = { cents: p.amount_cents, trial: p.trial_days, compareAt: p.compare_at_cents, promo: p.promo_label };
       }
       if (map.claimed || map.featured) pricing = { ...fallback, ...map };
     }
@@ -111,9 +113,19 @@ export default async function PricingPage() {
             </div>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-900">Silver</p>
             <div className="mt-4 flex flex-col gap-1">
-              <p className="text-4xl font-extrabold text-slate-950">{fmtDollars(claimed.monthly?.cents ?? 0)}<span className="text-lg font-semibold">/month</span></p>
+              {claimed.monthly?.compareAt ? (
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xl font-semibold text-slate-500 line-through">{fmtDollars(claimed.monthly.compareAt)}</span>
+                  <span className="text-4xl font-extrabold text-slate-950">{fmtDollars(claimed.monthly.cents)}<span className="text-lg font-semibold">/month</span></span>
+                </div>
+              ) : (
+                <p className="text-4xl font-extrabold text-slate-950">{fmtDollars(claimed.monthly?.cents ?? 0)}<span className="text-lg font-semibold">/month</span></p>
+              )}
+              {claimed.monthly?.promo && (
+                <span className="self-start rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">{claimed.monthly.promo}</span>
+              )}
               {claimed.yearly && (
-                <p className="text-sm text-slate-800">or {fmtDollars(claimed.yearly.cents)}/year {savings(claimed) > 0 && <span className="font-semibold text-slate-900">Save ~{savings(claimed)}%</span>}</p>
+                <p className="text-sm text-slate-800">or {claimed.yearly.compareAt ? <span className="text-slate-500 line-through">{fmtDollars(claimed.yearly.compareAt)}</span> : null} {fmtDollars(claimed.yearly.cents)}/year {savings(claimed) > 0 && <span className="font-semibold text-slate-900">Save ~{savings(claimed)}%</span>}</p>
               )}
             </div>
             {claimedTrial > 0 && <p className="mt-2 text-sm font-semibold text-slate-900">{claimedTrial}-day free trial</p>}
@@ -147,9 +159,19 @@ export default async function PricingPage() {
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-xs font-bold text-white shadow-md" style={{ backgroundColor: "#0F2540" }}>★ Recommended</div>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-black">Gold</p>
             <div className="mt-4 flex flex-col gap-1">
-              <p className="text-4xl font-extrabold text-black">{fmtDollars(featured.monthly?.cents ?? 0)}<span className="text-lg font-semibold">/month</span></p>
+              {featured.monthly?.compareAt ? (
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xl font-semibold text-slate-600 line-through">{fmtDollars(featured.monthly.compareAt)}</span>
+                  <span className="text-4xl font-extrabold text-black">{fmtDollars(featured.monthly.cents)}<span className="text-lg font-semibold">/month</span></span>
+                </div>
+              ) : (
+                <p className="text-4xl font-extrabold text-black">{fmtDollars(featured.monthly?.cents ?? 0)}<span className="text-lg font-semibold">/month</span></p>
+              )}
+              {featured.monthly?.promo && (
+                <span className="self-start rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">{featured.monthly.promo}</span>
+              )}
               {featured.yearly && (
-                <p className="text-sm text-slate-700">or {fmtDollars(featured.yearly.cents)}/year {savings(featured) > 0 && <span className="font-semibold" style={{ color: "#A67C2B" }}>Save ~{savings(featured)}%</span>}</p>
+                <p className="text-sm text-slate-700">or {featured.yearly.compareAt ? <span className="text-slate-600 line-through">{fmtDollars(featured.yearly.compareAt)}</span> : null} {fmtDollars(featured.yearly.cents)}/year {savings(featured) > 0 && <span className="font-semibold" style={{ color: "#A67C2B" }}>Save ~{savings(featured)}%</span>}</p>
               )}
             </div>
             {featuredTrial > 0 && <p className="mt-2 text-sm font-semibold text-emerald-700">{featuredTrial}-day free trial</p>}

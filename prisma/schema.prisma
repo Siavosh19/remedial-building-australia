@@ -681,12 +681,15 @@ model Plan {
   name              String
   description       String?
   billing_interval  String   // "month" | "year" | "one_time"
-  amount_cents      Int      // price in the smallest currency unit
+  amount_cents      Int      // price actually charged (founding price when on offer)
+  compare_at_cents  Int?     // standard price, shown struck-through when on offer
+  promo_label       String?  // e.g. "Limited time" — shown beside the offer price
   currency          String   @default("aud")
   trial_days        Int      @default(0)
   features          String[] // bullet points shown on the pricing card
   stripe_product_id String?
-  stripe_price_id   String?  // the live Stripe price used at checkout
+  stripe_price_id   String?  // the live Stripe price used at checkout (founding)
+  standard_stripe_price_id String? // Stripe price for the standard (compare-at) amount
   is_active         Boolean  @default(true)
   is_public         Boolean  @default(true) // show on the public pricing page
   display_order     Int      @default(0)
