@@ -237,9 +237,6 @@ export async function PATCH(request: NextRequest) {
   });
   if (!company) return NextResponse.json({ error: "Company not found." }, { status: 404 });
 
-  // Only claimed/featured profiles can edit all fields
-  const isClaimed = company.plan_type !== "basic";
-
   const companyData: Record<string, unknown> = {};
   if (typeof body.companyName === "string" && body.companyName.trim()) companyData.name = body.companyName.trim();
   if (typeof body.phone === "string" && body.phone.trim()) companyData.phone = body.phone.trim();
@@ -248,13 +245,12 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.description === "string" && body.description.trim()) companyData.description = body.description.trim();
   if (typeof body.mainCategoryId === "number" && body.mainCategoryId > 0) companyData.main_category_id = body.mainCategoryId;
 
-  // Claimed/Featured-only fields
-  if (isClaimed) {
-    if (typeof body.licenceNumber === "string") companyData.licence_number = body.licenceNumber.trim() || null;
-    if (typeof body.licenceType === "string") companyData.licence_type = body.licenceType.trim() || null;
-    if (typeof body.insuranceDetails === "string") companyData.insurance_details = body.insuranceDetails.trim() || null;
-    if (typeof body.yearEstablished === "number") companyData.year_established = body.yearEstablished;
-  }
+  // Self-declared profile fields — available to all tiers, including Free Listing.
+  // (Quote-request access stays Silver/Gold-only and is controlled separately.)
+  if (typeof body.licenceNumber === "string") companyData.licence_number = body.licenceNumber.trim() || null;
+  if (typeof body.licenceType === "string") companyData.licence_type = body.licenceType.trim() || null;
+  if (typeof body.insuranceDetails === "string") companyData.insurance_details = body.insuranceDetails.trim() || null;
+  if (typeof body.yearEstablished === "number") companyData.year_established = body.yearEstablished;
 
   if (Object.keys(companyData).length > 0) {
     await prisma.company.update({ where: { id: company.id }, data: companyData });
@@ -299,8 +295,8 @@ export async function PATCH(request: NextRequest) {
     }
   }
 
-  // Secondary categories (Claimed/Featured only)
-  if (isClaimed && Array.isArray(body.secondaryCategoryIds)) {
+  // Secondary categories — available to all tiers (incl. Free Listing).
+  if (Array.isArray(body.secondaryCategoryIds)) {
     const ids = (body.secondaryCategoryIds as unknown[]).map(Number).filter((n) => n > 0 && n !== company.main_category_id);
     // Remove deselected
     await prisma.companyCategory.deleteMany({

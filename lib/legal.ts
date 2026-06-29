@@ -19,6 +19,12 @@ export const RBA_DISCLAIMER_SHORT =
   "RBA is a directory and quote request platform only. It does not recommend, endorse, " +
   "supervise or manage any business. Make your own enquiries before engaging anyone.";
 
+// Directory disclaimer — businesses self-manage their profiles; licence/insurance
+// is self-declared. Shown on the directory, pricing, business profiles, SEO pages.
+export const DIRECTORY_DISCLAIMER =
+  "Businesses manage their own profiles. Licence and insurance information is self-declared " +
+  "unless otherwise stated. Clients should complete their own due diligence before engaging a contractor.";
+
 // Approved terminology — use these when describing listings / businesses.
 export const APPROVED_WORDING = [
   "listed business",

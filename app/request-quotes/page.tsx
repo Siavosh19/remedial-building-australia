@@ -13,9 +13,11 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const STEPS = [
-  { n: "1", title: "Submit your request", body: "Tell us the works required, the property and your contact details. Attach photos, reports or drawings." },
-  { n: "2", title: "We match listed businesses", body: "Your request is matched to paid listed businesses by work category and location, and they are notified." },
-  { n: "3", title: "Businesses contact you", body: "Matching businesses contact you directly to discuss and quote. You deal with them directly." },
+  { n: "1", title: "Tell us about your project", body: "Work category, property, location and a description. Attach photos, reports or drawings." },
+  { n: "2", title: "Browse businesses servicing your area", body: "See businesses that service your location, ranked by membership, relevance and distance." },
+  { n: "3", title: "Compare company profiles", body: "Open detailed profiles — logo, description, photos, licence and insurance details." },
+  { n: "4", title: "Send quote requests to up to 5 businesses", body: "You choose who to contact — send your request to up to 5 businesses. No obligation." },
+  { n: "5", title: "Businesses contact you directly", body: "The businesses you selected contact you to discuss and quote. You deal with them directly." },
 ];
 
 export default async function RequestQuotesLandingPage() {
@@ -56,7 +58,7 @@ export default async function RequestQuotesLandingPage() {
       <section className="px-6 py-14">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-xl font-extrabold text-slate-900">How it works</h2>
-          <div className="mt-6 grid gap-5 md:grid-cols-3">
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {STEPS.map((s) => (
               <div key={s.n} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-950 text-base font-bold text-white">

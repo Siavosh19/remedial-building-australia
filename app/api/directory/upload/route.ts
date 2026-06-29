@@ -6,9 +6,9 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 const BUCKET = "directory-media";
 
 const PHOTO_LIMITS: Record<string, number> = {
-  claimed: 5,
-  featured: 10,
-  basic: 0,
+  basic: 5, // Free Listing
+  claimed: 15, // Silver
+  featured: 15, // Gold
 };
 
 export async function POST(request: NextRequest) {
@@ -20,9 +20,6 @@ export async function POST(request: NextRequest) {
     include: { media: true },
   });
   if (!company) return NextResponse.json({ error: "Company not found." }, { status: 404 });
-  if (company.plan_type === "basic") {
-    return NextResponse.json({ error: "Uploads require a Claimed or Featured profile." }, { status: 403 });
-  }
 
   const formData = await request.formData().catch(() => null);
   if (!formData) return NextResponse.json({ error: "Invalid form data." }, { status: 400 });

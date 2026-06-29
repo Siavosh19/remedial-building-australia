@@ -84,8 +84,8 @@ function CompanyRow({ company }: { company: CompanyResult }) {
   const locationParts = [location?.suburb, location?.state].filter(Boolean);
   const planType = company.plan_type ?? (company.is_featured ? "featured" : company.is_claimed ? "claimed" : "basic");
   const tier = dirTier(planType);
-  const isBiz = tier === "business";
-  const isPrem = tier === "premium";
+  const isBiz = tier === "silver";
+  const isPrem = tier === "gold";
   const isPaid = isBiz || isPrem;
   const isClaimed = isPaid || planType === "claimed";
   const abbr = initials(company.name);
@@ -122,7 +122,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
               : { backgroundColor: TIER.business, color: "#fff" }
           }
         >
-          {isPrem ? "★ Premium" : "✦ Business"}
+          {isPrem ? "★ Gold" : "Silver"}
         </span>
       )}
 
@@ -161,7 +161,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
           {/* Ranking note (paid tiers) */}
           {isPaid && (
             <p className="mt-0.5 text-[11px] italic" style={{ color: isPrem ? TIER.gold : TIER.businessLight }}>
-              {isPrem ? "★ Priority listed in top 3 for selected categories" : "⭐ Featured in top listings for selected categories"}
+              {isPrem ? "★ Featured in your State for this category" : "Receives quote requests · ranks above free listings"}
             </p>
           )}
 
@@ -221,7 +221,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
         </h3>
         {isPaid && (
           <p className="mt-0.5 text-[11px] italic" style={{ color: isPrem ? TIER.gold : TIER.businessLight }}>
-            {isPrem ? "★ Priority listed in top 3 for selected categories" : "⭐ Featured in top listings for selected categories"}
+            {isPrem ? "★ Featured in your State for this category" : "Receives quote requests · ranks above free listings"}
           </p>
         )}
         {locationParts.length > 0 && (
@@ -992,6 +992,11 @@ export default function DirectoryListing({ categories }: Props) {
             {isLocalFallback && !loading && selectedLocation && (
               <p className="mt-1 text-xs text-amber-700">
                 No local businesses found. Showing relevant businesses that service your area.
+              </p>
+            )}
+            {hasActiveSearch && !loading && (
+              <p className="mt-1 text-xs text-slate-400">
+                Businesses are ranked by membership level, category relevance and distance from your project.
               </p>
             )}
           </div>

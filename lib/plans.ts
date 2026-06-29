@@ -7,10 +7,10 @@ import type { Plan } from "@prisma/client";
 // dashboards, badges and emails.
 const PLAN_LABELS: Record<string, string> = {
   basic: "Free Listing",
-  claimed: "Premium",
-  featured: "Premium Plus",
-  business: "Premium",
-  premium: "Premium Plus",
+  claimed: "Silver",
+  featured: "Gold",
+  business: "Silver",
+  premium: "Gold",
 };
 
 export function planLabel(tier: string | null | undefined): string {

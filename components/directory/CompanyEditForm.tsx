@@ -37,8 +37,10 @@ type Props = {
 const STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 
 export default function CompanyEditForm({ company, categories }: Props) {
-  const isClaimed = company.plan_type !== "basic";
-  const photoLimit = company.plan_type === "featured" ? 10 : 5;
+  // Free Listing now builds a full profile too — every tier can edit categories,
+  // licence/insurance (self-declared) and upload media.
+  const isClaimed = true;
+  const photoLimit = company.plan_type === "basic" ? 5 : 15;
   const location = company.locations[0];
   const secondaryIds = company.company_categories
     .filter((cc) => !cc.is_primary)

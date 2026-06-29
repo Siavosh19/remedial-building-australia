@@ -185,11 +185,11 @@ export default async function CompanyProfilePage({ params }: Props) {
                   </span>
                 ))}
                 {isFeatured && (
-                  <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">★ Featured</span>
+                  <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">★ Gold</span>
                 )}
                 {isClaimed && !isFeatured && (
                   <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700 ring-1 ring-indigo-200">
-                    Claimed Profile
+                    Silver
                   </span>
                 )}
               </div>
@@ -442,7 +442,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                     isFeatured ? "bg-amber-100 text-amber-800" :
                     isClaimed  ? "bg-indigo-100 text-indigo-700" : "bg-slate-100 text-slate-500"
                   }`}>
-                    {isFeatured ? "Featured ★" : isClaimed ? "Claimed Profile" : "Basic Listing"}
+                    {isFeatured ? "Gold ★" : isClaimed ? "Silver" : "Free Listing"}
                   </span>
                 </div>
                 {isClaimed && company.licence_number && (

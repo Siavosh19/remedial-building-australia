@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Directory Pricing | Remedial Building Australia",
-  description: "List your business on the Remedial Building Australia contractor directory. Basic listing is always free, or claim your profile to take full control.",
+  description: "List your business on the Remedial Building Australia directory. Free Listing is always free, Silver receives quote requests, and Gold is featured in your State.",
 };
 
 // Prices come from the admin-managed `plans` table so changes in the admin
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 const DISCLAIMER =
-  "Directory listings are provided for information only. Remedial Building Australia does not endorse, certify, verify, warrant, or guarantee any listed business. Users should make their own enquiries and check licences, insurance, experience, references, and suitability before engaging any provider.";
+  "Businesses manage their own profiles. Licence and insurance information is self-declared unless otherwise stated. Clients should complete their own due diligence before engaging a contractor.";
 
 const fmtDollars = (cents: number) => {
   const d = cents / 100;
@@ -64,8 +64,9 @@ export default async function PricingPage() {
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700 mb-3">Directory Plans</p>
           <h1 className="text-4xl font-extrabold text-sky-950 md:text-5xl">List your business</h1>
           <p className="mt-4 max-w-2xl mx-auto text-base leading-7 text-slate-600">
-            Get your business in front of strata managers, building committees, and consultants across Australia.
-            Basic listing is always free. Claim your profile to take full control.
+            Get your business in front of strata managers, owners corporations, building managers and consultants across
+            Australia. Free Listing is always free — build a full profile. Upgrade to Silver to receive quote requests,
+            or Gold to be featured in your State. No lock-in contracts.
           </p>
         </div>
 
@@ -74,16 +75,21 @@ export default async function PricingPage() {
 
           {/* Basic */}
           <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-8 shadow-sm flex flex-col">
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Basic Listing</p>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Free Listing</p>
             <p className="mt-4 text-4xl font-extrabold text-slate-950">Free</p>
             <p className="mt-1 text-sm text-slate-400">Always free</p>
             <ul className="mt-6 space-y-3 flex-1">
               {[
-                "Public directory listing",
-                "Business name",
-                "Category",
-                "Phone, email and website where available",
-                "Suburb and service location",
+                "Public business profile in directory search",
+                "Company logo upload",
+                "Up to 5 project photos",
+                "Business description",
+                "Phone, email and website",
+                "Business categories & service areas",
+                "Licence details (self-declared)",
+                "Insurance details (self-declared)",
+                "View Profile button",
+                "Does not receive quote requests",
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
                   <span className="mt-0.5 text-slate-400">✓</span> {f}
@@ -103,7 +109,7 @@ export default async function PricingPage() {
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-bold text-white" style={{ backgroundColor: "#0F2540" }}>
               Popular
             </div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-900">Business</p>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-900">Silver</p>
             <div className="mt-4 flex flex-col gap-1">
               <p className="text-4xl font-extrabold text-slate-950">{fmtDollars(claimed.monthly?.cents ?? 0)}<span className="text-lg font-semibold">/month</span></p>
               {claimed.yearly && (
@@ -114,14 +120,12 @@ export default async function PricingPage() {
             <ul className="mt-6 space-y-3 flex-1">
               {[
                 ...(claimedTrial > 0 ? [`${claimedTrial}-day free trial — no charge until trial ends`] : []),
-                "Claim and manage your profile",
-                "Logo upload",
-                "Business description",
-                "Up to 5 project photos",
-                "Service areas",
-                "Licence details provided",
-                "Insurance details provided",
-                "Quote request button enabled",
+                "Everything in Free",
+                "Receive quote requests",
+                "Request Quote button on your listing",
+                "Rank above Free listings",
+                "Up to 15 project photos",
+                "Project portfolio section",
                 "Profile dashboard access",
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm font-medium text-slate-900">
@@ -134,14 +138,14 @@ export default async function PricingPage() {
               className="mt-8 block rounded-2xl py-3 text-center text-sm font-bold text-white transition hover:brightness-110"
               style={{ backgroundColor: "#0F2540" }}
             >
-              Get Business →
+              Get Silver →
             </a>
           </div>
 
           {/* Featured */}
           <div className="relative rounded-3xl border-2 p-8 shadow-sm flex flex-col" style={{ background: "linear-gradient(135deg, #BF953F 0%, #FCF6BA 28%, #D4AF37 50%, #FBF5B7 72%, #AA771C 100%)", borderColor: "#AA771C", borderWidth: "2.5px", boxShadow: "0 12px 36px rgba(170,119,28,0.45)" }}>
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-xs font-bold text-white shadow-md" style={{ backgroundColor: "#0F2540" }}>★ Recommended</div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-black">Premium</p>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-black">Gold</p>
             <div className="mt-4 flex flex-col gap-1">
               <p className="text-4xl font-extrabold text-black">{fmtDollars(featured.monthly?.cents ?? 0)}<span className="text-lg font-semibold">/month</span></p>
               {featured.yearly && (
@@ -152,12 +156,12 @@ export default async function PricingPage() {
             <ul className="mt-6 space-y-3 flex-1">
               {[
                 ...(featuredTrial > 0 ? [`${featuredTrial}-day free trial — no charge until trial ends`] : []),
-                "Everything in Business",
-                "Premium gold badge on your listing",
-                "Placed in the top 3 of your selected category",
-                "Top 3 positions rotate fairly among up to 3 Premium listings",
-                "Priority above all Business & Basic listings",
-                "Up to 10 project photos",
+                "Everything in Silver",
+                "Featured listing placement",
+                "Displayed above Silver & Free listings",
+                "Highlighted listing card + Gold Featured badge",
+                "Only 3 Featured businesses per category in your State",
+                "Be Featured in Your State",
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm font-medium text-black">
                   <span className="mt-0.5 text-black">✓</span> {f}
@@ -169,7 +173,7 @@ export default async function PricingPage() {
               className="mt-8 block rounded-2xl py-3 text-center text-sm font-bold text-white transition hover:brightness-110"
               style={{ backgroundColor: "#0F2540" }}
             >
-              Get Premium →
+              Get Gold →
             </a>
           </div>
         </div>

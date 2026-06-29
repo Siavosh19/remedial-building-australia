@@ -21,8 +21,8 @@ export default async function DashboardProfilePage() {
   });
 
   const planLabel =
-    company?.plan_type === "featured" ? "Featured Profile" :
-    company?.plan_type === "claimed"  ? "Claimed Profile"  : "Basic Listing";
+    company?.plan_type === "featured" ? "Gold" :
+    company?.plan_type === "claimed"  ? "Silver" : "Free Listing";
 
   return (
     <div className="space-y-8">
@@ -32,7 +32,7 @@ export default async function DashboardProfilePage() {
             <h1 className="text-2xl font-semibold text-slate-950">Company profile</h1>
             <p className="mt-2 text-slate-600">
               {company?.plan_type === "basic"
-                ? "Upgrade to a Claimed Profile to unlock full profile editing, photos, licence details, and quote requests."
+                ? "Upgrade to Silver to receive quote requests and rank above Free listings."
                 : "Keep your listing up to date. Changes take effect immediately."}
             </p>
           </div>

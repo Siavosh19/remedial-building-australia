@@ -20,8 +20,8 @@ const PLANS = [
   {
     key: "basic",
     tier: "basic",
-    label: "Basic Listing",
-    features: ["Public directory listing", "Business name, category, location", "Phone, email and website"],
+    label: "Free Listing",
+    features: ["Public business profile", "Logo + up to 5 photos", "Licence & insurance (self-declared)", "Does not receive quote requests"],
     accent: "border-slate-200",
     cardStyle: { backgroundColor: "#F8FAFC" } as CSSProperties | undefined,
     textClass: "",
@@ -30,15 +30,14 @@ const PLANS = [
   {
     key: "claimed",
     tier: "claimed",
-    label: "Business",
+    label: "Silver",
     features: [
-      "Claim and manage your profile",
-      "Logo upload",
-      "Business description",
-      "Up to 5 project photos",
-      "Licence and insurance details",
-      "Quote request button",
-      "Profile dashboard",
+      "Everything in Free",
+      "Receive quote requests",
+      "Request Quote button on your listing",
+      "Rank above Free listings",
+      "Up to 15 project photos",
+      "Project portfolio section",
     ],
     accent: "border-slate-300",
     cardStyle: { background: "linear-gradient(135deg, #A8ADB4 0%, #F5F7F9 28%, #C7CCD2 50%, #FAFBFC 72%, #9197A0 100%)", borderColor: "#8A9099", borderWidth: "2.5px", boxShadow: "0 10px 32px rgba(120,128,138,0.4)" },
@@ -48,13 +47,13 @@ const PLANS = [
   {
     key: "featured",
     tier: "featured",
-    label: "Premium",
+    label: "Gold",
     features: [
-      "Everything in Business",
-      "Premium gold badge",
-      "Placed in the top 3 of your category",
-      "Top spots rotate fairly among up to 3 Premium listings",
-      "Up to 10 project photos",
+      "Everything in Silver",
+      "Featured listing placement",
+      "Gold Featured badge",
+      "Only 3 Featured per category in your State",
+      "Be Featured in Your State",
     ],
     accent: "border-amber-400",
     cardStyle: { background: "linear-gradient(135deg, #BF953F 0%, #FCF6BA 28%, #D4AF37 50%, #FBF5B7 72%, #AA771C 100%)", borderColor: "#AA771C", borderWidth: "2.5px", boxShadow: "0 10px 32px rgba(170,119,28,0.45)" },
@@ -139,7 +138,7 @@ export default function SubscriptionClient({
           <div className="rounded-2xl border border-slate-100 bg-slate-50 p-5">
             <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Current plan</p>
             <p className="mt-3 text-xl font-bold capitalize text-slate-950">
-              {planType === "basic" ? "Basic Listing" : planType === "claimed" ? "Business" : "Premium"}
+              {planType === "basic" ? "Free Listing" : planType === "claimed" ? "Silver" : "Gold"}
             </p>
           </div>
           <div className="rounded-2xl border border-slate-100 bg-slate-50 p-5">
@@ -301,7 +300,7 @@ export default function SubscriptionClient({
             <ul className="mt-4 space-y-2 text-sm text-slate-700">
               <li className="flex gap-2"><span className="text-sky-700">•</span> A recurring subscription billed in advance until you cancel.</li>
               <li className="flex gap-2"><span className="text-sky-700">•</span> Cancel anytime — features stay active until the end of the paid period, then revert to free Basic.</li>
-              <li className="flex gap-2"><span className="text-sky-700">•</span> Premium Top Listing fills up to 3 spots per category in subscription order — no #1 or sole placement is guaranteed.</li>
+              <li className="flex gap-2"><span className="text-sky-700">•</span> Gold Featured fills up to 3 spots per category in your State, in subscription order — no #1 or sole placement is guaranteed.</li>
               <li className="flex gap-2"><span className="text-sky-700">•</span> No guarantee of leads, enquiries or results. Fees are generally non-refundable.</li>
             </ul>
             <a href="/terms" target="_blank" className="mt-4 inline-block text-sm font-semibold text-sky-700 underline">

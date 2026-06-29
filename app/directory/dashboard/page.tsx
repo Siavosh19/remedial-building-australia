@@ -41,9 +41,9 @@ function claimStatusLabel(status: string | null) {
 }
 
 function planLabel(planType: string) {
-  if (planType === "featured") return "Featured Profile";
-  if (planType === "claimed") return "Claimed Profile";
-  return "Basic Listing";
+  if (planType === "featured") return "Gold";
+  if (planType === "claimed") return "Silver";
+  return "Free Listing";
 }
 
 function initials(name: string) {
@@ -386,7 +386,7 @@ export default async function DashboardIndexPage() {
             <div className="flex items-start gap-3">
               <Building2 size={20} className="mt-0.5 shrink-0 text-indigo-600" />
               <div>
-                <p className="font-bold text-indigo-900">Upgrade to Claimed Profile</p>
+                <p className="font-bold text-indigo-900">Upgrade to Silver</p>
                 <p className="mt-0.5 text-sm text-indigo-700">
                   Add your logo, photos, licence details, enable quote requests and get verified — from $29/month with a 60-day free trial.
                 </p>

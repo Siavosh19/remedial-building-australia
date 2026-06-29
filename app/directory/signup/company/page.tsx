@@ -28,8 +28,20 @@ export default async function DirectoryCompanySetupPage() {
     <AuthHeader />
     <div className="mx-auto max-w-5xl px-6 py-10">
     <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
-      <h1 className="text-3xl font-extrabold text-slate-950">Set up your company listing</h1>
+      <h1 className="text-3xl font-extrabold text-slate-950">Grow your business with Remedial Building Australia</h1>
       <p className="mt-3 text-slate-600">Complete your company profile and submit it for review.</p>
+      <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+        {[
+          "Build a professional online profile",
+          "Be found by owners, strata managers and consultants",
+          "Receive direct quote requests (Silver & Gold)",
+          "Upgrade, downgrade or cancel anytime — no lock-in contracts",
+        ].map((b) => (
+          <li key={b} className="flex items-start gap-2 text-sm text-slate-600">
+            <span className="mt-0.5 font-bold text-emerald-600">✓</span> {b}
+          </li>
+        ))}
+      </ul>
       <div className="mt-10">
         <CompanySetupForm categories={categories} />
       </div>

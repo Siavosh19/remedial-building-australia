@@ -5,9 +5,9 @@ import DirectoryPromoBanner from "@/components/directory/DirectoryPromoBanner";
 
 import SiteHeader from "@/components/SiteHeader";
 export const metadata: Metadata = {
-  title: "Strata Building Services Directory | Find Contractors & Consultants",
+  title: "Australia's Specialist Remedial Building Directory & Quote Request Platform",
   description:
-    "Search strata building contractors, consultants, waterproofers and specialists across Australia. Filter by location, category and expertise.",
+    "Find builders, contractors, engineers, consultants, suppliers and specialist contractors across Australia. Compare businesses, view detailed company profiles and request quotes directly from businesses servicing your area.",
 };
 
 export const revalidate = 60;
@@ -43,13 +43,14 @@ export default async function DirectoryPage() {
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-8 py-10">
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
-            Strata Building Services Directory
+            Directory &amp; Quote Request Platform
           </p>
-          <h1 className="mt-3 text-4xl font-extrabold leading-tight text-sky-950 md:text-5xl">
-            Strata Building Services Directory
+          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-sky-950 md:text-5xl">
+            Australia&rsquo;s Specialist Remedial Building Directory &amp; Quote Request Platform
           </h1>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-            Australia&rsquo;s strata building services directory — contractors, consultants, waterproofers, engineers and specialist trades across all states.
+          <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">
+            Find builders, contractors, engineers, consultants, suppliers and specialist contractors across Australia.
+            Compare businesses, view detailed company profiles and request quotes directly from businesses servicing your area.
           </p>
 
           {/* Stats bar */}
@@ -109,7 +110,11 @@ export default async function DirectoryPage() {
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs leading-6 text-slate-400">
+          <p className="mb-2">
+            Businesses manage their own profiles. Licence and insurance information is self-declared unless otherwise
+            stated. Clients should complete their own due diligence before engaging a contractor.
+          </p>
           © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>

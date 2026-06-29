@@ -61,7 +61,7 @@ export default function QuoteRequestsClient({
       <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm text-center">
         <h1 className="text-2xl font-bold text-slate-950">Quote Requests</h1>
         <p className="mt-4 text-slate-600">
-          Quote requests are available on Claimed Profile and Featured Profile plans.
+          Quote requests are available on Silver and Gold plans.
         </p>
         <Link
           href="/directory/pricing"

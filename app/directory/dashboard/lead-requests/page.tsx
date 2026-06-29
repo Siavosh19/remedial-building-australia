@@ -38,8 +38,8 @@ export default async function LeadRequestsPage() {
         <div className="rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center">
           <h2 className="text-lg font-bold text-amber-900">Upgrade to receive lead requests</h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-amber-800">
-            Premium and Premium Plus listings receive matching quote requests by email and here in your dashboard.
-            Premium Plus listings get higher ranking and stronger exposure in matching.
+            Silver and Gold listings receive matching quote requests by email and here in your dashboard.
+            Gold listings get higher ranking and stronger exposure in matching.
           </p>
           <Link
             href="/directory/dashboard/subscription"
