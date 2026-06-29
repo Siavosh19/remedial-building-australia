@@ -51,7 +51,7 @@ export default async function MyQuoteRequestsPage() {
               <tr>
                 <th className="px-5 py-3 font-semibold">Work category</th>
                 <th className="px-5 py-3 font-semibold">Location</th>
-                <th className="px-5 py-3 font-semibold">Matches</th>
+                <th className="px-5 py-3 font-semibold">Requested</th>
                 <th className="px-5 py-3 font-semibold">Created</th>
                 <th className="px-5 py-3 font-semibold">Status</th>
                 <th className="px-5 py-3" />

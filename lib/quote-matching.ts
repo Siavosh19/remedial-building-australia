@@ -195,3 +195,122 @@ export async function matchBusinessesForRequest(req: {
   matched.sort((a, b) => a.rank_tier - b.rank_tier || a.subAge - b.subAge || a.company_id - b.company_id);
   return matched.map((m) => ({ company_id: m.company_id, rank_tier: m.rank_tier }));
 }
+
+export type ResultBusiness = {
+  company_id: number;
+  slug: string;
+  name: string;
+  logo_url: string | null;
+  plan_type: string;
+  tier: "gold" | "silver" | "free";
+  category: string | null;
+  description: string | null;
+  suburb: string | null;
+  state: string | null;
+  distance_km: number | null;
+  services_statewide: boolean;
+  services_nationwide: boolean;
+  can_request: boolean; // Silver / Gold only
+};
+
+// Results page: ALL businesses (incl. Free) that service the request's location
+// and match its category, ranked Gold → Silver → Free, then by distance.
+// Free businesses are shown (View Profile only); Silver/Gold can be quote-requested.
+export async function findResultsForRequest(req: {
+  work_category_id: number;
+  work_subcategory_id: number | null;
+  suburb: string;
+  postcode: string;
+  state: LocationState | null;
+  latitude: number | null;
+  longitude: number | null;
+}): Promise<ResultBusiness[]> {
+  const categoryIds = [req.work_category_id, ...(req.work_subcategory_id ? [req.work_subcategory_id] : [])];
+
+  const candidates = await prisma.company.findMany({
+    where: {
+      status: "published",
+      suspended: false,
+      OR: [
+        { main_category_id: { in: categoryIds } },
+        { company_categories: { some: { category_id: { in: categoryIds } } } },
+      ],
+    },
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      logo_url: true,
+      plan_type: true,
+      description: true,
+      main_category: { select: { name: true } },
+      locations: {
+        select: {
+          suburb: true,
+          postcode: true,
+          state: true,
+          latitude: true,
+          longitude: true,
+          service_radius_km: true,
+          services_statewide: true,
+          services_nationwide: true,
+        },
+      },
+    },
+    take: 300,
+  });
+
+  const reqSuburb = req.suburb.trim().toLowerCase();
+  const rows: (ResultBusiness & { planRank: number; proximity: number })[] = [];
+
+  for (const c of candidates) {
+    let bestTier: number | null = null;
+    let bestLoc: CandidateLocation | null = null;
+    for (const loc of c.locations) {
+      const tier = locationTier(loc as CandidateLocation, req, reqSuburb);
+      if (tier != null && (bestTier == null || tier < bestTier)) {
+        bestTier = tier;
+        bestLoc = loc as CandidateLocation;
+      }
+    }
+    if (bestTier == null || !bestLoc) continue;
+
+    let km: number | null = null;
+    if (bestLoc.latitude != null && bestLoc.longitude != null && req.latitude != null && req.longitude != null) {
+      km = Math.round(haversineKm(req.latitude, req.longitude, bestLoc.latitude, bestLoc.longitude));
+    }
+
+    const planRank = c.plan_type === "featured" ? 0 : c.plan_type === "claimed" ? 1 : 2;
+    const tier = planRank === 0 ? "gold" : planRank === 1 ? "silver" : "free";
+
+    rows.push({
+      company_id: c.id,
+      slug: c.slug,
+      name: c.name,
+      logo_url: c.logo_url,
+      plan_type: c.plan_type,
+      tier,
+      category: c.main_category?.name ?? null,
+      description: c.description,
+      suburb: bestLoc.suburb,
+      state: bestLoc.state,
+      distance_km: km,
+      services_statewide: bestLoc.services_statewide,
+      services_nationwide: bestLoc.services_nationwide,
+      can_request: c.plan_type === "featured" || c.plan_type === "claimed",
+      planRank,
+      proximity: bestTier,
+    });
+  }
+
+  rows.sort(
+    (a, b) =>
+      a.planRank - b.planRank ||
+      a.proximity - b.proximity ||
+      (a.distance_km ?? 1e9) - (b.distance_km ?? 1e9) ||
+      a.name.localeCompare(b.name),
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return rows.map(({ planRank, proximity, ...r }) => r);
+}

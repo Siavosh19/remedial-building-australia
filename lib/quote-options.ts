@@ -36,11 +36,10 @@ export const REQUEST_STATUS_OPTIONS = [
 ] as const;
 
 export const RESPONSE_STATUS_OPTIONS = [
-  { id: "pending", label: "Awaiting response" },
+  { id: "pending", label: "New" },
   { id: "contacted", label: "Contacted" },
   { id: "quoted", label: "Quoted" },
   { id: "declined", label: "Declined" },
-  { id: "not_suitable", label: "Not suitable" },
 ] as const;
 
 function toMap(options: readonly { id: string; label: string }[]) {

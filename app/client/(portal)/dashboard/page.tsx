@@ -82,7 +82,7 @@ export default async function ClientDashboardPage() {
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-slate-900">{r.work_category?.name ?? "Building works"}</p>
                     <p className="truncate text-xs text-slate-500">
-                      {r.suburb} {r.postcode} · {r._count.deliveries} matching {r._count.deliveries === 1 ? "business" : "businesses"}
+                      {r.suburb} {r.postcode} · Requested from {r._count.deliveries} {r._count.deliveries === 1 ? "business" : "businesses"}
                     </p>
                   </div>
                   <RequestStatusBadge status={r.status} />

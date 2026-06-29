@@ -119,14 +119,22 @@ export default async function QuoteRequestDetailPage({ params }: { params: Promi
 
         {/* Matched businesses */}
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-          <h2 className="text-base font-bold text-slate-900">Businesses notified</h2>
+          <h2 className="text-base font-bold text-slate-900">Businesses you&rsquo;ve requested</h2>
           <p className="mt-1 text-sm text-slate-500">
             {r.status === "draft"
-              ? "This request is a draft. Submit it to notify matching businesses."
+              ? "This request is a draft. Submit it, then choose which businesses to send it to."
               : r.deliveries.length === 0
-                ? "No matching businesses yet. Your request has been recorded — matching businesses in your category and area will be notified as they become available, and they'll contact you directly."
-                : `${r.deliveries.length} matching ${r.deliveries.length === 1 ? "business" : "businesses"} received your request and may contact you directly.`}
+                ? "You haven't requested quotes from any businesses yet. Browse businesses servicing your area and pick up to 5."
+                : `You've requested quotes from ${r.deliveries.length} ${r.deliveries.length === 1 ? "business" : "businesses"}. They'll contact you directly.`}
           </p>
+          {r.status !== "draft" && r.status !== "closed" && r.deliveries.length < 5 && (
+            <Link
+              href={`/client/quote-requests/${r.id}/results`}
+              className="mt-3 inline-block rounded-xl bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800"
+            >
+              {r.deliveries.length === 0 ? "Browse businesses & request quotes →" : "Request more businesses →"}
+            </Link>
+          )}
 
           {r.deliveries.length > 0 && (
             <ul className="mt-4 space-y-3">

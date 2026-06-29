@@ -139,7 +139,11 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
         if (!submitRes.ok) throw new Error(submitted.error ?? "Could not submit your request.");
       }
 
-      router.push(`/client/quote-requests/${requestId}`);
+      router.push(
+        action === "submit"
+          ? `/client/quote-requests/${requestId}/results`
+          : `/client/quote-requests/${requestId}`,
+      );
     } catch (err) {
       setError((err as Error).message);
       setBusy(null);
@@ -343,7 +347,7 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
           disabled={busy !== null}
           className="rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {busy === "submit" ? "Submitting…" : "Submit request"}
+          {busy === "submit" ? "Finding businesses…" : "Submit & find businesses"}
         </button>
         <button
           type="button"

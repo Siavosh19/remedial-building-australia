@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getClientUserFromRequest } from "@/lib/directory-auth";
-import { processQuoteRequestSubmission } from "@/lib/quote-submit";
 import { TERMS_VERSION } from "@/lib/legal";
 
 type Params = { params: Promise<{ id: string }> };
@@ -76,17 +75,13 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     if (body.termsAccepted !== true && !existing.terms_accepted) {
       return NextResponse.json({ error: "You must accept the platform terms and disclaimer to submit." }, { status: 400 });
     }
+    // No auto-broadcast: submitting records the request and the client then
+    // browses the results page and hand-picks which businesses to send it to.
     await prisma.clientQuoteRequest.update({
       where: { id: existing.id },
-      data: { terms_accepted: true, terms_version: TERMS_VERSION, accepted_at: new Date(), status: "submitted" },
+      data: { terms_accepted: true, terms_version: TERMS_VERSION, accepted_at: new Date(), status: "submitted", submitted_at: existing.submitted_at ?? new Date() },
     });
-    try {
-      const result = await processQuoteRequestSubmission(existing.id);
-      return NextResponse.json({ success: true, matchedCount: result.matchedCount });
-    } catch (err) {
-      console.error(`[quote-request ${existing.id}] submission failed:`, err);
-      return NextResponse.json({ error: "We couldn't send your request. Please try again shortly." }, { status: 500 });
-    }
+    return NextResponse.json({ success: true });
   }
 
   // ── Update (draft only) ──────────────────────────────────────────────────────
