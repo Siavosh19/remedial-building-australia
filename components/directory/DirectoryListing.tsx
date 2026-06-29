@@ -893,17 +893,8 @@ export default function DirectoryListing({ categories }: Props) {
       {/* ── Search + filters ─────────────────────────────────────────────── */}
       <div className="bg-white shadow-[0_8px_24px_rgba(15,37,64,0.12)]">
         <div className="mx-auto max-w-7xl px-6 py-5">
-          {/* Patterned search shell — rounded navy box; the gradient grid fills
-              only the empty space around the controls (inputs/button stay solid). */}
-          <div className="relative overflow-hidden rounded-3xl border-2 border-[#0f2f5f] bg-white p-4">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 z-0"
-              style={{
-                background:
-                  "repeating-linear-gradient(45deg, rgba(100,116,139,0.30) 0, rgba(100,116,139,0.30) 1px, transparent 1px, transparent 1.75px), repeating-linear-gradient(-45deg, rgba(100,116,139,0.30) 0, rgba(100,116,139,0.30) 1px, transparent 1px, transparent 1.75px)",
-              }}
-            />
+          {/* Search shell — rounded navy box with a uniform light-green fill. */}
+          <div className="relative overflow-hidden rounded-3xl border-2 border-[#0f2f5f] bg-emerald-50 p-4">
           {/* Controls — keyword + location + Search + Clear all, all on one line */}
           <div className="relative z-10 flex flex-wrap items-center gap-3">
             {/* Keyword */}
@@ -956,9 +947,9 @@ export default function DirectoryListing({ categories }: Props) {
               </button>
             )}
           </div>
-          {/* Client quote-request entry point */}
-          <div className="mt-3 flex flex-col items-start justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-5 py-3 sm:flex-row sm:items-center">
-            <p className="text-sm text-sky-950">
+          {/* Client quote-request entry point — sits directly on the green shell */}
+          <div className="mt-3 flex flex-col items-start justify-between gap-3 border-t border-emerald-200 px-1 pt-3 sm:flex-row sm:items-center">
+            <p className="text-sm text-emerald-950">
               <span className="font-bold">Strata manager, owners corporation or building owner?</span>{" "}
               Request quotes for building works from listed businesses.
             </p>
