@@ -57,6 +57,19 @@ export async function POST(request: NextRequest) {
   }
   const phoneNational = phoneCheck.national!;
 
+  // ── Service area (radius / entire state / Australia-wide) + geocode ─────────────
+  const serviceAreaType = ["radius", "state", "nationwide"].includes(String(body.serviceAreaType))
+    ? String(body.serviceAreaType)
+    : "radius";
+  const serviceRadiusKm = Math.min(250, Math.max(10, Number(body.serviceRadiusKm) || 50));
+  const geo = geocodeAU(suburb, state, postcode);
+  const serviceAreaFields = {
+    service_radius_km: serviceAreaType === "radius" ? serviceRadiusKm : null,
+    services_statewide: serviceAreaType === "state",
+    services_nationwide: serviceAreaType === "nationwide",
+    ...(geo ? { latitude: geo.latitude, longitude: geo.longitude } : {}),
+  };
+
   // ── Suburb / postcode / state consistency (free anti-junk check) ───────────────
   const pcState = postcodeToState(postcode);
   if (pcState && pcState !== state) {
@@ -179,6 +192,7 @@ export async function POST(request: NextRequest) {
             city: suburb,
             state: state as LocationState,
             postcode,
+            ...serviceAreaFields,
           },
         },
         users: {

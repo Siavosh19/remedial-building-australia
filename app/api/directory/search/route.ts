@@ -48,17 +48,18 @@ function completenessBoost(row: { description: string | null; phone: string | nu
 // active, planRank returns 0 for everyone, so ranking is driven purely by
 // relevance, location and trust — nothing is faked. Extend PLAN_PRIORITY later.
 const PLAN_PRIORITY: Record<string, number> = {
-  featured: 2,
-  claimed: 1,
-  basic: 0,
+  featured: 2, // Gold
+  premium: 2,
+  claimed: 1, // Silver
+  business: 1,
+  basic: 0, // Free
 };
 
-function planRank(
-  row: { plan_type?: string | null; is_featured: boolean; featured_until?: Date | null },
-  now: Date,
-): number {
-  const activePaid = row.is_featured && row.featured_until != null && row.featured_until > now;
-  if (!activePaid) return 0;
+// Gold (featured) ranks above Silver (claimed) above Free (basic). plan_type is
+// already gated on an active subscription — the Stripe webhook reverts a company
+// to basic when its subscription expires — so we rank by it directly. This is the
+// highest sort key, so Gold/Silver lead the (already state-filtered) results.
+function planRank(row: { plan_type?: string | null }): number {
   return PLAN_PRIORITY[row.plan_type ?? "basic"] ?? 0;
 }
 
@@ -737,8 +738,10 @@ async function getTopListings(
         { main_category_id: sectionCatId },
         { company_categories: { some: { is_approved: true, category_id: sectionCatId } } },
       ],
-      plan_type: { in: ["premium", "featured"] },
+      // Gold Featured only, and only the 3 in the searched State/Territory.
+      plan_type: "featured",
       directory_subscription: { is: { subscription_status: { in: ["active", "trialing"] } } },
+      ...(resolved.state ? { locations: { some: { state: resolved.state } } } : {}),
     },
     orderBy: { directory_subscription: { created_at: "asc" } }, // first to subscribe first
     take: 3,
@@ -789,6 +792,10 @@ export async function GET(request: NextRequest) {
   const claimed = sp.get("claimed") === "true";
   const page = Math.max(1, parseInt(sp.get("page") ?? "1") || 1);
   const offset = (page - 1) * PAGE_SIZE;
+
+  // Search radius (km) from the searched point. "au"/absent = Australia-wide (no cap).
+  const radiusRaw = sp.get("radius")?.trim() ?? "";
+  const radiusKm = radiusRaw && radiusRaw !== "au" ? Number(radiusRaw) : null;
 
   // Location inputs: explicit suburb/postcode/state params, coords, or free-text box.
   const suburbParam = sp.get("suburb")?.trim() ?? "";
@@ -864,9 +871,20 @@ export async function GET(request: NextRequest) {
         distKm = p.km;
       }
 
+      // Radius filter: within the chosen radius OR the business explicitly services
+      // the area (statewide same-state / nationwide / its own service radius covers
+      // the point). Unknown distance is kept (don't hide). null radius = Australia-wide.
+      const keep =
+        radiusKm == null ||
+        loc?.services_nationwide === true ||
+        loc?.services_statewide === true ||
+        distKm == null ||
+        distKm <= radiusKm ||
+        (loc?.service_radius_km != null && distKm <= loc.service_radius_km);
+
       return {
-        id: row.id, rel, tier: relTier(rel), distTier, distKm, trust,
-        planScore: planRank(row, now),
+        id: row.id, rel, tier: relTier(rel), distTier, distKm, trust, keep,
+        planScore: planRank(row),
         keywordScore: rel + trust,
       };
     });
@@ -895,11 +913,14 @@ export async function GET(request: NextRequest) {
     // Keep each result's computed distance so the UI can show "~N km away".
     const distById = new Map(scored.map((s) => [s.id, s.distKm]));
 
+    // Apply the radius filter (no-op when Australia-wide / no radius chosen).
+    const visible = radiusKm == null ? scored : scored.filter((s) => s.keep);
+
     // Hard state filter means results are always in-region — no cross-state fallback.
     const isLocalFallback = false;
 
-    const totalCount = scored.length;
-    const pageSlice = scored.slice(offset, offset + PAGE_SIZE);
+    const totalCount = visible.length;
+    const pageSlice = visible.slice(offset, offset + PAGE_SIZE);
     const pageIds = pageSlice.map((r) => r.id);
 
     if (pageIds.length === 0) {

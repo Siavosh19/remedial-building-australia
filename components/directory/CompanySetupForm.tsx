@@ -31,6 +31,8 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
     website: "",
     businessEmail: "",
     description: "",
+    serviceAreaType: "radius",
+    serviceRadiusKm: 50,
   });
   const [otherCategory, setOtherCategory] = useState("");
   const [newsletterOptIn, setNewsletterOptIn] = useState(true);
@@ -265,6 +267,61 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
             </p>
           )}
         </label>
+      </div>
+
+      {/* Service area — where the business operates */}
+      <div className="block text-sm font-semibold text-slate-800">
+        <span>Service area</span>
+        <p className="mt-1 text-xs font-normal text-slate-500">
+          Where do you service? You&rsquo;ll appear in searches and quote requests for these areas.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {[
+            { id: "radius", label: "Within a radius" },
+            { id: "state", label: "Entire State / Territory" },
+            { id: "nationwide", label: "Australia-wide" },
+          ].map((o) => (
+            <button
+              type="button"
+              key={o.id}
+              onClick={() => setForm({ ...form, serviceAreaType: o.id })}
+              className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${
+                form.serviceAreaType === o.id
+                  ? "border-sky-600 bg-sky-50 text-sky-900"
+                  : "border-slate-300 bg-slate-50 text-slate-700 hover:border-sky-400"
+              }`}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+        {form.serviceAreaType === "radius" && (
+          <div className="mt-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-normal text-slate-600">Radius from your business address</span>
+              <span className="font-bold text-sky-900">{form.serviceRadiusKm} km</span>
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={250}
+              step={10}
+              value={form.serviceRadiusKm}
+              onChange={(e) => setForm({ ...form, serviceRadiusKm: Number(e.target.value) })}
+              className="mt-2 w-full accent-sky-700"
+            />
+            <div className="flex justify-between text-[11px] font-normal text-slate-400">
+              <span>10 km</span>
+              <span>250 km</span>
+            </div>
+          </div>
+        )}
+        {form.serviceAreaType === "state" && (
+          <p className="mt-3 text-xs font-normal text-slate-500">You&rsquo;ll appear for searches anywhere in {form.state}.</p>
+        )}
+        {form.serviceAreaType === "nationwide" && (
+          <p className="mt-3 text-xs font-normal text-slate-500">You&rsquo;ll appear for searches anywhere in Australia.</p>
+        )}
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">

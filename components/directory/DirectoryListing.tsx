@@ -87,7 +87,6 @@ function CompanyRow({ company }: { company: CompanyResult }) {
   const isBiz = tier === "silver";
   const isPrem = tier === "gold";
   const isPaid = isBiz || isPrem;
-  const isClaimed = isPaid || planType === "claimed";
   const abbr = initials(company.name);
   const tags = company.company_tags ?? [];
 
@@ -122,7 +121,7 @@ function CompanyRow({ company }: { company: CompanyResult }) {
               : { backgroundColor: TIER.business, color: "#fff" }
           }
         >
-          {isPrem ? "★ Gold" : "Silver"}
+          {isPrem ? `⭐ Featured in ${location?.state ?? "your State"}` : "Silver"}
         </span>
       )}
 
@@ -186,28 +185,28 @@ function CompanyRow({ company }: { company: CompanyResult }) {
           >
             View Profile →
           </a>
-          {isClaimed ? (
+          {isPaid ? (
+            /* Request Quote — Silver & Gold only */
             <a
               href={`/directory/company/${company.slug}`}
               className="whitespace-nowrap rounded-xl border bg-white px-4 py-2 text-xs font-semibold transition hover:bg-slate-50"
               style={
                 isPrem
                   ? { borderColor: TIER.gold, color: TIER.goldText }
-                  : isBiz
-                  ? { borderColor: TIER.business, color: TIER.business }
-                  : { borderColor: "#bae6fd", color: "#075985", backgroundColor: "#f0f9ff" }
+                  : { borderColor: TIER.silver, color: TIER.silverText }
               }
             >
               Request Quote
             </a>
-          ) : (
+          ) : !company.is_claimed ? (
+            /* Unclaimed Free listing — encourage the owner to claim it */
             <a
               href={`/directory/claim/${company.slug}`}
               className="whitespace-nowrap rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
             >
               Claim this profile →
             </a>
-          )}
+          ) : null}
         </div>
       </div>
 
@@ -276,22 +275,22 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
       <div style={{ display: "flex", flexDirection: "column", gap: 24, marginBottom: 28 }}>
         <div style={{ position: "relative" }}>
           <div style={{ position: "absolute", top: 0, left: "50%", transform: "translate(-50%, -50%)", background: "linear-gradient(135deg, #b8963e, #d4b44a, #c8922a)", color: "#fff", fontSize: 10, fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", padding: "6px 18px", borderRadius: 20, boxShadow: "0 4px 14px rgba(184,150,62,0.45)", whiteSpace: "nowrap", zIndex: 10 }}>
-            ★ Top Listing
+            ⭐ Gold Featured
           </div>
           <div className="overflow-hidden rounded-[20px] border border-[#e8edf2] bg-white transition-all duration-200 shadow-[0_4px_24px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.13)]">
             <div style={{ height: 5, background: "linear-gradient(90deg, #1e3a5f, #2d6a9f)" }} />
             <div className="rba-top-pad" style={{ padding: "20px 28px 24px 28px" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
                 <div style={{ minWidth: 0 }}>
-                  <span style={{ display: "inline-block", background: "#e8f0fb", color: "#1e3a5f", borderRadius: 20, padding: "3px 11px", fontSize: 11, fontWeight: 700 }}>TOP LISTING — AVAILABLE</span>
-                  <h3 style={{ fontSize: 19, fontWeight: 800, color: "#0f1f35", margin: "8px 0 0 0" }}>List Your Business Here</h3>
+                  <span style={{ display: "inline-block", background: "#e8f0fb", color: "#1e3a5f", borderRadius: 20, padding: "3px 11px", fontSize: 11, fontWeight: 700 }}>GOLD FEATURED — AVAILABLE</span>
+                  <h3 style={{ fontSize: 19, fontWeight: 800, color: "#0f1f35", margin: "8px 0 0 0" }}>Be Featured in Your State</h3>
                 </div>
                 <a href="/directory/signup" style={{ background: "#1e3a5f", color: "#fff", borderRadius: 10, padding: "10px 22px", fontSize: 12, fontWeight: 700, boxShadow: "0 3px 10px rgba(30,58,95,0.22)", textDecoration: "none", whiteSpace: "nowrap" }}>
                   Get This Spot →
                 </a>
               </div>
               <p style={{ fontSize: 13, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "10px 0 0" }}>
-                Be the first business clients see when they search this category. Top Listing placement puts you above all standard results — ahead of 12,000+ businesses on the directory. Positions are limited to 3 per category and filled in order of subscription.
+                Be one of only three Gold Featured businesses for this category in your State. Gold Featured placement puts you above all Silver and Free listings — ahead of 12,000+ businesses on the directory. Limited to 3 per category in each State/Territory.
               </p>
             </div>
           </div>
@@ -313,7 +312,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
         return (
           <div key={b.id} style={{ position: "relative" }}>
             <div style={{ position: "absolute", top: 0, left: "50%", transform: "translate(-50%, -50%)", background: "linear-gradient(135deg, #b8963e, #d4b44a, #c8922a)", color: "#fff", fontSize: 10, fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", padding: "6px 18px", borderRadius: 20, boxShadow: "0 4px 14px rgba(184,150,62,0.45)", whiteSpace: "nowrap", zIndex: 10 }}>
-              ★ Top Listing
+              {`⭐ Featured in ${loc?.state ?? "your State"}`}
             </div>
             <div
               ref={(el) => { refs.current[i] = el; }}
@@ -349,7 +348,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
         );
       })}
       <p style={{ fontSize: 11, color: "#94a3b8", textAlign: "center", marginTop: 10, lineHeight: 1.5 }}>
-        Top Listing placements are filled in order of subscription date — first to subscribe secures position #1, second secures #2, third secures #3. A maximum of 3 positions are available per category. Top Listed businesses appear exclusively above all standard results for their chosen category. No other business will occupy these positions while a subscription is active. Positions are held for the duration of the active subscription.{" "}
+        Gold Featured placements are filled in order of subscription date — first to subscribe secures position #1, second secures #2, third secures #3. A maximum of 3 positions are available per category in each State/Territory. Gold Featured businesses appear above all Silver and Free listings for their chosen category in their State. No other business will occupy these positions while a subscription is active. Positions are held for the duration of the active subscription.{" "}
         <a href="/terms" style={{ color: "#64748b", textDecoration: "underline" }}>Terms &amp; Conditions</a>
       </p>
       <style>{`
@@ -713,6 +712,7 @@ export default function DirectoryListing({ categories }: Props) {
   const [coords, setCoords] = useState<Coords>(null);
   const [category, setCategory] = useState(initialCategory);
   const [featured, setFeatured] = useState(false);
+  const [radius, setRadius] = useState("au"); // "au" = Australia-wide
   const [page, setPage] = useState(1);
 
   // The directory starts EMPTY — no listings until the visitor searches/filters.
@@ -742,6 +742,7 @@ export default function DirectoryListing({ categories }: Props) {
       coords: Coords;
       category: string;
       featured: boolean;
+      radius: string;
       page: number;
     }) => {
       setLoading(true);
@@ -776,6 +777,7 @@ export default function DirectoryListing({ categories }: Props) {
 
       if (params.category) sp.set("category", params.category);
       if (params.featured) sp.set("featured", "true");
+      if (params.radius && params.radius !== "au") sp.set("radius", params.radius);
       sp.set("page", String(params.page));
 
       try {
@@ -803,9 +805,9 @@ export default function DirectoryListing({ categories }: Props) {
   // button (which updates `q`).
   useEffect(() => {
     if (!hasActiveSearch) return;
-    fetchResults({ q, appliedLocation, selectedLocation, coords, category, featured, page });
+    fetchResults({ q, appliedLocation, selectedLocation, coords, category, featured, radius, page });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q, appliedLocation, selectedLocation, coords, category, featured, page]);
+  }, [q, appliedLocation, selectedLocation, coords, category, featured, radius, page]);
 
   // Reflect the current search in the URL so it can be shared / reloaded.
   function syncUrl(keyword: string, location: string) {
@@ -927,6 +929,21 @@ export default function DirectoryListing({ categories }: Props) {
                 onEnter={applySearch}
               />
             </div>
+
+            {/* Radius */}
+            <select
+              value={radius}
+              onChange={(e) => { setRadius(e.target.value); setPage(1); }}
+              aria-label="Search radius"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-700 focus:border-sky-500 focus:outline-none sm:w-auto"
+            >
+              <option value="10">Within 10 km</option>
+              <option value="25">Within 25 km</option>
+              <option value="50">Within 50 km</option>
+              <option value="100">Within 100 km</option>
+              <option value="250">Within 250 km</option>
+              <option value="au">Australia-wide</option>
+            </select>
 
             {/* Search button */}
             <button
