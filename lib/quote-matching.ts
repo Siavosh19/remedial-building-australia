@@ -273,6 +273,16 @@ export async function findResultsForRequest(req: {
         bestLoc = loc as CandidateLocation;
       }
     }
+    // Spec: never show "no matching businesses" if there are genuinely any in the
+    // State. So a same-State business (even >150 km away) is still eligible,
+    // ranked last by proximity tier.
+    if (bestTier == null && req.state) {
+      const sameState = c.locations.find((l) => l.state === req.state);
+      if (sameState) {
+        bestTier = 6;
+        bestLoc = sameState as CandidateLocation;
+      }
+    }
     if (bestTier == null || !bestLoc) continue;
 
     let km: number | null = null;
