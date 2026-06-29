@@ -42,14 +42,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const company = await prisma.company.findFirst({
     where: { slug, status: "published" },
-    select: { name: true, description: true, main_category: { select: { name: true } } },
+    select: { name: true, description: true, logo_url: true, main_category: { select: { name: true } } },
   });
   if (!company) return { title: "Company Not Found" };
+  const url = `https://www.remedialbuildingaustralia.com.au/directory/company/${slug}`;
+  const title = `${company.name} | ${company.main_category?.name ?? "Building Services"} Directory`;
+  const description =
+    company.description?.slice(0, 155) ??
+    `${company.name} — ${company.main_category?.name ?? "building services"} on the Remedial Building Australia directory.`;
   return {
-    title: `${company.name} | Strata Building Services Directory`,
-    description:
-      company.description?.slice(0, 155) ??
-      `${company.name} — ${company.main_category?.name ?? "strata building services"} listed on the Strata Building Services Directory.`,
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+      siteName: "Remedial Building Australia",
+      ...(company.logo_url ? { images: [{ url: company.logo_url }] } : {}),
+    },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -84,6 +97,35 @@ export default async function CompanyProfilePage({ params }: Props) {
     }),
   ]);
   if (!company) notFound();
+
+  // ── Structured data (LocalBusiness + breadcrumbs) ───────────────────────────
+  const SITE = "https://www.remedialbuildingaustralia.com.au";
+  const canonicalUrl = `${SITE}/directory/company/${slug}`;
+  const loc0 = company.locations[0];
+  const businessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": canonicalUrl,
+    name: company.name,
+    url: canonicalUrl,
+    ...(company.logo_url ? { image: company.logo_url, logo: company.logo_url } : {}),
+    ...(company.description ? { description: company.description.slice(0, 300) } : {}),
+    ...(company.phone ? { telephone: company.phone } : {}),
+    ...(company.website ? { sameAs: [company.website] } : {}),
+    ...(loc0
+      ? { address: { "@type": "PostalAddress", addressLocality: loc0.suburb ?? undefined, addressRegion: loc0.state, postalCode: loc0.postcode, addressCountry: "AU" } }
+      : {}),
+    areaServed: loc0?.state ?? "AU",
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+      { "@type": "ListItem", position: 2, name: "Directory", item: `${SITE}/directory` },
+      { "@type": "ListItem", position: 3, name: company.name, item: canonicalUrl },
+    ],
+  };
 
   // Track profile view
   prisma.company.update({
@@ -141,6 +183,8 @@ export default async function CompanyProfilePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(businessSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <SiteHeader />

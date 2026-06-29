@@ -207,5 +207,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Graceful degradation if DB unavailable during sitemap generation
   }
 
+  // ── Directory: business profiles + populated category×state landing pages ──
+  try {
+    const companies = await prisma.company.findMany({
+      where: { status: "published" },
+      select: { slug: true, updated_at: true, main_category: { select: { slug: true } }, locations: { take: 1, select: { state: true } } },
+      take: 20000,
+    });
+    const combos = new Set<string>();
+    for (const c of companies) {
+      entries.push({ url: `${BASE}/directory/company/${c.slug}`, lastModified: c.updated_at, changeFrequency: "monthly", priority: 0.6 });
+      const catSlug = c.main_category?.slug;
+      const state = c.locations[0]?.state;
+      if (catSlug && state) combos.add(`${catSlug}/${state.toLowerCase()}`);
+    }
+    for (const combo of combos) {
+      entries.push({ url: `${BASE}/directory/${combo}`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 });
+    }
+  } catch {
+    // Graceful degradation if DB unavailable
+  }
+
   return entries;
 }

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { stripe } from "@/lib/stripe";
 import { getDirectoryPlan } from "@/lib/plans";
+import { goldSlotsLeft } from "@/lib/gold-cap";
 import type { DirectoryPlanType, DirectoryBillingCycle } from "@prisma/client";
 
 // Maps the front-end plan key → (tier, Stripe interval, billing cycle label).
@@ -26,12 +27,34 @@ export async function POST(request: NextRequest) {
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
-    include: { directory_subscription: true },
+    include: {
+      directory_subscription: true,
+      main_category: { select: { name: true } },
+      locations: { take: 1, select: { state: true } },
+    },
   });
   if (!company) return NextResponse.json({ error: "Company not found." }, { status: 404 });
 
   const planType = mapped.tier;
   const billingCycle = mapped.cycle;
+
+  // ── Gold cap: max 3 Featured per category per State/Territory ──────────────────
+  if (planType === "featured" && company.plan_type !== "featured") {
+    const catId = company.main_category_id;
+    const state = company.locations[0]?.state ?? null;
+    if (catId && state) {
+      const left = await goldSlotsLeft(catId, state, company.id);
+      if (left <= 0) {
+        return NextResponse.json(
+          {
+            error: `Gold is full in ${state} for ${company.main_category?.name ?? "your category"} — all 3 Featured spots are taken. Choose Silver to receive quote requests, or contact us to join the waitlist.`,
+            goldFull: true,
+          },
+          { status: 409 },
+        );
+      }
+    }
+  }
 
   // Admin-managed plan from the DB is the source of truth for price + trial.
   const plan = await getDirectoryPlan(mapped.tier, mapped.interval);

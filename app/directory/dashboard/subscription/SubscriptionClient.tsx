@@ -14,6 +14,7 @@ type Props = {
   cancelAtPeriodEnd: boolean;
   stripeCustomerId: string | null;
   pricing: Record<string, TierPricing>;
+  goldInfo?: { slotsLeft: number; cap: number; state: string; category: string } | null;
 };
 
 const PLANS = [
@@ -79,7 +80,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function SubscriptionClient({
-  planType, subStatus, billingCycle, trialEndsAt, currentPeriodEnd, cancelAtPeriodEnd, stripeCustomerId, pricing,
+  planType, subStatus, billingCycle, trialEndsAt, currentPeriodEnd, cancelAtPeriodEnd, stripeCustomerId, pricing, goldInfo,
 }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -209,6 +210,17 @@ export default function SubscriptionClient({
           Yearly <span className="ml-1 text-xs text-emerald-600 font-bold">Save ~20%</span>
         </button>
       </div>
+
+      {/* Gold availability for this company's category + State */}
+      {goldInfo && (
+        <div className={`mb-4 rounded-2xl border px-5 py-3 text-sm ${goldInfo.slotsLeft > 0 ? "border-amber-200 bg-amber-50 text-amber-900" : "border-slate-200 bg-slate-50 text-slate-600"}`}>
+          {goldInfo.slotsLeft > 0 ? (
+            <><span className="font-bold">Gold: {goldInfo.slotsLeft} of {goldInfo.cap} spots left</span> in {goldInfo.state} for {goldInfo.category}.</>
+          ) : (
+            <><span className="font-bold">Gold is full in {goldInfo.state}</span> for {goldInfo.category} — all {goldInfo.cap} Featured spots are taken. Silver still receives quote requests.</>
+          )}
+        </div>
+      )}
 
       {/* Plan cards */}
       <div className="grid gap-5 md:grid-cols-3">
