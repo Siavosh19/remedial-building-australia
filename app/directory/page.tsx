@@ -5,7 +5,7 @@ import DirectoryPromoBanner from "@/components/directory/DirectoryPromoBanner";
 
 import SiteHeader from "@/components/SiteHeader";
 export const metadata: Metadata = {
-  title: "Australia's Specialist Remedial Building Directory & Quote Request Platform",
+  title: "Australia's Specialist Building Directory & Quote Request Platform",
   description:
     "Find builders, contractors, engineers, consultants, suppliers and specialist contractors across Australia. Compare businesses, view detailed company profiles and request quotes directly from businesses servicing your area.",
 };
@@ -46,7 +46,7 @@ export default async function DirectoryPage() {
             Directory &amp; Quote Request Platform
           </p>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-sky-950 md:text-5xl">
-            Australia&rsquo;s Specialist Remedial Building Directory &amp; Quote Request Platform
+            Australia&rsquo;s Specialist Building Directory &amp; Quote Request Platform
           </h1>
           <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">
             Find builders, contractors, engineers, consultants, suppliers and specialist contractors across Australia.
