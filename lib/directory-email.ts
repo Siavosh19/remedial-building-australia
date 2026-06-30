@@ -76,6 +76,29 @@ export async function sendClientVerificationEmail(name: string, email: string, t
   await sendEmail("Verify your Remedial Building Australia account", email, html, text);
 }
 
+// Sent to a business when an admin issues a refund on their directory subscription.
+export async function sendDirectoryRefundEmail(opts: {
+  to: string;
+  businessName: string;
+  amount: string; // formatted, e.g. "$49.00 AUD"
+  cancelled: boolean;
+}) {
+  const greeting = opts.businessName ? `Hi ${safeHtml(opts.businessName)},` : "Hello,";
+  const cancelLine = opts.cancelled
+    ? `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Your subscription has been cancelled and your listing has reverted to the free Free Listing tier. Your business profile remains published in the directory.</p>`
+    : "";
+  const html = emailWrapper(
+    "Refund processed",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">${greeting}</p>
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">We've processed a refund of <strong>${safeHtml(opts.amount)}</strong> to your original payment method. Depending on your bank or card provider, it can take <strong>5–10 business days</strong> to appear on your statement.</p>
+     ${cancelLine}
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">If you have any questions about this refund, just reply to this email or contact us at <a href="mailto:info@remedialbuildingaustralia.com.au" style="color:#0369a1;">info@remedialbuildingaustralia.com.au</a>.</p>
+     <p style="margin:0;font-size:15px;line-height:1.7;color:#334155;">Thank you,<br/>Remedial Building Australia</p>`
+  );
+  const text = `${opts.businessName ? `Hi ${opts.businessName},` : "Hello,"}\n\nWe've processed a refund of ${opts.amount} to your original payment method. Depending on your bank or card provider, it can take 5–10 business days to appear on your statement.\n${opts.cancelled ? "\nYour subscription has been cancelled and your listing has reverted to the free Free Listing tier. Your business profile remains published in the directory.\n" : ""}\nIf you have any questions, reply to this email or contact info@remedialbuildingaustralia.com.au.\n\nThank you,\nRemedial Building Australia`;
+  await sendEmail("Your refund has been processed", opts.to, html, text);
+}
+
 export async function sendDirectoryPasswordResetEmail(name: string, email: string, token: string) {
   const link = `${SITE_URL}/directory/reset-password/${encodeURIComponent(token)}`;
   const html = emailWrapper(
@@ -543,4 +566,61 @@ export async function sendClientQuoteConfirmationEmail(opts: {
   const text = `Hi ${opts.name},\n\nYour quote request for ${opts.category} in ${opts.suburb} has been submitted. ${matchedLine}\n\nView your request: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER}`;
 
   await sendEmail("Your quote request has been submitted", opts.to, html, text);
+}
+
+// ── Admin notifications (to the site owner) ──────────────────────────────────
+
+// Fired when a client submits a quote request through the directory (broadcast flow).
+export async function sendClientLeadAdminEmail(d: {
+  clientName: string;
+  clientEmail: string;
+  clientPhone?: string | null;
+  category: string;
+  suburb?: string | null;
+  postcode?: string | null;
+  businessName: string;
+}) {
+  const adminUrl = `${SITE_URL}/directory/admin/client-quote-requests`;
+  const loc = [d.suburb, d.postcode].filter(Boolean).join(" ");
+  const row = (k: string, v: string) =>
+    `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">${safeHtml(k)}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(v)}</td></tr>`;
+  const html = emailWrapper(
+    "New Quote Request",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A client has submitted a quote request through the directory.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+       ${row("Client", d.clientName)}
+       ${row("Email", d.clientEmail)}
+       ${row("Phone", d.clientPhone || "—")}
+       ${row("Category", d.category)}
+       ${row("Location", loc || "—")}
+       ${row("First sent to", d.businessName)}
+     </table>
+     <p style="margin:0;"><a href="${adminUrl}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">View in Admin →</a></p>`
+  );
+  const text = `New quote request (directory)\nClient: ${d.clientName} (${d.clientEmail}, ${d.clientPhone || "—"})\nCategory: ${d.category}\nLocation: ${loc || "—"}\nFirst sent to: ${d.businessName}\nAdmin: ${adminUrl}`;
+  await sendEmail(`New Quote Request — ${d.category}`, "info@remedialbuildingaustralia.com.au", html, text);
+}
+
+// Fired when a business subscribes or changes plan on the directory.
+export async function sendNewSubscriptionAdminEmail(d: {
+  companyName: string;
+  planLabel: string;
+  billingCycle?: string | null;
+  changeType?: "new" | "upgrade";
+}) {
+  const adminUrl = `${SITE_URL}/directory/admin/billing`;
+  const verb = d.changeType === "upgrade" ? "changed its plan to" : "subscribed to";
+  const row = (k: string, v: string) =>
+    `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">${safeHtml(k)}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(v)}</td></tr>`;
+  const html = emailWrapper(
+    "New Subscription",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;"><strong>${safeHtml(d.companyName)}</strong> has ${verb} <strong>${safeHtml(d.planLabel)}</strong>.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+       ${row("Business", d.companyName)}
+       ${row("Plan", d.planLabel + (d.billingCycle ? ` (${d.billingCycle})` : ""))}
+     </table>
+     <p style="margin:0;"><a href="${adminUrl}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">View Billing →</a></p>`
+  );
+  const text = `New subscription: ${d.companyName} — ${d.planLabel}${d.billingCycle ? ` (${d.billingCycle})` : ""}\nAdmin: ${adminUrl}`;
+  await sendEmail(`New Subscription — ${d.companyName} (${d.planLabel})`, "info@remedialbuildingaustralia.com.au", html, text);
 }

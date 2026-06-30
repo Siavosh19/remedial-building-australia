@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireWriteAdmin } from "@/lib/admin-auth";
 import { stripe } from "@/lib/stripe";
+import { sendDirectoryRefundEmail } from "@/lib/directory-email";
 
 // Admin refund for a directory business. Refunds the most recent successful
 // payment (full or a partial amount), and can optionally cancel the subscription
@@ -20,7 +21,10 @@ export async function POST(request: NextRequest) {
 
   const company = await prisma.company.findUnique({
     where: { id: companyId },
-    include: { directory_subscription: true },
+    include: {
+      directory_subscription: true,
+      users: { where: { is_primary: true }, take: 1, include: { user: { select: { email: true } } } },
+    },
   });
   const customerId = company?.directory_subscription?.stripe_customer_id;
   if (!company || !customerId) {
@@ -70,6 +74,18 @@ export async function POST(request: NextRequest) {
       }),
     ]);
     cancelled = true;
+  }
+
+  // Notify the business their refund was processed (best-effort; never fail the
+  // refund response on an email error).
+  const recipient = company.users[0]?.user?.email ?? company.email;
+  if (recipient) {
+    sendDirectoryRefundEmail({
+      to: recipient,
+      businessName: company.name,
+      amount: `$${(refund.amount / 100).toFixed(2)} ${refund.currency.toUpperCase()}`,
+      cancelled,
+    }).catch((e) => console.error(`[refund email] to ${recipient} failed:`, e));
   }
 
   return NextResponse.json({
