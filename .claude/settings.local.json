@@ -139,7 +139,8 @@
       "Bash(xargs ls -lt)",
       "Bash(npm -v)",
       "Bash(lsof -iTCP -sTCP:LISTEN -n -P)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "Bash(echo \"---EXIT:$?---\")"
     ]
   }
 }
