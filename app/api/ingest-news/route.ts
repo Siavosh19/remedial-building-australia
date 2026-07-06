@@ -233,12 +233,14 @@ PRIORITY_2 — Industry Relevant News:
 Accept if the article covers broader Australian building and strata industry news with relevance to Class 2 buildings, apartment maintenance, building compliance, or apartment construction quality. Examples: builder insolvencies affecting strata, insurance or warranty changes for buildings, apartment maintenance issues, construction regulation changes, strata law updates, construction material shortages, building quality investigations, apartment project defect disputes, defect prevention initiatives, sustainability upgrades to existing buildings, fire safety upgrades, waterproofing or building materials market updates, engineering compliance updates, professional indemnity for consultants or builders, owner corporation disputes.
 Requirement: Must have Australian relevance and relate to the building construction or strata sector.
 
-PRIORITY_3 — General Australian Building Industry News:
-Accept if the article is about broader Australian construction and development industry that supports SEO and site activity. Examples: apartment development news, housing construction policy, construction economy conditions, large construction projects, general property construction updates, industry market conditions, construction workforce issues, general strata news.
-Requirement: Must be Australian and construction or property related (not pure investment/finance).
+PRIORITY_3 — General Building Industry News:
+Accept if the article relates to the building, construction, remedial, strata, property-development, or building-product/material sector. Examples: apartment development news, housing construction policy, construction economy conditions, large construction or remedial projects, property construction updates, industry/market conditions, construction workforce issues, general strata news, building product or material launches, building material market analysis, construction methods and technology, façade/cladding/waterproofing/concrete product news.
+Requirement: Australian relevance is preferred but NOT required for genuinely building-technical, product, material, method, or market news — these may be international. Purely local overseas community news with no relevance to Australian building professionals does not qualify.
 
-REJECT — Truly irrelevant:
-Reject if: pure finance, banking or investment with no building context, mining or agriculture, international-only with no Australian relevance, celebrity or clickbait property content, generic real estate price/auction/mortgage news, infrastructure (roads/rail/tunnels) with no building defect angle, non-building political news, unrelated business news.
+REJECT — Only if clearly off-topic:
+Reject ONLY if the article is not genuinely about building, construction, remedial, strata, façade, waterproofing, concrete, building products/materials, or property development. Examples to reject: consumer products (e.g. tyres, cars, gadgets), pure finance/banking/investment with no building context, mining or agriculture, celebrity or clickbait content, generic real estate price/auction/mortgage news, roads/rail/tunnel infrastructure with no building angle, political news with no building angle, or purely local overseas community news with no relevance to Australian building professionals.
+
+When uncertain between REJECT and PRIORITY_3, choose PRIORITY_3 if the article has ANY genuine building, construction, remedial, strata, façade, waterproofing, concrete, or building-product/material relevance.
 
 Respond in EXACTLY this format:
 
@@ -393,7 +395,10 @@ export async function GET() {
       }
       const { priority, category, tags, summary, impact } = result.value;
 
-      if (priority === 0) {
+      // Never publish an article with no usable summary — the AI enrichment
+      // failed or returned an unparseable response. Treat it like a reject so
+      // it doesn't show as a blank card and isn't re-fetched next run.
+      if (priority === 0 || !summary || summary.trim().length < 40) {
         stats.skipped_irrelevant++;
         // Write back a minimal "rejected" record so this URL is never re-classified
         await supabase.from("industry_news").insert({

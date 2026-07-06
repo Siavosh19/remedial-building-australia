@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getClientUserFromRequest } from "@/lib/directory-auth";
-import { sendDirectQuoteRequestEmail } from "@/lib/directory-email";
+import { sendDirectQuoteRequestEmail, sendClientLeadAdminEmail } from "@/lib/directory-email";
 import { URGENCY_LABELS, formatBudget } from "@/lib/quote-options";
 
 type Params = { params: Promise<{ id: string }> };
@@ -88,6 +88,19 @@ export async function POST(request: NextRequest, { params }: Params) {
     }
   } else {
     await prisma.quoteRequestDelivery.update({ where: { id: delivery.id }, data: { email_status: "failed", email_error: "No business email on file" } });
+  }
+
+  // Notify the site owner once per request (on the first delivery).
+  if (sentCount === 0) {
+    sendClientLeadAdminEmail({
+      clientName: quoteRequest.contact_name,
+      clientEmail: quoteRequest.contact_email,
+      clientPhone: quoteRequest.contact_phone,
+      category: catName,
+      suburb: quoteRequest.suburb,
+      postcode: quoteRequest.postcode,
+      businessName: company.name,
+    }).catch(() => {});
   }
 
   // Advance the request out of "submitted" once at least one has been sent.

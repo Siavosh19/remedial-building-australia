@@ -2,15 +2,49 @@
 // silver and gold treatments across the card and profile.
 //
 // Mapping (single source of truth — change here if the tier↔plan mapping moves):
-//   free   ← basic            (plain baseline card)
-//   silver ← claimed, business (silver treatment, receives quotes)
-//   gold   ← featured, premium (gold / featured treatment, max 3 per cat/state)
+//   free   ← basic, claimed    (plain baseline card — claimed just means it has
+//                               an owner; it is NOT a paid tier)
+//   silver ← business, silver   (silver treatment, paid)
+//   gold   ← featured, premium  (gold / featured treatment, max 3 per cat/state)
 export type DirTier = "free" | "silver" | "gold";
 
 export function dirTier(planType?: string | null): DirTier {
   if (planType === "premium" || planType === "featured") return "gold";
-  if (planType === "business" || planType === "claimed") return "silver";
+  if (planType === "business" || planType === "silver") return "silver";
   return "free";
+}
+
+// Cards, badges and headings show only the core business name. Many listings
+// store an appended tagline / credential after a pipe — e.g.
+//   "Remedial Building Practitioners | Registered Class 2 Builder"
+// — which we strip to the part before the first pipe so the name fits one line.
+// This is a display-layer rule only; the stored value is left untouched and the
+// full text can still be used on the business's own profile page.
+export function displayName(name: string): string {
+  const core = name.split("|")[0].trim();
+  return core || name.trim();
+}
+
+// Paid tiers (Silver/Gold) display the full business name INCLUDING any tagline,
+// but clamped to a sensible length so a long tagline can't make the card messy.
+// Cuts on a word boundary where possible and appends an ellipsis. Free tier does
+// not use this — it strips the tagline entirely via displayName().
+export function clampName(name: string, maxChars = 58): string {
+  const n = name.trim();
+  if (n.length <= maxChars) return n;
+  const cut = n.slice(0, maxChars);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > 30 ? cut.slice(0, lastSpace) : cut).trimEnd() + "…";
+}
+
+// On-card description summary for the paid tiers (Gold & Silver). Capped to
+// ~30 words (about two lines) to match the card's line-clamp; the full,
+// uncapped description still renders on the profile page. Free tier shows none.
+export function cardSummary(text: string | null | undefined, maxWords = 30): string | null {
+  const trimmed = text?.trim();
+  if (!trimmed) return null;
+  const words = trimmed.split(/\s+/);
+  return words.length <= maxWords ? trimmed : words.slice(0, maxWords).join(" ") + "…";
 }
 
 // Display label for a tier (used on cards/badges).

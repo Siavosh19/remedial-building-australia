@@ -83,6 +83,18 @@ const STOPWORDS = new Set([
   "near", "around",
 ]);
 
+// Generic action verbs appear across every trade ("repair", "installation",
+// "service"…), so they must NOT drive ranking or they pull in unrelated trades
+// (a "window repair" search must not surface "Roofing Repairs"). These are demoted
+// to WEAK and excluded from exact-category matching — the NOUN/MATERIAL leads.
+const GENERIC_ACTIONS = new Set([
+  "repair", "repairs", "repairing", "install", "installs", "installed",
+  "installation", "installations", "installer", "installers",
+  "replace", "replaced", "replacing", "replacement", "replacements",
+  "service", "servicing", "maintenance", "maintaining",
+  "fix", "fixing", "fixes", "supply", "supplies", "upgrade", "upgrades",
+]);
+
 const SYNONYM_GROUPS: string[][] = [
   ["consultant", "consultants", "consulting", "advisory", "adviser", "advisor", "surveyor", "surveying"],
   ["inspector", "inspection", "inspections", "assessment", "assessor"],
@@ -276,6 +288,7 @@ type QueryAnalysis = {
   strong: string[];      // query words, synonyms, typo corrections (high weight)
   weak: string[];        // broader related/concept terms (low weight)
   intentCategories: string[]; // category names this query should surface (lowercased)
+  words: string[];            // cleaned content words (no synonyms) for exact-category matching
 };
 
 const MAX_TERMS = 20;
@@ -293,7 +306,10 @@ function analyzeQuery(q: string): QueryAnalysis {
   }
 
   const words = phrase.split(/\s+/).filter((w) => w.length >= 3 && !STOPWORDS.has(w));
+  const coreWords: string[] = []; // nouns/materials only (verbs excluded) — drives exact-category match
   for (const word of words) {
+    if (GENERIC_ACTIONS.has(word)) { weak.add(word); continue; }
+    coreWords.push(word);
     strong.add(word);
     const corrected = correctWord(word);
     const forms = corrected ? [word, corrected] : [word];
@@ -324,6 +340,7 @@ function analyzeQuery(q: string): QueryAnalysis {
     strong: [...strong].filter((t) => t.length >= 3).slice(0, MAX_TERMS),
     weak: [...weak].filter((t) => t.length >= 3).slice(0, MAX_TERMS),
     intentCategories: [...intent],
+    words: coreWords,
   };
 }
 
@@ -651,6 +668,7 @@ const MATCH_SELECT = {
   is_featured: true,
   confidence_score: true,
   is_claimed: true,
+  listing_claim_status: true,
   profile_status: true,
   main_category_id: true,
   main_category: { select: { name: true } },
@@ -679,11 +697,14 @@ const COMPANY_SELECT = {
   name: true,
   description: true,
   phone: true,
+  website: true,
+  email: true,
   plan_type: true,
   profile_status: true,
   confidence_score: true,
   is_featured: true,
   is_claimed: true,
+  listing_claim_status: true,
   logo_url: true,
   main_category: { select: { id: true, name: true, slug: true } },
   locations: {
@@ -790,6 +811,8 @@ export async function GET(request: NextRequest) {
   const featured = sp.get("featured") === "true";
   const licenceVerified = sp.get("licenceVerified") === "true";
   const claimed = sp.get("claimed") === "true";
+  // `sort=distance` ranks strictly nearest-first (used by the AI "near me" search).
+  const sortMode = sp.get("sort")?.trim() ?? "";
   const page = Math.max(1, parseInt(sp.get("page") ?? "1") || 1);
   const offset = (page - 1) * PAGE_SIZE;
 
@@ -882,32 +905,53 @@ export async function GET(request: NextRequest) {
         distKm <= radiusKm ||
         (loc?.service_radius_km != null && distKm <= loc.service_radius_km);
 
+      // Exact category match: ALL searched words appear in the business's PRIMARY
+      // category name — e.g. "access consultant" puts an Access Consultant above a
+      // Building Consultant that only shares the generic word "consultant".
+      const catName = (row.main_category?.name ?? "").toLowerCase();
+      const catExact = A.words.length > 0 && A.words.every((w) => catName.includes(w));
+
       return {
-        id: row.id, rel, tier: relTier(rel), distTier, distKm, trust, keep,
+        id: row.id, rel, tier: relTier(rel), distTier, distKm, trust, keep, catExact,
         planScore: planRank(row),
         keywordScore: rel + trust,
       };
     });
 
     if (locationRequested) {
-      // Location search ordering:
-      //   1. paid & relevant (featured) first
-      //   2. relevance tier — strong service matches above weak ones
-      //   3. proximity tier — closest first (suburb → nearby → metro → wider → state)
-      //   4. exact distance within a tier
-      //   5. relevance, then trust as final tie-breakers
       const kmOf = (x: { distKm: number | null }) => (x.distKm == null ? Number.MAX_SAFE_INTEGER : x.distKm);
-      scored.sort((a, b) =>
-        (b.planScore - a.planScore) ||
-        (b.tier - a.tier) ||
-        (a.distTier - b.distTier) ||
-        (kmOf(a) - kmOf(b)) ||
-        (b.rel - a.rel) ||
-        (b.trust - a.trust)
-      );
+      if (sortMode === "distance") {
+        // Strict nearest-first (AI "near me" search): order by ACTUAL kilometres,
+        // closest first, with unknown-distance rows last. Paid plans still lead
+        // for monetisation; relevance/trust only break exact-distance ties. The
+        // keyword WHERE clause already guarantees topical relevance, so the
+        // matched set can be ordered purely by proximity.
+        scored.sort((a, b) =>
+          (b.planScore - a.planScore) ||
+          (kmOf(a) - kmOf(b)) ||
+          (b.rel - a.rel) ||
+          (b.trust - a.trust)
+        );
+      } else {
+        // Default location ordering:
+        //   1. paid & relevant (featured) first
+        //   2. relevance tier — strong service matches above weak ones
+        //   3. proximity tier — closest first (suburb → nearby → metro → wider → state)
+        //   4. exact distance within a tier
+        //   5. relevance, then trust as final tie-breakers
+        scored.sort((a, b) =>
+          (b.planScore - a.planScore) ||
+          (Number(b.catExact) - Number(a.catExact)) ||
+          (b.tier - a.tier) ||
+          (a.distTier - b.distTier) ||
+          (kmOf(a) - kmOf(b)) ||
+          (b.rel - a.rel) ||
+          (b.trust - a.trust)
+        );
+      }
     } else {
       // Keyword-only search: pure relevance (then trust).
-      scored.sort((a, b) => (b.planScore - a.planScore) || (b.keywordScore - a.keywordScore));
+      scored.sort((a, b) => (b.planScore - a.planScore) || (Number(b.catExact) - Number(a.catExact)) || (b.keywordScore - a.keywordScore));
     }
 
     // Keep each result's computed distance so the UI can show "~N km away".

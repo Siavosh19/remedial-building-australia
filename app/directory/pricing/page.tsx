@@ -76,31 +76,26 @@ export default async function PricingPage() {
         <div className="grid gap-8 md:grid-cols-3">
 
           {/* Basic */}
-          <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-8 shadow-sm flex flex-col">
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Free Listing</p>
+          <div className="rounded-3xl border-2 p-8 shadow-sm flex flex-col" style={{ backgroundColor: "#F0FDF4", borderColor: "#86EFAC" }}>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-700">Free Listing</p>
             <p className="mt-4 text-4xl font-extrabold text-slate-950">Free</p>
-            <p className="mt-1 text-sm text-slate-400">Always free</p>
+            <p className="mt-1 text-sm text-slate-500">Always free</p>
             <ul className="mt-6 space-y-3 flex-1">
               {[
-                "Public business profile in directory search",
-                "Company logo upload",
-                "Up to 5 project photos",
+                "Public business profile",
                 "Business description",
                 "Phone, email and website",
-                "Business categories & service areas",
-                "Licence details (self-declared)",
-                "Insurance details (self-declared)",
-                "View Profile button",
+                "Listed in directory search",
                 "Does not receive quote requests",
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
-                  <span className="mt-0.5 text-slate-400">✓</span> {f}
+                  <span className="mt-0.5 text-emerald-600">✓</span> {f}
                 </li>
               ))}
             </ul>
             <a
               href="/directory/signup"
-              className="mt-8 block rounded-2xl border border-slate-200 py-3 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+              className="mt-8 block rounded-2xl bg-emerald-600 py-3 text-center text-sm font-bold text-white transition hover:bg-emerald-500"
             >
               Create free listing
             </a>
@@ -108,9 +103,6 @@ export default async function PricingPage() {
 
           {/* Claimed */}
           <div className="relative rounded-3xl border-2 p-8 shadow-md flex flex-col" style={{ background: "linear-gradient(135deg, #A8ADB4 0%, #F5F7F9 28%, #C7CCD2 50%, #FAFBFC 72%, #9197A0 100%)", borderColor: "#8A9099", borderWidth: "2.5px", boxShadow: "0 12px 36px rgba(120,128,138,0.4)" }}>
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-bold text-white" style={{ backgroundColor: "#0F2540" }}>
-              Popular
-            </div>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-900">Silver</p>
             <div className="mt-4 flex flex-col gap-1">
               {claimed.monthly?.compareAt ? (
@@ -125,7 +117,7 @@ export default async function PricingPage() {
                 <span className="self-start rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">{claimed.monthly.promo}</span>
               )}
               {claimed.yearly && (
-                <p className="text-sm text-slate-800">or {claimed.yearly.compareAt ? <span className="text-slate-500 line-through">{fmtDollars(claimed.yearly.compareAt)}</span> : null} {fmtDollars(claimed.yearly.cents)}/year {savings(claimed) > 0 && <span className="font-semibold text-slate-900">Save ~{savings(claimed)}%</span>}</p>
+                <p className="text-sm text-slate-800">or {claimed.yearly.compareAt ? <span className="text-slate-500 line-through">{fmtDollars(claimed.yearly.compareAt)}</span> : null} {fmtDollars(claimed.yearly.cents)}/year</p>
               )}
             </div>
             {claimedTrial > 0 && <p className="mt-2 text-sm font-semibold text-slate-900">{claimedTrial}-day free trial</p>}
@@ -136,7 +128,9 @@ export default async function PricingPage() {
                 "Receive quote requests",
                 "Request Quote button on your listing",
                 "Rank above Free listings",
+                "Company logo upload",
                 "Up to 15 project photos",
+                "Licence & insurance (self-declared)",
                 "Project portfolio section",
                 "Profile dashboard access",
               ].map((f) => (
@@ -171,7 +165,7 @@ export default async function PricingPage() {
                 <span className="self-start rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">{featured.monthly.promo}</span>
               )}
               {featured.yearly && (
-                <p className="text-sm text-slate-700">or {featured.yearly.compareAt ? <span className="text-slate-600 line-through">{fmtDollars(featured.yearly.compareAt)}</span> : null} {fmtDollars(featured.yearly.cents)}/year {savings(featured) > 0 && <span className="font-semibold" style={{ color: "#A67C2B" }}>Save ~{savings(featured)}%</span>}</p>
+                <p className="text-sm text-slate-700">or {featured.yearly.compareAt ? <span className="text-slate-600 line-through">{fmtDollars(featured.yearly.compareAt)}</span> : null} {fmtDollars(featured.yearly.cents)}/year</p>
               )}
             </div>
             {featuredTrial > 0 && <p className="mt-2 text-sm font-semibold text-emerald-700">{featuredTrial}-day free trial</p>}

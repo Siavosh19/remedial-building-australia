@@ -132,7 +132,6 @@ export default function SiteHeader() {
           </div>
           <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
           <a href="/request-quotes" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</a>
-          <a href="/ai-scope-builder" className="whitespace-nowrap hover:text-red-700 transition">AI Scope Builder</a>
           <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
         </nav>
 
@@ -203,7 +202,6 @@ export default function SiteHeader() {
               )}
             </div>
 
-            <a href="/ai-scope-builder" onClick={() => setMobileNavOpen(false)} className={mRow}>AI Scope Builder</a>
             <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className={mRow}>Defect Library</a>
             <a href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</a>
             <a href="/request-quotes" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</a>

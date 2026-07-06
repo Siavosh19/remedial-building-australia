@@ -148,8 +148,12 @@ export default function CompanyEditForm({ company, categories }: Props) {
               value={form.companyName}
               onChange={(e) => setForm({ ...form, companyName: e.target.value })}
               className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+              maxLength={50}
               required
             />
+            <span className="mt-1 block text-xs font-normal text-slate-400">
+              {form.companyName.length}/50 · keep it short so it fits one line on your listing
+            </span>
           </label>
 
           <div className="block text-sm font-semibold text-slate-800">

@@ -124,6 +124,7 @@ interface CoreService {
   image: string;
   href: string;
   badge?: string;
+  underDevelopment?: boolean;
   quickLinks?: { label: string; href: string; available: boolean }[];
 }
 
@@ -133,18 +134,16 @@ const coreServices: CoreService[] = [
     text: "Structured guidance for common Class 2 building defects, organised by category, cause, risk and repair pathway.",
     image: "/Images/Defect%20Library.jpg",
     href: "/defect-library",
+    badge: "In Development",
+    underDevelopment: true,
   },
   {
     title: "Repair Systems",
     text: "Technical reference for concrete repair mortars, corrosion inhibitors, waterproofing, crack injection and coatings — structured for Australian Class 2 remedial practice.",
     image: "/Images/Repair%20methods.jpg",
     href: "/repair-systems",
-    badge: "Now Live",
-    quickLinks: [
-      { label: "Repair Mortars",       href: "/repair-systems/repair-mortars",       available: true  },
-      { label: "Corrosion Inhibitors", href: "/repair-systems/corrosion-inhibitors", available: false },
-      { label: "Waterproofing",        href: "/repair-systems/waterproofing-systems", available: false },
-    ],
+    badge: "In Development",
+    underDevelopment: true,
   },
   {
     title: "Materials & Products Index",
@@ -829,6 +828,12 @@ export default function HomeClient() {
                   <h3 className="text-2xl font-extrabold text-sky-950">{service.title}</h3>
                   <p className="mt-3 text-base leading-7 text-slate-500">{service.text}</p>
 
+                  {service.underDevelopment && (
+                    <p className="mt-3 inline-flex items-center gap-1.5 self-start rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs font-semibold text-amber-800 ring-1 ring-amber-200">
+                      <span aria-hidden>🚧</span> This section is still under development
+                    </p>
+                  )}
+
                   {service.quickLinks && service.quickLinks.length > 0 && (
                     <div className="mt-5 flex flex-wrap gap-2">
                       {service.quickLinks.map((ql) =>
@@ -836,9 +841,8 @@ export default function HomeClient() {
                           <span
                             key={ql.label}
                             onClick={(e) => { e.preventDefault(); window.location.href = ql.href; }}
-                            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-bold text-sky-800 transition hover:bg-sky-100 hover:text-red-700"
+                            className="inline-flex cursor-pointer items-center rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-bold text-sky-800 transition hover:bg-sky-100 hover:text-red-700"
                           >
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
                             {ql.label}
                           </span>
                         ) : (

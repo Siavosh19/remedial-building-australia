@@ -29,9 +29,30 @@ const titleCase = (s: string) => s.toLowerCase().replace(/\b\w/g, (c) => c.toUpp
 const ARTIFACT = /(\b(DC|MC|BC|LVR)$)|POSTAL|PO BOXES|POST SHOP|POST OFFICE|DELIVERY CENTRE|MAIL CENTRE|MILITARY/;
 const isRealPlace = (name: string) => !ARTIFACT.test(name);
 
+// Canonical CBD postcode + coordinates for capital cities. The raw postcode dataset
+// lists non-geographic PO-box postcodes (e.g. Sydney 1001) first, ~9km off-centre —
+// we override to the real CBD so the chip + distance ranking are correct.
+const CAPITAL_CBD: Record<string, { st: string; pc: string; lat: number; lng: number }> = {
+  SYDNEY:     { st: "NSW", pc: "2000", lat: -33.8688, lng: 151.2093 },
+  MELBOURNE:  { st: "VIC", pc: "3000", lat: -37.8136, lng: 144.9631 },
+  BRISBANE:   { st: "QLD", pc: "4000", lat: -27.4698, lng: 153.0251 },
+  PERTH:      { st: "WA",  pc: "6000", lat: -31.9523, lng: 115.8613 },
+  ADELAIDE:   { st: "SA",  pc: "5000", lat: -34.9285, lng: 138.6007 },
+  CANBERRA:   { st: "ACT", pc: "2600", lat: -35.2820, lng: 149.1287 },
+  HOBART:     { st: "TAS", pc: "7000", lat: -42.8821, lng: 147.3272 },
+  DARWIN:     { st: "NT",  pc: "0800", lat: -12.4634, lng: 130.8456 },
+  NEWCASTLE:  { st: "NSW", pc: "2300", lat: -32.9267, lng: 151.7789 },
+  WOLLONGONG: { st: "NSW", pc: "2500", lat: -34.4248, lng: 150.8931 },
+};
+
 function toSuburb(r: SubRow): AuLocation {
   const name = titleCase(r.s);
-  return { type: "suburb", suburb: name, state: r.st, postcode: r.pc || undefined, lat: r.lat, lng: r.lng, label: `${name}, ${r.st}${r.pc ? ` ${r.pc}` : ""}` };
+  const cbd = CAPITAL_CBD[r.s.toUpperCase()];
+  const useCbd = cbd && cbd.st === r.st;
+  const pc = useCbd ? cbd.pc : r.pc;
+  const lat = useCbd ? cbd.lat : r.lat;
+  const lng = useCbd ? cbd.lng : r.lng;
+  return { type: "suburb", suburb: name, state: r.st, postcode: pc || undefined, lat, lng, label: `${name}, ${r.st}${pc ? ` ${pc}` : ""}` };
 }
 function toRegion(r: RegRow): AuLocation {
   const name = titleCase(r.s);
@@ -45,7 +66,13 @@ export function searchAuLocations(q: string, limit = 8): AuLocation[] {
   if (u.length < 2) return [];
   const byCloseness = (a: { s: string }, b: { s: string }) => a.s.length - b.s.length || a.s.localeCompare(b.s);
 
-  const subHits = suburbs.filter((x) => x.s.startsWith(u) && isRealPlace(x.s)).sort(byCloseness).slice(0, limit).map(toSuburb);
+  const seenSub = new Set<string>();
+  const subHits = suburbs
+    .filter((x) => x.s.startsWith(u) && isRealPlace(x.s))
+    .sort(byCloseness)
+    .map(toSuburb)
+    .filter((p) => { const k = `${p.suburb}|${p.state}`; if (seenSub.has(k)) return false; seenSub.add(k); return true; })
+    .slice(0, limit);
   const regHits = regions.filter((x) => x.s.startsWith(u) && isRealPlace(x.s)).sort(byCloseness).slice(0, 3).map(toRegion);
 
   // Regions are useful but less specific — show after exact suburb hits.

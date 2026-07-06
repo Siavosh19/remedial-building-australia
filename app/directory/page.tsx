@@ -5,9 +5,17 @@ import DirectoryPromoBanner from "@/components/directory/DirectoryPromoBanner";
 
 import SiteHeader from "@/components/SiteHeader";
 export const metadata: Metadata = {
-  title: "Australia's Specialist Building Directory & Quote Request Platform",
+  title: "AI-Powered Construction & Building Directory Australia | Find the Right Trade",
   description:
-    "Find builders, contractors, engineers, consultants, suppliers and specialist contractors across Australia. Compare businesses, view detailed company profiles and request quotes directly from businesses servicing your area.",
+    "Australia's AI-powered directory for construction and building businesses. Describe your job in plain English — our AI finds the right trade and the builders, contractors, engineers, consultants and suppliers servicing your area, then request quotes directly.",
+  alternates: { canonical: "/directory" },
+  openGraph: {
+    title: "AI-Powered Construction & Building Directory Australia",
+    description:
+      "Describe your building job in plain English and our AI matches you to the right contractors, engineers, consultants and suppliers across Australia.",
+    url: "/directory",
+    type: "website",
+  },
 };
 
 export const revalidate = 60;
@@ -33,8 +41,32 @@ export default async function DirectoryPage() {
   try { publishedCount = await prisma.company.count({ where: { status: "published" } }); } catch { /* ignore */ }
   const listedLabel = publishedCount > 0 ? publishedCount.toLocaleString("en-AU") : "12,900+";
 
+  const SITE_URL = "https://www.remedialbuildingaustralia.com.au";
+  const directorySchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_URL}/directory#webpage`,
+    name: "AI-Powered Construction & Building Directory Australia",
+    description:
+      "Australia's AI-powered directory for construction and building businesses. Describe your job in plain English and the AI matches you to the right builders, contractors, engineers, consultants and suppliers servicing your area.",
+    url: `${SITE_URL}/directory`,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/directory?search={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(directorySchema) }}
+      />
 
       {/* Header */}
       <SiteHeader />
@@ -43,14 +75,15 @@ export default async function DirectoryPage() {
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-8 py-10">
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
-            Directory &amp; Quote Request Platform
+            AI-Powered Directory &amp; Quote Request Platform
           </p>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-sky-950 md:text-5xl">
-            Australia&rsquo;s Specialist Building Directory &amp; Quote Request Platform
+            Australia&rsquo;s AI-Powered Building &amp; Construction Directory
           </h1>
           <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">
-            Find builders, contractors, engineers, consultants, suppliers and specialist contractors across Australia.
-            Compare businesses, view detailed company profiles and request quotes directly from businesses servicing your area.
+            Don&rsquo;t know the trade name? Just describe the job and our AI finds the right people. Search builders,
+            contractors, engineers, consultants, suppliers and specialist contractors across Australia, compare
+            profiles, and request quotes directly from businesses servicing your area.
           </p>
 
           {/* Stats bar */}

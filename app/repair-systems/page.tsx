@@ -41,6 +41,14 @@ export default function RepairSystemsGatewayPage() {
       {/* ── Header ── */}
       <SiteHeader />
 
+      {/* Under-development notice */}
+      <div className="border-b border-amber-200 bg-amber-50">
+        <div className="mx-auto flex max-w-7xl items-center gap-2 px-6 py-3 text-sm text-amber-900">
+          <span aria-hidden>🚧</span>
+          <span><span className="font-semibold">This section is still under development.</span> Content is being added and refined — some pages may be incomplete.</span>
+        </div>
+      </div>
+
       <main>
 
         {/* ── Hero ── */}

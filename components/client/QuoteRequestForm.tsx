@@ -4,8 +4,9 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { PROPERTY_TYPE_OPTIONS, URGENCY_OPTIONS, FILE_TYPE_OPTIONS, formatMoneyInput } from "@/lib/quote-options";
 import { RBA_DISCLAIMER } from "@/lib/legal";
+import CategoryTreeSelect, { type TreeCat } from "@/components/directory/CategoryTreeSelect";
 
-type Category = { id: number; name: string; children: { id: number; name: string }[] };
+type Category = TreeCat;
 type Defaults = { contactName: string; contactEmail: string; contactPhone: string; companyName: string };
 type PickedFile = { file: File; fileType: string };
 
@@ -48,35 +49,6 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<null | "draft" | "submit">(null);
-
-  // ── Searchable work-category combobox ──────────────────────────────────────
-  const flatCategories = useMemo(() => {
-    const out: { id: number; label: string; search: string }[] = [];
-    for (const c of categories) {
-      out.push({ id: c.id, label: c.name, search: c.name.toLowerCase() });
-      for (const ch of c.children) {
-        out.push({ id: ch.id, label: `${c.name} › ${ch.name}`, search: `${c.name} ${ch.name}`.toLowerCase() });
-      }
-    }
-    return out;
-  }, [categories]);
-
-  const [catText, setCatText] = useState("");
-  const [catOpen, setCatOpen] = useState(false);
-  const catBoxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function onDown(e: MouseEvent) {
-      if (catBoxRef.current && !catBoxRef.current.contains(e.target as Node)) setCatOpen(false);
-    }
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
-  }, []);
-
-  const filteredCats = (catText.trim()
-    ? flatCategories.filter((c) => c.search.includes(catText.trim().toLowerCase()))
-    : flatCategories
-  ).slice(0, 60);
 
   const set = (key: keyof typeof form, value: string | boolean) => setForm((f) => ({ ...f, [key]: value }));
 
@@ -214,41 +186,19 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
       </Section>
 
       <Section title="Works required">
-        {/* Searchable work-category picker */}
-        <div className={labelClass} ref={catBoxRef}>
+        {/* Grouped, searchable work-category browse — same as the directory */}
+        <div className={labelClass}>
           <span>Work category</span>
-          <div className="relative">
-            <input
-              className={inputClass}
-              value={catText}
-              onChange={(e) => { setCatText(e.target.value); set("workCategoryId", ""); setCatOpen(true); }}
-              onFocus={() => setCatOpen(true)}
-              placeholder="Search a work category…"
-              autoComplete="off"
-            />
-            {catOpen && (
-              <ul className="absolute z-20 mt-1 max-h-64 w-full overflow-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
-                {filteredCats.length === 0 ? (
-                  <li className="px-4 py-2 text-sm text-slate-400">No matching category</li>
-                ) : (
-                  filteredCats.map((c) => (
-                    <li key={c.id}>
-                      <button
-                        type="button"
-                        onClick={() => { set("workCategoryId", String(c.id)); setCatText(c.label); setCatOpen(false); }}
-                        className={`block w-full px-4 py-2 text-left text-sm hover:bg-sky-50 ${
-                          String(c.id) === form.workCategoryId ? "bg-sky-50 font-semibold text-sky-900" : "text-slate-700"
-                        }`}
-                      >
-                        {c.label}
-                      </button>
-                    </li>
-                  ))
-                )}
-              </ul>
-            )}
-          </div>
-          {!form.workCategoryId && catText && <span className="block text-xs font-medium text-amber-600">Select a category from the list.</span>}
+          <CategoryTreeSelect
+            categories={categories}
+            selectedId={form.workCategoryId ? Number(form.workCategoryId) : null}
+            onSelect={(cat) => set("workCategoryId", cat ? String(cat.id) : "")}
+            requireLeaf
+            placeholder="Browse or search a work category…"
+            buttonClassName="flex w-full items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-normal text-slate-700 focus:border-sky-600 focus:outline-none"
+            panelClassName="w-full"
+          />
+          {!form.workCategoryId && <span className="block text-xs font-medium text-slate-400">Browse the groups or type to search, then pick a specific category.</span>}
         </div>
 
         <label className={labelClass}>

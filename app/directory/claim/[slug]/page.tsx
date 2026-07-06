@@ -18,7 +18,7 @@ export default function ClaimListingPage() {
 
   const [company, setCompany] = useState<CompanyInfo | null>(null);
   const [notFound, setNotFound] = useState(false);
-  const [form, setForm] = useState({ fullName: "", email: "", phone: "", password: "", confirmPassword: "" });
+  const [form, setForm] = useState({ fullName: "", email: "", phone: "", abn: "", password: "", confirmPassword: "" });
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -51,7 +51,12 @@ export default function ClaimListingPage() {
       return;
     }
 
-    setStatus({ type: "success", message: "Listing claimed! Check your inbox to verify your email and access your dashboard." });
+    setStatus({
+      type: "success",
+      message: data.autoClaimed
+        ? "Listing claimed! Check your inbox to verify your email and access your dashboard."
+        : "Thanks — we couldn't automatically match your ABN to this listing, so your claim has been sent for a quick manual review. Check your inbox to verify your email in the meantime.",
+    });
   }
 
   if (notFound) {
@@ -147,20 +152,27 @@ export default function ClaimListingPage() {
                 </div>
               )}
 
-              {(["fullName", "email", "phone", "password", "confirmPassword"] as const).map((field) => (
+              {(["fullName", "email", "phone", "abn", "password", "confirmPassword"] as const).map((field) => (
                 <label key={field} className="block space-y-1.5">
                   <span className="text-xs font-bold uppercase tracking-wide text-slate-500">
                     {field === "fullName" ? "Full name" :
                      field === "confirmPassword" ? "Confirm password" :
+                     field === "abn" ? "ABN" :
                      field.charAt(0).toUpperCase() + field.slice(1)}
                   </span>
                   <input
                     type={field.toLowerCase().includes("password") ? "password" : field === "email" ? "email" : "text"}
                     required
+                    inputMode={field === "abn" ? "numeric" : undefined}
                     value={form[field]}
                     onChange={(e) => setForm((f) => ({ ...f, [field]: e.target.value }))}
                     className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   />
+                  {field === "abn" && (
+                    <span className="block text-[11px] font-normal normal-case text-slate-400">
+                      Your 11-digit ABN. If it matches the one we hold for this listing, you're verified instantly.
+                    </span>
+                  )}
                 </label>
               ))}
 

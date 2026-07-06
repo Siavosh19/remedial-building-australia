@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { stripe } from "@/lib/stripe";
 import { getDirectoryPlan } from "@/lib/plans";
+import { sendNewSubscriptionAdminEmail } from "@/lib/directory-email";
 import { goldSlotsLeft } from "@/lib/gold-cap";
 import type { DirectoryPlanType, DirectoryBillingCycle } from "@prisma/client";
 
@@ -92,6 +93,7 @@ export async function POST(request: NextRequest) {
       });
     });
 
+    sendNewSubscriptionAdminEmail({ companyName: company.name, planLabel: planType === "featured" ? "Gold" : "Silver", billingCycle, changeType: "new" }).catch(() => {});
     return NextResponse.json({ success: true, mode: "manual_trial", trialEndsAt: trialEnd.toISOString() });
   }
 
@@ -127,6 +129,7 @@ export async function POST(request: NextRequest) {
             prisma.directorySubscription.update({ where: { company_id: company.id }, data: { plan_type: planType, billing_cycle: billingCycle } }),
             prisma.company.update({ where: { id: company.id }, data: { plan_type: planType, is_featured: planType === "featured", quote_requests_enabled: true } }),
           ]);
+          sendNewSubscriptionAdminEmail({ companyName: company.name, planLabel: planType === "featured" ? "Gold" : "Silver", billingCycle, changeType: "upgrade" }).catch(() => {});
           return NextResponse.json({ success: true, mode: "updated" });
         }
       }

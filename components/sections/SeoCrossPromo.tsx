@@ -37,29 +37,29 @@ export default function SeoCrossPromo() {
             </a>
           </div>
 
-          {/* Strata Building Services Directory */}
+          {/* AI-Powered Building & Construction Directory */}
           <div className="flex flex-col rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-sm">
-            <h2 className="text-2xl font-extrabold tracking-tight text-sky-950">Strata Building Services Directory</h2>
+            <h2 className="text-2xl font-extrabold tracking-tight text-sky-950">AI-Powered Building &amp; Construction Directory</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
-              Remedial Building Australia also includes a national{" "}
-              <a href="/directory" className="font-semibold text-sky-700 hover:text-red-700">remedial building directory</a>{" "}
-              with over 12,000 businesses across Australia involved in remedial building, strata maintenance,
+              Remedial Building Australia includes an{" "}
+              <a href="/directory" className="font-semibold text-sky-700 hover:text-red-700">AI-powered directory for construction businesses</a>{" "}
+              with over 12,000 businesses across Australia — remedial building, strata maintenance,
               waterproofing, concrete repair, façade repairs, roofing, consulting, engineering and related
-              building services.
+              building trades.
             </p>
             <p className="mt-3 text-sm leading-7 text-slate-600">
-              Search the{" "}
+              Don&rsquo;t know the trade name? Just describe the job — our AI finds the right category for you. Or search the{" "}
               <a href="/directory?q=waterproofing" className="font-semibold text-sky-700 hover:text-red-700">waterproofing contractors directory</a>,
               find{" "}
               <a href="/directory?q=remedial%20builder" className="font-semibold text-sky-700 hover:text-red-700">remedial builders</a>, or
               browse the full{" "}
-              <a href="/directory" className="font-semibold text-sky-700 hover:text-red-700">strata building services directory</a>.
+              <a href="/directory" className="font-semibold text-sky-700 hover:text-red-700">building services directory</a>.
             </p>
             <a
               href="/directory"
               className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-sky-700 transition hover:text-red-700"
             >
-              Browse the Strata Building Services Directory <ArrowRight size={15} />
+              Try the AI-Powered Directory <ArrowRight size={15} />
             </a>
           </div>
         </div>

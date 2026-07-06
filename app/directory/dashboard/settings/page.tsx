@@ -44,6 +44,17 @@ export default async function DashboardSettingsPage() {
       </div>
 
       <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+        <h2 className="text-lg font-semibold text-slate-950">Subscription &amp; billing</h2>
+        <p className="mt-2 mb-6 text-slate-600">View your plan, upgrade, or <span className="font-semibold">cancel anytime</span> — your features stay active until the end of the paid period, then revert to free.</p>
+        <a
+          href="/directory/dashboard/subscription"
+          className="inline-flex rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
+        >
+          Manage / cancel subscription →
+        </a>
+      </div>
+
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-950">Sign out</h2>
         <p className="mt-2 text-slate-600">Sign out of your directory account on this device.</p>
         <div className="mt-6">

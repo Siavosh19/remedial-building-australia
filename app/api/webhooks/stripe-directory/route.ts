@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
-import { sendSubscriptionStatusEmail } from "@/lib/directory-email";
+import { sendSubscriptionStatusEmail, sendNewSubscriptionAdminEmail } from "@/lib/directory-email";
 import { tierLabel } from "@/lib/directory-tier";
 import type Stripe from "stripe";
 import type { DirectoryPlanType, DirectoryBillingCycle } from "@prisma/client";
@@ -46,6 +46,9 @@ export async function POST(request: NextRequest) {
             ownerName: owner.full_name ?? c!.name, ownerEmail: owner.email, companyName: c!.name,
             status: "active", planLabel: tierLabel(c!.plan_type),
           });
+        }
+        if (c) {
+          await sendNewSubscriptionAdminEmail({ companyName: c.name, planLabel: tierLabel(c.plan_type), changeType: "new" });
         }
       } catch { /* email optional */ }
     }

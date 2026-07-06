@@ -13,10 +13,9 @@ export default async function NewQuoteRequestPage() {
 
   const categories = await prisma.category.findMany({
     where: { is_active: true },
-    select: { id: true, name: true, parent_id: true },
+    select: { id: true, name: true, slug: true, parent_id: true },
     orderBy: [{ display_order: "asc" }, { name: "asc" }],
   });
-  const nameById = new Map(categories.map((c) => [c.id, c.name]));
 
   // Only offer categories that actually have published businesses (as a main or
   // approved secondary category) — otherwise the client hits a dead-end
@@ -38,18 +37,16 @@ export default async function NewQuoteRequestPage() {
     ...secCats.map((c) => c.category_id),
   ]);
 
-  // Flat, searchable list of selectable categories (parent context in the label).
-  const options = categories
-    .filter((c) => withBiz.has(c.id))
-    .map((c) => ({
-      id: c.id,
-      name: c.parent_id && nameById.get(c.parent_id) ? `${nameById.get(c.parent_id)} › ${c.name}` : c.name,
-      children: [] as { id: number; name: string }[],
-    }));
+  // Tree for the same grouped browse used by the directory search: parent groups
+  // plus only the subcategories that actually have businesses (no dead-ends).
+  const childrenBiz = categories.filter((c) => c.parent_id != null && withBiz.has(c.id));
+  const neededParents = new Set(childrenBiz.map((c) => c.parent_id!));
+  const groups = categories.filter((c) => neededParents.has(c.id));
+  const categoryTree = [...groups, ...childrenBiz].map((c) => ({ id: c.id, name: c.name, slug: c.slug, parent_id: c.parent_id }));
 
   return (
     <QuoteRequestForm
-      categories={options}
+      categories={categoryTree}
       defaults={{
         contactName: user.full_name ?? "",
         contactEmail: user.email,

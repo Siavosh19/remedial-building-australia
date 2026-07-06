@@ -136,7 +136,10 @@
       "Bash(defaults read *)",
       "Bash(npm view *)",
       "Bash(grep -rn \"\\\\$\\\\|price\\\\|Price\\\\|fee\\\\|Fee\\\\|from \\\\$\\\\|GST\\\\|incl\" app/expert-remedial-advice/)",
-      "Bash(xargs ls -lt)"
+      "Bash(xargs ls -lt)",
+      "Bash(npm -v)",
+      "Bash(lsof -iTCP -sTCP:LISTEN -n -P)",
+      "Bash(git log *)"
     ]
   }
 }
