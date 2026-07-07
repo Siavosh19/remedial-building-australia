@@ -588,7 +588,7 @@ function CategorySelector({
             <button
               type="button"
               onClick={() => select("")}
-              className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm font-semibold transition hover:bg-slate-50 ${!value ? "text-sky-700" : "text-slate-700"}`}
+              className={`flex w-full items-center justify-between border-b border-slate-100 px-4 py-2.5 text-left text-sm font-bold transition hover:bg-slate-50 ${!value ? "text-sky-700" : "text-slate-900"}`}
             >
               <span>All Categories</span>
             </button>
@@ -617,7 +617,7 @@ function CategorySelector({
                   <button
                     type="button"
                     onClick={() => (kids.length ? setExpanded((e) => (e === parent.id ? null : parent.id)) : select(parent.slug))}
-                    className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm font-bold transition hover:bg-slate-50 ${value === parent.slug ? "text-sky-700" : "text-slate-900"}`}
+                    className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm font-bold transition hover:bg-slate-50 ${value === parent.slug ? "text-sky-700" : "text-slate-600"}`}
                   >
                     <span className="truncate">{parent.name}</span>
                     <span className="ml-2 flex shrink-0 items-center gap-2">
