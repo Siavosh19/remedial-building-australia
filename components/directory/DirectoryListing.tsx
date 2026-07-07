@@ -501,8 +501,10 @@ function CategorySelector({
   const [subExpanded, setSubExpanded] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
+  // All top-level categories (most are now selectable leaves; only a few, like
+  // Product & Material Supplier, have children shown collapsibly).
   const parents = categories
-    .filter((c) => !c.parent_id && categories.some((k) => k.parent_id === c.id))
+    .filter((c) => !c.parent_id)
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const childrenOf = (pid: number) =>
