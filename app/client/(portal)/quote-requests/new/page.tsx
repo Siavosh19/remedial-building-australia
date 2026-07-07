@@ -37,12 +37,15 @@ export default async function NewQuoteRequestPage() {
     ...secCats.map((c) => c.category_id),
   ]);
 
-  // Tree for the same grouped browse used by the directory search: parent groups
-  // plus only the subcategories that actually have businesses (no dead-ends).
+  // Tree for the same grouped browse used by the directory search. Include every
+  // top-level category that either has businesses itself (most categories are now
+  // top-level) OR has business-bearing subcategories, plus those subcategories.
   const childrenBiz = categories.filter((c) => c.parent_id != null && withBiz.has(c.id));
-  const neededParents = new Set(childrenBiz.map((c) => c.parent_id!));
-  const groups = categories.filter((c) => neededParents.has(c.id));
-  const categoryTree = [...groups, ...childrenBiz].map((c) => ({ id: c.id, name: c.name, slug: c.slug, parent_id: c.parent_id }));
+  const parentsWithBizChild = new Set(childrenBiz.map((c) => c.parent_id!));
+  const topLevel = categories.filter(
+    (c) => c.parent_id == null && (withBiz.has(c.id) || parentsWithBizChild.has(c.id)),
+  );
+  const categoryTree = [...topLevel, ...childrenBiz].map((c) => ({ id: c.id, name: c.name, slug: c.slug, parent_id: c.parent_id }));
 
   return (
     <QuoteRequestForm

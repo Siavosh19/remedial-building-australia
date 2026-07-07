@@ -139,7 +139,7 @@ export default function CategoryTreeSelect({
                 <div key={parent.id} className="border-b border-slate-50 last:border-0">
                   <button
                     type="button"
-                    onClick={() => { if (kids.length) setExpanded((e) => (e === parent.id ? null : parent.id)); else if (!requireLeaf) pick(parent); }}
+                    onClick={() => { if (kids.length) setExpanded((e) => (e === parent.id ? null : parent.id)); else pick(parent); }}
                     className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm font-bold transition hover:bg-slate-50 ${selected?.id === parent.id ? "text-sky-700" : "text-slate-900"}`}
                   >
                     <span className="truncate">{parent.name}</span>

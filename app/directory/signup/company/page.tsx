@@ -15,13 +15,18 @@ export default async function DirectoryCompanySetupPage() {
 
   if (existingCompany) redirect("/directory/dashboard");
 
-  // Use the same top-level "Best Directory Label" categories as the public
-  // directory listing (parents only), sorted A–Z.
-  const categories = await prisma.category.findMany({
-    where: { is_active: true, parent_id: null },
+  // Categories a business can pick: the top-level trades PLUS the product/material
+  // supplier sub-categories (labelled "(Supplier)" so they're distinct), sorted A–Z.
+  // Flat searchable list — matches the directory taxonomy.
+  const rawCats = await prisma.category.findMany({
+    where: { is_active: true },
     orderBy: { name: "asc" },
-    select: { id: true, name: true },
+    select: { id: true, name: true, parent_id: true },
   });
+  const categories = [
+    ...rawCats.filter((c) => c.parent_id == null).map((c) => ({ id: c.id, name: c.name })),
+    ...rawCats.filter((c) => c.parent_id != null).map((c) => ({ id: c.id, name: `${c.name} (Supplier)` })),
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
