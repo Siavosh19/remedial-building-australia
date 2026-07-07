@@ -140,7 +140,8 @@
       "Bash(npm -v)",
       "Bash(lsof -iTCP -sTCP:LISTEN -n -P)",
       "Bash(git log *)",
-      "Bash(echo \"---EXIT:$?---\")"
+      "Bash(echo \"---EXIT:$?---\")",
+      "Bash(launchctl list *)"
     ]
   }
 }
