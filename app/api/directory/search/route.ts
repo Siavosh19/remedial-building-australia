@@ -131,6 +131,8 @@ const SYNONYM_GROUPS: string[][] = [
   ["balustrade", "balustrades", "handrail", "handrails", "balustrading"],
   ["crack", "cracks", "cracking"],
   ["brick", "bricks", "bricklayer", "bricklaying", "brickwork", "repointing", "pointing"],
+  ["plaster", "plasterer", "plasterers", "plastering", "gyprock", "gyprocker", "gyprocking", "plasterboard", "cornice"],
+  ["air conditioning", "air con", "aircon", "air conditioner", "hvac", "ducted", "refrigeration"],
 ];
 
 // Directed concept / occupation expansions (WEAK related terms).
@@ -227,6 +229,14 @@ const CATEGORY_INTENT: CategoryIntent[] = [
   {
     patterns: ["scaffold", "scaffolding"],
     categories: ["Scaffolding"],
+  },
+  {
+    patterns: ["air conditioning", "air con", "aircon", "air conditioner", "hvac", "ducted air", "ducted heating", "split system", "heating and cooling", "refrigeration mechanic"],
+    categories: ["Air Conditioning & HVAC Service"],
+  },
+  {
+    patterns: ["plaster", "plasterer", "plasterers", "plastering", "gyprock", "gyprocker", "gyprocking", "plasterboard", "cornice", "wall lining", "ceiling lining"],
+    categories: ["Plastering & Gyprock Service", "Rendering & Coating"],
   },
   {
     patterns: ["fire safety", "fire protection", "fire compliance"],
@@ -943,14 +953,16 @@ export async function GET(request: NextRequest) {
         );
       } else {
         // Default location ordering (membership model):
-        //   1. plan tier — Gold (state) → Silver → Free
-        //   2. closest first WITHIN a tier (unknown distance sorts last)
-        //   3. exact category match, then relevance & trust as tie-breakers
+        //   1. plan tier — Gold (state) → Silver → Free (tier ALWAYS beats distance)
+        //   2. exact category match, then relevance tier — keep the right trade up
+        //   3. closest first within the same tier + relevance (unknown distance last)
+        //   4. relevance score, then trust as final tie-breakers
         scored.sort((a, b) =>
           (b.planScore - a.planScore) ||
-          (kmOf(a) - kmOf(b)) ||
           (Number(b.catExact) - Number(a.catExact)) ||
           (b.tier - a.tier) ||
+          (a.distTier - b.distTier) ||
+          (kmOf(a) - kmOf(b)) ||
           (b.rel - a.rel) ||
           (b.trust - a.trust)
         );
