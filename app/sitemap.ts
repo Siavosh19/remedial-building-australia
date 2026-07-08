@@ -228,5 +228,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Graceful degradation if DB unavailable
   }
 
+  // ── Industry Jobs: board index + active listings ───────────────────────────
+  entries.push({ url: `${BASE}/industry-jobs`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 });
+  try {
+    const jobs = await prisma.job.findMany({
+      where: { status: "active", OR: [{ expires_at: null }, { expires_at: { gt: new Date() } }] },
+      select: { slug: true, updated_at: true },
+      take: 5000,
+    });
+    for (const job of jobs) {
+      entries.push({ url: `${BASE}/industry-jobs/${job.slug}`, lastModified: job.updated_at, changeFrequency: "weekly", priority: 0.6 });
+    }
+  } catch {
+    // Graceful degradation if DB unavailable
+  }
+
   return entries;
 }

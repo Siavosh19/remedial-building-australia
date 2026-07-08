@@ -189,7 +189,7 @@ async function getRelatedArticles(category: string, excludeSlug: string): Promis
     .eq("category", category)
     .neq("slug", excludeSlug)
     .order("published_date", { ascending: false })
-    .limit(3);
+    .limit(4);
 
   return (data ?? []).map((row: Record<string, unknown>) => ({
     id: String(row.id ?? ""),
@@ -266,28 +266,30 @@ export default async function IndustryNewsArticlePage({
 
       <main>
 
-        {/* ── Hero image ─────────────────────────────────────────────────── */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-200 md:aspect-[2/1]">
-          <Image
-            src={heroImage}
-            alt={article.title}
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 px-8 pb-8 md:px-16">
-            <div className="mx-auto max-w-3xl">
-              <span className="inline-block rounded-md bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm border border-white/20">
-                {article.category}
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* ── Two-column layout ─────────────────────────────────────────── */}
+        <div className="mx-auto max-w-7xl px-6 md:px-8">
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
 
-        {/* ── Article body ───────────────────────────────────────────────── */}
-        <div className="mx-auto max-w-3xl px-6 pb-16 md:px-8">
+            {/* ══ LEFT — main content (~70%) ═══════════════════════════════ */}
+            <div className="min-w-0 pb-16">
+
+              {/* Hero image */}
+              <div className="relative mt-6 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-slate-200 md:aspect-[2/1]">
+                <Image
+                  src={heroImage}
+                  alt={article.title}
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 70vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 px-6 pb-6 md:px-8">
+                  <span className="inline-block rounded-md bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-white backdrop-blur-sm border border-white/20">
+                    {article.category}
+                  </span>
+                </div>
+              </div>
 
           {/* Back link */}
           <div className="pt-8 pb-6">
@@ -479,46 +481,78 @@ export default async function IndustryNewsArticlePage({
             </div>
           </div>
 
+            </div>
+            {/* ══ end LEFT column ══ */}
+
+            {/* ══ RIGHT — sticky sidebar (~30%) ════════════════════════════
+                 Reserved ad space, intentionally left empty for now. The 320px
+                 column is held open (top slot taller, lower slot shorter) so
+                 banner units can drop in later without any layout change.
+                 Hidden below lg so the article isn't followed by a blank gap. */}
+            <aside className="hidden lg:block lg:mt-6" aria-hidden="true">
+              <div className="flex flex-col gap-8 lg:sticky lg:top-24">
+                {/* Reserved — top slot (taller) */}
+                <div className="h-[600px] w-full" />
+                {/* Reserved — lower slot (shorter) */}
+                <div className="h-[250px] w-full" />
+              </div>
+            </aside>
+
+          </div>
         </div>
 
-        {/* ── Related Articles ───────────────────────────────────────────── */}
-        {relatedArticlesWithImages.length > 0 && (
-          <section className="border-t border-slate-100 bg-slate-50 px-6 py-12 md:px-8">
-            <div className="mx-auto max-w-5xl">
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
-                More from {article.category}
-              </p>
-              <div className="mt-5 grid gap-5 sm:grid-cols-3">
-                {relatedArticlesWithImages.map((rel) => (
-                  <a
-                    key={rel.id}
-                    href={`/industry-news/${rel.slug}`}
-                    className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                  >
-                    <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                      <Image
-                        src={rel.featured_image}
-                        alt={rel.title}
-                        fill
-                        className="object-cover transition duration-500 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-4">
-                      <p className="text-[10px] text-slate-400">{formatDate(rel.published_date)}</p>
-                      <h3 className="mt-1 flex-1 text-sm font-bold leading-snug text-sky-950 line-clamp-3 transition group-hover:text-sky-700">
-                        {rel.title}
-                      </h3>
-                      <span className="mt-2 flex items-center gap-1 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
-                        Read <ChevronRight size={12} />
+        {/* ── Related News strip ─────────────────────────────────────────── */}
+        <section className="border-t border-slate-100 bg-slate-50 px-6 py-12 md:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex items-end justify-between gap-4">
+              <h2 className="text-lg font-extrabold tracking-tight text-sky-950">
+                Related News
+              </h2>
+              <a
+                href="/industry-news"
+                className="flex shrink-0 items-center gap-1 text-sm font-bold text-sky-700 transition hover:text-red-700"
+              >
+                See all <span aria-hidden>→</span>
+              </a>
+            </div>
+
+            <div className="mt-5 flex gap-5 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4">
+              {relatedArticlesWithImages.map((rel) => (
+                <a
+                  key={rel.id}
+                  href={`/industry-news/${rel.slug}`}
+                  className="group flex min-w-[260px] shrink-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sm:min-w-0"
+                >
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
+                    <Image
+                      src={rel.featured_image}
+                      alt={rel.title}
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 80vw, 25vw"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col p-4">
+                    <span className="inline-block w-fit rounded-md border border-sky-100 bg-sky-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sky-800">
+                      {rel.category}
+                    </span>
+                    <h3 className="mt-2 flex-1 text-sm font-bold leading-snug text-sky-950 line-clamp-2 transition group-hover:text-sky-700">
+                      {rel.title}
+                    </h3>
+                    <div className="mt-2 flex flex-wrap items-center gap-x-1.5 text-[11px] text-slate-400">
+                      <span>{formatDate(rel.published_date)}</span>
+                      <span>·</span>
+                      <span className="flex items-center gap-0.5">
+                        <Clock size={10} />
+                        {readingTime(rel.summary)}
                       </span>
                     </div>
-                  </a>
-                ))}
-              </div>
+                  </div>
+                </a>
+              ))}
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* ── Back link ──────────────────────────────────────────────────── */}
         <div className="border-t border-slate-100 bg-white px-6 py-8 text-center">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -135,6 +135,20 @@ export default function DirectorySignupPage() {
   const [turnstileToken, setTurnstileToken] = useState("");
 
   const phoneCheck = form.phone ? validateAuPhone(form.phone) : null;
+
+  // Deep link: /directory/signup?type=directory jumps straight into that card's form
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get("type");
+    if (!t) return;
+    const card = CARDS.find((c) => c.id === t);
+    if (!card || card.disabled) return;
+    if (card.href) {
+      router.push(card.href);
+      return;
+    }
+    setAccountType(card.id as AccountType);
+    setStep("form");
+  }, [router]);
 
   function selectCard(card: CardDef) {
     if (card.disabled) return;

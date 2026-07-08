@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown, X } from "lucide-react";
 
 const repairSystemsLinks = [
   { title: "Repair Systems Library",       href: "/repair-systems/library" },
@@ -43,6 +43,12 @@ export default function SiteHeader() {
   const expertCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const repairCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Lock body scroll while the slide-in drawer is open.
+  useEffect(() => {
+    document.body.style.overflow = mobileNavOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileNavOpen]);
+
   // Keep the Expert Advice dropdown open while the cursor is over the trigger
   // or the menu; only close it ~500ms after the cursor actually leaves.
   const openExpert = () => {
@@ -71,18 +77,28 @@ export default function SiteHeader() {
   };
 
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:gap-8 md:px-8 md:py-5">
-        <a href="/" className="flex min-w-0 items-center gap-3 xl:shrink-0">
-          <div className="min-w-0">
-            <div className="text-base font-extrabold tracking-tight text-sky-950 sm:text-lg">
-              Remedial Building Australia
+        <div className="flex min-w-0 items-center gap-2 xl:shrink-0">
+          <button
+            className="xl:hidden shrink-0 p-1 text-sky-900"
+            onClick={() => setMobileNavOpen((o) => !o)}
+            aria-label="Open menu"
+          >
+            <Menu size={24} />
+          </button>
+          <a href="/" className="flex min-w-0 items-center gap-3">
+            <div className="min-w-0">
+              <div className="text-base font-extrabold tracking-tight text-sky-950 sm:text-lg">
+                Remedial Building Australia
+              </div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-900 sm:text-xs sm:tracking-[0.22em]">
+                Technical Remedial Building Platform
+              </div>
             </div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-900 sm:text-xs sm:tracking-[0.22em]">
-              Technical Remedial Building Platform
-            </div>
-          </div>
-        </a>
+          </a>
+        </div>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold text-sky-800 xl:flex">
           <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
@@ -133,6 +149,7 @@ export default function SiteHeader() {
           <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
           <a href="/request-quotes" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</a>
           <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
+          <a href="/industry-jobs" className="whitespace-nowrap hover:text-red-700 transition">Industry Jobs</a>
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
@@ -145,18 +162,31 @@ export default function SiteHeader() {
               <span className="hidden sm:inline">Login / Create Account</span>
             </a>
           )}
-          <button
-            className="xl:hidden shrink-0 p-1"
-            onClick={() => setMobileNavOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            <Menu size={22} />
-          </button>
         </div>
       </div>
-      {mobileNavOpen && (
-        <div className="border-t border-sky-100 bg-white xl:hidden">
-          <nav className="flex flex-col">
+      </header>
+      {/* Mobile slide-in drawer (off-canvas from the left) — rendered outside the
+          blurred <header> so its fixed positioning isn't clipped by the hero. */}
+      <div
+        className={`fixed inset-0 z-[60] xl:hidden ${mobileNavOpen ? "" : "pointer-events-none"}`}
+        aria-hidden={!mobileNavOpen}
+      >
+        {/* Backdrop */}
+        <div
+          onClick={() => setMobileNavOpen(false)}
+          className={`absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 ${mobileNavOpen ? "opacity-100" : "opacity-0"}`}
+        />
+        {/* Panel */}
+        <div
+          className={`absolute left-0 top-0 flex h-full w-80 max-w-[85%] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${mobileNavOpen ? "translate-x-0" : "-translate-x-full"}`}
+        >
+          <div className="flex items-center justify-between border-b border-sky-100 px-5 py-4">
+            <span className="text-sm font-extrabold uppercase tracking-[0.15em] text-sky-950">Menu</span>
+            <button onClick={() => setMobileNavOpen(false)} aria-label="Close menu" className="p-1 text-slate-500 transition hover:text-red-700">
+              <X size={22} />
+            </button>
+          </div>
+          <nav className="flex flex-1 flex-col overflow-y-auto">
             <a href="/" onClick={() => setMobileNavOpen(false)} className={mRow}>Home</a>
 
             {/* Repair Systems — expandable */}
@@ -206,9 +236,10 @@ export default function SiteHeader() {
             <a href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</a>
             <a href="/request-quotes" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</a>
             <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className={mRow}>News &amp; Insights</a>
+            <a href="/industry-jobs" onClick={() => setMobileNavOpen(false)} className={mRow}>Industry Jobs</a>
           </nav>
         </div>
-      )}
-    </header>
+      </div>
+    </>
   );
 }

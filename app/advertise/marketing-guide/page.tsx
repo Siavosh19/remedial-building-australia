@@ -381,23 +381,29 @@ export default function MarketingGuidePage() {
             agreed with you — our team can assist with artwork.{" "}
             <strong>Banner advertising is a separate placement — it is not included in any Gold or Silver subscription.</strong>
           </p>
-          <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200">
-            <table className="w-full border-collapse text-sm">
+          <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
+            <table className="w-full min-w-[640px] border-collapse text-sm">
               <thead>
                 <tr className="bg-sky-950 text-white">
                   <th className="px-4 py-3 text-left font-bold">Placement</th>
-                  <th className="px-4 py-3 text-right font-bold">Starting Rate (ex GST)</th>
+                  <th className="px-4 py-3 text-left font-bold">Starting Rate (ex GST)</th>
+                  <th className="px-4 py-3 text-left font-bold">Preview</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  ["Directory page banner — 1 of 3 slots", "From $395 / month"],
-                  ["Industry News page banner — 1 of 3 slots", "From $295 / month"],
-                  ["Both pages (bundle)", "From $545 / month"],
-                ].map(([p, r], i) => (
-                  <tr key={p} className={i % 2 ? "bg-slate-50" : "bg-white"}>
-                    <td className="px-4 py-3 text-slate-700">{p}</td>
-                    <td className="px-4 py-3 text-right font-bold text-sky-950">{r}</td>
+                  { p: "Directory page banner — 1 of 3 slots", r: "From $395 / month", href: "/advertise/banner-layout#directory", preview: "See where each banner appears →" },
+                  { p: "Industry News page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#industry-news", preview: "See where each banner appears →" },
+                  { p: "News article page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#article", preview: "See where each banner appears →" },
+                ].map((row, i) => (
+                  <tr key={row.p} className={i % 2 ? "bg-slate-50" : "bg-white"}>
+                    <td className="px-4 py-3 text-slate-700">{row.p}</td>
+                    <td className="px-4 py-3 text-left font-bold text-sky-950">{row.r}</td>
+                    <td className="px-4 py-3 text-left">
+                      <a href={row.href} className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">
+                        {row.preview}
+                      </a>
+                    </td>
                   </tr>
                 ))}
               </tbody>

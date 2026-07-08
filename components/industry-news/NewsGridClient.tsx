@@ -37,7 +37,21 @@ function excerpt(summary: string, maxLen = 155): string {
   return summary.slice(0, maxLen).replace(/\s+\S*$/, "") + "…";
 }
 
-const ARTICLES_PER_PAGE = 12;
+const ARTICLES_PER_PAGE = 6;
+
+// Windowed pagination: always show first + last, a window around the current
+// page, and "…" gaps. Keeps the active page visible/highlighted past page 7.
+function pageList(current: number, total: number): (number | "…")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | "…")[] = [1];
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  if (start > 2) pages.push("…");
+  for (let p = start; p <= end; p++) pages.push(p);
+  if (end < total - 1) pages.push("…");
+  pages.push(total);
+  return pages;
+}
 
 function getTime(d: string): number {
   if (!d) return -Infinity;
@@ -305,19 +319,28 @@ export function NewsGridClient({ articles }: { articles: NewsArticle[] }) {
                 >
                   ← Previous
                 </button>
-                {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`rounded-lg border px-3.5 py-2.5 text-sm font-semibold shadow-sm transition ${
-                      page === currentPage
-                        ? "border-sky-950 bg-sky-950 text-white"
-                        : "border-slate-200 bg-white text-slate-600 hover:border-sky-300 hover:text-sky-800"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+                {pageList(currentPage, totalPages).map((page, i) =>
+                  page === "…" ? (
+                    <span
+                      key={`gap-${i}`}
+                      className="px-1.5 py-2.5 text-sm font-semibold text-slate-400"
+                    >
+                      …
+                    </span>
+                  ) : (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`rounded-lg border px-3.5 py-2.5 text-sm font-semibold shadow-sm transition ${
+                        page === currentPage
+                          ? "border-sky-950 bg-sky-950 text-white"
+                          : "border-slate-200 bg-white text-slate-600 hover:border-sky-300 hover:text-sky-800"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}

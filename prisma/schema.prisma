@@ -1165,6 +1165,195 @@ model RbaInsightsArticle {
   @@map("rba_insights_articles")
 }
 
+// ── Industry Jobs Board ───────────────────────────────────────────────────────
+// A self-contained paid classifieds-style jobs board. Deliberately separate from
+// the directory: employers sign in via passwordless magic link (job_employers),
+// pay per 30-day listing (Stripe one-time), and applicants apply with no account.
+// The only touchpoint with the directory is a soft, optional company_id link.
+
+enum JobStatus {
+  draft            // being created, not yet paid
+  pending_payment  // checkout started, awaiting Stripe confirmation
+  active           // live and public
+  expired          // past expiry / closing date
+  rejected         // pulled by admin
+}
+
+enum JobEmploymentType {
+  full_time
+  part_time
+  contract
+  casual
+  temporary
+  apprenticeship
+}
+
+enum JobExperienceLevel {
+  entry
+  junior
+  mid
+  senior
+  lead
+  executive
+}
+
+enum JobApplicationStatus {
+  new
+  reviewed
+  contacted
+  closed
+}
+
+enum JobPaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+model JobEmployer {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  company_name String?
+  contact_name String?
+  phone        String?
+  website      String?
+  logo_url     String?
+  company_id   Int?     // optional soft link to a directory Company (not enforced)
+  last_login_at DateTime?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  jobs Job[]
+
+  @@map("job_employers")
+}
+
+model JobCategory {
+  id            Int     @id @default(autoincrement())
+  name          String
+  slug          String  @unique
+  group         String  // "Strata & Property" | "Consulting & Engineering" | …
+  display_order Int     @default(0)
+  is_active     Boolean @default(true)
+
+  jobs Job[]
+
+  @@index([group])
+  @@map("job_categories")
+}
+
+model Job {
+  id               Int                 @id @default(autoincrement())
+  slug             String              @unique
+  employer_id      Int
+  category_id      Int?
+  title            String
+  company_name     String
+  company_logo_url String?
+  company_website  String?
+  company_about    String?
+  location         String
+  state            LocationState?
+  employment_type  JobEmploymentType?
+  experience_level JobExperienceLevel?
+  salary           String?
+  description      String              // "About the Role"
+  responsibilities String?
+  requirements     String?
+  contact_email    String
+  closing_date     DateTime?
+  status           JobStatus           @default(draft)
+  is_featured      Boolean             @default(false)
+  company_id       Int?                // soft link to directory Company for "View Profile"
+  meta_title       String?
+  meta_description String?
+  views            Int                 @default(0)
+  published_at     DateTime?
+  expires_at       DateTime?
+  featured_until   DateTime?
+  reminder_sent    Boolean             @default(false)
+  admin_notes      String?
+  created_at       DateTime            @default(now())
+  updated_at       DateTime            @updatedAt
+
+  employer     JobEmployer      @relation(fields: [employer_id], references: [id], onDelete: Cascade)
+  category     JobCategory?     @relation(fields: [category_id], references: [id])
+  applications JobApplication[]
+  payments     JobPayment[]
+
+  @@index([status])
+  @@index([is_featured])
+  @@index([category_id])
+  @@index([state])
+  @@index([employer_id])
+  @@index([published_at])
+  @@index([expires_at])
+  @@map("jobs")
+}
+
+model JobApplication {
+  id            Int                  @id @default(autoincrement())
+  job_id        Int
+  full_name     String
+  email         String
+  phone         String?
+  resume_url    String?
+  resume_name   String?
+  cover_message String?
+  status        JobApplicationStatus @default(new)
+  created_at    DateTime             @default(now())
+
+  job Job @relation(fields: [job_id], references: [id], onDelete: Cascade)
+
+  @@index([job_id])
+  @@index([status])
+  @@map("job_applications")
+}
+
+// Admin-editable jobs pricing — single source of truth for the jobs board, kept
+// separate from the directory `plans` table. `key` is stable ("standard" /
+// "featured" / add-on keys); admin sets amount + duration; checkout reads here.
+model JobPricing {
+  id                Int      @id @default(autoincrement())
+  key               String   @unique
+  name              String
+  description       String?
+  kind              String   @default("listing") // "listing" | "addon"
+  amount_cents      Int
+  currency          String   @default("aud")
+  duration_days     Int      @default(30)
+  features          String[]
+  stripe_product_id String?
+  stripe_price_id   String?
+  is_active         Boolean  @default(true)
+  display_order     Int      @default(0)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  @@map("job_pricing")
+}
+
+model JobPayment {
+  id                    Int              @id @default(autoincrement())
+  job_id                Int
+  employer_id           Int
+  plan_key              String           // "standard" | "featured"
+  is_featured           Boolean          @default(false)
+  amount_cents          Int
+  currency              String           @default("aud")
+  status                JobPaymentStatus @default(pending)
+  stripe_session_id     String?
+  stripe_payment_intent String?
+  created_at            DateTime         @default(now())
+
+  job Job @relation(fields: [job_id], references: [id], onDelete: Cascade)
+
+  @@index([job_id])
+  @@index([status])
+  @@map("job_payments")
+}
+
 // expert_advice_requests is written directly via @supabase/supabase-js (not Prisma mutations).
 // This model declaration exists solely to prevent prisma db push from dropping the table.
 model ExpertAdviceRequest {

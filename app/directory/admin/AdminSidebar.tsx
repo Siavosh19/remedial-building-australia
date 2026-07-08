@@ -25,6 +25,7 @@ import {
   Lightbulb,
   Newspaper,
   Tags,
+  Briefcase,
 } from "lucide-react";
 
 const NAV = [
@@ -35,6 +36,7 @@ const NAV = [
   { href: "/directory/admin/client-quote-requests", label: "Client Quote Requests", icon: ClipboardList },
   { href: "/directory/admin/client-users", label: "Client Users", icon: Users },
   { href: "/directory/admin/expert-advice-requests", label: "Expert Advice Requests", icon: Lightbulb },
+  { href: "/directory/admin/jobs", label: "Jobs Management", icon: Briefcase },
   { href: "/directory/admin/suppliers", label: "Suppliers", icon: Building2 },
   { href: "/directory/admin/supplier-marketing", label: "Promotions", icon: Megaphone },
   { href: "/directory/admin/billing", label: "Billing", icon: CreditCard },

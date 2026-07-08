@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, Check, Users, HardHat, Droplets, Layers, Search, ScanSearch, ClipboardCheck, FileSearch, Calculator, Wrench, Building2, LineChart } from "lucide-react";
+import { ArrowRight, Check, Users, HardHat, Droplets, Layers, Search, ScanSearch, ClipboardCheck, FileSearch, Calculator, Wrench, Building2, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
+import HomeJobsPanel from "@/components/jobs/HomeJobsPanel";
 
 // Home-page Expert Remedial Advice services.
 // Drives the interactive left-list / carousel / details layout.
@@ -111,12 +112,72 @@ const expertAdviceCards = [
   },
 ];
 
-// Simple "How it works" steps shown beneath the Expert Remedial Advice section.
-const expertAdviceSteps = [
-  { step: "1", title: "Select a Service", text: "Choose the independent advice that fits your situation." },
-  { step: "2", title: "Share Your Documents", text: "Send plans, photos, reports or quotes for review." },
-  { step: "3", title: "Receive Expert Advice", text: "Get clear, independent written guidance you can act on." },
-];
+// Compact Expert Remedial Advice card shown in the News section's right column.
+function HomeExpertAdviceCard() {
+  const [active, setActive] = useState(0);
+  // Auto-rotate the highlighted service top-to-bottom; the image follows.
+  useEffect(() => {
+    const t = setInterval(() => setActive((i) => (i + 1) % expertAdviceCards.length), 2600);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      {/* Heading + red underline */}
+      <div className="px-6 pt-5">
+        <h3 className="text-xl font-extrabold tracking-tight text-sky-950">Expert Remedial Advice</h3>
+        <div className="mt-2 h-[3px] w-40" style={{ background: "linear-gradient(to right, #b91c1c, rgba(185,28,28,0))" }} />
+      </div>
+
+      {/* Rotating image — follows the auto-selected service */}
+      <div className="relative mx-6 mt-4 h-56 shrink-0 overflow-hidden rounded-xl bg-slate-200 sm:h-64">
+        {expertAdviceCards.map((s, i) => (
+          <img
+            key={s.title}
+            src={s.image}
+            alt={s.title}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              i === active ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-sky-950/70 via-transparent to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 p-4">
+          <div className="text-sm font-extrabold leading-tight text-white drop-shadow">
+            {expertAdviceCards[active].title}
+          </div>
+        </div>
+      </div>
+
+      {/* Services — each links to its own page; active one is highlighted */}
+      <div className="flex flex-1 flex-col px-4 py-5">
+        <ul className="flex flex-col gap-1">
+          {expertAdviceCards.map((s, i) => (
+            <li key={s.title}>
+              <a
+                href={s.href}
+                onMouseEnter={() => setActive(i)}
+                className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                  i === active
+                    ? "bg-sky-50 text-sky-950 ring-1 ring-sky-100"
+                    : "text-slate-800 hover:bg-slate-50"
+                }`}
+              >
+                <Check size={16} className="shrink-0 text-emerald-600" />
+                {s.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a
+          href="/expert-remedial-advice"
+          className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-sky-950 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-sky-900"
+        >
+          View All Services <ArrowRight size={14} />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 interface CoreService {
   title: string;
@@ -250,8 +311,6 @@ export default function HomeClient() {
   const [newsSlides, setNewsSlides] = useState<NewsSlide[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
   const [directoryQuery, setDirectoryQuery] = useState("");
-  const [activeExpertService, setActiveExpertService] = useState(0);
-  const [expertPaused, setExpertPaused] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -276,15 +335,6 @@ export default function HomeClient() {
     }, 3500);
     return () => clearInterval(timer);
   }, [carouselImages.length]);
-
-  // Auto-advance the Expert Remedial Advice carousel (pauses on hover/focus)
-  useEffect(() => {
-    if (expertPaused) return;
-    const timer = setInterval(() => {
-      setActiveExpertService((i) => (i + 1) % expertAdviceCards.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [expertPaused]);
 
   useEffect(() => {
     async function fetchNews() {
@@ -344,7 +394,6 @@ export default function HomeClient() {
   }, []);
 
   const activeHero = heroSlides[heroIndex];
-  const activeExpert = expertAdviceCards[activeExpertService];
 
   return (
     <div className="min-h-screen bg-white text-sky-950">
@@ -369,9 +418,19 @@ export default function HomeClient() {
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-r from-sky-950/95 via-sky-800/75 to-sky-700/20" />
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent" />
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0"
+            style={{
+              height: "200px",
+              background:
+                "linear-gradient(to top, rgb(248,250,252) 0%, rgba(255,255,255,0.9) 35%, rgba(255,255,255,0.35) 70%, rgba(255,255,255,0) 100%)",
+            }}
+          />
 
-          <div className="relative mx-auto max-w-7xl px-10 py-24 md:px-16 md:py-28">
+          <div
+            className="relative mx-auto max-w-7xl px-6 py-20 sm:px-10 sm:py-24 md:px-16 md:py-28"
+            style={{ paddingBottom: "112px" }}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={heroIndex}
@@ -415,49 +474,34 @@ export default function HomeClient() {
           </div>
         </section>
 
-        {/* ── SEO intro / about ───────────────────────────────────────────── */}
-        <section className="border-b border-slate-200 bg-white">
-          <div className="mx-auto max-w-4xl px-6 py-14">
-            <h1 className="text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">
-              Remedial Building Australia
-            </h1>
-            <div className="mt-5 flex flex-col gap-4 text-base leading-7 text-slate-600">
-              <p>
-                Remedial Building Australia is an independent knowledge platform for the remedial
-                building sector — bringing together remedial building advice, defect guidance,
-                repair system information and remedial specifications for strata and apartment
-                buildings across the country. From strata remedial works to recurring apartment
-                building defects, our resources help you understand the problem before any repair
-                begins.
-              </p>
-              <p>
-                Whether you are sourcing{" "}
-                <a href="/remedial-building-services" className="font-semibold text-sky-700 hover:text-red-700">Remedial Building Services</a>,
-                planning{" "}
-                <a href="/building-remediation" className="font-semibold text-sky-700 hover:text-red-700">Building Remediation</a>{" "}
-                works, preparing{" "}
-                <a href="/remedial-repair-specifications" className="font-semibold text-sky-700 hover:text-red-700">Remedial Repair Specifications</a>,
-                or comparing{" "}
-                <a href="/remedial-building-solutions" className="font-semibold text-sky-700 hover:text-red-700">Remedial Building Solutions</a>,
-                our resources span remedial construction, concrete repair, waterproofing and façade
-                rectification to help owners, committees and consultants make confident decisions.
-                You can also find{" "}
-                <a href="/remedial-builders" className="font-semibold text-sky-700 hover:text-red-700">Remedial Builders</a>{" "}
-                through our national directory.
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* ── Find Strata Building Specialists ────────────────────────────── */}
-        <section className="border-y border-slate-200 bg-slate-50 py-14">
-          <div className="mx-auto max-w-7xl px-5">
+        <section
+          className="relative overflow-hidden"
+          style={{
+            background: "linear-gradient(#ffffff 0%, rgb(248,250,252) 120px)",
+            paddingTop: "72px",
+            paddingBottom: "85px",
+          }}
+        >
+          {/* Grey-to-white separator fade at the very bottom of the section */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0"
+            style={{
+              height: "70px",
+              background:
+                "linear-gradient(to bottom, rgba(51,65,85,0) 0%, rgba(51,65,85,0.22) 60%, rgba(71,85,105,0.4) 85%, #ffffff 100%)",
+            }}
+          />
+
+          <div className="relative mx-auto max-w-7xl px-5" style={{ marginTop: "-24px" }}>
             <div className="mb-8">
               <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry Directory</div>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 Find Strata Building Specialists
               </h2>
-              <p className="mt-2 text-base text-slate-500">
+              <div className="mt-3 h-[3px] w-44" style={{ background: "linear-gradient(to right, #b91c1c, rgba(185,28,28,0))" }} />
+              <p className="mt-3 text-base text-slate-900">
                 Search Australia&rsquo;s strata building services directory
               </p>
             </div>
@@ -469,7 +513,7 @@ export default function HomeClient() {
                 const q = directoryQuery.trim();
                 window.location.href = q ? `/directory?q=${encodeURIComponent(q)}` : "/directory";
               }}
-              className="mb-8 flex max-w-2xl gap-2"
+              className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center"
             >
               <input
                 type="text"
@@ -480,9 +524,9 @@ export default function HomeClient() {
               />
               <button
                 type="submit"
-                className="shrink-0 rounded-xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
+                className="w-full shrink-0 rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 sm:w-auto"
               >
-                Go to Directory Page
+                Browse the Full Directory
               </button>
             </form>
 
@@ -509,14 +553,24 @@ export default function HomeClient() {
               ))}
             </div>
 
-            {/* Browse all link */}
-            <div className="mt-7 text-center">
-              <a
-                href="/directory"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-sky-800 shadow-sm transition hover:border-sky-300 hover:text-red-700"
-              >
-                Browse the Full Directory <ArrowRight size={15} />
-              </a>
+            {/* Directory CTAs */}
+            <div className="text-center" style={{ marginTop: "55px" }}>
+              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <a
+                  href="/directory/signup?type=directory"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold shadow-sm transition hover:bg-sky-50 sm:w-auto"
+                  style={{ color: "rgb(7,89,133)", border: "1.5px solid rgb(7,89,133)" }}
+                >
+                  List Your Business
+                </a>
+                <a
+                  href="/request-quotes"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold shadow-sm transition hover:bg-red-50 sm:w-auto"
+                  style={{ color: "rgb(185,28,28)", border: "1.5px solid rgb(185,28,28)" }}
+                >
+                  Request a Quote <ArrowRight size={15} />
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -526,11 +580,14 @@ export default function HomeClient() {
             <div>
               <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">News &amp; Insights</div>
               <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-5xl">Latest News &amp; Insights</h2>
+              <div className="mt-3 h-[3px] w-44" style={{ background: "linear-gradient(to right, #b91c1c, rgba(185,28,28,0))" }} />
             </div>
             <a href="/industry-news" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
           </div>
 
-          <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-[1fr_1fr]">
+          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+            {/* News column — image on top, latest 5 below */}
+            <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             {/* Rotating image panel — images loaded dynamically from /Images/News/ */}
             <div className="relative min-h-[280px] bg-slate-200">
               {carouselImages.length > 0 ? (
@@ -581,7 +638,7 @@ export default function HomeClient() {
                 <div className="py-12 text-center">
                   <p className="text-sm text-slate-400">No recent articles.</p>
                 </div>
-              ) : newsSlides.map((slide, idx) => {
+              ) : newsSlides.slice(0, 5).map((slide, idx) => {
                 const dateStr = slide.publishedDate
                   ? (() => { const d = new Date(slide.publishedDate); return isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }); })()
                   : "";
@@ -625,175 +682,45 @@ export default function HomeClient() {
               })}
               </div>
             </div>
+            </div>
+            {/* Right column — Expert Remedial Advice card above Industry Jobs */}
+            <div className="flex flex-col gap-6 self-start">
+              <HomeExpertAdviceCard />
+              <HomeJobsPanel />
+            </div>
           </div>
         </section>
 
-        {/* ── Expert Remedial Advice ───────────────────────────────────────── */}
-        <section className="border-y border-slate-100 bg-slate-50/60">
-          <div className="mx-auto max-w-7xl px-5 py-20">
-            <div className="mb-10">
-              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Expert Remedial Advice</div>
-              <h2 className="mt-2 max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-4xl">
-                Independent desktop advice for building defects, scopes, budgets and strata planning
-              </h2>
-              <p className="mt-3 max-w-3xl text-base leading-7 text-slate-500">
-                Practical, independent guidance from experienced professionals to help you make confident decisions at every stage of the remedial process.
+        {/* ── Remedial Building Australia (intro) ─────────────────────────── */}
+        <section className="mx-auto max-w-7xl px-5 pt-4 pb-10">
+          <div className="rounded-2xl border-l-4 border-red-700 bg-[#faf6ee] p-8 shadow-sm md:p-10">
+            <h1 className="text-2xl font-extrabold tracking-tight text-sky-950 md:text-3xl">
+              Remedial Building Australia
+            </h1>
+            <div className="mt-4 flex flex-col gap-4 text-sm leading-7 text-slate-600 md:text-base">
+              <p>
+                Remedial Building Australia is an independent knowledge platform for the remedial
+                building sector — bringing together remedial building advice, defect guidance,
+                repair system information and remedial specifications for strata and apartment
+                buildings across the country. From strata remedial works to recurring apartment
+                building defects, our resources help you understand the problem before any repair
+                begins.
               </p>
-            </div>
-
-            {/* Interactive: service list · preview carousel · selected details */}
-            <div
-              className="grid items-stretch gap-6 lg:grid-cols-12"
-              onMouseEnter={() => setExpertPaused(true)}
-              onMouseLeave={() => setExpertPaused(false)}
-            >
-              {/* Left — service list */}
-              <div className="lg:col-span-3">
-                <ul className="flex flex-col gap-2.5">
-                  {expertAdviceCards.map((s, i) => {
-                    const ListIcon = s.Icon;
-                    const active = i === activeExpertService;
-                    return (
-                      <li key={s.title}>
-                        <button
-                          type="button"
-                          onClick={() => setActiveExpertService(i)}
-                          aria-pressed={active}
-                          className={`flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition ${
-                            active
-                              ? "border-red-200 bg-white text-sky-950 shadow-sm ring-1 ring-red-100"
-                              : "border-slate-200 bg-white/60 text-sky-800 hover:border-sky-300 hover:bg-white hover:text-red-700"
-                          }`}
-                        >
-                          <span
-                            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition ${
-                              active ? "bg-red-700 text-white" : "bg-slate-100 text-sky-800"
-                            }`}
-                          >
-                            <ListIcon size={18} />
-                          </span>
-                          <span className="text-sm font-semibold leading-snug">{s.title}</span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-              {/* Middle — preview carousel (~1.3× larger) */}
-              <div className="lg:col-span-5">
-                <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                  <div className="relative h-72 w-full overflow-hidden sm:h-80 lg:h-[23rem]">
-                    {expertAdviceCards.map((s, i) => (
-                      <img
-                        key={s.title}
-                        src={s.image}
-                        alt={s.title}
-                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                          i === activeExpertService ? "opacity-100" : "opacity-0"
-                        }`}
-                      />
-                    ))}
-                    <div className="absolute inset-0 bg-gradient-to-t from-sky-950/80 via-sky-950/15 to-transparent" />
-
-                    {/* Caption */}
-                    <div className="absolute inset-x-0 bottom-0 p-6">
-                      <div className="text-xs font-bold uppercase tracking-[0.22em] text-white/80">Expert Advice</div>
-                      <div className="mt-1 text-xl font-extrabold leading-tight text-white md:text-2xl">{activeExpert.title}</div>
-                    </div>
-
-                    {/* Arrows */}
-                    <button
-                      type="button"
-                      aria-label="Previous service"
-                      onClick={() =>
-                        setActiveExpertService((i) => (i - 1 + expertAdviceCards.length) % expertAdviceCards.length)
-                      }
-                      className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-sky-950 shadow-md ring-1 ring-slate-200 transition hover:bg-white hover:text-red-700"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Next service"
-                      onClick={() => setActiveExpertService((i) => (i + 1) % expertAdviceCards.length)}
-                      className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-sky-950 shadow-md ring-1 ring-slate-200 transition hover:bg-white hover:text-red-700"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
-                  </div>
-
-                  {/* Dots */}
-                  <div className="flex items-center justify-center gap-2 py-4">
-                    {expertAdviceCards.map((s, i) => (
-                      <button
-                        key={s.title}
-                        type="button"
-                        aria-label={`Show ${s.title}`}
-                        aria-current={i === activeExpertService}
-                        onClick={() => setActiveExpertService(i)}
-                        className={`h-2.5 rounded-full transition-all ${
-                          i === activeExpertService ? "w-7 bg-red-700" : "w-2.5 bg-slate-300 hover:bg-slate-400"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right — selected service details */}
-              <div className="lg:col-span-4">
-                <div className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-700 ring-1 ring-red-100">
-                    <activeExpert.Icon size={24} />
-                  </span>
-                  <h3 className="mt-4 text-xl font-extrabold leading-snug text-sky-950">{activeExpert.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-500">{activeExpert.detail}</p>
-
-                  <ul className="mt-5 flex flex-col gap-2.5">
-                    {activeExpert.points.map((p) => (
-                      <li key={p} className="flex items-start gap-2.5 text-sm font-medium text-sky-900">
-                        <Check size={16} className="mt-0.5 shrink-0 text-red-700" />
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-auto flex flex-wrap items-center gap-3 pt-7">
-                    <a
-                      href={activeExpert.href}
-                      className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-red-800"
-                    >
-                      {activeExpert.cta}
-                      <ArrowRight size={15} />
-                    </a>
-                    <a
-                      href="/expert-remedial-advice"
-                      className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700"
-                    >
-                      All Services
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* How it works */}
-            <div className="mt-14">
-              <div className="mb-6 text-center text-sm font-bold uppercase tracking-[0.22em] text-sky-800">How it works</div>
-              <div className="grid gap-5 sm:grid-cols-3">
-                {expertAdviceSteps.map((s) => (
-                  <div key={s.step} className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-950 text-base font-extrabold text-white">
-                      {s.step}
-                    </span>
-                    <div>
-                      <div className="text-base font-extrabold text-sky-950">{s.title}</div>
-                      <p className="mt-1 text-sm leading-6 text-slate-500">{s.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p>
+                Whether you are sourcing{" "}
+                <a href="/remedial-building-services" className="font-semibold text-sky-700 hover:text-red-700">Remedial Building Services</a>,
+                planning{" "}
+                <a href="/building-remediation" className="font-semibold text-sky-700 hover:text-red-700">Building Remediation</a>{" "}
+                works, preparing{" "}
+                <a href="/remedial-repair-specifications" className="font-semibold text-sky-700 hover:text-red-700">Remedial Repair Specifications</a>,
+                or comparing{" "}
+                <a href="/remedial-building-solutions" className="font-semibold text-sky-700 hover:text-red-700">Remedial Building Solutions</a>,
+                our resources span remedial construction, concrete repair, waterproofing and façade
+                rectification to help owners, committees and consultants make confident decisions.
+                You can also find{" "}
+                <a href="/remedial-builders" className="font-semibold text-sky-700 hover:text-red-700">Remedial Builders</a>{" "}
+                through our national directory.
+              </p>
             </div>
           </div>
         </section>
@@ -887,6 +814,7 @@ export default function HomeClient() {
               <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
               <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
               <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <a href="/industry-jobs" className="hover:text-sky-700">Industry Jobs</a>
             </div>
             <div className="flex flex-col gap-2">
               <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
