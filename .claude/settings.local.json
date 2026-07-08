@@ -141,7 +141,13 @@
       "Bash(lsof -iTCP -sTCP:LISTEN -n -P)",
       "Bash(git log *)",
       "Bash(echo \"---EXIT:$?---\")",
-      "Bash(launchctl list *)"
+      "Bash(launchctl list *)",
+      "Bash(git -C /Users/siasepehrara/remedial-building-australia log --all --oneline --pretty=format:\"%h %s\")",
+      "Bash(git -C /Users/siasepehrara/remedial-building-australia log --all --oneline)",
+      "Bash(mv \"Request Quote.jpg\" \"request-quotes.jpg\")",
+      "Bash(mv \"Directory Listing.png\" \"directory-listing.png\")",
+      "Bash(mv \"Supplier Portal.png\" \"supplier-portal.png\")",
+      "Bash(mv \"Consultants.png\" \"consultants.png\")"
     ]
   }
 }

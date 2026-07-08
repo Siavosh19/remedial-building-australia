@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Building2, Package, UserCog, ClipboardList, ChevronRight, type LucideIcon } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
@@ -14,49 +15,97 @@ type CardId = AccountType | "client";
 type CardDef = {
   id: CardId;
   title: string;
-  subtitle: string;
+  subtitle: ReactNode;
   Icon: LucideIcon;
+  image: string;
   href?: string; // client card routes to the separate client signup
-  badge?: string;
+  disabled?: boolean; // shown but not selectable — feature under development
 };
 
-// Soft accent tile per card (matches the colour-coded mockup look)
-const ACCENTS: Record<CardId, { tile: string; icon: string }> = {
-  client: { tile: "bg-sky-100", icon: "text-sky-700" },
-  directory: { tile: "bg-emerald-100", icon: "text-emerald-700" },
-  supplier: { tile: "bg-amber-100", icon: "text-amber-700" },
-  ai_scope: { tile: "bg-violet-100", icon: "text-violet-700" },
-};
+const IMAGE_BASE = "/Images/signup-page";
+
+// Bold + capitalised identity phrase inside the card copy
+const Who = ({ children }: { children: ReactNode }) => (
+  <strong className="font-bold text-black">{children}</strong>
+);
 
 const CARDS: CardDef[] = [
   {
     id: "client",
     title: "Request Quotes",
-    subtitle:
-      "Strata managers, owners corporations, building managers and property owners — create a client account to request quotes for building works from listed businesses.",
+    subtitle: (
+      <>
+        I'm a <Who>Strata Manager</Who>, <Who>Owners Corporation</Who>, <Who>Building Manager</Who> or{" "}
+        <Who>Property Owner</Who>, and I want to request quotes for building or remedial works from listed businesses.
+      </>
+    ),
     Icon: ClipboardList,
+    image: `${IMAGE_BASE}/request-quotes.jpg`,
     href: "/client/signup",
   },
   {
     id: "directory",
-    title: "Directory Listing",
-    subtitle: "List your building company — contractor, consultant, engineer — in the professional directory.",
+    title: "List My Business",
+    subtitle: (
+      <>
+        I run a <Who>Building or Trade Business</Who> — <Who>Contractor</Who>, <Who>Consultant</Who> or{" "}
+        <Who>Engineer</Who> — and I want to list it in the directory to receive quote requests and win more work.
+      </>
+    ),
     Icon: Building2,
+    image: `${IMAGE_BASE}/directory-listing.png`,
   },
   {
     id: "supplier",
     title: "Supplier Portal",
-    subtitle: "List your products, manage promotions, and reach building professionals across Australia.",
+    subtitle: (
+      <>
+        I'm a <Who>Materials Supplier</Who> and I want to list, manage and promote my products to building professionals
+        across Australia.
+      </>
+    ),
     Icon: Package,
+    image: `${IMAGE_BASE}/supplier-portal.png`,
+    disabled: true,
   },
   {
     id: "ai_scope",
-    title: "Consultant Login",
-    subtitle: "For remedial building consultants. AI-powered scope of works builder — coming soon.",
+    title: "Consultant / Engineer",
+    subtitle: (
+      <>
+        I'm a <Who>Remedial Building Consultant</Who> or <Who>Engineer</Who> and I want to use the AI-powered scope of
+        works builder to generate site-ready scope documents.
+      </>
+    ),
     Icon: UserCog,
-    badge: "Coming soon",
+    image: `${IMAGE_BASE}/consultants.png`,
+    disabled: true,
   },
 ];
+
+// Distinct soft column background + button colour per card
+const THEME: Record<CardId, { col: string; btn: string; badge: string }> = {
+  client: {
+    col: "bg-sky-50",
+    btn: "border-sky-900 text-sky-900 group-hover:bg-sky-900 group-hover:text-white",
+    badge: "",
+  },
+  directory: {
+    col: "bg-emerald-50",
+    btn: "border-emerald-900 text-emerald-900 group-hover:bg-emerald-900 group-hover:text-white",
+    badge: "",
+  },
+  supplier: {
+    col: "bg-amber-50",
+    btn: "",
+    badge: "bg-amber-200 text-amber-900",
+  },
+  ai_scope: {
+    col: "bg-violet-50",
+    btn: "",
+    badge: "bg-violet-200 text-violet-900",
+  },
+};
 
 type FormState = {
   fullName: string;
@@ -88,6 +137,7 @@ export default function DirectorySignupPage() {
   const phoneCheck = form.phone ? validateAuPhone(form.phone) : null;
 
   function selectCard(card: CardDef) {
+    if (card.disabled) return;
     if (card.href) {
       router.push(card.href);
       return;
@@ -135,7 +185,7 @@ export default function DirectorySignupPage() {
               <div className="py-6">
                 <button
                   onClick={() => { setStep("type"); setAccountType(null); }}
-                  className="mb-6 flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800"
+                  className="mb-6 flex items-center gap-1.5 text-lg font-bold text-slate-900 hover:text-black"
                 >
                   &larr; Back
                 </button>
@@ -163,48 +213,81 @@ export default function DirectorySignupPage() {
             ) : step === "type" ? (
               <>
                 <div className="mb-6">
-                  <Link href="/" className="text-sm text-slate-500 hover:text-slate-800">&larr; Back to home</Link>
+                  <Link href="/" className="text-lg font-bold text-slate-900 hover:text-black">&larr; Back to home</Link>
                 </div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Get started</p>
-                <h1 className="mt-2 text-3xl font-extrabold text-slate-950">What would you like to do?</h1>
+                <h1 className="mt-2 text-3xl font-extrabold text-slate-950">Which best describes you?</h1>
                 <p className="mt-3 max-w-2xl text-slate-600">
-                  Choose the option that matches how you want to use the platform. We'll take you to the right place.
+                  Choose the card that matches how you want to use the platform, and we'll take you to the right place.
                 </p>
 
-                <div className="mt-10 grid gap-6 sm:grid-cols-2">
+                <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   {CARDS.map((card) => {
-                    const Icon = card.Icon;
-                    const accent = ACCENTS[card.id];
+                    const disabled = !!card.disabled;
+                    const theme = THEME[card.id];
                     return (
-                      <button
+                      <div
                         key={card.id}
+                        role={disabled ? undefined : "button"}
+                        tabIndex={disabled ? undefined : 0}
+                        aria-disabled={disabled}
                         onClick={() => selectCard(card)}
-                        className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-7 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-400 hover:shadow-md"
+                        onKeyDown={(e) => {
+                          if (disabled) return;
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            selectCard(card);
+                          }
+                        }}
+                        className={`group relative flex flex-col overflow-hidden rounded-2xl border border-red-400 text-left shadow-sm transition ${theme.col} ${
+                          disabled
+                            ? "cursor-not-allowed"
+                            : "cursor-pointer hover:-translate-y-1 hover:shadow-lg"
+                        }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${accent.tile} ${accent.icon}`}>
-                            <Icon size={22} />
-                          </span>
-                          <span className="text-lg font-bold text-slate-900 group-hover:text-sky-900">{card.title}</span>
+                        {/* Illustration — white blended out via multiply so it sits on the column colour */}
+                        <div className="relative aspect-square w-full">
+                          <Image
+                            src={card.image}
+                            alt={card.title}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                            className={`object-contain object-bottom mix-blend-multiply transition ${disabled ? "opacity-70 grayscale-[35%]" : ""}`}
+                          />
+                          {disabled ? (
+                            <span className={`absolute right-3 top-3 rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${theme.badge}`}>
+                              Under development
+                            </span>
+                          ) : null}
                         </div>
-                        <span className="mt-3 flex-1 text-sm leading-relaxed text-slate-500">{card.subtitle}</span>
-                        {card.badge ? (
-                          <span className="mt-3 inline-block self-start rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
-                            {card.badge}
-                          </span>
-                        ) : null}
-                        <span className="mt-5 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-sky-950 px-4 py-2.5 text-sm font-semibold text-sky-950 transition group-hover:bg-sky-950 group-hover:text-white">
-                          Create Your Account
-                          <ChevronRight size={16} />
-                        </span>
-                      </button>
+
+                        {/* Body */}
+                        <div className="-mt-6 flex flex-1 flex-col items-center px-5 pb-6 text-center">
+                          <p className="mb-8 text-lg font-medium leading-relaxed text-slate-800">{card.subtitle}</p>
+                          {disabled ? (
+                            <span className="mt-auto inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-black/10 bg-white/60 px-4 py-3 text-base font-semibold text-slate-500">
+                              Coming soon
+                            </span>
+                          ) : (
+                            <span className={`mt-auto inline-flex w-full items-center justify-center gap-1.5 rounded-xl border px-4 py-3 text-base font-semibold transition ${theme.btn}`}>
+                              Create Your Account
+                              <ChevronRight size={18} />
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
 
-                <div className="mt-8 text-sm text-slate-600">
-                  Already have an account?{" "}
-                  <Link href="/directory/login" className="font-semibold text-sky-950 hover:text-sky-700">Sign in</Link>
+                <div className="mt-10 flex flex-wrap items-center gap-3 text-lg text-slate-700">
+                  <span className="font-bold text-slate-900">Already have an account?</span>
+                  <Link
+                    href="/directory/login"
+                    className="inline-flex items-center rounded-xl bg-sky-950 px-5 py-2.5 text-base font-semibold text-white transition hover:bg-sky-800"
+                  >
+                    Sign in
+                  </Link>
                 </div>
               </>
             ) : status?.type === "success" ? (
@@ -221,7 +304,7 @@ export default function DirectorySignupPage() {
               <>
                 <button
                   onClick={() => { setStep("type"); setStatus(null); }}
-                  className="mb-6 flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800"
+                  className="mb-6 flex items-center gap-1.5 text-lg font-bold text-slate-900 hover:text-black"
                 >
                   &larr; Back
                 </button>
@@ -346,9 +429,14 @@ export default function DirectorySignupPage() {
                   </button>
                 </form>
 
-                <div className="mt-6 text-sm text-slate-600">
-                  Already have an account?{" "}
-                  <Link href="/directory/login" className="font-semibold text-sky-950 hover:text-sky-700">Sign in</Link>
+                <div className="mt-8 flex flex-wrap items-center gap-3 text-lg text-slate-700">
+                  <span className="font-bold text-slate-900">Already have an account?</span>
+                  <Link
+                    href="/directory/login"
+                    className="inline-flex items-center rounded-xl bg-sky-950 px-5 py-2.5 text-base font-semibold text-white transition hover:bg-sky-800"
+                  >
+                    Sign in
+                  </Link>
                 </div>
               </>
             )}

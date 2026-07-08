@@ -92,7 +92,7 @@ export default async function QuoteRequestResultsPage({ params }: { params: Prom
   return (
     <div className="space-y-6">
       <div>
-        <Link href={`/client/quote-requests/${r.id}`} className="text-sm text-slate-500 hover:text-slate-800">
+        <Link href={`/client/quote-requests/${r.id}`} className="text-lg font-bold text-slate-900 hover:text-black">
           &larr; Back to request
         </Link>
         <h1 className="mt-2 text-2xl font-extrabold text-slate-900">Choose who to request quotes from</h1>

@@ -71,7 +71,7 @@ export default function NewsEditForm({ article }: { article: Article }) {
   return (
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center justify-between">
-        <a href="/directory/admin/news-articles" className="text-sm font-semibold text-slate-500 hover:text-slate-800">← Back to News Articles</a>
+        <a href="/directory/admin/news-articles" className="text-lg font-bold text-slate-900 hover:text-black">← Back to News Articles</a>
         <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${article.status === "published" ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>{article.status}</span>
       </div>
 

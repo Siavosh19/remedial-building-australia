@@ -31,7 +31,9 @@ export async function POST(request: NextRequest) {
     where: { slug: companySlug, status: "published" },
   });
   if (!company) return NextResponse.json({ error: "Listing not found." }, { status: 404 });
-  if (!company.quote_requests_enabled) {
+  // Quote requests are a Silver+ feature. Free (basic) listings never receive them.
+  const canReceiveQuotes = company.plan_type === "claimed" || company.plan_type === "featured";
+  if (!canReceiveQuotes || !company.quote_requests_enabled) {
     return NextResponse.json({ error: "This business is not currently accepting quote requests." }, { status: 403 });
   }
 

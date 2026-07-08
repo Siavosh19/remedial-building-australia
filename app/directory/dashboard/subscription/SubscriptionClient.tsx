@@ -166,8 +166,18 @@ export default function SubscriptionClient({
     <div className="space-y-8">
       {/* Current status */}
       <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-950">Subscription</h1>
-        <p className="mt-2 text-slate-600">Manage your directory plan and billing.</p>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-semibold text-slate-950">Subscription</h1>
+            <p className="mt-2 text-slate-600">Manage your directory plan and billing.</p>
+          </div>
+          <a
+            href="/advertise/marketing-guide"
+            className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-800 shadow-sm transition hover:bg-sky-50"
+          >
+            📘 Marketing Guide Breakdown →
+          </a>
+        </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <div className="rounded-2xl border border-slate-100 bg-slate-50 p-5">

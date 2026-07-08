@@ -172,8 +172,9 @@ export default async function CompanyProfilePage({ params }: Props) {
   }
 
   const profileUrl = `https://www.remedialbuildingaustralia.com.au/directory/company/${slug}`;
-  const logo = company.logo_url ?? company.media.find((m) => m.media_type === "logo")?.url ?? null;
-  const photos = company.media.filter((m) => m.media_type === "photo");
+  // Logo and project photos are Silver+ features — never shown on a Free (basic) profile.
+  const logo = isClaimed ? (company.logo_url ?? company.media.find((m) => m.media_type === "logo")?.url ?? null) : null;
+  const photos = isClaimed ? company.media.filter((m) => m.media_type === "photo") : [];
   const abbr = company.name
     .split(/\s+/)
     .slice(0, 2)

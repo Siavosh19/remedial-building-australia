@@ -68,7 +68,7 @@ export default function DirectoryLoginPage() {
             <div className="mb-8">
               <Link
                 href="/"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-slate-800"
+                className="inline-flex items-center gap-1.5 text-lg font-bold text-slate-900 transition-colors hover:text-black"
               >
                 <span aria-hidden="true">&larr;</span>
                 <span>Back to website</span>
@@ -150,50 +150,28 @@ export default function DirectoryLoginPage() {
 
             {/* Bottom links */}
             <div className="mt-6 space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-lg">
                 <Link
                   href="/directory/forgot-password"
-                  className="font-medium text-sky-950 transition-colors hover:text-sky-700"
+                  className="font-bold text-slate-900 transition-colors hover:text-black"
                 >
                   Forgot your password?
                 </Link>
                 <Link
                   href="/directory/signup"
-                  className="font-medium text-sky-950 transition-colors hover:text-sky-700"
+                  className="font-bold text-slate-900 transition-colors hover:text-black"
                 >
                   Create account
                 </Link>
               </div>
-              <p className="text-center text-xs text-slate-400">
+              <p className="text-center text-lg font-bold text-slate-900">
                 Need help?{" "}
-                <Link href="/contact" className="underline underline-offset-2 transition-colors hover:text-slate-600">
+                <Link href="/contact" className="underline underline-offset-2 transition-colors hover:text-black">
                   Contact support
                 </Link>
               </p>
             </div>
 
-          </div>
-
-          {/* ── Info panel — below card, light and compact ──────────────────── */}
-          <div className="mt-4 rounded-xl border border-slate-200 bg-white px-6 py-5">
-            <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-              Portal Access
-            </p>
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-4">
-              {[
-                "Manage your listing",
-                "Receive quote requests",
-                "Track profile views",
-                "Manage subscription",
-              ].map((text) => (
-                <li key={text} className="flex items-center gap-2 text-sm text-slate-500">
-                  <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[9px] font-bold text-slate-400">
-                    ✓
-                  </span>
-                  {text}
-                </li>
-              ))}
-            </ul>
           </div>
 
         </div>

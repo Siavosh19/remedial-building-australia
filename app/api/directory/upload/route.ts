@@ -6,10 +6,13 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 const BUCKET = "directory-media";
 
 const PHOTO_LIMITS: Record<string, number> = {
-  basic: 5, // Free Listing
+  basic: 0, // Free Listing — no project photos (Silver+ feature)
   claimed: 15, // Silver
   featured: 15, // Gold
 };
+
+// Logo upload is a Silver+ feature. Free (basic) listings cannot upload a logo.
+const PAID_TIERS = new Set(["claimed", "featured", "business", "premium"]);
 
 export async function POST(request: NextRequest) {
   const user = await getDirectoryUserFromRequest(request);
@@ -30,12 +33,24 @@ export async function POST(request: NextRequest) {
   if (!file) return NextResponse.json({ error: "No file provided." }, { status: 400 });
   if (!["logo", "photo"].includes(mediaType)) return NextResponse.json({ error: "Invalid media type." }, { status: 400 });
 
-  // Photo limit check
+  // Logo upload is Silver+ only.
+  if (mediaType === "logo" && !PAID_TIERS.has(company.plan_type)) {
+    return NextResponse.json(
+      { error: "Logo upload is available on Silver and Gold plans. Upgrade to add your logo." },
+      { status: 403 },
+    );
+  }
+
+  // Photo limit check (Free = 0, Silver/Gold = 15)
   if (mediaType === "photo") {
     const photoCount = company.media.filter((m) => m.media_type === "photo").length;
     const limit = PHOTO_LIMITS[company.plan_type] ?? 0;
     if (photoCount >= limit) {
-      return NextResponse.json({ error: `Your plan allows up to ${limit} project photos.` }, { status: 400 });
+      const msg =
+        limit === 0
+          ? "Project photos are available on Silver and Gold plans. Upgrade to add photos."
+          : `Your plan allows up to ${limit} project photos.`;
+      return NextResponse.json({ error: msg }, { status: 400 });
     }
   }
 

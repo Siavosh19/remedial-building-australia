@@ -112,7 +112,7 @@ export default function ProjectDetailPage() {
             </p>
             <a
               href="/ai-scope-builder/projects"
-              className="mt-5 text-sm font-bold text-sky-700 hover:text-red-700 transition"
+              className="mt-5 text-lg font-bold text-slate-900 hover:text-black transition"
             >
               ← Back to projects
             </a>

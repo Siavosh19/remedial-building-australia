@@ -52,7 +52,7 @@ export default async function QuoteRequestDetailPage({ params }: { params: Promi
 
   return (
     <div className="space-y-6">
-      <Link href="/client/quote-requests" className="text-sm text-slate-500 hover:text-slate-800">
+      <Link href="/client/quote-requests" className="text-lg font-bold text-slate-900 hover:text-black">
         &larr; Back to my requests
       </Link>
 

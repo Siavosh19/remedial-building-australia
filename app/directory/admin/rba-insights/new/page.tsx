@@ -10,7 +10,7 @@ export default async function NewInsightPage() {
   return (
     <div>
       <div className="mb-6 flex items-center gap-4">
-        <Link href="/directory/admin/rba-insights" className="text-sm font-semibold text-slate-500 hover:text-slate-800">
+        <Link href="/directory/admin/rba-insights" className="text-lg font-bold text-slate-900 hover:text-black">
           ← RBA Insights
         </Link>
         <h1 className="text-2xl font-bold text-slate-900">New Article</h1>

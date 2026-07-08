@@ -28,6 +28,9 @@ export async function matchAndDeliverLead(leadId: number): Promise<void> {
   const eligible = subscriptions.filter((sub) => {
     if (sub.company.status !== "published") return false;
 
+    // Receiving leads/quote requests is a Silver+ feature — Free (basic) listings never match.
+    if (sub.company.plan_type !== "claimed" && sub.company.plan_type !== "featured") return false;
+
     const monthlyLimit = sub.max_leads_per_month;
     const received = sub.leads_received_this_month ?? 0;
     if (monthlyLimit !== null && monthlyLimit !== undefined && received >= monthlyLimit) return false;

@@ -56,7 +56,7 @@ export default async function AdminClientQuoteRequestDetail({ params }: { params
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/directory/admin/client-quote-requests" className="text-sm text-slate-500 hover:text-slate-800">
+        <Link href="/directory/admin/client-quote-requests" className="text-lg font-bold text-slate-900 hover:text-black">
           &larr; All client quote requests
         </Link>
         <DeleteRequestButton requestId={r.id} />

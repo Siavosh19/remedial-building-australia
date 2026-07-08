@@ -70,13 +70,21 @@ export default async function PricingPage() {
             Australia. Free Listing is always free — build a full profile. Upgrade to Silver to receive quote requests,
             or Gold to be featured in your State. No lock-in contracts.
           </p>
+          <div className="mt-6">
+            <a
+              href="/advertise/marketing-guide"
+              className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-5 py-2.5 text-sm font-bold text-sky-800 shadow-sm transition hover:bg-sky-50"
+            >
+              📘 See Marketing Guide Breakdown →
+            </a>
+          </div>
         </div>
 
         {/* Plan cards */}
         <div className="grid gap-8 md:grid-cols-3">
 
           {/* Basic */}
-          <div className="rounded-3xl border-2 p-8 shadow-sm flex flex-col" style={{ backgroundColor: "#F0FDF4", borderColor: "#86EFAC" }}>
+          <div className="rounded-3xl border-2 p-8 shadow-sm flex flex-col" style={{ backgroundColor: "#FFFFFF", borderColor: "#86EFAC" }}>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-700">Free Listing</p>
             <p className="mt-4 text-4xl font-extrabold text-slate-950">Free</p>
             <p className="mt-1 text-sm text-slate-500">Always free</p>
@@ -208,7 +216,7 @@ export default async function PricingPage() {
         </div>
 
         <div className="mt-8 text-center">
-          <Link href="/directory" className="text-sm font-semibold text-sky-700 hover:text-sky-900">
+          <Link href="/directory" className="text-lg font-bold text-slate-900 hover:text-black">
             ← Browse the directory
           </Link>
         </div>

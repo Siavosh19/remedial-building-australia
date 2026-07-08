@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 export const metadata: Metadata = {
   title: "Terms & Conditions | Remedial Building Australia",
-  description: "Terms and conditions for using the Remedial Building Australia website — last updated June 2026.",
+  description: "Terms and conditions for using the Remedial Building Australia website — last updated July 2026.",
 };
 
 type Section = {
@@ -173,8 +173,22 @@ const sections: Section[] = [
   },
   {
     number: "18",
+    title: "Service Availability, Downtime & Advertising",
+    bullets: [
+      'The Platform is provided on an "as is" and "as available" basis. We do not warrant or guarantee that the Platform, any listing, advertisement, banner or feature will be available, uninterrupted, timely, secure, error-free or continuously accessible.',
+      "Access to the Platform may be suspended, restricted, delayed, degraded or unavailable, in whole or in part, at any time and without notice — including due to scheduled or emergency maintenance, upgrades, technical faults, software or hardware failure, capacity limits, or the acts or omissions of third-party hosting, network, payment, domain, content-delivery or other service providers on which the Platform relies.",
+      "We are not liable for any unavailability, outage, interruption, downtime, data loss, degraded performance, delay or failure of the Platform, or of any listing or advertisement, caused wholly or partly by any event beyond our reasonable control (a force majeure event). This includes, without limitation, acts of God, natural disaster, fire, flood or storm, power or telecommunications failure, internet or hosting-provider outage, cyber attack, hacking, malware, denial-of-service attack, virus, data breach, third-party service failure, industrial action, pandemic, government or regulatory action, or any other unforeseen, unavoidable or exceptional technical or external event.",
+      "Advertisers, directory subscribers and paying customers acknowledge and agree that any such unavailability, outage, downtime or interruption does not constitute a breach of these terms by us, does not reduce, suspend or void any fee already paid or payable, and does not give rise to any right to a refund, credit, discount, chargeback, compensation, damages or any other claim.",
+      "Without limiting the above, we are not liable for and do not guarantee any impressions, views, exposure, uptime percentage, leads, enquiries, quote requests, clicks, calls, sales or other commercial result during or as a result of any period of downtime, outage or interruption. An advertisement or listing is an advertising placement only, purchased on this basis.",
+      "We are not obliged to extend, pause, credit or make good the term of any subscription or advertising placement for any period of downtime or unavailability, although we may choose to do so at our sole and absolute discretion. Any goodwill remedy we provide in one instance does not create an obligation to do so in any other instance.",
+      "You agree not to bring, and release us from, any claim, demand, action or proceeding for refund, compensation, loss or damages arising out of or in connection with any unavailability, outage, downtime, interruption, delay or technical failure of the Platform, to the maximum extent permitted by law.",
+      "Nothing in this clause excludes, restricts or modifies any guarantee, right or remedy you may have under the Australian Consumer Law or any other law that cannot lawfully be excluded. Where such a right applies and cannot be excluded, our liability is limited in the manner set out in the Limitation of Liability clause above.",
+    ],
+  },
+  {
+    number: "19",
     title: "Contact",
-    content: "Last updated: June 2026\n\nFor all enquiries contact: info@remedialbuildingaustralia.com.au",
+    content: "Last updated: July 2026\n\nFor all enquiries contact: info@remedialbuildingaustralia.com.au",
   },
 ];
 
@@ -200,7 +214,7 @@ export default function TermsPage() {
               Terms &amp; Conditions
             </h1>
             <p className="mt-4 text-base text-slate-500">
-              Remedial Building Australia &mdash; Last Updated: June 2026
+              Remedial Building Australia &mdash; Last Updated: July 2026
             </p>
             <p className="mt-6 text-lg leading-8 text-slate-700">
               Remedial Building Australia is operated by Arasep Projects Pty Ltd ABN 20 675 874 003. By accessing or using this website, you agree to the following terms and conditions.

@@ -145,7 +145,7 @@ export default function ClientSignupPage() {
           ) : (
             <>
               <div className="mb-6">
-                <Link href="/" className="text-sm text-slate-500 hover:text-slate-800">
+                <Link href="/" className="text-lg font-bold text-slate-900 hover:text-black">
                   &larr; Back to home
                 </Link>
               </div>

@@ -37,10 +37,11 @@ type Props = {
 const STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 
 export default function CompanyEditForm({ company, categories }: Props) {
-  // Free Listing now builds a full profile too — every tier can edit categories,
-  // licence/insurance (self-declared) and upload media.
+  // Every tier builds a basic profile (categories, contact details, description).
+  // Licence/insurance, logo and project photos are Silver+ (paid) features.
   const isClaimed = true;
-  const photoLimit = company.plan_type === "basic" ? 5 : 15;
+  const isPaid = company.plan_type === "claimed" || company.plan_type === "featured";
+  const photoLimit = isPaid ? 15 : 0;
   const location = company.locations[0];
   const secondaryIds = company.company_categories
     .filter((cc) => !cc.is_primary)
@@ -254,7 +255,7 @@ export default function CompanyEditForm({ company, categories }: Props) {
           />
         </label>
 
-        {isClaimed && (
+        {isPaid && (
           <>
             <div className="border-t border-slate-100 pt-6">
               <p className="text-base font-semibold text-slate-800 mb-4">Licence & Insurance Details</p>
@@ -318,8 +319,24 @@ export default function CompanyEditForm({ company, categories }: Props) {
 
       </form>
 
-      {/* Media uploads — Claimed/Featured only */}
-      {isClaimed && (
+      {/* Media uploads — Silver/Gold (paid) only */}
+      {!isPaid && (
+        <div className="border-t border-slate-100 pt-8">
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5">
+            <h2 className="text-base font-semibold text-amber-900">Logo &amp; project photos</h2>
+            <p className="mt-1 text-sm text-amber-800">
+              Add your business logo and up to 15 project photos with a Silver or Gold plan. Upgrade to showcase your work.
+            </p>
+            <a
+              href="/directory/pricing"
+              className="mt-3 inline-block rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-500"
+            >
+              View plans →
+            </a>
+          </div>
+        </div>
+      )}
+      {isPaid && (
         <div className="border-t border-slate-100 pt-8 space-y-6">
           <div>
             <h2 className="text-base font-semibold text-slate-800">Logo</h2>

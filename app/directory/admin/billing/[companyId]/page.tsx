@@ -43,7 +43,7 @@ export default async function BusinessFinancialPage({ params }: { params: Promis
 
   return (
     <div>
-      <Link href="/directory/admin/billing" className="text-sm font-semibold text-sky-700 hover:underline">← Back to Billing</Link>
+      <Link href="/directory/admin/billing" className="text-lg font-bold text-slate-900 hover:underline hover:text-black">← Back to Billing</Link>
       <div className="mt-3 mb-6">
         <h1 className="text-2xl font-bold text-slate-900">{company.name}</h1>
         <p className="text-sm text-slate-500 mt-1">

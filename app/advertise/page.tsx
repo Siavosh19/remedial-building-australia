@@ -24,6 +24,14 @@ export default function AdvertisePage() {
             Your business, front and centre on one of Australia&rsquo;s busiest remedial building directories — seen by
             strata managers, owners corporations and property managers every day.
           </p>
+          <div className="mt-5">
+            <a
+              href="/advertise/marketing-guide"
+              className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-5 py-2.5 text-sm font-bold text-sky-800 shadow-sm transition hover:bg-sky-50"
+            >
+              📘 See Marketing Guide Breakdown →
+            </a>
+          </div>
         </div>
         <div className="mt-9 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
           <h2 className="text-lg font-bold text-sky-950">Request a Quote</h2>

@@ -36,10 +36,10 @@ export default async function DirectoryPage() {
     // DB unavailable — render with empty state
   }
 
-  // Real, exact published-business count for the stats bar.
-  let publishedCount = 0;
-  try { publishedCount = await prisma.company.count({ where: { status: "published" } }); } catch { /* ignore */ }
-  const listedLabel = publishedCount > 0 ? publishedCount.toLocaleString("en-AU") : "12,900+";
+  // Displayed "Businesses Listed" figure. Shown as a rounded headline number that
+  // accounts for the scraped businesses being imported later (not just the live
+  // published count). Update this once the remaining scraped pool is imported.
+  const listedLabel = "19,000+";
 
   const SITE_URL = "https://www.remedialbuildingaustralia.com.au";
   const directorySchema = {

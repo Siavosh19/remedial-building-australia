@@ -846,7 +846,7 @@ export default function NewScopePage() {
 
         {step <= 6 && !generating && (
           <div className="no-print mb-8">
-            <a href="/ai-scope-builder" className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-sky-950 transition">
+            <a href="/ai-scope-builder" className="mb-4 inline-flex items-center gap-2 text-lg font-bold uppercase tracking-wider text-slate-900 hover:text-black transition">
               ← Back to Scope Builder
             </a>
             <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">AI Scope Builder</div>

@@ -45,7 +45,7 @@ export default function MaterialsLibraryPage() {
         <div className="mb-8">
           <a
             href="/ai-scope-builder"
-            className="mb-3 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-sky-950 transition"
+            className="mb-3 inline-flex items-center gap-1 text-lg font-bold uppercase tracking-wider text-slate-900 hover:text-black transition"
           >
             ← Scope Builder
           </a>

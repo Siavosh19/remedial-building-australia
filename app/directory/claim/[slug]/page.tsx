@@ -79,7 +79,7 @@ export default function ClaimListingPage() {
 
         {/* Header */}
         <div className="mb-6">
-          <a href="/directory" className="text-xs font-semibold text-slate-500 hover:text-slate-700">
+          <a href="/directory" className="text-lg font-bold text-slate-900 hover:text-black">
             ← Back to directory
           </a>
         </div>

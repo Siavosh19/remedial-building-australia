@@ -534,7 +534,7 @@ export default async function BalconyProductCategoryPage({
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-extrabold text-sky-950">Page not found</h1>
-          <a href="/repair-systems/balcony-waterproofing-failure" className="mt-4 inline-flex text-sm font-bold text-sky-700 hover:text-red-700">
+          <a href="/repair-systems/balcony-waterproofing-failure" className="mt-4 inline-flex text-lg font-bold text-slate-900 hover:text-black">
             ← Back to Balcony Waterproofing Failure
           </a>
         </div>
