@@ -861,7 +861,7 @@ export default function DirectoryListing({ categories }: Props) {
   const [coords, setCoords] = useState<Coords>(null);
   const [category, setCategory] = useState(initialCategory);
   const [featured, setFeatured] = useState(false);
-  const [radius, setRadius] = useState("10"); // default: within 10 km
+  const [radius, setRadius] = useState("50"); // default: within 50 km (Silver membership reach)
   const [page, setPage] = useState(1);
 
   // The directory starts EMPTY — no listings until the visitor searches/filters.

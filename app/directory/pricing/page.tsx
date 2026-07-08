@@ -127,7 +127,7 @@ export default async function PricingPage() {
                 "Everything in Free",
                 "Receive quote requests",
                 "Request Quote button on your listing",
-                "Rank above Free listings",
+                "Shown within 50 km of the searcher — above all Free listings (closest first)",
                 "Company logo upload",
                 "Up to 15 project photos",
                 "Licence & insurance (self-declared)",
@@ -177,7 +177,7 @@ export default async function PricingPage() {
                 "Displayed above Silver & Free listings",
                 "Highlighted listing card + Gold Featured badge",
                 "Only 3 Featured businesses per category in your State",
-                "Be Featured in Your State",
+                "Shown across your whole State — state-wide reach (not distance-limited)",
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm font-medium text-black">
                   <span className="mt-0.5 text-black">✓</span> {f}
