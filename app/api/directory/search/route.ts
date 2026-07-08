@@ -63,6 +63,11 @@ function planRank(row: { plan_type?: string | null }): number {
   return PLAN_PRIORITY[row.plan_type ?? "basic"] ?? 0;
 }
 
+// Membership visibility radius. Gold (featured) shows across the whole state; Silver
+// (claimed) and Free (basic) are capped at this many km from the searched suburb.
+// Keep this in sync with the plan cards and the marketing guide page.
+const SILVER_FREE_RADIUS_KM = 50;
+
 // ─── Synonym + typo-tolerant query analysis ─────────────────────────────────────
 // Three things are handled here, in JS, before the Prisma WHERE clause is built:
 //   (a) spelling mistakes / typos      → Levenshtein correction onto a vocabulary
@@ -155,7 +160,7 @@ type CategoryIntent = { patterns: string[]; categories: string[] };
 const CATEGORY_INTENT: CategoryIntent[] = [
   {
     patterns: ["remedial builder", "remedial builders", "remedial contractor", "remedial contractors", "remedial construction", "remedial building", "remedial", "facade builder", "facade building"],
-    categories: ["Remedial & Facade Building", "Building & Construction (General)"],
+    categories: ["Building Contractor", "Facade Contractor", "Building Maintenance"],
   },
   {
     patterns: ["waterproofing", "waterproof", "water leak", "leaking balcony", "balcony leak", "leaking shower", "membrane", "tanking", "leak detection", "water ingress", "rising damp", "penetrating damp"],
@@ -163,7 +168,7 @@ const CATEGORY_INTENT: CategoryIntent[] = [
   },
   {
     patterns: ["facade", "façade", "cladding", "external wall", "external envelope", "render", "rendering"],
-    categories: ["Remedial & Facade Building", "Cladding", "Rendering"],
+    categories: ["Facade Contractor", "Cladding", "Rendering & Coating"],
   },
   {
     patterns: ["engineer", "engineering", "structural engineer", "structural assessment", "structural", "civil engineer", "geotechnical"],
@@ -171,31 +176,31 @@ const CATEGORY_INTENT: CategoryIntent[] = [
   },
   {
     patterns: ["concrete repair", "spalling", "concrete cancer", "carbonation", "concrete remediation", "reinforcement corrosion"],
-    categories: ["Remedial & Facade Building", "Concretors / Concrete Placement"],
+    categories: ["Building Contractor", "Concreter / Concreting Contractor"],
   },
   {
     patterns: ["concreter", "concretor", "concreting", "concrete placement"],
-    categories: ["Concretors / Concrete Placement"],
+    categories: ["Concreter / Concreting Contractor"],
   },
   {
     patterns: ["roof leak", "roof repair", "roofing", "roof restoration", "roof leaks"],
-    categories: ["Roofing & Roof Restoration", "Roof Plumbing"],
+    categories: ["Roofing & Restoration"],
   },
   {
     patterns: ["roof plumber", "roof plumbing", "box gutter", "gutter"],
-    categories: ["Roof Plumbing", "Guttering (Installation & Repairs)", "Roofing & Roof Restoration"],
+    categories: ["Roofing & Restoration", "Gutter & Roof Repair & Cleaning"],
   },
   {
     patterns: ["strata manager", "strata management", "oc manager", "owners corporation", "body corporate", "strata"],
-    categories: ["Strata & Property Management"],
+    categories: ["Strata Management"],
   },
   {
     patterns: ["builder", "building repair", "construction", "renovation", "renovations"],
-    categories: ["Building & Construction (General)", "Remedial & Facade Building", "Renovations & Extensions"],
+    categories: ["Building Contractor", "Building Maintenance"],
   },
   {
     patterns: ["balustrade", "handrail", "balustrading"],
-    categories: ["Balustrades & Handrails"],
+    categories: ["Balustrade"],
   },
   {
     // Passive fire protection (fire-stopping, penetrations, collars/dampers,
@@ -209,15 +214,15 @@ const CATEGORY_INTENT: CategoryIntent[] = [
     // general window/door bucket. Listed BEFORE the window intent; "fire door" never
     // matches the window patterns below, so the two stay cleanly separated.
     patterns: ["fire door", "fire doors", "firedoor", "fire-door", "fire-rated door", "fire rated door", "fire door installer", "fire door supplier", "fire door inspection", "fire door maintenance"],
-    categories: ["Fire Doors (Supply & Installation)"],
+    categories: ["Doors & Fire Doors"],
   },
   {
     patterns: ["window", "glazier", "glazing", "windows and doors", "window and door", "sliding door", "aluminium door", "timber door", "entry door"],
-    categories: ["Glass & Glazing", "Windows & Doors"],
+    categories: ["Glazing Works", "Window & Door Service", "Window & Door Supplier"],
   },
   {
     patterns: ["painter", "painting", "protective coating", "epoxy"],
-    categories: ["Painting", "Protective Coatings & Epoxy"],
+    categories: ["Painting", "Coatings & Paint"],
   },
   {
     patterns: ["scaffold", "scaffolding"],
@@ -225,7 +230,7 @@ const CATEGORY_INTENT: CategoryIntent[] = [
   },
   {
     patterns: ["fire safety", "fire protection", "fire compliance"],
-    categories: ["Fire Protection & Safety"],
+    categories: ["Fire Protection", "Fire Engineers and Safety Consultant"],
   },
 ];
 
@@ -894,16 +899,20 @@ export async function GET(request: NextRequest) {
         distKm = p.km;
       }
 
-      // Radius filter: within the chosen radius OR the business explicitly services
-      // the area (statewide same-state / nationwide / its own service radius covers
-      // the point). Unknown distance is kept (don't hide). null radius = Australia-wide.
+      // Membership visibility radius:
+      //   • Gold (featured) shows across the whole state — results are already
+      //     state-filtered (enforcedState), so Gold is never distance-capped.
+      //   • Silver (claimed) & Free (basic) are capped at 50km of the searched point,
+      //     even if the business self-declares statewide/nationwide. A user-selected
+      //     radius can only narrow this, never widen it.
+      //   • Unknown distance (geocode miss) is kept and ranked last — never hidden.
+      const isGold = planRank(row) === 2;
+      const cap = radiusKm == null ? SILVER_FREE_RADIUS_KM : Math.min(radiusKm, SILVER_FREE_RADIUS_KM);
       const keep =
-        radiusKm == null ||
-        loc?.services_nationwide === true ||
-        loc?.services_statewide === true ||
-        distKm == null ||
-        distKm <= radiusKm ||
-        (loc?.service_radius_km != null && distKm <= loc.service_radius_km);
+        !locationRequested ? true :
+        isGold ? true :
+        distKm == null ? true :
+        distKm <= cap;
 
       // Exact category match: ALL searched words appear in the business's PRIMARY
       // category name — e.g. "access consultant" puts an Access Consultant above a
@@ -933,18 +942,15 @@ export async function GET(request: NextRequest) {
           (b.trust - a.trust)
         );
       } else {
-        // Default location ordering:
-        //   1. paid & relevant (featured) first
-        //   2. relevance tier — strong service matches above weak ones
-        //   3. proximity tier — closest first (suburb → nearby → metro → wider → state)
-        //   4. exact distance within a tier
-        //   5. relevance, then trust as final tie-breakers
+        // Default location ordering (membership model):
+        //   1. plan tier — Gold (state) → Silver → Free
+        //   2. closest first WITHIN a tier (unknown distance sorts last)
+        //   3. exact category match, then relevance & trust as tie-breakers
         scored.sort((a, b) =>
           (b.planScore - a.planScore) ||
+          (kmOf(a) - kmOf(b)) ||
           (Number(b.catExact) - Number(a.catExact)) ||
           (b.tier - a.tier) ||
-          (a.distTier - b.distTier) ||
-          (kmOf(a) - kmOf(b)) ||
           (b.rel - a.rel) ||
           (b.trust - a.trust)
         );

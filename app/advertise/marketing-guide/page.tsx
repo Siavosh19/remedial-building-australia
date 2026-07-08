@@ -152,7 +152,7 @@ export default function MarketingGuidePage() {
   const hierarchy = [
     { n: "1", name: "Banner", tone: "navy", desc: "Premium rotating showcase at the top of the page. Limited to 3 businesses per page. Above everything." },
     { n: "2", name: "Gold Featured", tone: "gold", desc: "Top of your category in your State. Only 3 Gold spots per category per State/Territory." },
-    { n: "3", name: "Silver", tone: "silver", desc: "Top of your suburb. Ranks above every Free listing in your suburb for your category." },
+    { n: "3", name: "Silver", tone: "silver", desc: "Shown within 50 km of the searched suburb, above every Free listing for your category — closest Silver first." },
     { n: "4", name: "Free Listing", tone: "plain", desc: "Standard directory entry — name, contact details, category and profile page." },
   ] as const;
 
@@ -261,12 +261,12 @@ export default function MarketingGuidePage() {
 
         {/* Silver */}
         <section>
-          <H2>Silver — Top of Your Suburb</H2>
+          <H2>Silver — Within 50 km of the Searcher</H2>
           <p className="mt-2 text-sm font-bold text-sky-950">$49 / month — 30-day free trial — includes:</p>
           <div className="mt-5 space-y-6">
             <Includes
               items={[
-                "Ranks above every Free listing in your suburb and city for your category — if several hold Silver, they rank by distance, closest to the searcher on top",
+                "Shown within 50 km of the searched suburb, ranking above every Free listing for your category — if several hold Silver, they rank by distance, closest to the searcher on top",
                 "Receive quote requests + Request Quote button on your listing",
                 "Logo & business description on your listing card",
                 "Professional tagline next to your name — Business Name | Waterproofing Contractor",
