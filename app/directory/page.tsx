@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { getActiveBusinessCount, formatBusinessCount } from "@/lib/directory-stats";
 import DirectoryListing from "@/components/directory/DirectoryListing";
 
 import SiteHeader from "@/components/SiteHeader";
@@ -35,10 +36,14 @@ export default async function DirectoryPage() {
     // DB unavailable — render with empty state
   }
 
-  // Displayed "Businesses Listed" figure. Shown as a rounded headline number that
-  // accounts for the scraped businesses being imported later (not just the live
-  // published count). Update this once the remaining scraped pool is imported.
-  const listedLabel = "19,000+";
+  // Real, DB-backed "Businesses Listed" figure from the single shared count source,
+  // so the number is truthful and consistent everywhere (never hard-coded).
+  let listedLabel = "";
+  try {
+    listedLabel = formatBusinessCount(await getActiveBusinessCount());
+  } catch {
+    listedLabel = "";
+  }
 
   const SITE_URL = "https://www.remedialbuildingaustralia.com.au";
   const directorySchema = {
@@ -87,11 +92,15 @@ export default async function DirectoryPage() {
 
           {/* Stats bar */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-slate-100 pt-5 text-center text-sm">
-            <span>
-              <span className="font-extrabold text-sky-950">{listedLabel}</span>{" "}
-              <span className="text-slate-500">Businesses Listed</span>
-            </span>
-            <span className="text-slate-200" aria-hidden>|</span>
+            {listedLabel && (
+              <>
+                <span>
+                  <span className="font-extrabold text-sky-950">{listedLabel}</span>{" "}
+                  <span className="text-slate-500">Businesses Listed</span>
+                </span>
+                <span className="text-slate-200" aria-hidden>|</span>
+              </>
+            )}
             <span className="font-semibold text-slate-500">Australia Wide</span>
             <span className="text-slate-200" aria-hidden>|</span>
             <span className="font-semibold text-slate-500">Australian Strata Building Directory</span>

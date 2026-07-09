@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { LocationState } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import SiteHeader from "@/components/SiteHeader";
 import { STATE_NAMES, STATE_CODES } from "@/lib/au-locations";
@@ -33,26 +34,32 @@ async function getData(categorySlug: string, stateCode: string) {
   const catIds = cats.map((c) => c.id);
   const title = resolved.label ?? cats[0].name;
 
-  const companies = await prisma.company.findMany({
-    where: {
-      status: "published",
-      suspended: false,
-      OR: [
-        { main_category_id: { in: catIds } },
-        { company_categories: { some: { is_approved: true, category_id: { in: catIds } } } },
-      ],
-      // Reside in the state OR service it nationwide.
-      locations: { some: { OR: [{ state: state as LocationState }, { services_nationwide: true }] } },
-    },
-    select: {
-      id: true, slug: true, name: true, logo_url: true, plan_type: true, description: true,
-      locations: { take: 1, select: { suburb: true, state: true } },
-    },
-    take: 60,
-  });
+  const CARD_CAP = 60;
+  // Shared filter reused for BOTH the card list (capped) and the true total count.
+  const where: Prisma.CompanyWhereInput = {
+    status: "published",
+    suspended: false,
+    OR: [
+      { main_category_id: { in: catIds } },
+      { company_categories: { some: { is_approved: true, category_id: { in: catIds } } } },
+    ],
+    // Reside in the state OR service it nationwide.
+    locations: { some: { OR: [{ state: state as LocationState }, { services_nationwide: true }] } },
+  };
+  const [companies, total] = await Promise.all([
+    prisma.company.findMany({
+      where,
+      select: {
+        id: true, slug: true, name: true, logo_url: true, plan_type: true, description: true,
+        locations: { take: 1, select: { suburb: true, state: true } },
+      },
+      take: CARD_CAP,
+    }),
+    prisma.company.count({ where }), // TRUE state-filtered total (not the card cap)
+  ]);
   companies.sort((a, b) => planOrder(a.plan_type) - planOrder(b.plan_type) || a.name.localeCompare(b.name));
 
-  return { title, urlSlug: categorySlug, primarySlug: cats[0].slug, state, stateName: STATE_NAMES[state] ?? state, companies };
+  return { title, urlSlug: categorySlug, primarySlug: cats[0].slug, state, stateName: STATE_NAMES[state] ?? state, companies, total, cap: CARD_CAP };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -60,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getData(category, state);
   if (!data) return { title: "Not found" };
   const title = `${data.title} in ${data.stateName} | Remedial Building Australia`;
-  const description = `Find ${data.title.toLowerCase()} servicing ${data.stateName}. Compare ${data.companies.length}+ businesses, view profiles and request quotes directly.`;
+  const description = `Find ${data.title.toLowerCase()} servicing ${data.stateName}. Compare ${data.total} businesses, view profiles and request quotes directly.`;
   const url = `${SITE}/directory/${data.urlSlug}/${state.toLowerCase()}`;
   return {
     title,
@@ -75,7 +82,7 @@ export default async function CategoryStatePage({ params }: Props) {
   const { category, state } = await params;
   const data = await getData(category, state);
   if (!data) notFound();
-  const { title, urlSlug, primarySlug, stateName, companies } = data;
+  const { title, urlSlug, primarySlug, stateName, companies, total, cap } = data;
   const stateLower = state.toLowerCase();
 
   const breadcrumb = {
@@ -127,7 +134,10 @@ export default async function CategoryStatePage({ params }: Props) {
         </div>
 
         {/* Businesses */}
-        <h2 className="mt-10 text-xl font-bold text-slate-900">{title} businesses in {stateName} ({companies.length})</h2>
+        <h2 className="mt-10 text-xl font-bold text-slate-900">
+          {title} businesses in {stateName}{" "}
+          {total > cap ? <span className="font-semibold text-slate-500">— showing {companies.length} of {total}</span> : `(${total})`}
+        </h2>
         {companies.length === 0 ? (
           <p className="mt-3 text-sm text-slate-500">No businesses listed for this category in {stateName} yet.</p>
         ) : (
