@@ -856,7 +856,12 @@ export default function DirectoryListing({ categories }: Props) {
   // Free-text location box (suburb / postcode / state / partial text).
   // locationText = what the user is typing; appliedLocation = applied on search.
   const [locationText, setLocationText] = useState(initialLocation);
-  const [appliedLocation, setAppliedLocation] = useState(initialLocation);
+  // On a cold deep-link load the location is a raw string with no coordinates.
+  // We geocode it on mount (see the hydrate effect) and feed it through the same
+  // path as an interactive pick — so appliedLocation starts empty and we hold the
+  // search until geocoding resolves, rather than sending un-geocoded free text.
+  const [appliedLocation, setAppliedLocation] = useState("");
+  const [hydratingLocation, setHydratingLocation] = useState(Boolean(initialLocation));
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>(null);
   const [coords, setCoords] = useState<Coords>(null);
   const [category, setCategory] = useState(initialCategory);
@@ -968,10 +973,42 @@ export default function DirectoryListing({ categories }: Props) {
   // Note: qInput is NOT watched — the keyword only applies on Enter / the Search
   // button (which updates `q`).
   useEffect(() => {
-    if (!hasActiveSearch) return;
+    if (!hasActiveSearch || hydratingLocation) return;
     fetchResults({ q, appliedLocation, selectedLocation, coords, category, featured, radius, page, sortByDistance });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q, appliedLocation, selectedLocation, coords, category, featured, radius, page, sortByDistance]);
+  }, [q, appliedLocation, selectedLocation, coords, category, featured, radius, page, sortByDistance, hydratingLocation]);
+
+  // Deep-link hydration: when the page loads with a ?location= param, geocode it
+  // once (same source as the interactive autocomplete) and feed the first match
+  // through handleLocationSelect — giving the search real lat/lng/state, so a
+  // shared/refreshed URL reproduces the interactive result. If geocoding fails we
+  // drop the location and search nationwide rather than returning zero.
+  useEffect(() => {
+    if (!initialLocation) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const r = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(initialLocation)}`);
+        const j = await r.json();
+        const first = (j?.suggestions?.[0] as LocationSuggestion | undefined) ?? null;
+        if (cancelled) return;
+        if (first) {
+          handleLocationSelect(first); // sets selectedLocation + coords (page 1)
+        } else {
+          // Unrecognised location → nationwide fallback (keeps any keyword search).
+          setSelectedLocation(null);
+          setCoords(null);
+          setAppliedLocation("");
+        }
+      } catch {
+        if (!cancelled) { setSelectedLocation(null); setCoords(null); setAppliedLocation(""); }
+      } finally {
+        if (!cancelled) setHydratingLocation(false);
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Reflect the current search in the URL so it can be shared / reloaded.
   function syncUrl(keyword: string, location: string) {
