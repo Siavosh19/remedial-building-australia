@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
+import { getActiveBusinessCount, formatBusinessCount } from "@/lib/directory-stats";
 
 export const metadata: Metadata = {
   title: "Marketing Guide Breakdown | Remedial Building Australia",
@@ -148,7 +149,10 @@ function FreeSnapshot() {
 
 /* ── page ───────────────────────────────────────────────────────────────── */
 
-export default function MarketingGuidePage() {
+export default async function MarketingGuidePage() {
+  // Shared DB-backed total — never hard-coded, consistent with the directory hero.
+  let listed = "";
+  try { listed = formatBusinessCount(await getActiveBusinessCount()); } catch { listed = ""; }
   const hierarchy = [
     { n: "1", name: "Banner", tone: "navy", desc: "Premium rotating showcase at the top of the page. Limited to 3 businesses per page. Above everything." },
     { n: "2", name: "Gold Featured", tone: "gold", desc: "Top of your category in your State. Only 3 Gold spots per category per State/Territory." },
@@ -181,7 +185,7 @@ export default function MarketingGuidePage() {
             professionals, body corporates and property managers search every day.
           </p>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <StatChip big="19,000+" label="Businesses listed" tone="navy" />
+            <StatChip big={listed} label="Businesses listed" tone="navy" />
             <StatChip big="Australia wide" label="Coverage" tone="plain" />
             <StatChip big="3" label="Gold spots per State" tone="gold" />
             <StatChip big="Unlimited" label="Quote requests (paid)" tone="silver" />
@@ -195,7 +199,7 @@ export default function MarketingGuidePage() {
           {[
             { t: "Who we are", d: "Australia's dedicated platform for building maintenance and remedial works — defect library, repair solutions, technical product data, industry news and a national directory in one place." },
             { t: "Our audience", d: "Industry professionals, body corporates, strata and building managers, consultants, engineers and property managers — construction-literate decision-makers who commission maintenance, façade upgrades and remedial works." },
-            { t: "What we have", d: "19,300+ listed businesses, AI-powered search matching a plain-English job description to the right trade, direct quote requests, and technical content professionals return to." },
+            { t: "What we have", d: `${listed} listed businesses, AI-powered search matching a plain-English job description to the right trade, direct quote requests, and technical content professionals return to.` },
             { t: "Why it works", d: "A purpose-designed directory search and news section, with repair solutions and a defect library built to address the needs of industry and the common issues everyone deals with." },
           ].map((c) => (
             <div key={c.t} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -244,7 +248,7 @@ export default function MarketingGuidePage() {
             <Includes
               items={[
                 "Top 3 positions for your category State-wide, all the time — only 3 Gold spots per State/Territory",
-                "Featured placement with Gold Featured badge — above all Silver and Free listings, ahead of 19,300+ businesses",
+                `Featured placement with Gold Featured badge — above all Silver and Free listings, ahead of ${listed} businesses`,
                 "Logo & business description on your listing card",
                 "Professional tagline next to your name — Business Name | Remedial Builder",
                 "Receive quote requests + Request Quote button on your listing",
@@ -448,7 +452,7 @@ export default function MarketingGuidePage() {
           <p className="mt-2">
             Remedial Building Australia is a technical remedial building platform operated by Arasep Projects Pty Ltd —
             combining a defect library, repair systems, technical product data, industry news, AI-assisted scope writing tools
-            and a national directory of 19,300+ contractors, consultants and specialist trades across Australia.
+            and a national directory of {listed} contractors, consultants and specialist trades across Australia.
           </p>
           <p className="mt-3 text-xs text-slate-400">
             All directory listings and advertising placements are subject to our{" "}
