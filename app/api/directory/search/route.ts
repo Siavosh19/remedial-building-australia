@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import type { LocationState } from "@prisma/client";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { lookupSuburb, toStateCode, postcodeToState } from "@/lib/au-locations";
 import { resolveAuLocation } from "@/lib/au-suburbs";
+import { resolveQueryToCategory, normalizeQuery } from "@/lib/directory-categories";
+
+// Cached index of active category names → slug, for anchoring a free-text query to
+// a specific category (so "building surveyor" returns only Building Surveyors, not a
+// keyword-soup of consultants/engineers). Refreshed hourly.
+const getCategoryNameIndex = unstable_cache(
+  async (): Promise<Record<string, string>> => {
+    const cats = await prisma.category.findMany({ where: { is_active: true }, select: { name: true, slug: true } });
+    const idx: Record<string, string> = {};
+    for (const c of cats) idx[normalizeQuery(c.name)] = c.slug;
+    return idx;
+  },
+  ["directory-category-name-index"],
+  { revalidate: 3600 },
+);
 
 const PAGE_SIZE = 20;
 const MATCH_CAP = 3000; // max rows pulled for in-memory relevance scoring
@@ -101,7 +117,10 @@ const GENERIC_ACTIONS = new Set([
 ]);
 
 const SYNONYM_GROUPS: string[][] = [
-  ["consultant", "consultants", "consulting", "advisory", "adviser", "advisor", "surveyor", "surveying"],
+  // Consultant and surveyor are DISTINCT trades — never treat them as synonyms
+  // (otherwise "building surveyor" pulls in every building consultant).
+  ["consultant", "consultants", "consulting", "advisory", "adviser", "advisor"],
+  ["surveyor", "surveyors", "surveying", "survey"],
   ["inspector", "inspection", "inspections", "assessment", "assessor"],
   ["cleaner", "cleaners", "cleaning", "washing", "hygiene"],
   ["waterproof", "waterproofing", "membrane", "membranes", "tanking"],
@@ -941,7 +960,18 @@ export async function GET(request: NextRequest) {
       A.idfCutoff = 0.5 * Math.max(...A.words.map((w) => idf[w]));
     }
 
-    const where = buildWhere({ A, category, featured, licenceVerified, claimed, enforcedState, softSuburb });
+    // Category anchoring: if the visitor typed a query that IS a category (e.g.
+    // "building surveyor", "quantity surveyor", "waterproofing") and didn't pick a
+    // category from the dropdown, filter results to THAT category — so a category
+    // search returns only businesses in that category, not a keyword-soup of related
+    // trades. Freeform queries (no category match) fall through to keyword search.
+    let effectiveCategory = category;
+    if (!category && q) {
+      const anchored = resolveQueryToCategory(q, await getCategoryNameIndex());
+      if (anchored) effectiveCategory = anchored;
+    }
+
+    const where = buildWhere({ A, category: effectiveCategory, featured, licenceVerified, claimed, enforcedState, softSuburb });
 
     // Pull matching rows for in-memory relevance + proximity scoring.
     const matchingRows = await prisma.company.findMany({
