@@ -141,7 +141,12 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
       } catch { /* ignore — newsletter is optional */ }
     }
 
-    setStatus({ type: "success", message: "Your listing has been submitted for review. We will notify you when it goes live. Redirecting…" });
+    setStatus({
+      type: "success",
+      message: result.autoApproved
+        ? "Your ABN is confirmed — your listing is now live in the directory! Redirecting…"
+        : "Your listing has been submitted for review. We will notify you when it goes live. Redirecting…",
+    });
     window.setTimeout(() => { window.location.href = "/directory/dashboard"; }, 2000);
   }
 
@@ -406,7 +411,7 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
         className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Submitting…" : "Submit company for review"}
+        {loading ? "Submitting…" : "Submit &amp; publish listing"}
       </button>
     </form>
   );

@@ -438,8 +438,36 @@ export default function BannerLayoutPage() {
           <p className="mt-2 text-sm text-slate-600">
             Placeholder sizes shown below — actual dimensions are confirmed before your artwork is prepared.
           </p>
-          <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
-            <table className="w-full min-w-[560px] border-collapse text-sm">
+          {/* Mobile — stacked cards (no horizontal scroll) */}
+          <div className="mt-5 space-y-3 sm:hidden">
+            {tiers.map((t) => (
+              <div key={t.tier} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="flex items-center justify-between gap-3">
+                  <span
+                    className="rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white"
+                    style={{ background: t.ribbon }}
+                  >
+                    {t.tier}
+                  </span>
+                  <span className="text-right text-xs font-semibold text-slate-500">{t.position}</span>
+                </div>
+                <dl className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3 text-sm">
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">Desktop</dt>
+                    <dd className="mt-0.5 font-semibold text-slate-700">{t.desktop}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">Mobile</dt>
+                    <dd className="mt-0.5 font-semibold text-slate-700">{t.mobile}</dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
+
+          {/* Tablet & up — table */}
+          <div className="mt-5 hidden overflow-hidden rounded-2xl border border-slate-200 sm:block">
+            <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="bg-sky-950 text-white">
                   <th className="px-4 py-3 text-left font-bold">Tier</th>

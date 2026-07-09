@@ -310,6 +310,22 @@ function buildHtml(articles: Article[], sub: Subscriber): string {
             </td>
           </tr>
 
+          <!-- ── Jobs promo (compact, separate from the directory promo) ── -->
+          <tr>
+            <td style="padding:0 32px 24px 32px;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0f1f3d;border-top:3px solid #f59e0b;">
+                <tr>
+                  <td style="padding:18px 22px;">
+                    <p style="margin:0 0 4px 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:2px;color:#93c5fd;">Industry Jobs</p>
+                    <p style="margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#ffffff;line-height:1.4;">Hiring? Post a job and reach building professionals across Australia.</p>
+                    <a href="${SITE}/industry-jobs/post" style="display:inline-block;padding:10px 20px;background-color:#f59e0b;color:#0f1f3d;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:13px;">Post a job &#8594;</a>
+                    <a href="${SITE}/industry-jobs" style="display:inline-block;margin-left:14px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#93c5fd;text-decoration:underline;">Browse jobs</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
           <!-- ── Platform links ──────────────────────────────────────────── -->
           <tr>
             <td style="padding:0 32px 26px 32px;">
@@ -407,6 +423,12 @@ function buildPlainText(articles: Article[], sub: Subscriber): string {
     "  Gold / Featured — $99/mo: Featured in your State (only 3 per category).",
     "No lock-in contracts — cancel anytime.",
     `Get listed: ${SITE}/directory/pricing`,
+    "",
+    divider,
+    "INDUSTRY JOBS",
+    "Hiring? Post a job and reach building professionals across Australia.",
+    `Post a job: ${SITE}/industry-jobs/post`,
+    `Browse jobs: ${SITE}/industry-jobs`,
     "",
     divider,
     "EXPLORE THE PLATFORM",

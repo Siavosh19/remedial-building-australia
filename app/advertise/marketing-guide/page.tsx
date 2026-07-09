@@ -339,7 +339,31 @@ export default async function MarketingGuidePage() {
         {/* Compare */}
         <section>
           <H2>Compare the Plans</H2>
-          <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
+          {/* Mobile — one card per feature (no horizontal scroll) */}
+          <div className="mt-5 space-y-3 sm:hidden">
+            {compareRows.map((r) => (
+              <div key={r.f} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <p className="text-sm font-bold text-sky-950">{r.f}</p>
+                <div className="mt-3 grid grid-cols-3 gap-2 border-t border-slate-100 pt-3 text-center">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Free</div>
+                    <div className="mt-1 text-sm text-slate-600">{r.free}</div>
+                  </div>
+                  <div>
+                    <div className="rounded-full py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: SILVER_RIBBON }}>Silver</div>
+                    <div className="mt-1 text-sm font-semibold text-slate-700">{r.silver}</div>
+                  </div>
+                  <div>
+                    <div className="rounded-full py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: GOLD_RIBBON }}>Gold</div>
+                    <div className="mt-1 text-sm font-semibold text-slate-700">{r.gold}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tablet & up — table */}
+          <div className="mt-5 hidden overflow-x-auto rounded-2xl border border-slate-200 sm:block">
             <table className="w-full min-w-[560px] border-collapse text-sm">
               <thead>
                 <tr className="bg-sky-950 text-white">
@@ -385,34 +409,61 @@ export default async function MarketingGuidePage() {
             agreed with you — our team can assist with artwork.{" "}
             <strong>Banner advertising is a separate placement — it is not included in any Gold or Silver subscription.</strong>
           </p>
-          <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
-            <table className="w-full min-w-[640px] border-collapse text-sm">
-              <thead>
-                <tr className="bg-sky-950 text-white">
-                  <th className="px-4 py-3 text-left font-bold">Placement</th>
-                  <th className="px-4 py-3 text-left font-bold">Starting Rate (ex GST)</th>
-                  <th className="px-4 py-3 text-left font-bold">Preview</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { p: "Directory page banner — 1 of 3 slots", r: "From $395 / month", href: "/advertise/banner-layout#directory", preview: "See where each banner appears →" },
-                  { p: "Industry News page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#industry-news", preview: "See where each banner appears →" },
-                  { p: "News article page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#article", preview: "See where each banner appears →" },
-                ].map((row, i) => (
-                  <tr key={row.p} className={i % 2 ? "bg-slate-50" : "bg-white"}>
-                    <td className="px-4 py-3 text-slate-700">{row.p}</td>
-                    <td className="px-4 py-3 text-left font-bold text-sky-950">{row.r}</td>
-                    <td className="px-4 py-3 text-left">
-                      <a href={row.href} className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">
-                        {row.preview}
+          {(() => {
+            const bannerRows = [
+              { p: "Directory page banner — 1 of 3 slots", r: "From $395 / month", href: "/advertise/banner-layout#directory" },
+              { p: "Industry News page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#industry-news" },
+              { p: "News article page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#article" },
+            ];
+            return (
+              <div className="mt-5">
+                {/* Mobile — stacked cards (no horizontal scroll) */}
+                <div className="space-y-3 sm:hidden">
+                  {bannerRows.map((row) => (
+                    <div key={row.p} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                      <p className="text-sm font-bold text-sky-950">{row.p}</p>
+                      <div className="mt-2.5 flex items-baseline justify-between gap-3 border-t border-slate-100 pt-2.5">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Starting rate (ex GST)</span>
+                        <span className="text-sm font-bold text-sky-950">{row.r}</span>
+                      </div>
+                      <a
+                        href={row.href}
+                        className="mt-3 inline-block text-sm font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700"
+                      >
+                        See where each banner appears →
                       </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tablet & up — table */}
+                <div className="hidden overflow-hidden rounded-2xl border border-slate-200 sm:block">
+                  <table className="w-full border-collapse text-sm">
+                    <thead>
+                      <tr className="bg-sky-950 text-white">
+                        <th className="px-4 py-3 text-left font-bold">Placement</th>
+                        <th className="px-4 py-3 text-left font-bold">Starting Rate (ex GST)</th>
+                        <th className="px-4 py-3 text-left font-bold">Preview</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bannerRows.map((row, i) => (
+                        <tr key={row.p} className={i % 2 ? "bg-slate-50" : "bg-white"}>
+                          <td className="px-4 py-3 text-slate-700">{row.p}</td>
+                          <td className="px-4 py-3 text-left font-bold text-sky-950">{row.r}</td>
+                          <td className="px-4 py-3 text-left">
+                            <a href={row.href} className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">
+                              See where each banner appears →
+                            </a>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            );
+          })()}
           <p className="mt-2 text-xs text-slate-400">Minimum term 3 months. Limited availability — 3 slots per page.</p>
           <p className="mt-4 text-sm leading-7 text-slate-600">
             Banner placements are arranged directly. Submit a request via the{" "}

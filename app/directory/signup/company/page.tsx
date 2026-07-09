@@ -34,7 +34,7 @@ export default async function DirectoryCompanySetupPage() {
     <div className="mx-auto max-w-5xl px-6 py-10">
     <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
       <h1 className="text-3xl font-extrabold text-slate-950">Grow your business with Remedial Building Australia</h1>
-      <p className="mt-3 text-slate-600">Complete your company profile and submit it for review.</p>
+      <p className="mt-3 text-slate-600">Complete your company profile — once your ABN is confirmed, your listing goes live in the directory automatically.</p>
       <ul className="mt-6 grid gap-2 sm:grid-cols-2">
         {[
           "Build a professional online profile",

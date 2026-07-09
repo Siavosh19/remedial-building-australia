@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { LocationState } from "@prisma/client";
+import type { LocationState, CompanyStatus, AdminReviewStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
-import { sendAdminNewSignupEmail } from "@/lib/directory-email";
+import { sendAdminNewSignupEmail, sendCompanyStatusEmail } from "@/lib/directory-email";
 import { verifyAbn, abnNameMismatch } from "@/lib/abn";
 import { validateAuPhone } from "@/lib/phone-au";
 import { postcodeToState } from "@/lib/au-locations";
@@ -111,6 +111,22 @@ export async function POST(request: NextRequest) {
   // Confidence: ABN +10, Phone +15, Website +10, live-verified ABN +20.
   const confidence_score = 10 + 15 + (website ? 10 : 0) + (abnCheck.active ? 20 : 0);
 
+  // Auto-approve: every listing that reaches this point has already cleared ABN
+  // validation — a valid 11-digit checksum, plus an ACTIVE status when the live
+  // ABR check is configured (cancelled / not-found ABNs were rejected above). That
+  // is our "ABN confirmed" bar, so the listing is published immediately with no
+  // manual review gate. The admin is still emailed for every signup, and every
+  // auto-approved listing stays fully removable via the admin review queue.
+  const autoApprove = abnCheck.validFormat;
+  const companyStatus: CompanyStatus = autoApprove ? "published" : "draft";
+  const queueStatus: AdminReviewStatus = autoApprove ? "published" : "discovered";
+  const approvalNote = autoApprove
+    ? "Auto-approved on submission — ABN confirmed active with the ABR."
+    : "New directory listing submitted for review.";
+  const claimSignals = autoApprove
+    ? { listing_claim_status: "claimed" as const, claimed_at: new Date() }
+    : {};
+
   // Check if a scraped (unclaimed) company already exists with matching email or name
   const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
   const scraped = await prisma.company.findFirst({
@@ -139,7 +155,9 @@ export async function POST(request: NextRequest) {
           description: description || scraped.description || null,
           main_category_id: resolvedCategoryId || scraped.main_category_id,
           profile_status: profileStatus,
-          status: "draft",
+          status: companyStatus,
+          ...claimSignals,
+          ...(autoApprove && scraped.plan_type !== "featured" ? { plan_type: "claimed" as const } : {}),
         },
       });
       await tx.companyUser.create({
@@ -152,19 +170,28 @@ export async function POST(request: NextRequest) {
           accepted_at: new Date(),
         },
       });
+      const claimedSource = autoApprove
+        ? "directory signup (claimed, auto-approved)"
+        : "directory signup (claimed existing)";
       if (!scraped.admin_review_queue.length) {
         await tx.adminReviewQueue.create({
           data: {
             company_id: scraped.id,
-            status: "discovered",
-            source: "directory signup (claimed existing)",
-            notes: `Existing scraped listing claimed by owner via signup. ${verifyNote}`,
+            status: queueStatus,
+            source: claimedSource,
+            notes: `${approvalNote} Existing scraped listing claimed by owner via signup. ${verifyNote}`,
+            ...(autoApprove ? { reviewed_at: new Date() } : {}),
           },
         });
       } else {
         await tx.adminReviewQueue.update({
           where: { id: scraped.admin_review_queue[0].id },
-          data: { status: "discovered", source: "directory signup (claimed existing)", notes: `Claimed by owner via signup. ${verifyNote}` },
+          data: {
+            status: queueStatus,
+            source: claimedSource,
+            notes: `${approvalNote} Claimed by owner via signup. ${verifyNote}`,
+            ...(autoApprove ? { reviewed_at: new Date() } : {}),
+          },
         });
       }
     });
@@ -180,11 +207,13 @@ export async function POST(request: NextRequest) {
         email: businessEmail,
         description,
         main_category_id: resolvedCategoryId,
-        status: "draft",
+        status: companyStatus,
         profile_status: profileStatus,
         confidence_score,
         is_claimed: true,
         is_featured: false,
+        ...claimSignals,
+        ...(autoApprove ? { plan_type: "claimed" as const } : {}),
         locations: {
           create: {
             address: suburb,
@@ -216,9 +245,10 @@ export async function POST(request: NextRequest) {
         },
         admin_review_queue: {
           create: {
-            status: "discovered",
-            source: "directory signup",
-            notes: `New directory listing submitted for review. ${verifyNote}`,
+            status: queueStatus,
+            source: autoApprove ? "directory signup (auto-approved)" : "directory signup",
+            notes: `${approvalNote} ${verifyNote}`,
+            ...(autoApprove ? { reviewed_at: new Date() } : {}),
           },
         },
       },
@@ -235,7 +265,14 @@ export async function POST(request: NextRequest) {
     category?.name ?? "Unknown"
   ).catch(() => {});
 
-  return NextResponse.json({ success: true });
+  // Auto-approved → tell the owner their listing is live (the same confirmation
+  // the admin "approve" action sends). Manual-review listings still wait for the
+  // admin decision email as before.
+  if (autoApprove) {
+    sendCompanyStatusEmail(user.full_name ?? businessEmail, user.email, companyName, true).catch(() => {});
+  }
+
+  return NextResponse.json({ success: true, autoApproved: autoApprove });
 }
 
 export async function PATCH(request: NextRequest) {
