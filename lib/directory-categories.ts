@@ -106,6 +106,12 @@ export const QUERY_CATEGORY_SYNONYMS: Record<string, string> = {
   fencer: "fencing", fencing: "fencing",
   "quantity surveyor": "quantity-surveyor", "building surveyor": "building-surveyor",
   "building consultant": "building-consultant", "building inspector": "building-inspection", "building inspection": "building-inspection",
+  // Remedial builder / building restoration terms map to Building Maintenance so a
+  // search for them surfaces that category first.
+  "remedial builder": "building-maintenance", "remedial builders": "building-maintenance",
+  "building restoration": "building-maintenance", "building restoration works": "building-maintenance",
+  "building restoration work": "building-maintenance", "restoration works": "building-maintenance",
+  "remedial building works": "building-maintenance",
 };
 
 // Resolve a free-text query to ONE category slug when the query clearly IS that
