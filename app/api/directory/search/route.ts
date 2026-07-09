@@ -564,7 +564,9 @@ async function resolveLocation(opts: {
   // 2. Work out the target from explicit params or the free-text location box.
   let suburb = opts.suburb;
   let postcode = opts.postcode;
-  let state = opts.stateFilter ? asState(opts.stateFilter.toUpperCase()) : undefined;
+  // Honour BOTH the `state` param and `locationState` (the front-end sends the
+  // latter alongside coords, but a state-only request may send just one of them).
+  let state = asState((opts.stateFilter || opts.locationState || "").toUpperCase());
 
   if (!suburb && !postcode && !state && opts.rawLocation) {
     const t = opts.rawLocation.trim();
@@ -689,11 +691,14 @@ function buildWhere(params: {
   }
 
   // ── Location restriction ──────────────────────────────────────────────────────
-  // A resolved state HARD-FILTERS results to that state (a Sydney search never
-  // returns VIC/SA businesses). If we couldn't resolve a state but have a suburb,
-  // fall back to a soft suburb match so the search still narrows sensibly.
+  // A resolved state HARD-FILTERS results: a business must either RESIDE in that
+  // state OR service it nationwide. A business that neither resides in nor services
+  // the state is excluded (a Sydney search never returns a VIC-only business). If we
+  // couldn't resolve a state but have a suburb, fall back to a soft suburb match.
   if (enforcedState) {
-    AND.push({ locations: { some: { state: enforcedState } } });
+    AND.push({
+      locations: { some: { OR: [{ state: enforcedState }, { services_nationwide: true }] } },
+    });
   } else if (softSuburb) {
     AND.push({ locations: { some: { suburb: { contains: softSuburb, mode: "insensitive" } } } });
   }
@@ -878,7 +883,7 @@ export async function GET(request: NextRequest) {
   const rawLocation = sp.get("location")?.trim() ?? "";
   const hasCoordsParam = !isNaN(lat) && !isNaN(lng);
   const locationRequested = Boolean(
-    suburbParam || postcodeParam || stateParam || rawLocation || hasCoordsParam,
+    suburbParam || postcodeParam || stateParam || locationState || rawLocation || hasCoordsParam,
   );
 
   // ── Relevance guard — no listings without a search intent ─────────────────────

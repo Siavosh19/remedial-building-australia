@@ -489,12 +489,12 @@ export default function HomeClient() {
             {/* Category cards */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {[
-                { name: "Remedial Consultants",   href: "/directory?category=consultants-practitioners",  Icon: Users      },
-                { name: "Remedial Builders",      href: "/directory?category=remedial-contractors",        Icon: HardHat    },
+                { name: "Building Consultants",   href: "/directory?category=building-consultant",         Icon: Users      },
+                { name: "Building Contractors",   href: "/directory?category=building-contractor",         Icon: HardHat    },
                 { name: "Waterproofing",          href: "/directory?category=waterproofing",               Icon: Droplets   },
-                { name: "Facade & Cladding",      href: "/directory?category=facade-external-envelope",    Icon: Layers     },
-                { name: "Access Systems",         href: "/directory?category=access-systems",              Icon: Search     },
-                { name: "Testing & Investigation",href: "/directory?category=investigation-testing",       Icon: ScanSearch },
+                { name: "Facade & Cladding",      href: "/directory?category=facade-contractor",           Icon: Layers     },
+                { name: "Access & Equipment",     href: "/directory?category=access-equipment-and-hire",   Icon: Search     },
+                { name: "Testing & Inspection",   href: "/directory?category=laboratory-testing",          Icon: ScanSearch },
               ].map(({ name, href, Icon }) => (
                 <a
                   key={name}
