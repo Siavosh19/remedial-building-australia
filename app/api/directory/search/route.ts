@@ -304,6 +304,8 @@ type QueryAnalysis = {
   weak: string[];        // broader related/concept terms (low weight)
   intentCategories: string[]; // category names this query should surface (lowercased)
   words: string[];            // cleaned content words (no synonyms) for exact-category matching
+  tokenIdf?: Record<string, number>; // IDF weight per content word (multi-word queries only)
+  idfCutoff?: number;                 // min IDF coverage to keep a result (drops generic-word floods)
 };
 
 const MAX_TERMS = 20;
@@ -415,7 +417,41 @@ function relevanceScore(
     if (desc.includes(t)) s += 6;
   }
 
+  // IDF-weighted token coverage (multi-word queries) — rare tokens (brand names,
+  // specific materials) dominate over generic words like "supplier"/"contractor";
+  // matching ALL query tokens earns an AND-boost so "Mapei supplier" ranks a real
+  // Mapei supplier above the generic supplier list.
+  if (A.tokenIdf && A.words.length) {
+    const hay = `${name} ${desc} ${cat} ${secCats.join(" ")}`;
+    let cov = 0, matched = 0;
+    for (const w of A.words) {
+      if (hay.includes(w)) { cov += A.tokenIdf[w] ?? 0; matched++; }
+    }
+    s += cov * 45;
+    if (A.words.length >= 2 && matched === A.words.length) s += 300; // all tokens present
+  }
+
   return s;
+}
+
+// IDF-weighted coverage of a query's content words in a row (name/desc/category/
+// secondary). Used as the relevance cutoff that drops generic-word-only floods.
+function idfCoverage(
+  row: {
+    name: string;
+    description: string | null;
+    main_category: { name: string } | null;
+    company_categories?: { category: { name: string } | null }[];
+  },
+  A: QueryAnalysis,
+): number {
+  if (!A.tokenIdf) return 0;
+  const cat = (row.main_category?.name ?? "").toLowerCase();
+  const sec = (row.company_categories ?? []).map((c) => (c.category?.name ?? "").toLowerCase()).join(" ");
+  const hay = `${row.name.toLowerCase()} ${(row.description ?? "").toLowerCase()} ${cat} ${sec}`;
+  let cov = 0;
+  for (const w of A.words) if (hay.includes(w)) cov += A.tokenIdf[w] ?? 0;
+  return cov;
 }
 
 // ─── Location resolution ────────────────────────────────────────────────────────
@@ -871,6 +907,35 @@ export async function GET(request: NextRequest) {
     // Soft suburb match only when we couldn't pin a state (unknown suburb).
     const softSuburb = !enforcedState ? (resolved.suburb ?? "") : "";
 
+    // IDF token weighting (Bug 2). For multi-word queries, weight each content word
+    // by its inverse document frequency so a rare token (a brand like "Mapei")
+    // dominates a common one ("supplier"), and set a coverage cutoff that drops
+    // generic-word-only matches from the results + count.
+    if (A.words.length >= 2) {
+      const [N, ...dfs] = await Promise.all([
+        prisma.company.count({ where: { status: "published" } }),
+        ...A.words.map((w) =>
+          prisma.company.count({
+            where: {
+              status: "published",
+              OR: [
+                { name: { contains: w, mode: "insensitive" } },
+                { description: { contains: w, mode: "insensitive" } },
+                { main_category: { name: { contains: w, mode: "insensitive" } } },
+              ],
+            },
+          }),
+        ),
+      ]);
+      const idf: Record<string, number> = {};
+      A.words.forEach((w, i) => { idf[w] = Math.log((N + 1) / (dfs[i] + 1)); });
+      A.tokenIdf = idf;
+      // Keep results covering ≥ half the rarest token's weight: drops "supplier"-only
+      // matches for "Mapei supplier", but keeps both halves of similarly-common pairs
+      // (e.g. "waterproofing membrane").
+      A.idfCutoff = 0.5 * Math.max(...A.words.map((w) => idf[w]));
+    }
+
     const where = buildWhere({ A, category, featured, licenceVerified, claimed, enforcedState, softSuburb });
 
     // Pull matching rows for in-memory relevance + proximity scoring.
@@ -929,9 +994,13 @@ export async function GET(request: NextRequest) {
       // Building Consultant that only shares the generic word "consultant".
       const catName = (row.main_category?.name ?? "").toLowerCase();
       const catExact = A.words.length > 0 && A.words.every((w) => catName.includes(w));
+      // IDF coverage + whole-phrase hit — drive the multi-word relevance cutoff.
+      const cov = idfCoverage(row, A);
+      const phraseHit = A.words.length >= 2 &&
+        (row.name.toLowerCase().includes(A.phrase) || catName.includes(A.phrase));
 
       return {
-        id: row.id, rel, tier: relTier(rel), distTier, distKm, trust, keep, catExact,
+        id: row.id, rel, tier: relTier(rel), distTier, distKm, trust, keep, catExact, cov, phraseHit,
         planScore: planRank(row),
         keywordScore: rel + trust,
       };
@@ -976,7 +1045,15 @@ export async function GET(request: NextRequest) {
     const distById = new Map(scored.map((s) => [s.id, s.distKm]));
 
     // Apply the radius filter (no-op when Australia-wide / no radius chosen).
-    const visible = radiusKm == null ? scored : scored.filter((s) => s.keep);
+    const base = radiusKm == null ? scored : scored.filter((s) => s.keep);
+    // Relevance cutoff (Bug 2): for multi-word queries, drop results that don't
+    // cover enough of the rarest token's weight (generic-word-only floods), unless
+    // the whole phrase appears or the category is an exact match. Single-word and
+    // idf-less queries are unaffected (cutoff = 0).
+    const cutoff = A.idfCutoff ?? 0;
+    const visible = cutoff > 0
+      ? base.filter((s) => s.cov >= cutoff || s.phraseHit || s.catExact)
+      : base;
 
     // Hard state filter means results are always in-region — no cross-state fallback.
     const isLocalFallback = false;
