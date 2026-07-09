@@ -76,6 +76,51 @@ export const CATEGORY_KEYWORDS: Record<string, string[]> = {
 
 const STOP = new Set(["and", "the", "in", "for", "of", "a", "to", "services", "service", "your", "near", "me"]);
 
+// Normalise a query or category name to a comparable form: lowercase, "&"→"and",
+// punctuation → spaces, collapsed. So "Building Surveyor" and "building surveyor"
+// and "building-surveyor" all normalise to "building surveyor".
+export function normalizeQuery(s: string): string {
+  return s.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+// Informal trade terms that aren't a category NAME but clearly mean one category.
+// Values are live category slugs. Keep these UNAMBIGUOUS (one trade → one category).
+export const QUERY_CATEGORY_SYNONYMS: Record<string, string> = {
+  plumber: "plumbing-and-drainage", plumbers: "plumbing-and-drainage", plumbing: "plumbing-and-drainage",
+  electrician: "electrical-contractor", electricians: "electrical-contractor", sparky: "electrical-contractor", electrical: "electrical-contractor",
+  waterproofer: "waterproofing", waterproofers: "waterproofing",
+  roofer: "roofing-and-restoration", roofers: "roofing-and-restoration", roofing: "roofing-and-restoration",
+  painter: "painting", painters: "painting",
+  tiler: "tiling-and-paving", tilers: "tiling-and-paving", tiling: "tiling-and-paving",
+  concreter: "concreter-concreting-contractor", concreters: "concreter-concreting-contractor", concreting: "concreter-concreting-contractor",
+  plasterer: "plastering", plasterers: "plastering", gyprocker: "plastering", gyprock: "plastering",
+  carpenter: "carpentry", carpenters: "carpentry",
+  bricklayer: "bricklaying", bricklayers: "bricklaying", bricklaying: "bricklaying",
+  scaffolder: "scaffolding", scaffolders: "scaffolding",
+  glazier: "glazing-works", glaziers: "glazing-works", glazing: "glazing-works",
+  locksmith: "locksmith", locksmiths: "locksmith",
+  arborist: "arborist", arborists: "arborist",
+  demolition: "demolition", demolisher: "demolition",
+  landscaper: "landscaping-contractor", landscapers: "landscaping-contractor", landscaping: "landscaping-contractor",
+  handyman: "handyman-services", handymen: "handyman-services",
+  fencer: "fencing", fencing: "fencing",
+  "quantity surveyor": "quantity-surveyor", "building surveyor": "building-surveyor",
+  "building consultant": "building-consultant", "building inspector": "building-inspection", "building inspection": "building-inspection",
+};
+
+// Resolve a free-text query to ONE category slug when the query clearly IS that
+// category — an exact category-name match, or a known trade synonym above.
+// `nameIndex` maps normalised active category names → slug. Returns null for
+// freeform queries (they fall through to the keyword/synonym search engine).
+export function resolveQueryToCategory(q: string, nameIndex: Record<string, string>): string | null {
+  const n = normalizeQuery(q);
+  if (!n) return null;
+  if (nameIndex[n]) return nameIndex[n];
+  if (QUERY_CATEGORY_SYNONYMS[n]) return QUERY_CATEGORY_SYNONYMS[n];
+  if (n.endsWith("s") && nameIndex[n.slice(0, -1)]) return nameIndex[n.slice(0, -1)]; // simple plural
+  return null;
+}
+
 // Resolve a URL slug to a set of DB category slugs.
 // `activeSlugs` is the set of live top-level category slugs.
 // Returns { label?, slugs } or null when nothing matches (caller should 404).
