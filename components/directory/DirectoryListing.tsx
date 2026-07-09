@@ -986,25 +986,35 @@ export default function DirectoryListing({ categories }: Props) {
   useEffect(() => {
     if (!initialLocation) return;
     let cancelled = false;
+    // The URL may hold a formatted label like "Bondi, NSW 2026", but location-suggest
+    // only matches the suburb name — so try the raw value, then the part before the
+    // first comma, then a version with any trailing state/postcode stripped.
+    const candidates = Array.from(new Set([
+      initialLocation.trim(),
+      initialLocation.split(",")[0].trim(),
+      initialLocation.replace(/,?\s*\b[A-Za-z]{2,3}\b\s*\d{0,4}\s*$/i, "").trim(),
+    ].filter(Boolean)));
     (async () => {
-      try {
-        const r = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(initialLocation)}`);
-        const j = await r.json();
-        const first = (j?.suggestions?.[0] as LocationSuggestion | undefined) ?? null;
-        if (cancelled) return;
-        if (first) {
-          handleLocationSelect(first); // sets selectedLocation + coords (page 1)
-        } else {
-          // Unrecognised location → nationwide fallback (keeps any keyword search).
-          setSelectedLocation(null);
-          setCoords(null);
-          setAppliedLocation("");
-        }
-      } catch {
-        if (!cancelled) { setSelectedLocation(null); setCoords(null); setAppliedLocation(""); }
-      } finally {
-        if (!cancelled) setHydratingLocation(false);
+      let first: LocationSuggestion | null = null;
+      for (const query of candidates) {
+        try {
+          const r = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(query)}`);
+          const j = await r.json();
+          if (cancelled) return;
+          first = (j?.suggestions?.[0] as LocationSuggestion | undefined) ?? null;
+        } catch { first = null; }
+        if (first) break;
       }
+      if (cancelled) return;
+      if (first) {
+        handleLocationSelect(first); // sets selectedLocation + coords (page 1)
+      } else {
+        // Unrecognised location → nationwide fallback (keeps any keyword search).
+        setSelectedLocation(null);
+        setCoords(null);
+        setAppliedLocation("");
+      }
+      setHydratingLocation(false);
     })();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
