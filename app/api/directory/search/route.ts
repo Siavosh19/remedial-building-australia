@@ -675,14 +675,17 @@ function buildWhere(params: {
   claimed: boolean;
   enforcedState?: LocationState;
   softSuburb?: string;
+  skipKeyword?: boolean;
 }): Prisma.CompanyWhereInput {
-  const { A, category, featured, licenceVerified, claimed, enforcedState, softSuburb } = params;
+  const { A, category, featured, licenceVerified, claimed, enforcedState, softSuburb, skipKeyword } = params;
 
   const where: Prisma.CompanyWhereInput = { status: "published" };
   const AND: Prisma.CompanyWhereInput[] = [];
 
   // ── Keyword search — recall across all terms + intent categories ──────────────
-  if (A.phrase) {
+  // Skipped when the query is anchored to a category (then the category filter alone
+  // defines the set — a full category browse, ranked keyword-relevant-first).
+  if (A.phrase && !skipKeyword) {
     const terms = [...new Set([...A.strong, ...A.weak])];
     const or: Prisma.CompanyWhereInput[] = terms.flatMap((term) => [
       { name: { contains: term, mode: "insensitive" } },
@@ -966,12 +969,17 @@ export async function GET(request: NextRequest) {
     // search returns only businesses in that category, not a keyword-soup of related
     // trades. Freeform queries (no category match) fall through to keyword search.
     let effectiveCategory = category;
+    let anchoredByQuery = false;
     if (!category && q) {
       const anchored = resolveQueryToCategory(q, await getCategoryNameIndex());
-      if (anchored) effectiveCategory = anchored;
+      if (anchored) {
+        effectiveCategory = anchored;
+        anchoredByQuery = true;
+        A.idfCutoff = 0; // don't drop category members that lack a rare keyword token
+      }
     }
 
-    const where = buildWhere({ A, category: effectiveCategory, featured, licenceVerified, claimed, enforcedState, softSuburb });
+    const where = buildWhere({ A, category: effectiveCategory, featured, licenceVerified, claimed, enforcedState, softSuburb, skipKeyword: anchoredByQuery });
 
     // Pull matching rows for in-memory relevance + proximity scoring.
     const matchingRows = await prisma.company.findMany({
