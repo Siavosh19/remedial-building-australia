@@ -5,6 +5,7 @@ import type { LocationState } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import SiteHeader from "@/components/SiteHeader";
 import { STATE_NAMES, STATE_CODES } from "@/lib/au-locations";
+import { resolveCategorySlug } from "@/lib/directory-categories";
 import { DIRECTORY_DISCLAIMER } from "@/lib/legal";
 
 export const revalidate = 3600; // ISR — render on demand, cache for an hour
@@ -17,21 +18,31 @@ const planOrder = (p: string) => (p === "featured" ? 0 : p === "claimed" ? 1 : 2
 async function getData(categorySlug: string, stateCode: string) {
   const state = stateCode.toUpperCase();
   if (!(STATE_CODES as readonly string[]).includes(state)) return null;
-  const category = await prisma.category.findUnique({
-    where: { slug: categorySlug },
+
+  // Resolve the URL slug (exact, curated composite, or generic composite) to one or
+  // more live DB categories via the central map. Unknown slugs → null → 404.
+  const activeCats = await prisma.category.findMany({
+    where: { is_active: true, parent_id: null },
     select: { id: true, name: true, slug: true },
   });
-  if (!category) return null;
+  const bySlug = new Map(activeCats.map((c) => [c.slug, c]));
+  const resolved = resolveCategorySlug(categorySlug, new Set(bySlug.keys()));
+  if (!resolved) return null;
+  const cats = resolved.slugs.map((s) => bySlug.get(s)).filter((c): c is NonNullable<typeof c> => Boolean(c));
+  if (!cats.length) return null;
+  const catIds = cats.map((c) => c.id);
+  const title = resolved.label ?? cats[0].name;
 
   const companies = await prisma.company.findMany({
     where: {
       status: "published",
       suspended: false,
       OR: [
-        { main_category_id: category.id },
-        { company_categories: { some: { is_approved: true, category_id: category.id } } },
+        { main_category_id: { in: catIds } },
+        { company_categories: { some: { is_approved: true, category_id: { in: catIds } } } },
       ],
-      locations: { some: { state: state as LocationState } },
+      // Reside in the state OR service it nationwide.
+      locations: { some: { OR: [{ state: state as LocationState }, { services_nationwide: true }] } },
     },
     select: {
       id: true, slug: true, name: true, logo_url: true, plan_type: true, description: true,
@@ -41,16 +52,16 @@ async function getData(categorySlug: string, stateCode: string) {
   });
   companies.sort((a, b) => planOrder(a.plan_type) - planOrder(b.plan_type) || a.name.localeCompare(b.name));
 
-  return { category, state, stateName: STATE_NAMES[state] ?? state, companies };
+  return { title, urlSlug: categorySlug, primarySlug: cats[0].slug, state, stateName: STATE_NAMES[state] ?? state, companies };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, state } = await params;
   const data = await getData(category, state);
   if (!data) return { title: "Not found" };
-  const title = `${data.category.name} in ${data.stateName} | Remedial Building Australia`;
-  const description = `Find ${data.category.name.toLowerCase()} servicing ${data.stateName}. Compare ${data.companies.length}+ businesses, view profiles and request quotes directly.`;
-  const url = `${SITE}/directory/${data.category.slug}/${state.toLowerCase()}`;
+  const title = `${data.title} in ${data.stateName} | Remedial Building Australia`;
+  const description = `Find ${data.title.toLowerCase()} servicing ${data.stateName}. Compare ${data.companies.length}+ businesses, view profiles and request quotes directly.`;
+  const url = `${SITE}/directory/${data.urlSlug}/${state.toLowerCase()}`;
   return {
     title,
     description,
@@ -64,7 +75,7 @@ export default async function CategoryStatePage({ params }: Props) {
   const { category, state } = await params;
   const data = await getData(category, state);
   if (!data) notFound();
-  const { category: cat, stateName, companies } = data;
+  const { title, urlSlug, primarySlug, stateName, companies } = data;
   const stateLower = state.toLowerCase();
 
   const breadcrumb = {
@@ -73,12 +84,12 @@ export default async function CategoryStatePage({ params }: Props) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: SITE },
       { "@type": "ListItem", position: 2, name: "Directory", item: `${SITE}/directory` },
-      { "@type": "ListItem", position: 3, name: cat.name, item: `${SITE}/directory/${cat.slug}/${stateLower}` },
+      { "@type": "ListItem", position: 3, name: title, item: `${SITE}/directory/${urlSlug}/${stateLower}` },
     ],
   };
 
   const faqs = [
-    { q: `How do I find ${cat.name.toLowerCase()} in ${stateName}?`, a: `Browse the businesses listed below, open a company profile to view their details, and request quotes from the ones servicing your area.` },
+    { q: `How do I find ${title.toLowerCase()} in ${stateName}?`, a: `Browse the businesses listed below, open a company profile to view their details, and request quotes from the ones servicing your area.` },
     { q: `Are these businesses verified?`, a: `Businesses manage their own profiles and licence/insurance details are self-declared. Always complete your own due diligence before engaging a contractor.` },
     { q: `How much does it cost to request a quote?`, a: `Requesting quotes is free for clients. Create a client account, submit your project, and choose up to 5 businesses to contact you directly.` },
   ];
@@ -98,16 +109,16 @@ export default async function CategoryStatePage({ params }: Props) {
         <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-slate-400">
           <Link href="/">Home</Link> <span>/</span>
           <Link href="/directory">Directory</Link> <span>/</span>
-          <span className="text-sky-950">{cat.name} — {stateName}</span>
+          <span className="text-sky-950">{title} — {stateName}</span>
         </nav>
 
-        <h1 className="text-3xl font-extrabold text-sky-950 md:text-4xl">{cat.name} in {stateName}</h1>
+        <h1 className="text-3xl font-extrabold text-sky-950 md:text-4xl">{title} in {stateName}</h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-          Compare {cat.name.toLowerCase()} servicing {stateName}. View detailed company profiles, see service areas, and
+          Compare {title.toLowerCase()} servicing {stateName}. View detailed company profiles, see service areas, and
           request quotes directly from businesses that cover your location.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href={`/directory?category=${cat.slug}`} className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800">
+          <Link href={`/directory?category=${primarySlug}`} className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800">
             Search the directory →
           </Link>
           <Link href="/request-quotes" className="rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400">
@@ -116,7 +127,7 @@ export default async function CategoryStatePage({ params }: Props) {
         </div>
 
         {/* Businesses */}
-        <h2 className="mt-10 text-xl font-bold text-slate-900">{cat.name} businesses in {stateName} ({companies.length})</h2>
+        <h2 className="mt-10 text-xl font-bold text-slate-900">{title} businesses in {stateName} ({companies.length})</h2>
         {companies.length === 0 ? (
           <p className="mt-3 text-sm text-slate-500">No businesses listed for this category in {stateName} yet.</p>
         ) : (
@@ -142,11 +153,11 @@ export default async function CategoryStatePage({ params }: Props) {
         )}
 
         {/* This category in other states */}
-        <h2 className="mt-10 text-lg font-bold text-slate-900">{cat.name} in other states</h2>
+        <h2 className="mt-10 text-lg font-bold text-slate-900">{title} in other states</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           {STATE_CODES.filter((s) => s !== state.toUpperCase()).map((s) => (
-            <Link key={s} href={`/directory/${cat.slug}/${s.toLowerCase()}`} className="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-sky-400 hover:text-sky-800">
-              {cat.name} in {STATE_NAMES[s] ?? s}
+            <Link key={s} href={`/directory/${urlSlug}/${s.toLowerCase()}`} className="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-sky-400 hover:text-sky-800">
+              {title} in {STATE_NAMES[s] ?? s}
             </Link>
           ))}
         </div>
