@@ -4,6 +4,7 @@ import RemoveNewsButton from "./RemoveNewsButton";
 import RecycleNewsButton from "./RecycleNewsButton";
 import UnpublishNewsButton from "./UnpublishNewsButton";
 import CategorySelect from "./CategorySelect";
+import NewsletterToggle from "./NewsletterToggle";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ const FILTERS = [
   { key: "all", label: "All" },
   { key: "published", label: "Published" },
   { key: "rejected", label: "Rejected" },
+  { key: "newsletter", label: "In newsletter" },
 ] as const;
 
 type NewsRow = {
@@ -24,6 +26,7 @@ type NewsRow = {
   source_url: string | null;
   published_date: string | null;
   status: string | null;
+  include_in_newsletter: boolean | null;
 };
 
 function fmtDate(iso: string | null): string {
@@ -42,14 +45,21 @@ export default async function AdminNewsArticlesPage({
 
   let query = supabaseAdmin
     .from("industry_news")
-    .select("id, title, slug, category, source_name, source_url, published_date, status")
+    .select("id, title, slug, category, source_name, source_url, published_date, status, include_in_newsletter")
     .order("published_date", { ascending: false, nullsFirst: false })
     .limit(1000);
-  if (active !== "all") query = query.eq("status", active);
+  if (active === "newsletter") query = query.eq("include_in_newsletter", true);
+  else if (active !== "all") query = query.eq("status", active);
 
   const { data, error } = await query;
   if (error) console.error("[admin/news-articles] query failed:", error);
   const rows = (data ?? []) as NewsRow[];
+
+  // How many articles are currently queued for the next newsletter send.
+  const { count: selectedCount } = await supabaseAdmin
+    .from("industry_news")
+    .select("id", { count: "exact", head: true })
+    .eq("include_in_newsletter", true);
 
   return (
     <div>
@@ -57,7 +67,23 @@ export default async function AdminNewsArticlesPage({
         <h1 className="text-2xl font-bold text-slate-900">News Articles</h1>
         <p className="mt-1 text-sm text-slate-500">
           Remove anything you don&apos;t want shown, or recycle a wrongly‑rejected article back onto the site.
+          Use <span className="font-semibold text-emerald-700">Add</span> to pick which articles go in the next newsletter.
         </p>
+      </div>
+
+      {/* Newsletter queue status */}
+      <div className="mb-5 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-800">
+        {selectedCount ? (
+          <span>
+            <strong>{selectedCount}</strong> article{selectedCount === 1 ? "" : "s"} queued for the next newsletter.
+            Only these will be sent (newest first, up to 8). Selection clears automatically after the send.
+          </span>
+        ) : (
+          <span>
+            No articles selected — the next newsletter will fall back to the <strong>latest 8 published</strong>.
+            Click <strong>Add</strong> on the articles you want to curate a specific send.
+          </span>
+        )}
       </div>
 
       {/* Filter tabs */}
@@ -87,6 +113,7 @@ export default async function AdminNewsArticlesPage({
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Source</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Published</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Status</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-700">Newsletter</th>
               <th className="px-4 py-3 text-right font-semibold text-slate-700">Action</th>
             </tr>
           </thead>
@@ -122,6 +149,13 @@ export default async function AdminNewsArticlesPage({
                     </span>
                   </td>
                   <td className="px-4 py-3">
+                    {isPublished ? (
+                      <NewsletterToggle id={String(r.id)} selected={!!r.include_in_newsletter} />
+                    ) : (
+                      <span className="text-xs text-slate-300">—</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
                     <div className="flex flex-wrap items-center justify-end gap-1.5">
                       <a
                         href={`/directory/admin/news-articles/${r.id}/edit`}
@@ -138,7 +172,7 @@ export default async function AdminNewsArticlesPage({
             })}
             {!rows.length && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-slate-400">No articles in this view.</td>
+                <td colSpan={7} className="px-4 py-8 text-center text-slate-400">No articles in this view.</td>
               </tr>
             )}
           </tbody>

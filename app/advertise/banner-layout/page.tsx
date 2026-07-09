@@ -24,31 +24,6 @@ function H2({ children }: { children: React.ReactNode }) {
   return <h2 className="text-2xl font-extrabold text-sky-950 sm:text-3xl">{children}</h2>;
 }
 
-/* A page snapshot shown inside mock browser chrome. The banner slots are baked
-   into the image itself (real opened-up space), so no overlay is needed. */
-function SnapshotFrame({ src, alt, caption }: { src: string; alt: string; caption: string }) {
-  return (
-    <div>
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 p-3 shadow-sm sm:p-4">
-        {/* Mock browser chrome */}
-        <div className="mb-3 flex items-center gap-1.5 px-1">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-          <span className="ml-2 truncate rounded-md bg-white px-2 py-0.5 text-[10px] text-slate-400">
-            remedialbuildingaustralia.com.au
-          </span>
-        </div>
-        <div className="overflow-hidden rounded-lg bg-white shadow-inner">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt={alt} className="block w-full select-none" draggable={false} />
-        </div>
-      </div>
-      <p className="mt-3 text-center text-xs text-slate-400">{caption}</p>
-    </div>
-  );
-}
-
 /* A dashed banner slot with a coloured tier pill centred inside — matches the
    labelled placeholders used on the Industry News page snapshot. */
 function MockBanner({ label, ribbon, className }: { label: string; ribbon: string; className?: string }) {
@@ -181,6 +156,184 @@ function ArticleSnapshotMock() {
   );
 }
 
+/* Mock browser chrome wrapper shared by the built snapshots. */
+function Chrome({ url, children }: { url: string; children: React.ReactNode }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 p-3 shadow-sm sm:p-4">
+      <div className="mb-3 flex items-center gap-1.5 px-1">
+        <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+        <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+        <span className="ml-2 truncate rounded-md bg-white px-2 py-0.5 text-[10px] text-slate-400">{url}</span>
+      </div>
+      <div className="overflow-hidden rounded-lg bg-white shadow-inner">{children}</div>
+    </div>
+  );
+}
+
+/* Built snapshot of the Industry News page — Gold across the top (sitting close
+   above the content), Silver in the sidebar, Bronze along the bottom. */
+function NewsSnapshotMock() {
+  const cards = [
+    { img: "/Images/News/Construction%20news.jpg", cat: "Building Defects", title: "CSIRO is closing its fire testing facility" },
+    { img: "/Images/News/Building%20defect%20risk%20protected%20by%20insurance.jpg", cat: "DBP Act", title: "Ecosaver banned from Victorian Energy program" },
+    { img: "/Images/News/Construction%20safety%20inspection%20and%20site%20compliance.jpg", cat: "New Systems", title: "HIA warns CSIRO lab closure will slow innovation" },
+  ];
+  return (
+    <Chrome url="remedialbuildingaustralia.com.au/industry-news">
+      {/* Hero */}
+      <div className="bg-sky-950 px-5 py-5">
+        <p className="text-[7px] font-bold uppercase tracking-[0.3em] text-sky-500">Industry Intelligence</p>
+        <h4 className="mt-1 text-sm font-extrabold leading-tight text-white">Industry News &amp; Remedial Insights</h4>
+        <p className="mt-1 text-[8px] leading-relaxed text-sky-300">
+          Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects and DBP Act developments.
+        </p>
+      </div>
+      {/* Gold banner — small gap to the content below */}
+      <div className="px-4 pt-3 pb-2">
+        <MockBanner label="Gold · 728×90" ribbon={GOLD_RIBBON} className="h-12 w-full" />
+      </div>
+      {/* Editorial note */}
+      <div className="border-b border-slate-100 px-4 pb-2">
+        <p className="text-[7px] leading-relaxed text-slate-400">
+          We monitor Australian building, strata, waterproofing, façade and concrete repair updates, then summarise them for remedial relevance.
+        </p>
+      </div>
+      {/* Two-column: feed + sidebar */}
+      <div className="grid grid-cols-[1fr_130px] gap-3 p-4 sm:grid-cols-[1fr_160px]">
+        <div>
+          <div className="flex h-6 items-center rounded-lg border border-slate-200 px-2 text-[7px] text-slate-400">
+            Search articles, topics or sources…
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1">
+            {["All", "Building Commission NSW", "DBP Act", "Class 2", "Waterproofing"].map((f, i) => (
+              <span
+                key={f}
+                className={`rounded-full px-1.5 py-0.5 text-[6px] font-bold ${i === 0 ? "bg-sky-950 text-white" : "border border-slate-200 text-slate-500"}`}
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+          {/* Featured */}
+          <div className="mt-3 grid grid-cols-2 overflow-hidden rounded-lg border border-slate-200">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/Images/News/Apartment%20owners%20stressed%20by%20high%20levies%20losing%20their%20home.jpg"
+              alt=""
+              className="block aspect-[4/3] w-full object-cover"
+            />
+            <div className="flex flex-col justify-center p-2">
+              <span className="text-[6px] font-bold uppercase tracking-wide text-sky-700">New Construction Systems</span>
+              <p className="mt-0.5 text-[9px] font-bold leading-tight text-sky-950">
+                Pocock&rsquo;s pushing buttons on housing and crafted a model
+              </p>
+              <span className="mt-1 text-[6px] font-bold text-sky-700">Read source →</span>
+            </div>
+          </div>
+          {/* Card row */}
+          <div className="mt-2 grid grid-cols-3 gap-2">
+            {cards.map((c) => (
+              <div key={c.title} className="overflow-hidden rounded border border-slate-200">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={c.img} alt="" className="block aspect-[4/3] w-full object-cover" />
+                <div className="p-1.5">
+                  <span className="text-[5px] font-bold uppercase tracking-wide text-sky-700">{c.cat}</span>
+                  <p className="mt-0.5 line-clamp-2 text-[7px] font-bold leading-tight text-sky-950">{c.title}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Sidebar */}
+        <div className="space-y-2">
+          <p className="text-[6px] font-bold uppercase tracking-[0.2em] text-red-700">RBA Insights</p>
+          <div className="overflow-hidden rounded-lg border border-slate-200">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/Images/Categories/balconies-podiums.jpg" alt="" className="block aspect-[16/9] w-full object-cover" />
+            <div className="p-2">
+              <span className="rounded-full bg-red-100 px-1 py-0.5 text-[5px] font-bold uppercase text-red-700">Remedial Insights</span>
+              <p className="mt-1 text-[7px] font-bold leading-tight text-sky-950">Why Balconies Leak Even After Repairs</p>
+            </div>
+          </div>
+          <MockBanner label="Silver · 300×250" ribbon={SILVER_RIBBON} className="h-24 w-full" />
+        </div>
+      </div>
+      {/* Bronze leaderboard along the bottom */}
+      <div className="border-t border-slate-100 px-4 py-3">
+        <MockBanner label="Bronze · 728×90" ribbon={BRONZE_RIBBON} className="h-10 w-full" />
+      </div>
+    </Chrome>
+  );
+}
+
+/* Built snapshot of the Directory page — Gold in the top strip, Silver above the
+   listings, Bronze within a SHORT results list so the snapshot stays compact. */
+function DirectorySnapshotMock() {
+  const listings = [
+    { in: "SW", name: "Sydney Waterproofing & Remedial", cat: "Waterproofing", loc: "Sydney, NSW" },
+    { in: "AF", name: "Apex Façade & Cladding Solutions", cat: "Façade & Cladding", loc: "Parramatta, NSW" },
+    { in: "CR", name: "CoreLine Concrete Repair", cat: "Concrete Repair", loc: "Newcastle, NSW" },
+  ];
+  const Listing = ({ l }: { l: (typeof listings)[number] }) => (
+    <div className="flex items-center gap-2 rounded-lg border border-slate-200 p-2">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-sky-50 text-[8px] font-extrabold text-sky-800">
+        {l.in}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[8px] font-bold text-sky-950">{l.name}</p>
+        <p className="text-[6px] text-slate-500">
+          <span className="rounded bg-slate-100 px-1 py-0.5 font-semibold text-slate-600">{l.cat}</span> · {l.loc}
+        </p>
+      </div>
+      <span className="rounded bg-sky-950 px-2 py-1 text-[6px] font-bold text-white">View</span>
+    </div>
+  );
+  return (
+    <Chrome url="remedialbuildingaustralia.com.au/directory">
+      <div className="px-4 pt-4">
+        <p className="text-[6px] font-bold uppercase tracking-[0.25em] text-red-700">AI-Powered Directory &amp; Quote Request</p>
+        <h4 className="mt-1 text-sm font-extrabold leading-tight text-sky-950">
+          Australia&rsquo;s AI-Powered Building &amp; Construction Directory
+        </h4>
+      </div>
+      {/* Gold top strip */}
+      <div className="px-4 pt-3 pb-2">
+        <MockBanner label="Gold · 728×90" ribbon={GOLD_RIBBON} className="h-12 w-full" />
+      </div>
+      {/* AI assistant */}
+      <div className="mx-4 rounded-lg bg-gradient-to-br from-sky-900 to-indigo-900 p-3">
+        <span className="rounded-full bg-white/15 px-1.5 py-0.5 text-[6px] font-bold uppercase tracking-wider text-white">
+          ✦ AI Assistant
+        </span>
+        <p className="mt-1.5 text-[9px] font-extrabold text-white">Not sure who you need? Describe the job.</p>
+        <div className="mt-2 flex gap-1.5">
+          <div className="flex h-5 flex-1 items-center rounded bg-white px-1.5 text-[6px] text-slate-400">
+            e.g. water leaking through my balcony…
+          </div>
+          <div className="flex h-5 w-14 items-center rounded bg-white px-1.5 text-[6px] text-slate-400">Suburb…</div>
+          <span className="flex h-5 items-center rounded bg-red-600 px-2 text-[6px] font-bold text-white">Find people</span>
+        </div>
+      </div>
+      {/* Results count */}
+      <div className="px-4 pt-3">
+        <p className="text-[8px] font-bold text-sky-950">566 businesses found</p>
+      </div>
+      {/* Silver above the listings */}
+      <div className="px-4 pt-2">
+        <MockBanner label="Silver · 300×250" ribbon={SILVER_RIBBON} className="h-16 w-full" />
+      </div>
+      {/* Short results list with Bronze in-feed */}
+      <div className="space-y-2 px-4 py-3">
+        <Listing l={listings[0]} />
+        <Listing l={listings[1]} />
+        <MockBanner label="Bronze · in results" ribbon={BRONZE_RIBBON} className="h-12 w-full" />
+        <Listing l={listings[2]} />
+      </div>
+    </Chrome>
+  );
+}
+
 /* ── page ───────────────────────────────────────────────────────────────── */
 
 export default function BannerLayoutPage() {
@@ -236,11 +389,10 @@ export default function BannerLayoutPage() {
             <strong> Silver</strong> in the right sidebar, and <strong>Bronze</strong> along the bottom above the footer.
           </p>
           <div className="mx-auto mt-6 max-w-xl">
-            <SnapshotFrame
-              src="/advertise/news-page-preview.webp"
-              alt="Industry News page showing where the Gold, Silver and Bronze banners appear"
-              caption="Industry News page — banner slots shown in place for illustration. Not a live ad layout."
-            />
+            <NewsSnapshotMock />
+            <p className="mt-3 text-center text-xs text-slate-400">
+              Industry News page — banner slots shown in place for illustration. Not a live ad layout.
+            </p>
           </div>
         </section>
 
@@ -273,11 +425,10 @@ export default function BannerLayoutPage() {
             else on the page moves or overlaps.
           </p>
           <div className="mx-auto mt-6 max-w-xl">
-            <SnapshotFrame
-              src="/advertise/directory-page-preview.webp"
-              alt="Directory page showing where the Gold, Silver and Bronze banner slots appear"
-              caption="Directory page — reserved banner slots shown in place for illustration. Not a live ad layout."
-            />
+            <DirectorySnapshotMock />
+            <p className="mt-3 text-center text-xs text-slate-400">
+              Directory page — reserved banner slots shown in place for illustration. Not a live ad layout.
+            </p>
           </div>
         </section>
 

@@ -18,6 +18,8 @@ model IndustryNews {
   featured_image  String?
   status          String?   @default("published")
   priority        Int?      @default(2)
+  include_in_newsletter Boolean @default(false)
+  newsletter_sent_at DateTime?
   created_at      DateTime? @default(now())
 
   @@map("industry_news")

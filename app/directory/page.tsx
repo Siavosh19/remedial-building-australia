@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import DirectoryListing from "@/components/directory/DirectoryListing";
-import DirectoryPromoBanner from "@/components/directory/DirectoryPromoBanner";
 
 import SiteHeader from "@/components/SiteHeader";
 export const metadata: Metadata = {
@@ -98,11 +97,6 @@ export default async function DirectoryPage() {
             <span className="font-semibold text-slate-500">Australian Strata Building Directory</span>
           </div>
         </div>
-      </div>
-
-      {/* Animated self-promotion banner — encourages businesses to list */}
-      <div className="pb-12">
-        <DirectoryPromoBanner listedLabel={listedLabel} />
       </div>
 
       {/* Listing */}

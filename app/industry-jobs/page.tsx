@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { activeJobWhere } from "@/lib/jobs";
-import { AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS, SALARY_BANDS, JOB_CATEGORY_GROUPS } from "@/lib/jobs-data";
+import { AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS, SALARY_BANDS } from "@/lib/jobs-data";
 import JobCard, { type JobCardData } from "@/components/jobs/JobCard";
 import { Search, Briefcase, Plus } from "lucide-react";
 import type { Prisma } from "@prisma/client";
@@ -41,7 +41,6 @@ function salaryMatchesBand(salary: string | null, band: (typeof SALARY_BANDS)[nu
 export default async function IndustryJobsPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
   const q = one(sp.q).trim();
-  const category = one(sp.category);
   const state = one(sp.state);
   const location = one(sp.location).trim();
   const type = one(sp.type);
@@ -66,30 +65,20 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
   if (level) where.experience_level = level as Prisma.JobWhereInput["experience_level"];
   if (featuredOnly) where.is_featured = true;
 
-  let categories: { id: number; name: string; slug: string; group: string }[] = [];
   let featured: JobCardData[] = [];
   let latest: JobCardData[] = [];
 
   try {
-    if (category) {
-      const cat = await prisma.jobCategory.findUnique({ where: { slug: category }, select: { id: true } });
-      if (cat) where.category_id = cat.id;
-    }
-
-    const [cats, rows] = await Promise.all([
-      prisma.jobCategory.findMany({ where: { is_active: true }, orderBy: { display_order: "asc" }, select: { id: true, name: true, slug: true, group: true } }),
-      prisma.job.findMany({
-        where: activeJobWhere(where),
-        orderBy: [{ is_featured: "desc" }, { published_at: "desc" }, { created_at: "desc" }],
-        take: 200,
-        select: {
-          slug: true, title: true, company_name: true, company_logo_url: true, location: true,
-          employment_type: true, salary: true, description: true, is_featured: true,
-          published_at: true, created_at: true,
-        },
-      }),
-    ]);
-    categories = cats;
+    const rows = await prisma.job.findMany({
+      where: activeJobWhere(where),
+      orderBy: [{ is_featured: "desc" }, { published_at: "desc" }, { created_at: "desc" }],
+      take: 200,
+      select: {
+        slug: true, title: true, company_name: true, company_logo_url: true, location: true,
+        employment_type: true, salary: true, description: true, is_featured: true,
+        published_at: true, created_at: true,
+      },
+    });
     const filtered = band ? rows.filter((r) => salaryMatchesBand(r.salary, band)) : rows;
     featured = filtered.filter((r) => r.is_featured);
     latest = filtered.filter((r) => !r.is_featured);
@@ -98,7 +87,7 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
     console.error("[industry-jobs] listing query failed:", err);
   }
 
-  const hasFilters = Boolean(q || category || state || location || type || level || salary || featuredOnly);
+  const hasFilters = Boolean(q || state || location || type || level || salary || featuredOnly);
   const inputCls =
     "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-sky-950 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100";
 
@@ -131,22 +120,7 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
           <input name="q" defaultValue={q} placeholder="Search jobs..." className={`${inputCls} pl-10`} />
         </div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-          <select name="category" defaultValue={category} className={inputCls}>
-            <option value="">All Categories</option>
-            {JOB_CATEGORY_GROUPS.map((g) => (
-              <optgroup key={g.group} label={g.group}>
-                {g.categories.map((name) => {
-                  const c = categories.find((x) => x.name === name);
-                  return (
-                    <option key={name} value={c?.slug ?? name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}>
-                      {name}
-                    </option>
-                  );
-                })}
-              </optgroup>
-            ))}
-          </select>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
           <select name="state" defaultValue={state} className={inputCls}>
             <option value="">All States</option>
             {AU_STATES.map((s) => <option key={s} value={s}>{s}</option>)}

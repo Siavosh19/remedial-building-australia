@@ -38,7 +38,7 @@ export async function PATCH(request: NextRequest) {
   if (!body || typeof body !== "object")
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
 
-  const update: Record<string, string> = {};
+  const update: Record<string, string | boolean> = {};
 
   if (typeof body.status === "string") {
     if (!ALLOWED_STATUS.has(body.status))
@@ -53,6 +53,7 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.title === "string") update.title = body.title.trim().slice(0, 300);
   if (typeof body.summary === "string") update.summary = body.summary.trim();
   if (typeof body.industry_impact === "string") update.industry_impact = body.industry_impact.trim();
+  if (typeof body.include_in_newsletter === "boolean") update.include_in_newsletter = body.include_in_newsletter;
 
   if (Object.keys(update).length === 0)
     return NextResponse.json({ error: "Nothing to update" }, { status: 400 });

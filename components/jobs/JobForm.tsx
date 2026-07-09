@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { JOB_CATEGORY_GROUPS, jobCategorySlug, AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS } from "@/lib/jobs-data";
+import { AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS } from "@/lib/jobs-data";
 import { Upload, Building2, Star, Eye, Pencil } from "lucide-react";
 
 export type JobFormInitial = {
@@ -30,6 +30,16 @@ type Pricing = { standard: string | null; featured: string | null };
 const input =
   "w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-sky-950 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100";
 const label = "mb-1.5 block text-sm font-semibold text-sky-950";
+
+// Pretty-print a pure-number salary as currency ($1,222,222). Leaves ranges or
+// text (e.g. "$110k – $130k + super") untouched so the field stays flexible.
+function formatSalary(v: string): string {
+  const digits = v.replace(/[$,\s]/g, "");
+  if (digits.length > 0 && /^\d+$/.test(digits)) {
+    return "$" + Number(digits).toLocaleString("en-AU");
+  }
+  return v;
+}
 
 export default function JobForm({
   mode,
@@ -208,17 +218,6 @@ export default function JobForm({
           </label>
         </div>
         <div>
-          <label className={label}>Category</label>
-          <select className={input} value={f.category_slug ?? ""} onChange={(e) => set("category_slug", e.target.value)}>
-            <option value="">Select a category</option>
-            {JOB_CATEGORY_GROUPS.map((g) => (
-              <optgroup key={g.group} label={g.group}>
-                {g.categories.map((name) => <option key={name} value={jobCategorySlug(name)}>{name}</option>)}
-              </optgroup>
-            ))}
-          </select>
-        </div>
-        <div>
           <label className={label}>Company website</label>
           <input className={input} value={f.company_website ?? ""} onChange={(e) => set("company_website", e.target.value)} placeholder="https://" />
         </div>
@@ -249,7 +248,7 @@ export default function JobForm({
         </div>
         <div>
           <label className={label}>Salary (optional)</label>
-          <input className={input} value={f.salary ?? ""} onChange={(e) => set("salary", e.target.value)} placeholder="e.g. $110k – $130k + super" />
+          <input className={input} value={f.salary ?? ""} onChange={(e) => set("salary", formatSalary(e.target.value))} placeholder="e.g. $110k – $130k + super" />
         </div>
         <div>
           <label className={label}>Closing date (optional)</label>

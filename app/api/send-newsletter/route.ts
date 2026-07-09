@@ -455,17 +455,38 @@ async function handle(request: NextRequest) {
   if (!subs || subs.length === 0)
     return NextResponse.json({ error: "No subscribers found" }, { status: 404 });
 
-  // Up to 8 latest published articles with summaries — no date restriction
-  const { data: raw, error: artError } = await supabase
+  // Article selection: prefer the admin-curated set (include_in_newsletter =
+  // true). If nothing is curated, fall back to the 8 latest published articles.
+  // A curated selection is cleared after a real send (see below) so the next
+  // week starts fresh.
+  const ARTICLE_COLS = "title, slug, summary, category, source_name, published_date";
+
+  const { data: curated, error: curErr } = await supabase
     .from("industry_news")
-    .select("title, slug, summary, category, source_name, published_date")
+    .select(ARTICLE_COLS)
     .eq("status", "published")
     .not("summary", "is", null)
+    .eq("include_in_newsletter", true)
     .order("published_date", { ascending: false })
     .limit(8);
+  if (curErr)
+    return NextResponse.json({ error: curErr.message }, { status: 500 });
 
-  if (artError)
-    return NextResponse.json({ error: artError.message }, { status: 500 });
+  const usedCuration = (curated?.length ?? 0) > 0;
+  let raw = curated;
+
+  if (!usedCuration) {
+    const { data: latest, error: artError } = await supabase
+      .from("industry_news")
+      .select(ARTICLE_COLS)
+      .eq("status", "published")
+      .not("summary", "is", null)
+      .order("published_date", { ascending: false })
+      .limit(8);
+    if (artError)
+      return NextResponse.json({ error: artError.message }, { status: 500 });
+    raw = latest;
+  }
 
   const articles: Article[] = (raw ?? []).map((r: Record<string, unknown>) => ({
     title:          String(r.title          ?? "").trim(),
@@ -506,10 +527,24 @@ async function handle(request: NextRequest) {
     }
   }
 
+  // After a real send (not a preview), clear the curated selection so the next
+  // week starts empty and the same articles can't be resent by accident.
+  let cleared = false;
+  if (!testTo && usedCuration && sent > 0) {
+    const { error: clearErr } = await supabase
+      .from("industry_news")
+      .update({ include_in_newsletter: false })
+      .eq("include_in_newsletter", true);
+    if (clearErr) console.error("[send-newsletter] failed to clear selection:", clearErr);
+    else cleared = true;
+  }
+
   return NextResponse.json({
     sent,
     total_subscribers: subs.length,
     article_count: articles.length,
+    curated: usedCuration,
+    selection_cleared: cleared,
     errors: errors.length ? errors : undefined,
   });
 }
