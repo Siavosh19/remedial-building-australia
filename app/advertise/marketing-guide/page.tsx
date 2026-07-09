@@ -181,7 +181,7 @@ export default function MarketingGuidePage() {
             professionals, body corporates and property managers search every day.
           </p>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <StatChip big="19,300+" label="Businesses listed" tone="navy" />
+            <StatChip big="19,000+" label="Businesses listed" tone="navy" />
             <StatChip big="Australia wide" label="Coverage" tone="plain" />
             <StatChip big="3" label="Gold spots per State" tone="gold" />
             <StatChip big="Unlimited" label="Quote requests (paid)" tone="silver" />
