@@ -290,24 +290,24 @@ function SilverSampleCard() {
         </div>
         {/* Desktop CTA — inline on the right (unchanged) */}
         <a
-          href="/directory/signup"
+          href="/directory/login"
           className="hidden shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 sm:block"
           style={{ background: "#475569" }}
         >
           Get This Spot →
         </a>
       </div>
-      {/* Mobile contacts — phone over website (left) · email (centre) */}
-      <div className="relative mt-3 flex items-center text-[11px] font-semibold text-slate-600 sm:hidden">
-        <div className="flex flex-col gap-1">
+      {/* Mobile contacts — phone + email on one row, website below */}
+      <div className="mt-3 flex flex-col gap-1 text-[11px] font-semibold text-slate-600 sm:hidden">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           <span className="inline-flex items-center gap-1"><span aria-hidden>📞</span> 000 000 000</span>
-          <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
+          <span className="inline-flex items-center gap-1"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
         </div>
-        <span className="absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
+        <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
       </div>
       {/* Mobile CTA — full width */}
       <a
-        href="/directory/signup"
+        href="/directory/login"
         className="mt-3 block w-full rounded-lg px-4 py-2 text-center text-sm font-semibold text-white transition hover:opacity-90 sm:hidden"
         style={{ background: "#475569" }}
       >
@@ -393,20 +393,20 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                 </div>
 
                 {/* Desktop CTA — inline right (unchanged) */}
-                <a href="/directory/signup" className="hidden shrink-0 whitespace-nowrap rounded-[10px] px-[22px] py-2.5 text-sm font-bold text-white sm:block" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
+                <a href="/directory/login" className="hidden shrink-0 whitespace-nowrap rounded-[10px] px-[22px] py-2.5 text-sm font-bold text-white sm:block" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
                   Get This Spot →
                 </a>
               </div>
-              {/* Mobile contacts — phone over website (left) · email (centre) */}
-              <div className="relative mt-3 flex items-center text-[11px] font-semibold sm:hidden" style={{ color: "#7a6a4a" }}>
-                <div className="flex flex-col gap-1">
+              {/* Mobile contacts — phone + email on one row, website below */}
+              <div className="mt-3 flex flex-col gap-1 text-[11px] font-semibold sm:hidden" style={{ color: "#7a6a4a" }}>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                   <span className="inline-flex items-center gap-1"><span aria-hidden>📞</span> 000 000 000</span>
-                  <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
+                  <span className="inline-flex items-center gap-1"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
                 </div>
-                <span className="absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
+                <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
               </div>
               {/* Mobile CTA — full width */}
-              <a href="/directory/signup" className="mt-3 block w-full rounded-[10px] px-4 py-2 text-center text-sm font-bold text-white sm:hidden" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
+              <a href="/directory/login" className="mt-3 block w-full rounded-[10px] px-4 py-2 text-center text-sm font-bold text-white sm:hidden" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
                 Get This Spot →
               </a>
             </div>
@@ -1491,7 +1491,7 @@ export default function DirectoryListing({ categories }: Props) {
               Request quotes for building works from listed businesses.
             </p>
             <a
-              href="/request-quotes"
+              href="/directory/login"
               className="shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 sm:whitespace-nowrap"
             >
               Request Quotes →
@@ -1528,7 +1528,7 @@ export default function DirectoryListing({ categories }: Props) {
             )}
           </div>
           <a
-            href="/directory/signup"
+            href="/directory/login"
             className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
           >
             List your business →
@@ -1544,7 +1544,7 @@ export default function DirectoryListing({ categories }: Props) {
             </p>
           </div>
           <a
-            href="/directory/signup"
+            href="/directory/login"
             className="shrink-0 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 sm:whitespace-nowrap"
           >
             Claim Your Profile

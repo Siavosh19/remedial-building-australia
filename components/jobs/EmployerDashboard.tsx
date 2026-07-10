@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Star, Eye, Users, Pencil, Copy, RefreshCw, XCircle, Trash2, CreditCard, LogOut, ExternalLink } from "lucide-react";
+import { Plus, Star, Eye, Users, Pencil, Copy, RefreshCw, XCircle, Trash2, CreditCard, ExternalLink } from "lucide-react";
 
 export type DashboardJob = {
   id: number;
@@ -85,7 +85,7 @@ export default function EmployerDashboard({
     if (act === "expire" && !confirm("Take this listing offline now?")) return;
     setBusyId(id);
     const { ok, data } = await call(`/api/industry-jobs/jobs/${id}/action`, { action: act });
-    if (ok && act === "duplicate" && data.id) { window.location.href = `/industry-jobs/employer/jobs/${data.id}/edit`; return; }
+    if (ok && act === "duplicate" && data.id) { window.location.href = `/directory/dashboard/jobs/${data.id}/edit`; return; }
     if (ok) { window.location.reload(); return; }
     alert(data.error ?? "Something went wrong.");
     setBusyId(null);
@@ -103,19 +103,16 @@ export default function EmployerDashboard({
   const btn = "inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700 disabled:opacity-50";
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-10">
+    <div>
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-sky-950">Employer Dashboard</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-sky-950">Jobs</h1>
           <p className="mt-1 text-sm text-slate-500">{companyName ? `${companyName} · ` : ""}{email}</p>
         </div>
         <div className="flex items-center gap-3">
-          <a href="/industry-jobs/post" className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
+          <a href="/directory/dashboard/jobs/new" className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
             <Plus size={16} /> Post a Job
-          </a>
-          <a href="/api/industry-jobs/auth/logout" className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-slate-300">
-            <LogOut size={15} /> Sign out
           </a>
         </div>
       </div>
@@ -179,7 +176,7 @@ export default function EmployerDashboard({
           {filtered.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 py-14 text-center">
               <p className="text-sm font-semibold text-slate-500">Nothing here yet.</p>
-              {tab === "draft" && <a href="/industry-jobs/post" className="mt-2 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Post your first job →</a>}
+              {tab === "draft" && <a href="/directory/dashboard/jobs/new" className="mt-2 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Post your first job →</a>}
             </div>
           ) : (
             filtered.map((j) => {
@@ -208,9 +205,9 @@ export default function EmployerDashboard({
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {j.applications > 0 && (
-                      <a href={`/industry-jobs/employer/jobs/${j.id}/applications`} className={`${btn} border-sky-200 text-sky-800`}><Users size={13} /> Applications ({j.applications})</a>
+                      <a href={`/directory/dashboard/jobs/${j.id}/applications`} className={`${btn} border-sky-200 text-sky-800`}><Users size={13} /> Applications ({j.applications})</a>
                     )}
-                    <a href={`/industry-jobs/employer/jobs/${j.id}/edit`} className={btn}><Pencil size={13} /> Edit</a>
+                    <a href={`/directory/dashboard/jobs/${j.id}/edit`} className={btn}><Pencil size={13} /> Edit</a>
                     {isDraft && (
                       <button onClick={() => pay(j.id)} disabled={busyId === j.id} className="inline-flex items-center gap-1.5 rounded-lg bg-red-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-800 disabled:opacity-50">
                         <CreditCard size={13} /> {busyId === j.id ? "…" : "Pay & publish"}

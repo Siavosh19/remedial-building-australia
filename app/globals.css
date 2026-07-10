@@ -264,3 +264,27 @@
   .rba-featured-card:hover,
   .rba-sys-ref-panel:hover { transform: none; }
 }
+
+/* Visible drag-to-resize affordance on textareas (e.g. Post/Edit a Job form).
+   The native resizer is nearly invisible; this draws a clear diagonal grip in
+   the bottom-right corner and keeps resizing to the vertical axis. */
+textarea.textarea-grip {
+  resize: vertical;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #94a3b8 0 1.5px,
+    transparent 1.5px 4px
+  );
+  background-repeat: no-repeat;
+  background-position: right 4px bottom 4px;
+  background-size: 11px 11px;
+}
+textarea.textarea-grip:focus {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #0284c7 0 1.5px,
+    transparent 1.5px 4px
+  );
+}
+/* Hide the faint native WebKit resizer so only our grip shows */
+textarea.textarea-grip::-webkit-resizer { background: transparent; }

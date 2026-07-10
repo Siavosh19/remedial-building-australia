@@ -59,9 +59,9 @@ export default function QuoteRequestsClient({
   if (planType === "basic") {
     return (
       <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm text-center">
-        <h1 className="text-2xl font-bold text-slate-950">Quote Requests</h1>
+        <h1 className="text-2xl font-bold text-slate-950">Listing Enquiries</h1>
         <p className="mt-4 text-slate-600">
-          Quote requests are available on Silver and Gold plans.
+          Listing enquiries are available on Silver and Gold plans.
         </p>
         <Link
           href="/directory/pricing"
@@ -78,7 +78,7 @@ export default function QuoteRequestsClient({
       <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-950">Quote Requests</h1>
+            <h1 className="text-2xl font-bold text-slate-950">Listing Enquiries</h1>
             <p className="mt-1 text-slate-600">{list.length} total request{list.length !== 1 ? "s" : ""}</p>
           </div>
           {!quoteRequestsEnabled && (

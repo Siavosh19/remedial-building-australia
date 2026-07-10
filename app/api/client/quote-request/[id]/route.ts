@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getClientUserFromRequest } from "@/lib/directory-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { TERMS_VERSION } from "@/lib/legal";
 
 type Params = { params: Promise<{ id: string }> };
 
 async function loadOwnedRequest(request: NextRequest, idStr: string) {
-  const user = await getClientUserFromRequest(request);
+  const user = await getDirectoryUserFromRequest(request);
   if (!user) return { error: NextResponse.json({ error: "Unauthorized." }, { status: 401 }) };
   const id = Number(idStr);
   if (!Number.isInteger(id)) return { error: NextResponse.json({ error: "Invalid ID." }, { status: 400 }) };

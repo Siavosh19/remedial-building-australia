@@ -32,7 +32,7 @@ export default async function LeadRequestsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Lead Requests</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Matched Leads</h1>
           <p className="mt-1 text-sm text-slate-500">Quote requests from strata managers, owners corporations and property owners.</p>
         </div>
         <div className="rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center">
@@ -65,7 +65,7 @@ export default async function LeadRequestsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Lead Requests</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Matched Leads</h1>
           <p className="mt-1 text-sm text-slate-500">
             {deliveries.length} received{newCount > 0 ? ` · ${newCount} new` : ""} ·{" "}
             <span className="font-semibold">{planLabel(company.plan_type)}</span>

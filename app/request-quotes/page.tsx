@@ -23,7 +23,7 @@ const STEPS = [
 export default async function RequestQuotesLandingPage() {
   const user = await getCurrentDirectoryUser();
   const isClient = user?.role === "client_user";
-  const primaryHref = isClient ? "/client/quote-requests/new" : "/client/signup";
+  const primaryHref = isClient ? "/directory/dashboard/quotes/new" : "/directory/login";
   const primaryLabel = isClient ? "Start a quote request" : "Create a client account";
 
   return (

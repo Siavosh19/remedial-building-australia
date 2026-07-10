@@ -45,11 +45,11 @@ const CARDS: CardDef[] = [
   },
   {
     id: "directory",
-    title: "List My Business",
+    title: "List My Business & Post Jobs",
     subtitle: (
       <>
-        I run a <Who>Building or Trade Business</Who> — <Who>Contractor</Who>, <Who>Consultant</Who> or{" "}
-        <Who>Engineer</Who> — and I want to list it in the directory to receive quote requests and win more work.
+        I own a <Who>Business</Who> and want to <Who>list it in the directory</Who>, <Who>manage my subscription</Who>,{" "}
+        <Who>post jobs</Who>, receive quote requests and win more work.
       </>
     ),
     Icon: Building2,
@@ -136,12 +136,16 @@ export default function DirectorySignupPage() {
 
   const phoneCheck = form.phone ? validateAuPhone(form.phone) : null;
 
-  // Deep link: /directory/signup?type=directory jumps straight into that card's form
+  // The 4-card chooser is retired — the single entry point is /directory/login.
+  // /directory/signup?type=directory still deep-links to the business form (used
+  // by the login page's "Create account"); anything else funnels to login.
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("type");
-    if (!t) return;
-    const card = CARDS.find((c) => c.id === t);
-    if (!card || card.disabled) return;
+    const card = t ? CARDS.find((c) => c.id === t) : null;
+    if (!card || card.disabled) {
+      router.replace("/directory/login");
+      return;
+    }
     if (card.href) {
       router.push(card.href);
       return;

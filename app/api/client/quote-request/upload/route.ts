@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getClientUserFromRequest } from "@/lib/directory-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { FILE_TYPE_IDS } from "@/lib/quote-options";
 
@@ -8,7 +8,7 @@ const BUCKET = "quote-request-files";
 const MAX_BYTES = 25 * 1024 * 1024; // 25 MB per file
 
 export async function POST(request: NextRequest) {
-  const user = await getClientUserFromRequest(request);
+  const user = await getDirectoryUserFromRequest(request);
   if (!user) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
 
   const formData = await request.formData().catch(() => null);

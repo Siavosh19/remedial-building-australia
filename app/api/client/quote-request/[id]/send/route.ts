@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getClientUserFromRequest } from "@/lib/directory-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { sendDirectQuoteRequestEmail, sendClientLeadAdminEmail } from "@/lib/directory-email";
 import { URGENCY_LABELS, formatBudget } from "@/lib/quote-options";
 
@@ -11,7 +11,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildi
 
 // POST { companyId } — send this client's quote request to one chosen business.
 export async function POST(request: NextRequest, { params }: Params) {
-  const user = await getClientUserFromRequest(request);
+  const user = await getDirectoryUserFromRequest(request);
   if (!user) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
 
   const { id } = await params;

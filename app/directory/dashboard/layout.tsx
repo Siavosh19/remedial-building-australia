@@ -2,74 +2,57 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
-import DashboardNav from "@/components/directory/DashboardNav";
+import PortalSidebar from "@/components/directory/PortalSidebar";
 import { planLabel } from "@/lib/plans";
 
 
 const STATUS_COLOR: Record<string, string> = {
-  basic:    "bg-white/10 text-white/70",
-  claimed:  "bg-sky-400/20 text-sky-200",
-  featured: "bg-amber-400/20 text-amber-200",
+  basic:    "bg-slate-100 text-slate-600",
+  claimed:  "bg-sky-100 text-sky-800",
+  featured: "bg-amber-100 text-amber-800",
 };
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const user = await getCurrentDirectoryUser();
   if (!user) redirect("/directory/login");
-  // Strata/client users have their own dashboard — never the business setup.
-  if (user.role === "client_user") redirect("/client/dashboard");
+  if (user.role === "admin") redirect("/directory/admin");
 
+  // A listing is optional now: any account can reach the portal (e.g. to post
+  // jobs) before it has a directory listing. The "My Business" pages prompt to
+  // create one when it's missing.
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
     select: { id: true, name: true, slug: true, status: true, plan_type: true, profile_status: true },
   });
 
-  if (user.role === "admin") redirect("/directory/admin");
-  if (!company) redirect("/directory/signup/company");
-
-  const planDisplay = planLabel(company.plan_type);
-  const statusCls = STATUS_COLOR[company.plan_type] ?? "bg-slate-100 text-slate-600";
+  const planDisplay = company ? planLabel(company.plan_type) : null;
+  const statusCls = company ? (STATUS_COLOR[company.plan_type] ?? "bg-slate-100 text-slate-600") : "";
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA]">
-      {/* Top bar */}
-      <header className="border-b border-sky-900/40 bg-sky-950">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
-          <div className="flex items-center gap-4">
-            <a href="/" className="text-base font-bold tracking-tight text-white transition hover:text-sky-300">
-              Remedial Building Australia
-            </a>
-            <span className="h-4 w-px bg-white/20" aria-hidden />
-            <span className="text-base font-semibold text-white/75">{company.name}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className={`rounded-full px-3 py-1 text-sm font-bold tracking-wide ${statusCls}`}>
-              {planDisplay}
-            </span>
-            <a
-              href={`/directory/company/${company.slug}`}
-              target="_blank"
-              className="rounded-lg border border-white/20 px-3 py-1.5 text-sm font-semibold text-white/80 transition hover:border-white/40 hover:text-white"
-            >
-              View listing ↗
-            </a>
-            <a
-              href="/api/directory/logout"
-              className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-bold text-white transition hover:bg-red-500"
-            >
-              Sign out
-            </a>
-          </div>
-        </div>
+    <div className="flex min-h-screen bg-[#F5F7FA]">
+      <PortalSidebar email={user.email} />
 
-        {/* Nav tabs */}
-        <div className="mx-auto max-w-6xl px-6">
-          <DashboardNav />
-        </div>
-      </header>
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Slim top bar — listing name, plan and quick link (only when a listing exists) */}
+        {company ? (
+          <header className="flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-3">
+            <span className="truncate text-base font-semibold text-sky-950">{company.name}</span>
+            <div className="flex items-center gap-3">
+              <span className={`rounded-full px-3 py-1 text-xs font-bold tracking-wide ${statusCls}`}>{planDisplay}</span>
+              <a
+                href={`/directory/company/${company.slug}`}
+                target="_blank"
+                className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-sky-800 transition hover:border-sky-300"
+              >
+                View listing ↗
+              </a>
+            </div>
+          </header>
+        ) : null}
 
-      <main className="mx-auto max-w-6xl px-6 py-8">
-        {children}
-      </main>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
+          {children}
+        </main>
 
       <footer className="border-t border-sky-200 bg-slate-100">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:grid-cols-[1.2fr_1fr]">
@@ -99,6 +82,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>
+      </div>
     </div>
   );
 }

@@ -292,6 +292,9 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.companyName === "string" && body.companyName.trim()) companyData.name = body.companyName.trim();
   if (typeof body.phone === "string" && body.phone.trim()) companyData.phone = body.phone.trim();
   if (typeof body.website === "string") companyData.website = body.website.trim() || null;
+  if (typeof body.facebook === "string") companyData.facebook_url = body.facebook.trim() || null;
+  if (typeof body.instagram === "string") companyData.instagram_url = body.instagram.trim() || null;
+  if (typeof body.linkedin === "string") companyData.linkedin_url = body.linkedin.trim() || null;
   if (typeof body.businessEmail === "string" && EMAIL_RE.test(body.businessEmail.trim())) companyData.email = body.businessEmail.trim().toLowerCase();
   if (typeof body.description === "string" && body.description.trim()) companyData.description = body.description.trim();
   if (typeof body.mainCategoryId === "number" && body.mainCategoryId > 0) companyData.main_category_id = body.mainCategoryId;

@@ -479,7 +479,7 @@ export default function HomeClient() {
 
         {/* ── Find Strata Building Specialists ────────────────────────────── */}
         <section
-          className="relative overflow-hidden"
+          className="relative overflow-hidden shadow-[inset_90px_0_70px_-55px_rgba(15,23,42,0.25),inset_-90px_0_70px_-55px_rgba(15,23,42,0.25)]"
           style={{
             background: "linear-gradient(#ffffff 0%, rgb(248,250,252) 120px)",
             paddingTop: "72px",
@@ -562,14 +562,14 @@ export default function HomeClient() {
             <div className="text-center" style={{ marginTop: "55px" }}>
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <a
-                  href="/directory/signup?type=directory"
+                  href="/directory/login"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold shadow-sm transition hover:bg-sky-50 sm:w-auto"
                   style={{ color: "rgb(7,89,133)", border: "1.5px solid rgb(7,89,133)" }}
                 >
                   List Your Business
                 </a>
                 <a
-                  href="/request-quotes"
+                  href="/directory/login"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold shadow-sm transition hover:bg-red-50 sm:w-auto"
                   style={{ color: "rgb(185,28,28)", border: "1.5px solid rgb(185,28,28)" }}
                 >
@@ -688,43 +688,45 @@ export default function HomeClient() {
               </div>
             </div>
             </div>
-            {/* Right column — Expert Remedial Advice card above Industry Jobs */}
-            <div className="flex flex-col gap-6 self-start">
+            {/* Right column — Expert Remedial Advice card above Industry Jobs.
+                Stretches to the news column height; the jobs panel grows so both
+                columns' bottoms line up. */}
+            <div className="flex flex-col gap-6">
               <HomeExpertAdviceCard />
-              <HomeJobsPanel />
+              <div className="flex flex-1 flex-col">
+                <HomeJobsPanel />
+              </div>
             </div>
           </div>
         </section>
 
         {/* ── Remedial Building Australia (intro) ─────────────────────────── */}
         <section className="mx-auto max-w-7xl px-5 pt-4 pb-10">
-          <div className="rounded-2xl border-l-4 border-red-700 bg-[#faf6ee] p-8 shadow-sm md:p-10">
+          <div className="rounded-2xl border-l-4 border-red-700 bg-[linear-gradient(135deg,rgba(185,28,28,0.16)_0%,rgba(185,28,28,0.06)_12%,#ffffff_30%,#ffffff_100%)] p-8 shadow-sm md:p-10">
             <h1 className="text-2xl font-extrabold tracking-tight text-sky-950 md:text-3xl">
               Remedial Building Australia
             </h1>
-            <div className="mt-4 flex flex-col gap-4 text-sm leading-7 text-slate-600 md:text-base">
+            <div className="mt-4 flex flex-col gap-4 text-lg italic leading-8 text-slate-600 md:text-xl">
               <p>
-                Remedial Building Australia is an independent knowledge platform for the remedial
-                building sector — bringing together remedial building advice, defect guidance,
-                repair system information and remedial specifications for strata and apartment
-                buildings across the country. From strata remedial works to recurring apartment
-                building defects, our resources help you understand the problem before any repair
-                begins.
+                Remedial Building Australia is a strata and remedial building platform connecting
+                owners corporations, strata managers, building managers, contractors, consultants,
+                engineers, suppliers and industry professionals across Australia.
               </p>
               <p>
-                Whether you are sourcing{" "}
-                <a href="/remedial-building-services" className="font-semibold text-sky-700 hover:text-red-700">Remedial Building Services</a>,
-                planning{" "}
-                <a href="/building-remediation" className="font-semibold text-sky-700 hover:text-red-700">Building Remediation</a>{" "}
-                works, preparing{" "}
-                <a href="/remedial-repair-specifications" className="font-semibold text-sky-700 hover:text-red-700">Remedial Repair Specifications</a>,
-                or comparing{" "}
-                <a href="/remedial-building-solutions" className="font-semibold text-sky-700 hover:text-red-700">Remedial Building Solutions</a>,
-                our resources span remedial construction, concrete repair, waterproofing and façade
-                rectification to help owners, committees and consultants make confident decisions.
-                You can also find{" "}
-                <a href="/remedial-builders" className="font-semibold text-sky-700 hover:text-red-700">Remedial Builders</a>{" "}
-                through our national directory.
+                The platform includes a business directory, job board, request quote system,
+                industry news and technical resources for the remedial building sector.
+              </p>
+              <p>
+                Key resources include the Defect Library, Repair Solutions, Repair System Selector,
+                Material Index, AI Scope Writer, courses and technical guidance covering
+                waterproofing, concrete repair, façades, roofing, structural repairs, drainage,
+                basements and building defects.
+              </p>
+              <p>
+                The platform also includes an Expert Remedial Advice section, offering services such
+                as Scope, Quote &amp; Tender Review, Remedial Budget Estimates, Building Repair
+                Strategy Advice and Capital Works Forecasts for strata-related building repair
+                decisions.
               </p>
             </div>
           </div>
@@ -732,8 +734,8 @@ export default function HomeClient() {
 
         <section className="mx-auto max-w-7xl px-5 py-20">
           <div className="mb-10">
-            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">What We Provide</div>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Core platform sections</h2>
+            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Explore the platform</div>
+            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">Remedial building tools and resources</h2>
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

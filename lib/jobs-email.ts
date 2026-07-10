@@ -104,7 +104,7 @@ export async function sendJobListedAdminEmail(job: JobLike & { id: number }) {
 // ── Employer: payment confirmation ─────────────────────────────────────────────
 export async function sendJobPaymentConfirmationEmail(to: string, job: JobLike, amountLabel: string, expiresAt: Date) {
   const url = `${SITE_URL}/industry-jobs/${job.slug}`;
-  const dash = `${SITE_URL}/industry-jobs/employer`;
+  const dash = `${SITE_URL}/directory/dashboard/jobs`;
   const html = wrapper(
     "Payment confirmed",
     `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Thanks — your payment was successful and your job is now live.</p>
@@ -151,7 +151,7 @@ export async function sendEmployerNewApplicationEmail(params: {
   attachments?: JobEmailAttachment[];
 }) {
   const { to, job, applicantName, applicantEmail, applicantPhone, coverMessage, resumeUrl, attachments } = params;
-  const dash = `${SITE_URL}/industry-jobs/employer`;
+  const dash = `${SITE_URL}/directory/dashboard/jobs`;
   const html = wrapper(
     "New application received",
     `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">You've received a new application for <strong>${esc(job.title)}</strong>.</p>

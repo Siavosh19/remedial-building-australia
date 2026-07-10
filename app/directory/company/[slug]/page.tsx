@@ -3,8 +3,28 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import QuoteRequestForm from "@/components/directory/QuoteRequestForm";
 import TrackableContactButtons from "@/components/directory/TrackableContactButtons";
-
 import SiteHeader from "@/components/SiteHeader";
+
+// Real brand marks (lucide dropped its brand icons) — official colours + white glyph.
+const FB_PATH = "M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99C18.34 21.13 22 16.99 22 12z";
+const IG_PATH = "M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 01-1.38-.9 3.7 3.7 0 01-.9-1.38c-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 3.68a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm6.41-10.4a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z";
+const LI_PATH = "M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.14 2.07 2.07 0 010 4.14zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z";
+
+function SocialLink({ url, path, bg }: { url: string | null | undefined; path: string; bg: string }) {
+  const inner = (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px] text-white" aria-hidden>
+      <path d={path} />
+    </svg>
+  );
+  const cls = `flex h-10 w-10 items-center justify-center rounded-full ${bg}`;
+  return url ? (
+    <a href={url} target="_blank" rel="noopener noreferrer" className={`${cls} transition hover:opacity-90`}>
+      {inner}
+    </a>
+  ) : (
+    <span className={`${cls} opacity-40`}>{inner}</span>
+  );
+}
 export const revalidate = 60;
 
 type Props = { params: Promise<{ slug: string }> };
@@ -66,11 +86,54 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// Uniform section label — small accent bar + uppercase letter-spaced heading.
+function SectionLabel({ label, tone = "red" }: { label: string; tone?: "red" | "slate" }) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <span className={`h-3.5 w-1 rounded-full ${tone === "red" ? "bg-red-600" : "bg-slate-300"}`} />
+      <p className={`text-xs font-bold uppercase tracking-[0.2em] ${tone === "red" ? "text-red-700" : "text-slate-400"}`}>{label}</p>
+    </div>
+  );
+}
+
+// The shared content-card shell — identical radius, border, shadow, background.
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-700">{label}</p>
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-7">
+      <SectionLabel label={label} />
       <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+function EmptyState({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/40 px-4 py-10 text-center text-sm text-slate-400">
+      {children}
+    </div>
+  );
+}
+
+function ContactField({ label, value, href }: { label: string; value?: string | null; href?: string | null }) {
+  return (
+    <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/40 px-4 py-3">
+      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{label}</p>
+      {value ? (
+        href ? (
+          <a
+            href={href}
+            target={href.startsWith("http") ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            className="mt-0.5 block truncate text-sm font-semibold text-sky-800 hover:text-sky-600"
+          >
+            {value}
+          </a>
+        ) : (
+          <p className="mt-0.5 truncate text-sm font-semibold text-slate-700">{value}</p>
+        )
+      ) : (
+        <p className="mt-0.5 text-sm text-slate-400">Not provided</p>
+      )}
     </div>
   );
 }
@@ -88,14 +151,7 @@ const DISCLAIMER =
 
 export default async function CompanyProfilePage({ params }: Props) {
   const { slug } = await params;
-  const [company, parentCategories] = await Promise.all([
-    getCompany(slug),
-    prisma.category.findMany({
-      where: { is_active: true },
-      orderBy: { display_order: "asc" },
-      select: { id: true, name: true },
-    }),
-  ]);
+  const company = await getCompany(slug);
   if (!company) notFound();
 
   // ── Structured data (LocalBusiness + breadcrumbs) ───────────────────────────
@@ -142,7 +198,7 @@ export default async function CompanyProfilePage({ params }: Props) {
           locations: { take: 1, select: { suburb: true, state: true } },
         },
         orderBy: [{ plan_type: "desc" }, { confidence_score: "desc" }],
-        take: 4,
+        take: 6,
       })
     : [];
 
@@ -157,11 +213,8 @@ export default async function CompanyProfilePage({ params }: Props) {
     repair_system: company.company_tags.filter((t) => t.tag.tag_type === "repair_system"),
     capability: company.company_tags.filter((t) => t.tag.tag_type === "capability"),
   };
-  const hasAnyTags = Object.values(tagsByType).some((arr) => arr.length > 0);
-
-  const secondaryCategories = company.company_categories.filter(
-    (cc) => cc.category_id !== company.main_category_id
-  );
+  const hasExtraExpertise =
+    tagsByType.defect.length > 0 || tagsByType.repair_system.length > 0 || tagsByType.capability.length > 0;
 
   const serviceAreaParts: string[] = [];
   if (location) {
@@ -182,6 +235,11 @@ export default async function CompanyProfilePage({ params }: Props) {
     .join("")
     .toUpperCase();
 
+  // Location strings — suburb, state (+ postcode where required). Falls back to
+  // state alone when the suburb isn't known.
+  const locLabel = [location?.suburb, location?.state].filter(Boolean).join(", ");
+  const basedAt = location ? [location.suburb, location.state, location.postcode].filter(Boolean).join(", ") : null;
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(businessSchema) }} />
@@ -192,7 +250,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
       {/* Breadcrumb */}
       <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-8 py-3.5">
+        <div className="mx-auto max-w-7xl px-4 py-3.5 sm:px-6">
           <nav className="flex items-center gap-2 text-xs font-semibold text-slate-400">
             <a href="/" className="hover:text-sky-700 transition">Home</a>
             <span>/</span>
@@ -203,170 +261,117 @@ export default async function CompanyProfilePage({ params }: Props) {
         </div>
       </div>
 
-      {/* Profile header */}
-      <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-8 py-10">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            {/* Logo */}
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-sky-100 overflow-hidden">
+      {/* Main content + sidebar — hero and every card share the same container edges */}
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        {/* Hero card */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 via-white to-sky-50 px-8 py-8 shadow-sm sm:px-10">
+          <span className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-sky-500 to-indigo-400" aria-hidden />
+          {/* Category pill(s) — sit above, aligned with the business name */}
+          <div className="mb-2 flex flex-wrap items-center gap-2 pl-[84px]">
+            {company.main_category && (
+              <span className="inline-flex rounded-full bg-rose-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700">
+                {company.main_category.name}
+              </span>
+            )}
+            {isFeatured && (
+              <span className="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-800">★ Gold</span>
+            )}
+            {isClaimed && !isFeatured && (
+              <span className="inline-flex rounded-full bg-indigo-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-700">Silver</span>
+            )}
+          </div>
+
+          {/* Monogram centred with the business name */}
+          <div className="flex flex-wrap items-center gap-5">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-indigo-100 text-xl font-bold text-indigo-700">
               {logo ? (
                 <img src={logo} alt={`${company.name} logo`} className="h-full w-full object-cover" />
               ) : (
-                <span className="text-2xl font-extrabold text-sky-800">{abbr || "?"}</span>
+                <span>{abbr || "?"}</span>
               )}
             </div>
-
-            {/* Info */}
-            <div className="min-w-0 flex-1">
-              <div className="mb-2 flex flex-wrap items-center gap-2">
-                {company.main_category && (
-                  <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-800">
-                    {company.main_category.name}
-                  </span>
-                )}
-                {secondaryCategories.slice(0, 2).map((cc) => (
-                  <span key={cc.id} className="rounded-full border border-sky-200 px-3 py-1 text-xs font-semibold text-sky-700">
-                    {cc.category.name}
-                  </span>
-                ))}
-                {isFeatured && (
-                  <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">★ Gold</span>
-                )}
-                {isClaimed && !isFeatured && (
-                  <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700 ring-1 ring-indigo-200">
-                    Silver
-                  </span>
-                )}
-              </div>
-
-              <h1 className="text-3xl font-extrabold leading-tight text-sky-950 md:text-4xl">{company.name}</h1>
-
-              {location && (
-                <p className="mt-1.5 text-sm text-slate-500">
-                  {[location.suburb, location.state].filter(Boolean).join(", ")}
-                  {serviceAreaParts.length > 0 && <span className="ml-2 text-slate-400">· {serviceAreaParts.join(" · ")}</span>}
-                </p>
+            <h1 className="min-w-0 flex-1 font-serif text-3xl font-semibold leading-tight text-sky-950 md:text-4xl">
+              {company.name}
+              {locLabel && (
+                <span className="ml-2 font-sans text-lg font-medium text-slate-400">({locLabel})</span>
               )}
+            </h1>
 
-              {company.description && (
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">{company.description}</p>
-              )}
-            </div>
+            {/* Claim CTA — far right of the header box (unclaimed listings only) */}
+            {!isClaimed && (
+              <a
+                href={`/directory/claim/${company.slug}`}
+                className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-xl border-2 border-red-700 bg-red-700 px-5 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-red-800 hover:border-red-800"
+              >
+                Claim this profile →
+              </a>
+            )}
           </div>
         </div>
-      </div>
 
-      {/* Main content + sidebar */}
-      <main className="mx-auto max-w-7xl px-6 py-8">
-        <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_300px]">
 
-          {/* LEFT */}
+          {/* LEFT — standard content cards, always shown with empty states */}
           <div className="space-y-5">
 
-            {/* Contact (claimed profiles only) */}
-            {canShowContact && (company.phone || company.website || company.google_business_url) && (
-              <Section label="Contact Details">
-                <div className="space-y-4">
-                  {company.phone && (
-                    <div className="flex items-start gap-3">
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700 text-sm">☎</span>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Phone</p>
-                        <a href={`tel:${company.phone}`} className="mt-0.5 block font-semibold text-sky-800 hover:text-sky-600">
-                          {company.phone}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {company.website && (
-                    <div className="flex items-start gap-3">
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700 text-sm">↗</span>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Website</p>
-                        <a href={company.website} target="_blank" rel="noopener noreferrer" className="mt-0.5 block font-semibold text-sky-800 hover:text-sky-600">
-                          {company.website.replace(/^https?:\/\//, "")}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {/* Email intentionally not shown — directory displays phone contact only. */}
+            {/* About This Company */}
+            <Section label="About This Company">
+              {company.description ? (
+                <p className="text-base leading-8 text-slate-700 md:text-lg">{company.description}</p>
+              ) : (
+                <EmptyState>No description added yet.</EmptyState>
+              )}
+              {company.year_established && (
+                <div className="mt-5 inline-block rounded-xl bg-slate-50 px-5 py-3">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Established</p>
+                  <p className="mt-1 text-lg font-bold text-sky-950">{company.year_established}</p>
                 </div>
-              </Section>
-            )}
+              )}
+            </Section>
 
-            {/* About */}
-            {(company.description || company.year_established) && (
-              <Section label="About This Business">
-                {company.description && <p className="text-sm leading-7 text-slate-700">{company.description}</p>}
-                {company.year_established && (
-                  <div className="mt-5 inline-block rounded-xl bg-slate-50 px-5 py-3">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Established</p>
-                    <p className="mt-1 text-lg font-bold text-sky-950">{company.year_established}</p>
-                  </div>
-                )}
-              </Section>
-            )}
-
-            {/* Licence & Insurance details (claimed only, business-provided) */}
-            {isClaimed && (company.licence_number || company.licence_type || company.insurance_details) && (
-              <Section label="Licence & Insurance Details">
-                <p className="mb-4 text-xs text-slate-400 italic">
-                  These details are provided by the business and have not been independently checked by this platform.
-                </p>
-                <div className="space-y-3">
-                  {company.licence_number && (
-                    <div className="rounded-xl bg-slate-50 px-4 py-3">
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Licence number</p>
-                      <p className="mt-1 text-sm font-semibold text-slate-800">{company.licence_number}</p>
-                      {company.licence_type && <p className="text-xs text-slate-500">{company.licence_type}</p>}
-                    </div>
-                  )}
-                  {company.insurance_details && (
-                    <div className="rounded-xl bg-slate-50 px-4 py-3">
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Insurance details provided</p>
-                      <p className="mt-1 text-sm text-slate-700">{company.insurance_details}</p>
-                    </div>
-                  )}
-                </div>
-              </Section>
-            )}
-
-            {/* Project photos */}
-            {photos.length > 0 && (
-              <Section label="Project Photos">
-                <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
+            {/* Photos */}
+            <Section label="Photos">
+              {photos.length > 0 ? (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {photos.map((p) => (
-                    <img key={p.id} src={p.url} alt={p.filename ?? "Project photo"} className="rounded-xl object-cover aspect-square w-full border border-slate-100" />
+                    <img key={p.id} src={p.url} alt={p.filename ?? "Project photo"} className="aspect-square w-full rounded-xl border border-slate-100 object-cover" />
                   ))}
                 </div>
-              </Section>
-            )}
+              ) : (
+                <EmptyState>No photos added yet.</EmptyState>
+              )}
+            </Section>
 
-            {/* Expertise */}
-            {hasAnyTags && (
+            {/* Services Offered */}
+            <Section label="Services Offered">
+              {tagsByType.service.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {tagsByType.service.map((ct) => <TagChip key={ct.id} label={ct.tag.name} colour="bg-sky-100 text-sky-800" />)}
+                </div>
+              ) : (
+                <EmptyState>No services listed yet.</EmptyState>
+              )}
+            </Section>
+
+            {/* Additional expertise (claimed profiles with defect / repair / capability tags) */}
+            {hasExtraExpertise && (
               <Section label="Expertise / Specialisations">
                 <div className="space-y-5">
-                  {tagsByType.service.length > 0 && (
-                    <div>
-                      <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">Services</p>
-                      <div className="flex flex-wrap gap-2">{tagsByType.service.map((ct) => <TagChip key={ct.id} label={ct.tag.name} colour="bg-sky-100 text-sky-800" />)}</div>
-                    </div>
-                  )}
                   {tagsByType.defect.length > 0 && (
                     <div>
-                      <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">Defect Types</p>
+                      <p className="mb-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">Defect Types</p>
                       <div className="flex flex-wrap gap-2">{tagsByType.defect.map((ct) => <TagChip key={ct.id} label={ct.tag.name} colour="bg-rose-100 text-rose-800" />)}</div>
                     </div>
                   )}
                   {tagsByType.repair_system.length > 0 && (
                     <div>
-                      <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">Repair Systems</p>
+                      <p className="mb-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">Repair Systems</p>
                       <div className="flex flex-wrap gap-2">{tagsByType.repair_system.map((ct) => <TagChip key={ct.id} label={ct.tag.name} colour="bg-violet-100 text-violet-800" />)}</div>
                     </div>
                   )}
                   {tagsByType.capability.length > 0 && (
                     <div>
-                      <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">Capabilities</p>
+                      <p className="mb-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">Capabilities</p>
                       <div className="flex flex-wrap gap-2">{tagsByType.capability.map((ct) => <TagChip key={ct.id} label={ct.tag.name} colour="bg-slate-200 text-slate-700" />)}</div>
                     </div>
                   )}
@@ -374,30 +379,52 @@ export default async function CompanyProfilePage({ params }: Props) {
               </Section>
             )}
 
-            {/* Locations */}
-            {location && (
-              <Section label="Locations Serviced">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl bg-slate-50 px-5 py-3.5">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Based at</p>
-                    <p className="mt-1 font-semibold text-sky-950">
-                      {[location.suburb, location.city === location.suburb ? null : location.city, location.state, location.postcode].filter(Boolean).join(", ")}
-                    </p>
-                  </div>
-                  {serviceAreaParts.length > 0 && (
-                    <div className="rounded-xl bg-slate-50 px-5 py-3.5">
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Coverage</p>
-                      <p className="mt-1 font-semibold text-sky-950">{serviceAreaParts.join(" · ")}</p>
+            {/* Contact Details */}
+            <Section label="Contact Details">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <ContactField
+                  label="Phone"
+                  value={canShowContact ? company.phone : null}
+                  href={canShowContact && company.phone ? `tel:${company.phone}` : null}
+                />
+                <ContactField label="Email" value={null} />
+                <ContactField
+                  label="Website"
+                  value={canShowContact && company.website ? company.website.replace(/^https?:\/\//, "") : null}
+                  href={canShowContact ? company.website : null}
+                />
+                <ContactField label="ABN" value={company.abn ?? null} />
+              </div>
+            </Section>
+
+            {/* Licence & Insurance (claimed, business-provided) */}
+            {isClaimed && (company.licence_number || company.licence_type || company.insurance_details) && (
+              <Section label="Licence & Insurance Details">
+                <p className="mb-4 text-xs italic text-slate-400">
+                  These details are provided by the business and have not been independently checked by this platform.
+                </p>
+                <div className="space-y-3">
+                  {company.licence_number && (
+                    <div className="rounded-xl bg-slate-50 px-4 py-3">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Licence number</p>
+                      <p className="mt-1 text-sm font-semibold text-slate-800">{company.licence_number}</p>
+                      {company.licence_type && <p className="text-xs text-slate-500">{company.licence_type}</p>}
+                    </div>
+                  )}
+                  {company.insurance_details && (
+                    <div className="rounded-xl bg-slate-50 px-4 py-3">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Insurance details provided</p>
+                      <p className="mt-1 text-sm text-slate-700">{company.insurance_details}</p>
                     </div>
                   )}
                 </div>
               </Section>
             )}
 
-            {/* Existing licences from DB (if any, for legacy data) */}
+            {/* Registered licences (legacy public-source records, claimed) */}
             {isClaimed && company.licences.length > 0 && (
               <Section label="Registered Licences">
-                <p className="mb-3 text-xs text-slate-400 italic">Licence records below were collected from public sources. Always verify directly with the issuing authority.</p>
+                <p className="mb-3 text-xs italic text-slate-400">Licence records below were collected from public sources. Always verify directly with the issuing authority.</p>
                 <div className="space-y-3">
                   {company.licences.map((licence) => (
                     <div key={licence.id} className="rounded-xl border border-slate-100 bg-slate-50 p-5">
@@ -414,43 +441,6 @@ export default async function CompanyProfilePage({ params }: Props) {
                       </div>
                     </div>
                   ))}
-                </div>
-              </Section>
-            )}
-
-            {/* Similar companies — hidden on paid (Featured/Business/Premium) profiles
-                so a paying business isn't advertising competitors on its own page. */}
-            {!isFeatured && similar.length > 0 && (
-              <Section label="Similar Companies">
-                <div className="space-y-3">
-                  {similar.map((c) => {
-                    const loc = c.locations[0];
-                    return (
-                      <a
-                        key={c.id}
-                        href={`/directory/company/${c.slug}`}
-                        className="flex items-center gap-4 rounded-xl border border-slate-100 bg-slate-50 px-5 py-4 transition hover:border-sky-200 hover:bg-sky-50"
-                      >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sm font-extrabold text-sky-800">
-                          {c.name.split(/\s+/).slice(0, 2).map((w: string) => w[0] ?? "").join("").toUpperCase() || "?"}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate font-bold text-sky-950">{c.name}</p>
-                          <p className="mt-0.5 text-xs text-slate-500">
-                            {[loc?.suburb, loc?.state].filter(Boolean).join(", ") || c.main_category?.name}
-                          </p>
-                        </div>
-                        <div className="flex shrink-0 flex-col items-end gap-1">
-                          {c.plan_type === "featured" && (
-                            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">Featured</span>
-                          )}
-                          {c.plan_type === "claimed" && (
-                            <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-bold text-indigo-700">Claimed</span>
-                          )}
-                        </div>
-                      </a>
-                    );
-                  })}
                 </div>
               </Section>
             )}
@@ -472,67 +462,74 @@ export default async function CompanyProfilePage({ params }: Props) {
               </div>
             )}
 
-            {/* Contact buttons — trackable */}
+            {/* Contact buttons — trackable (claimed) */}
             {canShowContact && (company.phone || company.website) && (
               <TrackableContactButtons slug={company.slug} phone={company.phone ?? null} website={company.website ?? null} />
             )}
 
-            {/* Profile status (no verified wording) */}
+            {/* Profile */}
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-700">Profile</p>
-              <div className="mt-4 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Listing type</span>
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
-                    isFeatured ? "bg-amber-100 text-amber-800" :
-                    isClaimed  ? "bg-indigo-100 text-indigo-700" : "bg-slate-100 text-slate-500"
-                  }`}>
-                    {isFeatured ? "Gold ★" : isClaimed ? "Silver" : "Free Listing"}
-                  </span>
-                </div>
-                {isClaimed && company.licence_number && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600">Licence details</span>
-                    <span className="rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-bold text-sky-700">Provided</span>
-                  </div>
-                )}
-                {isClaimed && company.insurance_details && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600">Insurance details</span>
-                    <span className="rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-bold text-sky-700">Provided</span>
-                  </div>
-                )}
+              <SectionLabel label="Profile" />
+              <div className="mt-4 flex items-center justify-between">
+                <span className="text-sm text-slate-600">Listing type</span>
+                <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
+                  isFeatured ? "bg-amber-100 text-amber-800" : isClaimed ? "bg-indigo-100 text-indigo-700" : "bg-slate-100 text-slate-500"
+                }`}>
+                  {isFeatured ? "Gold ★" : isClaimed ? "Silver" : "Basic"}
+                </span>
               </div>
-
-              {/* Claim CTA — only if not claimed */}
-              {!isClaimed && (
-                <div className="mt-4 border-t border-slate-100 pt-4">
-                  <p className="text-xs text-slate-400">Is this your business?</p>
-                  <a
-                    href={`/directory/claim/${company.slug}`}
-                    className="mt-2 block rounded-xl border border-slate-200 px-4 py-2 text-center text-xs font-semibold text-slate-600 hover:bg-slate-50 transition"
-                  >
-                    Claim this profile →
-                  </a>
-                </div>
-              )}
             </div>
 
-            {/* Pricing link */}
-            <a
-              href="/directory/pricing"
-              className="block rounded-xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
-            >
-              About profile plans →
-            </a>
+            {/* Follow — real brand marks, centred */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <SectionLabel label="Follow" />
+              <div className="mt-4 flex justify-center gap-4">
+                <SocialLink url={company.facebook_url} path={FB_PATH} bg="bg-[#1877F2]" />
+                <SocialLink url={company.instagram_url} path={IG_PATH} bg="bg-gradient-to-br from-[#feda75] via-[#d62976] to-[#4f5bd5]" />
+                <SocialLink url={company.linkedin_url} path={LI_PATH} bg="bg-[#0A66C2]" />
+              </div>
+            </div>
 
             {/* Share */}
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-700">Share Profile</p>
+              <SectionLabel label="Share Profile" />
               <p className="mt-3 break-all rounded-xl bg-slate-50 px-3 py-2.5 text-xs text-slate-500">{profileUrl}</p>
             </div>
 
-            <a href="/directory" className="block rounded-xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
+            {/* Related businesses — vertical, no scroll bar. Hidden on Gold profiles so
+                a paying business isn't advertising competitors on its own page. */}
+            {!isFeatured && similar.length > 0 && (
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <SectionLabel label="Related Businesses" tone="slate" />
+                <div className="mt-4 space-y-2.5">
+                  {similar.map((c) => {
+                    const loc = c.locations[0];
+                    const ab = c.name.split(/\s+/).slice(0, 2).map((w: string) => w[0] ?? "").join("").toUpperCase() || "?";
+                    return (
+                      <a
+                        key={c.id}
+                        href={`/directory/company/${c.slug}`}
+                        className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 transition hover:border-sky-200 hover:bg-sky-50"
+                      >
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-xs font-extrabold text-sky-800">{ab}</div>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-bold text-sky-950">{c.name}</p>
+                          <p className="truncate text-xs text-slate-500">
+                            {[loc?.suburb, loc?.state].filter(Boolean).join(", ") || c.main_category?.name}
+                          </p>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* All listings */}
+            <a
+              href="/directory"
+              className="block rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50"
+            >
               ← All Listings
             </a>
           </aside>

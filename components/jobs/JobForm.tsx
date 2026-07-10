@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS } from "@/lib/jobs-data";
-import { Upload, Building2, Star, Eye, Pencil } from "lucide-react";
+import { Upload, Building2, Star, Eye, Pencil, Check } from "lucide-react";
 
 export type JobFormInitial = {
   id?: number;
@@ -25,7 +25,14 @@ export type JobFormInitial = {
   is_featured?: boolean;
 };
 
-type Pricing = { standard: string | null; featured: string | null };
+type ListingTier = {
+  name: string;
+  priceLabel: string | null;
+  durationDays: number;
+  description: string | null;
+  features: string[];
+};
+type Pricing = { standard: ListingTier | null; featured: ListingTier | null };
 
 const input =
   "w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-sky-950 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100";
@@ -128,7 +135,7 @@ export default function JobForm({
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error ?? "Save failed.");
-        window.location.href = "/industry-jobs/employer?saved=1";
+        window.location.href = "/directory/dashboard/jobs?saved=1";
         return;
       }
 
@@ -149,7 +156,7 @@ export default function JobForm({
       const cod = await co.json().catch(() => ({}));
       if (!co.ok) throw new Error(cod.error ?? "Could not start payment.");
       if (cod.checkoutUrl) { window.location.href = cod.checkoutUrl; return; }
-      window.location.href = "/industry-jobs/employer?published=1";
+      window.location.href = "/directory/dashboard/jobs?published=1";
     } catch (err) {
       setBusy(false);
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -262,33 +269,66 @@ export default function JobForm({
 
       <div>
         <label className={label}>About the role *</label>
-        <textarea rows={5} className={input} value={f.description ?? ""} onChange={(e) => set("description", e.target.value)} />
+        <textarea rows={5} className={`${input} textarea-grip`} value={f.description ?? ""} onChange={(e) => set("description", e.target.value)} />
       </div>
       <div>
         <label className={label}>Responsibilities</label>
-        <textarea rows={4} className={input} value={f.responsibilities ?? ""} onChange={(e) => set("responsibilities", e.target.value)} placeholder="One per line" />
+        <textarea rows={4} className={`${input} textarea-grip`} value={f.responsibilities ?? ""} onChange={(e) => set("responsibilities", e.target.value)} placeholder="One per line" />
       </div>
       <div>
         <label className={label}>Requirements</label>
-        <textarea rows={4} className={input} value={f.requirements ?? ""} onChange={(e) => set("requirements", e.target.value)} placeholder="One per line" />
+        <textarea rows={4} className={`${input} textarea-grip`} value={f.requirements ?? ""} onChange={(e) => set("requirements", e.target.value)} placeholder="One per line" />
       </div>
       <div>
         <label className={label}>About the company</label>
-        <textarea rows={4} className={input} value={f.company_about ?? ""} onChange={(e) => set("company_about", e.target.value)} />
+        <textarea rows={4} className={`${input} textarea-grip`} value={f.company_about ?? ""} onChange={(e) => set("company_about", e.target.value)} />
       </div>
 
-      {/* Listing type */}
+      {/* Listing type — stacked cards showing the admin-configured plan details */}
       <div>
         <label className={label}>Listing type</label>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <button type="button" onClick={() => set("is_featured", false)} className={`rounded-xl border p-4 text-left transition ${!f.is_featured ? "border-sky-500 bg-sky-50 ring-1 ring-sky-200" : "border-slate-200 hover:border-slate-300"}`}>
-            <p className="text-sm font-bold text-sky-950">Standard</p>
-            <p className="mt-0.5 text-xs text-slate-500">30-day listing{pricing.standard ? ` · ${pricing.standard}` : ""}</p>
-          </button>
-          <button type="button" onClick={() => set("is_featured", true)} className={`rounded-xl border p-4 text-left transition ${f.is_featured ? "border-amber-400 bg-amber-50 ring-1 ring-amber-200" : "border-slate-200 hover:border-slate-300"}`}>
-            <p className="flex items-center gap-1.5 text-sm font-bold text-sky-950"><Star size={13} className="fill-amber-500 text-amber-500" /> Featured</p>
-            <p className="mt-0.5 text-xs text-slate-500">Badge + top placement{pricing.featured ? ` · ${pricing.featured}` : ""}</p>
-          </button>
+        <div className="grid gap-3">
+          {[
+            { featured: false, tier: pricing.standard, fallbackName: "Standard", fallbackDesc: "30-day listing" },
+            { featured: true, tier: pricing.featured, fallbackName: "Featured", fallbackDesc: "Badge + top placement" },
+          ].map(({ featured, tier, fallbackName, fallbackDesc }) => {
+            const selected = Boolean(f.is_featured) === featured;
+            const ring = featured
+              ? "border-amber-400 bg-amber-50 ring-1 ring-amber-200"
+              : "border-sky-500 bg-sky-50 ring-1 ring-sky-200";
+            return (
+              <button
+                key={fallbackName}
+                type="button"
+                onClick={() => set("is_featured", featured)}
+                className={`rounded-xl border p-4 text-left transition ${selected ? ring : "border-slate-200 hover:border-slate-300"}`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <p className="flex items-center gap-1.5 text-sm font-bold text-sky-950">
+                    {featured && <Star size={13} className="fill-amber-500 text-amber-500" />}
+                    {tier?.name || fallbackName}
+                  </p>
+                  {tier?.priceLabel && (
+                    <span className="shrink-0 text-sm font-bold text-sky-950">
+                      {tier.priceLabel}
+                      <span className="font-normal text-slate-400"> · {tier.durationDays}-day</span>
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">{tier?.description || fallbackDesc}</p>
+                {tier?.features?.length ? (
+                  <ul className="mt-3 grid gap-1.5">
+                    {tier.features.map((ft) => (
+                      <li key={ft} className="flex items-start gap-2 text-xs text-slate-600">
+                        <Check size={14} className="mt-0.5 shrink-0 text-emerald-600" />
+                        <span>{ft}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </button>
+            );
+          })}
         </div>
       </div>
 

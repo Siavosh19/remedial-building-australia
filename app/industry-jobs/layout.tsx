@@ -18,8 +18,8 @@ export default function IndustryJobsLayout({ children }: { children: React.React
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
               <a href="/industry-jobs" className="hover:text-sky-700">Browse Jobs</a>
-              <a href="/industry-jobs/post" className="hover:text-sky-700">Post a Job</a>
-              <a href="/industry-jobs/employer" className="hover:text-sky-700">Employer Dashboard</a>
+              <a href="/directory/dashboard/jobs/new" className="hover:text-sky-700">Post a Job</a>
+              <a href="/directory/dashboard/jobs" className="hover:text-sky-700">Employer Dashboard</a>
             </div>
             <div className="flex flex-col gap-2">
               <a href="/directory" className="hover:text-sky-700">Business Directory</a>

@@ -107,7 +107,7 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
           </p>
         </div>
         <a
-          href="/industry-jobs/post"
+          href="/directory/dashboard/jobs/new"
           className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
         >
           <Plus size={16} /> Post a Job

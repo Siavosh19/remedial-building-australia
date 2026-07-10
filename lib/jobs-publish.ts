@@ -7,13 +7,18 @@ import { formatAud } from "@/lib/jobs-pricing";
 // Idempotent-ish: safe to call once per successful checkout.
 export async function activateJob(
   jobId: number,
-  opts: { durationDays: number; isFeatured: boolean; amountCents?: number; notify?: boolean },
+  opts: { durationDays: number; isFeatured: boolean; amountCents?: number; notify?: boolean; keepExpiry?: boolean },
 ) {
   const existing = await prisma.job.findUnique({ where: { id: jobId } });
   if (!existing) return null;
 
   const now = new Date();
-  let expires = new Date(now.getTime() + opts.durationDays * 86400000);
+  // Upgrades (e.g. Standard → Featured) keep the existing expiry — the paid
+  // listing period isn't reset, only the feature status changes.
+  let expires =
+    opts.keepExpiry && existing.expires_at
+      ? existing.expires_at
+      : new Date(now.getTime() + opts.durationDays * 86400000);
   if (existing.closing_date && existing.closing_date < expires) expires = existing.closing_date;
 
   const job = await prisma.job.update({

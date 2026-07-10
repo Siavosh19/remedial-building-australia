@@ -19,6 +19,9 @@ type Props = {
     phone: string | null;
     website: string | null;
     email: string;
+    facebook_url: string | null;
+    instagram_url: string | null;
+    linkedin_url: string | null;
     description: string | null;
     main_category_id: number | null;
     plan_type: string;
@@ -52,6 +55,9 @@ export default function CompanyEditForm({ company, categories }: Props) {
     phone: company.phone ?? "",
     website: company.website ?? "",
     businessEmail: company.email,
+    facebook: company.facebook_url ?? "",
+    instagram: company.instagram_url ?? "",
+    linkedin: company.linkedin_url ?? "",
     description: company.description ?? "",
     mainCategoryId: String(company.main_category_id ?? ""),
     suburb: location?.suburb ?? "",
@@ -244,6 +250,40 @@ export default function CompanyEditForm({ company, categories }: Props) {
             className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           />
         </label>
+
+        {/* Social links — shown as the Follow icons on your public profile */}
+        <div className="grid gap-4 sm:grid-cols-3">
+          <label className="block text-sm font-semibold text-slate-800">
+            <span>Facebook</span>
+            <input
+              type="url"
+              value={form.facebook}
+              onChange={(e) => setForm({ ...form, facebook: e.target.value })}
+              placeholder="https://facebook.com/…"
+              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+            />
+          </label>
+          <label className="block text-sm font-semibold text-slate-800">
+            <span>Instagram</span>
+            <input
+              type="url"
+              value={form.instagram}
+              onChange={(e) => setForm({ ...form, instagram: e.target.value })}
+              placeholder="https://instagram.com/…"
+              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+            />
+          </label>
+          <label className="block text-sm font-semibold text-slate-800">
+            <span>LinkedIn</span>
+            <input
+              type="url"
+              value={form.linkedin}
+              onChange={(e) => setForm({ ...form, linkedin: e.target.value })}
+              placeholder="https://linkedin.com/…"
+              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+            />
+          </label>
+        </div>
 
         <label className="block text-sm font-semibold text-slate-800">
           <span>Business description</span>

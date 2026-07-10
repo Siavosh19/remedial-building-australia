@@ -63,6 +63,35 @@ export default async function DashboardIndexPage() {
     // Also fetch fields needed for completion checklist
   });
 
+  // Job-only accounts (no directory listing yet) get a create-listing prompt
+  // instead of an empty business overview.
+  if (!company) {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-950 text-white">
+            <Building2 size={26} />
+          </div>
+          <h1 className="text-2xl font-extrabold text-sky-950">
+            Welcome{user?.full_name ? `, ${user.full_name.split(" ")[0]}` : ""}
+          </h1>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+            You don&apos;t have a business listing yet. Create one to appear in the directory and receive quote
+            requests — or head to{" "}
+            <Link href="/directory/dashboard/jobs" className="font-semibold text-sky-700 hover:text-red-700">Jobs</Link>{" "}
+            to post a role.
+          </p>
+          <Link
+            href="/directory/signup/company"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
+          >
+            Create my listing
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   // Refetch with extra fields for checklist
   const companyDetail = company
     ? await prisma.company.findUnique({

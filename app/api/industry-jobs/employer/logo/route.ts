@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { getEmployerFromRequest } from "@/lib/jobs-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { uploadJobFile } from "@/lib/jobs-storage";
 
 export const runtime = "nodejs";
@@ -10,8 +9,8 @@ const MAX = 4 * 1024 * 1024; // 4 MB
 
 // Company logo upload for the post-a-job form. Returns a public URL.
 export async function POST(request: NextRequest) {
-  const employer = await getEmployerFromRequest(request);
-  if (!employer) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
+  const user = await getDirectoryUserFromRequest(request);
+  if (!user) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
 
   let form: FormData;
   try {
@@ -26,7 +25,7 @@ export async function POST(request: NextRequest) {
 
   const buf = Buffer.from(await file.arrayBuffer());
   const ext = file.name.split(".").pop()?.toLowerCase() || "png";
-  const path = `logos/${employer.id}/${Date.now()}.${ext}`;
+  const path = `logos/${user.id}/${Date.now()}.${ext}`;
   let url: string;
   try {
     url = await uploadJobFile(path, buf, file.type);
@@ -35,6 +34,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Upload failed. Please try again." }, { status: 502 });
   }
 
-  await prisma.jobEmployer.update({ where: { id: employer.id }, data: { logo_url: url } }).catch(() => {});
   return NextResponse.json({ url });
 }

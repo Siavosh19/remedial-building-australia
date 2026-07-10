@@ -17,6 +17,35 @@ export async function getJobPricingByKey(key: string): Promise<JobPricing | null
   return prisma.jobPricing.findUnique({ where: { key } });
 }
 
+// Rich listing-tier data for the post/edit form cards (name, description,
+// features, price + duration) — so the form shows exactly what admin configured.
+export type ListingTier = {
+  name: string;
+  priceLabel: string | null;
+  durationDays: number;
+  description: string | null;
+  features: string[];
+};
+
+export async function getListingTiers(): Promise<{ standard: ListingTier | null; featured: ListingTier | null }> {
+  const toTier = (r: JobPricing | null): ListingTier | null =>
+    r
+      ? {
+          name: r.name,
+          priceLabel: formatAud(r.amount_cents),
+          durationDays: r.duration_days,
+          description: r.description,
+          features: r.features ?? [],
+        }
+      : null;
+  try {
+    const [std, feat] = await Promise.all([getJobPricingByKey("standard"), getJobPricingByKey("featured")]);
+    return { standard: toTier(std), featured: toTier(feat) };
+  } catch {
+    return { standard: null, featured: null };
+  }
+}
+
 // Resolve the price a job should be charged: featured row when featured, else standard.
 export async function resolveJobPrice(isFeatured: boolean): Promise<JobPricing | null> {
   const key = isFeatured ? "featured" : "standard";

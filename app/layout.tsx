@@ -54,6 +54,11 @@ export const metadata: Metadata = {
     copyright: "Arasep Projects Pty Ltd ABN 20 675 874 003",
     rights: "All content copyright Arasep Projects Pty Ltd. All rights reserved.",
   },
+  // Google Search Console verification (URL-prefix / HTML-tag method).
+  // Set GOOGLE_SITE_VERIFICATION in Vercel to the token Google gives you and redeploy.
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
 };
 
 export default function RootLayout({

@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
     const jobId = Number(meta.job_id);
     const paymentId = Number(meta.payment_id);
     const isFeatured = meta.is_featured === "true";
+    const isUpgrade = meta.is_upgrade === "true";
     const durationDays = Number(meta.duration_days) || 30;
 
     try {
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
           durationDays,
           isFeatured,
           amountCents: payment?.amount_cents,
+          keepExpiry: isUpgrade,
         });
       }
     } catch (err) {

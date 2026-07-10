@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getEmployerFromRequest } from "@/lib/jobs-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS } from "@/lib/jobs-data";
 import type { Prisma } from "@prisma/client";
 
@@ -9,13 +9,13 @@ const empValues = EMPLOYMENT_TYPES.map((t) => t.value) as string[];
 const lvlValues = EXPERIENCE_LEVELS.map((t) => t.value) as string[];
 
 async function ownedJob(request: NextRequest, idStr: string) {
-  const employer = await getEmployerFromRequest(request);
-  if (!employer) return { error: NextResponse.json({ error: "Please sign in first." }, { status: 401 }) };
+  const user = await getDirectoryUserFromRequest(request);
+  if (!user) return { error: NextResponse.json({ error: "Please sign in first." }, { status: 401 }) };
   const id = Number(idStr);
   if (!Number.isInteger(id)) return { error: NextResponse.json({ error: "Invalid job." }, { status: 400 }) };
   const job = await prisma.job.findUnique({ where: { id } });
-  if (!job || job.employer_id !== employer.id) return { error: NextResponse.json({ error: "Job not found." }, { status: 404 }) };
-  return { employer, job };
+  if (!job || job.user_id !== user.id) return { error: NextResponse.json({ error: "Job not found." }, { status: 404 }) };
+  return { user, job };
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

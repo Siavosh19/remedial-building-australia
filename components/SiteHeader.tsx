@@ -82,7 +82,7 @@ export default function SiteHeader() {
   return (
     <>
     <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:gap-8 md:px-8 md:py-5">
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 py-4 md:gap-4 md:px-8 md:py-5">
         <div className="flex min-w-0 items-center gap-2 xl:shrink-0">
           <button
             className="xl:hidden shrink-0 p-1 text-sky-900"
@@ -96,14 +96,14 @@ export default function SiteHeader() {
               <div className="text-base font-extrabold tracking-tight text-sky-950 sm:text-lg">
                 Remedial Building Australia
               </div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-900 sm:text-xs sm:tracking-[0.22em]">
-                Technical Remedial Building Platform
+              <div className="mt-0.5 max-w-[17rem] text-[13px] font-medium leading-snug text-slate-600 sm:max-w-[23rem] sm:text-[15px]">
+                Australia&rsquo;s strata directory and remedial building platform for jobs, technical resources and industry connections.
               </div>
             </div>
           </a>
         </div>
 
-        <nav className="hidden items-center gap-6 text-sm font-semibold text-sky-800 xl:flex">
+        <nav className="hidden items-center gap-4 text-sm font-semibold text-sky-800 xl:flex">
           <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
           <div
             className="relative"
@@ -150,7 +150,7 @@ export default function SiteHeader() {
             )}
           </div>
           <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
-          <a href="/request-quotes" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</a>
+          <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</a>
           <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
           <a href="/industry-jobs" className="whitespace-nowrap hover:text-red-700 transition">Industry Jobs</a>
         </nav>
@@ -237,7 +237,7 @@ export default function SiteHeader() {
 
             <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className={mRow}>Defect Library</a>
             <a href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</a>
-            <a href="/request-quotes" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</a>
+            <a href="/directory/login" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</a>
             <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className={mRow}>News &amp; Insights</a>
             <a href="/industry-jobs" onClick={() => setMobileNavOpen(false)} className={mRow}>Industry Jobs</a>
           </nav>

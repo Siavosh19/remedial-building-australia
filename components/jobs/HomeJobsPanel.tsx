@@ -74,7 +74,7 @@ export default function HomeJobsPanel() {
           <a href="/industry-jobs" className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700">
             Browse jobs <ArrowRight size={14} />
           </a>
-          <a href="/industry-jobs/post" className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-red-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
+          <a href="/directory/dashboard/jobs/new" className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-red-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
             <Plus size={14} /> Post a Job
           </a>
         </div>

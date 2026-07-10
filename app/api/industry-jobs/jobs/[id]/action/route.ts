@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getEmployerFromRequest } from "@/lib/jobs-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { uniqueJobSlug } from "@/lib/jobs";
 
 // Free employer actions on their own jobs: duplicate (→ new draft) and expire
 // (take offline early). Paid actions — renew / upgrade — go via /checkout.
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const employer = await getEmployerFromRequest(request);
-  if (!employer) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
+  const user = await getDirectoryUserFromRequest(request);
+  if (!user) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
 
   const job = await prisma.job.findUnique({ where: { id: Number(id) } });
-  if (!job || job.employer_id !== employer.id) return NextResponse.json({ error: "Job not found." }, { status: 404 });
+  if (!job || job.user_id !== user.id) return NextResponse.json({ error: "Job not found." }, { status: 404 });
 
   const body = await request.json().catch(() => ({}));
   const action = String(body?.action ?? "");
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const copy = await prisma.job.create({
       data: {
         slug,
-        employer_id: employer.id,
+        user_id: user.id,
         category_id: job.category_id,
         title: job.title,
         company_name: job.company_name,

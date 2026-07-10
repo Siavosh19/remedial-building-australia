@@ -113,8 +113,8 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
 
       router.push(
         action === "submit"
-          ? `/client/quote-requests/${requestId}/results`
-          : `/client/quote-requests/${requestId}`,
+          ? `/directory/dashboard/quotes/${requestId}/results`
+          : `/directory/dashboard/quotes/${requestId}`,
       );
     } catch (err) {
       setError((err as Error).message);

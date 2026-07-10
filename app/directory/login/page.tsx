@@ -158,7 +158,7 @@ export default function DirectoryLoginPage() {
                   Forgot your password?
                 </Link>
                 <Link
-                  href="/directory/signup"
+                  href="/directory/signup?type=directory"
                   className="font-bold text-slate-900 transition-colors hover:text-black"
                 >
                   Create account

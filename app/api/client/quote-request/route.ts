@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getClientUserFromRequest } from "@/lib/directory-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { resolveRequestCoords } from "@/lib/quote-matching";
 import { PROPERTY_TYPE_IDS, URGENCY_IDS } from "@/lib/quote-options";
 
@@ -8,7 +8,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // GET — list the signed-in client's quote requests (most recent first).
 export async function GET(request: NextRequest) {
-  const user = await getClientUserFromRequest(request);
+  const user = await getDirectoryUserFromRequest(request);
   if (!user) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
 
   const requests = await prisma.clientQuoteRequest.findMany({
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 // separate step via PATCH /[id] { action: "submit" } so file uploads can be
 // attached in between.
 export async function POST(request: NextRequest) {
-  const user = await getClientUserFromRequest(request);
+  const user = await getDirectoryUserFromRequest(request);
   if (!user) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
 
   const body = await request.json().catch(() => null);

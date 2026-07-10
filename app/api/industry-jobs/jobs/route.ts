@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getEmployerFromRequest } from "@/lib/jobs-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { uniqueJobSlug, findDirectoryCompany } from "@/lib/jobs";
 import { AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS } from "@/lib/jobs-data";
 import type { Prisma } from "@prisma/client";
@@ -11,8 +11,8 @@ const lvlValues = EXPERIENCE_LEVELS.map((t) => t.value) as string[];
 
 // Create a new job as a DRAFT. It only goes live after successful payment.
 export async function POST(request: NextRequest) {
-  const employer = await getEmployerFromRequest(request);
-  if (!employer) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
+  const user = await getDirectoryUserFromRequest(request);
+  if (!user) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
 
   const body = await request.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
@@ -54,10 +54,10 @@ export async function POST(request: NextRequest) {
 
   const data: Prisma.JobCreateInput = {
     slug,
-    employer: { connect: { id: employer.id } },
+    user: { connect: { id: user.id } },
     title,
     company_name: companyName,
-    company_logo_url: body.company_logo_url ? String(body.company_logo_url) : employer.logo_url,
+    company_logo_url: body.company_logo_url ? String(body.company_logo_url) : null,
     company_website: body.company_website ? String(body.company_website) : null,
     company_about: body.company_about ? String(body.company_about) : null,
     location,
@@ -79,16 +79,6 @@ export async function POST(request: NextRequest) {
   };
 
   const job = await prisma.job.create({ data });
-
-  // Keep the employer profile in sync for future posts.
-  await prisma.jobEmployer.update({
-    where: { id: employer.id },
-    data: {
-      company_name: employer.company_name ?? companyName,
-      logo_url: body.company_logo_url ? String(body.company_logo_url) : employer.logo_url,
-      website: employer.website ?? (body.company_website ? String(body.company_website) : null),
-    },
-  }).catch(() => {});
 
   return NextResponse.json({ id: job.id, slug: job.slug });
 }

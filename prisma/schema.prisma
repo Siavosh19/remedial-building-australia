@@ -317,6 +317,9 @@ model Company {
   phone               String?
   email               String
   google_business_url String?
+  facebook_url        String?
+  instagram_url       String?
+  linkedin_url        String?
   description         String?
   year_established    Int?
   main_category_id    Int?
@@ -499,6 +502,8 @@ model User {
   ai_scope_user               AIScopeUser?
   client_profile              ClientProfile?
   client_quote_requests       ClientQuoteRequest[]
+  jobs                        Job[]
+  job_payments                JobPayment[]
 
   @@index([account_type])
   @@index([supplier_id])
@@ -1248,7 +1253,8 @@ model JobCategory {
 model Job {
   id               Int                 @id @default(autoincrement())
   slug             String              @unique
-  employer_id      Int
+  employer_id      Int?                // legacy owner (magic-link JobEmployer) — retained during migration
+  user_id          Int?                // new owner: directory User account
   category_id      Int?
   title            String
   company_name     String
@@ -1279,7 +1285,8 @@ model Job {
   created_at       DateTime            @default(now())
   updated_at       DateTime            @updatedAt
 
-  employer     JobEmployer      @relation(fields: [employer_id], references: [id], onDelete: Cascade)
+  employer     JobEmployer?     @relation(fields: [employer_id], references: [id], onDelete: Cascade)
+  user         User?            @relation(fields: [user_id], references: [id], onDelete: Cascade)
   category     JobCategory?     @relation(fields: [category_id], references: [id])
   applications JobApplication[]
   payments     JobPayment[]
@@ -1289,6 +1296,7 @@ model Job {
   @@index([category_id])
   @@index([state])
   @@index([employer_id])
+  @@index([user_id])
   @@index([published_at])
   @@index([expires_at])
   @@map("jobs")
@@ -1339,7 +1347,8 @@ model JobPricing {
 model JobPayment {
   id                    Int              @id @default(autoincrement())
   job_id                Int
-  employer_id           Int
+  employer_id           Int?             // legacy owner — retained during migration
+  user_id               Int?             // new owner: directory User account
   plan_key              String           // "standard" | "featured"
   is_featured           Boolean          @default(false)
   amount_cents          Int
@@ -1349,9 +1358,11 @@ model JobPayment {
   stripe_payment_intent String?
   created_at            DateTime         @default(now())
 
-  job Job @relation(fields: [job_id], references: [id], onDelete: Cascade)
+  job  Job   @relation(fields: [job_id], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
 
   @@index([job_id])
+  @@index([user_id])
   @@index([status])
   @@map("job_payments")
 }

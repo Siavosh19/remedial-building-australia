@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getClientUserFromRequest } from "@/lib/directory-auth";
+import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { validateAuPhone } from "@/lib/phone-au";
 
 const CLIENT_TYPES = [
@@ -13,7 +13,7 @@ const CLIENT_TYPES = [
 ] as const;
 
 export async function PATCH(request: NextRequest) {
-  const user = await getClientUserFromRequest(request);
+  const user = await getDirectoryUserFromRequest(request);
   if (!user) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
 
   const body = await request.json().catch(() => null);
