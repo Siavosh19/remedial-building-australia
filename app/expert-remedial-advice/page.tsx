@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
+import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 const DISCLAIMER =
   "All services are preliminary desktop advisory services unless otherwise stated. They are not a substitute for site inspection, engineering certification, regulated design, waterproofing certification, legal advice, or a formal building inspection report.";
@@ -137,7 +138,7 @@ export default function ExpertRemedialAdvicePage() {
           </div>
 
           <div className="mt-10 grid items-start gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((service) => (
+            {services.filter((service) => !isExpertServiceHidden(service.href)).map((service) => (
               <div
                 key={service.href}
                 className="rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-lg"

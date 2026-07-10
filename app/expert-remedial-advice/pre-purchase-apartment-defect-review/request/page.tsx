@@ -1,6 +1,8 @@
+import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import ExpertAdviceForm from "@/components/expert-advice/ExpertAdviceForm";
 import FileUploadZone from "@/components/expert-advice/FileUploadZone";
+import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 const CONCERN_OPTIONS = [
   "Waterproofing",
@@ -17,6 +19,7 @@ const fieldClass =
 const labelClass = "mb-1.5 block text-sm font-semibold text-slate-700";
 
 export default function PrePurchaseApartmentDefectReviewRequestPage() {
+  if (isExpertServiceHidden("pre-purchase-apartment-defect-review")) notFound();
   return (
     <div className="min-h-screen bg-slate-100">
       <SiteHeader />

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import ServiceSchema from "@/components/expert-advice/ServiceSchema";
 import PageNav from "@/components/PageNav";
+import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 const whoFor = [
   "Buyers considering purchasing an apartment in a strata building",
@@ -35,6 +37,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrePurchaseApartmentDefectReviewPage() {
+  if (isExpertServiceHidden("pre-purchase-apartment-defect-review")) notFound();
   return (
     <div className="min-h-screen bg-slate-100">
       <SiteHeader />

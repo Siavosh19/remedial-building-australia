@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CONCRETE_DEFECTS_DATA } from "@/lib/concrete-defects-data";
 import { prisma } from "@/lib/prisma";
+import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 const BASE = "https://www.remedialbuildingaustralia.com.au";
 
@@ -102,6 +103,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ── Expert Remedial Advice (index + services) ──
+  // Hidden services are excluded so they aren't indexed (see lib/expert-advice-hidden.ts).
   for (const path of [
     "/expert-remedial-advice",
     "/expert-remedial-advice/preliminary-defect-assessment",
@@ -110,7 +112,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/expert-remedial-advice/building-repair-strategy-advice",
     "/expert-remedial-advice/pre-purchase-apartment-defect-review",
     "/expert-remedial-advice/capital-works-forecast",
-  ]) {
+  ].filter((path) => !isExpertServiceHidden(path))) {
     entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 });
   }
 

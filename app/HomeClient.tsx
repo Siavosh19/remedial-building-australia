@@ -9,11 +9,12 @@ import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 import HomeJobsPanel from "@/components/jobs/HomeJobsPanel";
+import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 // Home-page Expert Remedial Advice services.
 // Drives the interactive left-list / carousel / details layout.
 // Swap `image` to replace any slide — paths are relative to /public.
-const expertAdviceCards = [
+const allExpertAdviceCards = [
   {
     title: "Preliminary Defect Assessment",
     short: "Independent defect identification and documentation.",
@@ -111,6 +112,8 @@ const expertAdviceCards = [
     Icon: LineChart,
   },
 ];
+// Hidden services are dropped from the homepage carousel (see lib/expert-advice-hidden.ts).
+const expertAdviceCards = allExpertAdviceCards.filter((s) => !isExpertServiceHidden(s.href));
 
 // Compact Expert Remedial Advice card shown in the News section's right column.
 function HomeExpertAdviceCard() {
@@ -496,7 +499,9 @@ export default function HomeClient() {
 
           <div className="relative mx-auto max-w-7xl px-5" style={{ marginTop: "-24px" }}>
             <div className="mb-8">
-              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Industry Directory</div>
+              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">
+                <span aria-hidden>✨</span> AI-Powered Directory
+              </div>
               <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                 Find Strata Building Specialists
               </h2>

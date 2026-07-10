@@ -21,11 +21,10 @@ export default function SeoCrossPromo() {
               For owners, strata managers and building stakeholders who need practical guidance before
               committing to repair works, Remedial Building Australia provides{" "}
               <a href="/expert-remedial-advice" className="font-semibold text-sky-700 hover:text-red-700">Expert Remedial Advice</a>{" "}
-              services including a{" "}
-              <a href="/expert-remedial-advice/preliminary-defect-assessment" className="font-semibold text-sky-700 hover:text-red-700">preliminary defect assessment</a>,{" "}
-              <a href="/expert-remedial-advice/scope-quote-tender-review" className="font-semibold text-sky-700 hover:text-red-700">scope and quote review</a>, tender reviews,{" "}
-              <a href="/expert-remedial-advice/building-repair-strategy-advice" className="font-semibold text-sky-700 hover:text-red-700">building repair strategy advice</a>,
-              pre-purchase apartment defect reviews and{" "}
+              services including{" "}
+              <a href="/expert-remedial-advice/scope-quote-tender-review" className="font-semibold text-sky-700 hover:text-red-700">scope, quote and tender review</a>,{" "}
+              <a href="/expert-remedial-advice/remedial-budget-estimate" className="font-semibold text-sky-700 hover:text-red-700">remedial budget estimates</a>,{" "}
+              <a href="/expert-remedial-advice/building-repair-strategy-advice" className="font-semibold text-sky-700 hover:text-red-700">building repair strategy advice</a> and{" "}
               <a href="/expert-remedial-advice/capital-works-forecast" className="font-semibold text-sky-700 hover:text-red-700">capital works forecast</a>{" "}
               support.
             </p>

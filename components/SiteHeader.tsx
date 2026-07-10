@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown, X } from "lucide-react";
+import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 const repairSystemsLinks = [
   { title: "Repair Systems Library",       href: "/repair-systems/library" },
@@ -10,7 +11,7 @@ const repairSystemsLinks = [
   { title: "Materials & Products Index",   href: "/materials-products-index" },
 ];
 
-const expertServices = [
+const allExpertServices = [
   { title: "Preliminary Defect Assessment",       href: "/expert-remedial-advice/preliminary-defect-assessment" },
   { title: "Scope, Quote & Tender Review",         href: "/expert-remedial-advice/scope-quote-tender-review" },
   { title: "Remedial Budget Estimate",             href: "/expert-remedial-advice/remedial-budget-estimate" },
@@ -18,6 +19,8 @@ const expertServices = [
   { title: "Pre-Purchase Apartment Defect Review", href: "/expert-remedial-advice/pre-purchase-apartment-defect-review" },
   { title: "Capital Works Forecast",               href: "/expert-remedial-advice/capital-works-forecast" },
 ];
+// Hidden services are dropped from the nav (see lib/expert-advice-hidden.ts).
+const expertServices = allExpertServices.filter((s) => !isExpertServiceHidden(s.href));
 
 // ── Mobile menu row styling (clean horizontal rows, navy text, subtle dividers) ──
 const mRow =

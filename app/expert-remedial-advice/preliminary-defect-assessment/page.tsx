@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import ServiceSchema from "@/components/expert-advice/ServiceSchema";
 import PageNav from "@/components/PageNav";
+import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 const suitableFor = [
   "Owners who can see damage inside their apartment but are unsure where it is coming from",
@@ -35,6 +37,7 @@ export const metadata: Metadata = {
 };
 
 export default function PreliminaryDefectAssessmentPage() {
+  if (isExpertServiceHidden("preliminary-defect-assessment")) notFound();
   return (
     <div className="min-h-screen bg-slate-100">
       <SiteHeader />

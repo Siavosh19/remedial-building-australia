@@ -256,40 +256,63 @@ function SilverSampleCard() {
       className="relative rounded-[12px] p-[5px]"
       style={{ background: SILVER_BRUSH, boxShadow: "0 2px 9px rgba(15,23,42,0.16)" }}
     >
+      {/* "Your Business Here" — top-left badge (all sizes) */}
+      <span className="absolute left-4 top-0 z-20 -translate-y-1/2 whitespace-nowrap rounded-full bg-white px-3 py-1 text-[10px] font-bold text-slate-600 shadow-md ring-1 ring-slate-200 sm:left-6 sm:px-3.5 sm:text-[11px]">
+        Your Business Here
+      </span>
+      {/* Tier badge — top-right on phones, top-centre on desktop */}
       <span
-        className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full px-4 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white"
+        className="absolute right-4 top-0 z-10 -translate-y-1/2 rounded-full px-4 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white sm:left-1/2 sm:right-auto sm:-translate-x-1/2"
         style={{ background: "linear-gradient(135deg, #64748b, #94a3b8, #475569)", boxShadow: "0 3px 10px rgba(71,85,105,0.35)" }}
       >
         Silver — Available
       </span>
 
       {/* White content panel inside the silver frame */}
-      <div className="rounded-[8px] bg-white px-5 py-3.5">
+      <div className="rounded-[8px] bg-white px-4 pt-2.5 pb-3 sm:px-5 sm:py-3.5">
       <div className="flex items-start gap-3">
-        <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[12px] font-extrabold text-slate-400">★</div>
+        <div className="mt-0.5 hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-200 text-[12px] font-extrabold text-slate-400 sm:flex">★</div>
         <div className="min-w-0 flex-1">
-          <span className="mb-1 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[12px] font-bold text-slate-500">Your Business Here</span>
-          <h3 className="text-lg font-bold leading-tight text-slate-700">
+          <h3 className="text-base font-bold leading-tight text-slate-700 sm:text-lg">
             Your Business Name
-            <span className="ml-1.5 text-sm font-normal text-slate-400">(Your Suburb, State)</span>
+            <span className="text-sm font-normal text-slate-500"> / Your Tagline</span>
+            <span className="text-xs font-normal text-slate-400 sm:text-sm"> (Your Suburb, State)</span>
           </h3>
-          <p className="mt-2 text-sm leading-relaxed text-slate-500">
+          <p className="mt-1.5 text-[13px] leading-snug text-slate-500 sm:mt-2 sm:text-sm sm:leading-relaxed">
             Claim the Silver spot for this category and rank above every Free listing in your suburb — seen first by the strata managers and owners searching for your trade.
           </p>
-          <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-400">
-            <span className="inline-flex items-center gap-1 font-semibold"><span aria-hidden>📞</span> 000 000 000</span>
-            <span className="inline-flex items-center gap-1 font-semibold"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
-            <span className="inline-flex items-center gap-1 font-semibold"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
+          {/* Desktop contacts — nested under the name (unchanged) */}
+          <div className="mt-2.5 hidden flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold text-slate-400 sm:flex">
+            <span className="inline-flex items-center gap-1"><span aria-hidden>📞</span> 000 000 000</span>
+            <span className="inline-flex items-center gap-1"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
+            <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
           </div>
         </div>
+        {/* Desktop CTA — inline on the right (unchanged) */}
         <a
           href="/directory/signup"
-          className="shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
+          className="hidden shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 sm:block"
           style={{ background: "#475569" }}
         >
           Get This Spot →
         </a>
       </div>
+      {/* Mobile contacts — phone over website (left) · email (centre) */}
+      <div className="relative mt-3 flex items-center text-[11px] font-semibold text-slate-600 sm:hidden">
+        <div className="flex flex-col gap-1">
+          <span className="inline-flex items-center gap-1"><span aria-hidden>📞</span> 000 000 000</span>
+          <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
+        </div>
+        <span className="absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
+      </div>
+      {/* Mobile CTA — full width */}
+      <a
+        href="/directory/signup"
+        className="mt-3 block w-full rounded-lg px-4 py-2 text-center text-sm font-semibold text-white transition hover:opacity-90 sm:hidden"
+        style={{ background: "#475569" }}
+      >
+        Get This Spot →
+      </a>
       </div>
     </div>
     </div>
@@ -333,7 +356,12 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 24, marginBottom: 28 }}>
         <div style={{ position: "relative" }}>
-          <div style={{ position: "absolute", top: 0, left: "50%", transform: "translate(-50%, -50%)", background: "linear-gradient(135deg, #b8963e, #d4b44a, #c8922a)", color: "#fff", fontSize: 10, fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", padding: "6px 18px", borderRadius: 20, boxShadow: "0 4px 14px rgba(184,150,62,0.45)", whiteSpace: "nowrap", zIndex: 10 }}>
+          {/* "Your Business Here" — top-left badge (all sizes) */}
+          <span className="absolute left-4 top-0 z-20 -translate-y-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[10px] font-bold shadow-md ring-1 ring-black/5 sm:left-7 sm:px-3.5 sm:text-[11px]" style={{ background: "#fdf1cf", color: "#7a5c1e" }}>
+            Your Business Here
+          </span>
+          {/* Tier badge — top-right on phones, top-centre on desktop */}
+          <div className="absolute right-4 top-0 z-10 -translate-y-1/2 whitespace-nowrap rounded-[20px] px-[18px] py-1.5 text-[10px] font-extrabold uppercase tracking-[1.2px] text-white sm:left-1/2 sm:right-auto sm:-translate-x-1/2" style={{ background: "linear-gradient(135deg, #b8963e, #d4b44a, #c8922a)", boxShadow: "0 4px 14px rgba(184,150,62,0.45)" }}>
             ⭐ Gold Featured
           </div>
           <div
@@ -342,25 +370,52 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
           >
             <div className="overflow-hidden rounded-[15px] bg-white">
             <div className="rba-top-pad" style={{ padding: "20px 28px 24px 28px" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
-                <div style={{ minWidth: 0 }}>
-                  <span style={{ display: "inline-block", background: "#fff6da", color: "#7a5c1e", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 700 }}>GOLD FEATURED — AVAILABLE</span>
-                  <h3 style={{ fontSize: 23, fontWeight: 800, color: "#0f1f35", margin: "8px 0 0 0" }}>Be Featured in Your State</h3>
+              <div className="flex items-start gap-3 sm:gap-[14px]">
+                {/* Avatar (gold-tinted) — desktop only */}
+                <div className="mt-0.5 hidden h-9 w-9 shrink-0 items-center justify-center rounded-xl text-base font-extrabold sm:flex sm:h-10 sm:w-10 sm:text-lg" style={{ background: "#fff6da", color: "#b8963e" }}>★</div>
+
+                {/* Business-info preview (mirrors the Silver card) */}
+                <div className="min-w-0 flex-1">
+                  <h3 className="mt-1.5 text-base font-extrabold leading-tight sm:mt-0 sm:text-[19px]" style={{ color: "#0f1f35" }}>
+                    Your Business Name
+                    <span className="text-sm font-normal" style={{ color: "#64748b" }}> / Your Tagline</span>
+                    <span className="text-xs font-normal sm:text-sm" style={{ color: "#94a3b8" }}> (Your Suburb, State)</span>
+                  </h3>
+                  <p className="mt-1.5 text-[13px] font-medium leading-snug sm:mt-2 sm:text-sm sm:leading-relaxed" style={{ color: "#5b6472" }}>
+                    Be one of only three Gold Featured businesses for this category in your State — placed above all Silver and Free listings, ahead of 12,000+ businesses on the directory. Limited to 3 per category in each State/Territory.
+                  </p>
+                  {/* Desktop contacts — nested under the name (unchanged) */}
+                  <div className="mt-2.5 hidden flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold sm:flex" style={{ color: "#94826a" }}>
+                    <span className="inline-flex items-center gap-1"><span aria-hidden>📞</span> 000 000 000</span>
+                    <span className="inline-flex items-center gap-1"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
+                    <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
+                  </div>
                 </div>
-                <a href="/directory/signup" style={{ background: "#1e3a5f", color: "#fff", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 700, boxShadow: "0 3px 10px rgba(30,58,95,0.22)", textDecoration: "none", whiteSpace: "nowrap" }}>
+
+                {/* Desktop CTA — inline right (unchanged) */}
+                <a href="/directory/signup" className="hidden shrink-0 whitespace-nowrap rounded-[10px] px-[22px] py-2.5 text-sm font-bold text-white sm:block" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
                   Get This Spot →
                 </a>
               </div>
-              <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "10px 0 0" }}>
-                Be one of only three Gold Featured businesses for this category in your State. Gold Featured placement puts you above all Silver and Free listings — ahead of 12,000+ businesses on the directory. Limited to 3 per category in each State/Territory.
-              </p>
+              {/* Mobile contacts — phone over website (left) · email (centre) */}
+              <div className="relative mt-3 flex items-center text-[11px] font-semibold sm:hidden" style={{ color: "#7a6a4a" }}>
+                <div className="flex flex-col gap-1">
+                  <span className="inline-flex items-center gap-1"><span aria-hidden>📞</span> 000 000 000</span>
+                  <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
+                </div>
+                <span className="absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 whitespace-nowrap"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
+              </div>
+              {/* Mobile CTA — full width */}
+              <a href="/directory/signup" className="mt-3 block w-full rounded-[10px] px-4 py-2 text-center text-sm font-bold text-white sm:hidden" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
+                Get This Spot →
+              </a>
             </div>
             </div>
           </div>
         </div>
         <style>{`
           @media (max-width: 640px) {
-            .rba-top-pad { padding: 14px 16px 16px 16px !important; }
+            .rba-top-pad { padding: 10px 16px 14px 16px !important; }
           }
         `}</style>
       </div>
@@ -418,7 +473,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
       <style>{`
         @media (max-width: 640px) {
           .rba-top-list { gap: 14px !important; }
-          .rba-top-pad { padding: 14px 16px 16px 16px !important; }
+          .rba-top-pad { padding: 10px 16px 14px 16px !important; }
         }
       `}</style>
     </div>
@@ -868,6 +923,7 @@ export default function DirectoryListing({ categories }: Props) {
   const [featured, setFeatured] = useState(false);
   const [radius, setRadius] = useState("50"); // default: within 50 km (Silver membership reach)
   const [page, setPage] = useState(1);
+  const [showManual, setShowManual] = useState(false); // standard search hidden until toggled
 
   // The directory starts EMPTY — no listings until the visitor searches/filters.
   const [companies, setCompanies] = useState<CompanyResult[]>([]);
@@ -1215,103 +1271,139 @@ export default function DirectoryListing({ categories }: Props) {
         <div className="mx-auto max-w-7xl px-6 py-5">
           {/* ── AI box — advanced gradient "describe your job" assistant ── */}
           <div
-            className="relative overflow-hidden rounded-3xl p-5 text-white shadow-[0_18px_50px_rgba(30,58,138,0.45)] ring-1 ring-white/15"
-            style={{ background: "linear-gradient(135deg,#0b1f3a 0%,#13327d 42%,#3730a3 76%,#5b21b6 100%)" }}
+            className="relative overflow-visible rounded-3xl border-[1.5px] border-sky-400 p-[18px]"
+            style={{
+              background: "linear-gradient(135deg,#e0f2fe 0%,#dbeafe 30%,#cfe0ff 60%,#bfdbfe 100%)",
+              boxShadow: "0 12px 30px rgba(15,23,42,0.18),0 4px 10px rgba(15,23,42,0.10)",
+            }}
           >
-            {/* soft decorative glows for the "advanced AI" feel */}
-            <div aria-hidden className="pointer-events-none absolute -right-16 -top-24 h-56 w-56 rounded-full bg-sky-400/25 blur-3xl" />
-            <div aria-hidden className="pointer-events-none absolute -bottom-24 left-8 h-52 w-52 rounded-full bg-violet-400/25 blur-3xl" />
+            {/* Badge */}
+            <span
+              className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-widest text-white shadow ring-1 ring-white/40"
+              style={{ background: "linear-gradient(90deg,#06b6d4,#2563eb)" }}
+            >
+              <span aria-hidden>✨</span> AI Assistant
+            </span>
 
-            <div className="relative z-10">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white ring-1 ring-white/25 backdrop-blur">
-                <span aria-hidden>✨</span> AI Assistant
-              </span>
-              <h2 className="mt-3 text-xl font-extrabold leading-tight sm:text-2xl">Not sure who you need? Describe the job.</h2>
-              <p className="mt-1 text-sm text-white/70">
-                Tell us the problem in plain English — our AI finds the right trade and the businesses nearest you.
-              </p>
+            <h2 className="mt-2.5 text-xl font-extrabold leading-tight sm:text-2xl" style={{ color: "#0f2748" }}>
+              Not sure who you need? Describe the job.
+            </h2>
+            <p className="mt-0.5 text-sm" style={{ color: "#334155" }}>
+              Tell us the problem in plain English — our AI finds the right trade and the closest businesses.
+            </p>
 
-              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+            {/* Big description input */}
+            <input
+              type="text"
+              value={aiText}
+              onChange={(e) => setAiText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") runAiMatch(); }}
+              placeholder="e.g. water leaking through my balcony onto the unit below"
+              className="mt-3 w-full rounded-xl border-0 bg-white py-3 px-4 text-base text-slate-800 placeholder:text-slate-400 shadow focus:outline-none focus:ring-4 focus:ring-cyan-200/70"
+            />
+
+            {/* Control row — location · AI match (after search) · Find · Clear all */}
+            <div className="mt-2.5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              {aiResolvedLoc ? (
+                // Verified / locked-in location chip — the system recognised the place.
+                <div className="flex h-11 items-center gap-2 rounded-xl bg-white px-3.5 shadow-sm">
+                  <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white" aria-hidden>
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-800">{aiResolvedLoc.label}</span>
+                  <button
+                    type="button"
+                    onClick={clearAiLocation}
+                    aria-label="Clear location"
+                    className="shrink-0 rounded px-0.5 text-xs font-bold text-slate-400 transition hover:text-slate-700"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ) : (
                 <input
                   type="text"
-                  value={aiText}
-                  onChange={(e) => setAiText(e.target.value)}
+                  value={aiLocation}
+                  onChange={(e) => setAiLocation(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") runAiMatch(); }}
-                  placeholder="e.g. water leaking through my balcony onto the unit below"
-                  className="w-full rounded-xl border border-white/20 bg-white/95 py-3 px-4 text-base text-sky-900 placeholder:text-slate-400 shadow-sm focus:border-white focus:outline-none focus:ring-2 focus:ring-white/40 sm:flex-[1.6]"
+                  placeholder="Your suburb or postcode"
+                  aria-label="Your suburb or postcode"
+                  className="h-11 w-full rounded-xl border-0 bg-white px-3.5 text-sm text-slate-800 placeholder:text-slate-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-cyan-200/70 sm:w-52"
                 />
-                {aiResolvedLoc ? (
-                  // Verified / locked-in location pill — the system recognised the place.
-                  <div className="flex w-full items-center gap-2 rounded-xl border-2 border-sky-300 bg-white py-2.5 px-4 shadow-sm ring-2 ring-sky-200/60 sm:flex-1">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-600 text-white" aria-hidden>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-                    </span>
-                    <span className="min-w-0 flex-1 truncate text-base font-semibold text-sky-900">{aiResolvedLoc.label}</span>
-                    <button
-                      type="button"
-                      onClick={clearAiLocation}
-                      aria-label="Clear location"
-                      className="shrink-0 rounded-md px-1.5 text-base font-bold text-slate-400 transition hover:text-slate-700"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ) : (
-                  <input
-                    type="text"
-                    value={aiLocation}
-                    onChange={(e) => setAiLocation(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === "Enter") runAiMatch(); }}
-                    placeholder="Your suburb or postcode"
-                    aria-label="Your suburb or postcode"
-                    className="w-full rounded-xl border border-white/20 bg-white/95 py-3 px-4 text-base text-sky-900 placeholder:text-slate-400 shadow-sm focus:border-white focus:outline-none focus:ring-2 focus:ring-white/40 sm:flex-1"
-                  />
-                )}
-                <button
-                  type="button"
-                  onClick={runAiMatch}
-                  disabled={aiLoading}
-                  className="shrink-0 rounded-xl bg-white px-6 py-3 text-base font-bold text-sky-900 shadow-md transition hover:bg-sky-50 disabled:opacity-60"
-                >
-                  {aiLoading ? "Finding…" : "Find the right people"}
-                </button>
-              </div>
-              <p className="mt-1.5 text-xs text-white/60">
-                {aiResolvedLoc
-                  ? `✓ Location confirmed: ${aiResolvedLoc.label} — showing the nearest businesses first.`
-                  : "Adding your suburb or postcode shows the nearest businesses first."}
-              </p>
-              {aiError && <p className="mt-2 text-sm font-semibold text-rose-200">{aiError}</p>}
+              )}
+
+              {/* AI match breakdown — only rendered after a search returns a match */}
               {aiMatch?.matched && (
-                <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-                  <span className="text-white/80">Showing</span>
-                  <span className="rounded-full bg-white px-3 py-1 font-bold text-sky-900">{aiMatch.matched.name}</span>
-                  {aiAppliedLocation && <span className="text-white/80">near <span className="font-semibold text-white">{aiAppliedLocation}</span></span>}
-                  {aiMatch.alternates.length > 0 && <span className="text-white/50">· or try</span>}
-                  {aiMatch.alternates.map((a) => (
-                    <button
-                      key={a.id}
-                      type="button"
-                      onClick={() => applyAiSearch(a.name, aiResolvedLoc ? aiResolvedLoc.label : aiAppliedLocation, aiResolvedLoc)}
-                      className="rounded-full bg-white/15 px-3 py-1 font-medium text-white ring-1 ring-white/25 transition hover:bg-white/25"
-                    >
-                      {a.name}
-                    </button>
-                  ))}
+                <div className="relative flex h-11 items-center gap-2 rounded-xl bg-white/60 px-3 ring-1 ring-white/80 backdrop-blur">
+                  <span className="text-xs font-semibold text-slate-500">AI match:</span>
+                  {aiMatch.alternates.length > 0 ? (
+                    <details className="relative">
+                      <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-cyan-200 transition hover:ring-cyan-400">
+                        {aiMatch.matched.name}
+                        <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">Best</span>
+                        <span className="text-slate-400">▾</span>
+                      </summary>
+                      <div className="absolute left-0 top-full z-30 mt-1 min-w-[190px] rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+                        <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Or try</p>
+                        {aiMatch.alternates.map((a) => (
+                          <button
+                            key={a.id}
+                            type="button"
+                            onClick={() => applyAiSearch(a.name, aiResolvedLoc ? aiResolvedLoc.label : aiAppliedLocation, aiResolvedLoc)}
+                            className="block w-full rounded-lg px-2 py-1.5 text-left text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                          >
+                            {a.name}
+                          </button>
+                        ))}
+                      </div>
+                    </details>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-cyan-200">
+                      {aiMatch.matched.name}
+                      <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">Best</span>
+                    </span>
+                  )}
                 </div>
               )}
+
+              {/* Find the right people (stretches to fill the gap) */}
+              <button
+                type="button"
+                onClick={runAiMatch}
+                disabled={aiLoading}
+                className="flex h-11 w-full items-center justify-center rounded-xl bg-red-700 px-6 text-base font-bold tracking-tight text-white shadow-md transition hover:bg-red-800 disabled:opacity-60 sm:w-auto sm:flex-1"
+              >
+                {aiLoading ? "Finding…" : "Find the right people"}
+              </button>
+
+              {/* Clear all */}
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="flex h-11 w-full shrink-0 items-center justify-center rounded-xl border border-white/70 bg-white/50 px-4 text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-white sm:w-auto"
+              >
+                Clear all
+              </button>
             </div>
+            {aiError && <p className="mt-2 text-sm font-semibold text-red-700">{aiError}</p>}
           </div>
 
-          {/* OR divider between the two distinct boxes */}
-          <div className="my-5 flex items-center gap-4">
-            <span className="h-px flex-1 bg-slate-200" />
-            <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-400 shadow-sm">Or</span>
-            <span className="h-px flex-1 bg-slate-200" />
+          {/* Toggle: reveal the standard search on demand */}
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowManual((v) => !v)}
+              aria-expanded={showManual}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-sky-300 hover:text-sky-800"
+            >
+              {showManual ? "Hide standard search" : "Prefer to search yourself? Use the standard search"}
+              <span aria-hidden className={`text-slate-400 transition-transform ${showManual ? "rotate-180" : ""}`}>▾</span>
+            </button>
           </div>
 
-          {/* ── Manual search box — soft navy-blue-grey ── */}
-          <div className="rounded-3xl border-2 border-[#0f2f5f] p-4" style={{ background: "#cdd7e7" }}>
+          {/* ── Standard (manual) search box — hidden until toggled ── */}
+          {showManual && (
+          <div className="mt-4 rounded-3xl border-2 border-[#0f2f5f] p-4" style={{ background: "#cdd7e7" }}>
           {/* Controls — keyword + location + Search + Clear all, all on one line */}
           <div className="relative z-10 flex flex-wrap items-center gap-3">
             {/* Keyword */}
@@ -1389,8 +1481,11 @@ export default function DirectoryListing({ categories }: Props) {
             />
           </div>
 
-          {/* Client quote-request entry point — sits inside the manual search box */}
-          <div className="mt-3 flex flex-col items-start justify-between gap-3 border-t border-slate-300/80 px-1 pt-3 sm:flex-row sm:items-center">
+          </div>
+          )}
+
+          {/* Client quote-request entry point — always visible */}
+          <div className="mt-4 flex flex-col items-start justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm sm:flex-row sm:items-center">
             <p className="text-sm text-sky-950">
               <span className="font-bold">Strata manager, owners corporation or building owner?</span>{" "}
               Request quotes for building works from listed businesses.
@@ -1401,7 +1496,6 @@ export default function DirectoryListing({ categories }: Props) {
             >
               Request Quotes →
             </a>
-          </div>
           </div>
         </div>
       </div>
