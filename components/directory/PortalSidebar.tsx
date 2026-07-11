@@ -149,11 +149,11 @@ export default function PortalSidebar({ email, companySlug = null }: { email: st
   const view = searchParams.get("view");
   const groups = buildGroups(companySlug);
 
-  // A group starts open if it holds the active route; default the first open.
+  // All groups start expanded so every destination (incl. Jobs) is visible at a
+  // glance; the headers still collapse/expand on tap.
   const [open, setOpen] = useState<Record<string, boolean>>(() => {
     const state: Record<string, boolean> = {};
-    for (const g of groups) state[g.key] = g.items.some((i) => itemActive(i, pathname, view));
-    if (!Object.values(state).some(Boolean)) state[groups[0].key] = true;
+    for (const g of groups) state[g.key] = true;
     return state;
   });
   const [mobileOpen, setMobileOpen] = useState(false);
