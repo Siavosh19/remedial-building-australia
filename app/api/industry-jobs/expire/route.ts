@@ -5,7 +5,7 @@ import { sendJobExpiringSoonEmail, sendJobExpiredEmail } from "@/lib/jobs-email"
 export const runtime = "nodejs";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
-const RENEW_URL = `${SITE_URL}/industry-jobs/employer`;
+const RENEW_URL = `${SITE_URL}/directory/dashboard/jobs`;
 
 // Daily cron (Vercel): expire past-due jobs + send expiry reminders. Authenticated
 // with CRON_SECRET (Vercel injects `Authorization: Bearer <CRON_SECRET>`).

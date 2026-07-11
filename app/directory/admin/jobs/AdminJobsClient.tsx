@@ -112,7 +112,7 @@ export default function AdminJobsClient({
                   <td className="px-3 py-2.5">
                     <div className="flex flex-wrap gap-1.5">
                       <a href={`/industry-jobs/${j.slug}`} target="_blank" className={btn}><ExternalLink size={11} className="inline" /></a>
-                      <a href={`/industry-jobs/employer/jobs/${j.id}/edit`} target="_blank" className={btn}>Edit</a>
+                      <a href={`/directory/dashboard/jobs/${j.id}/edit`} target="_blank" className={btn}>Edit</a>
                       {j.effectiveStatus !== "active" && <button onClick={() => act(j.id, "approve")} disabled={busy === j.id} className={btn}>Approve</button>}
                       {j.effectiveStatus === "active" && <button onClick={() => act(j.id, "expire")} disabled={busy === j.id} className={btn}>Expire</button>}
                       {j.effectiveStatus === "expired" && <button onClick={() => act(j.id, "renew")} disabled={busy === j.id} className={btn}>Renew</button>}

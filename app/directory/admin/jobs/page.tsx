@@ -24,16 +24,22 @@ export default async function AdminJobsPage() {
       prisma.job.findMany({
         orderBy: { created_at: "desc" },
         take: 100,
-        include: { employer: { select: { email: true } }, _count: { select: { applications: true } } },
+        include: { user: { select: { email: true } }, _count: { select: { applications: true } } },
       }),
       prisma.jobPayment.findMany({ orderBy: { created_at: "desc" }, take: 50, include: { job: { select: { title: true } } } }),
-      prisma.jobEmployer.findMany({ orderBy: { created_at: "desc" }, take: 100, include: { _count: { select: { jobs: true } } } }),
+      // Employers are now directory users who own at least one job.
+      prisma.user.findMany({
+        where: { jobs: { some: {} } },
+        orderBy: { created_at: "desc" },
+        take: 100,
+        select: { id: true, email: true, full_name: true, created_at: true, _count: { select: { jobs: true } } },
+      }),
     ]);
 
     revenue = rev._sum.amount_cents ?? 0;
     counts = { active, featured, expired, applications: apps, draft };
     jobs = jobRows.map((j) => ({
-      id: j.id, slug: j.slug, title: j.title, company: j.company_name, employerEmail: j.employer?.email ?? "—",
+      id: j.id, slug: j.slug, title: j.title, company: j.company_name, employerEmail: j.user?.email ?? "—",
       status: j.status, isFeatured: j.is_featured, applications: j._count.applications,
       expiresAt: j.expires_at ? j.expires_at.toISOString() : null,
       createdAt: j.created_at.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" }),
@@ -45,7 +51,7 @@ export default async function AdminJobsPage() {
       date: p.created_at.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" }),
     }));
     employers = empRows.map((e) => ({
-      id: e.id, email: e.email, company: e.company_name, jobs: e._count.jobs,
+      id: e.id, email: e.email, company: e.full_name, jobs: e._count.jobs,
       joined: e.created_at.toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" }),
     }));
   } catch (err) {

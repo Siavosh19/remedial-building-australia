@@ -58,20 +58,6 @@ async function send(opts: { subject: string; to: string; html: string; text: str
   return res?.data;
 }
 
-// ── Employer magic-link sign-in ────────────────────────────────────────────────
-export async function sendJobMagicLinkEmail(email: string, token: string, next?: string) {
-  const link = `${SITE_URL}/industry-jobs/employer/verify?token=${encodeURIComponent(token)}${next ? `&next=${encodeURIComponent(next)}` : ""}`;
-  const html = wrapper(
-    "Sign in to Industry Jobs",
-    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Click the button below to sign in to your employer dashboard. This link is valid for 45 minutes.</p>
-     <p style="margin:0 0 24px;">${btn(link, "Sign in to my dashboard")}</p>
-     <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">If the button doesn't work, paste this into your browser:</p>
-     <p style="margin:8px 0 0;font-size:13px;line-height:1.7;color:#475569;word-break:break-all;">${esc(link)}</p>`,
-  );
-  const text = `Sign in to your Industry Jobs employer dashboard (valid 45 minutes):\n${link}`;
-  await send({ subject: "Sign in to Industry Jobs", to: email, html, text });
-}
-
 type JobLike = {
   slug: string;
   title: string;

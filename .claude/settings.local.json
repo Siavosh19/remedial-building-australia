@@ -147,7 +147,14 @@
       "Bash(mv \"Request Quote.jpg\" \"request-quotes.jpg\")",
       "Bash(mv \"Directory Listing.png\" \"directory-listing.png\")",
       "Bash(mv \"Supplier Portal.png\" \"supplier-portal.png\")",
-      "Bash(mv \"Consultants.png\" \"consultants.png\")"
+      "Bash(mv \"Consultants.png\" \"consultants.png\")",
+      "Bash(echo \"---exit:$?---\")",
+      "Read(//Applications/OneDrive.app/**)",
+      "Bash(sw_vers -productVersion)",
+      "Bash(xattr /Applications/OneDrive.app)",
+      "Bash(open -a OneDrive)",
+      "Bash(echo \"open exit: $?\")",
+      "Bash(softwareupdate --list)"
     ]
   }
 }
