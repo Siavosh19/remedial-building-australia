@@ -1138,9 +1138,24 @@ export default function DirectoryListing({ categories }: Props) {
         // Ltd"). Fall back to a name/keyword lookup so it still surfaces the listing
         // instead of dead-ending. Only show the "couldn't pin" hint if that finds
         // nothing either.
+        // Mirror the exact location params the real search will send (see
+        // fetchResults). A resolved suggestion carries coords/suburb/state — passing
+        // its full LABEL as free-text `location` doesn't parse server-side and yields
+        // a false "no results". Unresolved free text (e.g. "sydney") is parsed fine.
         const sp = new URLSearchParams({ search: desc });
-        const locForCheck = resolved ? resolved.label : rawLoc;
-        if (locForCheck) sp.set("location", locForCheck);
+        if (resolved) {
+          if (resolved.lat != null && resolved.lng != null) {
+            sp.set("lat", String(resolved.lat));
+            sp.set("lng", String(resolved.lng));
+            if (resolved.stateCode) sp.set("locationState", resolved.stateCode);
+          } else if (resolved.type === "state") {
+            sp.set("state", resolved.stateCode);
+          }
+          if (resolved.suburb) sp.set("suburb", resolved.suburb);
+          if (resolved.postcode) sp.set("postcode", resolved.postcode);
+        } else if (rawLoc) {
+          sp.set("location", rawLoc);
+        }
         let hasHit = false;
         try {
           const kr = await fetch(`/api/directory/search?${sp}`);
