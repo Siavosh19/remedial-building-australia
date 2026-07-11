@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { activeJobWhere } from "@/lib/jobs";
 import { uploadJobFile } from "@/lib/jobs-storage";
 import { sendApplicantConfirmationEmail, sendEmployerNewApplicationEmail, type JobEmailAttachment } from "@/lib/jobs-email";
+import { createNotification } from "@/lib/notifications";
 
 export const runtime = "nodejs";
 
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
 
   const job = await prisma.job.findFirst({
     where: activeJobWhere({ slug }),
-    select: { id: true, slug: true, title: true, company_name: true, location: true, contact_email: true, is_featured: true },
+    select: { id: true, slug: true, title: true, company_name: true, location: true, contact_email: true, is_featured: true, user_id: true },
   });
   if (!job) return NextResponse.json({ error: "This job is no longer accepting applications." }, { status: 404 });
 
@@ -80,6 +81,17 @@ export async function POST(request: NextRequest) {
       resume_name: resumeName,
     },
   });
+
+  // In-app bell for the employer who owns the job (alongside the email).
+  if (job.user_id) {
+    await createNotification({
+      userId: job.user_id,
+      type: "job_applicant",
+      title: "New job applicant",
+      body: `${fullName} applied for ${job.title}`,
+      link: `/directory/dashboard/jobs/${job.id}/applications`,
+    });
+  }
 
   // Emails are best-effort — never fail the applicant's submission on a send error.
   sendEmployerNewApplicationEmail({

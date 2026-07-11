@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { sendDirectQuoteRequestEmail, sendClientLeadAdminEmail } from "@/lib/directory-email";
+import { notifyCompanyOwners } from "@/lib/notifications";
 import { URGENCY_LABELS, formatBudget } from "@/lib/quote-options";
 
 type Params = { params: Promise<{ id: string }> };
@@ -61,6 +62,14 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   // Email the business (best-effort; record per-delivery status).
   const catName = quoteRequest.work_category?.name ?? "Building works";
+
+  // In-app bell alongside the email.
+  await notifyCompanyOwners(companyId, {
+    type: "lead",
+    title: "New lead received",
+    body: `${catName} · ${quoteRequest.suburb} ${quoteRequest.postcode}`,
+    link: "/directory/dashboard/lead-requests?view=new",
+  });
   if (company.email) {
     try {
       await sendDirectQuoteRequestEmail({

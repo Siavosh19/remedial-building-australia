@@ -264,10 +264,10 @@ export default async function CompanyProfilePage({ params }: Props) {
       {/* Main content + sidebar — hero and every card share the same container edges */}
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         {/* Hero card */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 via-white to-sky-50 px-8 py-8 shadow-sm sm:px-10">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 via-white to-sky-50 px-5 py-6 shadow-sm sm:px-10 sm:py-8">
           <span className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-sky-500 to-indigo-400" aria-hidden />
-          {/* Category pill(s) — sit above, aligned with the business name */}
-          <div className="mb-2 flex flex-wrap items-center gap-2 pl-[84px]">
+          {/* Category pill(s) — flush left on phones; aligned with the name on desktop */}
+          <div className="mb-2 flex flex-wrap items-center gap-2 sm:pl-[84px]">
             {company.main_category && (
               <span className="inline-flex rounded-full bg-rose-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700">
                 {company.main_category.name}
@@ -281,8 +281,8 @@ export default async function CompanyProfilePage({ params }: Props) {
             )}
           </div>
 
-          {/* Monogram centred with the business name */}
-          <div className="flex flex-wrap items-center gap-5">
+          {/* Logo top-aligned with the name on phones; vertically centred on desktop */}
+          <div className="flex flex-wrap items-start gap-4 sm:items-center sm:gap-5">
             <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-indigo-100 text-xl font-bold text-indigo-700">
               {logo ? (
                 <img src={logo} alt={`${company.name} logo`} className="h-full w-full object-cover" />
@@ -297,22 +297,57 @@ export default async function CompanyProfilePage({ params }: Props) {
               )}
             </h1>
 
-            {/* Claim CTA — far right of the header box (unclaimed listings only) */}
+            {/* Claim CTA — desktop: inline far right of the header (unclaimed only) */}
             {!isClaimed && (
               <a
                 href={`/directory/claim/${company.slug}`}
-                className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-xl border-2 border-red-700 bg-red-700 px-5 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-red-800 hover:border-red-800"
+                className="ml-auto hidden shrink-0 items-center gap-1.5 rounded-xl border-2 border-red-700 bg-red-700 px-5 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-red-800 hover:border-red-800 sm:inline-flex"
               >
                 Claim this profile →
               </a>
             )}
           </div>
+
+          {/* Claim CTA — phone: own line, bottom-right of the card (unclaimed only) */}
+          {!isClaimed && (
+            <div className="mt-5 flex justify-end sm:hidden">
+              <a
+                href={`/directory/claim/${company.slug}`}
+                className="inline-flex items-center gap-1.5 rounded-xl border-2 border-red-700 bg-red-700 px-5 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-red-800 hover:border-red-800"
+              >
+                Claim this profile →
+              </a>
+            </div>
+          )}
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_300px]">
 
           {/* LEFT — standard content cards, always shown with empty states */}
           <div className="space-y-5">
+
+            {/* Contact Details — kept at the top so visitors see phone / email /
+                website first (same details shown on the directory search card) */}
+            <Section label="Contact Details">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <ContactField
+                  label="Phone"
+                  value={company.phone}
+                  href={company.phone ? `tel:${company.phone}` : null}
+                />
+                <ContactField
+                  label="Email"
+                  value={company.email || null}
+                  href={company.email ? `mailto:${company.email}` : null}
+                />
+                <ContactField
+                  label="Website"
+                  value={company.website ? company.website.replace(/^https?:\/\//, "") : null}
+                  href={company.website ?? null}
+                />
+                <ContactField label="ABN" value={company.abn ?? null} />
+              </div>
+            </Section>
 
             {/* About This Company */}
             <Section label="About This Company">
@@ -378,24 +413,6 @@ export default async function CompanyProfilePage({ params }: Props) {
                 </div>
               </Section>
             )}
-
-            {/* Contact Details */}
-            <Section label="Contact Details">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <ContactField
-                  label="Phone"
-                  value={canShowContact ? company.phone : null}
-                  href={canShowContact && company.phone ? `tel:${company.phone}` : null}
-                />
-                <ContactField label="Email" value={null} />
-                <ContactField
-                  label="Website"
-                  value={canShowContact && company.website ? company.website.replace(/^https?:\/\//, "") : null}
-                  href={canShowContact ? company.website : null}
-                />
-                <ContactField label="ABN" value={company.abn ?? null} />
-              </div>
-            </Section>
 
             {/* Licence & Insurance (claimed, business-provided) */}
             {isClaimed && (company.licence_number || company.licence_type || company.insurance_details) && (

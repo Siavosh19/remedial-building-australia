@@ -106,17 +106,44 @@ export async function getCurrentAdminUser() {
   return user;
 }
 
+// ── Dual-role access ────────────────────────────────────────────────────────
+// One login can act as BOTH a service business AND a client. Rather than a
+// single-valued role gate, access is derived from what the account actually has:
+//   • client access  = the original client_user role OR a provisioned ClientProfile
+//   • business access = at least one company membership (company_users link)
+// The client profile is provisioned lazily the first time an account switches to
+// the client side (see /api/account/switch).
+export async function userHasClientAccess(user: { id: number; role: string } | null) {
+  if (!user) return false;
+  if (user.role === "client_user") return true;
+  const profile = await prisma.clientProfile.findUnique({
+    where: { user_id: user.id },
+    select: { id: true },
+  });
+  return !!profile;
+}
+
+export async function userHasBusinessAccess(user: { id: number } | null) {
+  if (!user) return false;
+  const link = await prisma.companyUser.findFirst({
+    where: { user_id: user.id },
+    select: { id: true },
+  });
+  return !!link;
+}
+
 // Strata / client users (quote-request platform). Same session + cookie as the
-// directory, gated on the client_user role.
+// directory; allows the original client_user role OR any account that has
+// switched into client mode (has a ClientProfile).
 export async function getCurrentClientUser() {
   const user = await getCurrentDirectoryUser();
-  if (!user || user.role !== "client_user") return null;
+  if (!(await userHasClientAccess(user))) return null;
   return user;
 }
 
 export async function getClientUserFromRequest(request: Request) {
   const user = await getDirectoryUserFromRequest(request);
-  if (!user || user.role !== "client_user") return null;
+  if (!(await userHasClientAccess(user))) return null;
   return user;
 }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { planLabel } from "@/lib/plans";
@@ -10,7 +11,10 @@ export const dynamic = "force-dynamic";
 
 const PAID = ["claimed", "featured"];
 
-export default async function LeadRequestsPage() {
+export default async function LeadRequestsPage({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
+  const rawView = (await searchParams).view?.toLowerCase();
+  const view: "new" | "viewed" | "all" = rawView === "new" ? "new" : rawView === "viewed" ? "viewed" : "all";
+
   const user = await getCurrentDirectoryUser();
   if (!user) redirect("/directory/login");
 
@@ -52,30 +56,68 @@ export default async function LeadRequestsPage() {
     );
   }
 
-  const deliveries = await prisma.quoteRequestDelivery.findMany({
-    where: { company_id: company.id, request: { status: { not: "draft" } } },
-    orderBy: { created_at: "desc" },
-    take: 200,
-    include: { request: { select: { suburb: true, postcode: true, urgency: true, work_category: { select: { name: true } } } } },
-  });
+  const baseWhere: Prisma.QuoteRequestDeliveryWhereInput = {
+    company_id: company.id,
+    request: { status: { not: "draft" } },
+  };
+  const viewWhere: Prisma.QuoteRequestDeliveryWhereInput =
+    view === "new"
+      ? { ...baseWhere, opened_at: null }
+      : view === "viewed"
+        ? { ...baseWhere, opened_at: { not: null } }
+        : baseWhere;
 
-  const newCount = deliveries.filter((d) => !d.opened_at).length;
+  const [deliveries, totalCount, newCount] = await Promise.all([
+    prisma.quoteRequestDelivery.findMany({
+      where: viewWhere,
+      orderBy: { created_at: "desc" },
+      take: 200,
+      include: { request: { select: { suburb: true, postcode: true, urgency: true, work_category: { select: { name: true } } } } },
+    }),
+    prisma.quoteRequestDelivery.count({ where: baseWhere }),
+    prisma.quoteRequestDelivery.count({ where: { ...baseWhere, opened_at: null } }),
+  ]);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Matched Leads</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            {deliveries.length} received{newCount > 0 ? ` · ${newCount} new` : ""} ·{" "}
-            <span className="font-semibold">{planLabel(company.plan_type)}</span>
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900">
+          {view === "new" ? "New Leads" : view === "viewed" ? "Viewed Leads" : "All Leads"}
+        </h1>
+        <p className="mt-1 text-sm text-slate-500">
+          Quote requests from strata managers, owners corporations and property owners ·{" "}
+          <span className="font-semibold">{planLabel(company.plan_type)}</span>
+        </p>
+      </div>
+
+      {/* View tabs — mirror the three Leads nav items */}
+      <div className="flex gap-2 overflow-x-auto">
+        {[
+          { key: "new", label: `New (${newCount})`, href: "/directory/dashboard/lead-requests?view=new" },
+          { key: "all", label: `All (${totalCount})`, href: "/directory/dashboard/lead-requests" },
+          { key: "viewed", label: `Viewed (${totalCount - newCount})`, href: "/directory/dashboard/lead-requests?view=viewed" },
+        ].map((t) => (
+          <Link
+            key={t.key}
+            href={t.href}
+            className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+              view === t.key ? "bg-sky-950 text-white" : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            {t.label}
+          </Link>
+        ))}
       </div>
 
       {deliveries.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center shadow-sm">
-          <p className="text-sm text-slate-500">No lead requests yet. Matching quote requests will appear here.</p>
+          <p className="text-sm text-slate-500">
+            {view === "new"
+              ? "No new leads right now. New matching quote requests will appear here."
+              : view === "viewed"
+                ? "No viewed leads yet."
+                : "No lead requests yet. Matching quote requests will appear here."}
+          </p>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-3xl border border-slate-200 bg-white shadow-sm">

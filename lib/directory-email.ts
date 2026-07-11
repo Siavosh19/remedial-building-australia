@@ -541,6 +541,59 @@ export async function sendDirectQuoteRequestEmail(opts: {
   await sendEmail("New quote request for your business", opts.to, html, text);
 }
 
+// Sent to a business that already received a quote request when the client edits
+// it. Mirrors sendDirectQuoteRequestEmail but with "updated" wording so the
+// business knows to re-check the details before contacting the client.
+export async function sendUpdatedQuoteRequestEmail(opts: {
+  to: string;
+  businessName?: string | null;
+  clientName: string;
+  clientEmail: string;
+  clientPhone?: string | null;
+  suburb: string;
+  postcode: string;
+  category: string;
+  description: string;
+  budget?: string | null;
+  urgency: string;
+  files: { filename: string | null; url: string }[];
+  dashboardUrl: string;
+}) {
+  const greeting = opts.businessName ? `Hi ${safeHtml(opts.businessName)},` : "Hello,";
+  const row = (label: string, value: string) =>
+    `<tr><td style="padding:6px 0;font-size:13px;color:#64748b;width:130px;vertical-align:top;">${safeHtml(label)}</td>
+      <td style="padding:6px 0;font-size:14px;color:#0f172a;font-weight:600;">${safeHtml(value)}</td></tr>`;
+  const fileLinks = opts.files.length
+    ? `<p style="margin:0 0 6px;font-size:13px;color:#64748b;">Attachments</p><ul style="margin:0 0 18px;padding-left:18px;">${opts.files
+        .map((f) => `<li style="font-size:13px;"><a href="${f.url}" style="color:#1d4ed8;">${safeHtml(f.filename ?? "File")}</a></li>`)
+        .join("")}</ul>`
+    : "";
+
+  const html = emailWrapper(
+    "Quote request updated",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">${greeting}</p>
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A client has <strong>updated</strong> a quote request they previously sent you. The latest details are below — please review before contacting them.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 18px;">
+       ${row("Location", `${opts.suburb} ${opts.postcode}`)}
+       ${row("Work category", opts.category)}
+       ${row("Urgency", opts.urgency)}
+       ${opts.budget ? row("Budget", opts.budget) : ""}
+       ${row("Client", opts.clientName)}
+       ${row("Email", opts.clientEmail)}
+       ${opts.clientPhone ? row("Phone", opts.clientPhone) : ""}
+     </table>
+     <p style="margin:0 0 6px;font-size:13px;color:#64748b;">Description</p>
+     <p style="margin:0 0 18px;font-size:14px;line-height:1.7;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;">${safeHtml(opts.description)}</p>
+     ${fileLinks}
+     <p style="margin:0 0 24px;"><a href="${opts.dashboardUrl}" style="display:inline-block;padding:14px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;">View in your dashboard →</a></p>
+     <p style="margin:0;font-size:12px;color:#64748b;line-height:1.7;">${safeHtml(RBA_DISCLAIMER_SHORT)}</p>`
+  );
+
+  const text = `${opts.businessName ? `Hi ${opts.businessName},` : "Hello,"}\n\nA client has UPDATED a quote request they previously sent you.\n\nLocation: ${opts.suburb} ${opts.postcode}\nWork category: ${opts.category}\nUrgency: ${opts.urgency}\n${opts.budget ? `Budget: ${opts.budget}\n` : ""}Client: ${opts.clientName}\nEmail: ${opts.clientEmail}\n${opts.clientPhone ? `Phone: ${opts.clientPhone}\n` : ""}\nDescription:\n${opts.description}\n${opts.files.length ? `\nAttachments:\n${opts.files.map((f) => `- ${f.filename ?? "File"}: ${f.url}`).join("\n")}\n` : ""}\nView in your dashboard: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER_SHORT}`;
+
+  await sendEmail("A quote request was updated", opts.to, html, text);
+}
+
 // Confirmation to the client after their request is matched and sent out.
 export async function sendClientQuoteConfirmationEmail(opts: {
   to: string;

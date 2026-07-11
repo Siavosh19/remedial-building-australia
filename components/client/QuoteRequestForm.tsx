@@ -9,6 +9,23 @@ import CategoryTreeSelect, { type TreeCat } from "@/components/directory/Categor
 type Category = TreeCat;
 type Defaults = { contactName: string; contactEmail: string; contactPhone: string; companyName: string };
 type PickedFile = { file: File; fileType: string };
+type InitialValues = {
+  contactName?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  companyName?: string;
+  buildingAddress?: string;
+  suburb?: string;
+  postcode?: string;
+  strataPlanNumber?: string;
+  propertyType?: string;
+  workCategoryId?: string;
+  description?: string;
+  urgency?: string;
+  preferredInspection?: string;
+  consultantScopeAvailable?: boolean;
+  budgetRange?: string;
+};
 
 const inputClass =
   "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm focus:border-sky-600 focus:outline-none";
@@ -26,29 +43,42 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-export default function QuoteRequestForm({ categories, defaults }: { categories: Category[]; defaults: Defaults }) {
+export default function QuoteRequestForm({
+  categories,
+  defaults,
+  mode = "create",
+  requestId,
+  initial,
+}: {
+  categories: Category[];
+  defaults: Defaults;
+  mode?: "create" | "edit";
+  requestId?: number;
+  initial?: InitialValues;
+}) {
   const router = useRouter();
+  const isEdit = mode === "edit";
   const [form, setForm] = useState({
-    contactName: defaults.contactName,
-    contactEmail: defaults.contactEmail,
-    contactPhone: defaults.contactPhone,
-    companyName: defaults.companyName,
-    buildingAddress: "",
-    suburb: "",
-    postcode: "",
-    strataPlanNumber: "",
-    propertyType: "",
-    workCategoryId: "",
-    description: "",
-    urgency: "",
-    preferredInspection: "",
-    consultantScopeAvailable: false,
-    budgetRange: "",
+    contactName: initial?.contactName ?? defaults.contactName,
+    contactEmail: initial?.contactEmail ?? defaults.contactEmail,
+    contactPhone: initial?.contactPhone ?? defaults.contactPhone,
+    companyName: initial?.companyName ?? defaults.companyName,
+    buildingAddress: initial?.buildingAddress ?? "",
+    suburb: initial?.suburb ?? "",
+    postcode: initial?.postcode ?? "",
+    strataPlanNumber: initial?.strataPlanNumber ?? "",
+    propertyType: initial?.propertyType ?? "",
+    workCategoryId: initial?.workCategoryId ?? "",
+    description: initial?.description ?? "",
+    urgency: initial?.urgency ?? "",
+    preferredInspection: initial?.preferredInspection ?? "",
+    consultantScopeAvailable: initial?.consultantScopeAvailable ?? false,
+    budgetRange: initial?.budgetRange ?? "",
   });
   const [files, setFiles] = useState<PickedFile[]>([]);
-  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(isEdit);
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState<null | "draft" | "submit">(null);
+  const [busy, setBusy] = useState<null | "draft" | "submit" | "save">(null);
 
   const set = (key: keyof typeof form, value: string | boolean) => setForm((f) => ({ ...f, [key]: value }));
 
@@ -78,7 +108,7 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
     }
   }
 
-  async function handle(action: "draft" | "submit") {
+  async function handle(action: "draft" | "submit" | "save") {
     setError(null);
     if (!form.workCategoryId) {
       setError("Please choose a work category.");
@@ -88,6 +118,28 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
       setError("You must accept the platform terms and disclaimer to submit.");
       return;
     }
+
+    // Edit mode: PATCH the existing request (the API notifies any businesses it
+    // was already sent to) and return to the request detail page.
+    if (action === "save" && requestId) {
+      setBusy("save");
+      try {
+        const res = await fetch(`/api/client/quote-request/${requestId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        const r = await res.json();
+        if (!res.ok) throw new Error(r.error ?? "Could not save your changes.");
+        if (files.length > 0) await uploadFiles(requestId);
+        router.push(`/client/quote-requests/${requestId}`);
+      } catch (err) {
+        setError((err as Error).message);
+        setBusy(null);
+      }
+      return;
+    }
+
     setBusy(action);
     try {
       const createRes = await fetch("/api/client/quote-request", {
@@ -113,8 +165,8 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
 
       router.push(
         action === "submit"
-          ? `/directory/dashboard/quotes/${requestId}/results`
-          : `/directory/dashboard/quotes/${requestId}`,
+          ? `/client/quote-requests/${requestId}/results`
+          : `/client/quote-requests/${requestId}`,
       );
     } catch (err) {
       setError((err as Error).message);
@@ -125,10 +177,11 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900">New quote request</h1>
+        <h1 className="text-2xl font-extrabold text-slate-900">{isEdit ? "Edit quote request" : "New quote request"}</h1>
         <p className="mt-1 text-sm text-slate-500">
-          Describe the works required. We match your request to listed businesses by category and location and notify them
-          — they then contact you directly.
+          {isEdit
+            ? "Update the details below. Any businesses you've already sent this request to will be notified of the changes."
+            : "Describe the works required. We match your request to listed businesses by category and location and notify them — they then contact you directly."}
         </p>
       </div>
 
@@ -276,37 +329,52 @@ export default function QuoteRequestForm({ categories, defaults }: { categories:
         )}
       </Section>
 
-      <Section title="Terms & disclaimer">
-        <label className="flex cursor-pointer items-start gap-3 text-sm text-slate-700">
-          <input
-            type="checkbox"
-            checked={termsAccepted}
-            onChange={(e) => setTermsAccepted(e.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-sky-950"
-          />
-          <span>I accept the platform terms and disclaimer. {RBA_DISCLAIMER}</span>
-        </label>
-      </Section>
+      {!isEdit && (
+        <Section title="Terms & disclaimer">
+          <label className="flex cursor-pointer items-start gap-3 text-sm text-slate-700">
+            <input
+              type="checkbox"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-sky-950"
+            />
+            <span>I accept the platform terms and disclaimer. {RBA_DISCLAIMER}</span>
+          </label>
+        </Section>
+      )}
 
       {error && <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">{error}</div>}
 
       <div className="flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={() => handle("submit")}
-          disabled={busy !== null}
-          className="rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {busy === "submit" ? "Finding businesses…" : "Explore available businesses"}
-        </button>
-        <button
-          type="button"
-          onClick={() => handle("draft")}
-          disabled={busy !== null}
-          className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {busy === "draft" ? "Saving…" : "Save as draft"}
-        </button>
+        {isEdit ? (
+          <button
+            type="button"
+            onClick={() => handle("save")}
+            disabled={busy !== null}
+            className="rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {busy === "save" ? "Saving…" : "Save changes"}
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={() => handle("submit")}
+              disabled={busy !== null}
+              className="rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {busy === "submit" ? "Finding businesses…" : "Explore available businesses"}
+            </button>
+            <button
+              type="button"
+              onClick={() => handle("draft")}
+              disabled={busy !== null}
+              className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {busy === "draft" ? "Saving…" : "Save as draft"}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

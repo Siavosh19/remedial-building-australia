@@ -2,10 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import Link from "next/link";
 import {
-  MessageSquare,
-  Eye,
-  Phone,
-  Globe,
   CreditCard,
   CheckCircle2,
   Circle,
@@ -16,8 +12,9 @@ import {
   Shield,
   Camera,
   Send,
-  TrendingUp,
   Building2,
+  Inbox,
+  Sparkles,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -56,7 +53,6 @@ export default async function DashboardIndexPage() {
     where: { users: { some: { user_id: user?.id ?? 0 } } },
     include: {
       directory_subscription: true,
-      quote_requests: { orderBy: { created_at: "desc" }, take: 5 },
       locations: { take: 1 },
       media: true,
     },
@@ -107,9 +103,26 @@ export default async function DashboardIndexPage() {
     : null;
 
   const subscription = company?.directory_subscription;
-  const recentQuotes = company?.quote_requests ?? [];
-  const newQuotes = recentQuotes.filter((q) => q.status === "new").length;
   const plan = company?.plan_type ?? "basic";
+
+  // Leads = matched quote-request deliveries to THIS business. RBA businesses
+  // never quote on-platform — they receive a lead and contact the client directly.
+  const [leadsReceived, newLeads, recentLeads] = await Promise.all([
+    prisma.quoteRequestDelivery.count({
+      where: { company_id: company.id, request: { status: { not: "draft" } } },
+    }),
+    prisma.quoteRequestDelivery.count({
+      where: { company_id: company.id, opened_at: null, request: { status: { not: "draft" } } },
+    }),
+    prisma.quoteRequestDelivery.findMany({
+      where: { company_id: company.id, request: { status: { not: "draft" } } },
+      orderBy: { created_at: "desc" },
+      take: 5,
+      include: {
+        request: { select: { suburb: true, postcode: true, work_category: { select: { name: true } } } },
+      },
+    }),
+  ]);
   const isClaimed = plan !== "basic";
   const claimPending = company?.listing_claim_status === "claim_pending";
 
@@ -248,44 +261,44 @@ export default async function DashboardIndexPage() {
         </div>
       </div>
 
-      {/* ── Stats grid ─────────────────────────────────────────────────── */}
+      {/* ── Stats grid — listing, leads, new leads, subscription ────────── */}
       <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
 
+        {/* Business Listing */}
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="flex items-center gap-2 text-slate-400 mb-2">
-            <MessageSquare size={14} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Quote requests</span>
+            <Building2 size={14} />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Business listing</span>
           </div>
-          <p className="text-2xl font-extrabold text-sky-950">{recentQuotes.length}</p>
-          {newQuotes > 0 ? (
-            <p className="mt-1 text-xs font-semibold text-amber-600">{newQuotes} new</p>
-          ) : (
-            <p className="mt-1 text-xs text-slate-400">None new</p>
-          )}
-          <Link href="/directory/dashboard/quote-requests" className="mt-2 block text-xs font-semibold text-blue-600 hover:text-blue-700">View all →</Link>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="flex items-center gap-2 text-slate-400 mb-2">
-            <Eye size={14} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Profile views</span>
-          </div>
-          <p className="text-2xl font-extrabold text-sky-950">{company?.profile_views ?? 0}</p>
-          <p className="mt-1 text-xs text-slate-400">All time</p>
+          <p className="text-lg font-extrabold text-sky-950">{listingStatus.label}</p>
           <Link href="/directory/dashboard/profile" className="mt-2 block text-xs font-semibold text-blue-600 hover:text-blue-700">Edit profile →</Link>
         </div>
 
+        {/* Leads Received */}
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="flex items-center gap-2 text-slate-400 mb-2">
-            <Phone size={14} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Phone clicks</span>
+            <Inbox size={14} />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Leads received</span>
           </div>
-          <p className="text-2xl font-extrabold text-sky-950">{company?.phone_clicks ?? 0}</p>
-          <p className="mt-1 text-xs text-slate-400">
-            <span className="inline-flex items-center gap-1"><Globe size={10} />{company?.website_clicks ?? 0} website</span>
-          </p>
+          <p className="text-2xl font-extrabold text-sky-950">{leadsReceived}</p>
+          <Link href="/directory/dashboard/lead-requests" className="mt-2 block text-xs font-semibold text-blue-600 hover:text-blue-700">View all →</Link>
         </div>
 
+        {/* New Leads */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-2 text-slate-400 mb-2">
+            <Sparkles size={14} />
+            <span className="text-[10px] font-bold uppercase tracking-widest">New leads</span>
+          </div>
+          <p className="text-2xl font-extrabold text-sky-950">{newLeads}</p>
+          {newLeads > 0 ? (
+            <Link href="/directory/dashboard/lead-requests?view=new" className="mt-2 block text-xs font-semibold text-amber-600 hover:text-amber-700">Review now →</Link>
+          ) : (
+            <p className="mt-2 text-xs text-slate-400">None new</p>
+          )}
+        </div>
+
+        {/* Subscription */}
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="flex items-center gap-2 text-slate-400 mb-2">
             <CreditCard size={14} />
@@ -348,59 +361,54 @@ export default async function DashboardIndexPage() {
           </div>
         </div>
 
-        {/* Recent activity / quote requests */}
+        {/* Recent leads */}
         <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
             <div>
-              <p className="font-bold text-sky-950">Recent quote requests</p>
-              {newQuotes > 0 && (
-                <p className="text-xs font-semibold text-amber-600 mt-0.5">{newQuotes} new request{newQuotes > 1 ? "s" : ""} waiting</p>
+              <p className="font-bold text-sky-950">Recent leads</p>
+              {newLeads > 0 && (
+                <p className="text-xs font-semibold text-amber-600 mt-0.5">{newLeads} new lead{newLeads > 1 ? "s" : ""} to review</p>
               )}
             </div>
-            <Link href="/directory/dashboard/quote-requests" className="text-xs font-semibold text-blue-600 hover:text-blue-700">
+            <Link href="/directory/dashboard/lead-requests" className="text-xs font-semibold text-blue-600 hover:text-blue-700">
               View all →
             </Link>
           </div>
 
-          {recentQuotes.length === 0 ? (
+          {recentLeads.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
-                <TrendingUp size={20} className="text-slate-400" />
+                <Inbox size={20} className="text-slate-400" />
               </div>
-              <p className="mt-3 text-sm font-semibold text-slate-500">No quote requests yet</p>
+              <p className="mt-3 text-sm font-semibold text-slate-500">No leads yet</p>
               <p className="mt-1 text-xs text-slate-400">
-                When prospective clients send you enquiries, they&apos;ll appear here.
+                Matching quote requests from strata managers and owners will appear here. Contact clients directly to win the work.
               </p>
               {plan === "basic" && (
                 <Link
                   href="/directory/dashboard/subscription"
                   className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-red-600 px-4 py-2 text-xs font-bold text-white hover:bg-red-500 transition"
                 >
-                  Upgrade to enable quote requests
+                  Upgrade to receive leads
                 </Link>
               )}
             </div>
           ) : (
             <ul className="divide-y divide-slate-50">
-              {recentQuotes.map((q) => (
-                <li key={q.id} className="flex items-center gap-4 px-5 py-3.5">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-extrabold text-slate-500">
-                    {(q.requester_name ?? "?")[0]?.toUpperCase()}
+              {recentLeads.map((d) => (
+                <li key={d.id} className="flex items-center gap-4 px-5 py-3.5">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-700">
+                    <Inbox size={15} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-800 truncate">{q.requester_name}</p>
+                    <p className="text-sm font-semibold text-slate-800 truncate">{d.request.work_category?.name ?? "Building works"}</p>
                     <p className="text-xs text-slate-400">
-                      {q.project_category ?? "General"} · {new Date(q.created_at).toLocaleDateString("en-AU", { day: "numeric", month: "short" })}
+                      {d.request.suburb} {d.request.postcode} · {new Date(d.created_at).toLocaleDateString("en-AU", { day: "numeric", month: "short" })}
                     </p>
                   </div>
-                  <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                    q.status === "new"       ? "bg-sky-100 text-sky-700"         :
-                    q.status === "responded" ? "bg-blue-100 text-blue-700"       :
-                    q.status === "won"       ? "bg-emerald-100 text-emerald-700" :
-                    "bg-slate-100 text-slate-500"
-                  }`}>
-                    {q.status}
-                  </span>
+                  {!d.opened_at && (
+                    <span className="shrink-0 rounded-full bg-sky-100 px-2.5 py-0.5 text-[10px] font-bold text-sky-700">New</span>
+                  )}
                 </li>
               ))}
             </ul>

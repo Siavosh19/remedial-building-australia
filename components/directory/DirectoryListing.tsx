@@ -221,12 +221,14 @@ function FreeRow({ company }: { company: CompanyResult }) {
           {name}
           {locText && <span className="ml-1 text-xs font-normal text-slate-400">({locText})</span>}
         </h3>
-        {/* Contacts — nudged right, but wrapped lines stay flush (flex-wrap, no hanging indent) */}
-        <ContactLinks company={company} className="mt-1.5 pl-5 text-xs" />
+        {/* Contacts — flush-left on phones (📞 lines up under the name's first
+            letter); nudged right on desktop. Wrapped lines stay flush. */}
+        <ContactLinks company={company} className="mt-1.5 text-xs sm:pl-5" />
       </div>
 
-      {/* Small, compact buttons — top-right */}
-      <div className="flex shrink-0 flex-col items-end gap-1.5 sm:flex-row sm:items-start">
+      {/* Small, compact buttons — vertically centred on phones (gap sits at the
+          card's middle), top-right on desktop */}
+      <div className="flex shrink-0 flex-col items-end gap-1.5 self-center sm:flex-row sm:items-start sm:self-start">
         <a
           href={`/directory/company/${company.slug}`}
           className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100"
