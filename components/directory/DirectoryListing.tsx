@@ -1118,23 +1118,40 @@ export default function DirectoryListing({ categories }: Props) {
         return;
       }
       setAiMatch(data);
+      // Location the owner typed, else any location the AI found in the text.
+      const rawLoc = aiLocation.trim() || (data.location ?? "").trim();
+      // Confirm it against the real AU place list (same source the main search
+      // box autocompletes from). A hit becomes a "verified" locked-in pill and
+      // gives precise coordinates for nearest-first ranking.
+      let resolved: LocationSuggestion | null = null;
+      if (rawLoc) {
+        try {
+          const lr = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(rawLoc)}`);
+          const lj = await lr.json();
+          resolved = (lj?.suggestions?.[0] as LocationSuggestion) ?? null;
+        } catch { resolved = null; }
+      }
       if (data.matched) {
-        // Location the owner typed, else any location the AI found in the text.
-        const rawLoc = aiLocation.trim() || (data.location ?? "").trim();
-        // Confirm it against the real AU place list (same source the main search
-        // box autocompletes from). A hit becomes a "verified" locked-in pill and
-        // gives precise coordinates for nearest-first ranking.
-        let resolved: LocationSuggestion | null = null;
-        if (rawLoc) {
-          try {
-            const lr = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(rawLoc)}`);
-            const lj = await lr.json();
-            resolved = (lj?.suggestions?.[0] as LocationSuggestion) ?? null;
-          } catch { resolved = null; }
-        }
         applyAiSearch(data.matched.name, rawLoc, resolved);
       } else {
-        setAiError("We couldn't pin a category. Try describing the work differently, or search by keyword below.");
+        // No trade category — the query is probably a BUSINESS NAME (e.g. "Oxo Pty
+        // Ltd"). Fall back to a name/keyword lookup so it still surfaces the listing
+        // instead of dead-ending. Only show the "couldn't pin" hint if that finds
+        // nothing either.
+        const sp = new URLSearchParams({ search: desc });
+        const locForCheck = resolved ? resolved.label : rawLoc;
+        if (locForCheck) sp.set("location", locForCheck);
+        let hasHit = false;
+        try {
+          const kr = await fetch(`/api/directory/search?${sp}`);
+          const kj = await kr.json();
+          hasHit = (kj?.total ?? 0) > 0;
+        } catch { hasHit = false; }
+        if (hasHit) {
+          applyAiSearch(desc, rawLoc, resolved);
+        } else {
+          setAiError("We couldn't pin a category or find a business by that name. Try describing the work differently, or search by keyword below.");
+        }
       }
     } catch {
       setAiError("Network error. Please try again.");
