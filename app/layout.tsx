@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import PWARegister from "@/components/PWARegister";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,10 +40,23 @@ const organisationSchema = {
   ],
 };
 
+// Theme colour tints the mobile browser/status bar and the PWA splash.
+export const viewport: Viewport = {
+  themeColor: "#0f2748",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Remedial Building Australia",
   description: "Technical defect database and remedial building knowledge platform for Australian Class 2 buildings",
+  applicationName: "Remedial Building Australia",
+  // PWA: link the web app manifest and enable iOS standalone ("Add to Home Screen").
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "RBA",
+    statusBarStyle: "default",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico?v=2", sizes: "any" },
@@ -77,6 +91,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organisationSchema) }}
         />
         {children}
+        <PWARegister />
         <Script
           src="https://app.termly.io/resource-blocker/cd648cb9-82de-4258-b9b6-13de590b2886"
           strategy="afterInteractive"
