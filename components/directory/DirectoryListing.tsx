@@ -1415,7 +1415,7 @@ export default function DirectoryListing({ categories }: Props) {
             </span>
 
             <h2 className="mt-2.5 text-xl font-extrabold leading-tight sm:text-2xl" style={{ color: "#0f2748" }}>
-              Not sure who you need? Describe the job.
+              Not Sure Who You Need? Describe The Job.
             </h2>
             <p className="mt-0.5 text-sm" style={{ color: "#334155" }}>
               Tell us the problem in plain English — our AI finds the right trade and the closest businesses.
