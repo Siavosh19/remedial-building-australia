@@ -61,7 +61,7 @@ export default function ExternalCoatingPaintDeteriorationPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">External Coating & Paint Deterioration</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">External Coating & Paint Deterioration</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 External coating and paint deterioration is one of the most visible forms of building envelope ageing in Class 2 buildings. While peeling or chalking paint is often treated as a cosmetic issue, a deteriorated coating exposes the substrate beneath — rendered walls, brick masonry, concrete, timber and metal elements — to moisture, UV radiation, salt and biological attack. In older buildings, repeated repainting over failing substrates can mask deeper structural or waterproofing problems, making thorough substrate assessment essential before any recoating programme is undertaken. Addressing the underlying substrate condition before recoating is the difference between a durable result and a programme of recurring paint failure.
               </p>

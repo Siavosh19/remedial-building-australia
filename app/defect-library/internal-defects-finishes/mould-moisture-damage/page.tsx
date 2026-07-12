@@ -54,7 +54,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Internal Defects & Finishes</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Mould & Moisture Damage</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Mould & Moisture Damage</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Mould growth in Class 2 buildings is a significant health concern and is increasingly the subject of strata disputes and litigation. Mould requires moisture, a food source (building materials) and warmth to grow. In apartment buildings, the primary moisture sources driving mould are water ingress from external envelope defects, condensation from inadequate insulation and ventilation, and moisture from internal sources such as bathrooms and kitchens without adequate exhaust. Visible mould is the final indicator — by the time it appears on surfaces, the underlying building materials are likely already significantly contaminated.</p>
             </div>
           </div>

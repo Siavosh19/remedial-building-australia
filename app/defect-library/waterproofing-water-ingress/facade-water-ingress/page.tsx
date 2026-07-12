@@ -63,7 +63,7 @@ export default function FacadeWaterIngressPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Façade Water Ingress</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Façade Water Ingress</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Façade water ingress is the penetration of water through the external building envelope into the building structure and interior spaces. In Class 2 multi-storey residential buildings, the façade is the primary barrier against weather — and when sealant joints fail, render cracks, cladding is damaged or flashings are absent, rainwater tracks directly into the building fabric. Façade water ingress typically presents as isolated wet patches on internal walls and ceilings, but sustained ingress causes progressive structural damage, mould growth and finishes deterioration that significantly escalates remediation costs.
               </p>

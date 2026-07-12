@@ -64,7 +64,7 @@ export default function PenetratingDampPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Penetrating Damp</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Penetrating Damp</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Penetrating damp is the lateral movement of water through external walls driven by wind-driven rain, hydrostatic pressure against below-ground walls and water ponding at wall bases. Unlike rising damp, which moves upward through capillary action, penetrating damp tracks horizontally through the building fabric via cracks, failed mortar joints, defective sealants, window perimeter failures and porous masonry. It is one of the most common causes of water ingress complaints in strata buildings across coastal and high-rainfall areas of Australia.
               </p>

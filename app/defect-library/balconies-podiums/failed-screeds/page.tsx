@@ -57,7 +57,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Balconies & Podiums</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Failed Screeds</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Failed Screeds</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Balcony and podium screeds provide the drainage falls and surface substrate for tile and waterproofing systems. Screed failure — through cracking, delamination or inadequate falls — undermines the performance of all finishes above it. A delaminated screed creates a void that collects water and prevents the membrane from drying, accelerating failure. Cracked screeds transmit cracks to the membrane and tile system above. Screeds with insufficient falls trap water on the balcony, increasing hydrostatic pressure on the membrane. Screed failures are frequently discovered during tile removal works and must be fully addressed before any waterproofing system is reinstated.</p>
             </div>
           </div>

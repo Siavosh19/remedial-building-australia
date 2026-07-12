@@ -54,7 +54,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Basements & Substructure</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Crack Injection Failures</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Crack Injection Failures</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Crack injection — using epoxy resin or polyurethane foam — is the primary repair method for water-bearing cracks in basement concrete walls and slabs. When correctly executed, injection creates a watertight seal within the crack. When it fails, water reappears at the same crack or at adjacent locations as the water finds new paths. Injection failures arise from incorrect product selection, insufficient injection pressure, active water in the crack washing out the resin before cure, or structural movement reopening the crack after injection. Understanding the failure mode is essential to selecting the correct re-injection or alternative approach.</p>
             </div>
           </div>

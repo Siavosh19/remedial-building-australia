@@ -42,7 +42,7 @@ export default function CategoryFilter({ groups, basePath }: { groups: Group[]; 
   const totalCategories = groups.reduce((n, g) => n + g.categories.length, 0);
 
   return (
-    <section className="px-8 py-14">
+    <section className="px-4 sm:px-8 py-14">
       <div className="mx-auto max-w-7xl">
 
         <div className="mb-8 flex items-start gap-3">
@@ -99,7 +99,7 @@ export default function CategoryFilter({ groups, basePath }: { groups: Group[]; 
         )}
 
         {filteredGroups.length === 0 ? (
-          <div className="rounded-2xl border border-slate-200 bg-white px-8 py-14 text-center">
+          <div className="rounded-2xl border border-slate-200 bg-white px-4 sm:px-8 py-14 text-center">
             <p className="text-sm font-semibold text-slate-400">No categories match your search.</p>
             <button
               onClick={() => { setSearch(""); setActiveGroup("All"); }}

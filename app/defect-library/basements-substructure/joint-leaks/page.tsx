@@ -51,7 +51,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Basements & Substructure</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Joint Leaks</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Joint Leaks</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Construction joints, day joints and expansion joints are the most common location for water ingress in basement concrete structures. These joints represent deliberate or unavoidable discontinuities in the concrete — and despite being designed with waterstops, injection hoses or sealants, are frequently the first point of failure when subjected to hydrostatic pressure. In multi-storey Class 2 buildings, the wall-to-slab construction joint is the single highest-risk location for basement water ingress and must be treated as a primary waterproofing concern in both new construction and remediation.</p>
             </div>
           </div>

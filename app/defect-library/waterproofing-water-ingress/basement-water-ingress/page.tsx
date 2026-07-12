@@ -61,7 +61,7 @@ export default function BasementWaterIngressPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Basement Water Ingress</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Basement Water Ingress</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Basement water ingress is a complex defect driven by hydrostatic groundwater pressure, failed waterproofing membranes and water entry through construction joints, cracks and penetrations. In Class 2 buildings, basements typically serve as car parks, storage and service areas — making water ingress both a structural risk and an ongoing operational problem. Repair strategies must address the source of the water, the structural integrity of the concrete and the long-term management of groundwater pressure at the site.
               </p>

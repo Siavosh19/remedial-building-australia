@@ -61,7 +61,7 @@ export default function RenderCrackingDelaminationPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Render Cracking & Delamination</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Render Cracking & Delamination</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 External render cracking and delamination is one of the most prevalent facade defects in Class 2 buildings. Render failures manifest as map cracking, shrinkage cracking, diagonal cracking at openings, and progressive loss of bond between the render layers or between the render and substrate. Delaminated render presents a falling hazard when at height, and allows water ingress behind the cladding layer — causing substrate deterioration, corrosion of embedded fixings and internal moisture damage. Early identification and containment are critical to preventing escalation.
               </p>

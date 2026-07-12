@@ -318,7 +318,7 @@ export default function SelectorClient() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="mx-auto max-w-7xl px-8 py-12">
+    <div className="mx-auto max-w-7xl px-4 sm:px-8 py-12">
 
       {/* ── Question flow (one at a time) ─────────────────────────────────── */}
       {!showResults && (
@@ -510,7 +510,7 @@ export default function SelectorClient() {
 
           {/* No match */}
           {displayStages.length === 0 ? (
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-8 py-12 text-center">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 sm:px-8 py-12 text-center">
               <AlertTriangle size={24} className="mx-auto mb-3 text-amber-600" />
               <p className="font-bold text-amber-900">No system matched your selection.</p>
               <p className="mt-2 text-sm text-amber-700">

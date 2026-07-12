@@ -59,7 +59,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Balconies & Podiums</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Balcony Leaks</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Balcony Leaks</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Balcony water ingress is one of the most frequently reported defects in Class 2 residential buildings and is responsible for a substantial proportion of strata remediation expenditure. Balconies in apartment buildings must comply with AS 3740 for waterproofing, which prescribes minimum membrane upturns, substrate preparation, drainage falls and detailing at penetrations and junctions. When the waterproofing system fails — or was never correctly installed — water travels through the structure and appears as staining, wet patches and active drips on the soffit of the balcony or ceiling of the apartment below.</p>
             </div>
           </div>

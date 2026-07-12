@@ -56,7 +56,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Roofing Defects</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Flashing Failures</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Flashing Failures</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Roof flashings are the transition details that seal junctions between roof surfaces, penetrations and adjacent walls or structures. They are consistently among the most common sources of roof leaks — a correctly installed primary roof covering can remain watertight while a failed flashing allows concentrated water flow directly into the structure. Flashing failure includes corrosion, displacement, failed sealant, inadequate lapping and the use of incompatible materials that react and deteriorate over time.</p>
             </div>
           </div>

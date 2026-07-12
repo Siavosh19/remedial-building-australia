@@ -61,7 +61,7 @@ export default function RoofingDefectsPage() {
           <div className="mt-10 max-w-4xl">
             <PageNav />
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Defect Category</p>
-            <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Roofing Defects</h1>
+            <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Roofing Defects</h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
               Technical guidance covering roof leaks, box gutter failure, flashing defects, poor drainage falls and overflow issues commonly found on Class 2 building roofs and podium decks.
             </p>

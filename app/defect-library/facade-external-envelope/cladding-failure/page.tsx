@@ -60,7 +60,7 @@ export default function CladdingFailurePage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Cladding Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Cladding Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Cladding failure in Class 2 buildings encompasses delamination, cracking, surface degradation, fixing failure and moisture ingress affecting fibre cement, aluminium composite, compressed sheet and similar panel cladding systems. The Grenfell Tower fire and subsequent Australian reviews have elevated the fire safety performance of external cladding as a critical issue — particularly for aluminium composite panels with combustible polyethylene cores installed prior to 2019. Remediation scope must address both performance and safety, with fire engineer input required for multi-storey buildings.
               </p>

@@ -31,7 +31,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ su
 
       <main>
         {/* ── Hero ── */}
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a>
@@ -43,7 +43,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ su
               <span className="text-sky-950">{sub.label}</span>
             </nav>
             <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems</p>
-            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">{sub.label}</h1>
+            <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">{sub.label}</h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
               Technical repair system reference for {sub.label.toLowerCase()} — select a product category to view system information, product comparisons and brand equivalents.
             </p>
@@ -51,7 +51,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ su
         </section>
 
         {/* ── Product category cards ── */}
-        <section className="px-8 py-14">
+        <section className="px-4 sm:px-8 py-14">
           <div className="mx-auto max-w-7xl">
             <div className="mb-8 flex items-start gap-3">
               <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />

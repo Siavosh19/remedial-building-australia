@@ -58,7 +58,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Roofing Defects</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Box Gutter Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Box Gutter Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Box gutters are concealed internal gutters typically formed in steel or aluminium that collect stormwater from pitched roof sections and discharge to downpipes. In Class 2 buildings, box gutter failure is a significant risk — when blocked or corroded, box gutters overflow directly into the building structure, causing severe internal damage to ceilings, walls and building services. Unlike external gutters, the failure of a box gutter is often not visible externally until significant internal damage has already occurred. Regular inspection and maintenance is essential.</p>
             </div>
           </div>

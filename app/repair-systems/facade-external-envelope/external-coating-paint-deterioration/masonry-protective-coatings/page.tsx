@@ -25,7 +25,7 @@ export default function MasonryProtectivePage() {
     <div className="min-h-screen bg-slate-50">
       <SiteHeader />
       <main>
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span><a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a><span>/</span><a href="/repair-systems/facade-external-envelope" className="hover:text-sky-700 transition">Facade &amp; External Envelope</a><span>/</span><a href={BASE_URL} className="hover:text-sky-700 transition">External Coating &amp; Paint Deterioration</a><span>/</span><span className="text-sky-950">Masonry protective coatings</span>
@@ -34,7 +34,7 @@ export default function MasonryProtectivePage() {
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Masonry protective coatings</h1>
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Masonry protective coatings</h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">Technical product reference for masonry and render protective coatings — Dulux Acratex AcraSkin fine texture coating for exterior facade protection on Australian strata and commercial buildings.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -57,8 +57,8 @@ export default function MasonryProtectivePage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><MasonryProtectiveIntroSection /><MasonryProtectiveProductSection /></div></section>
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="px-4 sm:px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><MasonryProtectiveIntroSection /><MasonryProtectiveProductSection /></div></section>
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">This page provides general technical information only. Final product selection must be confirmed against the current manufacturer technical data sheet and project specification. Do not rely on this reference as a substitute for professional advice.</p></div>
             <div className="mt-8"><a href={BASE_URL} className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition"><ArrowRight size={14} className="rotate-180" /> Back to External Coating &amp; Paint Deterioration</a></div>

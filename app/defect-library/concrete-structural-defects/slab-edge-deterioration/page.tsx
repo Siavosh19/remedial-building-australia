@@ -62,7 +62,7 @@ export default function SlabEdgeDeteriorationPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Concrete & Structural Defects</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Slab Edge Deterioration</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Slab Edge Deterioration</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Slab edge deterioration refers to the progressive breakdown of exposed concrete at balcony, car park and podium slab perimeters. The slab edge is one of the most vulnerable areas in a reinforced concrete building — it is directly exposed to weather, has limited concrete cover over reinforcement, and is subject to concentrated moisture run-off from the slab above. Carbonation and chloride ingress depassivate the reinforcement, initiating corrosion that causes internal expansive forces sufficient to crack and delaminate the concrete cover. Left unaddressed, slab edge deterioration accelerates rapidly and presents both structural and safety risks.
               </p>

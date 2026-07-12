@@ -104,7 +104,7 @@ export default function DrainagePodiumOutletsScuppersPage() {
       <main>
 
         {/* ── Hero ── */}
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a>
@@ -121,7 +121,7 @@ export default function DrainagePodiumOutletsScuppersPage() {
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Drainage</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
                   Drainage outlets, sumps &amp; scuppers — flat roofs, balconies &amp; podiums
                 </h1>
               </div>
@@ -179,7 +179,7 @@ export default function DrainagePodiumOutletsScuppersPage() {
         </div>
 
         {/* ── Content ── */}
-        <section className="px-8 py-12">
+        <section className="px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl space-y-10">
             <DrainagePodiumOutletsScuppersIntroSection />
             <DrainagePodiumOutletsScuppersProductSection />
@@ -187,7 +187,7 @@ export default function DrainagePodiumOutletsScuppersPage() {
         </section>
 
         {/* ── Disclaimer + related links ── */}
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>

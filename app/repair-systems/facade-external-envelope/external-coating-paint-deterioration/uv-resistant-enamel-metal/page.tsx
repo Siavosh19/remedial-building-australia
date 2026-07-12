@@ -25,7 +25,7 @@ export default function UVResistantEnamelMetalPage() {
     <div className="min-h-screen bg-slate-50">
       <SiteHeader />
       <main>
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
@@ -38,7 +38,7 @@ export default function UVResistantEnamelMetalPage() {
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">UV-resistant enamel systems — metal</h1>
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">UV-resistant enamel systems — metal</h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">UV-resistant enamel topcoats are specified for ferrous and non-ferrous metal facade elements — balustrades, lintels, window frames, louvres and metal cladding — where a durable, gloss or semi-gloss corrosion-resistant finish is required. Applied over an appropriate rust-inhibiting primer, they provide a hard film with good UV stability and colour retention in exterior exposure conditions.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -66,7 +66,7 @@ export default function UVResistantEnamelMetalPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><UVResistantEnamelMetalIntroSection /><UVResistantEnamelMetalProductSection />
+        <section className="px-4 sm:px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><UVResistantEnamelMetalIntroSection /><UVResistantEnamelMetalProductSection />
 
             {/* Do not confuse warning */}
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
@@ -93,7 +93,7 @@ export default function UVResistantEnamelMetalPage() {
             </div>
 
           </div></section>
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Enamel topcoat performance is entirely dependent on surface preparation and primer — metal must be prepared to the required cleanliness grade before priming. Confirm topcoat compatibility with primer and recoat interval from the current manufacturer TDS. Not a substitute for professional advice.</p></div>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

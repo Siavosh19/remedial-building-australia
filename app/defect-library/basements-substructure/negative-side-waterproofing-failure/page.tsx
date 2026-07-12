@@ -53,7 +53,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Basements & Substructure</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Negative-Side Waterproofing Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Negative-Side Waterproofing Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Negative-side waterproofing is applied to the internal (dry-side) face of basement walls and slabs, working against the direction of hydrostatic water pressure. Crystalline cementitious coatings, cementitious slurries and cavity drain systems are the primary negative-side systems used in basement remediation. While negative-side systems are the only option when the external face of the basement is inaccessible (as is typical for most remediation), they are more susceptible to pressure-induced delamination and require careful substrate preparation and application to achieve reliable performance.</p>
             </div>
           </div>

@@ -58,7 +58,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Balconies & Podiums</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Tile Delamination</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Tile Delamination</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Tile delamination on balconies and podiums is the loss of adhesion between tiles and their substrate — caused by substrate movement, inadequate adhesive coverage, moisture under the tile bed or thermal stress. Delaminated tiles present a safety hazard as they can crack under load and detach from the substrate, particularly at balcony edges and step nosings. In tiled waterproofing systems, delaminated tiles also indicate a breach of the membrane system below and should be treated as a waterproofing concern as well as an adhesion failure.</p>
             </div>
           </div>

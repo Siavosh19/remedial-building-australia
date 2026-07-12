@@ -67,7 +67,7 @@ export default function ConcreteSpallingPage() {
                 Concrete & Structural Defects
               </p>
 
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">
                 Concrete Spalling
               </h1>
 

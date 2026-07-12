@@ -57,7 +57,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Balconies & Podiums</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Rusted Balustrades</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Rusted Balustrades</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Balustrade corrosion on balconies is a critical safety defect — the primary purpose of a balustrade is to prevent falls, and a corroded or structurally compromised balustrade may fail at the moment it is most needed. In Class 2 buildings, mild steel balustrade posts are commonly core-filled into the balcony slab or screed without adequate waterproofing of the core fill opening. Water ingress to the core fill zone causes accelerating corrosion of the embedded post base, which can reduce structural capacity to below the minimum 1.0 kN horizontal load requirement under AS 1170.1 without any external visible indication of the extent of section loss below the surface.</p>
             </div>
           </div>

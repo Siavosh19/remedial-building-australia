@@ -52,7 +52,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Services & Drainage</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Inadequate Drainage Design</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Inadequate Drainage Design</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Inadequate drainage design is a systemic defect — where the stormwater system was designed or constructed with insufficient capacity for the contributing catchment area and local rainfall intensity. Unlike blocked drainage (which can be rectified by cleaning), design deficiency requires hydraulic re-assessment and physical upgrade of the infrastructure. In Class 2 buildings, drainage design deficiencies are often not apparent until a design storm event — typically the 1 in 100-year storm — reveals that the system cannot cope, causing flooding that damages the building and its occupants.</p>
             </div>
           </div>

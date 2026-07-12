@@ -57,7 +57,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Roofing Defects</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Poor Falls & Ponding</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Poor Falls & Ponding</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Inadequate drainage falls on flat and low-pitched roofs and podium decks cause water to pond rather than drain freely to outlets. Ponding water places additional hydrostatic load on the structure, accelerates membrane degradation through UV and wet-dry cycling, and increases the risk of overflow in heavy rain events. Under AS 4654 and AS 1428, a minimum 1:100 fall to drainage outlets is required on waterproofed roof decks. Falls below this threshold are a design and construction defect that must be remediated as part of any roof waterproofing works.</p>
             </div>
           </div>

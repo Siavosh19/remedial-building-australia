@@ -62,7 +62,7 @@ export default function DefectiveNonCompliantBalustradesPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Defective & Non-Compliant Balustrades</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Defective & Non-Compliant Balustrades</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Balustrade defects in Class 2 buildings range from corroded steel posts and rotten timber frames to non-compliant heights and structurally inadequate masonry constructions. As balustrades are primary fall-prevention barriers, any defect affecting structural capacity — regardless of material type — represents a serious life safety risk. Beyond steel corrosion, which is well documented, many older buildings contain timber balustrades subject to decay, aluminium frames with corrosion at fixings, glazed balustrades with deteriorated structural hardware, and single-skin brick or concrete upstand balustrades that do not meet current loading requirements. A structured inspection programme covering all balustrade materials and types is required to identify and prioritise defects by severity, structural impact and compliance status.
               </p>

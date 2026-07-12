@@ -63,7 +63,7 @@ export default function PlanterBoxWaterproofingFailurePage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Planter Box Waterproofing Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Planter Box Waterproofing Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Planter box waterproofing failure is a frequently identified defect in Class 2 residential and mixed-use buildings, particularly at podium level and on terrace areas. Planter boxes impose sustained moisture loads on the waterproofing system, which must also contend with root penetration, drainage layer surcharging and chemical attack from fertilisers and organic matter. Failure of the membrane or drainage system allows water to migrate into the concrete structure, causing reinforcement corrosion, concrete deterioration and water ingress to spaces below.
               </p>

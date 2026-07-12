@@ -58,7 +58,7 @@ export default function AboutPage() {
         {/* 1. Hero */}
         <section className="bg-sky-950 px-8 py-20">
           <div className="mx-auto max-w-5xl">
-            <h1 className="text-6xl font-extrabold leading-tight tracking-tight text-white md:text-7xl">
+            <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight tracking-tight text-white md:text-7xl">
               About Remedial Building Australia
             </h1>
             <p className="mt-8 max-w-2xl text-xl leading-9 text-sky-300">

@@ -57,7 +57,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Roofing Defects</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Roof Leaks</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Roof Leaks</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Roof leaks in Class 2 buildings result from failure of the primary roof covering, junctions, penetrations or associated drainage elements. Unlike flat membrane roofs covered separately under Waterproofing, pitched roof leaks typically arise from tile displacement, cracked ridge capping, failed flashing sealants, and deteriorated valley gutters. Active leaks cause rapid damage to internal ceilings, insulation and building services and must be investigated and repaired promptly to prevent structural deterioration of the ceiling and roof framing.</p>
             </div>
           </div>

@@ -56,7 +56,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Roofing Defects</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Overflow Issues</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Overflow Issues</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Overflow failure occurs when the primary drainage system of a roof, balcony, podium or box gutter is unable to cope with the design storm rainfall intensity, causing water to back up and breach the building envelope. Australian Standard AS/NZS 3500.3 requires that all roof areas are provided with a secondary overflow system capable of passing the design storm event in the event that primary drainage is blocked. Absent, blocked or undersized overflow provisions are a common construction defect in Class 2 buildings and represent a significant risk of catastrophic internal flooding.</p>
             </div>
           </div>

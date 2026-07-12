@@ -53,7 +53,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Basements & Substructure</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Hydrostatic Pressure Issues</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Hydrostatic Pressure Issues</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Hydrostatic pressure is the force exerted by groundwater against the external face of basement walls and slabs. In areas with a high groundwater table or in periods of sustained rain, this pressure can force water through even small defects in the concrete and waterproofing system — appearing as weeping, seeping or active flow through the basement structure. Hydrostatic ingress is particularly challenging to remediate because the water pressure is continuous, unlike rain-driven ingress. The repair approach must either resist the hydrostatic head (tanking) or relieve it (cavity drain or drainage systems).  </p>
             </div>
           </div>

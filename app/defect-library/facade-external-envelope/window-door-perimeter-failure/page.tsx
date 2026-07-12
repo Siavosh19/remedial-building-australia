@@ -73,7 +73,7 @@ export default function WindowDoorPerimeterFailurePage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Window & Door Perimeter Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Window & Door Perimeter Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Window and door defects in Class 2 buildings extend well beyond sealant failure. The interface between a window or door frame and the surrounding facade is a complex weatherproofing junction requiring correctly installed flashings, storm angles, subsill drainage, a compliant door hob where applicable, and a durable perimeter sealant to remain watertight over the building&rsquo;s service life. In older buildings, deteriorated timber frames — with rot, binding sashes, paint failure and swelling — are among the most common maintenance defects. Failure to address these early results in progressive structural decay that eventually requires full unit replacement. For balcony doors, a non-compliant or absent door hob is a waterproofing defect that allows water driven across a wet balcony surface to enter the building at threshold level.
               </p>

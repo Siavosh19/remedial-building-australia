@@ -58,7 +58,7 @@ export default function RepairSystemsLibraryPage() {
       <main>
 
         {/* ── Hero ── */}
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a>
@@ -68,7 +68,7 @@ export default function RepairSystemsLibraryPage() {
               <span className="text-sky-950">Library</span>
             </nav>
             <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems Library</p>
-            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+            <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
               Repair system categories
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
@@ -84,7 +84,7 @@ export default function RepairSystemsLibraryPage() {
         </section>
 
         {/* ── System grid ── */}
-        <section className="px-8 py-16">
+        <section className="px-4 sm:px-8 py-16">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {SYSTEMS.map((sys) => {

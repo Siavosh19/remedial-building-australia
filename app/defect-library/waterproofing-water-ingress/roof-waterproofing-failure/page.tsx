@@ -65,7 +65,7 @@ export default function RoofWaterproofingFailurePage() {
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
                 Waterproofing & Water Ingress
               </p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">
                 Roof Waterproofing Failure
               </h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">

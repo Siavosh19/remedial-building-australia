@@ -90,7 +90,7 @@ export default function ArrisAngleBeadsHubPage() {
       <main>
 
         {/* ── Hero ── */}
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
@@ -100,7 +100,7 @@ export default function ArrisAngleBeadsHubPage() {
             </nav>
             <PageNav />
             <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
-            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+            <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
               Arris angles &amp; render beads
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
@@ -110,7 +110,7 @@ export default function ArrisAngleBeadsHubPage() {
         </section>
 
         {/* ── Product category cards ── */}
-        <section className="px-8 py-14">
+        <section className="px-4 sm:px-8 py-14">
           <div className="mx-auto max-w-7xl">
 
             <div className="mb-8 flex items-start gap-3">

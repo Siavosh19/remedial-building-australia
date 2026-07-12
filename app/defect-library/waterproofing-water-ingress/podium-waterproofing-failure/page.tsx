@@ -63,7 +63,7 @@ export default function PodiumWaterproofingFailurePage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Podium Waterproofing Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Podium Waterproofing Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Podium waterproofing failure is one of the most significant and costly defects encountered in multi-storey Class 2 residential and mixed-use buildings. The podium deck is typically a large concrete slab spanning over car parks or retail spaces, subjected to traffic, landscape loading, UV exposure and thermal movement. When the waterproofing membrane system fails — at joints, penetrations or across the field area — water tracks directly into the structure and the occupied levels below. Full-deck replacement is often required, making early identification and repair critical.
               </p>

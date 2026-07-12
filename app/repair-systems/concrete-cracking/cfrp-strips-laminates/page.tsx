@@ -34,7 +34,7 @@ export default function CFRPStripsLaminatesCrackingPage() {
       <SiteHeader />
 
       <main>
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
@@ -47,7 +47,7 @@ export default function CFRPStripsLaminatesCrackingPage() {
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — Concrete &amp; Structural Defects</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">CFRP strips &amp; laminates</h1>
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">CFRP strips &amp; laminates</h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">Technical product reference for carbon fibre reinforced polymer (CFRP) strips and laminates used in externally bonded reinforcement (EBR) schemes to restore tensile continuity and flexural or shear capacity across structural cracks in concrete beams, slabs, columns, and walls — design to ACI 440.2R / AS 5100.8 required.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -85,7 +85,7 @@ export default function CFRPStripsLaminatesCrackingPage() {
           </div>
         </div>
 
-        <section className="px-8 py-14">
+        <section className="px-4 sm:px-8 py-14">
           <div className="mx-auto max-w-7xl space-y-10">
             <CFRPStripsLaminatesIntroSection />
             <CFRPStripsLaminatesProductSection />
@@ -111,7 +111,7 @@ export default function CFRPStripsLaminatesCrackingPage() {
           </div>
         </section>
 
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>

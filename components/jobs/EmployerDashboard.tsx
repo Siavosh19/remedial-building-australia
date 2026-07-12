@@ -148,7 +148,7 @@ export default function EmployerDashboard({
 
       {/* Payments tab */}
       {tab === "payments" ? (
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200">
           {payments.length === 0 ? (
             <p className="p-8 text-center text-sm text-slate-400">No payments yet.</p>
           ) : (

@@ -54,7 +54,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Services & Drainage</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Pipe Penetration Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Pipe Penetration Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Service pipe penetrations through slabs, walls and roofs are a consistent weak point in the building envelope. Each penetration creates an opening in the waterproofing system that must be sealed with a correctly installed collar or sleeve to prevent water ingress. In Class 2 buildings, penetrations through wet area floors and balcony slabs are particularly vulnerable — AS 3740 requires pre-formed or site-formed membrane collars to all penetrations in waterproofed areas. Failed collars, absent seals and incorrectly installed sleeves allow water to track along the outside of the pipe and through the slab, appearing as ingress below.</p>
             </div>
           </div>

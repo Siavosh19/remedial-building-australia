@@ -136,7 +136,7 @@ export default function DefectLibraryPage() {
               Defect Library
             </p>
 
-            <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950 md:text-6xl">
+            <h1 className="mt-4 text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight text-sky-950">
               Browse remedial building defects by category
             </h1>
 

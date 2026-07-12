@@ -65,7 +65,7 @@ export default function FailedScreedsTileDelaminationPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Failed Screeds & Tile Delamination</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Failed Screeds & Tile Delamination</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Failed balcony and podium screeds leading to tile delamination are among the most commonly reported finishes defects in Class 2 buildings. The screed layer beneath tiled surfaces provides the substrate, the drainage fall, and in many cases a wearing course over the waterproofing membrane. When screeds fail — from moisture intrusion, inadequate mix design, poor adhesion, or incorrect falls — the tiles above become drummy, hollow and eventually debond. Tile delamination is frequently a symptom of a defect beneath the tile itself, including waterproofing failure, a saturated substrate or screed breakdown. Rectifying the tiles alone without addressing the underlying cause will result in recurring failure.
               </p>

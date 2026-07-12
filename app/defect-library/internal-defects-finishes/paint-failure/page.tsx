@@ -54,7 +54,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Internal Defects & Finishes</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Paint Failure</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Paint Failure</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Internal paint failure manifests as blistering, peeling, flaking, chalking and adhesion loss — each of which indicates a different underlying cause. In Class 2 buildings, paint failure is frequently a symptom of a deeper problem: moisture ingress from behind, alkalinity from fresh concrete or render, or a contaminated surface that was not adequately prepared before painting. Repainting without addressing the underlying cause results in rapid recurrence. The correct repair sequence is always to identify and fix the cause, allow the substrate to dry and stabilise, and only then repaint with a compatible system.</p>
             </div>
           </div>

@@ -53,7 +53,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Miscellaneous & Other</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Fire Compliance Defects</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Fire Compliance Defects</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Fire compliance defects in Class 2 buildings encompass failures of both active and passive fire protection systems — including inadequate fire compartmentation, missing or incorrect fire stopping at service penetrations, combustible external cladding, inadequate fire doors and non-compliant fire detection systems. The consequences of fire defects are potentially catastrophic. The Lacrosse fire in Melbourne (2014) and subsequent national cladding audits have elevated fire compliance as the highest-priority safety defect category in Class 2 buildings. Building owners have legal obligations to maintain fire safety systems and must act immediately when defects are identified.</p>
             </div>
           </div>

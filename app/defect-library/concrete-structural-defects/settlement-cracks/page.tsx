@@ -60,7 +60,7 @@ export default function SettlementCracksPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Concrete & Structural Defects</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Settlement Cracks</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Settlement Cracks</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Settlement cracks occur when differential movement of the building's foundation or supporting ground causes the structure above to deform unevenly. In Class 2 buildings, settlement cracking most commonly presents as diagonal cracks at window and door openings, stepped cracking through masonry joints, and vertical cracks at structural interfaces. Unlike shrinkage cracking, settlement cracks are often active — continuing to widen over time — and require structural assessment before repair to distinguish dormant from progressive movement.
               </p>

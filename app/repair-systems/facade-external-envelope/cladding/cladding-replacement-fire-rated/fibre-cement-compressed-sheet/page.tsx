@@ -60,7 +60,7 @@ export default function FCSheetPage() {
     <div className="min-h-screen bg-slate-50">
       <SiteHeader />
       <main>
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
@@ -73,7 +73,7 @@ export default function FCSheetPage() {
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Fibre Cement Compressed Sheet</h1>
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Fibre Cement Compressed Sheet</h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
                   Technical product reference for compressed fibre cement sheet non-combustible external cladding. Standard, textured, and factory-primed FC compressed sheets for NCC 2022 compliant cladding replacement on Class 2 buildings. Products include James Hardie, BGC, and Cemintel ranges.
                 </p>
@@ -113,7 +113,7 @@ export default function FCSheetPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14">
+        <section className="px-4 sm:px-8 py-14">
           <div className="mx-auto max-w-7xl space-y-10">
             <FCSheetIntroSection />
             <FCSheetProductSection />
@@ -142,7 +142,7 @@ export default function FCSheetPage() {
 
           </div>
         </section>
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p>

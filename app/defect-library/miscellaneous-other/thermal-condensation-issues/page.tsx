@@ -53,7 +53,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Miscellaneous & Other</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Thermal & Condensation Issues</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Thermal & Condensation Issues</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Thermal performance deficiencies and condensation problems in Class 2 buildings arise when the building envelope does not adequately restrict heat transfer and prevent condensation forming within the building fabric. The NCC specifies minimum energy efficiency requirements for Class 2 buildings — including insulation R-values for roofs, walls and floors, window glazing performance and air infiltration control. When these requirements are not met — or when the building is constructed with thermal bridges, inadequate vapour control or insufficient insulation — residents experience discomfort, high energy costs and, in the worst cases, condensation-driven mould and structural damage.</p>
             </div>
           </div>

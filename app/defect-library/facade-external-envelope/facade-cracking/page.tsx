@@ -59,7 +59,7 @@ export default function FacadeCrackingPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Façade Cracking</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Façade Cracking</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Facade cracking encompasses a broad range of crack types — from hairline shrinkage cracks in render and concrete coatings through to wide structural cracks in masonry and concrete elements. Correct diagnosis is essential: the cause, activity, width and structural significance of each crack must be established before any repair approach is chosen. Patching active cracks without addressing the underlying cause invariably results in rapid recurrence. Structural engineer involvement is mandatory for any cracking that affects load-bearing elements or exceeds 1 mm in width.
               </p>

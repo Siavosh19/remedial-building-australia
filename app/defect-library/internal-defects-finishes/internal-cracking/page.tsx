@@ -52,7 +52,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Internal Defects & Finishes</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Internal Cracking</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Internal Cracking</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Internal cracking in Class 2 buildings encompasses a wide range of crack types — from minor hairline shrinkage cracks in new plasterboard joints through to structural cracking in load-bearing walls and slabs. Accurate classification of internal cracking is essential: hairline cracks may require no more than cosmetic repair, while active structural cracks require engineering assessment and may indicate foundation movement, slab deflection or structural deficiency. Recurring cracks after patching are a reliable indicator of active movement that must be addressed before cosmetic reinstatement.</p>
             </div>
           </div>

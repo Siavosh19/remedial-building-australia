@@ -52,7 +52,7 @@ export default function RepairSystemsGatewayPage() {
       <main>
 
         {/* ── Hero ── */}
-        <section className="border-b border-slate-200 bg-white px-8 py-16 md:py-20">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-16 md:py-20">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-6 flex items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a>
@@ -75,7 +75,7 @@ export default function RepairSystemsGatewayPage() {
         </section>
 
         {/* ── Three entrance cards ── */}
-        <section className="px-8 py-16">
+        <section className="px-4 sm:px-8 py-16">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-6 md:grid-cols-3">
               {CARDS.map((card) => {
@@ -114,7 +114,7 @@ export default function RepairSystemsGatewayPage() {
         {/* ── CTA banner ── */}
         <section className="px-8 pb-16">
           <div className="mx-auto max-w-7xl">
-            <div className="rounded-2xl border border-sky-100 bg-sky-950 px-8 py-10 md:px-12">
+            <div className="rounded-2xl border border-sky-100 bg-sky-950 px-4 sm:px-8 py-10 md:px-12">
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white">

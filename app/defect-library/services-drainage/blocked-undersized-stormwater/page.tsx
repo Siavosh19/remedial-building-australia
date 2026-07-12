@@ -53,7 +53,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Services & Drainage</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Blocked & Undersized Stormwater</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Blocked & Undersized Stormwater</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Blocked and undersized stormwater infrastructure is one of the most common causes of building flooding and water damage in Class 2 buildings. Stormwater systems sized to the minimum requirements at the time of construction may be inadequate as development increases impervious areas or as climate change increases rainfall intensity. Blocked pipes from debris, tree root intrusion or collapsed sections prevent even correctly-sized systems from functioning, rapidly leading to surcharge, overflow and ingress.</p>
             </div>
           </div>

@@ -61,7 +61,7 @@ export default function RisingDampPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Waterproofing & Water Ingress</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Rising Damp</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Rising Damp</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Rising damp is the upward movement of ground moisture through the pores and capillaries of masonry walls and concrete elements by capillary action. It is most prevalent in older buildings lacking an effective damp proof course and in newer buildings where the DPC has been damaged, bridged or installed incorrectly. Rising damp carries dissolved salts from the ground into the building fabric, causing progressive damage to finishes, plaster, masonry and timber elements. Accurate diagnosis is essential, as rising damp is frequently confused with penetrating damp and condensation.
               </p>

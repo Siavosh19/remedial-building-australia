@@ -54,7 +54,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Internal Defects & Finishes</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Ceiling Water Damage</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Ceiling Water Damage</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Ceiling water damage in Class 2 buildings is a consequence of water ingress from above — whether from a failed balcony waterproofing membrane, a leaking roof, a burst pipe, an overflowing planter box, or condensation in the ceiling cavity. Staining, sagging and collapse of plasterboard or fibrous plaster ceilings are the most visible manifestations, but the structural and health risks from prolonged saturation — including mould growth, framing rot and electrical hazards — are the more significant concerns that must be addressed as part of any ceiling repair.</p>
             </div>
           </div>

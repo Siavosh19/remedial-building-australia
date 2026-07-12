@@ -59,7 +59,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Balconies & Podiums</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Concrete Deterioration</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Concrete Deterioration</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Balcony and podium concrete deterioration encompasses spalling, cracking and reinforcement corrosion in the concrete slab and supporting structure. Balconies are highly exposed elements — cantilevering beyond the building face, directly exposed to rain, UV and coastal environments — and are among the highest-risk locations for concrete deterioration in Class 2 buildings. Corroding reinforcement expands within the concrete, generating crack and spall forces that progressively destroy concrete cover. Spalling concrete at height is a falling hazard and requires urgent attention.</p>
             </div>
           </div>

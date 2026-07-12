@@ -62,7 +62,7 @@ export default function BrickworkDeteriorationPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Brickwork Deterioration</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Brickwork Deterioration</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Brickwork deterioration in Class 2 buildings encompasses spalling of brick faces, progressive mortar joint failure, salt efflorescence, cracking from absent movement joints and wall tie corrosion in cavity wall construction. Brick facade systems are exposed to repeated wetting and drying, thermal movement and salt attack — particularly in coastal and humid climates. Mortar joint failure allows moisture to enter the cavity, wet the wall ties and penetrate to the internal leaf, driving progressive deterioration that is disproportionately expensive to remediate if left unaddressed.
               </p>

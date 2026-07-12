@@ -60,7 +60,7 @@ export default function FailedSealantsJointsPage() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Façade & External Envelope</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Failed Sealants & Joints</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Failed Sealants & Joints</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">
                 Facade sealant and movement joint failure is among the most frequent causes of water ingress in Class 2 buildings. Sealants have a finite service life — typically 10–15 years for polyurethane and 15–25 years for silicone — and must be proactively maintained as part of any building's ongoing maintenance programme. Failures arise from age, UV degradation, incorrect joint design, inadequate substrate preparation and the use of incompatible products. Even minor sealant failure can direct significant volumes of water into the building envelope during rain events.
               </p>

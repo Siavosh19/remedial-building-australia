@@ -39,7 +39,7 @@ export default function RustInhibitingPrimerPage() {
     <div className="min-h-screen bg-slate-50">
       <SiteHeader />
       <main>
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
@@ -52,7 +52,7 @@ export default function RustInhibitingPrimerPage() {
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Rust-inhibiting primer systems</h1>
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Rust-inhibiting primer systems</h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">Zinc phosphate and zinc-rich rust-inhibiting primers are the required first coat on ferrous metal balustrades, steel lintels, window frames and other metal facade elements before topcoating. Failure to apply a suitable rust-inhibiting primer is the primary cause of premature coating failure and corrosion re-occurrence on metal facade elements.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -80,7 +80,7 @@ export default function RustInhibitingPrimerPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><RustInhibitingPrimerIntroSection /><RustInhibitingPrimerProductSection />
+        <section className="px-4 sm:px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><RustInhibitingPrimerIntroSection /><RustInhibitingPrimerProductSection />
 
             {/* Do not confuse warning */}
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
@@ -107,7 +107,7 @@ export default function RustInhibitingPrimerPage() {
             </div>
 
           </div></section>
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. Surface preparation (abrasive blast or mechanical clean to AS 1627) is critical — no rust-inhibiting primer performs adequately over loose rust or mill scale. Confirm DFT, recoat interval and topcoat compatibility from the current manufacturer TDS. Not a substitute for professional advice.</p></div>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

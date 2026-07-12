@@ -52,7 +52,7 @@ export default function Page() {
             <div>
               <PageNav />
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">Services & Drainage</p>
-              <h1 className="mt-4 text-5xl font-extrabold leading-tight text-sky-950">Downpipe Defects</h1>
+              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-sky-950">Downpipe Defects</h1>
               <p className="mt-6 text-xl leading-9 text-slate-700">Downpipes carry stormwater from gutters, balconies and roof outlets to the drainage system below. Defective downpipes — from cracking, joint failure, incorrect termination or blockage — discharge water directly against the building structure rather than to the drainage system. Over time, this causes progressive deterioration of the building fabric, including render cracking, masonry wetting, basement ingress and subfloor saturation. External downpipes on multi-storey buildings are exposed to UV and thermal cycling, while internal downpipes within wall cavities are frequently not inspected and can fail silently over many years.</p>
             </div>
           </div>

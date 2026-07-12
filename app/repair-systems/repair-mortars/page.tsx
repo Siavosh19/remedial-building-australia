@@ -34,7 +34,7 @@ export default function RepairMortarsPage() {
       <main>
 
         {/* ── Page hero / header ── */}
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
 
             {/* Breadcrumb */}
@@ -53,7 +53,7 @@ export default function RepairMortarsPage() {
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">
                   Repair Systems
                 </p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">
                   Concrete Repair Mortars
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
@@ -108,7 +108,7 @@ export default function RepairMortarsPage() {
         </div>
 
         {/* ── Intro + Products ── */}
-        <section className="px-8 py-14">
+        <section className="px-4 sm:px-8 py-14">
           <div className="mx-auto max-w-7xl space-y-10">
 
             {/* What is */}
@@ -220,7 +220,7 @@ export default function RepairMortarsPage() {
         </section>
 
         {/* ── Compliance disclaimer ── */}
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5">
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">

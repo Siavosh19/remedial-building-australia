@@ -50,7 +50,7 @@ export default function ReinforcementCorrosionPage() {
       <SiteHeader />
 
       <main>
-        <section className="border-b border-slate-200 bg-white px-8 py-14">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-14">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
@@ -94,7 +94,7 @@ export default function ReinforcementCorrosionPage() {
 
         <CategoryFilter groups={GROUPS} />
 
-        <section className="border-t border-slate-200 bg-white px-8 py-10">
+        <section className="border-t border-slate-200 bg-white px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-start gap-3">
               <div className="mt-1 h-5 w-1 shrink-0 rounded-full bg-red-700" />

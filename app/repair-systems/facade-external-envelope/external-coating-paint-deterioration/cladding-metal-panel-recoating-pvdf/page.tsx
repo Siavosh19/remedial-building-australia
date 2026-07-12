@@ -25,7 +25,7 @@ export default function CladdingRecoatingPVDFPage() {
     <div className="min-h-screen bg-slate-50">
       <SiteHeader />
       <main>
-        <section className="border-b border-slate-200 bg-white px-8 py-12">
+        <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
               <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
@@ -38,7 +38,7 @@ export default function CladdingRecoatingPVDFPage() {
             <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.28em] text-red-700">Repair Systems — 03 — Facade &amp; External Envelope</p>
-                <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Cladding and metal panel recoating systems — PVDF / fluoropolymer</h1>
+                <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-5xl">Cladding and metal panel recoating systems — PVDF / fluoropolymer</h1>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">PVDF (polyvinylidene fluoride) and fluoropolymer recoating systems are the highest-performance option for aluminium composite panel (ACP) and metal cladding facades where the original factory coating has chalked, faded or delaminated. Meeting AAMA 2605 for colour retention and chalk resistance, they provide 15–25 year service life in harsh exterior exposure. Application requires specialist preparation and spray equipment — not a conventional roller or brush paint.</p>
               </div>
               <div className="grid grid-cols-2 gap-3 self-start rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -66,7 +66,7 @@ export default function CladdingRecoatingPVDFPage() {
             </div>
           </div>
         </div>
-        <section className="px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><CladdingRecoatingPVDFIntroSection /><CladdingRecoatingPVDFProductSection />
+        <section className="px-4 sm:px-8 py-14"><div className="mx-auto max-w-7xl space-y-10"><CladdingRecoatingPVDFIntroSection /><CladdingRecoatingPVDFProductSection />
 
             {/* Do not confuse warning */}
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-7">
@@ -93,7 +93,7 @@ export default function CladdingRecoatingPVDFPage() {
             </div>
 
           </div></section>
-        <section className="border-t border-slate-200 bg-slate-50 px-8 py-10">
+        <section className="border-t border-slate-200 bg-slate-50 px-4 sm:px-8 py-10">
           <div className="mx-auto max-w-7xl">
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5"><p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">Disclaimer</p><p className="text-xs leading-6 text-amber-900">General technical information only. PVDF recoating is a specialist application — standard paint contractors are not qualified for this work. Panels with delaminated PE cores or fire-safety compliance issues must be assessed separately. Confirm applicator licensing, surface preparation and warranty terms with the system manufacturer. Not a substitute for professional advice.</p></div>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
