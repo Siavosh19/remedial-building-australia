@@ -897,35 +897,103 @@ function LocationAutocomplete({
   );
 }
 
+// ─── Search persistence (survive Back from a profile) ────────────────────────
+// The directory keeps its search in local React state, and every "View Profile"
+// link is a full-page navigation — so returning from a business profile would
+// otherwise remount this component empty and drop the visitor's search. We
+// snapshot the applied search to sessionStorage and restore it on mount, so the
+// results, location, category and filters all come back. An explicit URL search
+// (a shared/deep link) always wins over the snapshot.
+const SEARCH_STORE_KEY = "rba:directory:search";
+
+type SavedSearch = {
+  qInput: string;
+  q: string;
+  locationText: string;
+  appliedLocation: string;
+  selectedLocation: SelectedLocation;
+  coords: Coords;
+  category: string;
+  featured: boolean;
+  radius: string;
+  page: number;
+  sortByDistance: boolean;
+  aiText: string;
+  aiLocation: string;
+  aiResolvedLoc: LocationSuggestion | null;
+  aiAppliedLocation: string;
+  aiMatch: AiMatchResponse | null;
+  showManual: boolean;
+};
+
+function readSavedSearch(): SavedSearch | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(SEARCH_STORE_KEY);
+    return raw ? (JSON.parse(raw) as SavedSearch) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeSavedSearch(snapshot: SavedSearch) {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(SEARCH_STORE_KEY, JSON.stringify(snapshot));
+  } catch {
+    // storage full / unavailable — non-fatal, the search just won't persist.
+  }
+}
+
+function clearSavedSearch() {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.removeItem(SEARCH_STORE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function DirectoryListing({ categories }: Props) {
   // Support deep links like /directory?search=remedial+builder&location=sydney
   // (also accepts the legacy ?q= and ?category= params).
   const params = typeof window === "undefined" ? null : new URLSearchParams(window.location.search);
-  const initialQ = params?.get("search") ?? params?.get("q") ?? "";
-  const initialLocation = params?.get("location") ?? "";
-  const initialCategory = params?.get("category") ?? "";
+  const urlQ = params?.get("search") ?? params?.get("q") ?? "";
+  const urlLocation = params?.get("location") ?? "";
+  const urlCategory = params?.get("category") ?? "";
+  const urlHasSearch = Boolean(urlQ || urlLocation || urlCategory);
+
+  // When the URL carries no search of its own, restore the visitor's last search
+  // (e.g. they just hit Back from a profile). An explicit URL/deep-link wins.
+  const saved = urlHasSearch ? null : readSavedSearch();
+
+  const initialQ = urlQ || saved?.q || "";
+  const initialLocation = urlLocation || saved?.appliedLocation || saved?.locationText || "";
+  const initialCategory = urlCategory || saved?.category || "";
 
   // qInput = what the user is typing; q = applied to search (on Enter/button)
-  const [qInput, setQInput] = useState(initialQ);
+  const [qInput, setQInput] = useState(saved?.qInput ?? initialQ);
   const [q, setQ] = useState(initialQ);
   // Free-text location box (suburb / postcode / state / partial text).
   // locationText = what the user is typing; appliedLocation = applied on search.
-  const [locationText, setLocationText] = useState(initialLocation);
+  const [locationText, setLocationText] = useState(saved?.locationText ?? initialLocation);
   // On a cold deep-link load the location is a raw string with no coordinates.
   // We geocode it on mount (see the hydrate effect) and feed it through the same
   // path as an interactive pick — so appliedLocation starts empty and we hold the
   // search until geocoding resolves, rather than sending un-geocoded free text.
-  const [appliedLocation, setAppliedLocation] = useState("");
-  const [hydratingLocation, setHydratingLocation] = useState(Boolean(initialLocation));
-  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>(null);
-  const [coords, setCoords] = useState<Coords>(null);
+  // A restored snapshot already carries resolved coords/appliedLocation, so it
+  // seeds these directly and skips the geocode step.
+  const [appliedLocation, setAppliedLocation] = useState(saved?.appliedLocation ?? "");
+  const [hydratingLocation, setHydratingLocation] = useState(Boolean(urlLocation));
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation>(saved?.selectedLocation ?? null);
+  const [coords, setCoords] = useState<Coords>(saved?.coords ?? null);
   const [category, setCategory] = useState(initialCategory);
-  const [featured, setFeatured] = useState(false);
-  const [radius, setRadius] = useState("50"); // default: within 50 km (Silver membership reach)
-  const [page, setPage] = useState(1);
-  const [showManual, setShowManual] = useState(false); // standard search hidden until toggled
+  const [featured, setFeatured] = useState(saved?.featured ?? false);
+  const [radius, setRadius] = useState(saved?.radius ?? "50"); // default: within 50 km (Silver membership reach)
+  const [page, setPage] = useState(saved?.page ?? 1);
+  const [showManual, setShowManual] = useState(saved?.showManual ?? false); // standard search hidden until toggled
 
   // The directory starts EMPTY — no listings until the visitor searches/filters.
   const [companies, setCompanies] = useState<CompanyResult[]>([]);
@@ -933,23 +1001,26 @@ export default function DirectoryListing({ categories }: Props) {
   const [topEligible, setTopEligible] = useState(false);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  // Start in the loading state when arriving via a deep link, so the empty
-  // "no results" message never flashes before the first fetch resolves.
-  const [loading, setLoading] = useState(Boolean(initialQ || initialCategory || initialLocation));
+  // Start in the loading state when arriving via a deep link OR restoring a saved
+  // search, so the empty "no results" message never flashes before the first
+  // fetch resolves.
+  const [loading, setLoading] = useState(
+    Boolean(initialQ || initialCategory || urlLocation || saved?.appliedLocation || saved?.selectedLocation || saved?.featured)
+  );
   const [isLocalFallback, setIsLocalFallback] = useState(false);
 
   // AI "describe your job" matcher state.
-  const [aiText, setAiText] = useState("");
-  const [aiLocation, setAiLocation] = useState("");
+  const [aiText, setAiText] = useState(saved?.aiText ?? "");
+  const [aiLocation, setAiLocation] = useState(saved?.aiLocation ?? "");
   const [aiLoading, setAiLoading] = useState(false);
-  const [aiMatch, setAiMatch] = useState<AiMatchResponse | null>(null);
+  const [aiMatch, setAiMatch] = useState<AiMatchResponse | null>(saved?.aiMatch ?? null);
   const [aiError, setAiError] = useState("");
-  const [aiAppliedLocation, setAiAppliedLocation] = useState("");
+  const [aiAppliedLocation, setAiAppliedLocation] = useState(saved?.aiAppliedLocation ?? "");
   // When the typed/AI-extracted location is recognised as a real AU place, we
   // lock it into a confirmed "verified" pill (same idea as the main search box).
-  const [aiResolvedLoc, setAiResolvedLoc] = useState<LocationSuggestion | null>(null);
+  const [aiResolvedLoc, setAiResolvedLoc] = useState<LocationSuggestion | null>(saved?.aiResolvedLoc ?? null);
   // AI "near me" search ranks results strictly nearest → furthest.
-  const [sortByDistance, setSortByDistance] = useState(false);
+  const [sortByDistance, setSortByDistance] = useState(saved?.sortByDistance ?? false);
 
   const geocodeAbortRef = useRef<AbortController | null>(null);
 
@@ -1042,15 +1113,17 @@ export default function DirectoryListing({ categories }: Props) {
   // shared/refreshed URL reproduces the interactive result. If geocoding fails we
   // drop the location and search nationwide rather than returning zero.
   useEffect(() => {
-    if (!initialLocation) return;
+    // Only geocode a location that came from the URL. A restored snapshot already
+    // carries resolved coords / free-text location, so it must not be re-geocoded.
+    if (!urlLocation) return;
     let cancelled = false;
     // The URL may hold a formatted label like "Bondi, NSW 2026", but location-suggest
     // only matches the suburb name — so try the raw value, then the part before the
     // first comma, then a version with any trailing state/postcode stripped.
     const candidates = Array.from(new Set([
-      initialLocation.trim(),
-      initialLocation.split(",")[0].trim(),
-      initialLocation.replace(/,?\s*\b[A-Za-z]{2,3}\b\s*\d{0,4}\s*$/i, "").trim(),
+      urlLocation.trim(),
+      urlLocation.split(",")[0].trim(),
+      urlLocation.replace(/,?\s*\b[A-Za-z]{2,3}\b\s*\d{0,4}\s*$/i, "").trim(),
     ].filter(Boolean)));
     (async () => {
       let first: LocationSuggestion | null = null;
@@ -1077,6 +1150,28 @@ export default function DirectoryListing({ categories }: Props) {
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Persist the current search so it survives leaving the directory (e.g. opening
+  // a profile and hitting Back). We snapshot while a search is active and clear it
+  // once the visitor resets — so a fresh, unsearched visit stays empty. We hold off
+  // while a deep-linked location is still geocoding, to avoid saving a half state.
+  useEffect(() => {
+    if (typeof window === "undefined" || hydratingLocation) return;
+    if (hasActiveSearch) {
+      writeSavedSearch({
+        qInput, q, locationText, appliedLocation, selectedLocation, coords,
+        category, featured, radius, page, sortByDistance,
+        aiText, aiLocation, aiResolvedLoc, aiAppliedLocation, aiMatch, showManual,
+      });
+    } else {
+      clearSavedSearch();
+    }
+  }, [
+    qInput, q, locationText, appliedLocation, selectedLocation, coords,
+    category, featured, radius, page, sortByDistance,
+    aiText, aiLocation, aiResolvedLoc, aiAppliedLocation, aiMatch, showManual,
+    hasActiveSearch, hydratingLocation,
+  ]);
 
   // Reflect the current search in the URL so it can be shared / reloaded.
   function syncUrl(keyword: string, location: string) {
