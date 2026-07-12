@@ -89,7 +89,7 @@ export default function SupplierDetailClient({ supplier, auditLogs }: { supplier
       </div>
 
       {tab === "products" && (
-        <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
@@ -192,7 +192,7 @@ export default function SupplierDetailClient({ supplier, auditLogs }: { supplier
       )}
 
       {tab === "audit" && (
-        <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">

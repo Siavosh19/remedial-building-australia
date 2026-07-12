@@ -71,7 +71,7 @@ export default async function AdminBillingPage() {
       </div>
 
       {/* Directory subscribers — payments & refunds */}
-      <div className="mb-8 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+      <div className="mb-8 rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
         <div className="px-5 py-4 border-b border-slate-200">
           <h2 className="text-sm font-bold text-slate-700">Directory Subscribers</h2>
           <p className="text-xs text-slate-500 mt-0.5">Click a business to view its payments / receipts and issue a refund.</p>
@@ -117,7 +117,7 @@ export default async function AdminBillingPage() {
         </div>
       )}
 
-      <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+      <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
         <div className="px-5 py-4 border-b border-slate-200">
           <h2 className="text-sm font-bold text-slate-700">Active Subscriptions</h2>
         </div>

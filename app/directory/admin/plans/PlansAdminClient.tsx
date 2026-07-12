@@ -131,7 +131,7 @@ export default function PlansAdminClient({ initialPlans, stripeConfigured }: { i
           <h2 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500">
             {PRODUCT_LINES.find((p) => p.value === line)?.label ?? line}
           </h2>
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
             <table className="w-full text-sm">
               <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
                 <tr>

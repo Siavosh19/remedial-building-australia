@@ -32,7 +32,7 @@ export default async function AdminQuoteRequestsPage() {
         <p className="text-sm text-slate-500 mt-1">{quotes.length} total</p>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+      <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">

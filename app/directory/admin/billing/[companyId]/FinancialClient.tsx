@@ -56,7 +56,7 @@ export default function FinancialClient({
       {msg && (
         <div className={`rounded-xl px-4 py-3 text-sm ${msg.type === "ok" ? "bg-emerald-100 text-emerald-900" : "bg-rose-100 text-rose-900"}`}>{msg.text}</div>
       )}
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
             <tr>

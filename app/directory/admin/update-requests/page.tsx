@@ -38,7 +38,7 @@ export default async function UpdateRequestsPage() {
 
       <div>
         <h2 className="text-base font-semibold text-slate-800 mb-3">Supplier Update Requests</h2>
-        <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">
@@ -77,7 +77,7 @@ export default async function UpdateRequestsPage() {
 
       <div>
         <h2 className="text-base font-semibold text-slate-800 mb-3">Product Update Requests</h2>
-        <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50">

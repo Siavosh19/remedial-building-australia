@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             Sign out
           </a>
         </header>
-        <main className="flex-1 overflow-y-auto px-6 py-6">{children}</main>
+        <main className="flex-1 overflow-y-auto px-4 py-5 md:px-6 md:py-6">{children}</main>
       </div>
     </div>
   );

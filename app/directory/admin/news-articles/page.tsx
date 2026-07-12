@@ -87,7 +87,7 @@ export default async function AdminNewsArticlesPage({
       </div>
 
       {/* Filter tabs */}
-      <div className="mb-5 flex gap-2">
+      <div className="mb-5 flex flex-wrap items-center gap-2">
         {FILTERS.map((f) => (
           <a
             key={f.key}
@@ -104,7 +104,77 @@ export default async function AdminNewsArticlesPage({
         <span className="ml-auto self-center text-xs text-slate-400">{rows.length} shown</span>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      {/* Mobile: stacked cards (the table is too wide to use on a phone) */}
+      <div className="space-y-3 md:hidden">
+        {rows.map((r) => {
+          const isPublished = r.status === "published";
+          const internal = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
+          return (
+            <div key={String(r.id)} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="flex items-start justify-between gap-2">
+                <p className="font-semibold text-slate-900">{r.title || "—"}</p>
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${isPublished ? "bg-emerald-100 text-emerald-700" : r.status === "rejected" ? "bg-rose-100 text-rose-700" : "bg-slate-100 text-slate-500"}`}>
+                  {r.status || "—"}
+                </span>
+              </div>
+              {(internal || r.source_url) && (
+                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                  {internal && (
+                    <a href={internal} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sky-700 hover:text-sky-900 hover:underline">
+                      On site <ExternalLink size={11} />
+                    </a>
+                  )}
+                  {r.source_url && (
+                    <a href={r.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-slate-500 hover:text-slate-800 hover:underline">
+                      Original source <ExternalLink size={11} />
+                    </a>
+                  )}
+                </div>
+              )}
+              <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                <div className="min-w-0">
+                  <dt className="mb-1 font-semibold text-slate-400">Category</dt>
+                  <dd><CategorySelect id={String(r.id)} current={r.category || "Other"} /></dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="mb-1 font-semibold text-slate-400">Source</dt>
+                  <dd className="truncate text-slate-600">{r.source_name || "—"}</dd>
+                </div>
+                <div>
+                  <dt className="mb-1 font-semibold text-slate-400">Published</dt>
+                  <dd className="text-slate-500">{fmtDate(r.published_date)}</dd>
+                </div>
+                <div>
+                  <dt className="mb-1 font-semibold text-slate-400">Newsletter</dt>
+                  <dd>
+                    {isPublished ? (
+                      <NewsletterToggle id={String(r.id)} selected={!!r.include_in_newsletter} />
+                    ) : (
+                      <span className="text-slate-300">—</span>
+                    )}
+                  </dd>
+                </div>
+              </dl>
+              <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-slate-100 pt-3">
+                <a
+                  href={`/directory/admin/news-articles/${r.id}/edit`}
+                  className="rounded-lg border border-sky-200 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-50 transition"
+                >
+                  Edit
+                </a>
+                {isPublished ? <UnpublishNewsButton id={String(r.id)} /> : <RecycleNewsButton id={String(r.id)} />}
+                <RemoveNewsButton id={String(r.id)} />
+              </div>
+            </div>
+          );
+        })}
+        {!rows.length && (
+          <p className="rounded-xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-400">No articles in this view.</p>
+        )}
+      </div>
+
+      {/* Desktop: full table (scrolls horizontally on narrow tablets as a fallback) */}
+      <div className="hidden overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm md:block">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">

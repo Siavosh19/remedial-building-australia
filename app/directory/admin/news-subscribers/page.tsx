@@ -38,7 +38,7 @@ export default async function NewsSubscribersPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+      <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">

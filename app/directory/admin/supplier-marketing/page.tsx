@@ -50,7 +50,7 @@ export default async function SupplierMarketingPage() {
         byTier[tier].length > 0 && (
           <div key={tier} className="mb-8">
             <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500 mb-3 capitalize">{tier} tier</h2>
-            <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+            <div className="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50">
