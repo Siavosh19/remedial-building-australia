@@ -181,7 +181,10 @@ type CategoryIntent = { patterns: string[]; categories: string[] };
 const CATEGORY_INTENT: CategoryIntent[] = [
   {
     patterns: ["remedial builder", "remedial builders", "remedial contractor", "remedial contractors", "remedial construction", "remedial building", "remedial", "facade builder", "facade building"],
-    categories: ["Building Contractor", "Facade Contractor", "Building Maintenance"],
+    // "Building Maintenance Contractors" is the exact live category name, so a
+    // remedial-builder search gives those businesses the strong exact-match boost
+    // (not just the weaker partial match from "Building Maintenance").
+    categories: ["Building Contractor", "Facade Contractor", "Building Maintenance Contractors", "Building Maintenance"],
   },
   {
     patterns: ["waterproofing", "waterproof", "water leak", "leaking balcony", "balcony leak", "leaking shower", "membrane", "tanking", "leak detection", "water ingress", "rising damp", "penetrating damp"],
