@@ -1462,28 +1462,61 @@ export default function DirectoryListing({ categories }: Props) {
               )}
 
               {/* AI match breakdown — only rendered after a search returns a match */}
-              {aiMatch?.matched && (
+              {aiMatch?.matched && (() => {
+                // Every category the user can pick — the best match first, then the
+                // alternates. The one that's actually applied is highlighted, so the
+                // dropdown always shows which category the current results are for.
+                const options = [aiMatch.matched, ...aiMatch.alternates];
+                const applied = q.trim().toLowerCase();
+                const active = options.find((o) => o.name.trim().toLowerCase() === applied) ?? aiMatch.matched;
+                const activeIsBest = active.id === aiMatch.matched.id;
+                return (
                 <div className="relative flex h-11 items-center gap-2 rounded-xl bg-white/60 px-3 ring-1 ring-white/80 backdrop-blur">
                   <span className="text-xs font-semibold text-slate-500">AI match:</span>
                   {aiMatch.alternates.length > 0 ? (
                     <details className="relative">
                       <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-cyan-200 transition hover:ring-cyan-400">
-                        {aiMatch.matched.name}
-                        <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">Best</span>
+                        {active.name}
+                        <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                          {activeIsBest ? "Best" : "Selected"}
+                        </span>
                         <span className="text-slate-400">▾</span>
                       </summary>
-                      <div className="absolute left-0 top-full z-30 mt-1 min-w-[190px] rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
-                        <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Or try</p>
-                        {aiMatch.alternates.map((a) => (
-                          <button
-                            key={a.id}
-                            type="button"
-                            onClick={() => applyAiSearch(a.name, aiResolvedLoc ? aiResolvedLoc.label : aiAppliedLocation, aiResolvedLoc)}
-                            className="block w-full rounded-lg px-2 py-1.5 text-left text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-                          >
-                            {a.name}
-                          </button>
-                        ))}
+                      <div className="absolute left-0 top-full z-30 mt-1 min-w-[210px] rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+                        <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Choose category</p>
+                        {options.map((o) => {
+                          const isActive = o.id === active.id;
+                          const isBest = o.id === aiMatch.matched.id;
+                          return (
+                            <button
+                              key={o.id}
+                              type="button"
+                              onClick={(e) => {
+                                applyAiSearch(o.name, aiResolvedLoc ? aiResolvedLoc.label : aiAppliedLocation, aiResolvedLoc);
+                                // Close the native <details> after a pick.
+                                (e.currentTarget.closest("details") as HTMLDetailsElement | null)?.removeAttribute("open");
+                              }}
+                              aria-current={isActive}
+                              className={`flex w-full items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-sm font-medium transition ${
+                                isActive
+                                  ? "bg-emerald-50 text-emerald-800 ring-1 ring-emerald-300"
+                                  : "text-slate-700 hover:bg-slate-100"
+                              }`}
+                            >
+                              <span className="flex min-w-0 items-center gap-1.5">
+                                <span className="truncate">{o.name}</span>
+                                {isBest && (
+                                  <span className="shrink-0 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">Best</span>
+                                )}
+                              </span>
+                              {isActive && (
+                                <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white" aria-hidden>
+                                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
                       </div>
                     </details>
                   ) : (
@@ -1493,7 +1526,8 @@ export default function DirectoryListing({ categories }: Props) {
                     </span>
                   )}
                 </div>
-              )}
+                );
+              })()}
 
               {/* Find the right people (stretches to fill the gap) */}
               <button
