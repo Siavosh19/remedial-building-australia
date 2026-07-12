@@ -1463,13 +1463,14 @@ export default function DirectoryListing({ categories }: Props) {
 
               {/* AI match breakdown — only rendered after a search returns a match */}
               {aiMatch?.matched && (() => {
+                const matched = aiMatch.matched;
                 // Every category the user can pick — the best match first, then the
                 // alternates. The one that's actually applied is highlighted, so the
                 // dropdown always shows which category the current results are for.
-                const options = [aiMatch.matched, ...aiMatch.alternates];
+                const options = [matched, ...aiMatch.alternates];
                 const applied = q.trim().toLowerCase();
-                const active = options.find((o) => o.name.trim().toLowerCase() === applied) ?? aiMatch.matched;
-                const activeIsBest = active.id === aiMatch.matched.id;
+                const active = options.find((o) => o.name.trim().toLowerCase() === applied) ?? matched;
+                const activeIsBest = active.id === matched.id;
                 return (
                 <div className="relative flex h-11 items-center gap-2 rounded-xl bg-white/60 px-3 ring-1 ring-white/80 backdrop-blur">
                   <span className="text-xs font-semibold text-slate-500">AI match:</span>
@@ -1486,7 +1487,7 @@ export default function DirectoryListing({ categories }: Props) {
                         <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Choose category</p>
                         {options.map((o) => {
                           const isActive = o.id === active.id;
-                          const isBest = o.id === aiMatch.matched.id;
+                          const isBest = o.id === matched.id;
                           return (
                             <button
                               key={o.id}
@@ -1521,7 +1522,7 @@ export default function DirectoryListing({ categories }: Props) {
                     </details>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-cyan-200">
-                      {aiMatch.matched.name}
+                      {matched.name}
                       <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">Best</span>
                     </span>
                   )}
