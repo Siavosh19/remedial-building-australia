@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ChevronDown } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import { getActiveBusinessCount, formatBusinessCount } from "@/lib/directory-stats";
 
@@ -24,8 +25,65 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="text-xs font-bold uppercase tracking-[0.22em] text-red-700">{children}</p>;
 }
 
-function H2({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-2xl font-extrabold text-sky-950 sm:text-3xl">{children}</h2>;
+/* Collapsible section. Native <details> keeps this a zero-JS server component:
+   the whole page is a scannable stack of headers, and each one expands in place
+   so the guide never feels like an endless wall of text. */
+type BadgeTone = "gold" | "silver" | "free" | "navy";
+function Accordion({
+  eyebrow,
+  title,
+  subtitle,
+  badge,
+  badgeTone = "navy",
+  defaultOpen = false,
+  children,
+}: {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  badgeTone?: BadgeTone;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}) {
+  const badgeStyles: Record<BadgeTone, string> = {
+    gold: "border-[#e6d79a] bg-[#fdf7e3] text-[#7a5c1e]",
+    silver: "border-slate-200 bg-slate-100 text-slate-600",
+    free: "border-emerald-200 bg-emerald-50 text-emerald-700",
+    navy: "border-sky-900 bg-sky-950 text-white",
+  };
+  return (
+    <details
+      open={defaultOpen}
+      className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition open:shadow-md open:ring-1 open:ring-sky-100"
+    >
+      <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-4 transition hover:bg-slate-50/70 sm:gap-4 sm:px-6 sm:py-5 [&::-webkit-details-marker]:hidden">
+        <div className="min-w-0 flex-1">
+          {eyebrow && <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-red-700">{eyebrow}</p>}
+          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+            <h2 className="text-base font-extrabold leading-tight text-sky-950 sm:text-xl">{title}</h2>
+            {badge && (
+              <span className={`rounded-full border px-2.5 py-0.5 text-xs font-extrabold ${badgeStyles[badgeTone]}`}>
+                {badge}
+              </span>
+            )}
+          </div>
+          {subtitle && <p className="mt-1 text-sm leading-snug text-slate-500">{subtitle}</p>}
+        </div>
+        {/* Explicit "See more / See less" affordance — pure CSS via the details open state */}
+        <span className="flex shrink-0 items-center gap-1.5 text-xs font-bold text-sky-700">
+          <span className="hidden sm:inline">
+            <span className="group-open:hidden">See more</span>
+            <span className="hidden group-open:inline">See less</span>
+          </span>
+          <span className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-500 transition group-open:rotate-180 group-open:border-sky-200 group-open:bg-sky-50 group-open:text-sky-700">
+            <ChevronDown size={18} />
+          </span>
+        </span>
+      </summary>
+      <div className="border-t border-slate-100 px-4 pb-6 pt-5 sm:px-6">{children}</div>
+    </details>
+  );
 }
 
 function StatChip({ big, label, tone }: { big: string; label: string; tone: "gold" | "silver" | "navy" | "plain" }) {
@@ -45,7 +103,7 @@ function StatChip({ big, label, tone }: { big: string; label: string; tone: "gol
 
 function Includes({ items }: { items: string[] }) {
   return (
-    <ul className="mt-4 space-y-2">
+    <ul className="space-y-2">
       {items.map((it) => (
         <li key={it} className="flex gap-2.5 text-sm leading-6 text-slate-700">
           <span className="mt-0.5 font-bold text-emerald-600">✓</span>
@@ -171,13 +229,19 @@ export default async function MarketingGuidePage() {
     { f: "Limited to 3 businesses per category, per State", free: "—", silver: "—", gold: "✓ Exclusive" },
   ];
 
+  const bannerRows = [
+    { p: "Directory page banner — 1 of 3 slots", r: "From $395 / month", href: "/advertise/banner-layout#directory" },
+    { p: "Industry News page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#industry-news" },
+    { p: "News article page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#article" },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
       <SiteHeader />
 
       {/* Hero */}
       <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-5xl px-6 py-14">
+        <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-14">
           <Eyebrow>Advertising &amp; Directory Media Kit</Eyebrow>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-sky-950 sm:text-5xl">Marketing Guide Breakdown</h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
@@ -193,9 +257,9 @@ export default async function MarketingGuidePage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-5xl space-y-16 px-6 py-16">
-        {/* Who / audience / what / why */}
-        <section className="grid gap-5 sm:grid-cols-2">
+      <div className="mx-auto max-w-5xl space-y-10 px-4 py-12 sm:px-6 sm:py-16">
+        {/* Who / audience / what / why — short context, always visible */}
+        <section className="grid gap-4 sm:grid-cols-2 sm:gap-5">
           {[
             { t: "Who we are", d: "Australia's dedicated platform for building maintenance and remedial works — defect library, repair solutions, technical product data, industry news and a national directory in one place." },
             { t: "Our audience", d: "Industry professionals, body corporates, strata and building managers, consultants, engineers and property managers — construction-literate decision-makers who commission maintenance, façade upgrades and remedial works." },
@@ -209,213 +273,231 @@ export default async function MarketingGuidePage() {
           ))}
         </section>
 
-        {/* Placement hierarchy */}
-        <section>
-          <Eyebrow>Be seen. Be chosen.</Eyebrow>
-          <H2>Placement Hierarchy</H2>
-          <p className="mt-2 text-sm text-slate-600">Put your business where the decisions are made.</p>
-          <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-            {hierarchy.map((h, i) => (
-              <div key={h.n} className={`flex items-start gap-4 px-5 py-4 ${i > 0 ? "border-t border-slate-100" : ""}`}>
-                <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-extrabold"
-                  style={
-                    h.tone === "gold"
-                      ? { background: GOLD_BRUSH, color: "#7a5c1e" }
-                      : h.tone === "silver"
-                      ? { background: SILVER_BRUSH, color: "#475569" }
-                      : h.tone === "navy"
-                      ? { background: NAVY, color: "#fff" }
-                      : { background: "#f1f5f9", color: "#334155" }
-                  }
-                >
-                  {h.n}
-                </div>
-                <div>
-                  <p className="text-sm font-extrabold uppercase tracking-wide text-sky-950">{h.name}</p>
-                  <p className="mt-0.5 text-sm leading-6 text-slate-600">{h.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Gold */}
-        <section>
-          <H2>Gold Featured — Top of Your State</H2>
-          <p className="mt-2 text-sm font-bold text-sky-950">$99 / month — includes:</p>
-          <div className="mt-5 space-y-6">
-            <Includes
-              items={[
-                "Top 3 positions for your category State-wide, all the time — only 3 Gold spots per State/Territory",
-                `Featured placement with Gold Featured badge — above all Silver and Free listings, ahead of ${listed} businesses`,
-                "Logo & business description on your listing card",
-                "Professional tagline next to your name — Business Name | Remedial Builder",
-                "Receive quote requests + Request Quote button on your listing",
-                "Up to 15 project photos, licence & insurance details, project portfolio",
-                "Public business profile, phone, email & website, listed in directory search",
-              ]}
-            />
-            <div>
-              <GoldSnapshot />
-              <p className="mt-2 text-center text-xs text-slate-400">Gold Featured placement as shown live on the directory.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Silver */}
-        <section>
-          <H2>Silver — Within 50 km of the Searcher</H2>
-          <p className="mt-2 text-sm font-bold text-sky-950">$49 / month — 30-day free trial — includes:</p>
-          <div className="mt-5 space-y-6">
-            <Includes
-              items={[
-                "Shown within 50 km of the searched suburb, ranking above every Free listing for your category — if several hold Silver, they rank by distance, closest to the searcher on top",
-                "Receive quote requests + Request Quote button on your listing",
-                "Logo & business description on your listing card",
-                "Professional tagline next to your name — Business Name | Waterproofing Contractor",
-                "Up to 15 project photos, licence & insurance details, project portfolio",
-                "Public business profile, phone, email & website, listed in directory search",
-              ]}
-            />
-            <div>
-              <SilverSnapshot />
-              <p className="mt-2 text-center text-xs text-slate-400">Silver placement as shown live on the directory.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Free */}
-        <section>
-          <H2>Free Listing — Get Found</H2>
-          <p className="mt-2 text-sm font-bold text-sky-950">$0 / month — includes:</p>
-          <div className="mt-5 space-y-6">
-            <Includes
-              items={[
-                "Public business profile, description, phone, email & website",
-                "Listed in directory search",
-                "Does not include quote requests, logo or tagline on the listing card",
-                "Upgrade to Silver or Gold anytime to move up the page",
-              ]}
-            />
-            <div>
-              <FreeSnapshot />
-              <p className="mt-2 text-center text-xs text-slate-400">Free listings as shown live on the directory.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Quote system */}
-        <section>
-          <H2>How the Quote Request System Works</H2>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
-            Property owners, strata managers and building managers browse the directory, land on a business&rsquo;s profile, and
-            send that business a quote request in a few clicks — the enquiry goes straight to the business by email and into
-            their dashboard.
+        {/* Collapsible detail sections — tap any header to expand */}
+        <div>
+          <p className="mb-3 px-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+            The detail — tap a section to open
           </p>
-          <div className="mt-5 rounded-2xl border-l-4 border-amber-500 bg-sky-950 p-5 text-sm leading-7 text-sky-50">
-            Every day, industry professionals and property owners search our directory for the right trade or consultant. When
-            they find you, they can request a quote directly from your listing. Free listings appear in search — but{" "}
-            <strong className="text-white">only Silver and Gold businesses can receive quote requests</strong>. Gold businesses
-            appear at the very top, so they&rsquo;re seen and contacted first.
-          </div>
-          <ol className="mt-6 space-y-4">
-            {[
-              ["The client searches.", "A strata manager, owner or building professional describes their job or browses a category and location (e.g. “waterproofing – NSW”). The directory shows the businesses servicing that area."],
-              ["The client opens a profile.", "Each business has a full profile — description, contact details, licence and insurance information, logo and project photos."],
-              ["The client sends a quote request.", "On paid profiles, a Request a Quote button lets the client send their project details — job type, suburb, urgency, budget and a message — in under a minute."],
-              ["The business is notified instantly.", "The request is emailed to the business immediately and saved in their dashboard — a warm, ready-to-act lead. No middleman, no bidding, no commission."],
-            ].map(([t, d], i) => (
-              <li key={t} className="flex gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-950 text-sm font-bold text-white">{i + 1}</span>
-                <p className="text-sm leading-7 text-slate-700">
-                  <strong className="text-sky-950">{t}</strong> {d}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        {/* Compare */}
-        <section>
-          <H2>Compare the Plans</H2>
-          {/* Mobile — one card per feature (no horizontal scroll) */}
-          <div className="mt-5 space-y-3 sm:hidden">
-            {compareRows.map((r) => (
-              <div key={r.f} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                <p className="text-sm font-bold text-sky-950">{r.f}</p>
-                <div className="mt-3 grid grid-cols-3 gap-2 border-t border-slate-100 pt-3 text-center">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Free</div>
-                    <div className="mt-1 text-sm text-slate-600">{r.free}</div>
+          <div className="space-y-4">
+            {/* Placement hierarchy — open by default so the page shows content on load */}
+            <Accordion
+              eyebrow="Be seen. Be chosen."
+              title="Placement Hierarchy"
+              subtitle="Where your business sits on the page — top to bottom."
+              defaultOpen
+            >
+              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                {hierarchy.map((h, i) => (
+                  <div key={h.n} className={`flex items-start gap-4 px-5 py-4 ${i > 0 ? "border-t border-slate-100" : ""}`}>
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-extrabold"
+                      style={
+                        h.tone === "gold"
+                          ? { background: GOLD_BRUSH, color: "#7a5c1e" }
+                          : h.tone === "silver"
+                          ? { background: SILVER_BRUSH, color: "#475569" }
+                          : h.tone === "navy"
+                          ? { background: NAVY, color: "#fff" }
+                          : { background: "#f1f5f9", color: "#334155" }
+                      }
+                    >
+                      {h.n}
+                    </div>
+                    <div>
+                      <p className="text-sm font-extrabold uppercase tracking-wide text-sky-950">{h.name}</p>
+                      <p className="mt-0.5 text-sm leading-6 text-slate-600">{h.desc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <div className="rounded-full py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: SILVER_RIBBON }}>Silver</div>
-                    <div className="mt-1 text-sm font-semibold text-slate-700">{r.silver}</div>
-                  </div>
-                  <div>
-                    <div className="rounded-full py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: GOLD_RIBBON }}>Gold</div>
-                    <div className="mt-1 text-sm font-semibold text-slate-700">{r.gold}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Tablet & up — table */}
-          <div className="mt-5 hidden overflow-x-auto rounded-2xl border border-slate-200 sm:block">
-            <table className="w-full min-w-[560px] border-collapse text-sm">
-              <thead>
-                <tr className="bg-sky-950 text-white">
-                  <th className="px-4 py-3 text-left font-bold">Feature</th>
-                  <th className="px-4 py-3 text-center font-bold">Free</th>
-                  <th className="px-4 py-3 text-center font-bold" style={{ background: SILVER_RIBBON }}>Silver</th>
-                  <th className="px-4 py-3 text-center font-bold" style={{ background: GOLD_RIBBON }}>Gold</th>
-                </tr>
-              </thead>
-              <tbody>
-                {compareRows.map((r, i) => (
-                  <tr key={r.f} className={i % 2 ? "bg-slate-50" : "bg-white"}>
-                    <td className="px-4 py-3 text-slate-700">{r.f}</td>
-                    <td className="px-4 py-3 text-center text-slate-500">{r.free}</td>
-                    <td className="px-4 py-3 text-center font-semibold text-slate-700">{r.silver}</td>
-                    <td className="px-4 py-3 text-center font-semibold text-slate-700">{r.gold}</td>
-                  </tr>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </div>
+            </Accordion>
 
-          <h3 className="mt-8 text-lg font-bold text-sky-950">What this means for you</h3>
-          <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
-            <li><strong className="text-sky-950">Free gets you found</strong> — you appear in search with a public profile, but Free listings cannot receive quote requests. Visibility only.</li>
-            <li><strong className="text-sky-950">Silver turns your listing into a lead channel</strong> — unlimited quote requests, logo and photo gallery, ranked above all Free listings.</li>
-            <li><strong className="text-sky-950">Gold is maximum exposure</strong> — everything in Silver plus top-of-results placement, the Gold Featured badge, and an exclusive spot: only 3 Gold businesses per category, per State.</li>
-          </ul>
-          <div className="mt-5 rounded-2xl border-l-4 border-amber-500 bg-sky-950 p-5 text-sm leading-7 text-sky-50">
-            <strong className="text-white">Key point:</strong> both Silver and Gold receive unlimited quote requests — no monthly cap. The
-            difference isn&rsquo;t how many enquiries you can receive; it&rsquo;s how visible you are and how early clients find you. Gold
-            businesses are seen first, so they&rsquo;re typically contacted first.
-          </div>
-        </section>
+            {/* Gold */}
+            <Accordion
+              title="Gold Featured — Top of Your State"
+              subtitle="Top 3 in your category, State-wide — only 3 spots per State."
+              badge="$99 / mo"
+              badgeTone="gold"
+            >
+              <div className="space-y-6">
+                <Includes
+                  items={[
+                    "Top 3 positions for your category State-wide, all the time — only 3 Gold spots per State/Territory",
+                    `Featured placement with Gold Featured badge — above all Silver and Free listings, ahead of ${listed} businesses`,
+                    "Logo & business description on your listing card",
+                    "Professional tagline next to your name — Business Name | Remedial Builder",
+                    "Receive quote requests + Request Quote button on your listing",
+                    "Up to 15 project photos, licence & insurance details, project portfolio",
+                    "Public business profile, phone, email & website, listed in directory search",
+                  ]}
+                />
+                <div>
+                  <GoldSnapshot />
+                  <p className="mt-2 text-center text-xs text-slate-400">Gold Featured placement as shown live on the directory.</p>
+                </div>
+              </div>
+            </Accordion>
 
-        {/* Banner advertising */}
-        <section>
-          <H2>Banner Advertising</H2>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
-            Our premium position, available on two high-value pages only: the <strong>Directory</strong> (highest buyer intent —
-            clients actively hiring) and <strong>Industry News</strong> (professional repeat audience — consultants, strata
-            managers, contractors). Each page carries a rotating showcase of 3 businesses maximum. Banner size and design are
-            agreed with you — our team can assist with artwork.{" "}
-            <strong>Banner advertising is a separate placement — it is not included in any Gold or Silver subscription.</strong>
-          </p>
-          {(() => {
-            const bannerRows = [
-              { p: "Directory page banner — 1 of 3 slots", r: "From $395 / month", href: "/advertise/banner-layout#directory" },
-              { p: "Industry News page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#industry-news" },
-              { p: "News article page banner — 1 of 3 slots", r: "From $295 / month", href: "/advertise/banner-layout#article" },
-            ];
-            return (
+            {/* Silver */}
+            <Accordion
+              title="Silver — Within 50 km of the Searcher"
+              subtitle="Above every Free listing for your category · 30-day free trial."
+              badge="$49 / mo"
+              badgeTone="silver"
+            >
+              <div className="space-y-6">
+                <Includes
+                  items={[
+                    "Shown within 50 km of the searched suburb, ranking above every Free listing for your category — if several hold Silver, they rank by distance, closest to the searcher on top",
+                    "Receive quote requests + Request Quote button on your listing",
+                    "Logo & business description on your listing card",
+                    "Professional tagline next to your name — Business Name | Waterproofing Contractor",
+                    "Up to 15 project photos, licence & insurance details, project portfolio",
+                    "Public business profile, phone, email & website, listed in directory search",
+                  ]}
+                />
+                <div>
+                  <SilverSnapshot />
+                  <p className="mt-2 text-center text-xs text-slate-400">Silver placement as shown live on the directory.</p>
+                </div>
+              </div>
+            </Accordion>
+
+            {/* Free */}
+            <Accordion
+              title="Free Listing — Get Found"
+              subtitle="Public profile and directory search. Upgrade anytime."
+              badge="$0"
+              badgeTone="free"
+            >
+              <div className="space-y-6">
+                <Includes
+                  items={[
+                    "Public business profile, description, phone, email & website",
+                    "Listed in directory search",
+                    "Does not include quote requests, logo or tagline on the listing card",
+                    "Upgrade to Silver or Gold anytime to move up the page",
+                  ]}
+                />
+                <div>
+                  <FreeSnapshot />
+                  <p className="mt-2 text-center text-xs text-slate-400">Free listings as shown live on the directory.</p>
+                </div>
+              </div>
+            </Accordion>
+
+            {/* Quote system */}
+            <Accordion
+              title="How the Quote Request System Works"
+              subtitle="From a client's search to a warm lead in your inbox — in four steps."
+            >
+              <p className="text-sm leading-7 text-slate-600">
+                Property owners, strata managers and building managers browse the directory, land on a business&rsquo;s profile, and
+                send that business a quote request in a few clicks — the enquiry goes straight to the business by email and into
+                their dashboard.
+              </p>
+              <div className="mt-5 rounded-2xl border-l-4 border-amber-500 bg-sky-950 p-5 text-sm leading-7 text-sky-50">
+                Every day, industry professionals and property owners search our directory for the right trade or consultant. When
+                they find you, they can request a quote directly from your listing. Free listings appear in search — but{" "}
+                <strong className="text-white">only Silver and Gold businesses can receive quote requests</strong>. Gold businesses
+                appear at the very top, so they&rsquo;re seen and contacted first.
+              </div>
+              <ol className="mt-6 space-y-4">
+                {[
+                  ["The client searches.", "A strata manager, owner or building professional describes their job or browses a category and location (e.g. “waterproofing – NSW”). The directory shows the businesses servicing that area."],
+                  ["The client opens a profile.", "Each business has a full profile — description, contact details, licence and insurance information, logo and project photos."],
+                  ["The client sends a quote request.", "On paid profiles, a Request a Quote button lets the client send their project details — job type, suburb, urgency, budget and a message — in under a minute."],
+                  ["The business is notified instantly.", "The request is emailed to the business immediately and saved in their dashboard — a warm, ready-to-act lead. No middleman, no bidding, no commission."],
+                ].map(([t, d], i) => (
+                  <li key={t} className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-950 text-sm font-bold text-white">{i + 1}</span>
+                    <p className="text-sm leading-7 text-slate-700">
+                      <strong className="text-sky-950">{t}</strong> {d}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </Accordion>
+
+            {/* Compare */}
+            <Accordion
+              title="Compare the Plans"
+              subtitle="Free vs Silver vs Gold, feature by feature."
+            >
+              {/* Mobile — one card per feature (no horizontal scroll) */}
+              <div className="space-y-3 sm:hidden">
+                {compareRows.map((r) => (
+                  <div key={r.f} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <p className="text-sm font-bold text-sky-950">{r.f}</p>
+                    <div className="mt-3 grid grid-cols-3 gap-2 border-t border-slate-100 pt-3 text-center">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Free</div>
+                        <div className="mt-1 text-sm text-slate-600">{r.free}</div>
+                      </div>
+                      <div>
+                        <div className="rounded-full py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: SILVER_RIBBON }}>Silver</div>
+                        <div className="mt-1 text-sm font-semibold text-slate-700">{r.silver}</div>
+                      </div>
+                      <div>
+                        <div className="rounded-full py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: GOLD_RIBBON }}>Gold</div>
+                        <div className="mt-1 text-sm font-semibold text-slate-700">{r.gold}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Tablet & up — table */}
+              <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 sm:block">
+                <table className="w-full min-w-[560px] border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-sky-950 text-white">
+                      <th className="px-4 py-3 text-left font-bold">Feature</th>
+                      <th className="px-4 py-3 text-center font-bold">Free</th>
+                      <th className="px-4 py-3 text-center font-bold" style={{ background: SILVER_RIBBON }}>Silver</th>
+                      <th className="px-4 py-3 text-center font-bold" style={{ background: GOLD_RIBBON }}>Gold</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {compareRows.map((r, i) => (
+                      <tr key={r.f} className={i % 2 ? "bg-slate-50" : "bg-white"}>
+                        <td className="px-4 py-3 text-slate-700">{r.f}</td>
+                        <td className="px-4 py-3 text-center text-slate-500">{r.free}</td>
+                        <td className="px-4 py-3 text-center font-semibold text-slate-700">{r.silver}</td>
+                        <td className="px-4 py-3 text-center font-semibold text-slate-700">{r.gold}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <h3 className="mt-8 text-lg font-bold text-sky-950">What this means for you</h3>
+              <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                <li><strong className="text-sky-950">Free gets you found</strong> — you appear in search with a public profile, but Free listings cannot receive quote requests. Visibility only.</li>
+                <li><strong className="text-sky-950">Silver turns your listing into a lead channel</strong> — unlimited quote requests, logo and photo gallery, ranked above all Free listings.</li>
+                <li><strong className="text-sky-950">Gold is maximum exposure</strong> — everything in Silver plus top-of-results placement, the Gold Featured badge, and an exclusive spot: only 3 Gold businesses per category, per State.</li>
+              </ul>
+              <div className="mt-5 rounded-2xl border-l-4 border-amber-500 bg-sky-950 p-5 text-sm leading-7 text-sky-50">
+                <strong className="text-white">Key point:</strong> both Silver and Gold receive unlimited quote requests — no monthly cap. The
+                difference isn&rsquo;t how many enquiries you can receive; it&rsquo;s how visible you are and how early clients find you. Gold
+                businesses are seen first, so they&rsquo;re typically contacted first.
+              </div>
+            </Accordion>
+
+            {/* Banner advertising */}
+            <Accordion
+              title="Banner Advertising"
+              subtitle="Premium rotating showcase — Directory & Industry News. Separate placement."
+              badge="From $295 / mo"
+              badgeTone="navy"
+            >
+              <p className="text-sm leading-7 text-slate-600">
+                Our premium position, available on two high-value pages only: the <strong>Directory</strong> (highest buyer intent —
+                clients actively hiring) and <strong>Industry News</strong> (professional repeat audience — consultants, strata
+                managers, contractors). Each page carries a rotating showcase of 3 businesses maximum. Banner size and design are
+                agreed with you — our team can assist with artwork.{" "}
+                <strong>Banner advertising is a separate placement — it is not included in any Gold or Silver subscription.</strong>
+              </p>
               <div className="mt-5">
                 {/* Mobile — stacked cards (no horizontal scroll) */}
                 <div className="space-y-3 sm:hidden">
@@ -437,7 +519,7 @@ export default async function MarketingGuidePage() {
                 </div>
 
                 {/* Tablet & up — table */}
-                <div className="hidden overflow-hidden rounded-2xl border border-slate-200 sm:block">
+                <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 sm:block">
                   <table className="w-full border-collapse text-sm">
                     <thead>
                       <tr className="bg-sky-950 text-white">
@@ -462,20 +544,21 @@ export default async function MarketingGuidePage() {
                   </table>
                 </div>
               </div>
-            );
-          })()}
-          <p className="mt-2 text-xs text-slate-400">Minimum term 3 months. Limited availability — 3 slots per page.</p>
-          <p className="mt-4 text-sm leading-7 text-slate-600">
-            Banner placements are arranged directly. Submit a request via the{" "}
-            <a href="/advertise" className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">Advertise With Us</a>{" "}
-            page, or email <strong>info@remedialbuildingaustralia.com.au</strong> — we&rsquo;ll confirm slot availability, duration,
-            artwork requirements and start date with you.
-          </p>
-        </section>
+              <p className="mt-2 text-xs text-slate-400">Minimum term 3 months. Limited availability — 3 slots per page.</p>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                Banner placements are arranged directly. Submit a request via the{" "}
+                <a href="/advertise" className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">Advertise With Us</a>{" "}
+                page, or email <strong>info@remedialbuildingaustralia.com.au</strong> — we&rsquo;ll confirm slot availability, duration,
+                artwork requirements and start date with you.
+              </p>
+            </Accordion>
+          </div>
+        </div>
 
-        {/* How to get listed */}
-        <section className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
-          <H2>How to Get Listed (Gold &amp; Silver)</H2>
+        {/* How to get listed — always visible conversion CTA */}
+        <section className="rounded-3xl border border-sky-200 bg-gradient-to-b from-white to-sky-50/60 p-6 shadow-sm sm:p-7">
+          <Eyebrow>Ready when you are</Eyebrow>
+          <h2 className="mt-2 text-2xl font-extrabold text-sky-950 sm:text-3xl">How to Get Listed (Gold &amp; Silver)</h2>
           <ol className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
             <li>1. Go to the <a href="/directory/signup" className="font-bold text-sky-700 underline underline-offset-2 hover:text-red-700">Directory sign-up page</a>.</li>
             <li>2. Complete your details and select <strong>Directory Business</strong> as your account type.</li>
