@@ -154,7 +154,8 @@
       "Bash(xattr /Applications/OneDrive.app)",
       "Bash(open -a OneDrive)",
       "Bash(echo \"open exit: $?\")",
-      "Bash(softwareupdate --list)"
+      "Bash(softwareupdate --list)",
+      "Bash(awk -F: '$1 < 360')"
     ]
   }
 }
