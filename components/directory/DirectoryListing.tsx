@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, memo, type CSSProperties } from "react";
 import { dirTier, displayName, clampName, cardSummary } from "@/lib/directory-tier";
 
 // Brushed / shiny metallic sheens — angled bands used as a thin frame around the
@@ -84,20 +84,6 @@ function initials(name: string) {
     .map((w) => w[0] ?? "")
     .join("")
     .toUpperCase();
-}
-
-function DistanceBadge({ distanceKm }: { distanceKm: number }) {
-  const label =
-    distanceKm < 1
-      ? "< 1 km"
-      : distanceKm < 10
-      ? `${distanceKm.toFixed(1)} km`
-      : `${Math.round(distanceKm)} km`;
-  return (
-    <span className="inline-block whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-semibold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>
-      {label} away
-    </span>
-  );
 }
 
 // Resolve a listing's plan string — same fallback the server ranks by.
@@ -219,11 +205,11 @@ function metaLine(distanceKm: number | null | undefined, locText: string): strin
 
 // Phone / email / website — shared inline contact row (Silver + Free desktop).
 // Each control opens the confirm popup rather than dialling/opening immediately.
-function ContactLinks({ company, className = "" }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null }; className?: string }) {
+function ContactLinks({ company, className = "", style }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null }; className?: string; style?: CSSProperties }) {
   if (!company.phone && !company.email && !company.website) return null;
   const btn = "inline-flex items-center gap-1 font-semibold text-sky-800 hover:underline";
   return (
-    <div className={`flex flex-wrap items-center gap-x-4 gap-y-1 ${className}`}>
+    <div className={`flex flex-wrap items-center gap-x-4 gap-y-1 ${className}`} style={style}>
       {company.phone && (
         <button type="button" aria-label={`Call ${company.name}`} onClick={() => openContactConfirm({ kind: "phone", value: company.phone!, company: company.name })} className={btn}>
           <span aria-hidden>📞</span> {company.phone}
@@ -250,7 +236,7 @@ function ContactLinks({ company, className = "" }: { company: { name: string; ph
 function SilverRow({ company }: { company: CompanyResult }) {
   const location = company.locations[0];
   const locText = [location?.suburb, location?.state].filter(Boolean).join(", ");
-  const summary = cardSummary(company.description);
+  const summary = cardSummary(company.description, 21);
   return (
     <div
       className="relative mx-3 my-2 rounded-[12px] p-[5px]"
@@ -264,45 +250,50 @@ function SilverRow({ company }: { company: CompanyResult }) {
         Silver
       </span>
 
-      {/* ── Desktop (≥640px) — item 3: tagline on its own line above the name; */}
-      {/*    category chip + km chip sit on the name line; View Profile top-right. */}
-      <div className="hidden rounded-[8px] bg-white px-5 py-3.5 sm:block">
-        <div className="flex items-start gap-3">
-          {/* 32px logo / initials */}
-          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[12px] font-extrabold text-slate-600">
-            {company.logo_url
-              ? <img src={company.logo_url} alt={`${company.name} logo`} width={32} height={32} loading="lazy" decoding="async" className="h-full w-full object-cover" />
-              : initials(company.name) || "?"}
+      {/* ── Desktop (≥640px) — redesigned featured header: left column stacks the */}
+      {/*    category badge over the logo; middle bottom-aligns tagline + name to  */}
+      {/*    the logo; View Profile pins top-right. Distance chip removed. Contacts */}
+      {/*    centre at the card foot above a thin divider. */}
+      <div className="hidden rounded-[8px] bg-white px-5 pb-3.5 pt-2.5 sm:block">
+        <div className="flex items-stretch gap-3">
+          {/* LEFT column (~88px, centred): category badge + logo */}
+          <div className="flex shrink-0 flex-col items-center gap-2" style={{ width: 88 }}>
+            {company.main_category && (
+              <span className="max-w-full truncate rounded-full px-2.5 py-0.5 text-center text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>
+                {company.main_category.name.split("/")[0].trim()}
+              </span>
+            )}
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[12px] font-extrabold text-slate-600">
+              {company.logo_url
+                ? <img src={company.logo_url} alt={`${company.name} logo`} width={32} height={32} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                : initials(company.name) || "?"}
+            </div>
           </div>
 
-          <div className="min-w-0 flex-1">
+          {/* MIDDLE column: tagline + name, bottom-aligned to the logo */}
+          <div className="flex min-w-0 flex-1 flex-col justify-end self-stretch">
             {company.tagline && (
               <div className="truncate" style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", fontSize: "15px", letterSpacing: "0.2px", color: "#9E3B2B" }}>
                 &ldquo;{company.tagline}&rdquo;
               </div>
             )}
-            <h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-lg font-bold leading-tight text-sky-950">
+            <h3 className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-lg font-bold leading-tight text-sky-950">
               <span>{clampName(company.name)}</span>
-              {company.main_category && (
-                <span className="inline-block shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>
-                  {company.main_category.name.split("/")[0].trim()}
-                </span>
-              )}
-              {company.distance_km != null && <DistanceBadge distanceKm={company.distance_km} />}
               {locText && <span className="text-sm font-normal text-slate-500">({locText})</span>}
             </h3>
           </div>
 
+          {/* RIGHT: View Profile pinned top-right */}
           <a
             href={`/directory/company/${company.slug}`}
-            className="shrink-0 whitespace-nowrap rounded-lg bg-sky-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
+            className="shrink-0 self-start whitespace-nowrap rounded-lg bg-sky-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
           >
             View Profile →
           </a>
         </div>
 
-        {summary && <p className="mt-2 text-sm leading-relaxed text-slate-600">{summary}</p>}
-        <ContactLinks company={company} className="mt-2.5 text-sm" />
+        {summary && <p className="mt-3 text-sm leading-relaxed text-slate-600">{summary}</p>}
+        <ContactLinks company={company} className="mt-3 justify-center border-t border-slate-200 pt-3 text-sm" />
       </div>
 
       {/* ── Mobile (<640px) — item 4: compact 4-row layout ── */}
@@ -601,31 +592,36 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
               className="flex flex-col rounded-[20px] p-[5px] transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.13)]"
             >
               <div className="flex-1 overflow-hidden rounded-[15px] bg-white">
-              {/* ── Desktop (≥640px) — item 3: tagline own line above name; chip + km on name line ── */}
-              <div className="hidden sm:block" style={{ padding: "20px 28px 24px 28px" }}>
-                <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                  <div style={{ width: 48, height: 48, flexShrink: 0, borderRadius: 12, background: "#fff6da", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {b.logo_url
-                      ? <img src={b.logo_url} alt={`${b.name} logo`} width={48} height={48} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      : <span style={{ fontSize: 16, fontWeight: 900, color: "#7a5c1e" }}>{initials(b.name)}</span>}
+              {/* ── Desktop (≥640px) — redesigned featured header: left column stacks */}
+              {/*    the category badge over the logo; middle bottom-aligns tagline + */}
+              {/*    name to the logo; View Profile pins top-right. Distance chip      */}
+              {/*    removed. Contacts centre at the card foot above a thin divider.   */}
+              <div className="hidden sm:block" style={{ padding: "14px 28px 20px 28px" }}>
+                <div style={{ display: "flex", gap: 16, alignItems: "stretch" }}>
+                  {/* LEFT column (~88px, centred): category badge + logo */}
+                  <div style={{ width: 88, flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                    {b.main_category && <span style={{ maxWidth: "100%", background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 10px", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", textAlign: "center" }}>{b.main_category.name.split("/")[0].trim()}</span>}
+                    <div style={{ width: 48, height: 48, flexShrink: 0, borderRadius: 12, background: "#fff6da", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {b.logo_url
+                        ? <img src={b.logo_url} alt={`${b.name} logo`} width={48} height={48} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        : <span style={{ fontSize: 16, fontWeight: 900, color: "#7a5c1e" }}>{initials(b.name)}</span>}
+                    </div>
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
+                  {/* MIDDLE column: tagline + name, bottom-aligned to the logo */}
+                  <div style={{ flex: 1, minWidth: 0, alignSelf: "stretch", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
                     {b.tagline && <div style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", color: "#9E3B2B", fontSize: 15, letterSpacing: "0.2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 4 }}>&ldquo;{b.tagline}&rdquo;</div>}
-                    <h3 style={{ fontSize: 21, fontWeight: 800, color: "#0f1f35", lineHeight: 1.25, margin: 0, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+                    <h3 style={{ fontSize: 21, fontWeight: 800, color: "#0f1f35", lineHeight: 1.25, margin: 0, display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: 8 }}>
                       <span>{clampName(b.name)}</span>
-                      {b.main_category && <span style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>{b.main_category.name.split("/")[0].trim()}</span>}
-                      {b.distance_km != null && <span style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 12, fontWeight: 600, whiteSpace: "nowrap" }}>{b.distance_km < 1 ? "< 1 km away" : `${b.distance_km} km away`}</span>}
                       {locText && <span style={{ fontSize: 15, fontWeight: 500, color: "#64748b" }}>({locText})</span>}
                     </h3>
                   </div>
-                  <div style={{ flexShrink: 0, display: "flex", alignItems: "center" }}>
-                    <a href={`/directory/company/${b.slug}`} style={{ background: "#1e3a5f", color: "#fff", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 700, boxShadow: "0 3px 10px rgba(30,58,95,0.22)", textDecoration: "none", whiteSpace: "nowrap" }}>
-                      View Profile →
-                    </a>
-                  </div>
+                  {/* RIGHT: View Profile pinned top-right */}
+                  <a href={`/directory/company/${b.slug}`} style={{ alignSelf: "flex-start", flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 700, boxShadow: "0 3px 10px rgba(30,58,95,0.22)", textDecoration: "none", whiteSpace: "nowrap" }}>
+                    View Profile →
+                  </a>
                 </div>
-                {cardSummary(b.description) && <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description)}</p>}
-                <ContactLinks company={b} className="mt-2.5 text-sm" />
+                {cardSummary(b.description, 21) && <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "12px 0 0", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description, 21)}</p>}
+                <ContactLinks company={b} className="mt-3 justify-center pt-3 text-sm" style={{ borderTop: "1px solid #ECE7D5" }} />
               </div>
 
               {/* ── Mobile (<640px) — item 4: compact 4-row layout ── */}
