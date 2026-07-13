@@ -33,8 +33,10 @@ export default function PWAHome() {
       className="fixed inset-0 z-40 overflow-y-auto"
       style={{ background: "#eef1f5", paddingBottom: "calc(96px + env(safe-area-inset-bottom))" }}
     >
+      {/* Fill at least the full viewport so the cards stretch and leave no gap. */}
+      <div className="flex min-h-full flex-col">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <div className="relative">
+      <div className="relative shrink-0">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/Images/Categories/homepage-hero.jpg')" }} />
         <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(15,31,53,0.88) 0%, rgba(15,31,53,0.60) 55%, rgba(15,31,53,0.48) 100%)" }} />
         <div className="relative px-5 pb-9" style={{ paddingTop: "calc(env(safe-area-inset-top) + 22px)" }}>
@@ -62,16 +64,16 @@ export default function PWAHome() {
         </div>
       </div>
 
-      {/* ── Cards over blueprint ─────────────────────────────────────────── */}
-      <div className="relative -mt-5 rounded-t-[22px] px-4 pt-5" style={{ background: "#eef1f5", backgroundImage: BLUEPRINT }}>
-        <div className="grid grid-cols-2 gap-3.5">
+      {/* ── Cards over blueprint (flex-fills the remaining height) ───────── */}
+      <div className="relative -mt-5 flex flex-1 flex-col rounded-t-[22px] px-4 pb-3 pt-5" style={{ background: "#eef1f5", backgroundImage: BLUEPRINT }}>
+        <div className="grid flex-1 grid-cols-2 grid-rows-2 gap-3.5">
           {CARDS.map((c) => {
             const Icon = c.icon;
             return (
               <Link
                 key={c.href}
                 href={c.href}
-                className="relative flex min-h-[192px] flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70 transition active:scale-[0.985]"
+                className="relative flex min-h-[188px] flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70 transition active:scale-[0.985]"
               >
                 {/* photo + white gradient so the left (text) stays readable */}
                 <div className="pointer-events-none absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${c.img}')` }} />
@@ -93,7 +95,7 @@ export default function PWAHome() {
         </div>
 
         {/* ── "Built on Experience" banner ───────────────────────────────── */}
-        <div className="relative mb-7 mt-4 flex items-center gap-3.5 overflow-hidden rounded-2xl px-4 py-4" style={{ background: NAVY }}>
+        <div className="relative mt-3.5 flex shrink-0 items-center gap-3.5 overflow-hidden rounded-2xl px-4 py-4" style={{ background: NAVY }}>
           <ShieldCheck size={36} color="#fff" strokeWidth={1.6} className="shrink-0" />
           <div className="min-w-0">
             <div className="text-[14px] font-extrabold leading-tight text-white">Built on Experience. Focused on Quality.</div>
@@ -102,6 +104,7 @@ export default function PWAHome() {
             </p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
