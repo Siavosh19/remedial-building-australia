@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+
+// The animated install walkthrough (iPhone/Android, tap-by-tap). Lazy-loaded so
+// its ~800 lines only download when the visitor actually opens the guide.
+const InstallGuide = dynamic(() => import("./InstallGuide"), { ssr: false });
 
 // Non-intrusive "install this app" banner for mobile web visitors.
 //
@@ -28,6 +33,7 @@ interface BeforeInstallPromptEvent extends Event {
 export default function InstallPrompt() {
   const [visible, setVisible] = useState(false);
   const [mode, setMode] = useState<"android" | "ios" | null>(null);
+  const [showGuide, setShowGuide] = useState(false);
   const deferredRef = useRef<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
@@ -92,26 +98,45 @@ export default function InstallPrompt() {
   if (!visible || !mode) return null;
 
   return (
-    <div style={bannerStyle} role="dialog" aria-label="Install app">
-      <div style={{ flex: 1, paddingRight: 10, fontSize: 14 }}>
-        <p style={{ margin: "0 0 8px", fontWeight: 500 }}>
-          Install our app for a faster, offline experience.
-        </p>
-        {mode === "android" ? (
-          <button onClick={install} style={installBtnStyle}>
-            Install App
-          </button>
-        ) : (
-          <span style={{ fontSize: 13, color: "#ccc", lineHeight: 1.4 }}>
-            Tap the <strong>&#8943;</strong> menu (bottom-right of Safari), then{" "}
-            <strong>&ldquo;Add to Home Screen&rdquo;</strong>.
-          </span>
-        )}
+    <>
+      <div style={bannerStyle} role="dialog" aria-label="Install app">
+        <div style={{ flex: 1, paddingRight: 10, fontSize: 14 }}>
+          <p style={{ margin: "0 0 3px", fontWeight: 600 }}>
+            Install our app for a faster experience
+          </p>
+          <p style={{ margin: "0 0 10px", fontSize: 12.5, color: "#bbb", lineHeight: 1.4 }}>
+            Add it to your home screen — it opens full-screen and works offline.
+          </p>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {mode === "android" && (
+              <button onClick={install} style={installBtnStyle}>
+                Install App
+              </button>
+            )}
+            <button
+              onClick={() => setShowGuide(true)}
+              style={mode === "ios" ? installBtnStyle : guideBtnStyle}
+            >
+              See how to install &rarr;
+            </button>
+          </div>
+        </div>
+        <button onClick={dismiss} aria-label="Dismiss" style={closeBtnStyle}>
+          &times;
+        </button>
       </div>
-      <button onClick={dismiss} aria-label="Dismiss" style={closeBtnStyle}>
-        &times;
-      </button>
-    </div>
+
+      {/* Full-screen animated guide, opened from the banner. Pre-selects the
+          visitor's platform; they can still toggle iPhone/Android inside. */}
+      {showGuide && (
+        <div style={guideOverlayStyle} role="dialog" aria-modal="true" aria-label="Install guide">
+          <button onClick={() => setShowGuide(false)} aria-label="Close guide" style={guideCloseStyle}>
+            &times;
+          </button>
+          <InstallGuide initialPlatform={mode === "android" ? "android" : "ios"} />
+        </div>
+      )}
+    </>
   );
 }
 
@@ -151,4 +176,43 @@ const closeBtnStyle: React.CSSProperties = {
   lineHeight: 1,
   cursor: "pointer",
   padding: "0 5px",
+};
+
+const guideBtnStyle: React.CSSProperties = {
+  background: "transparent",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.35)",
+  padding: "8px 14px",
+  borderRadius: 6,
+  fontWeight: 600,
+  fontSize: 13,
+  cursor: "pointer",
+};
+
+const guideOverlayStyle: React.CSSProperties = {
+  position: "fixed",
+  inset: 0,
+  zIndex: 10000,
+  background: "#0a1c34",
+  overflowY: "auto",
+  WebkitOverflowScrolling: "touch",
+};
+
+const guideCloseStyle: React.CSSProperties = {
+  position: "fixed",
+  top: "calc(env(safe-area-inset-top) + 10px)",
+  right: 14,
+  zIndex: 10001,
+  width: 40,
+  height: 40,
+  borderRadius: 999,
+  background: "rgba(0,0,0,0.55)",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.25)",
+  fontSize: 26,
+  lineHeight: 1,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };

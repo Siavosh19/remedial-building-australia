@@ -736,8 +736,8 @@ font-weight:800;
 font-size:12px;
 }`;
 
-export default function InstallGuide() {
-  const [platform, setPlatform] = useState<Platform>("ios");
+export default function InstallGuide({ initialPlatform = "ios" }: { initialPlatform?: Platform } = {}) {
+  const [platform, setPlatform] = useState<Platform>(initialPlatform);
   const [idx, setIdx] = useState(0);
   const [tap, setTap] = useState<TapPos | null>(null);
   const screenRef = useRef<HTMLDivElement>(null);
