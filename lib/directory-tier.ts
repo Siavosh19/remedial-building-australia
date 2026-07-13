@@ -2,15 +2,18 @@
 // silver and gold treatments across the card and profile.
 //
 // Mapping (single source of truth — change here if the tier↔plan mapping moves):
-//   free   ← basic, claimed    (plain baseline card — claimed just means it has
-//                               an owner; it is NOT a paid tier)
-//   silver ← business, silver   (silver treatment, paid)
+//   free   ← basic              (unclaimed baseline listing)
+//   silver ← claimed, business, silver
+//            "claimed" IS the Silver tier: claiming a listing starts a Silver
+//            trial (plan_type "claimed" + a trialing subscription), and the rest
+//            of the app already treats claimed as Silver (labels, quote requests,
+//            the PAID list). So the card must render Silver too.
 //   gold   ← featured, premium  (gold / featured treatment, max 3 per cat/state)
 export type DirTier = "free" | "silver" | "gold";
 
 export function dirTier(planType?: string | null): DirTier {
   if (planType === "premium" || planType === "featured") return "gold";
-  if (planType === "business" || planType === "silver") return "silver";
+  if (planType === "business" || planType === "silver" || planType === "claimed") return "silver";
   return "free";
 }
 
