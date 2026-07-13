@@ -299,12 +299,15 @@ body.pwa-tabbar {
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-/* Full lockdown: inside the installed app, hide the public site header and the
-   marketing footers so ONLY the section content + PWA chrome is shown. Portal /
-   dashboard chrome is left intact (those routes don't carry pwa-section). */
-body.pwa-standalone [data-site-header] {
-  display: none !important;
-}
-body.pwa-section footer {
+/* Full lockdown: inside the installed app it must look like a native app — no
+   website chrome anywhere. Hide the public site header, every footer, and any
+   element explicitly flagged website-only (data-pwa-hide, e.g. "Back to website"
+   links and marketing intro bands). Portal/dashboard pages render their own
+   header/footer as their app chrome; those are <header>/<footer> WITHOUT the
+   data-site-header marker, but we still hide their footers here for a clean
+   app look. */
+body.pwa-standalone [data-site-header],
+body.pwa-standalone footer,
+body.pwa-standalone [data-pwa-hide] {
   display: none !important;
 }

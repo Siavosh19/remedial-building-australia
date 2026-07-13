@@ -13,7 +13,7 @@
  *
  * Bump CACHE_VERSION to force old caches to be cleared on the next deploy.
  */
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const STATIC_CACHE = `rba-static-${CACHE_VERSION}`;
 const PAGE_CACHE = `rba-pages-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline";

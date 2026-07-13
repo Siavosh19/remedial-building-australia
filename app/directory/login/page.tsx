@@ -85,7 +85,7 @@ export default function DirectoryLoginPage() {
       <main className="flex-1">
 
         {/* ── Page intro ─────────────────────────────────────────────────────── */}
-        <section className="border-b border-sky-900/30 bg-sky-950 px-8 py-8">
+        <section data-pwa-hide className="border-b border-sky-900/30 bg-sky-950 px-8 py-8">
           <div className="mx-auto max-w-3xl">
             <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-sky-400">
               Account Portal
@@ -104,8 +104,8 @@ export default function DirectoryLoginPage() {
 
           <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm md:p-10">
 
-            {/* Back link */}
-            <div className="mb-8">
+            {/* Back link (hidden in the installed PWA — it's an app, no website) */}
+            <div data-pwa-hide className="mb-8">
               <Link
                 href="/"
                 className="inline-flex items-center gap-1.5 text-lg font-bold text-slate-900 transition-colors hover:text-black"

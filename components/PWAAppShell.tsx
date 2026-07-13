@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Building2, ClipboardList, Briefcase, Newspaper, type LucideIcon } from "lucide-react";
+import PWAHome from "./PWAHome";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PWA app shell — turns the installed ("Add to Home Screen") app into a focused,
@@ -25,13 +26,15 @@ import { Building2, ClipboardList, Briefcase, Newspaper, type LucideIcon } from 
 // ─────────────────────────────────────────────────────────────────────────────
 
 const NAVY = "#16324F";
+const RED = "#E4572E";
 
-// The only 4 sections the installed app exposes, in display order.
-const SECTIONS: { href: string; label: string; icon: LucideIcon; blurb: string }[] = [
-  { href: "/directory", label: "Directory", icon: Building2, blurb: "Find building specialists" },
-  { href: "/industry-news", label: "News", icon: Newspaper, blurb: "Latest industry updates" },
-  { href: "/request-quotes", label: "Quotes", icon: ClipboardList, blurb: "Request project quotes" },
-  { href: "/industry-jobs", label: "Jobs", icon: Briefcase, blurb: "Browse & post jobs" },
+// The only 4 sections the installed app exposes, in display order. `dot` shows a
+// small notification dot on that tab.
+const SECTIONS: { href: string; label: string; icon: LucideIcon; dot?: boolean }[] = [
+  { href: "/directory", label: "Directory", icon: Building2, dot: true },
+  { href: "/industry-news", label: "News", icon: Newspaper },
+  { href: "/request-quotes", label: "Quotes", icon: ClipboardList },
+  { href: "/industry-jobs", label: "Jobs", icon: Briefcase },
 ];
 
 // Internal paths the installed app may navigate to: the 4 sections + their
@@ -39,11 +42,13 @@ const SECTIONS: { href: string; label: string; icon: LucideIcon; blurb: string }
 // account switch). Anything else is blocked in standalone mode.
 const ALLOWED_PREFIXES = ["/directory", "/industry-news", "/request-quotes", "/industry-jobs", "/client", "/supplier-dashboard"];
 
-// Routes with their own chrome / focused auth — the bottom bar hides on these.
+// Routes that render their OWN app chrome (business/client/admin portals already
+// have a bottom tab bar) — our bar hides there to avoid two bars. Auth pages
+// (login/signup/…) are intentionally NOT here, so the bar stays on every page and
+// the app never falls back to a website look.
 const HIDE_BAR_PREFIXES = [
   "/directory/dashboard", "/directory/admin", "/directory/admin-review",
-  "/client", "/supplier-dashboard", "/directory/login", "/directory/signup",
-  "/directory/claim", "/directory/forgot-password", "/directory/reset-password",
+  "/client", "/supplier-dashboard",
 ];
 
 const WELCOMED_KEY = "rba-pwa-welcomed";
@@ -149,63 +154,46 @@ export default function PWAAppShell() {
         </div>
       )}
 
-      {/* ── Launcher home — 2×2 section cards (installed app, at "/") ──────── */}
-      {isLauncher && (
-        <div className="fixed inset-0 z-40 flex flex-col bg-slate-50" style={{ paddingBottom: "calc(80px + env(safe-area-inset-bottom))" }}>
-          <div className="flex items-center gap-3 px-5 pb-5 pt-8" style={{ background: NAVY }}>
-            <img src="/icon.png" alt="" width={40} height={40} className="rounded-xl" />
-            <div className="min-w-0">
-              <div className="truncate text-base font-extrabold leading-tight text-white">Remedial Building Australia</div>
-              <div className="text-[12px] text-white/60">Choose a section</div>
-            </div>
-          </div>
-          <div className="grid flex-1 grid-cols-2 content-start gap-3 p-4">
-            {SECTIONS.map((s) => {
-              const Icon = s.icon;
+      {/* ── Home screen (installed app, at "/") ───────────────────────────── */}
+      {isLauncher && <PWAHome />}
+
+      {/* ── Floating rounded navy bottom bar ──────────────────────────────── */}
+      {showBar && (
+        <div
+          className="fixed inset-x-0 bottom-0 z-50 px-3"
+          style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)" }}
+        >
+          <nav
+            className="mx-auto flex max-w-md items-stretch justify-between gap-1 rounded-[22px] p-2 shadow-[0_10px_30px_rgba(15,31,53,0.35)]"
+            style={{ background: NAVY }}
+            aria-label="Primary"
+          >
+            {SECTIONS.map((tab) => {
+              const active = tabActive(tab.href, pathname);
+              const Icon = tab.icon;
+              const color = active ? "#ffffff" : "rgba(255,255,255,0.6)";
               return (
                 <Link
-                  key={s.href}
-                  href={s.href}
-                  className="flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl bg-white p-3 text-center shadow-sm ring-1 ring-slate-200 transition active:scale-[0.98]"
+                  key={tab.href}
+                  href={tab.href}
+                  aria-label={tab.label}
+                  aria-current={active ? "page" : undefined}
+                  className="relative flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl py-2 text-[11px] font-semibold transition"
+                  style={active
+                    ? { background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.22)", color }
+                    : { color }}
                 >
-                  <span className="flex h-16 w-16 items-center justify-center rounded-2xl" style={{ background: NAVY }}>
-                    <Icon size={30} color="#fff" />
-                  </span>
-                  <span className="text-[15px] font-bold" style={{ color: NAVY }}>{s.label}</span>
-                  <span className="text-[11px] leading-snug text-slate-400">{s.blurb}</span>
+                  {tab.dot && (
+                    <span className="absolute right-3 top-1.5 h-1.5 w-1.5 rounded-full" style={{ background: RED }} />
+                  )}
+                  <Icon size={22} color={color} />
+                  <span>{tab.label}</span>
+                  <span className="h-[2px] w-5 rounded-full" style={{ background: active ? RED : "transparent" }} />
                 </Link>
               );
             })}
-          </div>
+          </nav>
         </div>
-      )}
-
-      {/* ── Doubled-height navy bottom tab bar ────────────────────────────── */}
-      {showBar && (
-        <nav
-          className="fixed inset-x-0 bottom-0 z-50 flex items-stretch"
-          style={{ background: NAVY, paddingBottom: "env(safe-area-inset-bottom)" }}
-          aria-label="Primary"
-        >
-          {SECTIONS.map((tab) => {
-            const active = tabActive(tab.href, pathname);
-            const Icon = tab.icon;
-            const color = active ? "#ffffff" : "rgba(255,255,255,0.55)";
-            return (
-              <Link
-                key={tab.href}
-                href={tab.href}
-                aria-label={tab.label}
-                aria-current={active ? "page" : undefined}
-                className="flex flex-1 flex-col items-center justify-center gap-1 py-3.5 text-[12px] font-semibold transition"
-                style={{ color }}
-              >
-                <Icon size={30} color={color} />
-                {tab.label}
-              </Link>
-            );
-          })}
-        </nav>
       )}
     </>
   );
