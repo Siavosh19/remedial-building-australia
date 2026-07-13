@@ -47,8 +47,15 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
   const [abnChecking, setAbnChecking] = useState(false);
   const [abnResult, setAbnResult] = useState<AbnResult | null>(null);
 
+  // Format an ABN as the standard "XX XXX XXX XXX" while the user types, so it can
+  // be entered/read with spaces. Validation & storage still use the 11 digits.
+  function formatAbn(v: string): string {
+    const d = v.replace(/\D/g, "").slice(0, 11);
+    return [d.slice(0, 2), d.slice(2, 5), d.slice(5, 8), d.slice(8, 11)].filter(Boolean).join(" ");
+  }
+
   useEffect(() => {
-    const abn = form.abn;
+    const abn = form.abn.replace(/\D/g, "");
     if (abn.length !== 11) {
       setAbnResult(null);
       setAbnChecking(false);
@@ -107,11 +114,17 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
     setStatus(null);
     setLoading(true);
 
+    // Accept a bare domain (e.g. "www.walsos.com.au") and normalise to a full URL
+    // so the stored value works as a link on the public profile.
+    const rawSite = form.website.trim();
+    const website = rawSite && !/^https?:\/\//i.test(rawSite) ? `https://${rawSite}` : rawSite;
+
     const response = await fetch("/api/directory/company", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
+        website,
         mainCategoryId: Number(form.mainCategoryId),
         otherCategory: isOtherCategory ? otherCategory.trim() : "",
       }),
@@ -174,7 +187,7 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
             <input
               type="text"
               value={form.abn}
-              onChange={(event) => setForm({ ...form, abn: event.target.value.replace(/\D/g, "") })}
+              onChange={(event) => setForm({ ...form, abn: formatAbn(event.target.value) })}
               className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 pr-10 text-sm focus:outline-none ${
                 abnIsBad
                   ? "border-rose-400 focus:border-rose-500"
@@ -183,17 +196,17 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
                   : "border-slate-300 focus:border-sky-600"
               }`}
               required
-              maxLength={11}
-              placeholder="11 digits"
+              maxLength={14}
+              placeholder="e.g. 78 138 462 763"
             />
-            {form.abn.length === 11 && (
+            {form.abn.replace(/\D/g, "").length === 11 && (
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-base">
                 {abnChecking ? "⏳" : abnIsBad ? "❌" : abnVerified ? "✅" : ""}
               </span>
             )}
           </div>
           {/* ABN status line */}
-          {form.abn.length === 11 && !abnChecking && abnResult && (
+          {form.abn.replace(/\D/g, "").length === 11 && !abnChecking && abnResult && (
             <p className={`mt-1.5 text-xs font-medium ${abnIsBad ? "text-rose-600" : abnVerified ? "text-emerald-600" : "text-slate-500"}`}>
               {abnIsBad
                 ? abnResult.status === "not_found"
@@ -357,10 +370,11 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         <label className="block text-sm font-semibold text-slate-800">
           <span>Website</span>
           <input
-            type="url"
+            type="text"
+            inputMode="url"
             value={form.website}
             onChange={(event) => setForm({ ...form, website: event.target.value })}
-            placeholder="https://"
+            placeholder="www.yourbusiness.com.au"
             className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           />
         </label>
@@ -411,7 +425,7 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
         className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Submitting…" : "Submit &amp; publish listing"}
+        {loading ? "Submitting…" : "Submit & publish listing"}
       </button>
     </form>
   );

@@ -93,11 +93,16 @@ export default function CompanyEditForm({ company, categories }: Props) {
     setStatus(null);
     setLoading(true);
 
+    // Accept a bare domain and normalise to a full URL so the saved value links.
+    const rawSite = form.website.trim();
+    const website = rawSite && !/^https?:\/\//i.test(rawSite) ? `https://${rawSite}` : rawSite;
+
     const response = await fetch("/api/directory/company", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
+        website,
         mainCategoryId: Number(form.mainCategoryId),
         yearEstablished: form.yearEstablished ? Number(form.yearEstablished) : undefined,
         secondaryCategoryIds: form.secondaryCategoryIds.map(Number),
@@ -247,10 +252,11 @@ export default function CompanyEditForm({ company, categories }: Props) {
         <label className="block text-sm font-semibold text-slate-800">
           <span>Website</span>
           <input
-            type="url"
+            type="text"
+            inputMode="url"
             value={form.website}
             onChange={(e) => setForm({ ...form, website: e.target.value })}
-            placeholder="https://"
+            placeholder="www.yourbusiness.com.au"
             className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           />
         </label>
