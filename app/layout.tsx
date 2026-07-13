@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, DM_Serif_Display } from "next/font/google";
 import Script from "next/script";
 import PWARegister from "@/components/PWARegister";
 import InstallPrompt from "@/components/InstallPrompt";
@@ -13,6 +13,15 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Italic display serif — used for the business tagline on directory cards.
+const dmSerifItalic = DM_Serif_Display({
+  variable: "--font-dm-serif",
+  weight: "400",
+  style: "italic",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const SITE_URL = "https://www.remedialbuildingaustralia.com.au";
@@ -84,7 +93,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${dmSerifItalic.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <script

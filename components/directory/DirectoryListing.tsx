@@ -68,6 +68,7 @@ type AiMatchResponse = {
   query: string;
   location: string;
   confidence: "high" | "medium" | "low";
+  reason: string;
 };
 
 interface Props {
@@ -93,7 +94,7 @@ function DistanceBadge({ distanceKm }: { distanceKm: number }) {
       ? `${distanceKm.toFixed(1)} km`
       : `${Math.round(distanceKm)} km`;
   return (
-    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500">
+    <span className="inline-block whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-semibold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>
       {label} away
     </span>
   );
@@ -165,19 +166,26 @@ function SilverRow({ company }: { company: CompanyResult }) {
           </div>
 
           <div className="min-w-0 flex-1">
-            <div className="mb-1 flex flex-wrap items-center gap-1.5">
+            <div className="mb-1 flex items-center gap-1.5">
               {company.main_category && (
-                <span className="inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[12px] font-bold text-slate-600">
+                <span className="inline-block shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>
                   {company.main_category.name.split("/")[0].trim()}
                 </span>
               )}
-              {company.distance_km != null && <DistanceBadge distanceKm={company.distance_km} />}
+              {company.tagline && (
+                <span
+                  className="min-w-0 flex-1 truncate"
+                  style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", fontSize: "15px", letterSpacing: "0.2px", color: "#9E3B2B" }}
+                >
+                  &ldquo;{company.tagline}&rdquo;
+                </span>
+              )}
             </div>
-            <h3 className="text-lg font-bold leading-tight text-sky-950">
-              {clampName(company.name)}
-              {locText && <span className="ml-1.5 text-sm font-normal text-slate-500">({locText})</span>}
+            <h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-lg font-bold leading-tight text-sky-950">
+              <span>{clampName(company.name)}</span>
+              {company.distance_km != null && <DistanceBadge distanceKm={company.distance_km} />}
+              {locText && <span className="text-sm font-normal text-slate-500">({locText})</span>}
             </h3>
-            {company.tagline && <p className="mt-0.5 text-sm font-medium text-slate-500">{company.tagline}</p>}
           </div>
 
           <a
@@ -338,6 +346,7 @@ type TopListing = {
   name: string;
   logo_url: string | null;
   description: string | null;
+  tagline: string | null;
   phone: string | null;
   email: string | null;
   website: string | null;
@@ -450,13 +459,14 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                       : <span style={{ fontSize: 16, fontWeight: 900, color: "#7a5c1e" }}>{initials(b.name)}</span>}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-                      {b.main_category && <span style={{ background: "#fff6da", color: "#7a5c1e", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 700 }}>{b.main_category.name.split("/")[0].trim()}</span>}
-                      {b.distance_km != null && <span style={{ background: "#fbf3d9", color: "#000000", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 600 }}>{b.distance_km < 1 ? "< 1 km away" : `${b.distance_km} km away`}</span>}
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, minWidth: 0 }}>
+                      {b.main_category && <span style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>{b.main_category.name.split("/")[0].trim()}</span>}
+                      {b.tagline && <span style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", color: "#9E3B2B", fontSize: 15, letterSpacing: "0.2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>&ldquo;{b.tagline}&rdquo;</span>}
                     </div>
-                    <h3 style={{ fontSize: 21, fontWeight: 800, color: "#0f1f35", lineHeight: 1.25, margin: 0 }}>
-                      {clampName(b.name)}
-                      {locText && <span style={{ fontSize: 15, fontWeight: 500, color: "#64748b" }}> ({locText})</span>}
+                    <h3 style={{ fontSize: 21, fontWeight: 800, color: "#0f1f35", lineHeight: 1.25, margin: 0, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+                      <span>{clampName(b.name)}</span>
+                      {b.distance_km != null && <span style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 12, fontWeight: 600, whiteSpace: "nowrap" }}>{b.distance_km < 1 ? "< 1 km away" : `${b.distance_km} km away`}</span>}
+                      {locText && <span style={{ fontSize: 15, fontWeight: 500, color: "#64748b" }}>({locText})</span>}
                     </h3>
                   </div>
                   <div style={{ flexShrink: 0, display: "flex", alignItems: "center" }}>
@@ -1239,25 +1249,6 @@ export default function DirectoryListing({ categories }: Props) {
     setAiLoading(true);
     setAiMatch(null);
     try {
-      // Confirm a location against the real AU place list (same source the main
-      // search box autocompletes from). A hit becomes a "verified" locked-in pill
-      // and gives precise coordinates for nearest-first ranking.
-      const suggestLocation = async (loc: string): Promise<LocationSuggestion | null> => {
-        if (!loc) return null;
-        try {
-          const lr = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(loc)}`);
-          const lj = await lr.json();
-          return (lj?.suggestions?.[0] as LocationSuggestion) ?? null;
-        } catch { return null; }
-      };
-
-      // When the owner typed a location, we already know it before the AI call
-      // returns — so resolve it CONCURRENTLY with the classifier instead of
-      // waiting for the AI round-trip to finish first. (Falls back to sequential
-      // only when the location has to be extracted from the description text.)
-      const typedLoc = aiLocation.trim();
-      const typedLocPromise = suggestLocation(typedLoc);
-
       const res = await fetch("/api/ai-category-match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1269,12 +1260,19 @@ export default function DirectoryListing({ categories }: Props) {
         return;
       }
       setAiMatch(data);
-      // Location the owner typed (resolved in parallel above), else any location
-      // the AI found in the text (resolved now).
-      const rawLoc = typedLoc || (data.location ?? "").trim();
-      const resolved: LocationSuggestion | null = typedLoc
-        ? await typedLocPromise
-        : await suggestLocation(rawLoc);
+      // Location the owner typed, else any location the AI found in the text.
+      const rawLoc = aiLocation.trim() || (data.location ?? "").trim();
+      // Confirm it against the real AU place list (same source the main search
+      // box autocompletes from). A hit becomes a "verified" locked-in pill and
+      // gives precise coordinates for nearest-first ranking.
+      let resolved: LocationSuggestion | null = null;
+      if (rawLoc) {
+        try {
+          const lr = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(rawLoc)}`);
+          const lj = await lr.json();
+          resolved = (lj?.suggestions?.[0] as LocationSuggestion) ?? null;
+        } catch { resolved = null; }
+      }
       if (data.matched) {
         applyAiSearch(data.matched.name, rawLoc, resolved);
       } else {

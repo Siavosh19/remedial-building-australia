@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   const businessEmail = String(body.businessEmail ?? "").trim().toLowerCase();
   const description = String(body.description ?? "").trim();
   const fullDescription = String(body.fullDescription ?? "").trim().slice(0, 7000);
-  const tagline = String(body.tagline ?? "").trim().slice(0, 45);
+  const tagline = String(body.tagline ?? "").trim().slice(0, 35);
 
   if (!companyName) return NextResponse.json({ error: "Company name is required." }, { status: 400 });
   if (!mainCategoryId) return NextResponse.json({ error: "Primary category is required." }, { status: 400 });
@@ -304,7 +304,7 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.businessEmail === "string" && EMAIL_RE.test(body.businessEmail.trim())) companyData.email = body.businessEmail.trim().toLowerCase();
   if (typeof body.description === "string" && body.description.trim()) companyData.description = body.description.trim();
   // Optional self-declared tagline + services list (all tiers). Empty clears them.
-  if (typeof body.tagline === "string") companyData.tagline = body.tagline.trim().slice(0, 45) || null;
+  if (typeof body.tagline === "string") companyData.tagline = body.tagline.trim().slice(0, 35) || null;
   if (typeof body.servicesOffered === "string") companyData.services_offered = body.servicesOffered.trim().slice(0, 220) || null;
   if (typeof body.fullDescription === "string") companyData.full_description = body.fullDescription.trim().slice(0, 7000) || null;
   if (typeof body.mainCategoryId === "number" && body.mainCategoryId > 0) companyData.main_category_id = body.mainCategoryId;

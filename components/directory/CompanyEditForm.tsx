@@ -309,12 +309,13 @@ export default function CompanyEditForm({ company, categories }: Props) {
             type="text"
             value={form.tagline}
             onChange={(e) => setForm({ ...form, tagline: e.target.value })}
-            maxLength={45}
+            maxLength={35}
             placeholder="e.g. Registered Class 2 Builder"
             className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           />
-          <span className="mt-1 block text-xs font-normal text-slate-400">
-            Appears next to your business name on your listing card and profile. Leave blank to hide it.
+          <span className="mt-1 flex justify-between gap-3 text-xs font-normal text-slate-400">
+            <span>Appears next to your business name on your listing card. Leave blank to hide it.</span>
+            <span className={`shrink-0 tabular-nums ${form.tagline.length >= 35 ? "font-semibold text-amber-600" : ""}`}>{form.tagline.length}/35</span>
           </span>
         </label>
 
