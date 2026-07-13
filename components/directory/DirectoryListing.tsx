@@ -22,6 +22,7 @@ type CompanyResult = {
   slug: string;
   name: string;
   description: string | null;
+  tagline?: string | null;
   phone: string | null;
   website?: string | null;
   email?: string | null;
@@ -177,6 +178,7 @@ function SilverRow({ company }: { company: CompanyResult }) {
               {clampName(company.name)}
               {locText && <span className="ml-1.5 text-sm font-normal text-slate-500">({locText})</span>}
             </h3>
+            {company.tagline && <p className="mt-0.5 text-sm font-medium text-slate-500">{company.tagline}</p>}
           </div>
 
           <a

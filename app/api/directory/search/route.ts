@@ -777,6 +777,7 @@ const COMPANY_SELECT = {
   slug: true,
   name: true,
   description: true,
+  tagline: true,
   phone: true,
   website: true,
   email: true,

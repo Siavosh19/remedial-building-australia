@@ -23,6 +23,8 @@ type Props = {
     instagram_url: string | null;
     linkedin_url: string | null;
     description: string | null;
+    tagline: string | null;
+    services_offered: string | null;
     main_category_id: number | null;
     plan_type: string;
     licence_number: string | null;
@@ -59,6 +61,8 @@ export default function CompanyEditForm({ company, categories }: Props) {
     instagram: company.instagram_url ?? "",
     linkedin: company.linkedin_url ?? "",
     description: company.description ?? "",
+    tagline: company.tagline ?? "",
+    servicesOffered: company.services_offered ?? "",
     mainCategoryId: String(company.main_category_id ?? ""),
     suburb: location?.suburb ?? "",
     postcode: location?.postcode ?? "",
@@ -286,6 +290,21 @@ export default function CompanyEditForm({ company, categories }: Props) {
         </div>
 
         <label className="block text-sm font-semibold text-slate-800">
+          <span>Tagline <span className="font-normal text-slate-400">(optional)</span></span>
+          <input
+            type="text"
+            value={form.tagline}
+            onChange={(e) => setForm({ ...form, tagline: e.target.value })}
+            maxLength={45}
+            placeholder="e.g. Registered Class 2 Builder"
+            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+          />
+          <span className="mt-1 block text-xs font-normal text-slate-400">
+            Appears next to your business name on your listing card and profile. Leave blank to hide it.
+          </span>
+        </label>
+
+        <label className="block text-sm font-semibold text-slate-800">
           <span>Business description</span>
           <textarea
             value={form.description}
@@ -293,6 +312,21 @@ export default function CompanyEditForm({ company, categories }: Props) {
             rows={5}
             className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           />
+        </label>
+
+        <label className="block text-sm font-semibold text-slate-800">
+          <span>Services offered <span className="font-normal text-slate-400">(optional)</span></span>
+          <textarea
+            value={form.servicesOffered}
+            onChange={(e) => setForm({ ...form, servicesOffered: e.target.value })}
+            rows={3}
+            maxLength={220}
+            placeholder="e.g. Waterproofing, concrete repair, façade rectification, remedial coatings"
+            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+          />
+          <span className="mt-1 block text-xs font-normal text-slate-400">
+            A short list of what you offer — shown in the &ldquo;Services offered&rdquo; section of your public profile.
+          </span>
         </label>
 
         {isPaid && (

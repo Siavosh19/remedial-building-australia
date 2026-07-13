@@ -273,12 +273,6 @@ export default async function CompanyProfilePage({ params }: Props) {
                 {company.main_category.name}
               </span>
             )}
-            {isFeatured && (
-              <span className="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-800">★ Gold</span>
-            )}
-            {isClaimed && !isFeatured && (
-              <span className="inline-flex rounded-full bg-indigo-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-700">Silver</span>
-            )}
           </div>
 
           {/* Logo top-aligned with the name on phones; vertically centred on desktop */}
@@ -290,12 +284,17 @@ export default async function CompanyProfilePage({ params }: Props) {
                 <span>{abbr || "?"}</span>
               )}
             </div>
-            <h1 className="min-w-0 flex-1 font-serif text-3xl font-semibold leading-tight text-sky-950 md:text-4xl">
-              {company.name}
-              {locLabel && (
-                <span className="ml-2 font-sans text-lg font-medium text-slate-400">({locLabel})</span>
+            <div className="min-w-0 flex-1">
+              <h1 className="font-serif text-3xl font-semibold leading-tight text-sky-950 md:text-4xl">
+                {company.name}
+                {locLabel && (
+                  <span className="ml-2 font-sans text-lg font-medium text-slate-400">({locLabel})</span>
+                )}
+              </h1>
+              {company.tagline && (
+                <p className="mt-1 font-sans text-base font-medium text-slate-500">{company.tagline}</p>
               )}
-            </h1>
+            </div>
 
             {/* Claim CTA — desktop: inline far right of the header (unclaimed only) */}
             {!isClaimed && (
@@ -377,9 +376,11 @@ export default async function CompanyProfilePage({ params }: Props) {
               )}
             </Section>
 
-            {/* Services Offered */}
+            {/* Services Offered — business-typed text takes priority, else tags */}
             <Section label="Services Offered">
-              {tagsByType.service.length > 0 ? (
+              {company.services_offered ? (
+                <p className="whitespace-pre-line text-base leading-8 text-slate-700">{company.services_offered}</p>
+              ) : tagsByType.service.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                   {tagsByType.service.map((ct) => <TagChip key={ct.id} label={ct.tag.name} colour="bg-sky-100 text-sky-800" />)}
                 </div>

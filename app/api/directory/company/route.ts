@@ -297,6 +297,9 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.linkedin === "string") companyData.linkedin_url = body.linkedin.trim() || null;
   if (typeof body.businessEmail === "string" && EMAIL_RE.test(body.businessEmail.trim())) companyData.email = body.businessEmail.trim().toLowerCase();
   if (typeof body.description === "string" && body.description.trim()) companyData.description = body.description.trim();
+  // Optional self-declared tagline + services list (all tiers). Empty clears them.
+  if (typeof body.tagline === "string") companyData.tagline = body.tagline.trim().slice(0, 45) || null;
+  if (typeof body.servicesOffered === "string") companyData.services_offered = body.servicesOffered.trim().slice(0, 220) || null;
   if (typeof body.mainCategoryId === "number" && body.mainCategoryId > 0) companyData.main_category_id = body.mainCategoryId;
 
   // Self-declared profile fields — available to all tiers, including Free Listing.

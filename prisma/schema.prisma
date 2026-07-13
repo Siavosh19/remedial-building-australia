@@ -321,6 +321,8 @@ model Company {
   instagram_url       String?
   linkedin_url        String?
   description         String?
+  tagline             String?
+  services_offered    String?
   year_established    Int?
   main_category_id    Int?
   status              CompanyStatus @default(draft)
