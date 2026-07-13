@@ -81,7 +81,7 @@ export default function SiteHeader() {
 
   return (
     <>
-    <header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
+    <header data-site-header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 py-4 md:gap-4 md:px-8 md:py-5">
         <div className="flex min-w-0 items-center gap-2 xl:shrink-0">
           <button
