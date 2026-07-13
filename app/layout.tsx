@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, DM_Serif_Display } from "next/font/google";
 import Script from "next/script";
 import PWARegister from "@/components/PWARegister";
 import InstallPrompt from "@/components/InstallPrompt";
+import PWAAppShell from "@/components/PWAAppShell";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -113,6 +114,7 @@ export default function RootLayout({
         {children}
         <PWARegister />
         <InstallPrompt />
+        <PWAAppShell />
         <Script
           src="https://app.termly.io/resource-blocker/cd648cb9-82de-4258-b9b6-13de590b2886"
           strategy="afterInteractive"

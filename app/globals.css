@@ -288,3 +288,10 @@ textarea.textarea-grip:focus {
 }
 /* Hide the faint native WebKit resizer so only our grip shows */
 textarea.textarea-grip::-webkit-resizer { background: transparent; }
+
+/* PWA app shell (see components/PWAAppShell.tsx): when the installed app shows
+   its bottom tab bar, reserve space so the fixed bar never covers page content
+   or the footer. Toggled on <body> only in standalone mode. */
+body.pwa-tabbar {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+}
