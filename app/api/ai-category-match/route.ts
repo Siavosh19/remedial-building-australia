@@ -30,7 +30,6 @@ type AiResult = {
   query: string; // short canonical trade phrase for the keyword search
   location: string; // suburb/town/postcode/state mentioned in the description, or ""
   confidence: "high" | "medium" | "low";
-  reason: string;
 };
 
 const RESULT_SCHEMA: Record<string, unknown> = {
@@ -59,9 +58,8 @@ const RESULT_SCHEMA: Record<string, unknown> = {
         "Any Australian suburb, town, city, postcode or state the owner mentions for WHERE the work is, copied as written (e.g. 'Bondi', '2026', 'Parramatta NSW'). Empty string if no location is mentioned.",
     },
     confidence: { type: "string", enum: ["high", "medium", "low"] },
-    reason: { type: "string", description: "One short sentence explaining the choice." },
   },
-  required: ["category", "alternates", "query", "location", "confidence", "reason"],
+  required: ["category", "alternates", "query", "location", "confidence"],
 };
 
 function buildSystemPrompt(categoryNames: string[]): string {
@@ -119,7 +117,10 @@ export async function POST(request: NextRequest) {
   try {
     const message = await anthropicMessages({
       model: AI_CLASSIFIER_MODEL,
-      max_tokens: 400,
+      // Output is a small fixed JSON (category + up to 2 alternates + a short
+      // query phrase) — ~150 tokens is ample headroom. Fewer output tokens =
+      // faster generation, which is what the user feels on every AI search.
+      max_tokens: 150,
       system: [
         {
           type: "text",
@@ -176,6 +177,5 @@ export async function POST(request: NextRequest) {
     query: ai.query ?? "", // pass as `q` for in-group relevance ranking
     location: (ai.location ?? "").trim(), // place mentioned in the description, or ""
     confidence: ai.confidence ?? "low",
-    reason: ai.reason ?? "",
   });
 }

@@ -68,7 +68,6 @@ type AiMatchResponse = {
   query: string;
   location: string;
   confidence: "high" | "medium" | "low";
-  reason: string;
 };
 
 interface Props {
@@ -1240,6 +1239,25 @@ export default function DirectoryListing({ categories }: Props) {
     setAiLoading(true);
     setAiMatch(null);
     try {
+      // Confirm a location against the real AU place list (same source the main
+      // search box autocompletes from). A hit becomes a "verified" locked-in pill
+      // and gives precise coordinates for nearest-first ranking.
+      const suggestLocation = async (loc: string): Promise<LocationSuggestion | null> => {
+        if (!loc) return null;
+        try {
+          const lr = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(loc)}`);
+          const lj = await lr.json();
+          return (lj?.suggestions?.[0] as LocationSuggestion) ?? null;
+        } catch { return null; }
+      };
+
+      // When the owner typed a location, we already know it before the AI call
+      // returns — so resolve it CONCURRENTLY with the classifier instead of
+      // waiting for the AI round-trip to finish first. (Falls back to sequential
+      // only when the location has to be extracted from the description text.)
+      const typedLoc = aiLocation.trim();
+      const typedLocPromise = suggestLocation(typedLoc);
+
       const res = await fetch("/api/ai-category-match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1251,19 +1269,12 @@ export default function DirectoryListing({ categories }: Props) {
         return;
       }
       setAiMatch(data);
-      // Location the owner typed, else any location the AI found in the text.
-      const rawLoc = aiLocation.trim() || (data.location ?? "").trim();
-      // Confirm it against the real AU place list (same source the main search
-      // box autocompletes from). A hit becomes a "verified" locked-in pill and
-      // gives precise coordinates for nearest-first ranking.
-      let resolved: LocationSuggestion | null = null;
-      if (rawLoc) {
-        try {
-          const lr = await fetch(`/api/directory/location-suggest?q=${encodeURIComponent(rawLoc)}`);
-          const lj = await lr.json();
-          resolved = (lj?.suggestions?.[0] as LocationSuggestion) ?? null;
-        } catch { resolved = null; }
-      }
+      // Location the owner typed (resolved in parallel above), else any location
+      // the AI found in the text (resolved now).
+      const rawLoc = typedLoc || (data.location ?? "").trim();
+      const resolved: LocationSuggestion | null = typedLoc
+        ? await typedLocPromise
+        : await suggestLocation(rawLoc);
       if (data.matched) {
         applyAiSearch(data.matched.name, rawLoc, resolved);
       } else {
