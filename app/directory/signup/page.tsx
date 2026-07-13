@@ -133,6 +133,35 @@ export default function DirectorySignupPage() {
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+  // Resend the verification email from the "check your inbox" screen (50s cooldown).
+  const [resendIn, setResendIn] = useState(0);
+  const [resending, setResending] = useState(false);
+  const [resendMsg, setResendMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const t = setTimeout(() => setResendIn((s) => (s <= 1 ? 0 : s - 1)), 1000);
+    return () => clearTimeout(t);
+  }, [resendIn]);
+
+  async function resendVerification() {
+    if (resending || resendIn > 0) return;
+    setResending(true);
+    setResendMsg(null);
+    try {
+      await fetch("/api/directory/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email }),
+      });
+      setResendMsg("Sent again — check your inbox (and your spam folder).");
+      setResendIn(50);
+    } catch {
+      setResendMsg("Couldn't resend just now. Please try again shortly.");
+    } finally {
+      setResending(false);
+    }
+  }
 
   const phoneCheck = form.phone ? validateAuPhone(form.phone) : null;
 
@@ -187,6 +216,7 @@ export default function DirectorySignupPage() {
       return;
     }
     setStatus({ type: "success", message: result.message ?? "Verification email sent. Please check your inbox to continue." });
+    setResendIn(50); // just sent one — start the cooldown before a resend is allowed
   }
 
   const selected = CARDS.find((c) => c.id === accountType);
@@ -313,6 +343,17 @@ export default function DirectorySignupPage() {
                 <div className="rounded-2xl bg-emerald-100 px-6 py-5 text-emerald-900">
                   <p className="font-semibold">Check your inbox</p>
                   <p className="mt-1 text-sm">{status.message}</p>
+                </div>
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    onClick={resendVerification}
+                    disabled={resending || resendIn > 0}
+                    className="rounded-lg border border-emerald-300 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {resending ? "Sending…" : resendIn > 0 ? `Resend in ${resendIn}s` : "Didn't get it? Resend email"}
+                  </button>
+                  {resendMsg && <p className="mt-2 text-sm font-medium text-emerald-700">{resendMsg}</p>}
                 </div>
                 <p className="mt-6 text-sm text-slate-500">
                   <Link href="/directory/login" className="font-semibold text-sky-950 hover:text-sky-700">Back to sign in</Link>

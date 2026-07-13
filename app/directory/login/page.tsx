@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import Link from "next/link";
 
@@ -9,10 +9,43 @@ export default function DirectoryLoginPage() {
   const [rememberMe, setRememberMe] = useState(true);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
+  // Shown when login is blocked because the account's email isn't verified yet —
+  // lets the user resend the verification email (50s cooldown between sends).
+  const [needsVerify, setNeedsVerify] = useState(false);
+  const [resendIn, setResendIn] = useState(0);
+  const [resending, setResending] = useState(false);
+  const [resendMsg, setResendMsg] = useState<string | null>(null);
+
+  // Cooldown countdown for the resend button.
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const t = setTimeout(() => setResendIn((s) => (s <= 1 ? 0 : s - 1)), 1000);
+    return () => clearTimeout(t);
+  }, [resendIn]);
+
+  async function resendVerification() {
+    if (resending || resendIn > 0) return;
+    setResending(true);
+    setResendMsg(null);
+    try {
+      await fetch("/api/directory/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email }),
+      });
+      setResendMsg("Verification email sent — check your inbox (and your spam folder).");
+      setResendIn(50);
+    } catch {
+      setResendMsg("Couldn't resend just now. Please try again shortly.");
+    } finally {
+      setResending(false);
+    }
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus(null);
+    setNeedsVerify(false);
     setLoading(true);
 
     const response = await fetch("/api/directory/login", {
@@ -24,7 +57,14 @@ export default function DirectoryLoginPage() {
     setLoading(false);
 
     if (!response.ok) {
-      setStatus({ type: "error", message: result.error ?? "Login failed." });
+      // 403 = account exists but email isn't verified → offer a resend instead of
+      // a dead-end error. Any other failure shows the normal error message.
+      if (response.status === 403) {
+        setNeedsVerify(true);
+        setResendMsg(null);
+      } else {
+        setStatus({ type: "error", message: result.error ?? "Login failed." });
+      }
       return;
     }
 
@@ -147,6 +187,29 @@ export default function DirectoryLoginPage() {
                 {loading ? "Signing in…" : "Sign in"}
               </button>
             </form>
+
+            {/* Email-not-verified — red box under the login form with a resend option */}
+            {needsVerify && (
+              <div className="mt-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-4 text-sm text-rose-800">
+                <p className="font-semibold">Your email isn&apos;t verified yet.</p>
+                <p className="mt-1 text-rose-700">
+                  Please verify your email before signing in. Check your inbox for the verification link — didn&apos;t get it?
+                </p>
+                <button
+                  type="button"
+                  onClick={resendVerification}
+                  disabled={resending || resendIn > 0}
+                  className="mt-3 rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {resending
+                    ? "Sending…"
+                    : resendIn > 0
+                    ? `Resend in ${resendIn}s`
+                    : "Resend verification email"}
+                </button>
+                {resendMsg && <p className="mt-2 font-medium text-emerald-700">{resendMsg}</p>}
+              </div>
+            )}
 
             {/* Bottom links */}
             <div className="mt-6 space-y-3">
