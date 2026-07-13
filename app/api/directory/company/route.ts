@@ -29,6 +29,8 @@ export async function POST(request: NextRequest) {
   const website = String(body.website ?? "").trim();
   const businessEmail = String(body.businessEmail ?? "").trim().toLowerCase();
   const description = String(body.description ?? "").trim();
+  const fullDescription = String(body.fullDescription ?? "").trim().slice(0, 7000);
+  const tagline = String(body.tagline ?? "").trim().slice(0, 45);
 
   if (!companyName) return NextResponse.json({ error: "Company name is required." }, { status: 400 });
   if (!mainCategoryId) return NextResponse.json({ error: "Primary category is required." }, { status: 400 });
@@ -153,6 +155,8 @@ export async function POST(request: NextRequest) {
           website: website || scraped.website || null,
           email: businessEmail,
           description: description || scraped.description || null,
+          full_description: fullDescription || null,
+          tagline: tagline || null,
           main_category_id: resolvedCategoryId || scraped.main_category_id,
           profile_status: profileStatus,
           status: companyStatus,
@@ -206,6 +210,8 @@ export async function POST(request: NextRequest) {
         phone: phoneNational,
         email: businessEmail,
         description,
+        full_description: fullDescription || null,
+        tagline: tagline || null,
         main_category_id: resolvedCategoryId,
         status: companyStatus,
         profile_status: profileStatus,
@@ -300,6 +306,7 @@ export async function PATCH(request: NextRequest) {
   // Optional self-declared tagline + services list (all tiers). Empty clears them.
   if (typeof body.tagline === "string") companyData.tagline = body.tagline.trim().slice(0, 45) || null;
   if (typeof body.servicesOffered === "string") companyData.services_offered = body.servicesOffered.trim().slice(0, 220) || null;
+  if (typeof body.fullDescription === "string") companyData.full_description = body.fullDescription.trim().slice(0, 7000) || null;
   if (typeof body.mainCategoryId === "number" && body.mainCategoryId > 0) companyData.main_category_id = body.mainCategoryId;
 
   // Self-declared profile fields — available to all tiers, including Free Listing.

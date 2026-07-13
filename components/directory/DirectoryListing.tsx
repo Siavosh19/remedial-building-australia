@@ -452,8 +452,10 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                       {b.main_category && <span style={{ background: "#fff6da", color: "#7a5c1e", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 700 }}>{b.main_category.name.split("/")[0].trim()}</span>}
                       {b.distance_km != null && <span style={{ background: "#fbf3d9", color: "#000000", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 600 }}>{b.distance_km < 1 ? "< 1 km away" : `${b.distance_km} km away`}</span>}
                     </div>
-                    <h3 style={{ fontSize: 21, fontWeight: 800, color: "#0f1f35", lineHeight: 1.25, margin: 0 }}>{clampName(b.name)}</h3>
-                    {locText && <p style={{ fontSize: 14, color: "#1a1a1a", fontWeight: 500, margin: "4px 0 0" }}>{locText}</p>}
+                    <h3 style={{ fontSize: 21, fontWeight: 800, color: "#0f1f35", lineHeight: 1.25, margin: 0 }}>
+                      {clampName(b.name)}
+                      {locText && <span style={{ fontSize: 15, fontWeight: 500, color: "#64748b" }}> ({locText})</span>}
+                    </h3>
                   </div>
                   <div style={{ flexShrink: 0, display: "flex", alignItems: "center" }}>
                     <a href={`/directory/company/${b.slug}`} style={{ background: "#1e3a5f", color: "#fff", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 700, boxShadow: "0 3px 10px rgba(30,58,95,0.22)", textDecoration: "none", whiteSpace: "nowrap" }}>
@@ -461,7 +463,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                     </a>
                   </div>
                 </div>
-                {cardSummary(b.description) && <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description)}</p>}
+                {cardSummary(b.description) && <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description)}</p>}
               </div>
               </div>
             </div>

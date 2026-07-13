@@ -23,6 +23,7 @@ type Props = {
     instagram_url: string | null;
     linkedin_url: string | null;
     description: string | null;
+    full_description: string | null;
     tagline: string | null;
     services_offered: string | null;
     main_category_id: number | null;
@@ -61,6 +62,7 @@ export default function CompanyEditForm({ company, categories }: Props) {
     instagram: company.instagram_url ?? "",
     linkedin: company.linkedin_url ?? "",
     description: company.description ?? "",
+    fullDescription: company.full_description ?? "",
     tagline: company.tagline ?? "",
     servicesOffered: company.services_offered ?? "",
     mainCategoryId: String(company.main_category_id ?? ""),
@@ -120,6 +122,12 @@ export default function CompanyEditForm({ company, categories }: Props) {
   }
 
   async function uploadFile(file: File, mediaType: "logo" | "photo") {
+    // Keep images small so profiles load fast — cap uploads at 1 MB each.
+    const MAX_BYTES = 1024 * 1024;
+    if (file.size > MAX_BYTES) {
+      setUploadError(`"${file.name}" is ${(file.size / 1024 / 1024).toFixed(1)} MB. Please use an image under 1 MB (try compressing or resizing it).`);
+      return;
+    }
     setUploading(true);
     setUploadError(null);
     const fd = new FormData();
@@ -311,13 +319,31 @@ export default function CompanyEditForm({ company, categories }: Props) {
         </label>
 
         <label className="block text-sm font-semibold text-slate-800">
-          <span>Business description</span>
+          <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
           <textarea
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
-            rows={5}
+            rows={3}
+            maxLength={250}
             className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           />
+          <span className="mt-1 block text-xs font-normal text-slate-400">
+            A brief summary shown on your directory listing card (max 250 characters).
+          </span>
+        </label>
+
+        <label className="block text-sm font-semibold text-slate-800">
+          <span>Full description <span className="font-normal text-slate-400">(profile page)</span></span>
+          <textarea
+            value={form.fullDescription}
+            onChange={(e) => setForm({ ...form, fullDescription: e.target.value })}
+            rows={8}
+            maxLength={7000}
+            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+          />
+          <span className="mt-1 block text-xs font-normal text-slate-400">
+            The full write-up shown on your public profile page — up to ~1000 words. If left blank, your short description is used.
+          </span>
         </label>
 
         <label className="block text-sm font-semibold text-slate-800">
@@ -391,12 +417,6 @@ export default function CompanyEditForm({ company, categories }: Props) {
           </>
         )}
 
-        {status ? (
-          <div className={`rounded-2xl px-4 py-3 text-sm ${status.type === "success" ? "bg-emerald-100 text-emerald-900" : "bg-rose-100 text-rose-900"}`}>
-            {status.message}
-          </div>
-        ) : null}
-
       </form>
 
       {/* Media uploads — Silver/Gold (paid) only */}
@@ -420,7 +440,7 @@ export default function CompanyEditForm({ company, categories }: Props) {
         <div className="border-t border-slate-100 pt-8 space-y-6">
           <div>
             <h2 className="text-base font-semibold text-slate-800">Logo</h2>
-            <p className="text-xs text-slate-500 mt-1">Upload or drag &amp; drop your business logo. Replaces the initials shown on your profile.</p>
+            <p className="text-xs text-slate-500 mt-1">Upload or drag &amp; drop your business logo. Replaces the initials shown on your profile. Recommended: under 1&nbsp;MB (JPG or PNG).</p>
             <div className="mt-4 flex items-start gap-4">
               {logo ? (
                 <div className="relative">
@@ -457,7 +477,7 @@ export default function CompanyEditForm({ company, categories }: Props) {
 
           <div>
             <h2 className="text-base font-semibold text-slate-800">Project photos</h2>
-            <p className="text-xs text-slate-500 mt-1">Up to {photoLimit} photos. {photos.length}/{photoLimit} used. Drag &amp; drop images below, or click + to browse.</p>
+            <p className="text-xs text-slate-500 mt-1">Up to {photoLimit} photos. {photos.length}/{photoLimit} used. Drag &amp; drop images below, or click + to browse. Recommended: under 1&nbsp;MB per image.</p>
             {uploadError && <p className="mt-2 text-xs text-red-600">{uploadError}</p>}
             <div
               onDragOver={(e) => { e.preventDefault(); if (photos.length < photoLimit) setPhotoDragOver(true); }}
@@ -509,6 +529,11 @@ export default function CompanyEditForm({ company, categories }: Props) {
         >
           {loading ? "Saving…" : "Save changes"}
         </button>
+        {status && (
+          <div className={`mt-3 rounded-2xl px-4 py-3 text-sm ${status.type === "success" ? "bg-emerald-100 text-emerald-900" : "bg-rose-100 text-rose-900"}`}>
+            {status.message}
+          </div>
+        )}
       </div>
     </div>
   );

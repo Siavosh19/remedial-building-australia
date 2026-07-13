@@ -321,6 +321,7 @@ model Company {
   instagram_url       String?
   linkedin_url        String?
   description         String?
+  full_description    String?
   tagline             String?
   services_offered    String?
   year_established    Int?

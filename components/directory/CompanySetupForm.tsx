@@ -31,6 +31,8 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
     website: "",
     businessEmail: "",
     description: "",
+    fullDescription: "",
+    tagline: "",
     serviceAreaType: "radius",
     serviceRadiusKm: 50,
   });
@@ -392,14 +394,41 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
       </label>
 
       <label className="block text-sm font-semibold text-slate-800">
-        <span>Short description</span>
+        <span>Tagline <span className="font-normal text-slate-400">(optional)</span></span>
+        <input
+          type="text"
+          value={form.tagline}
+          onChange={(event) => setForm({ ...form, tagline: event.target.value })}
+          maxLength={45}
+          placeholder="e.g. Registered Class 2 Builder"
+          className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+        />
+        <span className="mt-1 block text-xs font-normal text-slate-400">Appears next to your business name on your listing card and profile.</span>
+      </label>
+
+      <label className="block text-sm font-semibold text-slate-800">
+        <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
         <textarea
           value={form.description}
           onChange={(event) => setForm({ ...form, description: event.target.value })}
-          rows={5}
+          rows={3}
+          maxLength={250}
           className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           required
         />
+        <span className="mt-1 block text-xs font-normal text-slate-400">A brief summary shown on your directory listing card (max 250 characters).</span>
+      </label>
+
+      <label className="block text-sm font-semibold text-slate-800">
+        <span>Full description <span className="font-normal text-slate-400">(profile page — optional)</span></span>
+        <textarea
+          value={form.fullDescription}
+          onChange={(event) => setForm({ ...form, fullDescription: event.target.value })}
+          rows={7}
+          maxLength={7000}
+          className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+        />
+        <span className="mt-1 block text-xs font-normal text-slate-400">The full write-up shown on your public profile page — up to ~1000 words. If left blank, your short description is used.</span>
       </label>
 
       <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">

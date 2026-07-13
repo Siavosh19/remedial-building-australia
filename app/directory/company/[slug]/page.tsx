@@ -350,8 +350,8 @@ export default async function CompanyProfilePage({ params }: Props) {
 
             {/* About This Company */}
             <Section label="About This Company">
-              {company.description ? (
-                <p className="text-base leading-8 text-slate-700 md:text-lg">{company.description}</p>
+              {(company.full_description || company.description) ? (
+                <p className="whitespace-pre-line text-base leading-8 text-slate-700 md:text-lg">{company.full_description || company.description}</p>
               ) : (
                 <EmptyState>No description added yet.</EmptyState>
               )}
