@@ -322,13 +322,12 @@ export default function CompanyEditForm({ company, categories }: Props) {
           <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
           <textarea
             value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            onChange={(e) => { const w = e.target.value.trim().split(/\s+/).filter(Boolean); setForm({ ...form, description: w.length <= 24 ? e.target.value : w.slice(0, 24).join(" ") }); }}
             rows={3}
-            maxLength={250}
             className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           />
           <span className="mt-1 block text-xs font-normal text-slate-400">
-            A brief summary shown on your directory listing card (max 250 characters).
+            A brief summary shown on your directory listing card — max 24 words.
           </span>
         </label>
 

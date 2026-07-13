@@ -850,6 +850,7 @@ async function getTopListings(
     take: 3,
     select: {
       id: true, slug: true, name: true, logo_url: true, description: true,
+      phone: true, email: true, website: true,
       main_category: { select: { name: true } },
       locations: { take: 1, select: { suburb: true, state: true, latitude: true, longitude: true } },
     },
@@ -863,6 +864,7 @@ async function getTopListings(
     }
     return {
       id: t.id, slug: t.slug, name: t.name, logo_url: t.logo_url, description: t.description,
+      phone: t.phone, email: t.email, website: t.website,
       main_category: t.main_category,
       locations: t.locations.map((l) => ({ suburb: l.suburb, state: l.state })),
       distance_km: km,

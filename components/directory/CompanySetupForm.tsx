@@ -410,13 +410,12 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
         <textarea
           value={form.description}
-          onChange={(event) => setForm({ ...form, description: event.target.value })}
+          onChange={(event) => { const w = event.target.value.trim().split(/\s+/).filter(Boolean); setForm({ ...form, description: w.length <= 24 ? event.target.value : w.slice(0, 24).join(" ") }); }}
           rows={3}
-          maxLength={250}
           className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
           required
         />
-        <span className="mt-1 block text-xs font-normal text-slate-400">A brief summary shown on your directory listing card (max 250 characters).</span>
+        <span className="mt-1 block text-xs font-normal text-slate-400">A brief summary shown on your directory listing card — max 24 words.</span>
       </label>
 
       <label className="block text-sm font-semibold text-slate-800">

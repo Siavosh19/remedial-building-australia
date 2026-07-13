@@ -43,7 +43,7 @@ export function clampName(name: string, maxChars = 58): string {
 // On-card description summary for the paid tiers (Gold & Silver). Capped to
 // ~30 words (about two lines) to match the card's line-clamp; the full,
 // uncapped description still renders on the profile page. Free tier shows none.
-export function cardSummary(text: string | null | undefined, maxWords = 30): string | null {
+export function cardSummary(text: string | null | undefined, maxWords = 24): string | null {
   const trimmed = text?.trim();
   if (!trimmed) return null;
   const words = trimmed.split(/\s+/);

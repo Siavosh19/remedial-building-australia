@@ -106,7 +106,7 @@ function planOf(company: CompanyResult): string {
 }
 
 // Phone / email / website — shared inline contact row (Silver + Free).
-function ContactLinks({ company, className = "" }: { company: CompanyResult; className?: string }) {
+function ContactLinks({ company, className = "" }: { company: { phone: string | null; email?: string | null; website?: string | null }; className?: string }) {
   if (!company.phone && !company.email && !company.website) return null;
   return (
     <div className={`flex flex-wrap items-center gap-x-4 gap-y-1 ${className}`}>
@@ -339,6 +339,9 @@ type TopListing = {
   name: string;
   logo_url: string | null;
   description: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
   main_category: { name: string } | null;
   locations: { suburb: string | null; state: string }[];
   distance_km: number | null;
@@ -464,6 +467,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                   </div>
                 </div>
                 {cardSummary(b.description) && <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description)}</p>}
+                <ContactLinks company={b} className="mt-2.5 text-sm" />
               </div>
               </div>
             </div>
