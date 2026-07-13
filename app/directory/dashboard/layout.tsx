@@ -65,7 +65,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           <RoleSwitcher className="flex w-full" />
         </div>
 
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-24 sm:px-6 sm:pt-8 md:pb-10">
           {children}
         </main>
 
@@ -93,7 +93,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 py-5 text-xs text-slate-400">
+        <div className="mx-auto max-w-7xl border-t border-slate-200 px-5 pt-5 pb-24 text-xs text-slate-400 md:pb-5">
           © 2025 Remedial Building Australia. All content copyright Arasep Projects Pty Ltd. All rights reserved. Unauthorised reproduction prohibited.
         </div>
       </footer>

@@ -23,6 +23,7 @@ import {
   Menu,
   X,
   ExternalLink,
+  Briefcase,
   type LucideIcon,
 } from "lucide-react";
 
@@ -85,6 +86,22 @@ function buildGroups(companySlug: string | null): Group[] {
       ],
     },
   ];
+}
+
+// Mobile / PWA bottom tab bar — the 4 most-used business destinations, plus a
+// "Menu" tab that opens the same slide-in drawer as the hamburger (so every
+// other destination — subscription, settings, sign out — stays one tap away).
+const BOTTOM_TABS: { href: string; label: string; icon: LucideIcon; exact?: boolean }[] = [
+  { href: "/directory/dashboard", label: "Home", icon: LayoutDashboard, exact: true },
+  { href: "/directory/dashboard/lead-requests?view=new", label: "Leads", icon: Inbox },
+  { href: "/directory/dashboard/profile", label: "Profile", icon: Building2 },
+  { href: "/directory/dashboard/jobs", label: "Jobs", icon: Briefcase },
+];
+
+function bottomTabActive(href: string, pathname: string, exact?: boolean): boolean {
+  const base = href.split("?")[0];
+  if (exact) return pathname === base;
+  return pathname === base || pathname.startsWith(`${base}/`);
 }
 
 function itemActive(item: Item, pathname: string, view: string | null): boolean {
@@ -237,6 +254,38 @@ export default function PortalSidebar({ email, companySlug = null }: { email: st
         <nav className="flex-1 overflow-y-auto px-3 py-4">{groupList()}</nav>
         {footer}
       </aside>
+
+      {/* ── Mobile / PWA: app-style bottom tab bar ───────────────────────────── */}
+      <nav
+        className="fixed inset-x-0 bottom-0 z-40 flex items-stretch border-t border-slate-200 bg-white/95 shadow-[0_-2px_10px_rgba(0,0,0,0.06)] backdrop-blur md:hidden"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        aria-label="Primary"
+      >
+        {BOTTOM_TABS.map((tab) => {
+          const active = bottomTabActive(tab.href, pathname, tab.exact);
+          const Icon = tab.icon;
+          return (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-semibold transition ${
+                active ? "text-sky-900" : "text-slate-400"
+              }`}
+            >
+              <Icon size={21} className={active ? "text-red-500" : ""} />
+              {tab.label}
+            </Link>
+          );
+        })}
+        <button
+          onClick={() => setMobileOpen(true)}
+          className="flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-semibold text-slate-400 transition"
+          aria-label="Open menu"
+        >
+          <Menu size={21} />
+          Menu
+        </button>
+      </nav>
     </>
   );
 }
