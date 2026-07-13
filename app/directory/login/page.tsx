@@ -188,11 +188,11 @@ export default function DirectoryLoginPage() {
               </button>
             </form>
 
-            {/* Email-not-verified — red box under the login form with a resend option */}
+            {/* Email-not-verified — grey box under the login form, centered, with a resend option */}
             {needsVerify && (
-              <div className="mt-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-4 text-sm text-rose-800">
-                <p className="font-semibold">Your email isn&apos;t verified yet.</p>
-                <p className="mt-1 text-rose-700">
+              <div className="mt-5 rounded-xl border border-slate-200 bg-slate-100 px-4 py-4 text-center text-sm text-slate-700">
+                <p className="font-semibold text-slate-800">Your email isn&apos;t verified yet.</p>
+                <p className="mt-1 text-slate-600">
                   Please verify your email before signing in. Check your inbox for the verification link — didn&apos;t get it?
                 </p>
                 <button
