@@ -1,3 +1,4 @@
+import { cache } from "react";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -58,7 +59,10 @@ export function verifyAuthToken(token: string, expectedPurpose: DirectoryTokenPa
 
 const ADMIN_ROLES = new Set(["admin", "super_admin", "content_admin", "supplier_manager", "read_only_admin"]);
 
-export async function getCurrentDirectoryUser() {
+// Request-scoped cache: the dashboard layout and each page both call this on
+// every navigation. React cache() dedupes those calls within a single request so
+// the user lookup runs once, not once per component — making dashboard nav snappier.
+export const getCurrentDirectoryUser = cache(async () => {
   const cookie = (await cookies()).get(COOKIE_NAME)?.value;
   if (!cookie) return null;
 
@@ -74,7 +78,7 @@ export async function getCurrentDirectoryUser() {
   // Admin roles bypass email verification — they are created directly
   if (!user.is_verified && !ADMIN_ROLES.has(user.role)) return null;
   return user;
-}
+});
 
 export function createDirectorySessionCookie(token: string, rememberMe = true) {
   return {

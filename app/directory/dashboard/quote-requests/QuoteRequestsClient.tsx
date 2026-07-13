@@ -64,7 +64,7 @@ export default function QuoteRequestsClient({
           Listing enquiries are available on Silver and Gold plans.
         </p>
         <Link
-          href="/directory/pricing"
+          href="/directory/dashboard/subscription"
           className="mt-6 inline-flex rounded-2xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white hover:bg-sky-800"
         >
           View plans →

@@ -108,7 +108,7 @@ function StatusBadge({ status }: { status: string }) {
   };
   return (
     <span className={`rounded-full px-3 py-1 text-xs font-bold ${map[status] ?? "bg-slate-100 text-slate-500"}`}>
-      {status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+      {status === "trialing" ? "Free Trial" : status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
     </span>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
 import { dirTier, displayName, clampName, cardSummary } from "@/lib/directory-tier";
 
 // Brushed / shiny metallic sheens — angled bands used as a thin frame around the
@@ -160,7 +160,7 @@ function SilverRow({ company }: { company: CompanyResult }) {
           {/* 32px logo / initials */}
           <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[12px] font-extrabold text-slate-600">
             {company.logo_url
-              ? <img src={company.logo_url} alt={`${company.name} logo`} className="h-full w-full object-cover" />
+              ? <img src={company.logo_url} alt={`${company.name} logo`} width={32} height={32} loading="lazy" decoding="async" className="h-full w-full object-cover" />
               : initials(company.name) || "?"}
           </div>
 
@@ -323,11 +323,13 @@ function SilverSampleCard() {
 
 // Dispatch to the right card by tier. Gold renders in TopListingSection and is
 // filtered out of this list, so only Silver and Free reach here.
-function CompanyRow({ company }: { company: CompanyResult }) {
+// Memoized so typing in the search boxes (which re-renders DirectoryListing) does
+// not re-render every result card — cards only re-render when their company changes.
+const CompanyRow = memo(function CompanyRow({ company }: { company: CompanyResult }) {
   return dirTier(planOf(company)) === "silver"
     ? <SilverRow company={company} />
     : <FreeRow company={company} />;
-}
+});
 
 type TopListing = {
   id: number;
@@ -343,13 +345,10 @@ type TopListing = {
 // "Top Listing" section — real Premium subscribers for the searched category,
 // ordered by subscription date, max 3. Renders nothing when empty.
 function TopListingSection({ items, eligible }: { items: TopListing[]; eligible: boolean }) {
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
-  const [minH, setMinH] = useState<number | undefined>(undefined);
-  useEffect(() => {
-    if (!items.length) { setMinH(undefined); return; }
-    const tallest = Math.max(0, ...refs.current.map((el) => el?.offsetHeight ?? 0));
-    if (tallest > 0) setMinH(tallest);
-  }, [items]);
+  // The Top Listing cards are a vertical stack, so they render at natural height.
+  // (An earlier JS pass measured the tallest card and set a matching minHeight on
+  // every card — but that ran after first paint, causing a layout jump right above
+  // the results that could offset clicks. Natural heights avoid the reflow.)
 
   // Zero state — the category was searched but nobody has subscribed: one promo
   // card inviting businesses to claim the spot. No T&C line, never beside real cards.
@@ -367,7 +366,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
             ⭐ Gold Featured
           </div>
           <div
-            className="rounded-[20px] p-[5px] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.13)]"
+            className="rounded-[20px] p-[5px] transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.13)]"
             style={{ background: GOLD_BRUSH, boxShadow: "0 2px 12px rgba(0,0,0,0.14)" }}
           >
             <div className="overflow-hidden rounded-[15px] bg-white">
@@ -426,7 +425,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
 
   return (
     <div className="rba-top-list" style={{ display: "flex", flexDirection: "column", gap: 24, marginBottom: 28 }}>
-      {items.map((b, i) => {
+      {items.map((b) => {
         const loc = b.locations[0];
         const locText = [loc?.suburb, loc?.state].filter(Boolean).join(", ");
         return (
@@ -435,16 +434,15 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
               {`⭐ Featured in ${loc?.state ?? "your State"}`}
             </div>
             <div
-              ref={(el) => { refs.current[i] = el; }}
-              style={{ minHeight: minH, background: GOLD_BRUSH, boxShadow: "0 2px 12px rgba(0,0,0,0.14)" }}
-              className="flex flex-col rounded-[20px] p-[5px] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.13)]"
+              style={{ background: GOLD_BRUSH, boxShadow: "0 2px 12px rgba(0,0,0,0.14)" }}
+              className="flex flex-col rounded-[20px] p-[5px] transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.13)]"
             >
               <div className="flex-1 overflow-hidden rounded-[15px] bg-white">
               <div className="rba-top-pad" style={{ padding: "20px 28px 24px 28px" }}>
                 <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
                   <div className="rba-top-logo" style={{ width: 48, height: 48, flexShrink: 0, borderRadius: 12, background: "#fff6da", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {b.logo_url
-                      ? <img src={b.logo_url} alt={`${b.name} logo`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      ? <img src={b.logo_url} alt={`${b.name} logo`} width={48} height={48} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       : <span style={{ fontSize: 16, fontWeight: 900, color: "#7a5c1e" }}>{initials(b.name)}</span>}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -559,18 +557,41 @@ function CategorySelector({
   const ref = useRef<HTMLDivElement>(null);
 
   // All top-level categories (most are now selectable leaves; only a few, like
-  // Product & Material Supplier, have children shown collapsibly).
-  const parents = categories
-    .filter((c) => !c.parent_id)
-    .sort((a, b) => a.name.localeCompare(b.name));
+  // Product & Material Supplier, have children shown collapsibly). Memoized so we
+  // don't re-filter/sort the whole category list on every keystroke/render.
+  type Cat = (typeof categories)[number];
+  const parents = useMemo(
+    () => categories.filter((c) => !c.parent_id).sort((a, b) => a.name.localeCompare(b.name)),
+    [categories]
+  );
 
-  const childrenOf = (pid: number) =>
-    categories.filter((c) => c.parent_id === pid).sort((a, b) => a.name.localeCompare(b.name));
+  // Precompute children grouped by parent once, so lookups during render and while
+  // typing in the category search are O(1) instead of a full scan per parent.
+  const childrenByParent = useMemo(() => {
+    const map = new Map<number, Cat[]>();
+    for (const c of categories) {
+      if (c.parent_id == null) continue;
+      const arr = map.get(c.parent_id);
+      if (arr) arr.push(c);
+      else map.set(c.parent_id, [c]);
+    }
+    for (const arr of map.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+    return map;
+  }, [categories]);
+  const childrenOf = (pid: number): Cat[] => childrenByParent.get(pid) ?? [];
 
   const term = search.toLowerCase().trim();
-  const filteredParents = term
-    ? parents.filter((p) => p.name.toLowerCase().includes(term) || childrenOf(p.id).some((k) => k.name.toLowerCase().includes(term)))
-    : parents;
+  const filteredParents = useMemo(
+    () =>
+      term
+        ? parents.filter(
+            (p) =>
+              p.name.toLowerCase().includes(term) ||
+              (childrenByParent.get(p.id) ?? []).some((k) => k.name.toLowerCase().includes(term))
+          )
+        : parents,
+    [parents, childrenByParent, term]
+  );
 
   const selectedLabel = value
     ? (categories.find((c) => c.slug === value)?.name ?? "All Categories")
@@ -966,8 +987,15 @@ export default function DirectoryListing({ categories }: Props) {
   const urlHasSearch = Boolean(urlQ || urlLocation || urlCategory);
 
   // When the URL carries no search of its own, restore the visitor's last search
-  // (e.g. they just hit Back from a profile). An explicit URL/deep-link wins.
-  const saved = urlHasSearch ? null : readSavedSearch();
+  // ONLY if they actually navigated Back/Forward (e.g. returning from a company
+  // profile). A fresh visit, a reload, or a typed/linked bare /directory must
+  // start empty — otherwise the previous results linger even though the URL shows
+  // no search. An explicit URL/deep-link always wins.
+  const isBackForward =
+    typeof performance !== "undefined" &&
+    (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.type ===
+      "back_forward";
+  const saved = urlHasSearch || !isBackForward ? null : readSavedSearch();
 
   const initialQ = urlQ || saved?.q || "";
   const initialLocation = urlLocation || saved?.appliedLocation || saved?.locationText || "";
@@ -1461,18 +1489,47 @@ export default function DirectoryListing({ categories }: Props) {
                 />
               )}
 
-              {/* AI match breakdown — only rendered after a search returns a match */}
-              {aiMatch?.matched && (() => {
-                const matched = aiMatch.matched;
-                // Every category the user can pick — the best match first, then the
-                // alternates. The one that's actually applied is highlighted, so the
-                // dropdown always shows which category the current results are for.
-                const options = [matched, ...aiMatch.alternates];
-                const applied = q.trim().toLowerCase();
-                const active = options.find((o) => o.name.trim().toLowerCase() === applied) ?? matched;
-                const activeIsBest = active.id === matched.id;
-                return (
-                <div className="relative flex h-11 items-center gap-2 rounded-xl bg-white/60 px-3 ring-1 ring-white/80 backdrop-blur">
+              {/* Find the right people (stretches to fill the gap) */}
+              <button
+                type="button"
+                onClick={runAiMatch}
+                disabled={aiLoading}
+                className="flex h-11 w-full items-center justify-center rounded-xl bg-red-700 px-6 text-base font-bold tracking-tight text-white shadow-md transition hover:bg-red-800 disabled:opacity-60 sm:w-auto sm:flex-1"
+              >
+                {aiLoading ? "Finding…" : "Find the right people"}
+              </button>
+
+              {/* Clear all */}
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="flex h-11 w-full shrink-0 items-center justify-center rounded-xl border border-white/70 bg-white/50 px-4 text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-white sm:w-auto"
+              >
+                Clear all
+              </button>
+            </div>
+
+            {/* AI status / match — on its own row so it never reflows the control
+                row above (that reflow was causing clicks to land on the wrong
+                control right after a match resolved). While matching, an explicit
+                status shows instead of the page appearing frozen. */}
+            {aiLoading && (
+              <div className="mt-2.5 flex items-center gap-2.5 rounded-xl bg-white/60 px-3.5 py-2.5 text-sm font-semibold text-slate-600 ring-1 ring-white/80 backdrop-blur">
+                <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-cyan-300 border-t-transparent" aria-hidden />
+                Matching your job to the right trade…
+              </div>
+            )}
+            {!aiLoading && aiMatch?.matched && (() => {
+              const matched = aiMatch.matched;
+              // Every category the user can pick — the best match first, then the
+              // alternates. The one that's actually applied is highlighted, so the
+              // dropdown always shows which category the current results are for.
+              const options = [matched, ...aiMatch.alternates];
+              const applied = q.trim().toLowerCase();
+              const active = options.find((o) => o.name.trim().toLowerCase() === applied) ?? matched;
+              const activeIsBest = active.id === matched.id;
+              return (
+                <div className="mt-2.5 flex min-h-11 items-center gap-2 rounded-xl bg-white/60 px-3 py-1.5 ring-1 ring-white/80 backdrop-blur">
                   <span className="text-xs font-semibold text-slate-500">AI match:</span>
                   {aiMatch.alternates.length > 0 ? (
                     <details className="relative">
@@ -1527,28 +1584,8 @@ export default function DirectoryListing({ categories }: Props) {
                     </span>
                   )}
                 </div>
-                );
-              })()}
-
-              {/* Find the right people (stretches to fill the gap) */}
-              <button
-                type="button"
-                onClick={runAiMatch}
-                disabled={aiLoading}
-                className="flex h-11 w-full items-center justify-center rounded-xl bg-red-700 px-6 text-base font-bold tracking-tight text-white shadow-md transition hover:bg-red-800 disabled:opacity-60 sm:w-auto sm:flex-1"
-              >
-                {aiLoading ? "Finding…" : "Find the right people"}
-              </button>
-
-              {/* Clear all */}
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="flex h-11 w-full shrink-0 items-center justify-center rounded-xl border border-white/70 bg-white/50 px-4 text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-white sm:w-auto"
-              >
-                Clear all
-              </button>
-            </div>
+              );
+            })()}
             {aiError && <p className="mt-2 text-sm font-semibold text-red-700">{aiError}</p>}
           </div>
 
@@ -1671,7 +1708,7 @@ export default function DirectoryListing({ categories }: Props) {
         <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-slate-600">
-              {loading
+              {loading || aiLoading
                 ? "Searching…"
                 : !hasActiveSearch
                 ? "Search to find strata building specialists"
@@ -1716,10 +1753,10 @@ export default function DirectoryListing({ categories }: Props) {
         </div>
 
         {/* Top Listing section — real Premium subscribers for this category (max 3) */}
-        {!loading && <TopListingSection items={topListings} eligible={topEligible} />}
+        {!(loading || aiLoading) && <TopListingSection items={topListings} eligible={topEligible} />}
 
         {/* Results list */}
-        {loading ? (
+        {loading || aiLoading ? (
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)}
           </div>

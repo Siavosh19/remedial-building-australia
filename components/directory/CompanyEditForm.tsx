@@ -368,7 +368,7 @@ export default function CompanyEditForm({ company, categories }: Props) {
               Add your business logo and up to 15 project photos with a Silver or Gold plan. Upgrade to showcase your work.
             </p>
             <a
-              href="/directory/pricing"
+              href="/directory/dashboard/subscription"
               className="mt-3 inline-block rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-500"
             >
               View plans →

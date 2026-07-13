@@ -6,19 +6,22 @@ export const dynamic = "force-dynamic";
 
 export default async function DashboardProfilePage() {
   const user = await getCurrentDirectoryUser();
-  const company = await prisma.company.findFirst({
-    where: { users: { some: { user_id: user?.id ?? 0 } } },
-    include: {
-      locations: true,
-      company_categories: true,
-      media: { orderBy: [{ media_type: "asc" }, { sort_order: "asc" }] },
-    },
-  });
-
-  const categories = await prisma.category.findMany({
-    where: { is_active: true },
-    orderBy: { display_order: "asc" },
-  });
+  // The company and category lookups are independent — run them together instead
+  // of one after the other so the page renders after a single round trip.
+  const [company, categories] = await Promise.all([
+    prisma.company.findFirst({
+      where: { users: { some: { user_id: user?.id ?? 0 } } },
+      include: {
+        locations: true,
+        company_categories: true,
+        media: { orderBy: [{ media_type: "asc" }, { sort_order: "asc" }] },
+      },
+    }),
+    prisma.category.findMany({
+      where: { is_active: true },
+      orderBy: { display_order: "asc" },
+    }),
+  ]);
 
   const planLabel =
     company?.plan_type === "featured" ? "Gold" :
