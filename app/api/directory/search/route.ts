@@ -181,10 +181,10 @@ type CategoryIntent = { patterns: string[]; categories: string[] };
 const CATEGORY_INTENT: CategoryIntent[] = [
   {
     patterns: ["remedial builder", "remedial builders", "remedial contractor", "remedial contractors", "remedial construction", "remedial building", "remedial", "facade builder", "facade building"],
-    // "Building Maintenance Contractors" is the exact live category name, so a
-    // remedial-builder search gives those businesses the strong exact-match boost
-    // (not just the weaker partial match from "Building Maintenance").
-    categories: ["Building Contractor", "Facade Contractor", "Building Maintenance Contractors", "Building Maintenance"],
+    // The remedial-builder home category is id 2286, whose display name is
+    // "Remedial Building & Property Maintenance" (formerly "Building Maintenance").
+    // Both names are listed so the exact-match boost holds across the rename.
+    categories: ["Building Contractor", "Facade Contractor", "Remedial Building & Property Maintenance", "Building Maintenance Contractors", "Building Maintenance"],
   },
   {
     patterns: ["waterproofing", "waterproof", "water leak", "leaking balcony", "balcony leak", "leaking shower", "membrane", "tanking", "leak detection", "water ingress", "rising damp", "penetrating damp"],
@@ -220,7 +220,7 @@ const CATEGORY_INTENT: CategoryIntent[] = [
   },
   {
     patterns: ["builder", "building repair", "construction", "renovation", "renovations"],
-    categories: ["Building Contractor", "Building Maintenance"],
+    categories: ["Building Contractor", "Remedial Building & Property Maintenance", "Building Maintenance"],
   },
   {
     patterns: ["balustrade", "handrail", "balustrading"],
