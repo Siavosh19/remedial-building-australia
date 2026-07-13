@@ -24,6 +24,16 @@ const dmSerifItalic = DM_Serif_Display({
   display: "swap",
 });
 
+// Upright display serif — used for the business NAME on the mobile directory
+// cards (paired with the italic tagline above).
+const dmSerifUpright = DM_Serif_Display({
+  variable: "--font-dm-serif-up",
+  weight: "400",
+  style: "normal",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 const SITE_URL = "https://www.remedialbuildingaustralia.com.au";
 
 // Organisation + WebSite structured data (JSON-LD) for Remedial Building Australia.
@@ -93,7 +103,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${dmSerifItalic.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${dmSerifItalic.variable} ${dmSerifUpright.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <script

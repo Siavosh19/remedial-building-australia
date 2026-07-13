@@ -105,30 +105,139 @@ function planOf(company: CompanyResult): string {
   return company.plan_type ?? (company.is_featured ? "featured" : company.is_claimed ? "claimed" : "basic");
 }
 
-// Phone / email / website — shared inline contact row (Silver + Free).
-function ContactLinks({ company, className = "" }: { company: { phone: string | null; email?: string | null; website?: string | null }; className?: string }) {
+// ─── Contact confirm popup ───────────────────────────────────────────────────
+// Tapping any phone / email / website control opens a small popup that shows the
+// detail and lets the visitor proceed or close — instead of firing tel:/mailto:/
+// link straight away. A single modal (mounted once in the listing) listens for a
+// window event, so the memoized cards don't need a callback threaded through them.
+type ContactKind = "phone" | "email" | "website";
+type ContactDetail = { kind: ContactKind; value: string; company: string };
+
+function openContactConfirm(detail: ContactDetail) {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent<ContactDetail>("rba:contact", { detail }));
+  }
+}
+
+function contactHref(kind: ContactKind, value: string): string {
+  if (kind === "phone") return `tel:${value.replace(/\s+/g, "")}`;
+  if (kind === "email") return `mailto:${value}`;
+  return value.startsWith("http") ? value : `https://${value}`;
+}
+
+function prettyContact(kind: ContactKind, value: string): string {
+  return kind === "website" ? value.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") : value;
+}
+
+function ContactIcon({ kind }: { kind: ContactKind }) {
+  const p = { width: 15, height: 15, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
+  if (kind === "phone") return (<svg {...p}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" /></svg>);
+  if (kind === "email") return (<svg {...p}><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></svg>);
+  return (<svg {...p}><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20" /></svg>);
+}
+
+// The single confirm popup — mounted once at the top of the listing.
+function ContactConfirmModal() {
+  const [detail, setDetail] = useState<ContactDetail | null>(null);
+  useEffect(() => {
+    const handler = (e: Event) => setDetail((e as CustomEvent<ContactDetail>).detail);
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setDetail(null); };
+    window.addEventListener("rba:contact", handler);
+    window.addEventListener("keydown", esc);
+    return () => { window.removeEventListener("rba:contact", handler); window.removeEventListener("keydown", esc); };
+  }, []);
+  if (!detail) return null;
+  const { kind, value, company } = detail;
+  const heading = kind === "phone" ? "Phone number" : kind === "email" ? "Email address" : "Website";
+  const action = kind === "phone" ? "Call" : kind === "email" ? "Email" : "Visit website";
+  const close = () => setDetail(null);
+  return (
+    <div role="dialog" aria-modal="true" aria-label={`${heading} for ${company}`} onClick={close}
+      style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(15,23,42,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 14, maxWidth: 340, width: "100%", padding: 20, boxShadow: "0 12px 40px rgba(0,0,0,0.25)" }}>
+        <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#64748b", margin: 0 }}>{heading}</p>
+        <p style={{ fontSize: 14, fontWeight: 700, color: "#16324F", margin: "6px 0 2px", wordBreak: "break-word" }}>{company}</p>
+        <p style={{ fontSize: 16, color: "#1e3a5f", margin: "0 0 18px", wordBreak: "break-word" }}>{prettyContact(kind, value)}</p>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button type="button" onClick={close} style={{ flex: 1, borderRadius: 8, border: "0.5px solid #C6D2DE", background: "#fff", color: "#16324F", fontSize: 14, fontWeight: 600, padding: "10px 0", cursor: "pointer" }}>Close</button>
+          <a href={contactHref(kind, value)} onClick={close} {...(kind === "website" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            style={{ flex: 1, borderRadius: 8, background: "#16324F", color: "#fff", fontSize: 14, fontWeight: 700, padding: "10px 0", textAlign: "center", textDecoration: "none" }}>{action}</a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Circular 32px icon button (Free card, mobile) — opens the confirm popup.
+function ContactIconButton({ kind, value, company }: { kind: ContactKind; value: string; company: string }) {
+  const isWeb = kind === "website";
+  const aria = kind === "phone" ? `Call ${company}` : kind === "email" ? `Email ${company}` : `Visit ${company} website`;
+  return (
+    <button type="button" aria-label={aria} onClick={() => openContactConfirm({ kind, value, company })}
+      style={{ width: 32, height: 32, borderRadius: 999, background: "#EEF3F8", color: isWeb ? "#185FA5" : "#16324F", display: "inline-flex", alignItems: "center", justifyContent: "center", border: "none", flexShrink: 0, cursor: "pointer", padding: 0 }}>
+      <ContactIcon kind={kind} />
+    </button>
+  );
+}
+
+// Right-aligned circular icons for the available contacts (Free card, mobile).
+function ContactIconRow({ company }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null } }) {
   if (!company.phone && !company.email && !company.website) return null;
+  return (
+    <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+      {company.phone && <ContactIconButton kind="phone" value={company.phone} company={company.name} />}
+      {company.email && <ContactIconButton kind="email" value={company.email} company={company.name} />}
+      {company.website && <ContactIconButton kind="website" value={company.website} company={company.name} />}
+    </div>
+  );
+}
+
+// Equal-width Call / Email / Website tap buttons (Featured card, mobile Row 4) —
+// each opens the confirm popup. Only available contacts are shown.
+function ContactTapRow({ company }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null } }) {
+  const btns: { kind: ContactKind; value: string; label: string }[] = [];
+  if (company.phone) btns.push({ kind: "phone", value: company.phone, label: "Call" });
+  if (company.email) btns.push({ kind: "email", value: company.email, label: "Email" });
+  if (company.website) btns.push({ kind: "website", value: company.website, label: "Website" });
+  if (!btns.length) return null;
+  return (
+    <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+      {btns.map((b) => (
+        <button key={b.kind} type="button" aria-label={`${b.label} ${company.name}`} onClick={() => openContactConfirm({ kind: b.kind, value: b.value, company: company.name })}
+          style={{ flex: 1, background: "#F5F4F0", borderRadius: 8, border: "none", color: "#16324F", fontSize: 13, fontWeight: 700, padding: "9px 0", cursor: "pointer" }}>{b.label}</button>
+      ))}
+    </div>
+  );
+}
+
+// Distance + location as a single "📍 X km away · Suburb, STATE" line (mobile).
+function metaLine(distanceKm: number | null | undefined, locText: string): string {
+  const d = distanceKm == null ? "" : distanceKm < 1 ? "< 1 km away" : `${distanceKm < 10 ? distanceKm.toFixed(1) : Math.round(distanceKm)} km away`;
+  const s = [d, locText].filter(Boolean).join(" · ");
+  return s ? `📍 ${s}` : "";
+}
+
+// Phone / email / website — shared inline contact row (Silver + Free desktop).
+// Each control opens the confirm popup rather than dialling/opening immediately.
+function ContactLinks({ company, className = "" }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null }; className?: string }) {
+  if (!company.phone && !company.email && !company.website) return null;
+  const btn = "inline-flex items-center gap-1 font-semibold text-sky-800 hover:underline";
   return (
     <div className={`flex flex-wrap items-center gap-x-4 gap-y-1 ${className}`}>
       {company.phone && (
-        <a href={`tel:${company.phone.replace(/\s+/g, "")}`} className="inline-flex items-center gap-1 font-semibold text-sky-800 hover:underline">
+        <button type="button" aria-label={`Call ${company.name}`} onClick={() => openContactConfirm({ kind: "phone", value: company.phone!, company: company.name })} className={btn}>
           <span aria-hidden>📞</span> {company.phone}
-        </a>
+        </button>
       )}
       {company.email && (
-        <a href={`mailto:${company.email}`} className="inline-flex items-center gap-1 font-semibold text-sky-800 hover:underline">
+        <button type="button" aria-label={`Email ${company.name}`} onClick={() => openContactConfirm({ kind: "email", value: company.email!, company: company.name })} className={btn}>
           <span aria-hidden>✉️</span> {company.email}
-        </a>
+        </button>
       )}
       {company.website && (
-        <a
-          href={company.website.startsWith("http") ? company.website : `https://${company.website}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 font-semibold text-sky-800 hover:underline"
-        >
-          <span aria-hidden>🌐</span> {company.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
-        </a>
+        <button type="button" aria-label={`Visit ${company.name} website`} onClick={() => openContactConfirm({ kind: "website", value: company.website!, company: company.name })} className={btn}>
+          <span aria-hidden>🌐</span> {prettyContact("website", company.website)}
+        </button>
       )}
     </div>
   );
@@ -155,8 +264,9 @@ function SilverRow({ company }: { company: CompanyResult }) {
         Silver
       </span>
 
-      {/* White content panel inside the metallic frame */}
-      <div className="rounded-[8px] bg-white px-5 py-3.5">
+      {/* ── Desktop (≥640px) — item 3: tagline on its own line above the name; */}
+      {/*    category chip + km chip sit on the name line; View Profile top-right. */}
+      <div className="hidden rounded-[8px] bg-white px-5 py-3.5 sm:block">
         <div className="flex items-start gap-3">
           {/* 32px logo / initials */}
           <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[12px] font-extrabold text-slate-600">
@@ -166,23 +276,18 @@ function SilverRow({ company }: { company: CompanyResult }) {
           </div>
 
           <div className="min-w-0 flex-1">
-            <div className="mb-1 flex items-center gap-1.5">
+            {company.tagline && (
+              <div className="truncate" style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", fontSize: "15px", letterSpacing: "0.2px", color: "#9E3B2B" }}>
+                &ldquo;{company.tagline}&rdquo;
+              </div>
+            )}
+            <h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-lg font-bold leading-tight text-sky-950">
+              <span>{clampName(company.name)}</span>
               {company.main_category && (
                 <span className="inline-block shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>
                   {company.main_category.name.split("/")[0].trim()}
                 </span>
               )}
-              {company.tagline && (
-                <span
-                  className="min-w-0 flex-1 truncate"
-                  style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", fontSize: "15px", letterSpacing: "0.2px", color: "#9E3B2B" }}
-                >
-                  &ldquo;{company.tagline}&rdquo;
-                </span>
-              )}
-            </div>
-            <h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-lg font-bold leading-tight text-sky-950">
-              <span>{clampName(company.name)}</span>
               {company.distance_km != null && <DistanceBadge distanceKm={company.distance_km} />}
               {locText && <span className="text-sm font-normal text-slate-500">({locText})</span>}
             </h3>
@@ -198,6 +303,36 @@ function SilverRow({ company }: { company: CompanyResult }) {
 
         {summary && <p className="mt-2 text-sm leading-relaxed text-slate-600">{summary}</p>}
         <ContactLinks company={company} className="mt-2.5 text-sm" />
+      </div>
+
+      {/* ── Mobile (<640px) — item 4: compact 4-row layout ── */}
+      <div className="rounded-[8px] bg-white sm:hidden" style={{ padding: "20px 16px 14px" }}>
+        {/* Row 1: category chip (left) + View Profile (right) */}
+        <div className="flex items-center justify-between gap-2">
+          {company.main_category
+            ? <span className="min-w-0 truncate rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>{company.main_category.name.split("/")[0].trim()}</span>
+            : <span />}
+          <a href={`/directory/company/${company.slug}`} className="shrink-0 whitespace-nowrap rounded-lg bg-sky-950 px-3 py-1.5 text-[13px] font-semibold text-white">View Profile</a>
+        </div>
+        {/* Row 2: 46px logo + stacked tagline / name / location */}
+        <div className="mt-3 flex items-start gap-3">
+          <div className="flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[13px] font-extrabold text-slate-600" style={{ width: 46, height: 46 }}>
+            {company.logo_url
+              ? <img src={company.logo_url} alt={`${company.name} logo`} width={46} height={46} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+              : initials(company.name) || "?"}
+          </div>
+          <div className="min-w-0 flex-1">
+            {company.tagline && (
+              <div className="truncate" style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", fontSize: "13px", letterSpacing: "0.2px", color: "#9E3B2B" }}>&ldquo;{company.tagline}&rdquo;</div>
+            )}
+            <div className="truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 18, lineHeight: 1.2, color: "#16324F" }}>{clampName(company.name)}</div>
+            {metaLine(company.distance_km, locText) && <div className="truncate" style={{ fontSize: 12, color: "#64748b" }}>{metaLine(company.distance_km, locText)}</div>}
+          </div>
+        </div>
+        {/* Row 3: description (2 lines max) */}
+        {summary && <p className="mt-2.5 text-[13px] leading-snug text-slate-600" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{summary}</p>}
+        {/* Row 4: Call / Email / Website tap buttons */}
+        <ContactTapRow company={company} />
       </div>
     </div>
   );
@@ -219,39 +354,54 @@ function FreeRow({ company }: { company: CompanyResult }) {
   // presence of the "Claim this profile" button. Name, tag, fonts and button
   // styling are identical between the two.
   return (
-    <div className={`flex items-start justify-between gap-3 border-b border-slate-200 px-6 py-4 last:border-0 hover:bg-slate-50/70 ${claimed ? "bg-white" : "bg-slate-50/60"}`}>
-      <div className="min-w-0 flex-1">
-        {company.main_category && (
-          <span className="mb-1 inline-block rounded-full bg-sky-100 px-2 py-0.5 text-[11px] font-bold text-sky-800">
-            {company.main_category.name.split("/")[0].trim()}
-          </span>
-        )}
-        <h3 className="text-base font-bold leading-tight text-slate-900">
-          {name}
-          {locText && <span className="ml-1 text-xs font-normal text-slate-400">({locText})</span>}
-        </h3>
-        {/* Contacts — flush-left on phones (📞 lines up under the name's first
-            letter); nudged right on desktop. Wrapped lines stay flush. */}
-        <ContactLinks company={company} className="mt-1.5 text-xs sm:pl-5" />
+    <div className="sm:border-b sm:border-slate-200 sm:last:border-0">
+      {/* ── Desktop (≥640px) — unchanged ── */}
+      <div className={`hidden items-start justify-between gap-3 px-6 py-4 hover:bg-slate-50/70 sm:flex ${claimed ? "bg-white" : "bg-slate-50/60"}`}>
+        <div className="min-w-0 flex-1">
+          {company.main_category && (
+            <span className="mb-1 inline-block rounded-full bg-sky-100 px-2 py-0.5 text-[11px] font-bold text-sky-800">
+              {company.main_category.name.split("/")[0].trim()}
+            </span>
+          )}
+          <h3 className="text-base font-bold leading-tight text-slate-900">
+            {name}
+            {locText && <span className="ml-1 text-xs font-normal text-slate-400">({locText})</span>}
+          </h3>
+          <ContactLinks company={company} className="mt-1.5 text-xs sm:pl-5" />
+        </div>
+        <div className="flex shrink-0 flex-row items-start gap-1.5">
+          <a href={`/directory/company/${company.slug}`} className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100">
+            View Profile
+          </a>
+          {canClaim && (
+            <a href={`/directory/claim/${company.slug}`} className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100">
+              Claim this profile
+            </a>
+          )}
+        </div>
       </div>
 
-      {/* Small, compact buttons — vertically centred on phones (gap sits at the
-          card's middle), top-right on desktop */}
-      <div className="flex shrink-0 flex-col items-end gap-1.5 self-center sm:flex-row sm:items-start sm:self-start">
-        <a
-          href={`/directory/company/${company.slug}`}
-          className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100"
-        >
-          View Profile
-        </a>
-        {canClaim && (
-          <a
-            href={`/directory/claim/${company.slug}`}
-            className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100"
-          >
-            Claim this profile
-          </a>
-        )}
+      {/* ── Mobile (<640px) — item 6: fixed 3-row bordered card, no raw contacts ── */}
+      <div className="sm:hidden" style={{ margin: "5px 10px", borderRadius: 12, border: "0.5px solid #DDE4EC", padding: "12px 14px", background: "#fff" }}>
+        {/* Row 1: blue category chip (left) + Suburb, STATE (right) */}
+        <div className="flex items-center justify-between gap-2">
+          {company.main_category
+            ? <span className="min-w-0 truncate rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "#E3EEFB", color: "#185FA5" }}>{company.main_category.name.split("/")[0].trim()}</span>
+            : <span />}
+          {locText && <span className="shrink-0 truncate text-right text-[12px] text-slate-400" style={{ maxWidth: "55%" }}>{locText}</span>}
+        </div>
+        {/* Row 2: business name (serif) + circular contact icons */}
+        <div className="mt-2 flex items-center gap-2">
+          <div className="min-w-0 flex-1 truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 17, lineHeight: 1.2, color: "#16324F" }}>{name}</div>
+          <ContactIconRow company={company} />
+        </div>
+        {/* Row 3: View Profile (+ Claim if unclaimed), equal width */}
+        <div className="mt-2.5 flex gap-2">
+          <a href={`/directory/company/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold text-white" style={{ background: "#16324F" }}>View Profile</a>
+          {canClaim && (
+            <a href={`/directory/claim/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold" style={{ border: "0.5px solid #C6D2DE", color: "#16324F" }}>Claim this profile</a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -451,20 +601,19 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
               className="flex flex-col rounded-[20px] p-[5px] transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(0,0,0,0.13)]"
             >
               <div className="flex-1 overflow-hidden rounded-[15px] bg-white">
-              <div className="rba-top-pad" style={{ padding: "20px 28px 24px 28px" }}>
+              {/* ── Desktop (≥640px) — item 3: tagline own line above name; chip + km on name line ── */}
+              <div className="hidden sm:block" style={{ padding: "20px 28px 24px 28px" }}>
                 <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                  <div className="rba-top-logo" style={{ width: 48, height: 48, flexShrink: 0, borderRadius: 12, background: "#fff6da", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ width: 48, height: 48, flexShrink: 0, borderRadius: 12, background: "#fff6da", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {b.logo_url
                       ? <img src={b.logo_url} alt={`${b.name} logo`} width={48} height={48} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       : <span style={{ fontSize: 16, fontWeight: 900, color: "#7a5c1e" }}>{initials(b.name)}</span>}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, minWidth: 0 }}>
-                      {b.main_category && <span style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>{b.main_category.name.split("/")[0].trim()}</span>}
-                      {b.tagline && <span style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", color: "#9E3B2B", fontSize: 15, letterSpacing: "0.2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }}>&ldquo;{b.tagline}&rdquo;</span>}
-                    </div>
+                    {b.tagline && <div style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", color: "#9E3B2B", fontSize: 15, letterSpacing: "0.2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 4 }}>&ldquo;{b.tagline}&rdquo;</div>}
                     <h3 style={{ fontSize: 21, fontWeight: 800, color: "#0f1f35", lineHeight: 1.25, margin: 0, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
                       <span>{clampName(b.name)}</span>
+                      {b.main_category && <span style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>{b.main_category.name.split("/")[0].trim()}</span>}
                       {b.distance_km != null && <span style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 12, fontWeight: 600, whiteSpace: "nowrap" }}>{b.distance_km < 1 ? "< 1 km away" : `${b.distance_km} km away`}</span>}
                       {locText && <span style={{ fontSize: 15, fontWeight: 500, color: "#64748b" }}>({locText})</span>}
                     </h3>
@@ -477,6 +626,34 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                 </div>
                 {cardSummary(b.description) && <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description)}</p>}
                 <ContactLinks company={b} className="mt-2.5 text-sm" />
+              </div>
+
+              {/* ── Mobile (<640px) — item 4: compact 4-row layout ── */}
+              <div className="sm:hidden" style={{ padding: "20px 16px 14px" }}>
+                {/* Row 1: category chip (left) + View Profile (right) */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                  {b.main_category
+                    ? <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 12, fontWeight: 700 }}>{b.main_category.name.split("/")[0].trim()}</span>
+                    : <span />}
+                  <a href={`/directory/company/${b.slug}`} style={{ flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 8, padding: "6px 12px", fontSize: 13, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>View Profile</a>
+                </div>
+                {/* Row 2: 46px logo + stacked tagline / name / location */}
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginTop: 12 }}>
+                  <div style={{ width: 46, height: 46, flexShrink: 0, borderRadius: 10, background: "#fff6da", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {b.logo_url
+                      ? <img src={b.logo_url} alt={`${b.name} logo`} width={46} height={46} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      : <span style={{ fontSize: 15, fontWeight: 900, color: "#7a5c1e" }}>{initials(b.name)}</span>}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    {b.tagline && <div style={{ fontFamily: "var(--font-dm-serif)", fontStyle: "italic", color: "#9E3B2B", fontSize: 13, letterSpacing: "0.2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>&ldquo;{b.tagline}&rdquo;</div>}
+                    <div style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 18, lineHeight: 1.2, color: "#16324F", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{clampName(b.name)}</div>
+                    {metaLine(b.distance_km, locText) && <div style={{ fontSize: 12, color: "#64748b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{metaLine(b.distance_km, locText)}</div>}
+                  </div>
+                </div>
+                {/* Row 3: description (2 lines max) */}
+                {cardSummary(b.description) && <p style={{ fontSize: 13, color: "#334155", lineHeight: 1.45, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description)}</p>}
+                {/* Row 4: Call / Email / Website tap buttons */}
+                <ContactTapRow company={b} />
               </div>
               </div>
             </div>
@@ -1440,6 +1617,8 @@ export default function DirectoryListing({ categories }: Props) {
 
   return (
     <>
+      {/* Confirm popup for phone / email / website taps (mounted once) */}
+      <ContactConfirmModal />
       {/* ── Search + filters ─────────────────────────────────────────────── */}
       <div className="relative z-30 bg-white shadow-[0_8px_24px_rgba(15,37,64,0.12)]">
         <div className="mx-auto max-w-7xl px-6 py-5">
