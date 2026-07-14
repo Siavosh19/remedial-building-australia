@@ -15,6 +15,9 @@ import {
   Building2,
   Inbox,
   Sparkles,
+  ClipboardList,
+  Briefcase,
+  ChevronRight,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -62,27 +65,60 @@ export default async function DashboardIndexPage() {
   // Job-only accounts (no directory listing yet) get a create-listing prompt
   // instead of an empty business overview.
   if (!company) {
+    // First-login home for accounts without a business listing. Three things a
+    // new account can do — create a directory listing, request quotes as a
+    // client (the client portal auto-provisions a ClientProfile on entry), or
+    // post a role on the jobs board.
+    const actions = [
+      {
+        href: "/directory/signup/company",
+        Icon: Building2,
+        title: "Create my listing",
+        desc: "List your business in the directory so clients find you and send quote requests.",
+        accent: "bg-sky-950",
+      },
+      {
+        href: "/client/quote-requests/new",
+        Icon: ClipboardList,
+        title: "Get quotes from businesses",
+        desc: "Describe a building or remedial job you need done and matched businesses contact you directly.",
+        accent: "bg-red-700",
+      },
+      {
+        href: "/directory/dashboard/jobs/new",
+        Icon: Briefcase,
+        title: "Post a job",
+        desc: "Advertise a paid role or subcontract position on the industry jobs board.",
+        accent: "bg-emerald-700",
+      },
+    ];
     return (
       <div className="mx-auto max-w-2xl">
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-950 text-white">
-            <Building2 size={26} />
-          </div>
+        <div className="mb-6 text-center">
           <h1 className="text-2xl font-extrabold text-sky-950">
             Welcome{user?.full_name ? `, ${user.full_name.split(" ")[0]}` : ""}
           </h1>
           <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-            You don&apos;t have a business listing yet. Create one to appear in the directory and receive quote
-            requests — or head to{" "}
-            <Link href="/directory/dashboard/jobs" className="font-semibold text-sky-700 hover:text-red-700">Jobs</Link>{" "}
-            to post a role.
+            What would you like to do? Choose an option below to get started.
           </p>
-          <Link
-            href="/directory/signup/company"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
-          >
-            Create my listing
-          </Link>
+        </div>
+        <div className="space-y-3">
+          {actions.map(({ href, Icon, title, desc, accent }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-sky-300 hover:shadow-md"
+            >
+              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${accent} text-white`}>
+                <Icon size={22} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-base font-bold text-sky-950">{title}</p>
+                <p className="mt-0.5 text-sm leading-5 text-slate-500">{desc}</p>
+              </div>
+              <ChevronRight size={18} className="shrink-0 text-slate-300 transition group-hover:text-sky-500" />
+            </Link>
+          ))}
         </div>
       </div>
     );
