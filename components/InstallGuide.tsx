@@ -137,15 +137,18 @@ const CSS = String.raw`:root {
 --hair: #dde3ec;
 --shadow: 20px 40px 80px -30px rgba(15, 39, 72, 0.45);
 }
+/* The guide is always light (readable in the modal even when the phone is in
+   dark mode) — the dark-mode override is intentionally mapped to the light
+   palette. */
 @media (prefers-color-scheme: dark) {
 :root {
---navy: #17335a;
---ground: #0a121f;
---card: #111c2e;
---ink: #e8eef7;
---ink-soft: #93a2ba;
---hair: #24344b;
---shadow: 20px 40px 90px -30px rgba(0, 0, 0, 0.7);
+--navy: #0f2748;
+--ground: #eef1f6;
+--card: #ffffff;
+--ink: #14202f;
+--ink-soft: #55637a;
+--hair: #dde3ec;
+--shadow: 20px 40px 80px -30px rgba(15, 39, 72, 0.45);
 }
 }
 :root[data-theme="light"] {
@@ -158,13 +161,13 @@ const CSS = String.raw`:root {
 --shadow: 20px 40px 80px -30px rgba(15,39,72,0.45);
 }
 :root[data-theme="dark"] {
---navy: #17335a;
---ground: #0a121f;
---card: #111c2e;
---ink: #e8eef7;
---ink-soft: #93a2ba;
---hair: #24344b;
---shadow: 20px 40px 90px -30px rgba(0,0,0,0.7);
+--navy: #0f2748;
+--ground: #eef1f6;
+--card: #ffffff;
+--ink: #14202f;
+--ink-soft: #55637a;
+--hair: #dde3ec;
+--shadow: 20px 40px 80px -30px rgba(15,39,72,0.45);
 }
 .ig-root * {
 box-sizing: border-box;
@@ -740,6 +743,7 @@ export default function InstallGuide({ initialPlatform = "ios" }: { initialPlatf
   const [platform, setPlatform] = useState<Platform>(initialPlatform);
   const [idx, setIdx] = useState(0);
   const [tap, setTap] = useState<TapPos | null>(null);
+  const [paused, setPaused] = useState(false);
   const screenRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -775,7 +779,16 @@ export default function InstallGuide({ initialPlatform = "ios" }: { initialPlatf
     return () => window.removeEventListener("resize", compute);
   }, [platform, safeIdx]);
 
-  const go = (i: number) => { setIdx(i); };
+  // Auto-advance through the steps (~3s each), looping. Manual navigation
+  // (tapping a step, Back/Next) pauses it so the visitor can read at their own
+  // pace; the Play/Pause control resumes it.
+  useEffect(() => {
+    if (paused) return;
+    const id = window.setTimeout(() => setIdx((i) => (i + 1) % flow.steps.length), 3000);
+    return () => window.clearTimeout(id);
+  }, [paused, safeIdx, platform, flow.steps.length]);
+
+  const go = (i: number) => { setIdx(i); setPaused(true); };
   const selectPlatform = (p: Platform) => { setPlatform(p); setIdx(0); };
   const lastStep = safeIdx === flow.steps.length - 1;
 
@@ -831,6 +844,9 @@ export default function InstallGuide({ initialPlatform = "ios" }: { initialPlatf
               <button className="btn" disabled={safeIdx === 0} onClick={() => go(safeIdx - 1)}>&larr; Back</button>
               <button className="btn primary" onClick={() => go(lastStep ? 0 : safeIdx + 1)}>
                 {lastStep ? "Start over \u21ba" : "Next step \u2192"}
+              </button>
+              <button className="btn" aria-pressed={!paused} onClick={() => setPaused((p) => !p)}>
+                {paused ? "\u25b6 Play" : "\u2016 Pause"}
               </button>
             </div>
             <div className="note">

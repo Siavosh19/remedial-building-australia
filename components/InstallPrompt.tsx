@@ -193,7 +193,7 @@ const guideOverlayStyle: React.CSSProperties = {
   position: "fixed",
   inset: 0,
   zIndex: 10000,
-  background: "#0a1c34",
+  background: "#eef1f6",
   overflowY: "auto",
   WebkitOverflowScrolling: "touch",
 };
