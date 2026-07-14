@@ -886,6 +886,7 @@ model QuoteRequestDelivery {
   opened_at       DateTime?
   response_status ContractorResponseStatus @default(pending)
   responded_at    DateTime?
+  interested_at   DateTime?
   quote_doc_url   String?
   notes           String?
   created_at      DateTime                 @default(now())
