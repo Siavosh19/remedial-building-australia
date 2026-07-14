@@ -125,7 +125,7 @@ const FLOWS: Record<Platform, Flow> = {
     steps: [
       { t: "Open the site in Safari", p: 'Go to <b>remedialbuildingaustralia.com.au</b> in <b>Safari</b> (not Chrome \u2014 only Safari can install on iPhone).', screen: "iosPage" },
       { t: "Tap the \u22ef menu", p: 'At the <b>bottom-right</b> of Safari, tap the <kbd>&#8943;</kbd> (More) button.', screen: "iosPage", tap: { sel: ".more-btn", label: "Tap" } },
-      { t: "Tap \u201cShare\u201d", p: 'In the menu that opens, tap <kbd>Share</kbd> to open the share sheet.', screen: "iosMenu", tap: { sel: ".row-share", label: "Tap" } },
+      { t: "Tap \u201cShare\u201d, then scroll down", p: 'In the menu that opens, tap <kbd>Share</kbd> \u2014 then <b>scroll down</b> the share sheet to find Add to Home Screen.', screen: "iosMenu", tap: { sel: ".row-share", label: "Tap" } },
       { t: "Choose \u201cAdd to Home Screen\u201d", p: 'Scroll down the share sheet, then tap <kbd>Add to Home Screen</kbd>.', screen: "iosSheet", tap: { sel: ".row-add", label: "Tap" } },
       { t: "Tap \u201cAdd\u201d", p: 'A preview shows the RBA icon and name. Tap <kbd>Add</kbd> at the top-right.', screen: "iosDialog", tap: { sel: ".add", label: "Tap" } },
       { t: "Done \u2014 it\u2019s on your home screen", p: 'The RBA icon now sits on your home screen. Tap it any time to open the app full-screen.', screen: "iosHome", tap: { sel: ".rba .t", label: "RBA" } },
