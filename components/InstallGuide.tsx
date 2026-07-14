@@ -43,6 +43,25 @@ const SCREENS: Record<string, () => string> = {
           <span class="nav">&#9633;</span>
         </div>
       </div>`,
+  iosMenu: () => `
+      <div class="scr"><div class="statusbar"></div>
+        <div class="page" style="filter:brightness(.85)">
+          <div class="hero">Remedial Building Australia</div>
+          <div class="ln m"></div><div class="ln"></div><div class="ln s"></div>
+        </div>
+        <div class="safari-bottom">
+          <span class="nav">&#8249;</span><span class="nav">&#8250;</span>
+          <span class="pill">remedialbuildingaustralia.com.au</span>
+          <span class="iconbtn more-btn" style="color:#007aff;font-size:17px">&#8943;</span>
+          <span class="nav">&#9633;</span>
+        </div>
+        <div class="sheet" style="left:auto;right:6px;bottom:46px;width:74%">
+          <div class="row row-share"><span><b>Share</b></span><span class="r-ic">&#128228;</span></div>
+          <div class="row"><span>Add to Bookmarks</span><span class="r-ic">&#128278;</span></div>
+          <div class="row"><span>Add Bookmark to&#8230;</span><span class="r-ic">&#128366;</span></div>
+          <div class="row"><span>New Private Tab</span><span class="r-ic">&#9995;</span></div>
+        </div>
+      </div>`,
   iosSheet: () => `
       <div class="scr"><div class="statusbar"></div><div class="page" style="filter:brightness(.82)">
         <div class="hero">Remedial Building Australia</div><div class="ln m"></div><div class="ln"></div><div class="ln s"></div></div>
@@ -102,11 +121,12 @@ const SCREENS: Record<string, () => string> = {
 
 const FLOWS: Record<Platform, Flow> = {
   ios: {
-    note: '<b>On iPhone 17 (iOS 26)</b> the old Share square is gone \u2014 the option now lives inside the <kbd>&#8943;</kbd> menu at the bottom-right of Safari. This guide points you straight to it.',
+    note: '<b>On iPhone</b> open the <kbd>&#8943;</kbd> (More) menu at the bottom-right of Safari, tap <kbd>Share</kbd>, then scroll down and tap <kbd>Add to Home Screen</kbd>. Only Safari can install on iPhone \u2014 Chrome can\u2019t.',
     steps: [
       { t: "Open the site in Safari", p: 'Go to <b>remedialbuildingaustralia.com.au</b> in <b>Safari</b> (not Chrome \u2014 only Safari can install on iPhone).', screen: "iosPage" },
       { t: "Tap the \u22ef menu", p: 'At the <b>bottom-right</b> of Safari, tap the <kbd>&#8943;</kbd> (More) button.', screen: "iosPage", tap: { sel: ".more-btn", label: "Tap" } },
-      { t: "Choose \u201cAdd to Home Screen\u201d", p: 'Scroll the menu if needed, then tap <kbd>Add to Home Screen</kbd>.', screen: "iosSheet", tap: { sel: ".row-add", label: "Tap" } },
+      { t: "Tap \u201cShare\u201d", p: 'In the menu that opens, tap <kbd>Share</kbd> to open the share sheet.', screen: "iosMenu", tap: { sel: ".row-share", label: "Tap" } },
+      { t: "Choose \u201cAdd to Home Screen\u201d", p: 'Scroll down the share sheet, then tap <kbd>Add to Home Screen</kbd>.', screen: "iosSheet", tap: { sel: ".row-add", label: "Tap" } },
       { t: "Tap \u201cAdd\u201d", p: 'A preview shows the RBA icon and name. Tap <kbd>Add</kbd> at the top-right.', screen: "iosDialog", tap: { sel: ".add", label: "Tap" } },
       { t: "Done \u2014 it\u2019s on your home screen", p: 'The RBA icon now sits on your home screen. Tap it any time to open the app full-screen.', screen: "iosHome", tap: { sel: ".rba .t", label: "RBA" } },
     ],
