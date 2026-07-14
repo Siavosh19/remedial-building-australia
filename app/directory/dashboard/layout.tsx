@@ -5,6 +5,7 @@ import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import PortalSidebar from "@/components/directory/PortalSidebar";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import NotificationBell from "@/components/NotificationBell";
+import PushRegister from "@/components/PushRegister";
 import { planLabel } from "@/lib/plans";
 
 
@@ -68,6 +69,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-24 sm:px-6 sm:pt-8 md:pb-10">
           {children}
         </main>
+        <PushRegister />
 
       <footer className="border-t border-sky-200 bg-slate-100">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:grid-cols-[1.2fr_1fr]">

@@ -13,7 +13,7 @@
  *
  * Bump CACHE_VERSION to force old caches to be cleared on the next deploy.
  */
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 const STATIC_CACHE = `rba-static-${CACHE_VERSION}`;
 const PAGE_CACHE = `rba-pages-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline";
@@ -100,4 +100,41 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Everything else (API GETs, etc.) → default network handling, uncached.
+});
+
+// ── Web Push ─────────────────────────────────────────────────────────────────
+// Show an OS notification when the server pushes one (payload = {title,body,url}).
+self.addEventListener("push", (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch (e) {
+    data = { title: "Remedial Building Australia", body: event.data ? event.data.text() : "" };
+  }
+  const title = data.title || "Remedial Building Australia";
+  const options = {
+    body: data.body || "",
+    icon: "/icon.png",
+    badge: "/icon.png",
+    data: { url: data.url || "/" },
+    tag: data.tag || undefined,
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+// Focus an existing window on the target URL, or open a new one.
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const target = (event.notification.data && event.notification.data.url) || "/";
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+      for (const client of clients) {
+        if ("focus" in client) {
+          client.navigate(target).catch(() => {});
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow(target);
+    }),
+  );
 });

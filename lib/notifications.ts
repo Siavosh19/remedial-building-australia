@@ -1,10 +1,13 @@
 import { prisma } from "@/lib/prisma";
+import { sendPushToUser, sendPushToUsers } from "@/lib/push";
 
 // In-app notification bell. Best-effort by design: creating a notification must
 // never break the primary action (sending a lead, submitting an application),
 // so every function swallows its own errors — same contract as the email sends.
+// Each bell notification also fires an OS-level web push (best-effort) so the
+// recipient is alerted even when the app is closed.
 
-export type NotificationType = "lead" | "lead_updated" | "job_applicant";
+export type NotificationType = "lead" | "lead_updated" | "job_applicant" | "news_digest";
 
 export async function createNotification(input: {
   userId: number;
@@ -26,6 +29,7 @@ export async function createNotification(input: {
   } catch (err) {
     console.error("[notifications] createNotification failed", err);
   }
+  await sendPushToUser(input.userId, { title: input.title, body: input.body, url: input.link });
 }
 
 // Fan out to every member of a company (owner + staff via company_users).
@@ -48,6 +52,7 @@ export async function notifyCompanyOwners(
         link: input.link ?? null,
       })),
     });
+    await sendPushToUsers(members.map((m) => m.user_id), { title: input.title, body: input.body, url: input.link });
   } catch (err) {
     console.error("[notifications] notifyCompanyOwners failed", err);
   }

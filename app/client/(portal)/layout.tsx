@@ -4,6 +4,7 @@ import { getCurrentDirectoryUser, userHasClientAccess } from "@/lib/directory-au
 import ClientPortalSidebar from "@/components/client/ClientPortalSidebar";
 import RoleSwitcher from "@/components/RoleSwitcher";
 import NotificationBell from "@/components/NotificationBell";
+import PushRegister from "@/components/PushRegister";
 
 export default async function ClientLayout({ children }: { children: ReactNode }) {
   const user = await getCurrentDirectoryUser();
@@ -34,6 +35,7 @@ export default async function ClientLayout({ children }: { children: ReactNode }
         </div>
 
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">{children}</main>
+        <PushRegister />
 
         <footer className="border-t border-sky-200 bg-slate-100">
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">

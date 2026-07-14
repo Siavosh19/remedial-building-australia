@@ -508,10 +508,28 @@ model User {
   jobs                        Job[]
   job_payments                JobPayment[]
   notifications               Notification[]
+  push_subscriptions          PushSubscription[]
 
   @@index([account_type])
   @@index([supplier_id])
   @@map("users")
+}
+
+// Web Push subscriptions (one per browser/device per user). Populated when a
+// logged-in user grants notification permission; used to fan out OS-level push
+// alongside the in-app Notification rows. Expired endpoints (404/410) are pruned.
+model PushSubscription {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  endpoint   String   @unique
+  p256dh     String
+  auth       String
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("push_subscriptions")
 }
 
 // In-app notification bell. One row per recipient user per event. Complements the
