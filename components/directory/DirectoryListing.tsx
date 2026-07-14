@@ -1414,7 +1414,7 @@ export default function DirectoryListing({ categories }: Props) {
   // ── AI "describe your job" matcher ───────────────────────────────────────────
   async function runAiMatch() {
     const desc = aiText.trim();
-    if (desc.length < 8) {
+    if (desc.length < 1) {
       setAiError("Please describe the work in a bit more detail.");
       return;
     }

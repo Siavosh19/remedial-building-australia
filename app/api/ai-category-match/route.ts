@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json().catch(() => null);
   const description = typeof body?.description === "string" ? body.description.trim() : "";
-  if (description.length < 8) {
+  if (description.length < 1) {
     return NextResponse.json(
       { error: "Please describe the work in a bit more detail." },
       { status: 400 },
