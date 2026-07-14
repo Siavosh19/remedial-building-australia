@@ -143,9 +143,12 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
                   <td className="px-5 py-4 text-slate-600">{URGENCY_LABELS[d.request.urgency] ?? d.request.urgency}</td>
                   <td className="px-5 py-4 text-slate-500">{new Date(d.created_at).toLocaleDateString("en-AU")}</td>
                   <td className="px-5 py-4"><ResponseStatusBadge status={d.response_status} /></td>
-                  <td className="px-5 py-4 text-right">
-                    <Link href={`/directory/dashboard/lead-requests/${d.id}`} className="font-semibold text-sky-800 hover:text-sky-600">
-                      Open
+                  <td className="px-5 py-4 text-center">
+                    <Link
+                      href={`/directory/dashboard/lead-requests/${d.id}`}
+                      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-sky-950 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-sky-800"
+                    >
+                      View request
                     </Link>
                   </td>
                 </tr>

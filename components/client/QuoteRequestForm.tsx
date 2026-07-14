@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { PROPERTY_TYPE_OPTIONS, URGENCY_OPTIONS, FILE_TYPE_OPTIONS, formatMoneyInput } from "@/lib/quote-options";
+import SuburbAutocomplete from "@/components/directory/SuburbAutocomplete";
 import { RBA_DISCLAIMER } from "@/lib/legal";
 import CategoryTreeSelect, { type TreeCat } from "@/components/directory/CategoryTreeSelect";
 
@@ -77,6 +78,9 @@ export default function QuoteRequestForm({
   });
   const [files, setFiles] = useState<PickedFile[]>([]);
   const [termsAccepted, setTermsAccepted] = useState(isEdit);
+  // Suburb must be confirmed against real AU data before submit. A pre-filled
+  // suburb (edit mode) is treated as already confirmed.
+  const [suburbVerified, setSuburbVerified] = useState(Boolean(initial?.suburb));
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<null | "draft" | "submit" | "save">(null);
 
@@ -116,6 +120,10 @@ export default function QuoteRequestForm({
     }
     if (action === "submit" && !termsAccepted) {
       setError("You must accept the platform terms and disclaimer to submit.");
+      return;
+    }
+    if ((action === "submit" || action === "save") && !suburbVerified) {
+      setError("Please pick your suburb from the list so we can confirm it.");
       return;
     }
 
@@ -214,7 +222,12 @@ export default function QuoteRequestForm({
         <div className="grid gap-5 sm:grid-cols-3">
           <label className={`${labelClass} sm:col-span-2`}>
             <span>Suburb</span>
-            <input className={inputClass} value={form.suburb} onChange={(e) => set("suburb", e.target.value)} required />
+            <SuburbAutocomplete
+              value={form.suburb}
+              verified={suburbVerified}
+              onType={(suburb) => { setForm((f) => ({ ...f, suburb })); setSuburbVerified(false); }}
+              onSelect={(s) => { setForm((f) => ({ ...f, suburb: s.suburb, postcode: s.postcode })); setSuburbVerified(true); }}
+            />
           </label>
           <label className={labelClass}>
             <span>Postcode</span>

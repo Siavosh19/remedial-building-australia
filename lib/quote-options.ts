@@ -55,6 +55,29 @@ export const RESPONSE_STATUS_LABELS = toMap(RESPONSE_STATUS_OPTIONS);
 export const PROPERTY_TYPE_IDS = PROPERTY_TYPE_OPTIONS.map((o) => o.id);
 export const URGENCY_IDS = URGENCY_OPTIONS.map((o) => o.id);
 
+// ─── Response-window policy ───────────────────────────────────────────────────
+// How long a business has to respond to a quote request before it auto-expires
+// (marked "not interested") and the lead passes to the next reserve business.
+// Tied to the client's chosen urgency. Surfaced to the client at request time,
+// in the business notification email + lead page, and in the Terms & Conditions.
+export const RESPONSE_WINDOW_HOURS: Record<string, number> = {
+  emergency: 24,     // Emergency / make-safe
+  within_week: 48,   // Urgent
+  within_month: 72,  // Standard
+  planning: 72,      // Planning / budgeting
+};
+export const DEFAULT_RESPONSE_WINDOW_HOURS = 72;
+
+export function responseWindowHours(urgency: string | null | undefined): number {
+  return (urgency && RESPONSE_WINDOW_HOURS[urgency]) || DEFAULT_RESPONSE_WINDOW_HOURS;
+}
+
+// Client-facing sentence describing the window for the chosen urgency.
+export function responseWindowNote(urgency: string | null | undefined): string {
+  const h = responseWindowHours(urgency);
+  return `Businesses have ${h} hours to respond to this request. If a business does not respond in time it is automatically removed and your request passes to the next available business you selected.`;
+}
+
 export const FILE_TYPE_OPTIONS = [
   { id: "photo", label: "Photo" },
   { id: "report", label: "Report" },
