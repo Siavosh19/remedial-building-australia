@@ -77,21 +77,25 @@ export default async function DirectoryPage() {
 
       {/* Hero */}
       <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-8 py-10">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
-            AI-Powered Directory &amp; Quote Request Platform
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-sky-950 md:text-5xl">
-            Australia&rsquo;s AI-Powered Building &amp; Construction Directory
-          </h1>
-          <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">
-            Don&rsquo;t know the trade name? Just describe the job and our AI finds the right people. Search builders,
-            contractors, engineers, consultants, suppliers and specialist contractors across Australia, compare
-            profiles, and request quotes directly from businesses servicing your area.
-          </p>
+        <div className="mx-auto max-w-7xl px-8 py-5 sm:py-10">
+          {/* Intro heading + blurb — hidden on phones / the installed app so the
+              search box sits near the top (no scrolling past it). Shown ≥640px. */}
+          <div className="hidden sm:block">
+            <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-700">
+              AI-Powered Directory &amp; Quote Request Platform
+            </p>
+            <h1 className="mt-3 text-3xl font-extrabold leading-tight text-sky-950 md:text-5xl">
+              Australia&rsquo;s AI-Powered Building &amp; Construction Directory
+            </h1>
+            <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">
+              Don&rsquo;t know the trade name? Just describe the job and our AI finds the right people. Search builders,
+              contractors, engineers, consultants, suppliers and specialist contractors across Australia, compare
+              profiles, and request quotes directly from businesses servicing your area.
+            </p>
+          </div>
 
           {/* Stats bar */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-slate-100 pt-5 text-center text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-slate-100 text-center text-sm sm:mt-6 sm:border-t sm:pt-5">
             {listedLabel && (
               <>
                 <span>
