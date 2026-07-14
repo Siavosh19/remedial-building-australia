@@ -371,6 +371,12 @@ model Company {
   @@index([name])
   @@index([plan_type])
   @@index([listing_claim_status])
+  @@index([main_category_id])
+  // NOTE: directory search also relies on pg_trgm GIN indexes on companies.name
+  // and companies.description (for ILIKE keyword/IDF matching). Prisma can't model
+  // trigram GIN indexes without the postgresqlExtensions preview, so they are
+  // created in migration 20260714120000_search_trgm_indexes. Do NOT let a
+  // `prisma migrate dev` drop them.
   @@map("companies")
 }
 
@@ -436,6 +442,9 @@ model CompanyCategory {
   category   Category @relation(fields: [category_id], references: [id])
   approvedBy User?    @relation("CompanyCategoryApprover", fields: [approved_by], references: [id])
 
+  @@index([company_id])
+  @@index([category_id])
+  @@index([is_approved, category_id])
   @@map("company_categories")
 }
 

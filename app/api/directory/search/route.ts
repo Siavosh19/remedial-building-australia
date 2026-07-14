@@ -21,6 +21,33 @@ const getCategoryNameIndex = unstable_cache(
   { revalidate: 3600 },
 );
 
+// IDF inputs (Bug 2 weighting) change slowly, but were recomputed on every
+// multi-word search as N+1 `count()` scans — each a leading-wildcard ILIKE that
+// can't use a btree index. Document frequencies barely move between searches, so
+// cache them: the total published count, and the per-word document frequency
+// (keyed by the word, so distinct words cache independently). Refreshed hourly.
+const getPublishedCount = unstable_cache(
+  async (): Promise<number> => prisma.company.count({ where: { status: "published" } }),
+  ["directory-published-count"],
+  { revalidate: 3600 },
+);
+
+const getWordDocFreq = unstable_cache(
+  async (word: string): Promise<number> =>
+    prisma.company.count({
+      where: {
+        status: "published",
+        OR: [
+          { name: { contains: word, mode: "insensitive" } },
+          { description: { contains: word, mode: "insensitive" } },
+          { main_category: { name: { contains: word, mode: "insensitive" } } },
+        ],
+      },
+    }),
+  ["directory-word-doc-freq"],
+  { revalidate: 3600 },
+);
+
 const PAGE_SIZE = 20;
 const MATCH_CAP = 3000; // max rows pulled for in-memory relevance scoring
 
@@ -928,38 +955,34 @@ export async function GET(request: NextRequest) {
   const now = new Date();
 
   try {
-    // Resolve the requested location → state (hard filter) + coordinates (ranking).
-    const resolved: ResolvedLocation = locationRequested
-      ? await resolveLocation({
-          lat, lng, hasCoords: hasCoordsParam, locationState,
-          suburb: suburbParam, postcode: postcodeParam, stateFilter: stateParam, rawLocation,
-        })
-      : {};
+    // These three lookups are independent of each other, so fire them together
+    // instead of in series: location → state/coords, the IDF document-frequency
+    // counts (now cached), and the category-name index used for query anchoring.
+    const needIdf = A.words.length >= 2;
+    const needAnchor = Boolean(!category && q);
+    const [resolved, idfCounts, catIndex] = await Promise.all([
+      // Resolve the requested location → state (hard filter) + coordinates (ranking).
+      locationRequested
+        ? resolveLocation({
+            lat, lng, hasCoords: hasCoordsParam, locationState,
+            suburb: suburbParam, postcode: postcodeParam, stateFilter: stateParam, rawLocation,
+          })
+        : Promise.resolve({} as ResolvedLocation),
+      // IDF token weighting (Bug 2). For multi-word queries, weight each content word
+      // by its inverse document frequency so a rare token (a brand like "Mapei")
+      // dominates a common one ("supplier"). Counts are cached hourly.
+      needIdf
+        ? Promise.all([getPublishedCount(), ...A.words.map((w) => getWordDocFreq(w))])
+        : Promise.resolve(null),
+      needAnchor ? getCategoryNameIndex() : Promise.resolve(null),
+    ]);
 
     const enforcedState = resolved.state;
     // Soft suburb match only when we couldn't pin a state (unknown suburb).
     const softSuburb = !enforcedState ? (resolved.suburb ?? "") : "";
 
-    // IDF token weighting (Bug 2). For multi-word queries, weight each content word
-    // by its inverse document frequency so a rare token (a brand like "Mapei")
-    // dominates a common one ("supplier"), and set a coverage cutoff that drops
-    // generic-word-only matches from the results + count.
-    if (A.words.length >= 2) {
-      const [N, ...dfs] = await Promise.all([
-        prisma.company.count({ where: { status: "published" } }),
-        ...A.words.map((w) =>
-          prisma.company.count({
-            where: {
-              status: "published",
-              OR: [
-                { name: { contains: w, mode: "insensitive" } },
-                { description: { contains: w, mode: "insensitive" } },
-                { main_category: { name: { contains: w, mode: "insensitive" } } },
-              ],
-            },
-          }),
-        ),
-      ]);
+    if (idfCounts) {
+      const [N, ...dfs] = idfCounts;
       const idf: Record<string, number> = {};
       A.words.forEach((w, i) => { idf[w] = Math.log((N + 1) / (dfs[i] + 1)); });
       A.tokenIdf = idf;
@@ -976,8 +999,8 @@ export async function GET(request: NextRequest) {
     // trades. Freeform queries (no category match) fall through to keyword search.
     let effectiveCategory = category;
     let anchoredByQuery = false;
-    if (!category && q) {
-      const anchored = resolveQueryToCategory(q, await getCategoryNameIndex());
+    if (needAnchor && catIndex) {
+      const anchored = resolveQueryToCategory(q, catIndex);
       if (anchored) {
         effectiveCategory = anchored;
         anchoredByQuery = true;
@@ -1118,21 +1141,22 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Fetch full data for the page, preserve ranking order.
-    const fullRows = await prisma.company.findMany({
-      where: { id: { in: pageIds } },
-      select: COMPANY_SELECT,
-    });
+    // Fetch full data for the page and the (first-page-only) Top Listing section
+    // together — they hit different rows and don't depend on each other.
+    const [fullRows, topData] = await Promise.all([
+      prisma.company.findMany({
+        where: { id: { in: pageIds } },
+        select: COMPANY_SELECT,
+      }),
+      page === 1
+        ? getTopListings(category, matchingRows, resolved)
+        : Promise.resolve({ items: [] as TopListingCard[], eligible: false }),
+    ]);
     const companies = pageIds.map((id) => {
       const row = fullRows.find((r) => r.id === id)!;
       const km = distById.get(id);
       return { ...row, distance_km: km == null ? null : Math.round(km) };
     });
-
-    // Top Listing section — only meaningful on the first page.
-    const topData = page === 1
-      ? await getTopListings(category, matchingRows, resolved)
-      : { items: [] as TopListingCard[], eligible: false };
 
     return NextResponse.json({
       companies,
