@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { prisma } from "@/lib/prisma";
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { STRATA_INTAKE_BUCKET } from "@/lib/strata-connect";
+import { STRATA_INTAKE_BUCKET, extractIntake } from "@/lib/strata-connect";
 
 // Inbound work-order webhook for Strata Connect.
 //
@@ -174,6 +174,10 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Stage 2 will trigger AI extraction here (address, category, units).
+  // Stage 2 — AI extraction (address, category, job summary). Best-effort: it
+  // never throws (records an error + leaves needs_review), and we still return
+  // 200 so the inbound provider doesn't retry the delivery.
+  await extractIntake(intake.id).catch(() => {});
+
   return NextResponse.json({ ok: true, id: intake.id, attachments: attachments.length });
 }

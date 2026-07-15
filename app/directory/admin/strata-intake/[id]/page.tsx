@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { STRATA_INTAKE_BUCKET } from "@/lib/strata-connect";
+import StrataIntakeActions from "@/components/directory/StrataIntakeActions";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,21 @@ export default async function AdminStrataIntakeDetailPage({ params }: { params: 
     include: { files: { orderBy: { id: "asc" } } },
   });
   if (!intake) notFound();
+
+  // Parent categories for the approve form's picker.
+  const categories = await prisma.category.findMany({
+    where: { is_active: true, parent_id: null },
+    select: { id: true, name: true },
+    orderBy: [{ display_order: "asc" }, { name: "asc" }],
+  });
+
+  const locked = intake.status === "converted" || intake.status === "rejected";
+  const lockedReason =
+    intake.status === "converted"
+      ? `Converted to quote request #${intake.quote_request_id} and broadcast to businesses.`
+      : intake.status === "rejected"
+        ? "This work order was rejected — nothing was sent."
+        : null;
 
   // Sign each stored attachment so the admin can open it (private bucket).
   const canSign = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -138,9 +154,28 @@ export default async function AdminStrataIntakeDetailPage({ params }: { params: 
         )}
       </section>
 
-      <p className="mt-6 text-xs text-slate-400">
-        Approve / reject actions and AI extraction are added in the next stages. Nothing is sent to any business until you approve.
-      </p>
+      {/* ── Stage 3: review, correct, approve → broadcast (or reject) ────────── */}
+      <div className="mt-6">
+        <StrataIntakeActions
+          intakeId={intake.id}
+          categories={categories}
+          locked={locked}
+          lockedReason={lockedReason}
+          initial={{
+            buildingAddress: intake.building_address ?? "",
+            suburb: intake.suburb ?? "",
+            postcode: intake.postcode ?? "",
+            strataPlanNumber: intake.strata_plan_number ?? "",
+            description: intake.job_description ?? intake.subject ?? "",
+            contactName: intake.from_name ?? "",
+            contactEmail: intake.from_email ?? "",
+            contactPhone: "",
+            propertyType: "residential_strata",
+            urgency: "within_month",
+            workCategoryId: intake.matched_category_id ? String(intake.matched_category_id) : "",
+          }}
+        />
+      </div>
     </div>
   );
 }
