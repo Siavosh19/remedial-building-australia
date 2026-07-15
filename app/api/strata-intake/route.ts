@@ -7,10 +7,17 @@ import { STRATA_INTAKE_BUCKET, extractIntake } from "@/lib/strata-connect";
 // Inbound work-order webhook for Strata Connect.
 //
 // A strata manager forwards a work order to workorders@… ; that mailbox
-// auto-forwards into Resend Inbound, which POSTs the parsed email (body +
-// attachments) here. We store it as a PENDING StrataIntake for admin review —
-// no business is contacted until an admin approves it. Stage 2 will add AI
-// extraction; Stage 3 converts an approved intake into a ClientQuoteRequest.
+// auto-forwards to a Resend Inbound address. Resend POSTs an `email.received`
+// event that contains only METADATA (email_id, from, to, subject, attachment
+// filenames) — NOT the body or attachment bytes. So we call the Resend Received
+// Emails API to fetch the body, and the Attachments API for each file's
+// download URL. We store it as a PENDING StrataIntake, AI-extract it (Stage 2),
+// and an admin reviews + approves it (Stage 3) before any business is contacted.
+//
+// A direct full-email JSON POST (no `type: email.received`) is still accepted as
+// a fallback so the flow can be tested without Resend.
+
+const RESEND_API = "https://api.resend.com";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -79,6 +86,46 @@ function joinTo(to: InboundEmail["to"]): string | null {
   return parts.length ? parts.join(", ") : null;
 }
 
+// Resend's email.received webhook is metadata-only. Pull the full email (body)
+// from the Received Emails API and each attachment's presigned download URL from
+// the Attachments API, mapping into our InboundEmail shape. Returns null if the
+// API key is missing or the fetch fails (caller then errors so Resend retries).
+async function hydrateFromResend(emailId: string): Promise<InboundEmail | null> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return null;
+  const headers = { Authorization: `Bearer ${key}` };
+
+  const r = await fetch(`${RESEND_API}/emails/receiving/${emailId}`, { headers });
+  if (!r.ok) return null;
+  const e = (await r.json()) as Record<string, unknown>;
+
+  let attachments: InboundAttachment[] = [];
+  try {
+    const ar = await fetch(`${RESEND_API}/emails/receiving/${emailId}/attachments?limit=100`, { headers });
+    if (ar.ok) {
+      const aj = (await ar.json()) as { data?: Array<Record<string, unknown>> };
+      attachments = (aj.data ?? []).map((a) => ({
+        filename: a.filename as string | undefined,
+        content_type: a.content_type as string | undefined,
+        size: a.size as number | undefined,
+        content_url: a.download_url as string | undefined, // presigned CDN URL → raw bytes
+      }));
+    }
+  } catch {
+    // Attachments are best-effort; the body alone is enough to extract from.
+  }
+
+  return {
+    message_id: (e.message_id as string) ?? emailId,
+    from: e.from as InboundEmail["from"],
+    to: e.to as InboundEmail["to"],
+    subject: e.subject as string | undefined,
+    text: e.text as string | undefined,
+    html: e.html as string | undefined,
+    attachments,
+  };
+}
+
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
 
@@ -94,8 +141,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON." }, { status: 400 });
   }
   const record = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : {};
-  // Resend wraps the email as { type, data }; accept a bare email object too.
-  const email = (record.data ?? record) as InboundEmail;
+  const eventType = typeof record.type === "string" ? record.type : "";
+  const data = (record.data ?? record) as Record<string, unknown>;
+
+  // Real Resend inbound: metadata-only event → fetch the full email from the API.
+  // Otherwise treat the POST body as a full email (direct/test path).
+  let email: InboundEmail;
+  if (eventType === "email.received" && data.email_id) {
+    const hydrated = await hydrateFromResend(String(data.email_id));
+    if (!hydrated) {
+      // Non-200 so Resend retries once the API key / transient issue is resolved.
+      return NextResponse.json({ error: "Could not retrieve received email from Resend." }, { status: 502 });
+    }
+    email = hydrated;
+  } else {
+    email = data as InboundEmail;
+  }
 
   const from = parseFrom(email.from);
   if (!from.email) return NextResponse.json({ error: "Missing sender." }, { status: 400 });
