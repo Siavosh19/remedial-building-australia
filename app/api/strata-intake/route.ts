@@ -1,0 +1,179 @@
+import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
+import { prisma } from "@/lib/prisma";
+import { supabaseAdmin } from "@/lib/supabase-admin";
+import { STRATA_INTAKE_BUCKET } from "@/lib/strata-connect";
+
+// Inbound work-order webhook for Strata Connect.
+//
+// A strata manager forwards a work order to workorders@… ; that mailbox
+// auto-forwards into Resend Inbound, which POSTs the parsed email (body +
+// attachments) here. We store it as a PENDING StrataIntake for admin review —
+// no business is contacted until an admin approves it. Stage 2 will add AI
+// extraction; Stage 3 converts an approved intake into a ClientQuoteRequest.
+
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
+type InboundAttachment = {
+  filename?: string;
+  name?: string;
+  content_type?: string;
+  contentType?: string;
+  content?: string; // base64
+  content_url?: string; // or a URL to fetch
+  url?: string;
+  size?: number;
+};
+
+type InboundEmail = {
+  message_id?: string;
+  messageId?: string;
+  from?: string | { email?: string; name?: string };
+  to?: string | Array<string | { email?: string }>;
+  subject?: string;
+  text?: string;
+  html?: string;
+  attachments?: InboundAttachment[];
+};
+
+// Svix-style signature verification (Resend signs inbound webhooks via Svix).
+// Skipped when RESEND_INBOUND_SECRET is unset (e.g. local/dev simulated posts).
+function verifySignature(secret: string, headers: Headers, rawBody: string): boolean {
+  const id = headers.get("svix-id") ?? headers.get("webhook-id");
+  const ts = headers.get("svix-timestamp") ?? headers.get("webhook-timestamp");
+  const sig = headers.get("svix-signature") ?? headers.get("webhook-signature");
+  if (!id || !ts || !sig) return false;
+  const key = secret.startsWith("whsec_") ? secret.slice(6) : secret;
+  let keyBytes: Buffer;
+  try {
+    keyBytes = Buffer.from(key, "base64");
+  } catch {
+    return false;
+  }
+  const expected = crypto.createHmac("sha256", keyBytes).update(`${id}.${ts}.${rawBody}`).digest("base64");
+  return sig.split(" ").some((part) => {
+    const s = part.includes(",") ? part.split(",")[1] : part;
+    try {
+      return crypto.timingSafeEqual(Buffer.from(s), Buffer.from(expected));
+    } catch {
+      return false;
+    }
+  });
+}
+
+function parseFrom(v: InboundEmail["from"]): { email: string; name?: string } {
+  if (!v) return { email: "" };
+  if (typeof v === "string") {
+    const m = v.match(/^\s*(.*?)\s*<([^>]+)>\s*$/);
+    if (m) return { email: m[2].trim(), name: m[1].replace(/"/g, "").trim() || undefined };
+    return { email: v.trim() };
+  }
+  return { email: (v.email ?? "").trim(), name: v.name };
+}
+
+function joinTo(to: InboundEmail["to"]): string | null {
+  if (!to) return null;
+  if (typeof to === "string") return to;
+  const parts = to.map((t) => (typeof t === "string" ? t : t.email ?? "")).filter(Boolean);
+  return parts.length ? parts.join(", ") : null;
+}
+
+export async function POST(request: NextRequest) {
+  const rawBody = await request.text();
+
+  const secret = process.env.RESEND_INBOUND_SECRET;
+  if (secret && !verifySignature(secret, request.headers, rawBody)) {
+    return NextResponse.json({ error: "Invalid signature." }, { status: 401 });
+  }
+
+  let payload: unknown;
+  try {
+    payload = JSON.parse(rawBody);
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON." }, { status: 400 });
+  }
+  const record = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : {};
+  // Resend wraps the email as { type, data }; accept a bare email object too.
+  const email = (record.data ?? record) as InboundEmail;
+
+  const from = parseFrom(email.from);
+  if (!from.email) return NextResponse.json({ error: "Missing sender." }, { status: 400 });
+
+  const messageId = email.message_id ?? email.messageId ?? null;
+
+  // Idempotency: the same forwarded message must not create a second intake.
+  if (messageId) {
+    const existing = await prisma.strataIntake.findUnique({
+      where: { message_id: messageId },
+      select: { id: true },
+    });
+    if (existing) return NextResponse.json({ ok: true, id: existing.id, deduped: true });
+  }
+
+  const intake = await prisma.strataIntake.create({
+    data: {
+      message_id: messageId,
+      from_email: from.email,
+      from_name: from.name ?? null,
+      envelope_from: from.email,
+      to_email: joinTo(email.to),
+      subject: email.subject ?? null,
+      body_text: email.text ?? null,
+      body_html: email.html ?? null,
+      status: "received",
+    },
+  });
+
+  // Persist EVERY attachment (any type) so the admin review shows all of them.
+  const attachments = Array.isArray(email.attachments) ? email.attachments : [];
+  const haveStorage = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  if (attachments.length && haveStorage) {
+    await supabaseAdmin.storage.createBucket(STRATA_INTAKE_BUCKET, { public: false }).catch(() => {});
+  }
+
+  for (let i = 0; i < attachments.length; i++) {
+    const att = attachments[i];
+    const filename = att.filename ?? att.name ?? `attachment-${i + 1}`;
+    const contentType = att.content_type ?? att.contentType ?? "application/octet-stream";
+
+    let buffer: Buffer | null = null;
+    try {
+      if (att.content) {
+        buffer = Buffer.from(att.content, "base64");
+      } else {
+        const url = att.content_url ?? att.url;
+        if (url) {
+          const r = await fetch(url);
+          if (r.ok) buffer = Buffer.from(await r.arrayBuffer());
+        }
+      }
+    } catch {
+      buffer = null;
+    }
+
+    let storedPath: string | null = null;
+    if (buffer && haveStorage) {
+      const safe = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${intake.id}/${i + 1}-${safe}`;
+      const { error } = await supabaseAdmin.storage
+        .from(STRATA_INTAKE_BUCKET)
+        .upload(path, buffer, { contentType, upsert: true });
+      if (!error) storedPath = path;
+    }
+
+    await prisma.strataIntakeFile.create({
+      data: {
+        intake_id: intake.id,
+        filename,
+        content_type: contentType,
+        size_bytes: att.size ?? buffer?.length ?? null,
+        url: storedPath, // storage object path; admin views it via a signed URL
+        is_pdf: /pdf/i.test(contentType) || /\.pdf$/i.test(filename),
+      },
+    });
+  }
+
+  // Stage 2 will trigger AI extraction here (address, category, units).
+  return NextResponse.json({ ok: true, id: intake.id, attachments: attachments.length });
+}
