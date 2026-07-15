@@ -125,20 +125,9 @@ export default async function DashboardIndexPage() {
     );
   }
 
-  // Refetch with extra fields for checklist
-  const companyDetail = company
-    ? await prisma.company.findUnique({
-        where: { id: company.id },
-        select: {
-          description: true,
-          phone: true,
-          website: true,
-          licence_number: true,
-          logo_url: true,
-        },
-      })
-    : null;
-
+  // The checklist fields (description/licence_number/logo_url) are already on
+  // `company` above — the base findFirst returns all scalar columns — so no
+  // second round-trip is needed.
   const subscription = company?.directory_subscription;
   const plan = company?.plan_type ?? "basic";
 
@@ -175,10 +164,10 @@ export default async function DashboardIndexPage() {
 
   const logoMedia = company?.media.find((m) => m.media_type === "logo");
   const photos = company?.media.filter((m) => m.media_type === "photo") ?? [];
-  const hasLogo = !!(logoMedia || companyDetail?.logo_url);
-  const hasDescription = !!(companyDetail?.description?.trim());
+  const hasLogo = !!(logoMedia || company?.logo_url);
+  const hasDescription = !!(company?.description?.trim());
   const hasLocation = !!(company?.locations?.[0]?.postcode);
-  const hasLicence = !!(companyDetail?.licence_number);
+  const hasLicence = !!(company?.licence_number);
   const hasPhotos = photos.length > 0;
   const isLive = company?.status === "published";
 
@@ -233,10 +222,10 @@ export default async function DashboardIndexPage() {
 
           {/* Avatar */}
           <div className="shrink-0">
-            {(logoMedia?.url || companyDetail?.logo_url) ? (
+            {(logoMedia?.url || company?.logo_url) ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={logoMedia?.url ?? companyDetail?.logo_url ?? ""}
+                src={logoMedia?.url ?? company?.logo_url ?? ""}
                 alt={company?.name ?? ""}
                 className="h-16 w-16 rounded-xl border border-slate-200 object-cover"
               />
