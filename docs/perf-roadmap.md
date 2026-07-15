@@ -46,3 +46,31 @@ fast; it only needs the cross-cutting polish items so both sides feel like one p
 
 ## Recommendation
 Phase 0 + 1 delivers ~80% of the perceived improvement for ~20% of the effort.
+
+## Reality check after digging in (2026-07-15)
+The app was already more optimised than the raw metrics implied — several roadmap
+items were already done or are non-issues:
+- `getCurrentDirectoryUser` is already `cache()`-wrapped (auth dedupes per render). ✓
+- `loading.tsx` now covers both portals (Phase 0). ✓
+- A **PWA bottom tab bar already exists** (`components/PWAAppShell.tsx`, installed/standalone
+  mode, 4 public sections) — so Phase 3's "mobile tab bar" is partly covered; a *portal*-scoped
+  tab bar would be the only addition.
+- `xlsx` is **not** imported in app code (only a comment + a file-input `accept`), so it does
+  not bloat the client bundle — no dynamic-import needed.
+- `framer-motion` is used in exactly one file (`app/HomeClient.tsx`, the public hero) — low value
+  to change and risky (above the fold).
+
+### Done in this pass (committed to branch, not deployed)
+- **DB:** removed a redundant second `company` query on the business dashboard — the base
+  `findFirst` already returns all scalar columns, so the checklist re-fetch was a wasted round-trip
+  on every load.
+- **Optimistic UI:** `LeadFlowActions` now flips instantly on tap (interested / not-interested /
+  outcome) and reverts on failure, instead of waiting for the server round-trip.
+
+### Genuinely remaining (higher-risk — do deliberately, not in bulk)
+- Convert the 14 raw `<img>` → `next/image` (needs per-image dimensions).
+- Audit the 51 `force-dynamic` pages: only some are truly per-user; the rest can be cached with
+  `revalidate` / `unstable_cache` + tag invalidation. Must be done page-by-page to avoid serving
+  one user's data to another.
+- Suspense streaming on the heaviest pages (marginal now that `loading.tsx` covers nav).
+- A portal-scoped mobile bottom tab bar + View Transitions.
