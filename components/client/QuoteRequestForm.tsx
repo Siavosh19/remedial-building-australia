@@ -171,11 +171,9 @@ export default function QuoteRequestForm({
         if (!submitRes.ok) throw new Error(submitted.error ?? "Could not submit your request.");
       }
 
-      router.push(
-        action === "submit"
-          ? `/client/quote-requests/${requestId}/results`
-          : `/client/quote-requests/${requestId}`,
-      );
+      // Submitting now auto-broadcasts to matching businesses (server-side), so we
+      // go straight to the request page — no "find + pick businesses" step.
+      router.push(`/client/quote-requests/${requestId}`);
     } catch (err) {
       setError((err as Error).message);
       setBusy(null);
@@ -376,7 +374,7 @@ export default function QuoteRequestForm({
               disabled={busy !== null}
               className="rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {busy === "submit" ? "Finding businesses…" : "Explore available businesses"}
+              {busy === "submit" ? "Posting your request…" : "Post request to matching businesses"}
             </button>
             <button
               type="button"

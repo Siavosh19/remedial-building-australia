@@ -5,6 +5,9 @@ import { TERMS_VERSION } from "@/lib/legal";
 import { notifyCompanyOwners } from "@/lib/notifications";
 import { sendUpdatedQuoteRequestEmail } from "@/lib/directory-email";
 import { PROPERTY_TYPE_OPTIONS, URGENCY_OPTIONS, URGENCY_LABELS, formatBudget } from "@/lib/quote-options";
+import { broadcastRequest } from "@/lib/quote-broadcast";
+
+export const maxDuration = 60;
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -80,13 +83,18 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     if (body.termsAccepted !== true && !existing.terms_accepted) {
       return NextResponse.json({ error: "You must accept the platform terms and disclaimer to submit." }, { status: 400 });
     }
-    // No auto-broadcast: submitting records the request and the client then
-    // browses the results page and hand-picks which businesses to send it to.
+    // Portal stream (manual): posting is auto-processed — no admin approval. We
+    // record acceptance then AUTO-BROADCAST to every matching Silver/Gold business
+    // in the category (each subject to its monthly lead cap). This replaces the
+    // old "browse results and hand-pick 5" step (which is what used to freeze).
+    // The Strata Connect (AI) stream will instead call broadcastRequest() only
+    // after an admin approves the extracted request.
     await prisma.clientQuoteRequest.update({
       where: { id: existing.id },
       data: { terms_accepted: true, terms_version: TERMS_VERSION, accepted_at: new Date(), status: "submitted", submitted_at: existing.submitted_at ?? new Date() },
     });
-    return NextResponse.json({ success: true });
+    const result = await broadcastRequest(existing.id);
+    return NextResponse.json({ success: true, matched: result.matched, delivered: result.delivered });
   }
 
   // ── Update (draft, submitted or already-sent — never closed) ─────────────────
