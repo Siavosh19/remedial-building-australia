@@ -2,15 +2,27 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { createNotification } from "@/lib/notifications";
+import { dirTier } from "@/lib/directory-tier";
+import { WEEKLY_INTEREST_CAP } from "@/lib/quote-options";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ id: string }> };
 
-// A contractor taps "Interested" on a lead card. We record the interest and
-// refer them to the client (bell + push). No messaging — a straight hookup: the
-// client is notified who's interested and contacts them directly.
+// Monday 00:00 of the current week (local server time) — the window the weekly
+// interest allowance is counted against.
+function startOfWeek(): Date {
+  const n = new Date();
+  const day = (n.getDay() + 6) % 7; // 0 = Monday
+  const d = new Date(n.getFullYear(), n.getMonth(), n.getDate() - day);
+  return d;
+}
+
+// A contractor taps "Interested" on a lead. Subject to a weekly allowance by tier
+// (Silver 3, Gold 7). We record the interest and refer them to the client (bell +
+// push). Contact details are NOT exchanged yet — that happens only once the
+// client proceeds with this business (client_requested_at).
 export async function POST(request: NextRequest, { params }: Params) {
   const user = await getDirectoryUserFromRequest(request);
   if (!user) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
@@ -21,7 +33,7 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
-    select: { id: true, name: true },
+    select: { id: true, name: true, plan_type: true },
   });
   if (!company) return NextResponse.json({ error: "Company not found." }, { status: 404 });
 
@@ -37,12 +49,31 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   // Idempotent — tapping again is a no-op that still returns ok.
   if (!delivery.interested_at) {
+    // Enforce the weekly interest allowance for this tier before recording.
+    const tier = dirTier(company.plan_type);
+    const cap = WEEKLY_INTEREST_CAP[tier] ?? 0;
+    const usedThisWeek = await prisma.quoteRequestDelivery.count({
+      where: { company_id: company.id, interested_at: { gte: startOfWeek() } },
+    });
+    if (usedThisWeek >= cap) {
+      return NextResponse.json(
+        {
+          error:
+            cap === 0
+              ? "Your plan does not include leads. Upgrade to express interest in leads."
+              : `You've used all ${cap} of your ${tier === "gold" ? "Gold" : "Silver"} leads for this week. Your allowance resets on Monday.`,
+          code: "weekly_cap_reached",
+        },
+        { status: 429 },
+      );
+    }
+
     const now = new Date();
     await prisma.quoteRequestDelivery.update({
       where: { id: deliveryId },
       data: {
         interested_at: now,
-        response_status: "contacted",
+        response_status: "interested",
         responded_at: now,
       },
     });
@@ -64,7 +95,7 @@ export async function POST(request: NextRequest, { params }: Params) {
       userId: delivery.request.client_user_id,
       type: "lead",
       title: "A contractor is interested",
-      body: `${company.name} is interested in ${category}. Contact them to discuss.`,
+      body: `${company.name} is interested in ${category}. Request a quote to connect and exchange contact details.`,
       link: `/client/quote-requests/${delivery.request.id}`,
     });
   }

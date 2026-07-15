@@ -35,12 +35,32 @@ export const REQUEST_STATUS_OPTIONS = [
   { id: "closed", label: "Closed" },
 ] as const;
 
+// A business lead moves: New → Interested (business taps interest) → [client
+// proceeds → contacts exchanged] → the business logs the outcome (Quoted / Won /
+// Didn't proceed). "declined" = the business tapped "Not interested".
 export const RESPONSE_STATUS_OPTIONS = [
   { id: "pending", label: "New" },
-  { id: "contacted", label: "Contacted" },
+  { id: "interested", label: "Interested" },
   { id: "quoted", label: "Quoted" },
-  { id: "declined", label: "Declined" },
+  { id: "won", label: "Won" },
+  { id: "not_proceeded", label: "Didn't proceed" },
+  { id: "declined", label: "Not interested" },
 ] as const;
+
+// Post-connection outcome the business logs once the client has proceeded and
+// contact details are exchanged. Feedback only — it does not affect the client.
+export const LEAD_OUTCOME_OPTIONS = [
+  { id: "quoted", label: "Quoted" },
+  { id: "won", label: "Won" },
+  { id: "not_proceeded", label: "Didn't proceed" },
+] as const;
+export const LEAD_OUTCOME_IDS = LEAD_OUTCOME_OPTIONS.map((o) => o.id);
+
+// Weekly interest-click allowance by visual tier (see lib/directory-tier dirTier).
+// A business may express interest in at most this many leads per calendar week
+// (Mon–Sun). Beyond it they must wait for the week to roll over (or buy extra
+// later). Free listings never receive leads, so 0.
+export const WEEKLY_INTEREST_CAP: Record<string, number> = { gold: 7, silver: 3, free: 0 };
 
 function toMap(options: readonly { id: string; label: string }[]) {
   return Object.fromEntries(options.map((o) => [o.id, o.label])) as Record<string, string>;
@@ -50,7 +70,8 @@ export const CLIENT_TYPE_LABELS = toMap(CLIENT_TYPE_OPTIONS);
 export const PROPERTY_TYPE_LABELS = toMap(PROPERTY_TYPE_OPTIONS);
 export const URGENCY_LABELS = toMap(URGENCY_OPTIONS);
 export const REQUEST_STATUS_LABELS = toMap(REQUEST_STATUS_OPTIONS);
-export const RESPONSE_STATUS_LABELS = toMap(RESPONSE_STATUS_OPTIONS);
+// Keep "contacted"/"not_suitable" resolvable for any pre-existing rows.
+export const RESPONSE_STATUS_LABELS: Record<string, string> = { ...toMap(RESPONSE_STATUS_OPTIONS), contacted: "Contacted", not_suitable: "Not suitable" };
 
 export const PROPERTY_TYPE_IDS = PROPERTY_TYPE_OPTIONS.map((o) => o.id);
 export const URGENCY_IDS = URGENCY_OPTIONS.map((o) => o.id);

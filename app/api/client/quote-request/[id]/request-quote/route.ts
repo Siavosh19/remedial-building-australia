@@ -43,10 +43,20 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   const catName = req.work_category?.name ?? "Building works";
 
+  // Mark that the client has proceeded with this business. This unlocks the
+  // two-way contact exchange: the business page now reveals the client's details
+  // and shows the outcome tracker. Idempotent — only stamp the first time.
+  if (!delivery.client_requested_at) {
+    await prisma.quoteRequestDelivery.update({
+      where: { id: delivery.id },
+      data: { client_requested_at: new Date() },
+    });
+  }
+
   await notifyCompanyOwners(companyId, {
     type: "lead",
     title: "Client requested a quote from you",
-    body: `${catName} · ${req.suburb} ${req.postcode} — the client has selected you. Contact them to quote.`,
+    body: `${catName} · ${req.suburb} ${req.postcode} — the client has selected you. Their contact details are now on the lead.`,
     link: "/directory/dashboard/lead-requests",
   });
 

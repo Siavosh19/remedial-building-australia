@@ -6,20 +6,12 @@ import { URGENCY_LABELS, formatBudget } from "@/lib/quote-options";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
 
-// Monthly lead caps by tier. A business that has already received this many leads
-// this calendar month is skipped — beyond the cap they must buy extra leads
-// (purchase flow + admin urgency pricing added later). Gold = featured (28),
-// Silver = claimed (12).
-export const MONTHLY_LEAD_CAP: Record<string, number> = { featured: 28, claimed: 12 };
-
-function startOfMonth(): Date {
-  const n = new Date();
-  return new Date(n.getFullYear(), n.getMonth(), 1);
-}
-
 // Broadcast a submitted request to EVERY matching Silver/Gold business in its
-// category (each subject to its own monthly lead cap). This replaces the old
-// "client hand-picks 5" flow. Reusable by both intake streams:
+// category. Businesses can review all matching leads; the scarcity sits at the
+// interest step instead — a business may only express interest in a limited
+// number of leads per week (WEEKLY_INTEREST_CAP, enforced in the interested
+// route). This replaces the old "client hand-picks 5" flow. Reusable by both
+// intake streams:
 //   • Portal (manual): called immediately on submit — no approval.
 //   • Strata Connect (AI): called AFTER an admin approves the extracted request.
 export async function broadcastRequest(requestId: number): Promise<{ matched: number; delivered: number }> {
@@ -58,18 +50,12 @@ export async function broadcastRequest(requestId: number): Promise<{ matched: nu
   });
   const compById = new Map(companies.map((c) => [c.id, c]));
 
-  // Batch the pre-checks (dedupe + monthly usage) so the loop does no extra
-  // queries — this is what keeps submit fast (the old flow hung on a self-fetch).
-  const monthStart = startOfMonth();
+  // Dedupe against any deliveries already created for this request so a re-run
+  // never double-sends — this is what keeps submit fast (the old flow hung on a
+  // self-fetch).
   const alreadySent = new Set(
     (await prisma.quoteRequestDelivery.findMany({ where: { request_id: requestId }, select: { company_id: true } })).map((d) => d.company_id),
   );
-  const usage = await prisma.quoteRequestDelivery.groupBy({
-    by: ["company_id"],
-    where: { company_id: { in: ids }, created_at: { gte: monthStart } },
-    _count: { _all: true },
-  });
-  const usedByCompany = new Map(usage.map((u) => [u.company_id, u._count._all]));
 
   const emailJobs: Promise<unknown>[] = [];
   let delivered = 0;
@@ -77,9 +63,6 @@ export async function broadcastRequest(requestId: number): Promise<{ matched: nu
   for (const m of matches) {
     const company = compById.get(m.company_id);
     if (!company || alreadySent.has(company.id)) continue;
-
-    const cap = MONTHLY_LEAD_CAP[company.plan_type] ?? 12;
-    if ((usedByCompany.get(company.id) ?? 0) >= cap) continue; // over cap → must buy extra later
 
     const delivery = await prisma.quoteRequestDelivery.create({
       data: { request_id: requestId, company_id: company.id, rank_tier: m.rank_tier, email_status: "pending" },

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { PROPERTY_TYPE_LABELS, URGENCY_LABELS, FILE_TYPE_OPTIONS, formatBudget } from "@/lib/quote-options";
 import { ResponseStatusBadge } from "@/components/client/badges";
-import LeadResponseActions from "@/components/directory/LeadResponseActions";
+import LeadFlowActions from "@/components/directory/LeadFlowActions";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +44,7 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
   }
 
   const r = delivery.request;
+  const clientRequested = Boolean(delivery.client_requested_at);
   const field = (label: string, value: React.ReactNode) =>
     value ? (
       <div>
@@ -106,22 +107,35 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
         </section>
 
         <div className="space-y-6">
-          <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-            <h2 className="text-base font-bold text-slate-900">Client contact</h2>
-            <p className="mt-1 text-xs text-slate-500">Contact the client directly to discuss and quote.</p>
-            <dl className="mt-4 space-y-4">
-              {field("Name", r.contact_name)}
-              {field("Email", <a href={`mailto:${r.contact_email}`} className="text-sky-800 hover:text-sky-600">{r.contact_email}</a>)}
-              {field("Phone", r.contact_phone ? <a href={`tel:${r.contact_phone}`} className="text-sky-800 hover:text-sky-600">{r.contact_phone}</a> : null)}
-              {field("Company", r.company_name)}
-            </dl>
-          </section>
+          {/* Client contact is exchanged only after the client proceeds with this
+              business. Until then it stays hidden. */}
+          {clientRequested ? (
+            <section className="rounded-3xl border border-emerald-200 bg-white p-6 shadow-sm md:p-8">
+              <h2 className="text-base font-bold text-slate-900">Client contact</h2>
+              <p className="mt-1 text-xs text-emerald-700">The client has proceeded — contact them directly to quote.</p>
+              <dl className="mt-4 space-y-4">
+                {field("Name", r.contact_name)}
+                {field("Email", <a href={`mailto:${r.contact_email}`} className="text-sky-800 hover:text-sky-600">{r.contact_email}</a>)}
+                {field("Phone", r.contact_phone ? <a href={`tel:${r.contact_phone}`} className="text-sky-800 hover:text-sky-600">{r.contact_phone}</a> : null)}
+                {field("Company", r.company_name)}
+              </dl>
+            </section>
+          ) : (
+            <section className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm md:p-8">
+              <h2 className="text-base font-bold text-slate-900">Client contact</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-500">
+                Contact details are shared once the client proceeds with your business. Express interest below to be
+                put forward to the client.
+              </p>
+            </section>
+          )}
 
           <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-            <LeadResponseActions
+            <LeadFlowActions
               deliveryId={delivery.id}
               responseStatus={delivery.response_status}
-              quoteDocUrl={delivery.quote_doc_url}
+              interested={Boolean(delivery.interested_at)}
+              clientRequested={clientRequested}
             />
           </section>
         </div>

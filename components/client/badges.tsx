@@ -10,8 +10,11 @@ const REQUEST_COLORS: Record<string, string> = {
 
 const RESPONSE_COLORS: Record<string, string> = {
   pending: "bg-slate-100 text-slate-600",
+  interested: "bg-sky-100 text-sky-800",
   contacted: "bg-sky-100 text-sky-800",
-  quoted: "bg-emerald-100 text-emerald-800",
+  quoted: "bg-indigo-100 text-indigo-800",
+  won: "bg-emerald-100 text-emerald-800",
+  not_proceeded: "bg-slate-200 text-slate-600",
   declined: "bg-rose-100 text-rose-700",
   not_suitable: "bg-amber-100 text-amber-800",
 };

@@ -5,22 +5,22 @@ generator client {
 // industry_news is managed by Supabase directly (not via Prisma mutations).
 // This model declaration exists solely to prevent prisma db push from dropping the table.
 model IndustryNews {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title           String
-  slug            String    @unique
-  summary         String?
-  industry_impact String?
-  category        String?
-  tags            String[]
-  source_name     String?
-  source_url      String?
-  published_date  DateTime?
-  featured_image  String?
-  status          String?   @default("published")
-  priority        Int?      @default(2)
-  include_in_newsletter Boolean @default(false)
-  newsletter_sent_at DateTime?
-  created_at      DateTime? @default(now())
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                 String
+  slug                  String    @unique
+  summary               String?
+  industry_impact       String?
+  category              String?
+  tags                  String[]
+  source_name           String?
+  source_url            String?
+  published_date        DateTime?
+  featured_image        String?
+  status                String?   @default("published")
+  priority              Int?      @default(2)
+  include_in_newsletter Boolean   @default(false)
+  newsletter_sent_at    DateTime?
+  created_at            DateTime? @default(now())
 
   @@map("industry_news")
 }
@@ -128,6 +128,9 @@ enum ContractorResponseStatus {
   quoted
   declined
   not_suitable
+  interested
+  won
+  not_proceeded
 }
 
 enum QuoteEmailStatus {
@@ -349,20 +352,20 @@ model Company {
   phone_clicks           Int                  @default(0)
   suspended              Boolean              @default(false)
 
-  main_category          Category?              @relation("CompanyMainCategory", fields: [main_category_id], references: [id])
-  locations              Location[]
-  company_categories     CompanyCategory[]
-  licences               Licence[]
-  company_tags           CompanyTag[]
-  users                  CompanyUser[]
-  lead_subscriptions     LeadSubscription[]
-  lead_deliveries        LeadDelivery[]
-  admin_review_queue     AdminReviewQueue[]
-  directory_subscription DirectorySubscription?
-  claim_requests         ClaimRequest[]
-  quote_requests         QuoteRequest[]
+  main_category            Category?              @relation("CompanyMainCategory", fields: [main_category_id], references: [id])
+  locations                Location[]
+  company_categories       CompanyCategory[]
+  licences                 Licence[]
+  company_tags             CompanyTag[]
+  users                    CompanyUser[]
+  lead_subscriptions       LeadSubscription[]
+  lead_deliveries          LeadDelivery[]
+  admin_review_queue       AdminReviewQueue[]
+  directory_subscription   DirectorySubscription?
+  claim_requests           ClaimRequest[]
+  quote_requests           QuoteRequest[]
   quote_request_deliveries QuoteRequestDelivery[]
-  media                  CompanyMedia[]
+  media                    CompanyMedia[]
 
   @@index([status])
   @@index([is_featured])
@@ -415,16 +418,16 @@ model Category {
   icon          String?
   is_active     Boolean @default(true)
 
-  parent              Category?         @relation("CategoryParent", fields: [parent_id], references: [id])
-  children            Category[]        @relation("CategoryParent")
-  companies           Company[]         @relation("CompanyMainCategory")
-  company_categories  CompanyCategory[]
-  leads               Lead[]            @relation("LeadCategory")
-  sub_leads           Lead[]            @relation("LeadSubcategory")
-  directory_leads     DirectoryLead[]   @relation("DirectoryLeadCategory")
-  directory_sub_leads DirectoryLead[]   @relation("DirectoryLeadSubcategory")
-  client_quote_requests     ClientQuoteRequest[] @relation("ClientQuoteCategory")
-  client_quote_subrequests  ClientQuoteRequest[] @relation("ClientQuoteSubcategory")
+  parent                   Category?            @relation("CategoryParent", fields: [parent_id], references: [id])
+  children                 Category[]           @relation("CategoryParent")
+  companies                Company[]            @relation("CompanyMainCategory")
+  company_categories       CompanyCategory[]
+  leads                    Lead[]               @relation("LeadCategory")
+  sub_leads                Lead[]               @relation("LeadSubcategory")
+  directory_leads          DirectoryLead[]      @relation("DirectoryLeadCategory")
+  directory_sub_leads      DirectoryLead[]      @relation("DirectoryLeadSubcategory")
+  client_quote_requests    ClientQuoteRequest[] @relation("ClientQuoteCategory")
+  client_quote_subrequests ClientQuoteRequest[] @relation("ClientQuoteSubcategory")
 
   @@map("categories")
 }
@@ -507,10 +510,10 @@ model User {
   updated_at        DateTime     @updatedAt
 
   company_users               CompanyUser[]
-  approved_company_categories CompanyCategory[]  @relation("CompanyCategoryApprover")
-  review_queue                AdminReviewQueue[] @relation("AdminReviewQueueReviewer")
-  supplier                    Supplier?          @relation(fields: [supplier_id], references: [id])
-  audit_logs                  AuditLog[]         @relation("AuditLogActor")
+  approved_company_categories CompanyCategory[]    @relation("CompanyCategoryApprover")
+  review_queue                AdminReviewQueue[]   @relation("AdminReviewQueueReviewer")
+  supplier                    Supplier?            @relation(fields: [supplier_id], references: [id])
+  audit_logs                  AuditLog[]           @relation("AuditLogActor")
   ai_scope_user               AIScopeUser?
   client_profile              ClientProfile?
   client_quote_requests       ClientQuoteRequest[]
@@ -546,7 +549,7 @@ model PushSubscription {
 model Notification {
   id         Int       @id @default(autoincrement())
   user_id    Int
-  type       String    // "lead" | "lead_updated" | "job_applicant"
+  type       String // "lead" | "lead_updated" | "job_applicant"
   title      String
   body       String?
   link       String?
@@ -732,26 +735,26 @@ model DirectorySubscription {
 // Scope Reader, supplier cards, …). The admin "Plans & Pricing" screen is the
 // single source of truth; checkout reads the Stripe price id from here, not env.
 model Plan {
-  id                Int      @id @default(autoincrement())
-  product_line      String   // "directory" | "ai_scope" | "supplier_card"
-  tier              String   // "claimed" | "featured" | … (free-form per product line)
-  name              String
-  description       String?
-  billing_interval  String   // "month" | "year" | "one_time"
-  amount_cents      Int      // price actually charged (founding price when on offer)
-  compare_at_cents  Int?     // standard price, shown struck-through when on offer
-  promo_label       String?  // e.g. "Limited time" — shown beside the offer price
-  currency          String   @default("aud")
-  trial_days        Int      @default(0)
-  features          String[] // bullet points shown on the pricing card
-  stripe_product_id String?
-  stripe_price_id   String?  // the live Stripe price used at checkout (founding)
+  id                       Int      @id @default(autoincrement())
+  product_line             String // "directory" | "ai_scope" | "supplier_card"
+  tier                     String // "claimed" | "featured" | … (free-form per product line)
+  name                     String
+  description              String?
+  billing_interval         String // "month" | "year" | "one_time"
+  amount_cents             Int // price actually charged (founding price when on offer)
+  compare_at_cents         Int? // standard price, shown struck-through when on offer
+  promo_label              String? // e.g. "Limited time" — shown beside the offer price
+  currency                 String   @default("aud")
+  trial_days               Int      @default(0)
+  features                 String[] // bullet points shown on the pricing card
+  stripe_product_id        String?
+  stripe_price_id          String? // the live Stripe price used at checkout (founding)
   standard_stripe_price_id String? // Stripe price for the standard (compare-at) amount
-  is_active         Boolean  @default(true)
-  is_public         Boolean  @default(true) // show on the public pricing page
-  display_order     Int      @default(0)
-  created_at        DateTime @default(now())
-  updated_at        DateTime @updatedAt
+  is_active                Boolean  @default(true)
+  is_public                Boolean  @default(true) // show on the public pricing page
+  display_order            Int      @default(0)
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
 
   @@index([product_line])
   @@index([is_active])
@@ -831,36 +834,36 @@ model ClientProfile {
 }
 
 model ClientQuoteRequest {
-  id                        Int               @id @default(autoincrement())
-  client_user_id            Int
-  contact_name              String
-  contact_email             String
-  contact_phone             String?
-  company_name              String?
-  building_address          String
-  suburb                    String
-  postcode                  String
-  state                     LocationState?
-  strata_plan_number        String?
-  property_type             PropertyType
-  work_category_id          Int
-  work_subcategory_id       Int?
-  description               String
-  urgency                   LeadUrgency
-  preferred_inspection      String?
-  consultant_scope_available Boolean          @default(false)
-  budget_range              String?
-  terms_accepted            Boolean           @default(false)
-  terms_version             String?
-  accepted_at               DateTime?
-  status                    ClientQuoteStatus @default(draft)
-  matched_count             Int               @default(0)
-  latitude                  Float?
-  longitude                 Float?
-  created_at                DateTime          @default(now())
-  updated_at                DateTime          @updatedAt
-  submitted_at              DateTime?
-  closed_at                 DateTime?
+  id                         Int               @id @default(autoincrement())
+  client_user_id             Int
+  contact_name               String
+  contact_email              String
+  contact_phone              String?
+  company_name               String?
+  building_address           String
+  suburb                     String
+  postcode                   String
+  state                      LocationState?
+  strata_plan_number         String?
+  property_type              PropertyType
+  work_category_id           Int
+  work_subcategory_id        Int?
+  description                String
+  urgency                    LeadUrgency
+  preferred_inspection       String?
+  consultant_scope_available Boolean           @default(false)
+  budget_range               String?
+  terms_accepted             Boolean           @default(false)
+  terms_version              String?
+  accepted_at                DateTime?
+  status                     ClientQuoteStatus @default(draft)
+  matched_count              Int               @default(0)
+  latitude                   Float?
+  longitude                  Float?
+  created_at                 DateTime          @default(now())
+  updated_at                 DateTime          @updatedAt
+  submitted_at               DateTime?
+  closed_at                  DateTime?
 
   client        User                   @relation(fields: [client_user_id], references: [id])
   work_category Category               @relation("ClientQuoteCategory", fields: [work_category_id], references: [id])
@@ -887,6 +890,9 @@ model QuoteRequestDelivery {
   response_status ContractorResponseStatus @default(pending)
   responded_at    DateTime?
   interested_at   DateTime?
+  // Set when the client formally proceeds with THIS business (request-quote).
+  // Gates the two-way contact exchange and unlocks the outcome tracker.
+  client_requested_at DateTime?
   quote_doc_url   String?
   notes           String?
   created_at      DateTime                 @default(now())
@@ -1230,11 +1236,11 @@ model RbaInsightsArticle {
 // The only touchpoint with the directory is a soft, optional company_id link.
 
 enum JobStatus {
-  draft            // being created, not yet paid
-  pending_payment  // checkout started, awaiting Stripe confirmation
-  active           // live and public
-  expired          // past expiry / closing date
-  rejected         // pulled by admin
+  draft // being created, not yet paid
+  pending_payment // checkout started, awaiting Stripe confirmation
+  active // live and public
+  expired // past expiry / closing date
+  rejected // pulled by admin
 }
 
 enum JobEmploymentType {
@@ -1270,17 +1276,17 @@ enum JobPaymentStatus {
 }
 
 model JobEmployer {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  company_name String?
-  contact_name String?
-  phone        String?
-  website      String?
-  logo_url     String?
-  company_id   Int?     // optional soft link to a directory Company (not enforced)
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  company_name  String?
+  contact_name  String?
+  phone         String?
+  website       String?
+  logo_url      String?
+  company_id    Int? // optional soft link to a directory Company (not enforced)
   last_login_at DateTime?
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
 
   jobs Job[]
 
@@ -1291,7 +1297,7 @@ model JobCategory {
   id            Int     @id @default(autoincrement())
   name          String
   slug          String  @unique
-  group         String  // "Strata & Property" | "Consulting & Engineering" | …
+  group         String // "Strata & Property" | "Consulting & Engineering" | …
   display_order Int     @default(0)
   is_active     Boolean @default(true)
 
@@ -1304,8 +1310,8 @@ model JobCategory {
 model Job {
   id               Int                 @id @default(autoincrement())
   slug             String              @unique
-  employer_id      Int?                // legacy owner (magic-link JobEmployer) — retained during migration
-  user_id          Int?                // new owner: directory User account
+  employer_id      Int? // legacy owner (magic-link JobEmployer) — retained during migration
+  user_id          Int? // new owner: directory User account
   category_id      Int?
   title            String
   company_name     String
@@ -1317,14 +1323,14 @@ model Job {
   employment_type  JobEmploymentType?
   experience_level JobExperienceLevel?
   salary           String?
-  description      String              // "About the Role"
+  description      String // "About the Role"
   responsibilities String?
   requirements     String?
   contact_email    String
   closing_date     DateTime?
   status           JobStatus           @default(draft)
   is_featured      Boolean             @default(false)
-  company_id       Int?                // soft link to directory Company for "View Profile"
+  company_id       Int? // soft link to directory Company for "View Profile"
   meta_title       String?
   meta_description String?
   views            Int                 @default(0)
@@ -1398,9 +1404,9 @@ model JobPricing {
 model JobPayment {
   id                    Int              @id @default(autoincrement())
   job_id                Int
-  employer_id           Int?             // legacy owner — retained during migration
-  user_id               Int?             // new owner: directory User account
-  plan_key              String           // "standard" | "featured"
+  employer_id           Int? // legacy owner — retained during migration
+  user_id               Int? // new owner: directory User account
+  plan_key              String // "standard" | "featured"
   is_featured           Boolean          @default(false)
   amount_cents          Int
   currency              String           @default("aud")
@@ -1447,4 +1453,84 @@ model ExpertAdviceRequest {
   @@index([email])
   @@index([created_at(sort: Desc)])
   @@map("expert_advice_requests")
+}
+
+// ─── Strata Connect: inbound work-order intake ───────────────────────────────
+// A strata manager forwards a work order / scope of works to workorders@… ; the
+// inbound webhook stores it here as a PENDING item. AI extraction fills the
+// fields below, an admin reviews it (seeing every original attachment), and on
+// approval it is converted into a ClientQuoteRequest via the existing pipeline.
+// Deliberately self-contained (no FKs into existing models) so the migration is
+// purely additive.
+enum StrataIntakeStatus {
+  received
+  extracting
+  needs_review
+  approved
+  rejected
+  converted
+  failed
+}
+
+model StrataIntake {
+  id Int @id @default(autoincrement())
+
+  // ── Raw inbound email ──
+  message_id    String?  @unique
+  from_email    String
+  from_name     String?
+  envelope_from String?
+  to_email      String?
+  subject       String?
+  body_text     String?
+  body_html     String?
+  received_at   DateTime @default(now())
+
+  // ── AI extraction (filled in Stage 2; denormalised category snapshot, no FK) ──
+  building_address      String?
+  suburb                String?
+  postcode              String?
+  state                 LocationState?
+  strata_plan_number    String?
+  order_number          String?
+  job_description       String?
+  extracted_units       Json?
+  matched_category_id   Int?
+  matched_category_slug String?
+  matched_category_name String?
+  match_confidence      String?
+  extraction_error      String?
+
+  // ── Review / lifecycle ──
+  status           StrataIntakeStatus @default(received)
+  review_notes     String?
+  reviewed_by      Int?
+  reviewed_at      DateTime?
+  quote_request_id Int?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  files StrataIntakeFile[]
+
+  @@index([status])
+  @@index([received_at])
+  @@map("strata_intakes")
+}
+
+model StrataIntakeFile {
+  id             Int      @id @default(autoincrement())
+  intake_id      Int
+  filename       String
+  content_type   String?
+  size_bytes     Int?
+  url            String?
+  is_pdf         Boolean  @default(false)
+  extracted_text String?
+  created_at     DateTime @default(now())
+
+  intake StrataIntake @relation(fields: [intake_id], references: [id], onDelete: Cascade)
+
+  @@index([intake_id])
+  @@map("strata_intake_files")
 }
