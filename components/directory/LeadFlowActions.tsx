@@ -24,12 +24,25 @@ export default function LeadFlowActions({
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Optimistic overrides — a tap flips the UI instantly; reverted if the request
+  // fails. router.refresh() then reconciles with the server's authoritative state.
+  const [optInterested, setOptInterested] = useState(false);
+  const [optDeclined, setOptDeclined] = useState(false);
+  const [optOutcome, setOptOutcome] = useState<string | null>(null);
+
+  const effInterested = interested || optInterested;
+  const effDeclined = responseStatus === "declined" || optDeclined;
+  const effStatus = optOutcome ?? responseStatus;
+
   async function expressInterest() {
     setBusy("interested");
     setError(null);
+    setOptDeclined(false);
+    setOptInterested(true); // instant → interested view
     const res = await fetch(`/api/directory/lead-requests/${deliveryId}/interested`, { method: "POST" });
     setBusy(null);
     if (!res.ok) {
+      setOptInterested(false); // revert
       const r = await res.json().catch(() => ({}));
       setError(r.error ?? "Could not submit your interest.");
       return;
@@ -37,9 +50,30 @@ export default function LeadFlowActions({
     router.refresh();
   }
 
-  async function setStatus(status: string) {
+  async function decline() {
+    setBusy("declined");
+    setError(null);
+    setOptDeclined(true); // instant → declined view
+    const res = await fetch(`/api/directory/lead-requests/${deliveryId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ responseStatus: "declined" }),
+    });
+    setBusy(null);
+    if (!res.ok) {
+      setOptDeclined(false); // revert
+      const r = await res.json().catch(() => ({}));
+      setError(r.error ?? "Could not update.");
+      return;
+    }
+    router.refresh();
+  }
+
+  async function setOutcome(status: string) {
     setBusy(status);
     setError(null);
+    const prev = optOutcome;
+    setOptOutcome(status); // instant highlight
     const res = await fetch(`/api/directory/lead-requests/${deliveryId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -47,6 +81,7 @@ export default function LeadFlowActions({
     });
     setBusy(null);
     if (!res.ok) {
+      setOptOutcome(prev); // revert
       const r = await res.json().catch(() => ({}));
       setError(r.error ?? "Could not update.");
       return;
@@ -64,11 +99,11 @@ export default function LeadFlowActions({
         </div>
         <div className="flex flex-wrap gap-2">
           {LEAD_OUTCOME_OPTIONS.map((o) => {
-            const active = responseStatus === o.id;
+            const active = effStatus === o.id;
             return (
               <button
                 key={o.id}
-                onClick={() => setStatus(o.id)}
+                onClick={() => setOutcome(o.id)}
                 disabled={busy !== null}
                 className={`rounded-xl px-4 py-2 text-sm font-semibold transition disabled:opacity-60 ${
                   active ? "bg-sky-950 text-white" : "border border-slate-300 bg-white text-slate-700 hover:border-sky-400"
@@ -85,7 +120,7 @@ export default function LeadFlowActions({
   }
 
   // ── Phase: declined (Not interested) — terminal, undoable ──────────────────
-  if (responseStatus === "declined") {
+  if (effDeclined) {
     return (
       <div className="space-y-3">
         <p className="text-sm font-semibold text-slate-700">You marked this lead as not interested.</p>
@@ -102,7 +137,7 @@ export default function LeadFlowActions({
   }
 
   // ── Phase 2: interested, waiting on the client ─────────────────────────────
-  if (interested) {
+  if (effInterested) {
     return (
       <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4">
         <p className="text-sm font-bold text-emerald-800">Your interest has been submitted ✓</p>
@@ -127,7 +162,7 @@ export default function LeadFlowActions({
           {busy === "interested" ? "Submitting…" : "Interested"}
         </button>
         <button
-          onClick={() => setStatus("declined")}
+          onClick={decline}
           disabled={busy !== null}
           className="rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 disabled:opacity-60"
         >
