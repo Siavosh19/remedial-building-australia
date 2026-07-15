@@ -2,15 +2,15 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
-import { planLabel } from "@/lib/plans";
 import {
   PROPERTY_TYPE_LABELS,
   URGENCY_LABELS,
   FILE_TYPE_OPTIONS,
   formatBudget,
 } from "@/lib/quote-options";
-import { RequestStatusBadge, ResponseStatusBadge } from "@/components/client/badges";
+import { RequestStatusBadge } from "@/components/client/badges";
 import RequestActions from "@/components/client/RequestActions";
+import InterestedBusinesses, { type InterestedBusiness } from "@/components/client/InterestedBusinesses";
 
 export const dynamic = "force-dynamic";
 
@@ -34,13 +34,35 @@ export default async function QuoteRequestDetailPage({ params }: { params: Promi
         orderBy: { rank_tier: "asc" },
         include: {
           company: {
-            select: { name: true, slug: true, plan_type: true, locations: { select: { suburb: true, state: true }, take: 1 } },
+            select: {
+              id: true, name: true, slug: true, plan_type: true, phone: true, email: true, website: true,
+              locations: { select: { suburb: true, state: true }, take: 1 },
+            },
           },
         },
       },
     },
   });
   if (!r) notFound();
+
+  // The client only ever sees businesses that actually expressed interest — never
+  // the full list of businesses that were notified. Gold (featured) sorts to the
+  // top; every card otherwise looks the same (no Silver/Free labels shown).
+  const interested = r.deliveries
+    .filter((d) => d.interested_at != null || d.response_status === "contacted" || d.response_status === "quoted")
+    .map((d) => ({
+      deliveryId: d.id,
+      companyId: d.company.id,
+      name: d.company.name,
+      slug: d.company.slug,
+      suburb: d.company.locations[0]?.suburb ?? null,
+      state: d.company.locations[0]?.state ?? null,
+      phone: d.company.phone,
+      email: d.company.email,
+      website: d.company.website,
+      isFeatured: d.company.plan_type === "featured",
+    }))
+    .sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured));
 
   const field = (label: string, value: React.ReactNode) =>
     value ? (
@@ -129,44 +151,19 @@ export default async function QuoteRequestDetailPage({ params }: { params: Promi
 
         {/* Matched businesses */}
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-          <h2 className="text-base font-bold text-slate-900">Businesses you&rsquo;ve requested</h2>
+          <h2 className="text-base font-bold text-slate-900">Interested businesses</h2>
           <p className="mt-1 text-sm text-slate-500">
             {r.status === "draft"
-              ? "This request is a draft. Submit it, then choose which businesses to send it to."
-              : r.deliveries.length === 0
-                ? "You haven't requested quotes from any businesses yet. Browse businesses servicing your area and pick up to 5."
-                : `You've requested quotes from ${r.deliveries.length} ${r.deliveries.length === 1 ? "business" : "businesses"}. They'll contact you directly.`}
+              ? "This request is a draft. Submit it to send it to matching businesses in your area."
+              : interested.length === 0
+                ? "Your request has been submitted. We’ve notified matching businesses in your area — any that are interested will appear here and be in touch with you directly."
+                : `${interested.length} ${interested.length === 1 ? "business is" : "businesses are"} interested and will contact you directly.`}
           </p>
-          {r.status !== "draft" && r.status !== "closed" && r.deliveries.length < 5 && (
-            <Link
-              href={`/client/quote-requests/${r.id}/results`}
-              className="mt-3 inline-block rounded-xl bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800"
-            >
-              {r.deliveries.length === 0 ? "Browse businesses & request quotes →" : "Request more businesses →"}
-            </Link>
-          )}
 
-          {r.deliveries.length > 0 && (
-            <ul className="mt-4 space-y-3">
-              {r.deliveries.map((d) => (
-                <li key={d.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-bold text-slate-900">{d.company.name}</p>
-                      <p className="truncate text-xs text-slate-500">
-                        {d.company.locations[0]?.suburb ?? ""} {d.company.locations[0]?.state ?? ""}
-                      </p>
-                    </div>
-                    <span className="shrink-0 rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-bold text-sky-800">
-                      {planLabel(d.company.plan_type)}
-                    </span>
-                  </div>
-                  <div className="mt-2">
-                    <ResponseStatusBadge status={d.response_status} />
-                  </div>
-                </li>
-              ))}
-            </ul>
+          {interested.length > 0 && (
+            <div className="mt-4">
+              <InterestedBusinesses requestId={r.id} businesses={interested} />
+            </div>
           )}
 
           <p className="mt-6 text-xs leading-6 text-slate-400">
