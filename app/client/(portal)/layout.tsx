@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser, userHasClientAccess } from "@/lib/directory-auth";
 import ClientPortalSidebar from "@/components/client/ClientPortalSidebar";
 import RoleSwitcher from "@/components/RoleSwitcher";
@@ -15,6 +16,15 @@ export default async function ClientLayout({ children }: { children: ReactNode }
   if (user.role === "supplier_user") redirect("/supplier-dashboard");
   if (!(await userHasClientAccess(user))) redirect("/api/account/switch?to=client");
 
+  // Show the account's business name in the top bar (same as the business side)
+  // so the identity is consistent across both modes. Falls back to "Client
+  // Portal" for client-only accounts with no listing.
+  const company = await prisma.company.findFirst({
+    where: { users: { some: { user_id: user.id } } },
+    select: { name: true },
+  });
+  const brandName = company?.name ?? "Client Portal";
+
   return (
     <div className="flex min-h-screen bg-[#F5F7FA]">
       <ClientPortalSidebar email={user.email} />
@@ -23,7 +33,10 @@ export default async function ClientLayout({ children }: { children: ReactNode }
         {/* Top bar — hamburger space (mobile), role switch, bell */}
         <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-slate-200 bg-white pl-16 pr-4 md:pl-6">
           <div className="min-w-0 flex-1">
-            <span className="truncate text-sm font-semibold text-sky-950 sm:text-base">Client Portal</span>
+            <span className="truncate text-sm font-semibold text-sky-950 sm:text-base">{brandName}</span>
+            <span className="ml-2 hidden rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold tracking-wide text-slate-600 sm:inline">
+              Client
+            </span>
           </div>
           <RoleSwitcher className="hidden md:inline-flex" />
           <NotificationBell />
