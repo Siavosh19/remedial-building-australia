@@ -1494,6 +1494,8 @@ model StrataIntake {
   strata_plan_number    String?
   order_number          String?
   job_description       String?
+  contact_name          String?
+  contact_phone         String?
   extracted_units       Json?
   matched_category_id   Int?
   matched_category_slug String?

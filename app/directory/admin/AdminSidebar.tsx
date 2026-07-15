@@ -28,6 +28,7 @@ import {
   Newspaper,
   Tags,
   Briefcase,
+  Inbox,
 } from "lucide-react";
 
 const NAV = [
@@ -36,6 +37,7 @@ const NAV = [
   { href: "/directory/admin/claims", label: "Claim Requests", icon: FileCheck },
   { href: "/directory/admin/quote-requests", label: "Quote Requests", icon: MessageSquare },
   { href: "/directory/admin/client-quote-requests", label: "Client Quote Requests", icon: ClipboardList },
+  { href: "/directory/admin/strata-intakes", label: "Strata Connect", icon: Inbox },
   { href: "/directory/admin/client-users", label: "Client Users", icon: Users },
   { href: "/directory/admin/expert-advice-requests", label: "Expert Advice Requests", icon: Lightbulb },
   { href: "/directory/admin/jobs", label: "Jobs Management", icon: Briefcase },

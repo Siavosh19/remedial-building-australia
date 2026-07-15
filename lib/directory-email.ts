@@ -677,3 +677,30 @@ export async function sendNewSubscriptionAdminEmail(d: {
   const text = `New subscription: ${d.companyName} — ${d.planLabel}${d.billingCycle ? ` (${d.billingCycle})` : ""}\nAdmin: ${adminUrl}`;
   await sendEmail(`New Subscription — ${d.companyName} (${d.planLabel})`, "info@remedialbuildingaustralia.com.au", html, text);
 }
+
+// Strata Connect: a work order arrived at workorders@… and is waiting in the
+// review queue (after AI extraction). Points the admin straight at the intake.
+export async function sendStrataIntakeAdminEmail(d: {
+  intakeId: number;
+  fromName?: string | null;
+  fromEmail: string;
+  subject?: string | null;
+  attachments: number;
+}) {
+  const adminUrl = `${SITE_URL}/directory/admin/strata-intakes/${d.intakeId}`;
+  const sender = [d.fromName, d.fromName ? `<${d.fromEmail}>` : d.fromEmail].filter(Boolean).join(" ");
+  const row = (k: string, v: string) =>
+    `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">${safeHtml(k)}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(v)}</td></tr>`;
+  const html = emailWrapper(
+    "New Strata Connect work order",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A work order was forwarded to Strata Connect and is waiting for review before it goes out to businesses.</p>
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
+       ${row("From", sender || d.fromEmail)}
+       ${row("Subject", d.subject || "—")}
+       ${row("Attachments", String(d.attachments))}
+     </table>
+     <p style="margin:0;"><a href="${adminUrl}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Review &amp; approve →</a></p>`
+  );
+  const text = `New Strata Connect work order\nFrom: ${sender || d.fromEmail}\nSubject: ${d.subject || "—"}\nAttachments: ${d.attachments}\nReview: ${adminUrl}`;
+  await sendEmail("New Strata Connect work order — review needed", "info@remedialbuildingaustralia.com.au", html, text);
+}

@@ -81,6 +81,12 @@ Code lives on **mac2** at `~/Developer/remedial-building-australia` → GitHub
 3. **Keep the Open Tasks list below current** — remove what you finished, add new items.
 
 ## Open tasks (keep current)
+- [ ] **Strata Connect (owner setup):** the feature is BUILT (inbound webhook, AI
+      extraction, admin review queue at `/directory/admin/strata-intakes`, approve →
+      quote-request broadcast). To go live the owner must: (1) run `docs/strata-connect.sql`
+      in Supabase, (2) set `STRATA_INBOUND_SECRET` on Vercel, (3) set up SendGrid Inbound
+      Parse + the `parse.` MX at VentraIP, (4) forward `workorders@…` to the parse
+      subdomain. Full click-by-click in `docs/strata-connect.md`.
 - [ ] **Phone:** set the "Sydney Remedial Builders" listing phone to `1300 849 584`.
       Deferred by owner — needs the exact company id first (several similar Sydney
       names exist), then owner runs `UPDATE companies SET phone='1300849584' WHERE id=<id>;`.
