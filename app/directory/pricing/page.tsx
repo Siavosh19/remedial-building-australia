@@ -124,9 +124,11 @@ export default async function PricingPage() {
               {claimed.monthly?.promo && (
                 <span className="self-start rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">{claimed.monthly.promo}</span>
               )}
+              {/* ANNUAL DISMANTLED (2026-07-15) — restore to bring yearly back:
               {claimed.yearly && (
                 <p className="text-sm text-slate-800">or {claimed.yearly.compareAt ? <span className="text-slate-500 line-through">{fmtDollars(claimed.yearly.compareAt)}</span> : null} {fmtDollars(claimed.yearly.cents)}/year</p>
               )}
+              */}
             </div>
             {claimedTrial > 0 && <p className="mt-2 text-sm font-semibold text-slate-900">{claimedTrial}-day free trial</p>}
             <ul className="mt-6 space-y-3 flex-1">
@@ -172,9 +174,11 @@ export default async function PricingPage() {
               {featured.monthly?.promo && (
                 <span className="self-start rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">{featured.monthly.promo}</span>
               )}
+              {/* ANNUAL DISMANTLED (2026-07-15) — restore to bring yearly back:
               {featured.yearly && (
                 <p className="text-sm text-slate-700">or {featured.yearly.compareAt ? <span className="text-slate-600 line-through">{fmtDollars(featured.yearly.compareAt)}</span> : null} {fmtDollars(featured.yearly.cents)}/year</p>
               )}
+              */}
             </div>
             {featuredTrial > 0 && <p className="mt-2 text-sm font-semibold text-emerald-700">{featuredTrial}-day free trial</p>}
             <ul className="mt-6 space-y-3 flex-1">
@@ -205,7 +209,9 @@ export default async function PricingPage() {
         {/* Notes */}
         <div className="mt-10 rounded-2xl border border-slate-200 bg-white px-8 py-6 space-y-2 text-sm text-slate-500">
           <p>Monthly plans can be cancelled anytime. Access continues until the end of the paid billing period.</p>
+          {/* ANNUAL DISMANTLED (2026-07-15) — restore when yearly billing returns.
           <p>Yearly plans renew annually unless cancelled before the renewal date. Access remains active until the end of the paid yearly term.</p>
+          */}
           <p>No automatic refunds. No lead delivery guarantee. No results guarantee.</p>
         </div>
 

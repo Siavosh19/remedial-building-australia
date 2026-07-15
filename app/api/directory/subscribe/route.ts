@@ -10,9 +10,11 @@ import type { DirectoryPlanType, DirectoryBillingCycle } from "@prisma/client";
 // Maps the front-end plan key → (tier, Stripe interval, billing cycle label).
 const PLAN_MAP: Record<string, { tier: DirectoryPlanType; interval: string; cycle: DirectoryBillingCycle }> = {
   "claimed-monthly":  { tier: "claimed",  interval: "month", cycle: "monthly" },
-  "claimed-yearly":   { tier: "claimed",  interval: "year",  cycle: "yearly" },
   "featured-monthly": { tier: "featured", interval: "month", cycle: "monthly" },
-  "featured-yearly":  { tier: "featured", interval: "year",  cycle: "yearly" },
+  // ANNUAL DISMANTLED (2026-07-15) — yearly checkout disabled for now. Restore
+  // these two keys to re-enable annual billing.
+  // "claimed-yearly":   { tier: "claimed",  interval: "year",  cycle: "yearly" },
+  // "featured-yearly":  { tier: "featured", interval: "year",  cycle: "yearly" },
 };
 
 export async function POST(request: NextRequest) {

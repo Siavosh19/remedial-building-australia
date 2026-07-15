@@ -257,6 +257,8 @@ export default function SubscriptionClient({
         >
           Monthly
         </button>
+        {/* ANNUAL DISMANTLED (2026-07-15) — monthly only for now. Restore this
+            button to bring yearly billing back.
         <button
           type="button"
           onClick={() => setBilling("yearly")}
@@ -264,6 +266,7 @@ export default function SubscriptionClient({
         >
           Yearly
         </button>
+        */}
       </div>
 
       {/* Gold availability — premium navy/gold notification card */}
