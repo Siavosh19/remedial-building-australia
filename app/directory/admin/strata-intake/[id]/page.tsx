@@ -166,7 +166,7 @@ export default async function AdminStrataIntakeDetailPage({ params }: { params: 
             suburb: intake.suburb ?? "",
             postcode: intake.postcode ?? "",
             strataPlanNumber: intake.strata_plan_number ?? "",
-            description: intake.job_description ?? intake.subject ?? "",
+            description: intake.body_text ?? intake.job_description ?? intake.subject ?? "",
             contactName: intake.from_name ?? "",
             contactEmail: intake.from_email ?? "",
             contactPhone: "",

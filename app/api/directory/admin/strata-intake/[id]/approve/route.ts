@@ -3,12 +3,17 @@ import { prisma } from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/directory-auth";
 import { resolveRequestCoords } from "@/lib/quote-matching";
 import { broadcastRequest } from "@/lib/quote-broadcast";
-import { getOrCreateStrataClientUser } from "@/lib/strata-connect";
+import { getOrCreateStrataClientUser, STRATA_INTAKE_BUCKET } from "@/lib/strata-connect";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { PROPERTY_TYPE_IDS, URGENCY_IDS } from "@/lib/quote-options";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
+
+// Public bucket the portal uses for quote-request attachments (permanent public
+// URLs so businesses can open them straight from the email).
+const QUOTE_FILES_BUCKET = "quote-request-files";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -24,7 +29,7 @@ export async function POST(request: NextRequest, { params }: Params) {
   const intakeId = Number(id);
   if (!Number.isInteger(intakeId)) return NextResponse.json({ error: "Invalid ID." }, { status: 400 });
 
-  const intake = await prisma.strataIntake.findUnique({ where: { id: intakeId } });
+  const intake = await prisma.strataIntake.findUnique({ where: { id: intakeId }, include: { files: true } });
   if (!intake) return NextResponse.json({ error: "Intake not found." }, { status: 404 });
   if (intake.status === "converted" && intake.quote_request_id) {
     return NextResponse.json({ error: "This work order has already been converted." }, { status: 409 });
@@ -38,7 +43,9 @@ export async function POST(request: NextRequest, { params }: Params) {
   const suburb = pick("suburb", intake.suburb);
   const postcode = pick("postcode", intake.postcode);
   const strataPlan = pick("strataPlanNumber", intake.strata_plan_number);
-  const description = pick("description", intake.job_description || intake.subject);
+  // Businesses should get the EXACT work-order text the strata manager sent (the
+  // full email body), not the short AI summary. Falls back to summary/subject.
+  const description = pick("description", intake.body_text || intake.job_description || intake.subject);
   const contactName = pick("contactName", intake.from_name || intake.from_email);
   const contactEmail = pick("contactEmail", intake.from_email).toLowerCase();
   const contactPhone = pick("contactPhone", null);
@@ -91,6 +98,42 @@ export async function POST(request: NextRequest, { params }: Params) {
     },
     select: { id: true },
   });
+
+  // Carry EVERY strata attachment across to the quote request so the matching
+  // businesses receive them. The originals live in the private strata bucket; we
+  // copy each into the public quote-files bucket and store its permanent public
+  // URL. Best-effort per file — a single failed copy must not block the approval.
+  // Runs BEFORE broadcast so the files are attached to the emails that go out.
+  await supabaseAdmin.storage.createBucket(QUOTE_FILES_BUCKET, { public: true }).catch(() => {});
+  for (const f of intake.files) {
+    if (!f.url) continue; // no stored object (e.g. storage wasn't configured at intake time)
+    try {
+      const dl = await supabaseAdmin.storage.from(STRATA_INTAKE_BUCKET).download(f.url);
+      if (dl.error || !dl.data) continue;
+      const buffer = Buffer.from(await dl.data.arrayBuffer());
+      const safe = (f.filename ?? "attachment").replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${created.id}/${f.id}-${safe}`;
+      const up = await supabaseAdmin.storage.from(QUOTE_FILES_BUCKET).upload(path, buffer, {
+        contentType: f.content_type ?? "application/octet-stream",
+        upsert: true,
+      });
+      if (up.error) continue;
+      const { data: urlData } = supabaseAdmin.storage.from(QUOTE_FILES_BUCKET).getPublicUrl(path);
+      await prisma.quoteRequestFile.create({
+        data: {
+          request_id: created.id,
+          file_type: (f.content_type ?? "").startsWith("image/") ? "photo" : "document",
+          url: urlData.publicUrl,
+          filename: f.filename ?? null,
+          size_bytes: f.size_bytes ?? buffer.length,
+          content_type: f.content_type ?? null,
+          uploaded_by: "client",
+        },
+      });
+    } catch {
+      // best-effort; skip this attachment
+    }
+  }
 
   // Fan out to matching businesses (same pipeline the portal uses).
   const result = await broadcastRequest(created.id);
