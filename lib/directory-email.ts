@@ -505,7 +505,16 @@ export async function sendDirectQuoteRequestEmail(opts: {
   urgency: string;
   files: { filename: string | null; url: string }[];
   dashboardUrl: string;
+  // When the two magic-link URLs are supplied, render Interested / Not interested
+  // buttons that sign the business in and record their response.
+  interestedUrl?: string;
+  notInterestedUrl?: string;
+  // Gate the client's contact details. Broadcast leads set this false (contact is
+  // shared only once the client proceeds); the "client picked you" email leaves it
+  // true so the business can contact them directly.
+  showContact?: boolean;
 }) {
+  const showContact = opts.showContact !== false;
   const greeting = opts.businessName ? `Hi ${safeHtml(opts.businessName)},` : "Hello,";
   const row = (label: string, value: string) =>
     `<tr><td style="padding:6px 0;font-size:13px;color:#64748b;width:130px;vertical-align:top;">${safeHtml(label)}</td>
@@ -515,30 +524,50 @@ export async function sendDirectQuoteRequestEmail(opts: {
         .map((f) => `<li style="font-size:13px;"><a href="${f.url}" style="color:#1d4ed8;">${safeHtml(f.filename ?? "File")}</a></li>`)
         .join("")}</ul>`
     : "";
+  const contactRows = showContact
+    ? `${row("Client", opts.clientName)}${row("Email", opts.clientEmail)}${opts.clientPhone ? row("Phone", opts.clientPhone) : ""}`
+    : "";
+  const intro = showContact
+    ? "A client has requested a quote from your business. Their contact details are below — please contact them directly to discuss and quote."
+    : "A new lead matches your business. Review the work order below and let the client know if you're interested — their contact details are shared once they proceed with you.";
+  const respondButtons =
+    opts.interestedUrl && opts.notInterestedUrl
+      ? `<table role="presentation" style="margin:0 0 12px;"><tr>
+           <td style="padding-right:10px;"><a href="${opts.interestedUrl}" style="display:inline-block;padding:14px 26px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:700;">I'm interested</a></td>
+           <td><a href="${opts.notInterestedUrl}" style="display:inline-block;padding:14px 26px;background:#ffffff;color:#334155;border:1px solid #cbd5e1;border-radius:10px;text-decoration:none;font-weight:700;">Not interested</a></td>
+         </tr></table>
+         <p style="margin:0 0 22px;font-size:13px;color:#64748b;line-height:1.6;">Tapping a button signs you into your account and records your response. Expressing interest uses one of your weekly leads.</p>`
+      : "";
 
   const html = emailWrapper(
-    "New quote request",
+    showContact ? "New quote request" : "New lead for your business",
     `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">${greeting}</p>
-     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A client has requested a quote from your business. Their contact details are below — please contact them directly to discuss and quote.</p>
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">${intro}</p>
      <table style="width:100%;border-collapse:collapse;margin:0 0 18px;">
        ${row("Location", `${opts.suburb} ${opts.postcode}`)}
        ${row("Work category", opts.category)}
        ${row("Urgency", opts.urgency)}
        ${opts.budget ? row("Budget", opts.budget) : ""}
-       ${row("Client", opts.clientName)}
-       ${row("Email", opts.clientEmail)}
-       ${opts.clientPhone ? row("Phone", opts.clientPhone) : ""}
+       ${contactRows}
      </table>
      <p style="margin:0 0 6px;font-size:13px;color:#64748b;">Description</p>
-     <p style="margin:0 0 18px;font-size:14px;line-height:1.7;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;">${safeHtml(opts.description)}</p>
+     <p style="margin:0 0 18px;font-size:14px;line-height:1.7;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;white-space:pre-wrap;">${safeHtml(opts.description)}</p>
      ${fileLinks}
-     <p style="margin:0 0 24px;"><a href="${opts.dashboardUrl}" style="display:inline-block;padding:14px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;">View in your dashboard →</a></p>
+     ${respondButtons}
+     <p style="margin:0 0 24px;"><a href="${opts.dashboardUrl}" style="display:inline-block;padding:12px 20px;background:${respondButtons ? "#ffffff" : "#0f172a"};color:${respondButtons ? "#334155" : "#ffffff"};border:${respondButtons ? "1px solid #cbd5e1" : "none"};border-radius:10px;text-decoration:none;font-weight:600;">View in your dashboard →</a></p>
      <p style="margin:0;font-size:12px;color:#64748b;line-height:1.7;">${safeHtml(RBA_DISCLAIMER_SHORT)}</p>`
   );
 
-  const text = `${opts.businessName ? `Hi ${opts.businessName},` : "Hello,"}\n\nA client has requested a quote from your business.\n\nLocation: ${opts.suburb} ${opts.postcode}\nWork category: ${opts.category}\nUrgency: ${opts.urgency}\n${opts.budget ? `Budget: ${opts.budget}\n` : ""}Client: ${opts.clientName}\nEmail: ${opts.clientEmail}\n${opts.clientPhone ? `Phone: ${opts.clientPhone}\n` : ""}\nDescription:\n${opts.description}\n${opts.files.length ? `\nAttachments:\n${opts.files.map((f) => `- ${f.filename ?? "File"}: ${f.url}`).join("\n")}\n` : ""}\nView in your dashboard: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER_SHORT}`;
+  const respondText =
+    opts.interestedUrl && opts.notInterestedUrl
+      ? `\nI'm interested: ${opts.interestedUrl}\nNot interested: ${opts.notInterestedUrl}\n`
+      : "";
+  const contactText = showContact
+    ? `Client: ${opts.clientName}\nEmail: ${opts.clientEmail}\n${opts.clientPhone ? `Phone: ${opts.clientPhone}\n` : ""}`
+    : "";
+  const text = `${opts.businessName ? `Hi ${opts.businessName},` : "Hello,"}\n\n${intro}\n\nLocation: ${opts.suburb} ${opts.postcode}\nWork category: ${opts.category}\nUrgency: ${opts.urgency}\n${opts.budget ? `Budget: ${opts.budget}\n` : ""}${contactText}\nDescription:\n${opts.description}\n${opts.files.length ? `\nAttachments:\n${opts.files.map((f) => `- ${f.filename ?? "File"}: ${f.url}`).join("\n")}\n` : ""}${respondText}\nView in your dashboard: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER_SHORT}`;
 
-  await sendEmail("New quote request for your business", opts.to, html, text);
+  await sendEmail(showContact ? "New quote request for your business" : "New lead for your business", opts.to, html, text);
 }
 
 // Sent to a business that already received a quote request when the client edits
@@ -612,13 +641,61 @@ export async function sendClientQuoteConfirmationEmail(opts: {
     "Quote request submitted",
     `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Hi ${safeHtml(opts.name)},</p>
      <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Your quote request for <strong>${safeHtml(opts.category)}</strong> in <strong>${safeHtml(opts.suburb)}</strong> has been submitted. ${safeHtml(matchedLine)}</p>
+     <p style="margin:0 0 18px;font-size:14px;line-height:1.7;color:#334155;">We'll send any updates about this request — including when a business is interested in it — to this email address (${safeHtml(opts.to)}).</p>
      <p style="margin:0 0 24px;"><a href="${opts.dashboardUrl}" style="display:inline-block;padding:14px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;">View your request →</a></p>
      <p style="margin:0;font-size:12px;color:#64748b;line-height:1.7;">${safeHtml(RBA_DISCLAIMER)}</p>`
   );
 
-  const text = `Hi ${opts.name},\n\nYour quote request for ${opts.category} in ${opts.suburb} has been submitted. ${matchedLine}\n\nView your request: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER}`;
+  const text = `Hi ${opts.name},\n\nYour quote request for ${opts.category} in ${opts.suburb} has been submitted. ${matchedLine}\n\nWe'll send any updates about this request — including when a business is interested — to this email address (${opts.to}).\n\nView your request: ${opts.dashboardUrl}\n\n${RBA_DISCLAIMER}`;
 
   await sendEmail("Your quote request has been submitted", opts.to, html, text);
+}
+
+// Sent to the client when a business expresses interest in their request. Shows
+// the business's contact card (like the directory listing) so the client can
+// reach out directly or request a quote to proceed.
+export async function sendBusinessInterestedClientEmail(opts: {
+  to: string;
+  clientName: string;
+  category: string;
+  requestUrl: string;
+  business: {
+    name: string;
+    tier?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    website?: string | null;
+    profileUrl?: string | null;
+  };
+}) {
+  const b = opts.business;
+  const badge = b.tier
+    ? `<span style="display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;${b.tier === "Gold" ? "background:#fef3c7;color:#92400e;" : "background:#e2e8f0;color:#334155;"}">${safeHtml(b.tier)}</span>`
+    : "";
+  const webHref = b.website ? (b.website.startsWith("http") ? b.website : `https://${b.website}`) : "";
+  const contactBits = [
+    b.phone ? `<div style="font-size:14px;color:#0f172a;padding:3px 0;">Phone: <a href="tel:${safeHtml(b.phone)}" style="color:#1d4ed8;text-decoration:none;">${safeHtml(b.phone)}</a></div>` : "",
+    b.email ? `<div style="font-size:14px;color:#0f172a;padding:3px 0;">Email: <a href="mailto:${safeHtml(b.email)}" style="color:#1d4ed8;">${safeHtml(b.email)}</a></div>` : "",
+    b.website ? `<div style="font-size:14px;color:#0f172a;padding:3px 0;">Web: <a href="${safeHtml(webHref)}" style="color:#1d4ed8;">${safeHtml(b.website.replace(/^https?:\/\/(www\.)?/, ""))}</a></div>` : "",
+  ].join("");
+  const card = `
+    <div style="border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;margin:0 0 20px;background:#ffffff;">
+      <div style="font-size:17px;font-weight:800;color:#0f172a;">${safeHtml(b.name)}${badge}</div>
+      <div style="margin-top:10px;">${contactBits || '<div style="font-size:13px;color:#64748b;">See their profile for contact details.</div>'}</div>
+      ${b.profileUrl ? `<div style="margin-top:14px;"><a href="${b.profileUrl}" style="display:inline-block;padding:10px 18px;border:1px solid #cbd5e1;border-radius:10px;color:#334155;text-decoration:none;font-weight:600;font-size:13px;">View profile →</a></div>` : ""}
+    </div>`;
+
+  const html = emailWrapper(
+    "A business is interested",
+    `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">Hi ${safeHtml(opts.clientName || "there")},</p>
+     <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;"><strong>${safeHtml(b.name)}</strong> is interested in your <strong>${safeHtml(opts.category)}</strong> request. Their details are below — contact them directly, or request a quote to proceed.</p>
+     ${card}
+     <p style="margin:0 0 24px;"><a href="${opts.requestUrl}" style="display:inline-block;padding:14px 22px;background:#b91c1c;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:700;">Request a quote →</a></p>
+     <p style="margin:0;font-size:12px;color:#64748b;line-height:1.7;">${safeHtml(RBA_DISCLAIMER)}</p>`
+  );
+  const text = `Hi ${opts.clientName || "there"},\n\n${b.name} is interested in your ${opts.category} request.\n\n${b.name}${b.tier ? ` (${b.tier})` : ""}\n${b.phone ? `Phone: ${b.phone}\n` : ""}${b.email ? `Email: ${b.email}\n` : ""}${b.website ? `Web: ${b.website}\n` : ""}\nContact them directly, or request a quote: ${opts.requestUrl}\n\n${RBA_DISCLAIMER}`;
+
+  await sendEmail(`${b.name} is interested in your request`, opts.to, html, text);
 }
 
 // ── Admin notifications (to the site owner) ──────────────────────────────────

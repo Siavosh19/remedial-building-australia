@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
-import { PROPERTY_TYPE_LABELS, URGENCY_LABELS, FILE_TYPE_OPTIONS, formatBudget } from "@/lib/quote-options";
+import { PROPERTY_TYPE_LABELS, URGENCY_LABELS, FILE_TYPE_OPTIONS, formatBudget, WEEKLY_INTEREST_CAP } from "@/lib/quote-options";
+import { dirTier } from "@/lib/directory-tier";
 import { ResponseStatusBadge } from "@/components/client/badges";
 import LeadFlowActions from "@/components/directory/LeadFlowActions";
 
@@ -20,9 +21,20 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
-    select: { id: true },
+    select: { id: true, plan_type: true },
   });
   if (!company) redirect("/directory/dashboard");
+
+  // Weekly interest allowance for this tier, and how many are left this week
+  // (Mon–Sun) — surfaced in the actions panel.
+  const tier = dirTier(company.plan_type);
+  const weeklyCap = WEEKLY_INTEREST_CAP[tier] ?? 0;
+  const now = new Date();
+  const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+  const weeklyUsed = await prisma.quoteRequestDelivery.count({
+    where: { company_id: company.id, interested_at: { gte: weekStart } },
+  });
+  const weeklyRemaining = Math.max(0, weeklyCap - weeklyUsed);
 
   const delivery = await prisma.quoteRequestDelivery.findFirst({
     where: { id: deliveryId, company_id: company.id },
@@ -136,6 +148,9 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
               responseStatus={delivery.response_status}
               interested={Boolean(delivery.interested_at)}
               clientRequested={clientRequested}
+              weeklyRemaining={weeklyRemaining}
+              weeklyCap={weeklyCap}
+              tierLabel={tier === "gold" ? "Gold" : tier === "silver" ? "Silver" : "Free"}
             />
           </section>
         </div>

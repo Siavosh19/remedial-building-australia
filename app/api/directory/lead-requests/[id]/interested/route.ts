@@ -4,9 +4,12 @@ import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { createNotification } from "@/lib/notifications";
 import { dirTier } from "@/lib/directory-tier";
 import { WEEKLY_INTEREST_CAP } from "@/lib/quote-options";
+import { sendBusinessInterestedClientEmail } from "@/lib/directory-email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -33,7 +36,7 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
-    select: { id: true, name: true, plan_type: true },
+    select: { id: true, name: true, plan_type: true, phone: true, email: true, website: true, slug: true },
   });
   if (!company) return NextResponse.json({ error: "Company not found." }, { status: 404 });
 
@@ -42,7 +45,15 @@ export async function POST(request: NextRequest, { params }: Params) {
     select: {
       id: true,
       interested_at: true,
-      request: { select: { id: true, client_user_id: true, work_category: { select: { name: true } } } },
+      request: {
+        select: {
+          id: true,
+          client_user_id: true,
+          contact_name: true,
+          contact_email: true,
+          work_category: { select: { name: true } },
+        },
+      },
     },
   });
   if (!delivery) return NextResponse.json({ error: "Lead not found." }, { status: 404 });
@@ -98,6 +109,27 @@ export async function POST(request: NextRequest, { params }: Params) {
       body: `${company.name} is interested in ${category}. Request a quote to connect and exchange contact details.`,
       link: `/client/quote-requests/${delivery.request.id}`,
     });
+
+    // Email the client (their provided email) with the business's contact card —
+    // works for portal clients AND strata-connect submitters (contact_email is
+    // the real person in both). Best-effort; never fail the response on this.
+    if (delivery.request.contact_email) {
+      const t = dirTier(company.plan_type);
+      sendBusinessInterestedClientEmail({
+        to: delivery.request.contact_email,
+        clientName: delivery.request.contact_name ?? "there",
+        category,
+        requestUrl: `${SITE_URL}/client/quote-requests/${delivery.request.id}`,
+        business: {
+          name: company.name,
+          tier: t === "gold" ? "Gold" : t === "silver" ? "Silver" : null,
+          phone: company.phone,
+          email: company.email,
+          website: company.website,
+          profileUrl: company.slug ? `${SITE_URL}/directory/company/${company.slug}` : null,
+        },
+      }).catch((e) => console.error("[interested] client email failed:", e));
+    }
   }
 
   return NextResponse.json({ success: true });

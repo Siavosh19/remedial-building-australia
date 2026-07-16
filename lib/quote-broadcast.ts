@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { matchBusinessesForRequest } from "@/lib/quote-matching";
 import { notifyCompanyOwners } from "@/lib/notifications";
-import { sendDirectQuoteRequestEmail, sendClientLeadAdminEmail } from "@/lib/directory-email";
+import { sendDirectQuoteRequestEmail, sendClientLeadAdminEmail, sendClientQuoteConfirmationEmail } from "@/lib/directory-email";
+import { createAuthToken } from "@/lib/directory-auth";
 import { URGENCY_LABELS, formatBudget } from "@/lib/quote-options";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
@@ -50,6 +51,15 @@ export async function broadcastRequest(requestId: number): Promise<{ matched: nu
   });
   const compById = new Map(companies.map((c) => [c.id, c]));
 
+  // First member per company — used to mint the magic-link token so the
+  // Interested / Not-interested buttons in the lead email log that business in.
+  const memberRows = await prisma.companyUser.findMany({
+    where: { company_id: { in: ids } },
+    select: { company_id: true, user_id: true },
+  });
+  const ownerByCompany = new Map<number, number>();
+  for (const mr of memberRows) if (!ownerByCompany.has(mr.company_id)) ownerByCompany.set(mr.company_id, mr.user_id);
+
   // Dedupe against any deliveries already created for this request so a re-run
   // never double-sends — this is what keeps submit fast (the old flow hung on a
   // self-fetch).
@@ -77,6 +87,12 @@ export async function broadcastRequest(requestId: number): Promise<{ matched: nu
       link: "/directory/dashboard/lead-requests?view=new",
     });
 
+    // Magic-link buttons for this business (log in + record response from email).
+    const ownerId = ownerByCompany.get(company.id);
+    const magicBase = ownerId
+      ? `${SITE_URL}/api/directory/leads/access?token=${createAuthToken(ownerId, "lead_access", "21d")}&delivery=${delivery.id}`
+      : null;
+
     // Email in parallel (awaited together below) so a big fan-out stays quick.
     if (company.email) {
       emailJobs.push(
@@ -94,6 +110,10 @@ export async function broadcastRequest(requestId: number): Promise<{ matched: nu
           urgency: URGENCY_LABELS[req.urgency] ?? req.urgency,
           files: req.files,
           dashboardUrl: `${SITE_URL}/directory/dashboard/lead-requests`,
+          // Broadcast lead: gate contact, show Interested / Not-interested.
+          showContact: false,
+          interestedUrl: magicBase ? `${magicBase}&respond=interested` : undefined,
+          notInterestedUrl: magicBase ? `${magicBase}&respond=declined` : undefined,
         })
           .then(() => prisma.quoteRequestDelivery.update({ where: { id: delivery.id }, data: { email_status: "sent", email_sent_at: new Date() } }))
           .catch((err) => prisma.quoteRequestDelivery.update({ where: { id: delivery.id }, data: { email_status: "failed", email_error: String((err as Error)?.message ?? err).slice(0, 480) } })),
@@ -124,6 +144,20 @@ export async function broadcastRequest(requestId: number): Promise<{ matched: nu
     where: { id: requestId },
     data: { status: "sent_to_businesses", matched_count: delivered, submitted_at: req.submitted_at ?? new Date() },
   });
+
+  // Confirm to the client — sent to the contact email on the request, which is
+  // the real person in BOTH flows (the portal client, or the strata manager who
+  // emailed a work order). Best-effort; never fail the broadcast on this.
+  if (req.contact_email) {
+    sendClientQuoteConfirmationEmail({
+      to: req.contact_email,
+      name: req.contact_name || "there",
+      category: catName,
+      suburb: req.suburb,
+      matchedCount: delivered,
+      dashboardUrl: `${SITE_URL}/client/quote-requests/${requestId}`,
+    }).catch((e) => console.error("[broadcast] client confirmation failed:", e));
+  }
 
   return { matched: matches.length, delivered };
 }

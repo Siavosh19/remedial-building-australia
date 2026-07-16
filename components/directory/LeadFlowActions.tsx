@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { LEAD_OUTCOME_OPTIONS } from "@/lib/quote-options";
 
@@ -14,11 +14,17 @@ export default function LeadFlowActions({
   responseStatus,
   interested,
   clientRequested,
+  weeklyRemaining,
+  weeklyCap,
+  tierLabel,
 }: {
   deliveryId: number;
   responseStatus: string;
   interested: boolean;
   clientRequested: boolean;
+  weeklyRemaining?: number;
+  weeklyCap?: number;
+  tierLabel?: string;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
@@ -33,6 +39,20 @@ export default function LeadFlowActions({
   const effInterested = interested || optInterested;
   const effDeclined = responseStatus === "declined" || optDeclined;
   const effStatus = optOutcome ?? responseStatus;
+
+  // Arrived from a lead email's magic link (?respond=interested|declined): apply
+  // the chosen response once, only if the lead is still in its initial state.
+  const autoRan = useRef(false);
+  useEffect(() => {
+    if (autoRan.current) return;
+    const respond = new URLSearchParams(window.location.search).get("respond");
+    if (!respond) return;
+    if (clientRequested || interested || responseStatus === "declined") return;
+    autoRan.current = true;
+    if (respond === "interested") expressInterest();
+    else if (respond === "declined") decline();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function expressInterest() {
     setBusy("interested");
@@ -150,9 +170,17 @@ export default function LeadFlowActions({
   }
 
   // ── Phase 1: new lead — Interested / Not interested ────────────────────────
+  const showAllowance = typeof weeklyRemaining === "number" && typeof weeklyCap === "number";
   return (
     <div className="space-y-3">
       <p className="text-sm font-semibold text-slate-800">Are you interested in this lead?</p>
+      {showAllowance && (
+        <div className={`rounded-xl border px-4 py-2.5 text-sm font-semibold ${weeklyRemaining! > 0 ? "border-sky-100 bg-sky-50 text-sky-900" : "border-amber-100 bg-amber-50 text-amber-800"}`}>
+          {weeklyRemaining! > 0
+            ? `${weeklyRemaining} of ${weeklyCap} ${tierLabel ?? ""} leads left this week`.replace("  ", " ")
+            : `You've used all ${weeklyCap} of your ${tierLabel ?? ""} leads this week — resets Monday.`.replace("  ", " ")}
+        </div>
+      )}
       <div className="flex flex-wrap gap-2">
         <button
           onClick={expressInterest}
@@ -170,8 +198,8 @@ export default function LeadFlowActions({
         </button>
       </div>
       <p className="text-xs leading-5 text-slate-500">
-        Expressing interest counts toward your weekly lead allowance. The client's contact details are exchanged only
-        once they proceed with your business.
+        Expressing interest uses one of your weekly leads. The client's contact details are exchanged only once they
+        proceed with your business.
       </p>
       {error && <p className="text-sm text-rose-700">{error}</p>}
     </div>

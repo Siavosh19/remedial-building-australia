@@ -519,6 +519,18 @@ export default function CompanyEditForm({ company, categories }: Props) {
         </div>
       )}
 
+      {/* Locked-fields note */}
+      <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
+        <p className="text-sm leading-6 text-amber-900">
+          To change your <strong>business name</strong>, <strong>business email</strong>, <strong>ABN</strong>, or your
+          <strong> selected trade categories</strong>, please contact{" "}
+          <a href="mailto:info@remedialbuildingaustralia.com.au" className="font-semibold underline">
+            info@remedialbuildingaustralia.com.au
+          </a>
+          .
+        </p>
+      </div>
+
       {/* Save bar — sticks to the bottom of the page, below logo & photos */}
       <div className="sticky bottom-0 -mx-1 mt-2 border-t border-slate-200 bg-white/95 px-1 py-4 backdrop-blur">
         <button

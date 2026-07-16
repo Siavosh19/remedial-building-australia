@@ -15,7 +15,7 @@ export type DirectorySessionPayload = {
 
 export type DirectoryTokenPayload = {
   userId: number;
-  purpose: "email_verification" | "password_reset";
+  purpose: "email_verification" | "password_reset" | "lead_access";
 };
 
 export function hashPassword(password: string) {
