@@ -29,6 +29,7 @@ import {
   Tags,
   Briefcase,
   Inbox,
+  DollarSign,
 } from "lucide-react";
 
 const NAV = [
@@ -45,6 +46,7 @@ const NAV = [
   { href: "/directory/admin/supplier-marketing", label: "Promotions", icon: Megaphone },
   { href: "/directory/admin/billing", label: "Billing", icon: CreditCard },
   { href: "/directory/admin/plans", label: "Plans & Pricing", icon: Tags },
+  { href: "/directory/admin/lead-pricing", label: "Lead Pricing", icon: DollarSign },
   { href: "/directory/admin/ai-scope-users", label: "AI Scope Users", icon: Bot },
   { href: "/directory/admin/analytics", label: "Analytics", icon: BarChart2 },
   { href: "/directory/admin/audit-log", label: "Audit Log", icon: ClipboardList },
