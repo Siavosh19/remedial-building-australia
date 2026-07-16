@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import PasswordChangeForm from "@/components/directory/PasswordChangeForm";
 import RemoveListingForm from "@/components/directory/RemoveListingForm";
+import DangerZone from "@/components/directory/DangerZone";
 
 export default async function DashboardSettingsPage() {
   const user = await getCurrentDirectoryUser();
@@ -65,11 +66,20 @@ export default async function DashboardSettingsPage() {
 
       {/* Remove listing */}
       <div id="remove" className={card}>
-        <h2 className="text-lg font-semibold text-slate-950">Remove listing</h2>
+        <h2 className="text-lg font-semibold text-slate-950">Hide listing (temporary)</h2>
         <p className="mt-2 mb-6 text-slate-600">
-          Take your business off the public directory. Your account stays active — you can contact support to re-publish later.
+          Temporarily take your business off the public directory (unpublish). This is reversible and nothing is deleted — contact support to re-publish. To permanently delete, use the Danger zone below.
         </p>
         <RemoveListingForm />
+      </div>
+
+      {/* Danger zone */}
+      <div id="danger" className={`${card} border-rose-200`}>
+        <h2 className="text-lg font-semibold text-rose-700">Danger zone</h2>
+        <p className="mt-2 mb-6 text-slate-600">
+          Permanent, irreversible deletion. You will be asked for your password to confirm.
+        </p>
+        <DangerZone />
       </div>
 
       {/* Unsubscribe */}
