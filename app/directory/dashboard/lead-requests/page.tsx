@@ -72,7 +72,7 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
       where: viewWhere,
       orderBy: { created_at: "desc" },
       take: 200,
-      include: { request: { select: { suburb: true, postcode: true, urgency: true, work_category: { select: { name: true } } } } },
+      include: { request: { select: { suburb: true, postcode: true, urgency: true, status: true, work_category: { select: { name: true } } } } },
     }),
     prisma.quoteRequestDelivery.count({ where: baseWhere }),
     prisma.quoteRequestDelivery.count({ where: { ...baseWhere, opened_at: null } }),
@@ -133,11 +133,20 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {deliveries.map((d) => (
-                <tr key={d.id} className={`transition hover:bg-slate-50 ${!d.opened_at ? "bg-sky-50/40" : ""}`}>
+              {deliveries.map((d) => {
+                // A closed request needs no action, so it never gets the unread
+                // highlight — it carries a Closed badge instead.
+                const closed = d.request.status === "closed";
+                return (
+                <tr key={d.id} className={`transition hover:bg-slate-50 ${!d.opened_at && !closed ? "bg-sky-50/40" : ""}`}>
                   <td className="px-5 py-4 font-semibold text-slate-900">
-                    {!d.opened_at && <span className="mr-2 inline-block h-2 w-2 rounded-full bg-sky-500 align-middle" />}
-                    {d.request.work_category?.name ?? "Building works"}
+                    {!d.opened_at && !closed && <span className="mr-2 inline-block h-2 w-2 rounded-full bg-sky-500 align-middle" />}
+                    <span className={closed ? "text-slate-500" : undefined}>{d.request.work_category?.name ?? "Building works"}</span>
+                    {closed && (
+                      <span className="ml-2 inline-block rounded-full bg-slate-200 px-2 py-0.5 align-middle text-[11px] font-bold uppercase tracking-wide text-slate-500">
+                        Closed
+                      </span>
+                    )}
                   </td>
                   <td className="px-5 py-4 text-slate-600">{d.request.suburb} {d.request.postcode}</td>
                   <td className="px-5 py-4 text-slate-600">{URGENCY_LABELS[d.request.urgency] ?? d.request.urgency}</td>
@@ -152,7 +161,8 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
                     </Link>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

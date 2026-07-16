@@ -57,6 +57,7 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
 
   const r = delivery.request;
   const clientRequested = Boolean(delivery.client_requested_at);
+  const requestClosed = r.status === "closed";
   const field = (label: string, value: React.ReactNode) =>
     value ? (
       <div>
@@ -78,6 +79,17 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
         </div>
         <ResponseStatusBadge status={delivery.response_status} />
       </div>
+
+      {requestClosed && (
+        <div className="rounded-2xl border border-slate-300 bg-slate-100 px-5 py-4">
+          <p className="text-sm font-bold text-slate-700">
+            The client closed this request{r.closed_at ? ` on ${new Date(r.closed_at).toLocaleDateString("en-AU")}` : ""}.
+          </p>
+          <p className="mt-1 text-sm leading-6 text-slate-600">
+            They are no longer accepting quotes for this job. No further action is needed.
+          </p>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
         <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
@@ -148,6 +160,7 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
               responseStatus={delivery.response_status}
               interested={Boolean(delivery.interested_at)}
               clientRequested={clientRequested}
+              requestClosed={requestClosed}
               weeklyRemaining={weeklyRemaining}
               weeklyCap={weeklyCap}
               tierLabel={tier === "gold" ? "Gold" : tier === "silver" ? "Silver" : "Free"}

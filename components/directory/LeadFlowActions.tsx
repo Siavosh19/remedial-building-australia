@@ -14,6 +14,7 @@ export default function LeadFlowActions({
   responseStatus,
   interested,
   clientRequested,
+  requestClosed,
   weeklyRemaining,
   weeklyCap,
   tierLabel,
@@ -22,6 +23,7 @@ export default function LeadFlowActions({
   responseStatus: string;
   interested: boolean;
   clientRequested: boolean;
+  requestClosed?: boolean;
   weeklyRemaining?: number;
   weeklyCap?: number;
   tierLabel?: string;
@@ -47,6 +49,7 @@ export default function LeadFlowActions({
     if (autoRan.current) return;
     const respond = new URLSearchParams(window.location.search).get("respond");
     if (!respond) return;
+    if (requestClosed) return; // a closed request can no longer be responded to
     if (clientRequested || interested || responseStatus === "declined") return;
     autoRan.current = true;
     if (respond === "interested") expressInterest();
@@ -135,6 +138,21 @@ export default function LeadFlowActions({
           })}
         </div>
         {error && <p className="text-sm text-rose-700">{error}</p>}
+      </div>
+    );
+  }
+
+  // ── Phase: client closed the request — nothing left to action ─────────────
+  // Deliberately sits below phase 3: a business the client already proceeded with
+  // keeps its outcome tracker, since the job itself may have gone ahead.
+  if (requestClosed) {
+    return (
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4">
+        <p className="text-sm font-bold text-slate-700">This lead is closed</p>
+        <p className="mt-1 text-sm leading-6 text-slate-600">
+          The client closed this request and is no longer accepting quotes.
+          {effInterested ? " Your interest was submitted before it closed." : ""}
+        </p>
       </div>
     );
   }

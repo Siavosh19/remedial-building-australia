@@ -32,9 +32,15 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
   const delivery = await prisma.quoteRequestDelivery.findFirst({
     where: { id: deliveryId, company_id: company.id },
-    select: { id: true, request_id: true, client_requested_at: true },
+    select: { id: true, request_id: true, client_requested_at: true, request: { select: { status: true } } },
   });
   if (!delivery) return NextResponse.json({ error: "Lead request not found." }, { status: 404 });
+
+  // A closed request can no longer be engaged with — but a business the client
+  // already proceeded with may still log how the job actually went.
+  if (delivery.request.status === "closed" && !POST_CONNECTION.includes(responseStatus)) {
+    return NextResponse.json({ error: "The client has closed this request." }, { status: 409 });
+  }
 
   // Outcome statuses are only valid once the client has proceeded with this business.
   if (POST_CONNECTION.includes(responseStatus) && !delivery.client_requested_at) {

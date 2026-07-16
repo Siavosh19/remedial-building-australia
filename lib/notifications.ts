@@ -7,7 +7,7 @@ import { sendPushToUser, sendPushToUsers } from "@/lib/push";
 // Each bell notification also fires an OS-level web push (best-effort) so the
 // recipient is alerted even when the app is closed.
 
-export type NotificationType = "lead" | "lead_updated" | "job_applicant" | "news_digest";
+export type NotificationType = "lead" | "lead_updated" | "lead_closed" | "job_applicant" | "news_digest";
 
 export async function createNotification(input: {
   userId: number;

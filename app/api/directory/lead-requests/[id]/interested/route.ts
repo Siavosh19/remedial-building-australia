@@ -48,6 +48,7 @@ export async function POST(request: NextRequest, { params }: Params) {
       request: {
         select: {
           id: true,
+          status: true,
           client_user_id: true,
           contact_name: true,
           contact_email: true,
@@ -57,6 +58,10 @@ export async function POST(request: NextRequest, { params }: Params) {
     },
   });
   if (!delivery) return NextResponse.json({ error: "Lead not found." }, { status: 404 });
+  // Never spend a weekly lead on a request the client has already closed.
+  if (delivery.request.status === "closed") {
+    return NextResponse.json({ error: "The client has closed this request." }, { status: 409 });
+  }
 
   // Idempotent — tapping again is a no-op that still returns ok.
   if (!delivery.interested_at) {

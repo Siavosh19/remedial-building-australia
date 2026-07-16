@@ -67,11 +67,40 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const action = String(body.action ?? "update");
 
   // ── Close ──────────────────────────────────────────────────────────────────
+  // Closing is terminal. Every business the request was broadcast to is told in
+  // their portal (bell + push) so they stop chasing a dead lead — same
+  // best-effort contract as the edit path below.
   if (action === "close") {
+    if (existing.status === "closed") return NextResponse.json({ success: true });
+
     await prisma.clientQuoteRequest.update({
       where: { id: existing.id },
       data: { status: "closed", closed_at: new Date() },
     });
+
+    // A draft was never broadcast — there is nobody to tell.
+    if (existing.status !== "draft") {
+      const deliveries = await prisma.quoteRequestDelivery.findMany({
+        where: { request_id: existing.id },
+        select: { company_id: true },
+      });
+      if (deliveries.length > 0) {
+        const cat = await prisma.category.findUnique({
+          where: { id: existing.work_category_id },
+          select: { name: true },
+        });
+        const catName = cat?.name ?? "Building works";
+        for (const d of deliveries) {
+          await notifyCompanyOwners(d.company_id, {
+            type: "lead_closed",
+            title: "Lead closed by the client",
+            body: `${catName} · ${existing.suburb} ${existing.postcode} — no longer accepting quotes.`,
+            link: "/directory/dashboard/lead-requests",
+          });
+        }
+      }
+    }
+
     return NextResponse.json({ success: true });
   }
 
