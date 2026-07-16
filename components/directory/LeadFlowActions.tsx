@@ -18,6 +18,10 @@ export default function LeadFlowActions({
   weeklyRemaining,
   weeklyCap,
   tierLabel,
+  canBuy,
+  leadPriceCents,
+  walletCents,
+  topupCents,
 }: {
   deliveryId: number;
   responseStatus: string;
@@ -27,10 +31,63 @@ export default function LeadFlowActions({
   weeklyRemaining?: number;
   weeklyCap?: number;
   tierLabel?: string;
+  // Pay-per-lead: only Silver/Gold can buy once the weekly allowance is used up.
+  canBuy?: boolean;
+  leadPriceCents?: number;
+  walletCents?: number;
+  topupCents?: number;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const fmt = (c: number) => {
+    const d = c / 100;
+    return Number.isInteger(d) ? `$${d.toLocaleString("en-AU")}` : `$${d.toFixed(2)}`;
+  };
+
+  // Buy this single lead — pays from the wallet if it covers the price, otherwise
+  // redirects to Stripe checkout for this one lead.
+  async function buyLead() {
+    setBusy("buy");
+    setError(null);
+    const res = await fetch(`/api/directory/lead-requests/${deliveryId}/purchase`, { method: "POST" });
+    const r = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setBusy(null);
+      setError(r.error ?? "Could not buy this lead.");
+      return;
+    }
+    if (r.checkoutUrl) {
+      window.location.href = r.checkoutUrl; // off to Stripe
+      return;
+    }
+    setBusy(null);
+    router.refresh(); // paid from wallet — reconcile
+  }
+
+  // Top up the lead wallet with pre-paid credit.
+  async function topUp() {
+    setBusy("topup");
+    setError(null);
+    const res = await fetch(`/api/directory/lead-wallet/topup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amountCents: topupCents ?? 10000 }),
+    });
+    const r = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setBusy(null);
+      setError(r.error ?? "Could not start top-up.");
+      return;
+    }
+    if (r.checkoutUrl) {
+      window.location.href = r.checkoutUrl;
+      return;
+    }
+    setBusy(null);
+    router.refresh();
+  }
 
   // Optimistic overrides — a tap flips the UI instantly; reverted if the request
   // fails. router.refresh() then reconciles with the server's authoritative state.
@@ -189,6 +246,64 @@ export default function LeadFlowActions({
 
   // ── Phase 1: new lead — Interested / Not interested ────────────────────────
   const showAllowance = typeof weeklyRemaining === "number" && typeof weeklyCap === "number";
+  const capped = showAllowance && weeklyRemaining! <= 0;
+  const price = leadPriceCents ?? 0;
+  const wallet = walletCents ?? 0;
+  const fromWallet = wallet >= price && price > 0;
+
+  // ── Weekly allowance exhausted, but a Silver/Gold business can BUY this lead ──
+  if (capped && canBuy && price > 0) {
+    return (
+      <div className="space-y-3">
+        <p className="text-sm font-semibold text-slate-800">Are you interested in this lead?</p>
+        <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800">
+          {`You've used all ${weeklyCap} of your ${tierLabel ?? ""} weekly leads — resets Monday.`.replace("  ", " ")}
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4">
+          <p className="text-sm font-bold text-slate-900">Buy this lead now — {fmt(price)}</p>
+          <p className="mt-0.5 text-xs text-slate-500">
+            Priced by the client&apos;s urgency.{" "}
+            {wallet > 0 ? `Lead credit balance: ${fmt(wallet)}.` : "You have no lead credit yet."}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              onClick={buyLead}
+              disabled={busy !== null}
+              className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:opacity-60"
+            >
+              {busy === "buy"
+                ? "Processing…"
+                : fromWallet
+                  ? `Buy this lead — ${fmt(price)} from credit`
+                  : `Buy this lead — ${fmt(price)}`}
+            </button>
+            {!fromWallet && (
+              <button
+                onClick={topUp}
+                disabled={busy !== null}
+                className="rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-sky-400 disabled:opacity-60"
+              >
+                {busy === "topup" ? "…" : `Top up ${fmt(topupCents ?? 10000)} credit`}
+              </button>
+            )}
+            <button
+              onClick={decline}
+              disabled={busy !== null}
+              className="rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 disabled:opacity-60"
+            >
+              {busy === "declined" ? "…" : "Not interested"}
+            </button>
+          </div>
+        </div>
+        <p className="text-xs leading-5 text-slate-500">
+          A bought lead doesn&apos;t count against next week&apos;s allowance. The client&apos;s contact details are
+          exchanged only once they proceed with your business.
+        </p>
+        {error && <p className="text-sm text-rose-700">{error}</p>}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-3">
       <p className="text-sm font-semibold text-slate-800">Are you interested in this lead?</p>

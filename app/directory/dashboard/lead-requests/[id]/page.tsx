@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { PROPERTY_TYPE_LABELS, URGENCY_LABELS, FILE_TYPE_OPTIONS, formatBudget, WEEKLY_INTEREST_CAP } from "@/lib/quote-options";
 import { dirTier } from "@/lib/directory-tier";
+import { getLeadPriceCents, DEFAULT_TOPUP_CENTS } from "@/lib/lead-pricing";
 import { ResponseStatusBadge } from "@/components/client/badges";
 import LeadFlowActions from "@/components/directory/LeadFlowActions";
 
@@ -21,7 +22,7 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
 
   const company = await prisma.company.findFirst({
     where: { users: { some: { user_id: user.id } } },
-    select: { id: true, plan_type: true },
+    select: { id: true, plan_type: true, lead_wallet_cents: true },
   });
   if (!company) redirect("/directory/dashboard");
 
@@ -58,6 +59,10 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
   const r = delivery.request;
   const clientRequested = Boolean(delivery.client_requested_at);
   const requestClosed = r.status === "closed";
+  // Pay-per-lead: Silver/Gold can buy this lead once their weekly allowance is
+  // used up. Price depends on the client's urgency (admin-managed).
+  const canBuy = tier === "silver" || tier === "gold";
+  const leadPriceCents = canBuy ? await getLeadPriceCents(r.urgency) : 0;
   const field = (label: string, value: React.ReactNode) =>
     value ? (
       <div>
@@ -164,6 +169,10 @@ export default async function LeadRequestDetailPage({ params }: { params: Promis
               weeklyRemaining={weeklyRemaining}
               weeklyCap={weeklyCap}
               tierLabel={tier === "gold" ? "Gold" : tier === "silver" ? "Silver" : "Free"}
+              canBuy={canBuy}
+              leadPriceCents={leadPriceCents}
+              walletCents={company.lead_wallet_cents}
+              topupCents={DEFAULT_TOPUP_CENTS}
             />
           </section>
         </div>

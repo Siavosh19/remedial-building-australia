@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
 import { sendSubscriptionStatusEmail, sendNewSubscriptionAdminEmail } from "@/lib/directory-email";
 import { tierLabel } from "@/lib/directory-tier";
+import { applyLeadInterest } from "@/lib/lead-interest";
 import type Stripe from "stripe";
 import type { DirectoryPlanType, DirectoryBillingCycle } from "@prisma/client";
 
@@ -30,6 +31,40 @@ export async function POST(request: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     const companyId = Number(session.metadata?.company_id);
     if (!companyId) return NextResponse.json({ ok: true });
+
+    // ── Pay-per-lead: one-off purchase of a single lead ─────────────────────
+    // Flip the pending ledger row to completed FIRST; only proceed if we won the
+    // race, so a webhook retry can't record the interest / credit twice.
+    if (session.metadata?.product_line === "lead") {
+      const claimed = await prisma.leadWalletTxn.updateMany({
+        where: { stripe_session_id: session.id, status: "pending" },
+        data: { status: "completed" },
+      });
+      if (claimed.count > 0) {
+        const deliveryId = Number(session.metadata?.delivery_id);
+        const priceCents = Number(session.metadata?.price_cents);
+        if (Number.isInteger(deliveryId)) {
+          await applyLeadInterest(deliveryId, companyId, { paidCents: Number.isFinite(priceCents) ? priceCents : undefined });
+        }
+      }
+      return NextResponse.json({ ok: true });
+    }
+
+    // ── Lead wallet top-up: add pre-paid credit ─────────────────────────────
+    if (session.metadata?.product_line === "lead_topup") {
+      const claimed = await prisma.leadWalletTxn.updateMany({
+        where: { stripe_session_id: session.id, status: "pending" },
+        data: { status: "completed" },
+      });
+      if (claimed.count > 0) {
+        const amountCents = Number(session.metadata?.amount_cents);
+        if (Number.isFinite(amountCents) && amountCents > 0) {
+          await prisma.company.update({ where: { id: companyId }, data: { lead_wallet_cents: { increment: amountCents } } });
+        }
+      }
+      return NextResponse.json({ ok: true });
+    }
+
     const rawSub = session.subscription;
     const subId = typeof rawSub === "string" ? rawSub : (rawSub as { id?: string } | null)?.id ?? null;
     if (subId) {

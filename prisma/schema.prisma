@@ -351,6 +351,9 @@ model Company {
   website_clicks         Int                  @default(0)
   phone_clicks           Int                  @default(0)
   suspended              Boolean              @default(false)
+  // Pre-paid lead credit balance (cents). Leads bought past the weekly interest
+  // allowance draw down from here; topped up via /api/directory/lead-wallet/topup.
+  lead_wallet_cents      Int                  @default(0)
 
   main_category            Category?              @relation("CompanyMainCategory", fields: [main_category_id], references: [id])
   locations                Location[]
@@ -893,6 +896,10 @@ model QuoteRequestDelivery {
   // Set when the client formally proceeds with THIS business (request-quote).
   // Gates the two-way contact exchange and unlocks the outcome tracker.
   client_requested_at DateTime?
+  // Set when this lead was BOUGHT (weekly interest allowance exhausted) rather
+  // than claimed for free. purchase_cents is the amount paid at the time.
+  purchased_at    DateTime?
+  purchase_cents  Int?
   quote_doc_url   String?
   notes           String?
   created_at      DateTime                 @default(now())
@@ -1533,4 +1540,33 @@ model StrataIntakeFile {
 
   @@index([intake_id])
   @@map("strata_intake_files")
+}
+
+// Admin-managed per-urgency price to buy a single lead once the weekly interest
+// allowance is used up. One row per urgency id (see URGENCY_OPTIONS).
+model LeadPrice {
+  id           Int      @id @default(autoincrement())
+  urgency      String   @unique
+  amount_cents Int
+  updated_at   DateTime @default(now()) @updatedAt
+
+  @@map("lead_prices")
+}
+
+// Ledger for the lead wallet: top-ups (credit) and lead purchases / spends
+// (debit). company_id / delivery_id are plain ids (no FK relation) to keep the
+// hot Company + QuoteRequestDelivery models untouched.
+model LeadWalletTxn {
+  id                Int      @id @default(autoincrement())
+  company_id        Int
+  delta_cents       Int // + credit (topup/refund), − debit (spend/purchase)
+  kind              String // "topup" | "spend" | "purchase" | "refund"
+  delivery_id       Int?
+  urgency           String?
+  stripe_session_id String?
+  status            String   @default("completed") // "completed" | "pending"
+  created_at        DateTime @default(now())
+
+  @@index([company_id])
+  @@map("lead_wallet_txns")
 }

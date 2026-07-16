@@ -136,6 +136,8 @@ export default async function PricingPage() {
                 ...(claimedTrial > 0 ? [`${claimedTrial}-day free trial — no charge until trial ends`] : []),
                 "Everything in Free",
                 "Receive quote requests",
+                "3 lead credits per week — express interest in 3 leads/week",
+                "Buy extra leads anytime — priced by urgency (from $5/lead)",
                 "Request Quote button on your listing",
                 "Shown within 50 km of the searcher — above all Free listings (closest first)",
                 "Company logo upload",
@@ -185,6 +187,8 @@ export default async function PricingPage() {
               {[
                 ...(featuredTrial > 0 ? [`${featuredTrial}-day free trial — no charge until trial ends`] : []),
                 "Everything in Silver",
+                "7 lead credits per week — express interest in 7 leads/week",
+                "Buy extra leads anytime — priced by urgency (from $5/lead)",
                 "Featured listing placement",
                 "Displayed above Silver & Free listings",
                 "Highlighted listing card + Gold Featured badge",
