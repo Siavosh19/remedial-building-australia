@@ -95,6 +95,7 @@ export default async function PricingPage() {
                 "Phone, email and website",
                 "Listed in directory search",
                 "Does not receive quote requests",
+                "No lead credits — upgrade to Silver or Gold to receive leads",
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
                   <span className="mt-0.5 text-emerald-600">✓</span> {f}

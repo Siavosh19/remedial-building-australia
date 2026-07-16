@@ -4,7 +4,8 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { planLabel } from "@/lib/plans";
-import { URGENCY_LABELS } from "@/lib/quote-options";
+import { URGENCY_LABELS, WEEKLY_INTEREST_CAP } from "@/lib/quote-options";
+import { dirTier } from "@/lib/directory-tier";
 import { ResponseStatusBadge } from "@/components/client/badges";
 
 export const dynamic = "force-dynamic";
@@ -78,6 +79,17 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
     prisma.quoteRequestDelivery.count({ where: { ...baseWhere, opened_at: null } }),
   ]);
 
+  // Weekly interest allowance for this tier and how many remain (Mon–Sun),
+  // mirrored from the lead detail page — surfaced at the top of the list.
+  const tier = dirTier(company.plan_type);
+  const weeklyCap = WEEKLY_INTEREST_CAP[tier] ?? 0;
+  const now = new Date();
+  const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+  const weeklyUsed = await prisma.quoteRequestDelivery.count({
+    where: { company_id: company.id, interested_at: { gte: weekStart } },
+  });
+  const weeklyRemaining = Math.max(0, weeklyCap - weeklyUsed);
+
   return (
     <div className="space-y-6">
       <div>
@@ -88,6 +100,15 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
           Quote requests from strata managers, owners corporations and property owners ·{" "}
           <span className="font-semibold">{planLabel(company.plan_type)}</span>
         </p>
+      </div>
+
+      {/* Weekly interest allowance — free leads left this week (resets Monday) */}
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm">
+        <span className="font-semibold text-sky-900">{weeklyRemaining} of {weeklyCap} free {weeklyCap === 1 ? "lead" : "leads"} left this week</span>
+        <span className="text-sky-700">· resets Monday</span>
+        {weeklyRemaining === 0 && weeklyCap > 0 && (
+          <span className="text-sky-700">· you can still <span className="font-semibold">buy leads</span> by urgency — open any lead to purchase</span>
+        )}
       </div>
 
       {/* View tabs — mirror the three Leads nav items */}
@@ -120,52 +141,102 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-3xl border border-slate-200 bg-white shadow-sm">
-          <table className="w-full min-w-[680px] text-left text-sm">
-            <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-              <tr>
-                <th className="px-5 py-3 font-semibold">Work category</th>
-                <th className="px-5 py-3 font-semibold">Location</th>
-                <th className="px-5 py-3 font-semibold">Urgency</th>
-                <th className="px-5 py-3 font-semibold">Received</th>
-                <th className="px-5 py-3 font-semibold">Your response</th>
-                <th className="px-5 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {deliveries.map((d) => {
-                // A closed request needs no action, so it never gets the unread
-                // highlight — it carries a Closed badge instead.
-                const closed = d.request.status === "closed";
-                return (
-                <tr key={d.id} className={`transition hover:bg-slate-50 ${!d.opened_at && !closed ? "bg-sky-50/40" : ""}`}>
-                  <td className="px-5 py-4 font-semibold text-slate-900">
-                    {!d.opened_at && !closed && <span className="mr-2 inline-block h-2 w-2 rounded-full bg-sky-500 align-middle" />}
-                    <span className={closed ? "text-slate-500" : undefined}>{d.request.work_category?.name ?? "Building works"}</span>
-                    {closed && (
-                      <span className="ml-2 inline-block rounded-full bg-slate-200 px-2 py-0.5 align-middle text-[11px] font-bold uppercase tracking-wide text-slate-500">
+        <>
+          {/* Mobile: stacked cards so nothing needs horizontal scrolling on a phone */}
+          <ul className="space-y-3 md:hidden">
+            {deliveries.map((d) => {
+              const closed = d.request.status === "closed";
+              return (
+                <li
+                  key={d.id}
+                  className={`rounded-2xl border bg-white p-4 shadow-sm ${!d.opened_at && !closed ? "border-sky-200 ring-1 ring-sky-100" : "border-slate-200"}`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="flex min-w-0 items-center gap-2 font-semibold text-slate-900">
+                      {!d.opened_at && !closed && <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-sky-500" />}
+                      <span className={`truncate ${closed ? "text-slate-500" : ""}`}>{d.request.work_category?.name ?? "Building works"}</span>
+                    </p>
+                    {closed ? (
+                      <span className="shrink-0 rounded-full bg-slate-200 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-slate-500">
                         Closed
                       </span>
+                    ) : (
+                      <ResponseStatusBadge status={d.response_status} />
                     )}
-                  </td>
-                  <td className="px-5 py-4 text-slate-600">{d.request.suburb} {d.request.postcode}</td>
-                  <td className="px-5 py-4 text-slate-600">{URGENCY_LABELS[d.request.urgency] ?? d.request.urgency}</td>
-                  <td className="px-5 py-4 text-slate-500">{new Date(d.created_at).toLocaleDateString("en-AU")}</td>
-                  <td className="px-5 py-4"><ResponseStatusBadge status={d.response_status} /></td>
-                  <td className="px-5 py-4 text-center">
-                    <Link
-                      href={`/directory/dashboard/lead-requests/${d.id}`}
-                      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-sky-950 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-sky-800"
-                    >
-                      View request
-                    </Link>
-                  </td>
+                  </div>
+                  <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                    <div>
+                      <dt className="text-xs uppercase tracking-wide text-slate-400">Location</dt>
+                      <dd className="text-slate-600">{d.request.suburb} {d.request.postcode}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wide text-slate-400">Urgency</dt>
+                      <dd className="text-slate-600">{URGENCY_LABELS[d.request.urgency] ?? d.request.urgency}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wide text-slate-400">Received</dt>
+                      <dd className="text-slate-500">{new Date(d.created_at).toLocaleDateString("en-AU")}</dd>
+                    </div>
+                  </dl>
+                  <Link
+                    href={`/directory/dashboard/lead-requests/${d.id}`}
+                    className="mt-4 flex w-full items-center justify-center rounded-lg bg-sky-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-800"
+                  >
+                    View request
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* Desktop: full table */}
+          <div className="hidden overflow-x-auto rounded-3xl border border-slate-200 bg-white shadow-sm md:block">
+            <table className="w-full min-w-[680px] text-left text-sm">
+              <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                <tr>
+                  <th className="px-5 py-3 font-semibold">Work category</th>
+                  <th className="px-5 py-3 font-semibold">Location</th>
+                  <th className="px-5 py-3 font-semibold">Urgency</th>
+                  <th className="px-5 py-3 font-semibold">Received</th>
+                  <th className="px-5 py-3 font-semibold">Your response</th>
+                  <th className="px-5 py-3" />
                 </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {deliveries.map((d) => {
+                  // A closed request needs no action, so it never gets the unread
+                  // highlight — it carries a Closed badge instead.
+                  const closed = d.request.status === "closed";
+                  return (
+                  <tr key={d.id} className={`transition hover:bg-slate-50 ${!d.opened_at && !closed ? "bg-sky-50/40" : ""}`}>
+                    <td className="px-5 py-4 font-semibold text-slate-900">
+                      {!d.opened_at && !closed && <span className="mr-2 inline-block h-2 w-2 rounded-full bg-sky-500 align-middle" />}
+                      <span className={closed ? "text-slate-500" : undefined}>{d.request.work_category?.name ?? "Building works"}</span>
+                      {closed && (
+                        <span className="ml-2 inline-block rounded-full bg-slate-200 px-2 py-0.5 align-middle text-[11px] font-bold uppercase tracking-wide text-slate-500">
+                          Closed
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-5 py-4 text-slate-600">{d.request.suburb} {d.request.postcode}</td>
+                    <td className="px-5 py-4 text-slate-600">{URGENCY_LABELS[d.request.urgency] ?? d.request.urgency}</td>
+                    <td className="px-5 py-4 text-slate-500">{new Date(d.created_at).toLocaleDateString("en-AU")}</td>
+                    <td className="px-5 py-4"><ResponseStatusBadge status={d.response_status} /></td>
+                    <td className="px-5 py-4 text-center">
+                      <Link
+                        href={`/directory/dashboard/lead-requests/${d.id}`}
+                        className="inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-sky-950 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-sky-800"
+                      >
+                        View request
+                      </Link>
+                    </td>
+                  </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );
