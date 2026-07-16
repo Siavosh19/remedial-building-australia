@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import QuoteRequestForm from "@/components/directory/QuoteRequestForm";
 import TrackableContactButtons from "@/components/directory/TrackableContactButtons";
 import SiteHeader from "@/components/SiteHeader";
+import { buildProfileMetadata, type SeoCompany } from "@/lib/seo/business-profile";
+import { profileJsonLd } from "@/lib/seo/schema";
 
 // Real brand marks (lucide dropped its brand icons) — official colours + white glyph.
 const FB_PATH = "M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99C18.34 21.13 22 16.99 22 12z";
@@ -58,32 +60,65 @@ function formatDate(d: Date | null | undefined) {
   return new Intl.DateTimeFormat("en-AU", { day: "numeric", month: "long", year: "numeric" }).format(new Date(d));
 }
 
+// Project a company row into the SeoCompany shape the SEO helper expects. Shared
+// by generateMetadata and the sitemap so the indexing gate stays consistent.
+function toSeoCompany(
+  c: {
+    slug: string; name: string; description: string | null; full_description: string | null;
+    services_offered: string | null; logo_url: string | null; website: string | null; phone: string | null;
+    licence_number: string | null; insurance_details: string | null; plan_type: string;
+    main_category: { name: string | null; slug: string | null } | null;
+    locations: SeoLocationRow[];
+    _count?: { company_tags: number };
+  },
+): SeoCompany {
+  return {
+    slug: c.slug,
+    name: c.name,
+    description: c.description,
+    full_description: c.full_description,
+    services_offered: c.services_offered,
+    logo_url: c.logo_url,
+    website: c.website,
+    phone: c.phone,
+    licence_number: c.licence_number,
+    insurance_details: c.insurance_details,
+    plan_type: c.plan_type,
+    main_category: c.main_category,
+    locations: c.locations,
+    approvedTagCount: c._count?.company_tags ?? 0,
+  };
+}
+
+type SeoLocationRow = {
+  suburb: string | null; state: string | null; postcode: string | null;
+  services_nationwide: boolean; services_statewide: boolean;
+  states_serviced: string[]; service_radius_km: number | null;
+};
+
+const SEO_SELECT = {
+  slug: true, name: true, description: true, full_description: true, services_offered: true,
+  logo_url: true, website: true, phone: true, licence_number: true, insurance_details: true,
+  plan_type: true,
+  main_category: { select: { name: true, slug: true } },
+  locations: {
+    take: 1,
+    select: {
+      suburb: true, state: true, postcode: true,
+      services_nationwide: true, services_statewide: true, states_serviced: true, service_radius_km: true,
+    },
+  },
+  _count: { select: { company_tags: { where: { is_approved: true } } } },
+} as const;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const company = await prisma.company.findFirst({
     where: { slug, status: "published" },
-    select: { name: true, description: true, logo_url: true, main_category: { select: { name: true } } },
+    select: SEO_SELECT,
   });
   if (!company) return { title: "Company Not Found" };
-  const url = `https://www.remedialbuildingaustralia.com.au/directory/company/${slug}`;
-  const title = `${company.name} | ${company.main_category?.name ?? "Building Services"} Directory`;
-  const description =
-    company.description?.slice(0, 155) ??
-    `${company.name} — ${company.main_category?.name ?? "building services"} on the Remedial Building Australia directory.`;
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: {
-      title,
-      description,
-      url,
-      type: "website",
-      siteName: "Remedial Building Australia",
-      ...(company.logo_url ? { images: [{ url: company.logo_url }] } : {}),
-    },
-    robots: { index: true, follow: true },
-  };
+  return buildProfileMetadata(toSeoCompany(company));
 }
 
 // Uniform section label — small accent bar + uppercase letter-spaced heading.
@@ -154,35 +189,6 @@ export default async function CompanyProfilePage({ params }: Props) {
   const company = await getCompany(slug);
   if (!company) notFound();
 
-  // ── Structured data (LocalBusiness + breadcrumbs) ───────────────────────────
-  const SITE = "https://www.remedialbuildingaustralia.com.au";
-  const canonicalUrl = `${SITE}/directory/company/${slug}`;
-  const loc0 = company.locations[0];
-  const businessSchema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": canonicalUrl,
-    name: company.name,
-    url: canonicalUrl,
-    ...(company.logo_url ? { image: company.logo_url, logo: company.logo_url } : {}),
-    ...(company.description ? { description: company.description.slice(0, 300) } : {}),
-    ...(company.phone ? { telephone: company.phone } : {}),
-    ...(company.website ? { sameAs: [company.website] } : {}),
-    ...(loc0
-      ? { address: { "@type": "PostalAddress", addressLocality: loc0.suburb ?? undefined, addressRegion: loc0.state, postalCode: loc0.postcode, addressCountry: "AU" } }
-      : {}),
-    areaServed: loc0?.state ?? "AU",
-  };
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Directory", item: `${SITE}/directory` },
-      { "@type": "ListItem", position: 3, name: company.name, item: canonicalUrl },
-    ],
-  };
-
   // Track profile view
   prisma.company.update({
     where: { id: company.id },
@@ -206,6 +212,22 @@ export default async function CompanyProfilePage({ params }: Props) {
   const isFeatured = company.plan_type === "featured";
   const canShowContact = isClaimed;
   const location = company.locations[0];
+
+  // ── Structured data (LocalBusiness + Organization + BreadcrumbList) ──────────
+  // Contact fields are only emitted when they're actually rendered (canShowContact),
+  // so the structured data mirrors the visible page.
+  const seoCompany: SeoCompany = {
+    slug: company.slug,
+    name: company.name,
+    description: company.description,
+    full_description: company.full_description,
+    website: company.website,
+    phone: company.phone,
+    logo_url: isClaimed ? company.logo_url : null,
+    main_category: company.main_category ? { name: company.main_category.name, slug: company.main_category.slug } : null,
+    locations: company.locations,
+  };
+  const jsonLd = profileJsonLd(seoCompany, { showContact: canShowContact });
 
   const tagsByType = {
     service: company.company_tags.filter((t) => t.tag.tag_type === "service"),
@@ -242,8 +264,9 @@ export default async function CompanyProfilePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(businessSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
 
       {/* Header */}
       <SiteHeader />

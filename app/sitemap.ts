@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { CONCRETE_DEFECTS_DATA } from "@/lib/concrete-defects-data";
 import { prisma } from "@/lib/prisma";
 import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
+import { isIndexable, type SeoCompany } from "@/lib/seo/business-profile";
 
 const BASE = "https://www.remedialbuildingaustralia.com.au";
 
@@ -210,14 +211,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ── Directory: business profiles + populated category×state landing pages ──
+  // Only indexable profiles (real content) are listed — thin scraped shells are
+  // noindex, so including them would send Google a conflicting signal. The gate
+  // is shared with the profile page via lib/seo/business-profile (isIndexable).
   try {
     const companies = await prisma.company.findMany({
       where: { status: "published" },
-      select: { slug: true, updated_at: true, main_category: { select: { slug: true } }, locations: { take: 1, select: { state: true } } },
+      select: {
+        slug: true, updated_at: true,
+        description: true, full_description: true, services_offered: true,
+        licence_number: true, insurance_details: true, plan_type: true,
+        main_category: { select: { slug: true, name: true } },
+        locations: { take: 1, select: { state: true } },
+        _count: { select: { company_tags: { where: { is_approved: true } } } },
+      },
       take: 20000,
     });
     const combos = new Set<string>();
     for (const c of companies) {
+      const seo: SeoCompany = {
+        slug: c.slug, name: "",
+        description: c.description, full_description: c.full_description, services_offered: c.services_offered,
+        licence_number: c.licence_number, insurance_details: c.insurance_details, plan_type: c.plan_type,
+        main_category: c.main_category, approvedTagCount: c._count.company_tags,
+      };
+      if (!isIndexable(seo)) continue;
       entries.push({ url: `${BASE}/directory/company/${c.slug}`, lastModified: c.updated_at, changeFrequency: "monthly", priority: 0.6 });
       const catSlug = c.main_category?.slug;
       const state = c.locations[0]?.state;
