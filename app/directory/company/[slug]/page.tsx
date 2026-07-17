@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import QuoteRequestForm from "@/components/directory/QuoteRequestForm";
@@ -275,9 +276,9 @@ export default async function CompanyProfilePage({ params }: Props) {
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-3.5 sm:px-6">
           <nav className="flex items-center gap-2 text-xs font-semibold text-slate-400">
-            <a href="/" className="hover:text-sky-700 transition">Home</a>
+            <Link href="/" className="hover:text-sky-700 transition">Home</Link>
             <span>/</span>
-            <a href="/directory" className="hover:text-sky-700 transition">Strata Building Services Directory</a>
+            <Link href="/directory" className="hover:text-sky-700 transition">Strata Building Services Directory</Link>
             <span>/</span>
             <span className="text-sky-950">{company.name}</span>
           </nav>
@@ -321,24 +322,24 @@ export default async function CompanyProfilePage({ params }: Props) {
 
             {/* Claim CTA — desktop: inline far right of the header (unclaimed only) */}
             {!isClaimed && (
-              <a
+              <Link
                 href={`/directory/claim/${company.slug}`}
                 className="ml-auto hidden shrink-0 items-center gap-1.5 rounded-xl border-2 border-red-700 bg-red-700 px-5 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-red-800 hover:border-red-800 sm:inline-flex"
               >
                 Claim this profile →
-              </a>
+              </Link>
             )}
           </div>
 
           {/* Claim CTA — phone: own line, bottom-right of the card (unclaimed only) */}
           {!isClaimed && (
             <div className="mt-5 flex justify-end sm:hidden">
-              <a
+              <Link
                 href={`/directory/claim/${company.slug}`}
                 className="inline-flex items-center gap-1.5 rounded-xl border-2 border-red-700 bg-red-700 px-5 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-red-800 hover:border-red-800"
               >
                 Claim this profile →
-              </a>
+              </Link>
             </div>
           )}
         </div>
@@ -547,7 +548,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                     const loc = c.locations[0];
                     const ab = c.name.split(/\s+/).slice(0, 2).map((w: string) => w[0] ?? "").join("").toUpperCase() || "?";
                     return (
-                      <a
+                      <Link
                         key={c.id}
                         href={`/directory/company/${c.slug}`}
                         className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 transition hover:border-sky-200 hover:bg-sky-50"
@@ -559,7 +560,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                             {[loc?.suburb, loc?.state].filter(Boolean).join(", ") || c.main_category?.name}
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     );
                   })}
                 </div>
@@ -567,12 +568,12 @@ export default async function CompanyProfilePage({ params }: Props) {
             )}
 
             {/* All listings */}
-            <a
+            <Link
               href="/directory"
               className="block rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50"
             >
               ← All Listings
-            </a>
+            </Link>
           </aside>
         </div>
 
@@ -585,9 +586,9 @@ export default async function CompanyProfilePage({ params }: Props) {
       {/* Footer */}
       <footer className="border-t border-sky-200 bg-white">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/" className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50">
+          <Link href="/" className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50">
             ← Home
-          </a>
+          </Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -598,16 +599,16 @@ export default async function CompanyProfilePage({ params }: Props) {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

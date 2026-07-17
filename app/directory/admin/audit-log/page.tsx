@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -32,13 +33,13 @@ export default async function AuditLogPage({ searchParams }: { searchParams: { p
       </div>
 
       <div className="flex gap-2 mb-4 flex-wrap">
-        <a href="/directory/admin/audit-log" className={`rounded-full px-3 py-1 text-xs font-semibold transition ${!entityType ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
+        <Link href="/directory/admin/audit-log" className={`rounded-full px-3 py-1 text-xs font-semibold transition ${!entityType ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
           All
-        </a>
+        </Link>
         {entityTypes.map(t => (
-          <a key={t} href={`/directory/admin/audit-log?entity_type=${t}`} className={`rounded-full px-3 py-1 text-xs font-semibold transition ${entityType === t ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
+          <Link key={t} href={`/directory/admin/audit-log?entity_type=${t}`} className={`rounded-full px-3 py-1 text-xs font-semibold transition ${entityType === t ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>
             {t}
-          </a>
+          </Link>
         ))}
       </div>
 

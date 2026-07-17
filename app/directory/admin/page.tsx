@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { redirect } from "next/navigation";
 import AdminPanel from "@/components/directory/AdminPanel";
@@ -53,13 +54,13 @@ export default async function AdminPage() {
       {pendingSupplierCount > 0 && (
         <div className="mb-4 flex items-center gap-3 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
           <span className="font-semibold">{pendingSupplierCount} new supplier {pendingSupplierCount === 1 ? "registration" : "registrations"} pending review.</span>
-          <a href="/directory/admin/suppliers" className="underline hover:text-sky-900">Review →</a>
+          <Link href="/directory/admin/suppliers" className="underline hover:text-sky-900">Review →</Link>
         </div>
       )}
       {aiScopeCount > 0 && (
         <div className="mb-4 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <span className="font-semibold">{aiScopeCount} AI Scope {aiScopeCount === 1 ? "request" : "requests"} pending approval.</span>
-          <a href="/directory/admin/ai-scope-users" className="underline hover:text-amber-900">Review →</a>
+          <Link href="/directory/admin/ai-scope-users" className="underline hover:text-amber-900">Review →</Link>
         </div>
       )}
       <AdminPanel

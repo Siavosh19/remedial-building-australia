@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Plus, Star, Eye, Users, Pencil, Copy, RefreshCw, XCircle, Trash2, CreditCard, ExternalLink } from "lucide-react";
 
 export type DashboardJob = {
@@ -111,9 +112,9 @@ export default function EmployerDashboard({
           <p className="mt-1 text-sm text-slate-500">{companyName ? `${companyName} · ` : ""}{email}</p>
         </div>
         <div className="flex items-center gap-3">
-          <a href="/directory/dashboard/jobs/new" className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
+          <Link href="/directory/dashboard/jobs/new" className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
             <Plus size={16} /> Post a Job
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -176,7 +177,7 @@ export default function EmployerDashboard({
           {filtered.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 py-14 text-center">
               <p className="text-sm font-semibold text-slate-500">Nothing here yet.</p>
-              {tab === "draft" && <a href="/directory/dashboard/jobs/new" className="mt-2 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Post your first job →</a>}
+              {tab === "draft" && <Link href="/directory/dashboard/jobs/new" className="mt-2 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Post your first job →</Link>}
             </div>
           ) : (
             filtered.map((j) => {
@@ -205,9 +206,9 @@ export default function EmployerDashboard({
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {j.applications > 0 && (
-                      <a href={`/directory/dashboard/jobs/${j.id}/applications`} className={`${btn} border-sky-200 text-sky-800`}><Users size={13} /> Applications ({j.applications})</a>
+                      <Link href={`/directory/dashboard/jobs/${j.id}/applications`} className={`${btn} border-sky-200 text-sky-800`}><Users size={13} /> Applications ({j.applications})</Link>
                     )}
-                    <a href={`/directory/dashboard/jobs/${j.id}/edit`} className={btn}><Pencil size={13} /> Edit</a>
+                    <Link href={`/directory/dashboard/jobs/${j.id}/edit`} className={btn}><Pencil size={13} /> Edit</Link>
                     {isDraft && (
                       <button onClick={() => pay(j.id)} disabled={busyId === j.id} className="inline-flex items-center gap-1.5 rounded-lg bg-red-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-800 disabled:opacity-50">
                         <CreditCard size={13} /> {busyId === j.id ? "…" : "Pay & publish"}

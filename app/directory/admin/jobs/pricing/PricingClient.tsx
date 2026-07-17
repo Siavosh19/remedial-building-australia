@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Plus, Save, Trash2 } from "lucide-react";
 
 export type PricingRow = {
@@ -79,7 +80,7 @@ export default function PricingClient({ initial, stripeConfigured }: { initial: 
 
   return (
     <div className="p-6">
-      <a href="/directory/admin/jobs" className="text-sm font-semibold text-sky-700 hover:text-red-700">← Jobs Management</a>
+      <Link href="/directory/admin/jobs" className="text-sm font-semibold text-sky-700 hover:text-red-700">← Jobs Management</Link>
       <h1 className="mt-2 text-2xl font-bold text-slate-900">Jobs Pricing</h1>
       <p className="mt-1 text-sm text-slate-500">
         Set what employers pay to post. <strong>standard</strong> and <strong>featured</strong> are the two listing tiers used at checkout.

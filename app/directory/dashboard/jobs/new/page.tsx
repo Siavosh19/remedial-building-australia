@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { getListingTiers } from "@/lib/jobs-pricing";
 import JobForm from "@/components/jobs/JobForm";
@@ -14,7 +15,7 @@ export default async function PostJobPage() {
 
   return (
     <div>
-      <a href="/directory/dashboard/jobs" className="text-sm font-bold text-slate-900 hover:text-black">← Manage Jobs</a>
+      <Link href="/directory/dashboard/jobs" className="text-sm font-bold text-slate-900 hover:text-black">← Manage Jobs</Link>
       <div className="mt-3 flex items-center gap-2 text-red-700">
         <Briefcase size={18} />
         <span className="text-sm font-extrabold uppercase tracking-[0.2em]">Post a Job</span>

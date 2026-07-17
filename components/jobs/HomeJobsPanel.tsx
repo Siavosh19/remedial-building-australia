@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { MapPin, Star, Plus, ArrowRight } from "lucide-react";
 import { employmentTypeLabel } from "@/lib/jobs-data";
 
@@ -37,7 +38,7 @@ export default function HomeJobsPanel() {
           <h3 className="text-lg font-extrabold tracking-tight text-sky-950">Industry Jobs</h3>
           <div className="mt-2 h-[3px] w-40" style={{ background: "linear-gradient(to right, #b91c1c, rgba(185,28,28,0))" }} />
         </div>
-        <a href="/industry-jobs" className="shrink-0 text-xs font-bold text-sky-600 hover:text-red-700">View all →</a>
+        <Link href="/industry-jobs" className="shrink-0 text-xs font-bold text-sky-600 hover:text-red-700">View all →</Link>
       </div>
 
       <div className="flex flex-1 flex-col px-6 py-5">
@@ -52,7 +53,7 @@ export default function HomeJobsPanel() {
             </div>
           ) : jobs.length === 0 ? null : (
             jobs.map((j) => (
-              <a key={j.slug} href={`/industry-jobs/${j.slug}`} className="group block py-3">
+              <Link key={j.slug} href={`/industry-jobs/${j.slug}`} className="group block py-3">
                 <div className="flex items-start gap-2">
                   {j.is_featured && <Star size={13} className="mt-0.5 shrink-0 fill-amber-500 text-amber-500" />}
                   <div className="min-w-0">
@@ -65,18 +66,18 @@ export default function HomeJobsPanel() {
                     </p>
                   </div>
                 </div>
-              </a>
+              </Link>
             ))
           )}
         </div>
 
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-          <a href="/industry-jobs" className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700">
+          <Link href="/industry-jobs" className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700">
             Browse jobs <ArrowRight size={14} />
-          </a>
-          <a href="/directory/dashboard/jobs/new" className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-red-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
+          </Link>
+          <Link href="/directory/dashboard/jobs/new" className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-red-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800">
             <Plus size={14} /> Post a Job
-          </a>
+          </Link>
         </div>
       </div>
     </div>

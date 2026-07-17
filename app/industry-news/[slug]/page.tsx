@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { readdirSync, existsSync } from "fs";
 import { join, extname } from "path";
@@ -293,12 +294,12 @@ export default async function IndustryNewsArticlePage({
 
           {/* Back link */}
           <div className="pt-8 pb-6">
-            <a
+            <Link
               href="/industry-news"
               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.15em] text-slate-400 transition hover:text-sky-700"
             >
               <ArrowLeft size={13} /> News & Insights
-            </a>
+            </Link>
           </div>
 
           {/* Metadata bar */}
@@ -508,17 +509,17 @@ export default async function IndustryNewsArticlePage({
               <h2 className="text-lg font-extrabold tracking-tight text-sky-950">
                 Related News
               </h2>
-              <a
+              <Link
                 href="/industry-news"
                 className="flex shrink-0 items-center gap-1 text-sm font-bold text-sky-700 transition hover:text-red-700"
               >
                 See all <span aria-hidden>→</span>
-              </a>
+              </Link>
             </div>
 
             <div className="mt-5 flex gap-5 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4">
               {relatedArticlesWithImages.map((rel) => (
-                <a
+                <Link
                   key={rel.id}
                   href={`/industry-news/${rel.slug}`}
                   className="group flex min-w-[260px] shrink-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sm:min-w-0"
@@ -548,7 +549,7 @@ export default async function IndustryNewsArticlePage({
                       </span>
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -556,12 +557,12 @@ export default async function IndustryNewsArticlePage({
 
         {/* ── Back link ──────────────────────────────────────────────────── */}
         <div className="border-t border-slate-100 bg-white px-6 py-8 text-center">
-          <a
+          <Link
             href="/industry-news"
             className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-sky-800"
           >
             <ArrowLeft size={15} /> All News & Insights
-          </a>
+          </Link>
         </div>
 
       </main>
@@ -572,12 +573,12 @@ export default async function IndustryNewsArticlePage({
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
       <footer className="border-t border-sky-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-6 pt-10">
-          <a
+          <Link
             href="/"
             className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100"
           >
             ← Home
-          </a>
+          </Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -588,16 +589,16 @@ export default async function IndustryNewsArticlePage({
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
+import Link from "next/link";
 import { Check, X, Star, Clock, RefreshCw, ShieldCheck } from "lucide-react";
 
 type TierPricing = { trial: number; monthly?: { key: string; cents: number }; yearly?: { key: string; cents: number } };
@@ -171,12 +172,12 @@ export default function SubscriptionClient({
             <h1 className="text-2xl font-semibold text-slate-950">Subscription</h1>
             <p className="mt-2 text-slate-600">Manage your directory plan and billing.</p>
           </div>
-          <a
+          <Link
             href="/advertise/marketing-guide"
             className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-800 shadow-sm transition hover:bg-sky-50"
           >
             📘 Marketing Guide Breakdown →
-          </a>
+          </Link>
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-3">

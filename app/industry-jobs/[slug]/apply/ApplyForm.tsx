@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { CheckCircle2, Upload } from "lucide-react";
 
 const STORAGE_KEY = "rba_jobs_applicant";
@@ -62,7 +63,7 @@ export default function ApplyForm({ jobSlug }: { jobSlug: string }) {
         <CheckCircle2 className="mx-auto mb-3 text-emerald-600" size={36} />
         <p className="text-lg font-extrabold text-emerald-900">Application sent successfully.</p>
         <p className="mt-1 text-sm text-emerald-800">We&apos;ve emailed you a confirmation. The employer will contact you directly if shortlisted.</p>
-        <a href="/industry-jobs" className="mt-5 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Browse more jobs →</a>
+        <Link href="/industry-jobs" className="mt-5 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Browse more jobs →</Link>
       </div>
     );
   }

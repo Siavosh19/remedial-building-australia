@@ -1,4 +1,5 @@
 import SiteHeader from "@/components/SiteHeader";
+import Link from "next/link";
 
 // Shared chrome for every public + employer Industry Jobs page.
 export default function IndustryJobsLayout({ children }: { children: React.ReactNode }) {
@@ -17,14 +18,14 @@ export default function IndustryJobsLayout({ children }: { children: React.React
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/industry-jobs" className="hover:text-sky-700">Browse Jobs</a>
-              <a href="/directory/dashboard/jobs/new" className="hover:text-sky-700">Post a Job</a>
-              <a href="/directory/dashboard/jobs" className="hover:text-sky-700">Employer Dashboard</a>
+              <Link href="/industry-jobs" className="hover:text-sky-700">Browse Jobs</Link>
+              <Link href="/directory/dashboard/jobs/new" className="hover:text-sky-700">Post a Job</Link>
+              <Link href="/directory/dashboard/jobs" className="hover:text-sky-700">Employer Dashboard</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
             </div>
           </div>
         </div>

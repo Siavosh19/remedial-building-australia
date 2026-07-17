@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 
 type CompanyInfo = {
@@ -65,9 +66,9 @@ export default function ClaimListingPage() {
         <div className="max-w-md text-center">
           <p className="text-2xl font-bold text-slate-950">Listing not found</p>
           <p className="mt-2 text-slate-500">We could not find this business listing.</p>
-          <a href="/directory" className="mt-6 inline-flex rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800">
+          <Link href="/directory" className="mt-6 inline-flex rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800">
             Back to directory
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -79,9 +80,9 @@ export default function ClaimListingPage() {
 
         {/* Header */}
         <div className="mb-6">
-          <a href="/directory" className="text-lg font-bold text-slate-900 hover:text-black">
+          <Link href="/directory" className="text-lg font-bold text-slate-900 hover:text-black">
             ← Back to directory
-          </a>
+          </Link>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -107,12 +108,12 @@ export default function ClaimListingPage() {
               <p className="mt-2 text-sm text-slate-500">
                 This listing has already been claimed by its owner.
               </p>
-              <a
+              <Link
                 href="/directory/login"
                 className="mt-6 inline-flex rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
               >
                 Sign in to your account
-              </a>
+              </Link>
             </div>
           ) : company?.listing_claim_status === "claim_pending" ? (
             <div className="px-8 py-8 text-center">
@@ -120,12 +121,12 @@ export default function ClaimListingPage() {
               <p className="mt-2 text-sm text-slate-500">
                 A claim for this listing is currently under review. If this is your business, please contact us.
               </p>
-              <a
+              <Link
                 href="/directory/login"
                 className="mt-6 inline-flex rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
               >
                 Sign in to your account
-              </a>
+              </Link>
             </div>
           ) : status?.type === "success" ? (
             <div className="px-8 py-8">
@@ -133,12 +134,12 @@ export default function ClaimListingPage() {
                 <p className="font-bold text-blue-900">Listing claimed successfully</p>
                 <p className="mt-2 text-sm text-blue-700">{status.message}</p>
               </div>
-              <a
+              <Link
                 href="/directory/login"
                 className="mt-6 block text-center rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
               >
                 Go to login
-              </a>
+              </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5 px-8 py-8">
@@ -186,9 +187,9 @@ export default function ClaimListingPage() {
 
               <p className="text-center text-xs text-slate-400">
                 Already have an account?{" "}
-                <a href="/directory/login" className="font-semibold text-blue-600 hover:text-blue-700">
+                <Link href="/directory/login" className="font-semibold text-blue-600 hover:text-blue-700">
                   Sign in
-                </a>
+                </Link>
               </p>
             </form>
           )}

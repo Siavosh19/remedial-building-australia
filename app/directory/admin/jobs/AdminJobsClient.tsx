@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { DollarSign, Briefcase, Star, Clock, Users, ExternalLink, Tags } from "lucide-react";
 
 export type AdminJob = {
@@ -56,9 +57,9 @@ export default function AdminJobsClient({
     <div className="p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-slate-900">Jobs Management</h1>
-        <a href="/directory/admin/jobs/pricing" className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+        <Link href="/directory/admin/jobs/pricing" className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
           <Tags size={15} /> Manage Pricing
-        </a>
+        </Link>
       </div>
 
       {/* Summary */}

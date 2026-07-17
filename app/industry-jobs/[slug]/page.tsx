@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { activeJobWhere, findDirectoryCompany } from "@/lib/jobs";
@@ -123,7 +124,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
     <div className="mx-auto max-w-4xl px-5 py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobSchema) }} />
 
-      <a href="/industry-jobs" className="text-sm font-semibold text-sky-700 hover:text-red-700">← All jobs</a>
+      <Link href="/industry-jobs" className="text-sm font-semibold text-sky-700 hover:text-red-700">← All jobs</Link>
 
       {/* Header card */}
       <div className={`mt-4 rounded-2xl border bg-white p-6 shadow-sm ${job.is_featured ? "border-amber-300 ring-1 ring-amber-200" : "border-slate-200"}`}>
@@ -158,13 +159,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
         </div>
 
         <div className="mt-5 flex flex-wrap gap-3">
-          <a href={`/industry-jobs/${job.slug}/apply`} className="inline-flex items-center rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800">
+          <Link href={`/industry-jobs/${job.slug}/apply`} className="inline-flex items-center rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800">
             Apply now
-          </a>
+          </Link>
           {directory && (
-            <a href={`/directory/company/${encodeURIComponent(directory.slug)}`} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700">
+            <Link href={`/directory/company/${encodeURIComponent(directory.slug)}`} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700">
               <ExternalLink size={15} /> View Company Profile
-            </a>
+            </Link>
           )}
           {job.company_website && (
             <a href={job.company_website} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-sky-800 transition hover:border-sky-300 hover:text-red-700">
@@ -183,9 +184,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
       <div className="mt-10 rounded-2xl border border-slate-200 bg-sky-50/60 p-6 text-center">
         <h2 className="text-lg font-extrabold text-sky-950">Interested in this role?</h2>
         <p className="mt-1 text-sm text-slate-500">Apply directly — no account needed.</p>
-        <a href={`/industry-jobs/${job.slug}/apply`} className="mt-4 inline-flex items-center rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800">
+        <Link href={`/industry-jobs/${job.slug}/apply`} className="mt-4 inline-flex items-center rounded-xl bg-red-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-800">
           Apply now
-        </a>
+        </Link>
       </div>
 
       {/* Similar jobs */}

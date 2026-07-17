@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 type Product = {
   id: number;
@@ -69,7 +70,7 @@ export default function SupplierDetailClient({ supplier, auditLogs }: { supplier
   return (
     <div>
       <div className="mb-6">
-        <a href="/directory/admin/suppliers" className="text-lg font-bold text-slate-900 hover:text-black">← Back to Suppliers</a>
+        <Link href="/directory/admin/suppliers" className="text-lg font-bold text-slate-900 hover:text-black">← Back to Suppliers</Link>
         <h1 className="mt-2 text-2xl font-bold text-slate-900">{supplier.brand_name}</h1>
         <p className="text-sm text-slate-500">{supplier.slug}</p>
       </div>

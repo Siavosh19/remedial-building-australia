@@ -1,4 +1,5 @@
 import { redirect, notFound } from "next/navigation";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { getListingTiers } from "@/lib/jobs-pricing";
@@ -44,7 +45,7 @@ export default async function EditJobPage({ params }: { params: Promise<{ id: st
 
   return (
     <div>
-      <a href="/directory/dashboard/jobs" className="text-sm font-bold text-slate-900 hover:text-black">← Manage Jobs</a>
+      <Link href="/directory/dashboard/jobs" className="text-sm font-bold text-slate-900 hover:text-black">← Manage Jobs</Link>
       <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-sky-950">Edit job</h1>
       <p className="mt-1 text-sm text-slate-500">
         {isDraft ? "This draft isn't live yet — preview then pay to publish." : "Changes save immediately to your live listing."}

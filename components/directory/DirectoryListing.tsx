@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo, memo, type CSSProperties } from "react";
+import Link from "next/link";
 import { dirTier, displayName, clampName, cardSummary } from "@/lib/directory-tier";
 
 // Brushed / shiny metallic sheens — angled bands used as a thin frame around the
@@ -284,12 +285,12 @@ function SilverRow({ company }: { company: CompanyResult }) {
           </div>
 
           {/* RIGHT: View Profile pinned top-right */}
-          <a
+          <Link
             href={`/directory/company/${company.slug}`}
             className="shrink-0 self-start whitespace-nowrap rounded-lg bg-sky-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
           >
             View Profile →
-          </a>
+          </Link>
         </div>
 
         {summary && <p className="mt-3 text-sm leading-relaxed text-slate-600">{summary}</p>}
@@ -303,7 +304,7 @@ function SilverRow({ company }: { company: CompanyResult }) {
           {company.main_category
             ? <span className="min-w-0 truncate rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>{company.main_category.name.split("/")[0].trim()}</span>
             : <span />}
-          <a href={`/directory/company/${company.slug}`} className="shrink-0 whitespace-nowrap rounded-lg bg-sky-950 px-3 py-1.5 text-[13px] font-semibold text-white">View Profile</a>
+          <Link href={`/directory/company/${company.slug}`} className="shrink-0 whitespace-nowrap rounded-lg bg-sky-950 px-3 py-1.5 text-[13px] font-semibold text-white">View Profile</Link>
         </div>
         {/* Row 2: 46px logo + stacked tagline / name / location */}
         <div className="mt-3 flex items-start gap-3">
@@ -361,13 +362,13 @@ function FreeRow({ company }: { company: CompanyResult }) {
           <ContactLinks company={company} className="mt-1.5 text-xs sm:pl-5" />
         </div>
         <div className="flex shrink-0 flex-row items-start gap-1.5">
-          <a href={`/directory/company/${company.slug}`} className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100">
+          <Link href={`/directory/company/${company.slug}`} className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100">
             View Profile
-          </a>
+          </Link>
           {canClaim && (
-            <a href={`/directory/claim/${company.slug}`} className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100">
+            <Link href={`/directory/claim/${company.slug}`} className="whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100">
               Claim this profile
-            </a>
+            </Link>
           )}
         </div>
       </div>
@@ -388,9 +389,9 @@ function FreeRow({ company }: { company: CompanyResult }) {
         </div>
         {/* Row 3: View Profile (+ Claim if unclaimed), equal width */}
         <div className="mt-2.5 flex gap-2">
-          <a href={`/directory/company/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold text-white" style={{ background: "#16324F" }}>View Profile</a>
+          <Link href={`/directory/company/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold text-white" style={{ background: "#16324F" }}>View Profile</Link>
           {canClaim && (
-            <a href={`/directory/claim/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold" style={{ border: "0.5px solid #C6D2DE", color: "#16324F" }}>Claim this profile</a>
+            <Link href={`/directory/claim/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold" style={{ border: "0.5px solid #C6D2DE", color: "#16324F" }}>Claim this profile</Link>
           )}
         </div>
       </div>
@@ -441,13 +442,13 @@ function SilverSampleCard() {
           </div>
         </div>
         {/* Desktop CTA — inline on the right (unchanged) */}
-        <a
+        <Link
           href="/directory/login"
           className="hidden shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 sm:block"
           style={{ background: "#475569" }}
         >
           Get This Spot →
-        </a>
+        </Link>
       </div>
       {/* Mobile contacts — phone + email on one row, website below */}
       <div className="mt-3 flex flex-col gap-1 text-[11px] font-semibold text-slate-600 sm:hidden">
@@ -458,13 +459,13 @@ function SilverSampleCard() {
         <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
       </div>
       {/* Mobile CTA — full width */}
-      <a
+      <Link
         href="/directory/login"
         className="mt-3 block w-full rounded-lg px-4 py-2 text-center text-sm font-semibold text-white transition hover:opacity-90 sm:hidden"
         style={{ background: "#475569" }}
       >
         Get This Spot →
-      </a>
+      </Link>
       </div>
     </div>
     </div>
@@ -548,9 +549,9 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                 </div>
 
                 {/* Desktop CTA — inline right (unchanged) */}
-                <a href="/directory/login" className="hidden shrink-0 whitespace-nowrap rounded-[10px] px-[22px] py-2.5 text-sm font-bold text-white sm:block" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
+                <Link href="/directory/login" className="hidden shrink-0 whitespace-nowrap rounded-[10px] px-[22px] py-2.5 text-sm font-bold text-white sm:block" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
                   Get This Spot →
-                </a>
+                </Link>
               </div>
               {/* Mobile contacts — phone + email on one row, website below */}
               <div className="mt-3 flex flex-col gap-1 text-[11px] font-semibold sm:hidden" style={{ color: "#7a6a4a" }}>
@@ -561,9 +562,9 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                 <span className="inline-flex items-center gap-1"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
               </div>
               {/* Mobile CTA — full width */}
-              <a href="/directory/login" className="mt-3 block w-full rounded-[10px] px-4 py-2 text-center text-sm font-bold text-white sm:hidden" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
+              <Link href="/directory/login" className="mt-3 block w-full rounded-[10px] px-4 py-2 text-center text-sm font-bold text-white sm:hidden" style={{ background: "#1e3a5f", boxShadow: "0 3px 10px rgba(30,58,95,0.22)" }}>
                 Get This Spot →
-              </a>
+              </Link>
             </div>
             </div>
           </div>
@@ -616,9 +617,9 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                     </h3>
                   </div>
                   {/* RIGHT: View Profile pinned top-right */}
-                  <a href={`/directory/company/${b.slug}`} style={{ alignSelf: "flex-start", flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 700, boxShadow: "0 3px 10px rgba(30,58,95,0.22)", textDecoration: "none", whiteSpace: "nowrap" }}>
+                  <Link href={`/directory/company/${b.slug}`} style={{ alignSelf: "flex-start", flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 700, boxShadow: "0 3px 10px rgba(30,58,95,0.22)", textDecoration: "none", whiteSpace: "nowrap" }}>
                     View Profile →
-                  </a>
+                  </Link>
                 </div>
                 {cardSummary(b.description, 21) && <p style={{ fontSize: 15, color: "#1a1a1a", fontWeight: 500, lineHeight: 1.6, margin: "12px 0 0", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description, 21)}</p>}
                 <ContactLinks company={b} className="mt-3 justify-center pt-3 text-sm" style={{ borderTop: "1px solid #ECE7D5" }} />
@@ -631,7 +632,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                   {b.main_category
                     ? <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 12, fontWeight: 700 }}>{b.main_category.name.split("/")[0].trim()}</span>
                     : <span />}
-                  <a href={`/directory/company/${b.slug}`} style={{ flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 8, padding: "6px 12px", fontSize: 13, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>View Profile</a>
+                  <Link href={`/directory/company/${b.slug}`} style={{ flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 8, padding: "6px 12px", fontSize: 13, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>View Profile</Link>
                 </div>
                 {/* Row 2: 46px logo + stacked tagline / name / location */}
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginTop: 12 }}>
@@ -658,7 +659,7 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
       })}
       <p style={{ fontSize: 11, color: "#94a3b8", textAlign: "center", marginTop: 10, lineHeight: 1.5 }}>
         Gold Featured placements are filled in order of subscription date — first to subscribe secures position #1, second secures #2, third secures #3. A maximum of 3 positions are available per category in each State/Territory. Gold Featured businesses appear above all Silver and Free listings for their chosen category in their State. No other business will occupy these positions while a subscription is active. Positions are held for the duration of the active subscription.{" "}
-        <a href="/terms" style={{ color: "#64748b", textDecoration: "underline" }}>Terms &amp; Conditions</a>
+        <Link href="/terms" style={{ color: "#64748b", textDecoration: "underline" }}>Terms &amp; Conditions</Link>
       </p>
       <style>{`
         @media (max-width: 640px) {
@@ -1883,12 +1884,12 @@ export default function DirectoryListing({ categories }: Props) {
               <span className="font-bold">Strata manager, owners corporation or building owner?</span>{" "}
               Request quotes for building works from listed businesses.
             </p>
-            <a
+            <Link
               href="/directory/login"
               className="shrink-0 rounded-xl bg-red-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-800 sm:whitespace-nowrap"
             >
               Request Quotes →
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -1920,12 +1921,12 @@ export default function DirectoryListing({ categories }: Props) {
               </p>
             )}
           </div>
-          <a
+          <Link
             href="/directory/login"
             className="rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
           >
             List your business →
-          </a>
+          </Link>
         </div>
 
         {/* Claim banner */}
@@ -1936,12 +1937,12 @@ export default function DirectoryListing({ categories }: Props) {
               Claim your profile to manage your details, showcase your expertise and receive enquiries from potential clients.
             </p>
           </div>
-          <a
+          <Link
             href="/directory/login"
             className="shrink-0 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800 sm:whitespace-nowrap"
           >
             Claim Your Profile
-          </a>
+          </Link>
         </div>
 
         {/* Top Listing section — real Premium subscribers for this category (max 3) */}

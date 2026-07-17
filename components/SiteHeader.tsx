@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, ChevronDown, X } from "lucide-react";
 import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
@@ -91,7 +92,7 @@ export default function SiteHeader() {
           >
             <Menu size={24} />
           </button>
-          <a href="/" className="flex min-w-0 items-center gap-3">
+          <Link href="/" className="flex min-w-0 items-center gap-3">
             <div className="min-w-0">
               <div className="text-base font-extrabold tracking-tight text-sky-950 sm:text-lg">
                 Remedial Building Australia
@@ -100,29 +101,29 @@ export default function SiteHeader() {
                 Australia&rsquo;s strata directory and remedial building platform for jobs, technical resources and industry connections.
               </div>
             </div>
-          </a>
+          </Link>
         </div>
 
         <nav className="hidden items-center gap-4 text-sm font-semibold text-sky-800 xl:flex">
-          <a href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</a>
+          <Link href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</Link>
           <div
             className="relative"
             onMouseEnter={openRepair}
             onMouseLeave={closeRepairSoon}
           >
-            <a
+            <Link
               href="/repair-systems"
               className="flex items-center gap-1 whitespace-nowrap hover:text-red-700 transition"
             >
               Repair Systems
               <ChevronDown size={13} className={`mt-px transition-transform duration-200 ${repairOpen ? "rotate-180" : ""}`} />
-            </a>
+            </Link>
             {repairOpen && (
               <div className={dPanel}>
                 {repairSystemsLinks.map((s) => (
-                  <a key={s.href} href={s.href} className={dRow}>
+                  <Link key={s.href} href={s.href} className={dRow}>
                     {s.title}
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}
@@ -132,38 +133,38 @@ export default function SiteHeader() {
             onMouseEnter={openExpert}
             onMouseLeave={closeExpertSoon}
           >
-            <a
+            <Link
               href="/expert-remedial-advice"
               className="flex items-center gap-1 whitespace-nowrap hover:text-red-700 transition"
             >
               Expert Advice
               <ChevronDown size={13} className={`mt-px transition-transform duration-200 ${expertOpen ? "rotate-180" : ""}`} />
-            </a>
+            </Link>
             {expertOpen && (
               <div className={dPanel}>
                 {expertServices.map((s) => (
-                  <a key={s.href} href={s.href} className={dRow}>
+                  <Link key={s.href} href={s.href} className={dRow}>
                     {s.title}
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}
           </div>
-          <a href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</a>
-          <a href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</a>
-          <a href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</a>
-          <a href="/industry-jobs" className="whitespace-nowrap hover:text-red-700 transition">Industry Jobs</a>
+          <Link href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</Link>
+          <Link href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</Link>
+          <Link href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</Link>
+          <Link href="/industry-jobs" className="whitespace-nowrap hover:text-red-700 transition">Industry Jobs</Link>
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
           {!isAuthPage && (
-            <a
+            <Link
               href="/directory/login"
               className="inline-flex shrink-0 items-center rounded-lg bg-red-700 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-red-800 transition sm:px-3.5 sm:py-1.5 sm:text-xs"
             >
               <span className="sm:hidden">Login</span>
               <span className="hidden sm:inline">Login / Create Account</span>
-            </a>
+            </Link>
           )}
         </div>
       </div>
@@ -190,7 +191,7 @@ export default function SiteHeader() {
             </button>
           </div>
           <nav className="flex flex-1 flex-col overflow-y-auto">
-            <a href="/" onClick={() => setMobileNavOpen(false)} className={mRow}>Home</a>
+            <Link href="/" onClick={() => setMobileNavOpen(false)} className={mRow}>Home</Link>
 
             {/* Repair Systems — expandable */}
             <div className="flex flex-col">
@@ -203,13 +204,13 @@ export default function SiteHeader() {
               </button>
               {mobileRepairOpen && (
                 <div className="flex flex-col border-l-2 border-sky-300 bg-sky-50/70">
-                  <a href="/repair-systems" onClick={() => setMobileNavOpen(false)} className={mSubRow}>
+                  <Link href="/repair-systems" onClick={() => setMobileNavOpen(false)} className={mSubRow}>
                     Repair Systems Overview
-                  </a>
+                  </Link>
                   {repairSystemsLinks.map((s) => (
-                    <a key={s.href} href={s.href} onClick={() => setMobileNavOpen(false)} className={mSubRow}>
+                    <Link key={s.href} href={s.href} onClick={() => setMobileNavOpen(false)} className={mSubRow}>
                       {s.title}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -227,19 +228,19 @@ export default function SiteHeader() {
               {mobileExpertOpen && (
                 <div className="flex flex-col border-l-2 border-sky-300 bg-sky-50/70">
                   {expertServices.map((s) => (
-                    <a key={s.href} href={s.href} onClick={() => setMobileNavOpen(false)} className={mSubRow}>
+                    <Link key={s.href} href={s.href} onClick={() => setMobileNavOpen(false)} className={mSubRow}>
                       {s.title}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
             </div>
 
-            <a href="/defect-library" onClick={() => setMobileNavOpen(false)} className={mRow}>Defect Library</a>
-            <a href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</a>
-            <a href="/directory/login" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</a>
-            <a href="/industry-news" onClick={() => setMobileNavOpen(false)} className={mRow}>News &amp; Insights</a>
-            <a href="/industry-jobs" onClick={() => setMobileNavOpen(false)} className={mRow}>Industry Jobs</a>
+            <Link href="/defect-library" onClick={() => setMobileNavOpen(false)} className={mRow}>Defect Library</Link>
+            <Link href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</Link>
+            <Link href="/directory/login" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</Link>
+            <Link href="/industry-news" onClick={() => setMobileNavOpen(false)} className={mRow}>News &amp; Insights</Link>
+            <Link href="/industry-jobs" onClick={() => setMobileNavOpen(false)} className={mRow}>Industry Jobs</Link>
           </nav>
         </div>
       </div>

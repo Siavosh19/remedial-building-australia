@@ -1,4 +1,5 @@
 import { redirect, notFound } from "next/navigation";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import ApplicationsList, { type ApplicationRow } from "@/components/jobs/ApplicationsList";
@@ -34,7 +35,7 @@ export default async function ApplicationsPage({ params }: { params: Promise<{ i
 
   return (
     <div>
-      <a href="/directory/dashboard/jobs" className="text-sm font-bold text-slate-900 hover:text-black">← Manage Jobs</a>
+      <Link href="/directory/dashboard/jobs" className="text-sm font-bold text-slate-900 hover:text-black">← Manage Jobs</Link>
       <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-sky-950">Applications</h1>
       <p className="mt-1 text-sm text-slate-500">{job.title} · {applications.length} application{applications.length === 1 ? "" : "s"}</p>
       <ApplicationsList applications={applications} />

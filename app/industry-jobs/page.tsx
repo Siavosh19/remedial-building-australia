@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { activeJobWhere } from "@/lib/jobs";
 import { AU_STATES, EMPLOYMENT_TYPES, EXPERIENCE_LEVELS, SALARY_BANDS } from "@/lib/jobs-data";
@@ -106,12 +107,12 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
             property sectors.
           </p>
         </div>
-        <a
+        <Link
           href="/directory/dashboard/jobs/new"
           className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
         >
           <Plus size={16} /> Post a Job
-        </a>
+        </Link>
       </div>
 
       {/* Filters (server-rendered GET form) */}
@@ -148,7 +149,7 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
             Apply filters
           </button>
           {hasFilters && (
-            <a href="/industry-jobs" className="text-sm font-semibold text-slate-500 hover:text-red-700">Clear</a>
+            <Link href="/industry-jobs" className="text-sm font-semibold text-slate-500 hover:text-red-700">Clear</Link>
           )}
         </div>
       </form>
@@ -173,7 +174,7 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
             <p className="text-sm font-semibold text-slate-500">
               {hasFilters ? "No jobs match your filters." : "No jobs listed yet — check back soon."}
             </p>
-            {hasFilters && <a href="/industry-jobs" className="mt-2 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Clear filters</a>}
+            {hasFilters && <Link href="/industry-jobs" className="mt-2 inline-block text-sm font-bold text-sky-700 hover:text-red-700">Clear filters</Link>}
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

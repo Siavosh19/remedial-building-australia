@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { VALID_CATEGORIES } from "@/lib/news-categories";
 
@@ -71,7 +72,7 @@ export default function NewsEditForm({ article }: { article: Article }) {
   return (
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center justify-between">
-        <a href="/directory/admin/news-articles" className="text-lg font-bold text-slate-900 hover:text-black">← Back to News Articles</a>
+        <Link href="/directory/admin/news-articles" className="text-lg font-bold text-slate-900 hover:text-black">← Back to News Articles</Link>
         <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${article.status === "published" ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>{article.status}</span>
       </div>
 
@@ -126,7 +127,7 @@ export default function NewsEditForm({ article }: { article: Article }) {
         <button type="button" onClick={save} disabled={saving} className="rounded-xl bg-red-700 px-6 py-3 text-sm font-bold text-white hover:bg-red-800 disabled:opacity-60">
           {saving ? "Saving…" : "Save changes"}
         </button>
-        <a href="/directory/admin/news-articles" className="rounded-xl border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50">Done</a>
+        <Link href="/directory/admin/news-articles" className="rounded-xl border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50">Done</Link>
       </div>
     </div>
   );
