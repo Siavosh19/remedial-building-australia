@@ -51,6 +51,21 @@ const getWordDocFreq = unstable_cache(
 const PAGE_SIZE = 20;
 const MATCH_CAP = 3000; // max rows pulled for in-memory relevance scoring
 
+// The heavy part of a search is pulling the matching rows (up to MATCH_CAP, with
+// joined categories + a location) so they can be scored in memory. That result
+// depends ONLY on the WHERE clause — the per-user proximity/distance ranking runs
+// afterwards in JS — so two users running the same query+filters+state share the
+// same rows. Cache it briefly (company data changes slowly): repeat browses of a
+// category/state become near-instant instead of re-scanning the table each time.
+// Oversized result sets simply aren't cached by Next (soft 2MB data-cache limit)
+// and fall back to a live query — safe degradation. Keyed by the WHERE object.
+const getMatchingRows = unstable_cache(
+  async (where: Prisma.CompanyWhereInput) =>
+    prisma.company.findMany({ where, select: MATCH_SELECT, take: MATCH_CAP }),
+  ["directory-match-rows"],
+  { revalidate: 300 },
+);
+
 const VALID_STATES: LocationState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 
 const PROFILE_STATUS_RANK: Record<string, number> = {
@@ -1010,12 +1025,9 @@ export async function GET(request: NextRequest) {
 
     const where = buildWhere({ A, category: effectiveCategory, featured, licenceVerified, claimed, enforcedState, softSuburb, skipKeyword: anchoredByQuery });
 
-    // Pull matching rows for in-memory relevance + proximity scoring.
-    const matchingRows = await prisma.company.findMany({
-      where,
-      select: MATCH_SELECT,
-      take: MATCH_CAP,
-    });
+    // Pull matching rows for in-memory relevance + proximity scoring (cached by
+    // WHERE — see getMatchingRows; proximity ranking below stays per-request).
+    const matchingRows = await getMatchingRows(where);
 
     if (matchingRows.length === 0) {
       return NextResponse.json({

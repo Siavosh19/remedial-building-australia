@@ -1242,6 +1242,9 @@ export default function DirectoryListing({ categories }: Props) {
   const [sortByDistance, setSortByDistance] = useState(saved?.sortByDistance ?? false);
 
   const geocodeAbortRef = useRef<AbortController | null>(null);
+  // Cancels the previous in-flight search when a newer one starts, so fast typing
+  // / rapid filter changes don't stack requests or paint stale, out-of-order results.
+  const searchAbortRef = useRef<AbortController | null>(null);
 
   // A search is "active" once the visitor has supplied a keyword, location,
   // category or filter. Until then we show the search prompt, not businesses.
@@ -1297,8 +1300,13 @@ export default function DirectoryListing({ categories }: Props) {
       if (params.radius && params.radius !== "au") sp.set("radius", params.radius);
       sp.set("page", String(params.page));
 
+      // Abort any search still in flight before firing this one.
+      if (searchAbortRef.current) searchAbortRef.current.abort();
+      const ctrl = new AbortController();
+      searchAbortRef.current = ctrl;
+
       try {
-        const res = await fetch(`/api/directory/search?${sp}`);
+        const res = await fetch(`/api/directory/search?${sp}`, { signal: ctrl.signal });
         const data = await res.json();
         setCompanies(data.companies ?? []);
         setTopListings(data.topListings ?? []);
@@ -1306,10 +1314,14 @@ export default function DirectoryListing({ categories }: Props) {
         setTotal(data.total ?? 0);
         setTotalPages(data.totalPages ?? 1);
         setIsLocalFallback(data.isLocalFallback ?? false);
-      } catch {
-        // keep current results on error
+      } catch (err) {
+        // A superseded request was aborted — ignore it and let the newer one win
+        // (don't drop the loading state either; the newer search owns it now).
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        // keep current results on other errors
       } finally {
-        setLoading(false);
+        // Only the most recent request clears the loading state.
+        if (searchAbortRef.current === ctrl) setLoading(false);
       }
     },
     []
