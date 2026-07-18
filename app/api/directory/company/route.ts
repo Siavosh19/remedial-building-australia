@@ -7,6 +7,7 @@ import { verifyAbn, abnNameMismatch } from "@/lib/abn";
 import { validateAuPhone } from "@/lib/phone-au";
 import { postcodeToState } from "@/lib/au-locations";
 import { geocodeAU } from "@/lib/geocode";
+import { bustDirectoryCache } from "@/lib/directory-cache";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const STATES: LocationState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
@@ -278,6 +279,7 @@ export async function POST(request: NextRequest) {
     sendCompanyStatusEmail(user.full_name ?? businessEmail, user.email, companyName, true).catch(() => {});
   }
 
+  bustDirectoryCache(); // a new/claimed listing should surface in search now
   return NextResponse.json({ success: true, autoApproved: autoApprove });
 }
 
@@ -377,5 +379,6 @@ export async function PATCH(request: NextRequest) {
     }
   }
 
+  bustDirectoryCache(); // profile edits should surface in search now
   return NextResponse.json({ success: true });
 }

@@ -4,6 +4,7 @@ import type { AdminReviewStatus, CompanyStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/directory-auth";
 import { sendCompanyStatusEmail } from "@/lib/directory-email";
+import { bustDirectoryCache } from "@/lib/directory-cache";
 
 type ActionLogEntry = { ts: string; actor: string; action: string; note?: string };
 
@@ -130,5 +131,6 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  bustDirectoryCache(); // publish/unpublish changes what search should return
   return NextResponse.json({ ok: true });
 }

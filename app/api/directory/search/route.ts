@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { lookupSuburb, toStateCode, postcodeToState } from "@/lib/au-locations";
 import { resolveAuLocation } from "@/lib/au-suburbs";
 import { resolveQueryToCategory, normalizeQuery } from "@/lib/directory-categories";
+import { DIRECTORY_CACHE_TAG } from "@/lib/directory-cache";
 
 // Cached index of active category names → slug, for anchoring a free-text query to
 // a specific category (so "building surveyor" returns only Building Surveyors, not a
@@ -63,7 +64,9 @@ const getMatchingRows = unstable_cache(
   async (where: Prisma.CompanyWhereInput) =>
     prisma.company.findMany({ where, select: MATCH_SELECT, take: MATCH_CAP }),
   ["directory-match-rows"],
-  { revalidate: 300 },
+  // Tagged so a listing create/edit/publish can bust it instantly
+  // (bustDirectoryCache) — otherwise changes take up to `revalidate` to appear.
+  { revalidate: 300, tags: [DIRECTORY_CACHE_TAG] },
 );
 
 const VALID_STATES: LocationState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
