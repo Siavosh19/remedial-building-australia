@@ -4,7 +4,7 @@ import HomeClient from "./HomeClient";
 export const metadata: Metadata = {
   title: "Remedial Building Australia | Remedial Building Advice, Defects & Repair Systems",
   description:
-    "Remedial Building Australia provides remedial building advice, defect guidance, repair system information, remedial specifications, expert remedial services and an AI-powered directory for construction and building businesses across Australia.",
+    "Australia's strata and remedial building directory — connect owners corporations and strata managers with remedial contractors, consultants, engineers and suppliers. Plus Strata Connect quote requests, a defect library, repair systems, industry news and expert remedial advice.",
   alternates: { canonical: "/" },
 };
 

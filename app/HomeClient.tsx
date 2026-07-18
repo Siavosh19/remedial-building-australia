@@ -825,6 +825,7 @@ export default function HomeClient() {
               <Link href="/industry-jobs" className="hover:text-sky-700">Industry Jobs</Link>
             </div>
             <div className="flex flex-col gap-2">
+              <Link href="/about" className="hover:text-sky-700">About</Link>
               <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
               <Link href="/contact" className="hover:text-sky-700">Contact</Link>
               <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
