@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { InjectionResinsPUFlexibleIntroSection, InjectionResinsPUFlexibleProductSection } from "./InjectionResinsPUFlexibleProductSection";
 import PageNav from "@/components/PageNav";
@@ -37,9 +38,9 @@ export default function InjectionResinsPUFlexiblePage() {
         <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
-              <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
-              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a><span>/</span>
-              <a href="/repair-systems/concrete-structural-defects" className="hover:text-sky-700 transition">Concrete &amp; Structural Defects</a><span>/</span>
+              <Link href="/" className="hover:text-sky-700 transition">Home</Link><span>/</span>
+              <Link href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</Link><span>/</span>
+              <Link href="/repair-systems/concrete-structural-defects" className="hover:text-sky-700 transition">Concrete &amp; Structural Defects</Link><span>/</span>
               <a href={BASE} className="hover:text-sky-700 transition">Concrete cracking</a><span>/</span>
               <span className="text-sky-950">PU flexible injection</span>
             </nav>
@@ -148,16 +149,16 @@ export default function InjectionResinsPUFlexiblePage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

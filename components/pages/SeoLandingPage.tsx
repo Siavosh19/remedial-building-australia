@@ -1,4 +1,5 @@
 import SiteHeader from "@/components/SiteHeader";
+import Link from "next/link";
 import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 import { ArrowRight } from "lucide-react";
 
@@ -153,14 +154,14 @@ export default function SeoLandingPage({ config }: { config: SeoLandingConfig })
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <Link href="/about" className="hover:text-sky-700">About</Link>
+            <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+            <Link href="/terms" className="hover:text-sky-700">Terms</Link>
+            <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+            <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+            <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+            <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
+            <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
         </div>

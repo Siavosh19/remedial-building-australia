@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import AdvertiseForm from "@/components/advertise/AdvertiseForm";
 
@@ -25,12 +26,12 @@ export default function AdvertisePage() {
             strata managers, owners corporations and property managers every day.
           </p>
           <div className="mt-5">
-            <a
+            <Link
               href="/advertise/marketing-guide"
               className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-5 py-2.5 text-sm font-bold text-sky-800 shadow-sm transition hover:bg-sky-50"
             >
               📘 See Marketing Guide Breakdown →
-            </a>
+            </Link>
           </div>
         </div>
         <div className="mt-9 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
@@ -53,16 +54,16 @@ export default function AdvertisePage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import rawData from "@/lib/materials-index-data.json";
+import Link from "next/link";
 import MaterialsIndexClient, {
   type ProductRow,
   type DropdownOptions,
@@ -30,7 +31,7 @@ export default function MaterialsProductsIndexPage() {
         <section className="border-b border-slate-200 bg-white px-8 py-14">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-slate-400">
-              <a href="/" className="hover:text-sky-700 transition">Home</a>
+              <Link href="/" className="hover:text-sky-700 transition">Home</Link>
               <span>/</span>
               <span className="text-sky-950">Materials &amp; Products Index</span>
             </nav>
@@ -81,11 +82,11 @@ export default function MaterialsProductsIndexPage() {
             </div>
           </div>
           <nav className="flex flex-wrap gap-5 text-xs font-semibold text-slate-500">
-            <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
-            <a href="/defect-library" className="hover:text-sky-700 transition">Defect Library</a>
-            <a href="/advertise" className="hover:text-sky-700 transition">Advertise With Us</a>
-            <a href="/terms" className="hover:text-sky-700 transition">Terms &amp; Conditions</a>
-            <a href="/privacy-policy" className="hover:text-sky-700 transition">Privacy Policy</a>
+            <Link href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</Link>
+            <Link href="/defect-library" className="hover:text-sky-700 transition">Defect Library</Link>
+            <Link href="/advertise" className="hover:text-sky-700 transition">Advertise With Us</Link>
+            <Link href="/terms" className="hover:text-sky-700 transition">Terms &amp; Conditions</Link>
+            <Link href="/privacy-policy" className="hover:text-sky-700 transition">Privacy Policy</Link>
           </nav>
         </div>
       </footer>

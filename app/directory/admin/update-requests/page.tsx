@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { redirect } from "next/navigation";
 
@@ -52,9 +53,9 @@ export default async function UpdateRequestsPage() {
               {supplierRequests.map((r) => (
                 <tr key={r.id} className="border-b border-slate-100 hover:bg-slate-50 transition">
                   <td className="px-4 py-3 font-medium text-slate-900">
-                    <a href={`/directory/admin/suppliers/${r.supplier.slug}`} className="hover:underline text-sky-700">
+                    <Link href={`/directory/admin/suppliers/${r.supplier.slug}`} className="hover:underline text-sky-700">
                       {r.supplier.brand_name}
-                    </a>
+                    </Link>
                   </td>
                   <td className="px-4 py-3">{statusBadge(r.status)}</td>
                   <td className="px-4 py-3 text-slate-500 text-xs max-w-xs truncate">

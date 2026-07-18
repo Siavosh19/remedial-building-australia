@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import PageNav from "@/components/PageNav";
 
@@ -58,8 +59,8 @@ export default function SaltAttackHubPage() {
         <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
-              <a href="/" className="hover:text-sky-700 transition">Home</a><span>/</span>
-              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a><span>/</span>
+              <Link href="/" className="hover:text-sky-700 transition">Home</Link><span>/</span>
+              <Link href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</Link><span>/</span>
               <a href={PARENT_URL} className="hover:text-sky-700 transition">Facade &amp; External Envelope</a><span>/</span>
               <span className="text-sky-950">Salt Attack &amp; Salt-Contaminated Render</span>
             </nav>
@@ -69,7 +70,7 @@ export default function SaltAttackHubPage() {
               Salt attack &amp; salt-contaminated render — repair systems
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              Technical product reference for salt attack remediation on Class 2 strata facades — select a product type to view salt-resistant renovating renders, substrate treatments, breathable render systems and bonding primers for salt-contaminated substrates. Note: where rising damp is the cause of salt attack, see the <a href="/repair-systems/rising-damp" className="underline hover:text-red-700">Rising Damp section</a> for DPC injection and damp-proof systems.
+              Technical product reference for salt attack remediation on Class 2 strata facades — select a product type to view salt-resistant renovating renders, substrate treatments, breathable render systems and bonding primers for salt-contaminated substrates. Note: where rising damp is the cause of salt attack, see the <Link href="/repair-systems/rising-damp" className="underline hover:text-red-700">Rising Damp section</Link> for DPC injection and damp-proof systems.
             </p>
           </div>
         </section>
@@ -125,7 +126,7 @@ export default function SaltAttackHubPage() {
               <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-sky-700">Related Systems</p>
               <p className="text-xs leading-6 text-sky-900">
                 Where rising damp is the underlying cause of salt attack, render repair alone is not sufficient. See the{" "}
-                <a href="/repair-systems/rising-damp" className="font-bold underline hover:text-red-700">Rising Damp</a> section for DPC injection, silane cream, breathable render and renovating plaster systems that address the moisture source before re-rendering.
+                <Link href="/repair-systems/rising-damp" className="font-bold underline hover:text-red-700">Rising Damp</Link> section for DPC injection, silane cream, breathable render and renovating plaster systems that address the moisture source before re-rendering.
               </p>
             </div>
           </div>
@@ -145,16 +146,16 @@ export default function SaltAttackHubPage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

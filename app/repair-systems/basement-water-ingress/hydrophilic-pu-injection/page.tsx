@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AlertTriangle, BookOpen, ArrowRight } from "lucide-react";
 import { HydrophilicPUProductSection, HydrophilicPUIntroSection } from "./HydrophilicPUProductSection";
 import PageNav from "@/components/PageNav";
@@ -48,11 +49,11 @@ export default function HydrophilicPUPage() {
         <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
-              <a href="/" className="hover:text-sky-700 transition">Home</a>
+              <Link href="/" className="hover:text-sky-700 transition">Home</Link>
               <span>/</span>
-              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
+              <Link href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</Link>
               <span>/</span>
-              <a href="/repair-systems/basement-water-ingress" className="hover:text-sky-700 transition">Basement Water Ingress</a>
+              <Link href="/repair-systems/basement-water-ingress" className="hover:text-sky-700 transition">Basement Water Ingress</Link>
               <span>/</span>
               <span className="text-sky-950">Hydrophilic PU injection</span>
             </nav>
@@ -100,7 +101,7 @@ export default function HydrophilicPUPage() {
                     {group.tabs.map((tab) => {
                       const active = tab.slug === "hydrophilic-pu-injection";
                       return (
-                        <a
+                        <Link
                           key={tab.slug}
                           href={`/repair-systems/basement-water-ingress/${tab.slug}`}
                           className={`relative shrink-0 border-b-2 px-4 py-3 text-xs font-bold whitespace-nowrap transition ${
@@ -110,7 +111,7 @@ export default function HydrophilicPUPage() {
                           }`}
                         >
                           {tab.label}
-                        </a>
+                        </Link>
                       );
                     })}
                   </div>
@@ -138,9 +139,9 @@ export default function HydrophilicPUPage() {
               </p>
             </div>
             <div className="mt-8">
-              <a href="/repair-systems/basement-water-ingress" className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition">
+              <Link href="/repair-systems/basement-water-ingress" className="inline-flex items-center gap-2 rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition">
                 <ArrowRight size={14} className="rotate-180" /> Back to Basement Water Ingress
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -156,16 +157,16 @@ export default function HydrophilicPUPage() {
             </div>
             <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import ExpertAdviceForm from "@/components/expert-advice/ExpertAdviceForm";
 import FileUploadZone from "@/components/expert-advice/FileUploadZone";
@@ -26,9 +27,9 @@ export default function PrePurchaseApartmentDefectReviewRequestPage() {
       <main className="px-6 py-10">
         <section className="mx-auto max-w-4xl">
           <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-400">
-            <a href="/expert-remedial-advice" className="hover:text-sky-700 transition">Expert Remedial Advice</a>
+            <Link href="/expert-remedial-advice" className="hover:text-sky-700 transition">Expert Remedial Advice</Link>
             <span>›</span>
-            <a href="/expert-remedial-advice/pre-purchase-apartment-defect-review" className="hover:text-sky-700 transition">Pre-Purchase Apartment Defect Review</a>
+            <Link href="/expert-remedial-advice/pre-purchase-apartment-defect-review" className="hover:text-sky-700 transition">Pre-Purchase Apartment Defect Review</Link>
             <span>›</span>
             <span className="text-sky-800">Request This Advice</span>
           </div>
@@ -111,16 +112,16 @@ export default function PrePurchaseApartmentDefectReviewRequestPage() {
           </div>
 
           <div className="mt-6">
-            <a href="/expert-remedial-advice/pre-purchase-apartment-defect-review" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200">← Back to Pre-Purchase Apartment Defect Review</a>
+            <Link href="/expert-remedial-advice/pre-purchase-apartment-defect-review" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200">← Back to Pre-Purchase Apartment Defect Review</Link>
           </div>
         </section>
       </main>
 
       <footer className="border-t border-sky-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/expert-remedial-advice" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200">
+          <Link href="/expert-remedial-advice" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200">
             ← Expert Remedial Advice
-          </a>
+          </Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-8 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -131,16 +132,16 @@ export default function PrePurchaseApartmentDefectReviewRequestPage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

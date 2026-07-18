@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import { ArrowRight, Clock, Calendar } from "lucide-react";
@@ -61,9 +62,9 @@ export default async function RbaInsightsPage() {
             <p className="mt-3 max-w-2xl text-sm leading-7 text-sky-300">
               Original technical articles, guides and practical insights written by Remedial Building Australia — covering waterproofing, concrete repair, façade defects, strata compliance and more.
             </p>
-            <a href="/industry-news" className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-sky-400 hover:text-white transition">
+            <Link href="/industry-news" className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-sky-400 hover:text-white transition">
               ← Also see: Industry News &amp; Insights
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -77,7 +78,7 @@ export default async function RbaInsightsPage() {
 
           {/* ── Featured article ──────────────────────────────────────────── */}
           {featured && (
-            <a
+            <Link
               href={`/rba-insights/${featured.slug}`}
               className="group grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:shadow-xl lg:grid-cols-[1.1fr_0.9fr]"
             >
@@ -117,14 +118,14 @@ export default async function RbaInsightsPage() {
                   Read article <ArrowRight size={14} />
                 </span>
               </div>
-            </a>
+            </Link>
           )}
 
           {/* ── Grid ──────────────────────────────────────────────────────── */}
           {rest.length > 0 && (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {rest.map((article) => (
-                <a
+                <Link
                   key={article.id}
                   href={`/rba-insights/${article.slug}`}
                   className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg"
@@ -161,7 +162,7 @@ export default async function RbaInsightsPage() {
                       Read article <ArrowRight size={12} />
                     </span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           )}
@@ -171,7 +172,7 @@ export default async function RbaInsightsPage() {
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
       <footer className="border-t border-sky-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-6 pt-10">
-          <a href="/" className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100">← Home</a>
+          <Link href="/" className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100">← Home</Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -180,16 +181,16 @@ export default async function RbaInsightsPage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

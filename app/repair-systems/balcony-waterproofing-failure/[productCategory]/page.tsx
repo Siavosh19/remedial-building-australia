@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BookOpen, ArrowRight, Clock, AlertTriangle } from "lucide-react";
 
 const SIBLING_TABS = [
@@ -534,9 +535,9 @@ export default async function BalconyProductCategoryPage({
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-extrabold text-sky-950">Page not found</h1>
-          <a href="/repair-systems/balcony-waterproofing-failure" className="mt-4 inline-flex text-lg font-bold text-slate-900 hover:text-black">
+          <Link href="/repair-systems/balcony-waterproofing-failure" className="mt-4 inline-flex text-lg font-bold text-slate-900 hover:text-black">
             ← Back to Balcony Waterproofing Failure
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -554,13 +555,13 @@ export default async function BalconyProductCategoryPage({
         <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-400">
-              <a href="/" className="hover:text-sky-700 transition">Home</a>
+              <Link href="/" className="hover:text-sky-700 transition">Home</Link>
               <span>/</span>
-              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
+              <Link href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</Link>
               <span>/</span>
-              <a href="/repair-systems/waterproofing-water-ingress" className="hover:text-sky-700 transition">Waterproofing Systems</a>
+              <Link href="/repair-systems/waterproofing-water-ingress" className="hover:text-sky-700 transition">Waterproofing Systems</Link>
               <span>/</span>
-              <a href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</a>
+              <Link href="/repair-systems/balcony-waterproofing-failure" className="hover:text-sky-700 transition">Balcony, roof, planter box and podium waterproofing failure</Link>
               <span>/</span>
               <span className="text-sky-950">{activeTab.label}</span>
             </nav>
@@ -593,7 +594,7 @@ export default async function BalconyProductCategoryPage({
               {SIBLING_TABS.map((tab) => {
                 const active = tab.slug === productCategory;
                 return (
-                  <a
+                  <Link
                     key={tab.slug}
                     href={`/repair-systems/balcony-waterproofing-failure/${tab.slug}`}
                     className={`relative shrink-0 border-b-2 px-5 py-4 text-sm font-bold whitespace-nowrap transition ${
@@ -603,7 +604,7 @@ export default async function BalconyProductCategoryPage({
                     }`}
                   >
                     {tab.label}
-                  </a>
+                  </Link>
                 );
               })}
             </div>
@@ -638,18 +639,18 @@ export default async function BalconyProductCategoryPage({
                     Detailed product comparisons, brand equivalents, technical specifications and procurement sources for {activeTab.label.toLowerCase()} are being compiled. Check back soon, or use the AI Scope Builder to get system recommendations.
                   </p>
                   <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                    <a
+                    <Link
                       href="/ai-scope-builder"
                       className="inline-flex items-center gap-2 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-bold text-white hover:bg-sky-800 transition"
                     >
                       AI Scope Builder <ArrowRight size={14} />
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="/repair-systems/balcony-waterproofing-failure/liquid-applied-membranes-polyurethane"
                       className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-5 py-2.5 text-sm font-bold text-sky-950 hover:bg-white hover:border-sky-200 transition"
                     >
                       See PU membrane products <ArrowRight size={14} />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -713,9 +714,9 @@ export default async function BalconyProductCategoryPage({
 
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/repair-systems/balcony-waterproofing-failure" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
+          <Link href="/repair-systems/balcony-waterproofing-failure" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm transition hover:bg-slate-200">
             ← Balcony Waterproofing Failure
-          </a>
+          </Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -726,16 +727,16 @@ export default async function BalconyProductCategoryPage({
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

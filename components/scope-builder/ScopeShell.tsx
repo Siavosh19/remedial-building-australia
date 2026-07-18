@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import Link from "next/link";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -27,7 +28,7 @@ export function ScopeShell({ children, activePath = "/ai-scope-builder", bgClass
 
       <header className="no-print sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-8 py-5">
-          <a href="/" className="flex shrink-0 items-center gap-3">
+          <Link href="/" className="flex shrink-0 items-center gap-3">
             <div>
               <div className="text-lg font-extrabold tracking-tight text-sky-950">
                 Remedial Building Australia
@@ -36,7 +37,7 @@ export function ScopeShell({ children, activePath = "/ai-scope-builder", bgClass
                 Technical Defect Database
               </div>
             </div>
-          </a>
+          </Link>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-sky-800 md:flex">
             {NAV_LINKS.map((link) => {
               const isActive = link.href === "/" ? activePath === "/" : activePath.startsWith(link.href);
@@ -61,12 +62,12 @@ export function ScopeShell({ children, activePath = "/ai-scope-builder", bgClass
 
       <footer className="no-print mt-16 border-t border-sky-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-12">
-          <a
+          <Link
             href="/"
             className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100"
           >
             ← Home
-          </a>
+          </Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -76,14 +77,14 @@ export function ScopeShell({ children, activePath = "/ai-scope-builder", bgClass
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
-            <a href="/about" className="hover:text-sky-700">About</a>
-            <a href="/contact" className="hover:text-sky-700">Contact</a>
-            <a href="/terms" className="hover:text-sky-700">Terms</a>
-            <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-            <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-            <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-            <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-            <a href="/directory" className="hover:text-sky-700">Business Directory</a>
+            <Link href="/about" className="hover:text-sky-700">About</Link>
+            <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+            <Link href="/terms" className="hover:text-sky-700">Terms</Link>
+            <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+            <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+            <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+            <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
+            <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
         </div>

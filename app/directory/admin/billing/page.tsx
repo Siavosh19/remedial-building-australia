@@ -137,7 +137,7 @@ export default async function AdminBillingPage() {
               <tr key={p.id} className="border-b border-slate-100 hover:bg-slate-50">
                 <td className="px-4 py-3 font-medium text-slate-900">{p.product_name}</td>
                 <td className="px-4 py-3">
-                  <a href={`/directory/admin/suppliers/${p.supplier.slug}`} className="text-indigo-600 hover:underline text-sm">{p.supplier.brand_name}</a>
+                  <Link href={`/directory/admin/suppliers/${p.supplier.slug}`} className="text-indigo-600 hover:underline text-sm">{p.supplier.brand_name}</Link>
                 </td>
                 <td className="px-4 py-3">
                   <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { activeJobWhere } from "@/lib/jobs";
@@ -34,9 +35,9 @@ export default async function ApplyPage({ params }: { params: Promise<{ slug: st
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-10">
-      <a href={`/industry-jobs/${job.slug}`} className="text-sm font-semibold text-sky-700 hover:text-red-700">
+      <Link href={`/industry-jobs/${job.slug}`} className="text-sm font-semibold text-sky-700 hover:text-red-700">
         ← Back to job
-      </a>
+      </Link>
 
       <div className="mt-4 flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-slate-50">

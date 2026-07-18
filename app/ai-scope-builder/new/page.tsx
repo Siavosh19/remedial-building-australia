@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import {
   ArrowRight, ArrowLeft, AlertCircle, FileText, Printer,
   ChevronDown, ChevronUp, Plus, X, Check,
@@ -846,9 +847,9 @@ export default function NewScopePage() {
 
         {step <= 6 && !generating && (
           <div className="no-print mb-8">
-            <a href="/ai-scope-builder" className="mb-4 inline-flex items-center gap-2 text-lg font-bold uppercase tracking-wider text-slate-900 hover:text-black transition">
+            <Link href="/ai-scope-builder" className="mb-4 inline-flex items-center gap-2 text-lg font-bold uppercase tracking-wider text-slate-900 hover:text-black transition">
               ← Back to Scope Builder
-            </a>
+            </Link>
             <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">AI Scope Builder</div>
             <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-sky-950 md:text-4xl">New Scope of Works</h1>
           </div>
@@ -1462,9 +1463,9 @@ export default function NewScopePage() {
 
             <div className="no-print mt-6 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <a href="/ai-scope-builder/projects" className="text-sm font-bold text-sky-700 hover:text-red-700 transition">
+                <Link href="/ai-scope-builder/projects" className="text-sm font-bold text-sky-700 hover:text-red-700 transition">
                   View saved projects →
-                </a>
+                </Link>
                 <button
                   type="button"
                   onClick={() => setShowTenderSchedule((v) => !v)}

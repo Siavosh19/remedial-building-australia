@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { Layers, SquareStack, Ruler, ChevronDown, ChevronUp, BookOpen, AlertTriangle } from "lucide-react";
 import { TechCard, CheckCircle } from "../../_components/ProductPageShared";
 import { AutoProductReference } from "../../_components/AutoProductReference";
@@ -222,7 +223,7 @@ export function CrackStitchingProductSection() {
         </div>
         <p className="text-sm leading-7 text-sky-900">
           Crack stitching is not specified from a crack-width lookup. Proprietary carbon-fibre stitch spacing follows the manufacturer detail within an engineer&rsquo;s design; custom stainless staples/dowels are fabricated and bonded entirely to the engineer&rsquo;s specification. In all structural cases the stitch size, number, spacing and embedment are designed by a structural engineer to ACI 224.1R / AS 3600. Steel stitches/dowels are bonded with a structural epoxy anchoring adhesive — see the{" "}
-          <a href="/repair-systems/concrete-cracking/epoxy-anchoring-adhesives" className="font-bold text-sky-700 underline hover:text-sky-900">Epoxy anchoring adhesives</a>{" "}reference.
+          <Link href="/repair-systems/concrete-cracking/epoxy-anchoring-adhesives" className="font-bold text-sky-700 underline hover:text-sky-900">Epoxy anchoring adhesives</Link>{" "}reference.
         </p>
       </div>
 

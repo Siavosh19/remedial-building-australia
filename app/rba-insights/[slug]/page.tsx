@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
@@ -129,12 +130,12 @@ export default async function RbaInsightsArticlePage({
 
           {/* Back link */}
           <div className="pt-8 pb-6">
-            <a
+            <Link
               href="/rba-insights"
               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.15em] text-slate-400 transition hover:text-sky-700"
             >
               <ArrowLeft size={13} /> RBA Insights
-            </a>
+            </Link>
           </div>
 
           {/* Metadata */}
@@ -237,12 +238,12 @@ export default async function RbaInsightsArticlePage({
 
         {/* ── Back link ───────────────────────────────────────────────────── */}
         <div className="border-t border-slate-100 bg-white px-6 py-8 text-center">
-          <a
+          <Link
             href="/rba-insights"
             className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-sky-800"
           >
             <ArrowLeft size={15} /> All RBA Insights
-          </a>
+          </Link>
         </div>
 
       </main>
@@ -250,7 +251,7 @@ export default async function RbaInsightsArticlePage({
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
       <footer className="border-t border-sky-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-6 pt-10">
-          <a href="/" className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100">← Home</a>
+          <Link href="/" className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100">← Home</Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -259,16 +260,16 @@ export default async function RbaInsightsArticlePage({
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

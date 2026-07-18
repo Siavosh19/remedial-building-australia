@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, Users, HardHat, Droplets, Layers, Search, ScanSearch, ClipboardCheck, FileSearch, Calculator, Wrench, Building2, LineChart } from "lucide-react";
@@ -171,12 +172,12 @@ function HomeExpertAdviceCard() {
             </li>
           ))}
         </ul>
-        <a
+        <Link
           href="/expert-remedial-advice"
           className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-sky-950 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-sky-900"
         >
           View All Services <ArrowRight size={14} />
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -561,20 +562,20 @@ export default function HomeClient() {
             {/* Directory CTAs */}
             <div className="text-center" style={{ marginTop: "55px" }}>
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <a
+                <Link
                   href="/directory/login"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold shadow-sm transition hover:bg-sky-50 sm:w-auto"
                   style={{ color: "rgb(7,89,133)", border: "1.5px solid rgb(7,89,133)" }}
                 >
                   List Your Business
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/directory/login"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold shadow-sm transition hover:bg-red-50 sm:w-auto"
                   style={{ color: "rgb(185,28,28)", border: "1.5px solid rgb(185,28,28)" }}
                 >
                   Request a Quote <ArrowRight size={15} />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -587,7 +588,7 @@ export default function HomeClient() {
               <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-5xl">Latest News &amp; Insights</h2>
               <div className="mt-3 h-[3px] w-44" style={{ background: "linear-gradient(to right, #b91c1c, rgba(185,28,28,0))" }} />
             </div>
-            <a href="/industry-news" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</a>
+            <Link href="/industry-news" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</Link>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -632,7 +633,7 @@ export default function HomeClient() {
             <div className="flex flex-col px-6 py-5">
               <div className="mb-4 flex shrink-0 items-center justify-between">
                 <h3 className="text-base font-extrabold tracking-tight text-sky-950">Latest News</h3>
-                <a href="/industry-news" className="text-xs font-bold text-sky-600 hover:text-red-700">View all →</a>
+                <Link href="/industry-news" className="text-xs font-bold text-sky-600 hover:text-red-700">View all →</Link>
               </div>
               <div className="divide-y divide-slate-100 overflow-y-auto" style={{ maxHeight: "520px" }}>
               {newsLoading ? (
@@ -817,17 +818,17 @@ export default function HomeClient() {
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
-              <a href="/industry-jobs" className="hover:text-sky-700">Industry Jobs</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
+              <Link href="/industry-jobs" className="hover:text-sky-700">Industry Jobs</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

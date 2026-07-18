@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowRight, Droplets, Layers, Home, Building2 } from "lucide-react";
 
 import SiteHeader from "@/components/SiteHeader";
@@ -61,9 +62,9 @@ export default function RepairSystemsLibraryPage() {
         <section className="border-b border-slate-200 bg-white px-4 sm:px-8 py-12">
           <div className="mx-auto max-w-7xl">
             <nav className="mb-5 flex items-center gap-2 text-xs font-semibold text-slate-400">
-              <a href="/" className="hover:text-sky-700 transition">Home</a>
+              <Link href="/" className="hover:text-sky-700 transition">Home</Link>
               <span>/</span>
-              <a href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</a>
+              <Link href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</Link>
               <span>/</span>
               <span className="text-sky-950">Library</span>
             </nav>
@@ -90,7 +91,7 @@ export default function RepairSystemsLibraryPage() {
               {SYSTEMS.map((sys) => {
                 const Icon = sys.icon;
                 return sys.live ? (
-                  <a
+                  <Link
                     key={sys.slug}
                     href={`/repair-systems/${sys.slug}`}
                     className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:border-sky-300 hover:shadow-md"
@@ -111,7 +112,7 @@ export default function RepairSystemsLibraryPage() {
                     <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-sky-700 transition group-hover:text-red-700">
                       Browse products <ArrowRight size={12} />
                     </div>
-                  </a>
+                  </Link>
                 ) : (
                   <div
                     key={sys.slug}
@@ -142,7 +143,7 @@ export default function RepairSystemsLibraryPage() {
 
       <footer className="border-t border-slate-200 bg-slate-100">
         <div className="mx-auto max-w-7xl px-5 pt-10">
-          <a href="/repair-systems" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition">← Repair Systems</a>
+          <Link href="/repair-systems" className="inline-flex rounded-xl border border-sky-200 bg-white px-4 py-2 text-sm font-bold text-sky-950 shadow-sm hover:bg-slate-200 transition">← Repair Systems</Link>
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
@@ -151,16 +152,16 @@ export default function RepairSystemsLibraryPage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/contact" className="hover:text-sky-700">Contact</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
             </div>
           </div>

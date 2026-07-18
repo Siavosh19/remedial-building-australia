@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import { getActiveBusinessCount, formatBusinessCount } from "@/lib/directory-stats";
@@ -547,7 +548,7 @@ export default async function MarketingGuidePage() {
               <p className="mt-2 text-xs text-slate-400">Minimum term 3 months. Limited availability — 3 slots per page.</p>
               <p className="mt-4 text-sm leading-7 text-slate-600">
                 Banner placements are arranged directly. Submit a request via the{" "}
-                <a href="/advertise" className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">Advertise With Us</a>{" "}
+                <Link href="/advertise" className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">Advertise With Us</Link>{" "}
                 page, or email <strong>info@remedialbuildingaustralia.com.au</strong> — we&rsquo;ll confirm slot availability, duration,
                 artwork requirements and start date with you.
               </p>
@@ -560,7 +561,7 @@ export default async function MarketingGuidePage() {
           <Eyebrow>Ready when you are</Eyebrow>
           <h2 className="mt-2 text-2xl font-extrabold text-sky-950 sm:text-3xl">How to Get Listed (Gold &amp; Silver)</h2>
           <ol className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
-            <li>1. Go to the <a href="/directory/signup" className="font-bold text-sky-700 underline underline-offset-2 hover:text-red-700">Directory sign-up page</a>.</li>
+            <li>1. Go to the <Link href="/directory/signup" className="font-bold text-sky-700 underline underline-offset-2 hover:text-red-700">Directory sign-up page</Link>.</li>
             <li>2. Complete your details and select <strong>Directory Business</strong> as your account type.</li>
             <li>3. Confirm your account via the verification email.</li>
             <li>4. Log in to your dashboard and select your subscription — <strong>Gold Featured</strong> or <strong>Silver</strong>.</li>
@@ -568,15 +569,15 @@ export default async function MarketingGuidePage() {
           </ol>
           <p className="mt-3 text-xs text-slate-500"><strong>Note:</strong> an ABN is required to list your business.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="/directory/signup" className="rounded-xl bg-sky-950 px-5 py-3 text-sm font-bold text-white hover:bg-sky-900">
+            <Link href="/directory/signup" className="rounded-xl bg-sky-950 px-5 py-3 text-sm font-bold text-white hover:bg-sky-900">
               List your business on the directory →
-            </a>
-            <a href="/directory/pricing" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-100">
+            </Link>
+            <Link href="/directory/pricing" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-100">
               View plans &amp; pricing
-            </a>
-            <a href="/directory" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-100">
+            </Link>
+            <Link href="/directory" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-100">
               Browse the directory
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -590,7 +591,7 @@ export default async function MarketingGuidePage() {
           </p>
           <p className="mt-3 text-xs text-slate-400">
             All directory listings and advertising placements are subject to our{" "}
-            <a href="/terms" className="underline underline-offset-2 hover:text-red-700">Terms &amp; Conditions</a> and Privacy Policy.
+            <Link href="/terms" className="underline underline-offset-2 hover:text-red-700">Terms &amp; Conditions</Link> and Privacy Policy.
             Rates exclude GST and may be updated at any time; confirmed bookings retain their agreed rate for the booked term.
           </p>
         </section>
@@ -608,16 +609,16 @@ export default async function MarketingGuidePage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/advertise/marketing-guide" className="hover:text-sky-700">Marketing Guide</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/advertise/marketing-guide" className="hover:text-sky-700">Marketing Guide</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Wrench, Building2 } from "lucide-react";
 
 // Airbnb-style role switch. One login, two dashboards. The active side is derived
@@ -22,14 +23,14 @@ export default function RoleSwitcher({ className = "" }: { className?: string })
       role="tablist"
       aria-label="Switch account mode"
     >
-      <a href="/api/account/switch?to=business" className={seg(!isClient)} role="tab" aria-selected={!isClient}>
+      <Link href="/api/account/switch?to=business" className={seg(!isClient)} role="tab" aria-selected={!isClient}>
         <Wrench size={13} className="shrink-0" />
         <span className="whitespace-nowrap">Service Business</span>
-      </a>
-      <a href="/api/account/switch?to=client" className={seg(isClient)} role="tab" aria-selected={isClient}>
+      </Link>
+      <Link href="/api/account/switch?to=client" className={seg(isClient)} role="tab" aria-selected={isClient}>
         <Building2 size={13} className="shrink-0" />
         <span className="whitespace-nowrap">Client</span>
-      </a>
+      </Link>
     </div>
   );
 }

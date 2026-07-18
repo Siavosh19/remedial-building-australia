@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
@@ -369,12 +370,12 @@ export default function BannerLayoutPage() {
             ))}
           </div>
           <p className="mt-6 text-sm text-slate-500">
-            <a
+            <Link
               href="/advertise/marketing-guide"
               className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700"
             >
               ← Back to the Marketing Guide
-            </a>
+            </Link>
           </p>
         </div>
       </section>
@@ -505,22 +506,22 @@ export default function BannerLayoutPage() {
           <H2>Ready to book a banner?</H2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
             Banner placements are arranged directly. Submit a request via the{" "}
-            <a href="/advertise" className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">
+            <Link href="/advertise" className="font-semibold text-sky-700 underline underline-offset-2 hover:text-red-700">
               Advertise With Us
-            </a>{" "}
+            </Link>{" "}
             page, or email <strong>info@remedialbuildingaustralia.com.au</strong> — we&rsquo;ll confirm slot
             availability, duration, artwork requirements and start date with you.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="/advertise" className="rounded-xl bg-sky-950 px-5 py-3 text-sm font-bold text-white hover:bg-sky-900">
+            <Link href="/advertise" className="rounded-xl bg-sky-950 px-5 py-3 text-sm font-bold text-white hover:bg-sky-900">
               Enquire about banner advertising →
-            </a>
-            <a
+            </Link>
+            <Link
               href="/advertise/marketing-guide"
               className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-100"
             >
               Back to the Marketing Guide
-            </a>
+            </Link>
           </div>
         </section>
       </div>
@@ -537,16 +538,16 @@ export default function BannerLayoutPage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
-              <a href="/directory" className="hover:text-sky-700">Business Directory</a>
-              <a href="/repair-systems" className="hover:text-sky-700">Repair Systems</a>
-              <a href="/defect-library" className="hover:text-sky-700">Defect Library</a>
-              <a href="/industry-news" className="hover:text-sky-700">News &amp; Insights</a>
+              <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
+              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
-              <a href="/advertise" className="hover:text-sky-700">Advertise With Us</a>
-              <a href="/advertise/marketing-guide" className="hover:text-sky-700">Marketing Guide</a>
-              <a href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</a>
-              <a href="/terms" className="hover:text-sky-700">Terms</a>
+              <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
+              <Link href="/advertise/marketing-guide" className="hover:text-sky-700">Marketing Guide</Link>
+              <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-sky-700">Terms</Link>
             </div>
           </div>
         </div>
