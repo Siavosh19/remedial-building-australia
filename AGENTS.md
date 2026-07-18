@@ -81,9 +81,24 @@ Code lives on **mac2** at `~/Developer/remedial-building-australia` → GitHub
 3. **Keep the Open Tasks list below current** — remove what you finished, add new items.
 
 ## Open tasks (keep current)
+- [ ] **Push notifications — GO LIVE (owner):** the whole PWA web-push system is
+      built and deployed; the Supabase `push_subscriptions` table is created. Only
+      remaining step: set 3 env vars in Vercel → Settings → Env Vars (all envs) and
+      REDEPLOY (`NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`).
+      Keys are recorded in the agent memory note `project-push-notifications`.
+- [ ] **Trigram indexes & bulk import:** GIN `gin_trgm_ops` indexes now exist on
+      `companies.name/description` + `categories.name` (owner ran them; keyword search
+      dropped ~440ms→~180ms). Before the big 7,234-business import, DROP these 3 indexes
+      then recreate after — they slow bulk inserts.
+- [ ] **(Nice-to-have) Cache-bust coverage:** search match-row cache is busted on
+      listing create/edit/publish. Not yet on delete/unpublish/plan-change, so a
+      removed/downgraded listing can linger in search up to 5 min. Add
+      `bustDirectoryCache()` to those routes to close it.
 - [ ] **Phone:** set the "Sydney Remedial Builders" listing phone to `1300 849 584`.
-      Deferred by owner — needs the exact company id first (several similar Sydney
-      names exist), then owner runs `UPDATE companies SET phone='1300849584' WHERE id=<id>;`.
+      SQL ready — the listing has the unique slug `sydney-remedial-builders`, so no
+      id lookup is needed. Owner runs:
+      `UPDATE companies SET phone='1300849584' WHERE slug='sydney-remedial-builders';`
+      (confirm first with `SELECT id, name, slug, phone FROM companies WHERE slug='sydney-remedial-builders';`).
 - [ ] **Proton email:** retest deliverability to proton.me (DMARC now set; Proton may
       still defer new-domain mail — consider domain warmup). System is otherwise fine.
 - [ ] **(Nice-to-have)** "Services offered" field is editor-only; add it to the signup
