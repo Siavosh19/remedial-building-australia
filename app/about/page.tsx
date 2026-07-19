@@ -2,40 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import SiteHeader from "@/components/SiteHeader";
+import StrataConnectSlides from "@/components/about/StrataConnectSlides";
 
 export const metadata: Metadata = {
   title: "About | Strata & Remedial Building Platform — Remedial Building Australia",
   description:
     "Remedial Building Australia is a strata and remedial building platform connecting owners corporations, strata managers, contractors, consultants and engineers — with a business directory, Strata Connect quote requests, a defect library, repair systems and expert remedial advice.",
 };
-
-// ── Strata Connect — how the work-order → quotes flow works (crawlable, SEO) ──
-const strataSteps = [
-  {
-    n: "1",
-    title: "Forward your work order",
-    body:
-      "A strata manager or building manager emails the scope of works, defect report or work order straight to Strata Connect — no forms, no new logins.",
-  },
-  {
-    n: "2",
-    title: "We read and review it",
-    body:
-      "The scope is parsed automatically, then checked by our team so the right trade, location and building type are captured before anything goes out.",
-  },
-  {
-    n: "3",
-    title: "Matched to specialists",
-    body:
-      "It becomes a quote request and is broadcast to relevant, verified remedial contractors, consultants and engineers in the right state and category.",
-  },
-  {
-    n: "4",
-    title: "Compare the quotes",
-    body:
-      "Interested specialists respond, and the strata manager compares competitive quotes for the repair — waterproofing, concrete, façades, roofing and more.",
-  },
-];
 
 const coverageCards = [
   {
@@ -133,21 +106,8 @@ export default function AboutPage() {
               roofing, structural repairs, drainage, basements and building defects.
             </p>
 
-            {/* Horizontal scroll-snap slides — all text server-rendered/crawlable */}
-            <ol className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:thin]">
-              {strataSteps.map((s) => (
-                <li
-                  key={s.n}
-                  className="flex min-w-[80%] snap-start flex-col rounded-2xl border border-slate-200 bg-slate-50 p-7 sm:min-w-[320px]"
-                >
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-950 text-sm font-bold text-white">
-                    {s.n}
-                  </span>
-                  <h3 className="mt-5 text-lg font-bold text-sky-950">{s.title}</h3>
-                  <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">{s.body}</p>
-                </li>
-              ))}
-            </ol>
+            {/* Auto-crossfading feature slides (half image / half text) */}
+            <StrataConnectSlides />
 
             <div className="mt-8">
               <Link
