@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 import HomeJobsPanel from "@/components/jobs/HomeJobsPanel";
+import StrataConnectSlides from "@/components/about/StrataConnectSlides";
 import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 // Home-page Expert Remedial Advice services.
@@ -701,36 +702,22 @@ export default function HomeClient() {
           </div>
         </section>
 
-        {/* ── Remedial Building Australia (intro) ─────────────────────────── */}
+        {/* ── Strata Connect ──────────────────────────────────────────────── */}
         <section className="mx-auto max-w-7xl px-5 pt-4 pb-10">
-          <div className="rounded-2xl border-l-4 border-red-700 bg-[linear-gradient(135deg,rgba(185,28,28,0.16)_0%,rgba(185,28,28,0.06)_12%,#ffffff_30%,#ffffff_100%)] p-8 shadow-sm md:p-10">
-            <h1 className="text-2xl font-extrabold tracking-tight text-sky-950 md:text-3xl">
-              Remedial Building Australia
-            </h1>
-            <div className="mt-4 flex flex-col gap-4 text-lg italic leading-8 text-slate-600 md:text-xl">
-              <p>
-                Remedial Building Australia is a strata and remedial building platform connecting
-                owners corporations, strata managers, building managers, contractors, consultants,
-                engineers, suppliers and industry professionals across Australia.
-              </p>
-              <p>
-                The platform includes a business directory, job board, request quote system,
-                industry news and technical resources for the remedial building sector.
-              </p>
-              <p>
-                Key resources include the Defect Library, Repair Solutions, Repair System Selector,
-                Material Index, AI Scope Writer, courses and technical guidance covering
-                waterproofing, concrete repair, façades, roofing, structural repairs, drainage,
-                basements and building defects.
-              </p>
-              <p>
-                The platform also includes an Expert Remedial Advice section, offering services such
-                as Scope, Quote &amp; Tender Review, Remedial Budget Estimates, Building Repair
-                Strategy Advice and Capital Works Forecasts for strata-related building repair
-                decisions.
-              </p>
+          <div className="mb-6">
+            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">
+              Strata Connect
             </div>
+            <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-sky-950 md:text-3xl">
+              Turn a strata work order into competitive quotes
+            </h1>
+            <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600 md:text-lg">
+              Owners corporations and strata managers forward a work order once — from remedial
+              building works to cleaning and maintenance — and it&rsquo;s matched to available,
+              verified specialists who send back competitive quotes.
+            </p>
           </div>
+          <StrataConnectSlides />
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-20">

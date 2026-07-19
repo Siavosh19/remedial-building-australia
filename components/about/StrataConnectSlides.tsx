@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-// Strata Connect feature/benefit slides. Each slide is split half image / half
-// text and the set auto-crossfades. All slide text is rendered in the DOM (only
-// hidden via opacity), so it stays crawlable for SEO. Images are strata-related
-// shots reused from the news library in /public/Images.
+// Strata Connect feature/benefit slides. Each slide is split image + text and the
+// set auto-crossfades. All slide text is rendered in the DOM (only hidden via
+// opacity), so it stays crawlable for SEO. Images are strata-related shots reused
+// from the news library in /public/Images.
 type Slide = {
   image: string;
   alt: string;
@@ -21,21 +21,21 @@ const SLIDES: Slide[] = [
     image: "/Images/News8-Apartment.jpg",
     alt: "Strata apartment building serviced through Strata Connect",
     eyebrow: "One request, every trade",
-    title: "From remedial works to cleaning — all in one place",
+    title: "From remedial works to cleaning",
     body:
-      "Whether it's waterproofing, concrete repair, façades and roofing or everyday building cleaning, gardening and maintenance, a single Strata Connect request reaches the right specialists across every trade.",
+      "Waterproofing, concrete repair, façades, roofing — or everyday cleaning and maintenance. A single request reaches the right specialists across every trade.",
     points: [
-      "Every remedial and building services trade covered",
-      "One work order, matched to the right categories",
+      "Every remedial and building services trade",
+      "One work order, matched automatically",
     ],
   },
   {
     image: "/Images/News14 Rope Access.jpg",
     alt: "Remedial rope-access work on a strata building",
     eyebrow: "Quotes, faster",
-    title: "Reach available businesses near the building",
+    title: "Available businesses near the building",
     body:
-      "Your work order is matched instantly to verified businesses that are available and operating in the right location — so competitive quotes come back quickly, with no chasing trades or cold-calling one contractor at a time.",
+      "Your work order is matched to verified businesses operating in the right area — competitive quotes come back quickly, with no chasing trades one at a time.",
     points: [
       "Matched to verified, available specialists",
       "Compare competitive quotes side by side",
@@ -45,12 +45,12 @@ const SLIDES: Slide[] = [
     image: "/Images/News 30 Highrise Building.jpg",
     alt: "High-rise strata building managed with Strata Connect",
     eyebrow: "Submit once, not every time",
-    title: "No repeating a quote form for every job",
+    title: "No repeating a quote form",
     body:
-      "Owners corporations and strata managers simply forward a work order or scope of works. Strata Connect handles the matching and broadcasting — you stay in control while the right specialists come to you.",
+      "Owners corporations and strata managers simply forward a work order. Strata Connect handles the matching — you stay in control while the right specialists come to you.",
     points: [
       "Forward a work order — no repeat forms",
-      "Full control, less admin for every repair",
+      "Full control, less admin per repair",
     ],
   },
 ];
@@ -68,14 +68,16 @@ export default function StrataConnectSlides() {
   }, []);
 
   return (
-    <div className="mt-10">
-      {/* Crossfading slide stack — fixed responsive height so slides overlay */}
-      <div className="relative h-[520px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:h-[420px]">
+    <div>
+      {/* Crossfading slide stack. Mobile: image on top (fixed), text fills the
+          rest. Desktop: image left half, text right half. Fixed heights give the
+          absolute-stacked slides a stable box without clipping the text. */}
+      <div className="relative h-[560px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:h-[400px]">
         {SLIDES.map((s, i) => (
           <article
             key={s.title}
             aria-hidden={i !== active}
-            className={`absolute inset-0 grid grid-rows-2 transition-opacity duration-700 ease-in-out sm:grid-cols-2 sm:grid-rows-1 ${
+            className={`absolute inset-0 grid grid-rows-[210px_1fr] transition-opacity duration-700 ease-in-out sm:grid-cols-2 sm:grid-rows-1 ${
               i === active ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
@@ -91,20 +93,20 @@ export default function StrataConnectSlides() {
               />
             </div>
 
-            {/* Text half */}
-            <div className="flex flex-col justify-center gap-3 px-6 py-6 sm:px-9">
-              <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-red-700">
+            {/* Text half — generous padding so nothing touches the card edges */}
+            <div className="flex flex-col justify-center gap-3.5 px-7 py-7 sm:px-10 sm:py-9">
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-red-700">
                 {s.eyebrow}
               </p>
-              <h3 className="text-xl font-extrabold leading-tight text-sky-950 sm:text-2xl">
+              <h3 className="text-xl font-extrabold leading-snug text-sky-950 sm:text-2xl">
                 {s.title}
               </h3>
-              <p className="text-sm leading-7 text-slate-600">{s.body}</p>
-              <ul className="mt-1 space-y-1.5">
+              <p className="text-[15px] leading-7 text-slate-600">{s.body}</p>
+              <ul className="mt-1 space-y-2">
                 {s.points.map((p) => (
-                  <li key={p} className="flex items-start gap-2 text-sm font-medium text-sky-900">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-700" />
-                    {p}
+                  <li key={p} className="flex items-start gap-2.5 text-sm font-medium text-sky-900">
+                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-red-700" />
+                    <span>{p}</span>
                   </li>
                 ))}
               </ul>
