@@ -161,6 +161,19 @@ export async function POST(request: NextRequest) {
   const from = parseFrom(email.from);
   if (!from.email) return NextResponse.json({ error: "Missing sender." }, { status: 400 });
 
+  // Sender allowlist — Strata Connect only accepts work orders from an address
+  // that has a login account (the email someone signed up with). Any other
+  // sender is ignored: no intake is created, no attachments are stored, no AI
+  // runs, so no quote can ever result. We return 200 so Resend treats the
+  // message as delivered and does not retry.
+  const account = await prisma.user.findUnique({
+    where: { email: from.email.toLowerCase() },
+    select: { id: true, suspended: true },
+  });
+  if (!account || account.suspended) {
+    return NextResponse.json({ ok: true, rejected: true, reason: "sender-not-registered" });
+  }
+
   const messageId = email.message_id ?? email.messageId ?? null;
 
   // Idempotency: the same forwarded message must not create a second intake.
