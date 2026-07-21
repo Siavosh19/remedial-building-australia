@@ -405,7 +405,9 @@ export default function HomeClient() {
       <SiteHeader />
 
       <main>
-        <section className="relative overflow-hidden bg-sky-800">
+        <section className="relative overflow-hidden">
+          {/* Background blue layers, desaturated ~30% for a softer, less rich tone */}
+          <div className="absolute inset-0 bg-sky-800" style={{ filter: "saturate(0.7)" }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={heroIndex}
@@ -423,6 +425,7 @@ export default function HomeClient() {
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-r from-sky-950/95 via-sky-800/75 to-sky-700/20" />
+          </div>
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0"
             style={{
