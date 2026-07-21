@@ -157,6 +157,7 @@ export default function SeoLandingPage({ config }: { config: SeoLandingConfig })
             <Link href="/about" className="hover:text-sky-700">About</Link>
             <Link href="/contact" className="hover:text-sky-700">Contact</Link>
             <Link href="/terms" className="hover:text-sky-700">Terms</Link>
+            <Link href="/faq" className="hover:text-sky-700">FAQ</Link>
             <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
             <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
             <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>

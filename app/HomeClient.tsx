@@ -818,6 +818,7 @@ export default function HomeClient() {
               <Link href="/about" className="hover:text-sky-700">About</Link>
               <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
               <Link href="/contact" className="hover:text-sky-700">Contact</Link>
+              <Link href="/faq" className="hover:text-sky-700">FAQ</Link>
               <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-sky-700">Terms</Link>
               <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>

@@ -546,6 +546,7 @@ export default function BannerLayoutPage() {
             <div className="flex flex-col gap-2">
               <Link href="/advertise" className="hover:text-sky-700">Advertise With Us</Link>
               <Link href="/advertise/marketing-guide" className="hover:text-sky-700">Marketing Guide</Link>
+              <Link href="/faq" className="hover:text-sky-700">FAQ</Link>
               <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-sky-700">Terms</Link>
             </div>
