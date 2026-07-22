@@ -156,25 +156,25 @@ function ContactConfirmModal() {
 }
 
 // Circular 32px icon button (Free card, mobile) — opens the confirm popup.
-function ContactIconButton({ kind, value, company }: { kind: ContactKind; value: string; company: string }) {
+function ContactIconButton({ kind, value, company, size = 32 }: { kind: ContactKind; value: string; company: string; size?: number }) {
   const isWeb = kind === "website";
   const aria = kind === "phone" ? `Call ${company}` : kind === "email" ? `Email ${company}` : `Visit ${company} website`;
   return (
     <button type="button" aria-label={aria} onClick={() => openContactConfirm({ kind, value, company })}
-      style={{ width: 32, height: 32, borderRadius: 999, background: "#EEF3F8", color: isWeb ? "#185FA5" : "#16324F", display: "inline-flex", alignItems: "center", justifyContent: "center", border: "none", flexShrink: 0, cursor: "pointer", padding: 0 }}>
+      style={{ width: size, height: size, borderRadius: 999, background: "#EEF3F8", color: isWeb ? "#185FA5" : "#16324F", display: "inline-flex", alignItems: "center", justifyContent: "center", border: "none", flexShrink: 0, cursor: "pointer", padding: 0 }}>
       <ContactIcon kind={kind} />
     </button>
   );
 }
 
 // Right-aligned circular icons for the available contacts (Free card, mobile).
-function ContactIconRow({ company }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null } }) {
+function ContactIconRow({ company, size, gap = 6 }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null }; size?: number; gap?: number }) {
   if (!company.phone && !company.email && !company.website) return null;
   return (
-    <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-      {company.phone && <ContactIconButton kind="phone" value={company.phone} company={company.name} />}
-      {company.email && <ContactIconButton kind="email" value={company.email} company={company.name} />}
-      {company.website && <ContactIconButton kind="website" value={company.website} company={company.name} />}
+    <div style={{ display: "flex", gap, flexShrink: 0 }}>
+      {company.phone && <ContactIconButton kind="phone" value={company.phone} company={company.name} size={size} />}
+      {company.email && <ContactIconButton kind="email" value={company.email} company={company.name} size={size} />}
+      {company.website && <ContactIconButton kind="website" value={company.website} company={company.name} size={size} />}
     </div>
   );
 }
@@ -382,16 +382,14 @@ function FreeRow({ company }: { company: CompanyResult }) {
             : <span />}
           {locText && <span className="shrink-0 truncate text-right text-[12px] text-slate-400" style={{ maxWidth: "55%" }}>{locText}</span>}
         </div>
-        {/* Row 2: business name (serif) + circular contact icons */}
-        <div className="mt-2 flex items-center gap-2">
-          <div className="min-w-0 flex-1 truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 17, lineHeight: 1.2, color: "#16324F" }}>{name}</div>
-          <ContactIconRow company={company} />
-        </div>
-        {/* Row 3: View Profile (+ Claim if unclaimed), equal width */}
-        <div className="mt-2.5 flex gap-2">
-          <Link href={`/directory/company/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold text-white" style={{ background: "#16324F" }}>View Profile</Link>
+        {/* Row 2: business name (serif) — full width so long names truncate less */}
+        <div className="mt-2 min-w-0 truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 17, lineHeight: 1.2, color: "#16324F" }}>{name}</div>
+        {/* Row 3: three equal thirds — contact icons (left) · View Profile · Claim this profile */}
+        <div className="mt-2.5 flex items-center gap-2">
+          <div className="flex min-w-0 flex-1 justify-start"><ContactIconRow company={company} size={28} gap={4} /></div>
+          <Link href={`/directory/company/${company.slug}`} className="min-w-0 flex-1 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-center text-[11px] font-semibold text-white" style={{ background: "#16324F" }}>View Profile</Link>
           {canClaim && (
-            <Link href={`/directory/claim/${company.slug}`} className="flex-1 whitespace-nowrap rounded-lg px-3 py-2 text-center text-[13px] font-semibold" style={{ border: "0.5px solid #C6D2DE", color: "#16324F" }}>Claim this profile</Link>
+            <Link href={`/directory/claim/${company.slug}`} className="min-w-0 flex-1 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-center text-[11px] font-semibold" style={{ border: "0.5px solid #C6D2DE", color: "#16324F" }}>Claim this profile</Link>
           )}
         </div>
       </div>
