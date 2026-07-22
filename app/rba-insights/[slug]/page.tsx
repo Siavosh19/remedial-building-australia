@@ -7,7 +7,7 @@ import { ArrowLeft, Clock, Calendar, ChevronRight } from "lucide-react";
 import { marked } from "marked";
 
 import SiteHeader from "@/components/SiteHeader";
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour — cuts ISR compute (Vercel free-tier)
 
 function formatDate(d: Date | null): string {
   if (!d) return "";

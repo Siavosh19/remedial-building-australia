@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour — cuts ISR compute (Vercel free-tier)
 
 function formatDate(d: Date | null): string {
   if (!d) return "";

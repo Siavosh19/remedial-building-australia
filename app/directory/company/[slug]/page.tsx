@@ -28,7 +28,7 @@ function SocialLink({ url, path, bg }: { url: string | null | undefined; path: s
     <span className={`${cls} opacity-40`}>{inner}</span>
   );
 }
-export const revalidate = 60;
+export const revalidate = 86400; // 1 day — profiles rarely change; cuts ISR compute (Vercel free-tier provisioned memory)
 
 type Props = { params: Promise<{ slug: string }> };
 

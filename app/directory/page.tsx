@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60;
+export const revalidate = 600; // 10 min — cuts ISR compute (Vercel free-tier)
 
 export default async function DirectoryPage() {
   // The directory shows NO listings until the visitor searches or filters.
