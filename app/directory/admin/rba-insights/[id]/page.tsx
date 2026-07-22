@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { InsightEditor } from "../InsightEditor";
 import DeleteInsightButton from "./DeleteInsightButton";
+import ShareToSocialButton from "./ShareToSocialButton";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +44,10 @@ export default async function EditInsightPage({ params }: { params: Promise<{ id
           </Link>
           <h1 className="text-2xl font-bold text-slate-900 line-clamp-1">{article.title}</h1>
         </div>
-        <DeleteInsightButton id={article.id} />
+        <div className="flex items-start gap-3">
+          <ShareToSocialButton id={article.id} status={article.status} />
+          <DeleteInsightButton id={article.id} />
+        </div>
       </div>
       <InsightEditor initial={initial} />
     </div>
