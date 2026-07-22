@@ -5,8 +5,46 @@ import CategorySearch from "@/components/directory/CategorySearch";
 import SuburbAutocomplete from "@/components/directory/SuburbAutocomplete";
 import { postcodeToState } from "@/lib/au-locations";
 import { validateAuPhone } from "@/lib/phone-au";
+import { NAME_MAX_FREE, NAME_MAX_PAID, DESC_MAX_WORDS } from "@/lib/directory-tier";
 
 const OTHER_CATEGORY_ID = -1;
+
+// Plan the signer-upper is choosing. "free" publishes immediately; "silver" /
+// "gold" create the listing then hand off to Stripe checkout (card required)
+// before the trial starts. Keys map to the subscribe route's plan keys.
+type PlanChoice = "free" | "silver" | "gold";
+type PlanPricing = { cents: number; trial: number; compareAt?: number | null; promo?: string | null };
+export type SignupPlans = { silver: PlanPricing; gold: PlanPricing };
+
+const fmtDollars = (cents: number) => {
+  const d = cents / 100;
+  return Number.isInteger(d) ? `$${d.toLocaleString("en-AU")}` : `$${d.toFixed(2)}`;
+};
+
+// Feature copy mirrors the /directory/pricing cards (single wording source).
+const FREE_FEATURES = [
+  "Public business profile",
+  "Phone, email and website",
+  "Listed in directory search",
+  "Does not receive quote requests",
+];
+const SILVER_FEATURES = [
+  "Everything in Free",
+  "Receive quote requests",
+  "3 lead credits per week",
+  "Request Quote button on your listing",
+  "Shown within 50 km of the searcher — above all Free listings",
+  "Company logo + up to 15 project photos",
+  "On-card description (up to 21 words) + tagline",
+];
+const GOLD_FEATURES = [
+  "Everything in Silver",
+  "7 lead credits per week",
+  "Featured placement — above Silver & Free listings",
+  "Highlighted card + Gold Featured badge",
+  "Only 3 Gold businesses per category in your State",
+  "Shown across your whole State — not distance-limited",
+];
 
 type AbnResult = {
   validFormat: boolean;
@@ -19,7 +57,8 @@ type AbnResult = {
   message: string;
 };
 
-export default function CompanySetupForm({ categories }: { categories: { id: number; name: string }[] }) {
+export default function CompanySetupForm({ categories, plans }: { categories: { id: number; name: string }[]; plans: SignupPlans }) {
+  const [selectedPlan, setSelectedPlan] = useState<PlanChoice>("free");
   const [form, setForm] = useState({
     companyName: "",
     abn: "",
@@ -91,6 +130,16 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
     (abnResult.status === "invalid" || abnResult.status === "cancelled" || abnResult.status === "not_found");
   const abnVerified = abnResult?.status === "active";
 
+  // ── Tier-dependent input caps ──────────────────────────────────────────────
+  // Free listings show a short name only and no description; Silver/Gold show a
+  // fuller name + a capped description. Caps are enforced live (can't type past
+  // them) and match what the listing card renders, so nothing gets clipped.
+  const isPaid = selectedPlan !== "free";
+  const nameMax = isPaid ? NAME_MAX_PAID : NAME_MAX_FREE;
+  const nameAtCap = form.companyName.length >= nameMax;
+  const descWordCount = form.description.trim() ? form.description.trim().split(/\s+/).filter(Boolean).length : 0;
+  const descAtCap = descWordCount >= DESC_MAX_WORDS;
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!form.mainCategoryId) {
@@ -113,6 +162,10 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
       setStatus({ type: "error", message: `Postcode ${form.postcode} is in ${pcState}, not ${form.state}.` });
       return;
     }
+    if (isPaid && !form.description.trim()) {
+      setStatus({ type: "error", message: "A short description is required for Silver and Gold listings." });
+      return;
+    }
     setStatus(null);
     setLoading(true);
 
@@ -127,6 +180,8 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
       body: JSON.stringify({
         ...form,
         website,
+        // Free listings carry no description (their card never shows one).
+        description: isPaid ? form.description : "",
         mainCategoryId: Number(form.mainCategoryId),
         otherCategory: isOtherCategory ? otherCategory.trim() : "",
       }),
@@ -156,6 +211,38 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
       } catch { /* ignore — newsletter is optional */ }
     }
 
+    // Paid plan → create the listing (done above) then hand off to Stripe
+    // checkout, where a card is collected before the free trial starts. If the
+    // buyer abandons checkout, the listing simply stays Free/claimed.
+    if (isPaid) {
+      setStatus({ type: "success", message: "Listing created — redirecting to secure checkout to start your free trial…" });
+      try {
+        const subRes = await fetch("/api/directory/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plan: selectedPlan === "gold" ? "featured-monthly" : "claimed-monthly" }),
+        });
+        const subResult = await subRes.json().catch(() => ({}));
+        if (subRes.ok && subResult.checkoutUrl) {
+          window.location.href = subResult.checkoutUrl;
+          return;
+        }
+        if (subRes.ok && (subResult.success || subResult.mode)) {
+          // Manual trial granted (Stripe not configured for this plan yet).
+          window.location.href = "/directory/dashboard/subscription";
+          return;
+        }
+        // Subscribe failed (e.g. Gold full in this State) — listing is live as
+        // Free; send them to the dashboard with the reason.
+        setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Your listing is live as a Free listing — you can upgrade anytime from your dashboard." });
+        window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
+      } catch {
+        setStatus({ type: "error", message: "We couldn't reach checkout. Your listing is live as Free — upgrade anytime from your dashboard." });
+        window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
+      }
+      return;
+    }
+
     setStatus({
       type: "success",
       message: result.autoApproved
@@ -165,21 +252,82 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
     window.setTimeout(() => { window.location.href = "/directory/dashboard"; }, 2000);
   }
 
+  const planCards: Array<{ key: PlanChoice; label: string; price?: PlanPricing; features: string[]; ring: string; header: string; badge?: string }> = [
+    { key: "gold", label: "Gold", price: plans.gold, features: GOLD_FEATURES, ring: "ring-amber-400", header: "text-amber-700", badge: "★ Recommended" },
+    { key: "silver", label: "Silver", price: plans.silver, features: SILVER_FEATURES, ring: "ring-slate-400", header: "text-slate-700" },
+    { key: "free", label: "Free Listing", features: FREE_FEATURES, ring: "ring-emerald-400", header: "text-emerald-700" },
+  ];
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* ── Plan picker (Gold → Silver → Free), scrollable ── */}
+      <div>
+        <p className="text-sm font-semibold text-slate-800">Choose your plan</p>
+        <p className="mt-0.5 text-xs text-slate-500">
+          Free publishes instantly. Silver or Gold start a free trial — a card is required at checkout, with no charge until the trial ends.
+        </p>
+        <div className="mt-3 max-h-[440px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 p-3" role="radiogroup" aria-label="Choose your plan">
+          {planCards.map((p) => {
+            const active = selectedPlan === p.key;
+            return (
+              <button
+                key={p.key}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => setSelectedPlan(p.key)}
+                className={`block w-full rounded-2xl border bg-white p-4 text-left transition ${active ? `border-transparent ring-2 ${p.ring}` : "border-slate-200 hover:border-slate-300"}`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-bold uppercase tracking-[0.18em] ${p.header}`}>{p.label}</span>
+                    {p.badge && <span className="rounded-full bg-sky-950 px-2 py-0.5 text-[10px] font-bold text-white">{p.badge}</span>}
+                  </div>
+                  <div className="text-right">
+                    {p.price ? (
+                      <>
+                        <span className="text-lg font-extrabold text-slate-900">{fmtDollars(p.price.cents)}</span>
+                        <span className="text-xs font-semibold text-slate-500">/month</span>
+                        {p.price.trial > 0 && <div className="text-[11px] font-semibold text-emerald-700">{p.price.trial}-day free trial</div>}
+                      </>
+                    ) : (
+                      <span className="text-lg font-extrabold text-slate-900">Free</span>
+                    )}
+                  </div>
+                </div>
+                <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-1.5 text-xs text-slate-600">
+                      <span className="mt-0.5 shrink-0 text-emerald-600">✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <span className={`mt-3 inline-flex items-center gap-1.5 text-xs font-semibold ${active ? "text-sky-800" : "text-slate-400"}`}>
+                  <span className={`inline-block h-3.5 w-3.5 rounded-full border ${active ? "border-sky-700 bg-sky-700" : "border-slate-300"}`} />
+                  {active ? "Selected" : "Select"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="grid gap-6 md:grid-cols-2">
         <label className="block text-sm font-semibold text-slate-800">
           <span>Company name</span>
           <input
             type="text"
             value={form.companyName}
-            onChange={(event) => setForm({ ...form, companyName: event.target.value })}
-            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-            maxLength={50}
+            onChange={(event) => setForm({ ...form, companyName: event.target.value.slice(0, nameMax) })}
+            className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${nameAtCap ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"}`}
+            maxLength={nameMax}
             required
           />
-          <span className="mt-1 block text-xs font-normal text-slate-400">
-            {form.companyName.length}/50 · keep it short so it fits one line on your listing
+          <span className="mt-1 flex justify-between gap-3 text-xs font-normal">
+            <span className={nameAtCap ? "font-semibold text-rose-600" : "text-slate-400"}>
+              {nameAtCap ? `Max ${nameMax} characters` : "Keep it short so it fits one line on your listing"}
+            </span>
+            <span className={`shrink-0 tabular-nums ${nameAtCap ? "font-semibold text-rose-600" : "text-slate-400"}`}>{form.companyName.length}/{nameMax}</span>
           </span>
         </label>
 
@@ -409,17 +557,31 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         </span>
       </label>
 
-      <label className="block text-sm font-semibold text-slate-800">
-        <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
-        <textarea
-          value={form.description}
-          onChange={(event) => { const w = event.target.value.trim().split(/\s+/).filter(Boolean); setForm({ ...form, description: w.length <= 24 ? event.target.value : w.slice(0, 24).join(" ") }); }}
-          rows={3}
-          className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-          required
-        />
-        <span className="mt-1 block text-xs font-normal text-slate-400">A brief summary shown on your directory listing card — max 24 words.</span>
-      </label>
+      {isPaid ? (
+        <label className="block text-sm font-semibold text-slate-800">
+          <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
+          <textarea
+            value={form.description}
+            onChange={(event) => {
+              const w = event.target.value.split(/\s+/).filter(Boolean);
+              setForm({ ...form, description: w.length <= DESC_MAX_WORDS ? event.target.value : w.slice(0, DESC_MAX_WORDS).join(" ") });
+            }}
+            rows={3}
+            className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${descAtCap ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"}`}
+            required
+          />
+          <span className="mt-1 flex justify-between gap-3 text-xs font-normal">
+            <span className={descAtCap ? "font-semibold text-rose-600" : "text-slate-400"}>
+              {descAtCap ? `Max ${DESC_MAX_WORDS} words` : `A brief summary shown on your Silver/Gold listing card — max ${DESC_MAX_WORDS} words.`}
+            </span>
+            <span className={`shrink-0 tabular-nums ${descAtCap ? "font-semibold text-rose-600" : "text-slate-400"}`}>{descWordCount}/{DESC_MAX_WORDS} words</span>
+          </span>
+        </label>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500">
+          Free listings show your business name and contact details only — no description. Choose <span className="font-semibold text-slate-700">Silver</span> or <span className="font-semibold text-slate-700">Gold</span> above to add an on-card description (up to {DESC_MAX_WORDS} words), a logo and photos.
+        </div>
+      )}
 
       <label className="block text-sm font-semibold text-slate-800">
         <span>Full description <span className="font-normal text-slate-400">(profile page — optional)</span></span>
@@ -456,7 +618,7 @@ export default function CompanySetupForm({ categories }: { categories: { id: num
         disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
         className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Submitting…" : "Submit & publish listing"}
+        {loading ? "Submitting…" : isPaid ? `Continue to secure checkout — start ${selectedPlan === "gold" ? "Gold" : "Silver"} trial →` : "Submit & publish free listing"}
       </button>
     </form>
   );

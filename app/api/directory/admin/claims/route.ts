@@ -57,8 +57,9 @@ export async function PATCH(request: NextRequest) {
           listing_claim_status: "claimed",
           is_claimed: true,
           claimed_at: new Date(),
-          // Elevate to claimed plan if still basic
-          plan_type: claim.company.listing_claim_status === "unclaimed" ? "claimed" : undefined,
+          // Approving a claim marks ownership only — it does NOT grant a paid
+          // tier. The listing stays Free/basic until the owner subscribes via
+          // Stripe checkout (card required).
         },
       });
 
@@ -79,25 +80,9 @@ export async function PATCH(request: NextRequest) {
         });
       }
 
-      // Start free trial subscription for claimed plan
-      await tx.directorySubscription.upsert({
-        where: { company_id: claim.company.id },
-        create: {
-          company_id: claim.company.id,
-          plan_type: "claimed",
-          billing_cycle: "free",
-          subscription_status: "trialing",
-          trial_started_at: new Date(),
-          trial_ends_at: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
-          admin_notes: "60-day trial started on claim approval",
-        },
-        update: {
-          subscription_status: "trialing",
-          trial_started_at: new Date(),
-          trial_ends_at: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
-          admin_notes: "60-day trial started on claim approval",
-        },
-      });
+      // NOTE: no trial subscription is created on claim approval. A trial only
+      // exists after the owner completes Stripe checkout (card on file). Writing
+      // a "trialing" row here created phantom trials with no billing behind them.
     });
 
     // Get user details for email

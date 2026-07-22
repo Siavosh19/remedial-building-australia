@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo, memo, type CSSProperties } from "react";
 import Link from "next/link";
-import { dirTier, displayName, clampName, cardSummary } from "@/lib/directory-tier";
+import { dirTier, freeCardName, clampName, cardSummary } from "@/lib/directory-tier";
 
 // Brushed / shiny metallic sheens — angled bands used as a thin frame around the
 // white content panel on the paid tiers.
@@ -338,7 +338,7 @@ function SilverRow({ company }: { company: CompanyResult }) {
 function FreeRow({ company }: { company: CompanyResult }) {
   const location = company.locations[0];
   const locText = [location?.suburb, location?.state].filter(Boolean).join(", ");
-  const name = displayName(company.name);
+  const name = freeCardName(company.name);
   const claimed = company.is_claimed || company.listing_claim_status === "claimed";
   const canClaim = !claimed && company.listing_claim_status !== "claim_pending";
 

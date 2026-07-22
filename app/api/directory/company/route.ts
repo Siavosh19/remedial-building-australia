@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
   if (!suburb) return NextResponse.json({ error: "Suburb is required." }, { status: 400 });
   if (!/^\d{4}$/.test(postcode)) return NextResponse.json({ error: "Postcode must be 4 digits." }, { status: 400 });
   if (!businessEmail || !EMAIL_RE.test(businessEmail)) return NextResponse.json({ error: "A valid business email is required." }, { status: 400 });
-  if (!description) return NextResponse.json({ error: "Short description is required." }, { status: 400 });
+  // Description is optional: Free listings carry none (their card shows only the
+  // business name + contacts). Silver/Gold require it, enforced on the client.
 
   // ── ABN verification (checksum, plus live ABR lookup when configured) ──────────
   const abnCheck = await verifyAbn(abn);
@@ -162,7 +163,10 @@ export async function POST(request: NextRequest) {
           profile_status: profileStatus,
           status: companyStatus,
           ...claimSignals,
-          ...(autoApprove && scraped.plan_type !== "featured" ? { plan_type: "claimed" as const } : {}),
+          // Claiming a listing NO LONGER grants a paid tier. It stays on its
+          // current plan (Free/basic for a scraped listing) and only marks
+          // ownership. A Silver/Gold tier is granted solely via Stripe checkout
+          // (/api/directory/subscribe), which requires a card.
         },
       });
       await tx.companyUser.create({
@@ -220,7 +224,8 @@ export async function POST(request: NextRequest) {
         is_claimed: true,
         is_featured: false,
         ...claimSignals,
-        ...(autoApprove ? { plan_type: "claimed" as const } : {}),
+        // New listings start on Free/basic. A Silver/Gold tier is granted only
+        // through Stripe checkout (/api/directory/subscribe), never on signup.
         locations: {
           create: {
             address: suburb,

@@ -10,8 +10,6 @@ import { verifyAbn, abnNameMismatch } from "@/lib/abn";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const digits = (s: string | null | undefined) => (s ?? "").replace(/\D/g, "");
 
-const TRIAL_MS = 60 * 24 * 60 * 60 * 1000;
-
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
@@ -130,7 +128,8 @@ export async function POST(request: NextRequest) {
           claimed_at: new Date(),
           abn: enteredAbn,
           ...(abnCheck.active ? { profile_status: "business_verified" } : {}),
-          plan_type: company.listing_claim_status === "unclaimed" ? "claimed" : undefined,
+          // Claiming marks ownership only — it does NOT grant a Silver/Gold tier.
+          // The listing stays on Free/basic until the owner subscribes via Stripe.
         },
       });
       await tx.claimRequest.create({
@@ -146,24 +145,10 @@ export async function POST(request: NextRequest) {
           reviewed_at: new Date(),
         },
       });
-      await tx.directorySubscription.upsert({
-        where: { company_id: company.id },
-        create: {
-          company_id: company.id,
-          plan_type: "claimed",
-          billing_cycle: "free",
-          subscription_status: "trialing",
-          trial_started_at: new Date(),
-          trial_ends_at: new Date(Date.now() + TRIAL_MS),
-          admin_notes: "60-day trial started on ABN-verified self-claim",
-        },
-        update: {
-          subscription_status: "trialing",
-          trial_started_at: new Date(),
-          trial_ends_at: new Date(Date.now() + TRIAL_MS),
-          admin_notes: "60-day trial started on ABN-verified self-claim",
-        },
-      });
+      // NOTE: no subscription/trial row is created on claim. A trial only ever
+      // exists after the owner completes Stripe checkout (card on file) via
+      // /api/directory/subscribe. Creating a "trialing" row here produced phantom
+      // trials with no billing behind them.
     });
 
     sendDirectoryVerificationEmail(fullName, email, verificationToken).catch(() => {});

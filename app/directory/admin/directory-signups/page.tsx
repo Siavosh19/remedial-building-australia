@@ -1,6 +1,14 @@
 import { prisma } from "@/lib/prisma";
+import { tierLabel } from "@/lib/directory-tier";
 
 export const dynamic = "force-dynamic";
+
+// Tailwind classes for the Plan-type badge, keyed by the visual tier.
+const PLAN_BADGE: Record<string, string> = {
+  Gold: "bg-amber-100 text-amber-800",
+  Silver: "bg-slate-200 text-slate-700",
+  "Free Listing": "bg-slate-100 text-slate-500",
+};
 
 export default async function DirectorySignupsPage() {
   const companies = await prisma.company.findMany({
@@ -9,6 +17,7 @@ export default async function DirectorySignupsPage() {
     include: {
       main_category: { select: { name: true } },
       locations: { take: 1 },
+      directory_subscription: { select: { subscription_status: true, stripe_subscription_id: true } },
     },
   });
 
@@ -34,6 +43,7 @@ export default async function DirectorySignupsPage() {
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Company</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Category</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Location</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-700">Plan type</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Status</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Claimed</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Joined</th>
@@ -48,6 +58,21 @@ export default async function DirectorySignupsPage() {
                 </td>
                 <td className="px-4 py-3 text-slate-500">{c.main_category?.name ?? "—"}</td>
                 <td className="px-4 py-3 text-slate-500">{c.locations[0] ? `${c.locations[0].suburb}, ${c.locations[0].state}` : "—"}</td>
+                <td className="px-4 py-3">
+                  {(() => {
+                    const label = tierLabel(c.plan_type);
+                    const sub = c.directory_subscription;
+                    const note = sub && sub.subscription_status !== "none"
+                      ? ` · ${sub.subscription_status}${sub.stripe_subscription_id ? "" : " (no card)"}`
+                      : "";
+                    return (
+                      <span className="inline-flex items-center gap-1">
+                        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${PLAN_BADGE[label] ?? "bg-slate-100 text-slate-500"}`}>{label}</span>
+                        {note && <span className="text-[11px] text-slate-400">{note}</span>}
+                      </span>
+                    );
+                  })()}
+                </td>
                 <td className="px-4 py-3">
                   <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${c.status === "published" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>
                     {c.status}

@@ -1,8 +1,31 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
-import CompanySetupForm from "@/components/directory/CompanySetupForm";
+import CompanySetupForm, { type SignupPlans } from "@/components/directory/CompanySetupForm";
 import AuthHeader from "@/components/AuthHeader";
+
+// Plan pricing shown on the signup plan-picker. Pulled from the admin-managed
+// `plans` table (same source as /directory/pricing), with a founding-offer
+// fallback so the form still renders if the table is empty/unavailable.
+async function getSignupPlans(): Promise<SignupPlans> {
+  const fallback: SignupPlans = {
+    silver: { cents: 2900, trial: 60, compareAt: 4900, promo: "Limited time" },
+    gold:   { cents: 4900, trial: 60, compareAt: 9900, promo: "Limited time" },
+  };
+  try {
+    const plans = await prisma.plan.findMany({
+      where: { product_line: "directory", is_active: true, is_public: true, billing_interval: "month" },
+    });
+    const silver = plans.find((p) => p.tier === "claimed");
+    const gold = plans.find((p) => p.tier === "featured");
+    return {
+      silver: silver ? { cents: silver.amount_cents, trial: silver.trial_days, compareAt: silver.compare_at_cents, promo: silver.promo_label } : fallback.silver,
+      gold:   gold   ? { cents: gold.amount_cents,   trial: gold.trial_days,   compareAt: gold.compare_at_cents,   promo: gold.promo_label }   : fallback.gold,
+    };
+  } catch {
+    return fallback;
+  }
+}
 
 export default async function DirectoryCompanySetupPage() {
   const user = await getCurrentDirectoryUser();
@@ -28,6 +51,8 @@ export default async function DirectoryCompanySetupPage() {
     ...rawCats.filter((c) => c.parent_id != null).map((c) => ({ id: c.id, name: `${c.name} (Supplier)` })),
   ];
 
+  const plans = await getSignupPlans();
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
     <AuthHeader />
@@ -48,7 +73,7 @@ export default async function DirectoryCompanySetupPage() {
         ))}
       </ul>
       <div className="mt-10">
-        <CompanySetupForm categories={categories} />
+        <CompanySetupForm categories={categories} plans={plans} />
       </div>
     </div>
     </div>
