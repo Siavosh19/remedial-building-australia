@@ -21,7 +21,7 @@ export function dirTier(planType?: string | null): DirTier {
 // Shared by the signup form (enforced at input) AND the listing cards (enforced
 // at render), so a listing that was captured within the caps never gets clipped
 // on its card. Character counts INCLUDE spaces.
-export const NAME_MAX_FREE = 32;    // Free listings: short business name only
+export const NAME_MAX_FREE = 38;    // Free listings: short business name only
 export const NAME_MAX_PAID = 58;    // Silver / Gold: full name (may include a tagline)
 export const DESC_MAX_WORDS = 21;   // Silver / Gold on-card description word cap
 
