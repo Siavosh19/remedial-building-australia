@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import CategorySearch from "@/components/directory/CategorySearch";
 import SecondaryCategories from "@/components/directory/SecondaryCategories";
+import { DESC_MAX_WORDS } from "@/lib/directory-tier";
 
 type Category = { id: number; name: string };
 
@@ -89,6 +90,11 @@ export default function CompanyEditForm({ company, categories }: Props) {
 
   const photos = media.filter((m) => m.media_type === "photo");
   const logo = media.find((m) => m.media_type === "logo");
+
+  // Short-description word cap — enforced live (can't type past it) and mirrored
+  // in the helper note, which turns red at the cap. Matches the signup form.
+  const descWordCount = form.description.trim() ? form.description.trim().split(/\s+/).filter(Boolean).length : 0;
+  const descAtCap = descWordCount >= DESC_MAX_WORDS;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -323,12 +329,15 @@ export default function CompanyEditForm({ company, categories }: Props) {
           <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
           <textarea
             value={form.description}
-            onChange={(e) => { const w = e.target.value.trim().split(/\s+/).filter(Boolean); setForm({ ...form, description: w.length <= 24 ? e.target.value : w.slice(0, 24).join(" ") }); }}
+            onChange={(e) => { const w = e.target.value.split(/\s+/).filter(Boolean); setForm({ ...form, description: w.length <= DESC_MAX_WORDS ? e.target.value : w.slice(0, DESC_MAX_WORDS).join(" ") }); }}
             rows={3}
-            className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+            className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${descAtCap ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"}`}
           />
-          <span className="mt-1 block text-xs font-normal text-slate-400">
-            A brief summary shown on your directory listing card — max 24 words.
+          <span className="mt-1 flex justify-between gap-3 text-xs font-normal">
+            <span className={descAtCap ? "font-semibold text-rose-600" : "text-slate-400"}>
+              {descAtCap ? `Max ${DESC_MAX_WORDS} words` : `A brief summary shown on your directory listing card — max ${DESC_MAX_WORDS} words.`}
+            </span>
+            <span className={`shrink-0 tabular-nums ${descAtCap ? "font-semibold text-rose-600" : "text-slate-400"}`}>{descWordCount}/{DESC_MAX_WORDS} words</span>
           </span>
         </label>
 

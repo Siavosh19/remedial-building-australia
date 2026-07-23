@@ -179,24 +179,6 @@ function ContactIconRow({ company, size, gap = 6 }: { company: { name: string; p
   );
 }
 
-// Equal-width Call / Email / Website tap buttons (Featured card, mobile Row 4) —
-// each opens the confirm popup. Only available contacts are shown.
-function ContactTapRow({ company }: { company: { name: string; phone: string | null; email?: string | null; website?: string | null } }) {
-  const btns: { kind: ContactKind; value: string; label: string }[] = [];
-  if (company.phone) btns.push({ kind: "phone", value: company.phone, label: "Call" });
-  if (company.email) btns.push({ kind: "email", value: company.email, label: "Email" });
-  if (company.website) btns.push({ kind: "website", value: company.website, label: "Website" });
-  if (!btns.length) return null;
-  return (
-    <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-      {btns.map((b) => (
-        <button key={b.kind} type="button" aria-label={`${b.label} ${company.name}`} onClick={() => openContactConfirm({ kind: b.kind, value: b.value, company: company.name })}
-          style={{ flex: 1, background: "#F5F4F0", borderRadius: 8, border: "none", color: "#16324F", fontSize: 13, fontWeight: 700, padding: "9px 0", cursor: "pointer" }}>{b.label}</button>
-      ))}
-    </div>
-  );
-}
-
 // Distance + location as a single "📍 X km away · Suburb, STATE" line (mobile).
 function metaLine(distanceKm: number | null | undefined, locText: string): string {
   const d = distanceKm == null ? "" : distanceKm < 1 ? "< 1 km away" : `${distanceKm < 10 ? distanceKm.toFixed(1) : Math.round(distanceKm)} km away`;
@@ -299,13 +281,10 @@ function SilverRow({ company }: { company: CompanyResult }) {
 
       {/* ── Mobile (<640px) — item 4: compact 4-row layout ── */}
       <div className="rounded-[8px] bg-white sm:hidden" style={{ padding: "20px 16px 14px" }}>
-        {/* Row 1: category chip (left) + View Profile (right) */}
-        <div className="flex items-center justify-between gap-2">
-          {company.main_category
-            ? <span className="min-w-0 truncate rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>{company.main_category.name.split("/")[0].trim()}</span>
-            : <span />}
-          <Link href={`/directory/company/${company.slug}`} className="shrink-0 whitespace-nowrap rounded-lg bg-sky-950 px-3 py-1.5 text-[13px] font-semibold text-white">View Profile</Link>
-        </div>
+        {/* Row 1: category chip (View Profile moved to the foot row) */}
+        {company.main_category && (
+          <span className="inline-block min-w-0 max-w-full truncate rounded-full px-2 py-0.5 text-[12px] font-bold" style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}>{company.main_category.name.split("/")[0].trim()}</span>
+        )}
         {/* Row 2: 46px logo + stacked tagline / name / location */}
         <div className="mt-3 flex items-start gap-3">
           <div className="flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[13px] font-extrabold text-slate-600" style={{ width: 46, height: 46 }}>
@@ -323,8 +302,11 @@ function SilverRow({ company }: { company: CompanyResult }) {
         </div>
         {/* Row 3: description (2 lines max) */}
         {summary && <p className="mt-2.5 text-[13px] leading-snug text-slate-600" style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{summary}</p>}
-        {/* Row 4: Call / Email / Website tap buttons */}
-        <ContactTapRow company={company} />
+        {/* Row 4: contact icons (left) + View Profile (right) — mirrors the Free card */}
+        <div className="mt-3 flex items-center justify-between gap-2">
+          {(company.phone || company.email || company.website) ? <ContactIconRow company={company} /> : <span />}
+          <Link href={`/directory/company/${company.slug}`} className="shrink-0 whitespace-nowrap rounded-lg bg-sky-950 px-4 py-2 text-[13px] font-semibold text-white">View Profile</Link>
+        </div>
       </div>
     </div>
   );
@@ -514,8 +496,8 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
           <span className="absolute left-4 top-0 z-20 -translate-y-1/2 whitespace-nowrap rounded-full px-3 py-1 text-[10px] font-bold shadow-md ring-1 ring-black/5 sm:left-7 sm:px-3.5 sm:text-[11px]" style={{ background: "#fdf1cf", color: "#7a5c1e" }}>
             Your Business Here
           </span>
-          {/* Tier badge — top-right on phones, top-centre on desktop */}
-          <div className="absolute right-4 top-0 z-10 -translate-y-1/2 whitespace-nowrap rounded-[20px] px-[18px] py-1.5 text-[10px] font-extrabold uppercase tracking-[1.2px] text-white sm:left-1/2 sm:right-auto sm:-translate-x-1/2" style={{ background: "linear-gradient(135deg, #b8963e, #d4b44a, #c8922a)", boxShadow: "0 4px 14px rgba(184,150,62,0.45)" }}>
+          {/* Tier badge — top-centre on all sizes */}
+          <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-[20px] px-[18px] py-1.5 text-[10px] font-extrabold uppercase tracking-[1.2px] text-white" style={{ background: "linear-gradient(135deg, #b8963e, #d4b44a, #c8922a)", boxShadow: "0 4px 14px rgba(184,150,62,0.45)" }}>
             ⭐ Gold Featured
           </div>
           <div
@@ -625,13 +607,8 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
 
               {/* ── Mobile (<640px) — item 4: compact 4-row layout ── */}
               <div className="sm:hidden" style={{ padding: "20px 16px 14px" }}>
-                {/* Row 1: category chip (left) + View Profile (right) */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                  {b.main_category
-                    ? <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 12, fontWeight: 700 }}>{b.main_category.name.split("/")[0].trim()}</span>
-                    : <span />}
-                  <Link href={`/directory/company/${b.slug}`} style={{ flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 8, padding: "6px 12px", fontSize: 13, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>View Profile</Link>
-                </div>
+                {/* Row 1: category chip (View Profile moved to the foot row) */}
+                {b.main_category && <span style={{ display: "inline-block", minWidth: 0, maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE", borderRadius: 20, padding: "3px 11px", fontSize: 12, fontWeight: 700 }}>{b.main_category.name.split("/")[0].trim()}</span>}
                 {/* Row 2: 46px logo + stacked tagline / name / location */}
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginTop: 12 }}>
                   <div style={{ width: 46, height: 46, flexShrink: 0, borderRadius: 10, background: "#fff6da", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -647,8 +624,11 @@ function TopListingSection({ items, eligible }: { items: TopListing[]; eligible:
                 </div>
                 {/* Row 3: description (2 lines max) */}
                 {cardSummary(b.description) && <p style={{ fontSize: 13, color: "#334155", lineHeight: 1.45, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cardSummary(b.description)}</p>}
-                {/* Row 4: Call / Email / Website tap buttons */}
-                <ContactTapRow company={b} />
+                {/* Row 4: contact icons (left) + View Profile (right) — mirrors the Free card */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginTop: 12 }}>
+                  {(b.phone || b.email || b.website) ? <ContactIconRow company={b} /> : <span />}
+                  <Link href={`/directory/company/${b.slug}`} style={{ flexShrink: 0, background: "#1e3a5f", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>View Profile</Link>
+                </div>
               </div>
               </div>
             </div>
