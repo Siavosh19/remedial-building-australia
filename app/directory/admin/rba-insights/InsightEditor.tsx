@@ -62,8 +62,15 @@ function calcReadingTime(body: string): number {
 }
 
 export function InsightEditor({ initial }: { initial?: Partial<Article> }) {
-  const isEdit = !!initial?.id;
+  const [savedId, setSavedId] = useState<number | null>(initial?.id ?? null);
+  const isEdit = savedId !== null;
+  const startedPublished = initial?.status === "published";
   const [form, setForm] = useState<Article>({ ...EMPTY, ...initial });
+  const [social, setSocial] = useState({ facebook: true, instagram: true, linkedin: true });
+  const [postedOnce, setPostedOnce] = useState(false);
+  const [socialResults, setSocialResults] = useState<
+    Array<{ platform: string; ok: boolean; skipped?: boolean; url?: string; error?: string }> | null
+  >(null);
   const [slugTouched, setSlugTouched] = useState(isEdit);
   const [tab, setTab] = useState<"write" | "preview">("write");
   const [imagePreview, setImagePreview] = useState<"sidebar" | "listing" | "hero">("sidebar");
@@ -138,23 +145,59 @@ export function InsightEditor({ initial }: { initial?: Partial<Article> }) {
         : form.published_date || null,
     };
 
-    const url = isEdit ? `/api/directory/admin/rba-insights/${initial!.id}` : "/api/directory/admin/rba-insights";
+    const wasCreate = !isEdit;
+    const url = isEdit ? `/api/directory/admin/rba-insights/${savedId}` : "/api/directory/admin/rba-insights";
     const method = isEdit ? "PATCH" : "POST";
     const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const data = await res.json();
-    setSaving(false);
 
     if (!res.ok) {
+      setSaving(false);
       setStatus({ type: "error", message: data.error ?? "Save failed." });
       return;
     }
 
-    if (!isEdit && data.article?.id) {
-      window.location.href = `/directory/admin/rba-insights/${data.article.id}`;
+    const finalStatus = targetStatus ?? form.status;
+    const articleId: number | undefined = wasCreate ? data.article?.id : savedId ?? undefined;
+    if (wasCreate && articleId) setSavedId(articleId); // become edit mode so re-saves don't duplicate
+    if (targetStatus) setForm((f) => ({ ...f, status: targetStatus }));
+
+    // Auto-post to social on the transition INTO published (once per session), for the
+    // ticked platforms only. Editing an already-published article does NOT repost — use
+    // the "Share to social" button at the top for a deliberate re-share.
+    const wantPlatforms = (["facebook", "instagram", "linkedin"] as const).filter((pl) => social[pl]);
+    const shouldAutoPost =
+      finalStatus === "published" && !startedPublished && !postedOnce && wantPlatforms.length > 0 && !!articleId;
+
+    if (shouldAutoPost) {
+      setPostedOnce(true);
+      setStatus({ type: "success", message: "Published — posting to social…" });
+      try {
+        const sres = await fetch(`/api/directory/admin/rba-insights/${articleId}/share`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ platforms: wantPlatforms }),
+        });
+        const sdata = await sres.json();
+        if (sres.ok) {
+          setSocialResults(sdata.results ?? []);
+          setStatus({ type: "success", message: "Article published and shared to social." });
+        } else {
+          setStatus({ type: "error", message: sdata.error ?? "Article saved, but social posting failed." });
+        }
+      } catch {
+        setStatus({ type: "error", message: "Article saved, but social posting failed (network)." });
+      }
+      setSaving(false);
       return;
     }
-    setStatus({ type: "success", message: targetStatus === "published" ? "Article published." : "Saved." });
-    if (targetStatus) setForm((f) => ({ ...f, status: targetStatus }));
+
+    setSaving(false);
+    if (wasCreate && articleId) {
+      window.location.href = `/directory/admin/rba-insights/${articleId}`;
+      return;
+    }
+    setStatus({ type: "success", message: finalStatus === "published" ? "Article published." : "Saved." });
   }
 
   const readingTime = form.body_content ? calcReadingTime(form.body_content) : null;
@@ -499,6 +542,64 @@ export function InsightEditor({ initial }: { initial?: Partial<Article> }) {
           {status.message}
         </div>
       )}
+
+      {/* Share to social */}
+      <div className="space-y-3 rounded-xl border border-sky-200 bg-sky-50/60 p-5">
+        <p className="text-sm font-semibold text-slate-800">Share to social when published</p>
+        <p className="text-xs text-slate-500">
+          Ticked platforms are posted automatically when you click Publish. Nothing is posted for drafts, and
+          re-saving an already-published article won&rsquo;t repost (use the Share to social button up top for that).
+        </p>
+        <div className="flex flex-wrap gap-5">
+          {(
+            [
+              ["facebook", "Facebook"],
+              ["instagram", "Instagram"],
+              ["linkedin", "LinkedIn"],
+            ] as const
+          ).map(([key, label]) => (
+            <label key={key} className="flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                checked={social[key]}
+                onChange={(e) => setSocial((sx) => ({ ...sx, [key]: e.target.checked }))}
+                className="h-4 w-4 rounded border-slate-300 accent-sky-950"
+              />
+              <span className="text-sm font-semibold text-slate-700">{label}</span>
+            </label>
+          ))}
+        </div>
+        {socialResults && (
+          <div className="mt-1 rounded-lg border border-slate-200 bg-white p-3 text-sm">
+            {socialResults.map((r) => (
+              <div key={r.platform} className="flex items-center justify-between gap-3 py-0.5">
+                <span className="font-semibold capitalize text-slate-700">{r.platform}</span>
+                {r.ok ? (
+                  <span className="text-emerald-600">
+                    Posted
+                    {r.url ? (
+                      <>
+                        {" · "}
+                        <a className="underline" href={r.url} target="_blank" rel="noreferrer">
+                          view
+                        </a>
+                      </>
+                    ) : null}
+                  </span>
+                ) : r.skipped ? (
+                  <span className="text-slate-400" title={r.error}>
+                    Not connected
+                  </span>
+                ) : (
+                  <span className="text-rose-600" title={r.error}>
+                    Failed
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Actions */}
       <div className="flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6">
