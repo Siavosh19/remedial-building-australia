@@ -23,7 +23,8 @@ export function dirTier(planType?: string | null): DirTier {
 // on its card. Character counts INCLUDE spaces.
 export const NAME_MAX_FREE = 38;    // Free listings: short business name only
 export const NAME_MAX_PAID = 58;    // Silver / Gold: full name (may include a tagline)
-export const DESC_MAX_WORDS = 21;   // Silver / Gold on-card description word cap
+export const DESC_MAX_WORDS = 21;   // Silver / Gold on-card description word cap (card display safety net)
+export const DESC_MAX_CHARS = 114;  // Silver / Gold short-description input cap (hard char limit)
 
 // Cards, badges and headings show only the core business name. Many listings
 // store an appended tagline / credential after a pipe — e.g.

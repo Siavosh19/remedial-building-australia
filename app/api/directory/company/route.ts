@@ -8,6 +8,7 @@ import { validateAuPhone } from "@/lib/phone-au";
 import { postcodeToState } from "@/lib/au-locations";
 import { geocodeAU } from "@/lib/geocode";
 import { bustDirectoryCache } from "@/lib/directory-cache";
+import { DESC_MAX_CHARS } from "@/lib/directory-tier";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const STATES: LocationState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
   const phone = String(body.phone ?? "").trim();
   const website = String(body.website ?? "").trim();
   const businessEmail = String(body.businessEmail ?? "").trim().toLowerCase();
-  const description = String(body.description ?? "").trim();
+  const description = String(body.description ?? "").trim().slice(0, DESC_MAX_CHARS);
   const fullDescription = String(body.fullDescription ?? "").trim().slice(0, 7000);
   const tagline = String(body.tagline ?? "").trim().slice(0, 35);
 
@@ -309,7 +310,7 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.instagram === "string") companyData.instagram_url = body.instagram.trim() || null;
   if (typeof body.linkedin === "string") companyData.linkedin_url = body.linkedin.trim() || null;
   if (typeof body.businessEmail === "string" && EMAIL_RE.test(body.businessEmail.trim())) companyData.email = body.businessEmail.trim().toLowerCase();
-  if (typeof body.description === "string" && body.description.trim()) companyData.description = body.description.trim();
+  if (typeof body.description === "string" && body.description.trim()) companyData.description = body.description.trim().slice(0, DESC_MAX_CHARS);
   // Optional self-declared tagline + services list (all tiers). Empty clears them.
   if (typeof body.tagline === "string") companyData.tagline = body.tagline.trim().slice(0, 35) || null;
   if (typeof body.servicesOffered === "string") companyData.services_offered = body.servicesOffered.trim().slice(0, 220) || null;
