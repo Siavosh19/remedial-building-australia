@@ -8,9 +8,10 @@ import AuthHeader from "@/components/AuthHeader";
 // `plans` table (same source as /directory/pricing), with a founding-offer
 // fallback so the form still renders if the table is empty/unavailable.
 async function getSignupPlans(): Promise<SignupPlans> {
+  // Gold has NO free trial (billed immediately at checkout); only Silver trials.
   const fallback: SignupPlans = {
     silver: { cents: 2900, trial: 60, compareAt: 4900, promo: "Limited time" },
-    gold:   { cents: 4900, trial: 60, compareAt: 9900, promo: "Limited time" },
+    gold:   { cents: 4900, trial: 0,  compareAt: 9900, promo: "Limited time" },
   };
   try {
     const plans = await prisma.plan.findMany({
@@ -20,7 +21,7 @@ async function getSignupPlans(): Promise<SignupPlans> {
     const gold = plans.find((p) => p.tier === "featured");
     return {
       silver: silver ? { cents: silver.amount_cents, trial: silver.trial_days, compareAt: silver.compare_at_cents, promo: silver.promo_label } : fallback.silver,
-      gold:   gold   ? { cents: gold.amount_cents,   trial: gold.trial_days,   compareAt: gold.compare_at_cents,   promo: gold.promo_label }   : fallback.gold,
+      gold:   gold   ? { cents: gold.amount_cents,   trial: 0,                 compareAt: gold.compare_at_cents,   promo: gold.promo_label }   : fallback.gold,
     };
   } catch {
     return fallback;

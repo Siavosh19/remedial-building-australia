@@ -158,6 +158,11 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
       setStatus({ type: "error", message: phoneCheck.message });
       return;
     }
+    // Point of contact: a phone OR an email is required — not both.
+    if (!form.phone.trim() && !form.businessEmail.trim()) {
+      setStatus({ type: "error", message: "Add at least one point of contact — a phone number or an email address." });
+      return;
+    }
     if (postcodeMismatch) {
       setStatus({ type: "error", message: `Postcode ${form.postcode} is in ${pcState}, not ${form.state}.` });
       return;
@@ -215,7 +220,12 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
     // checkout, where a card is collected before the free trial starts. If the
     // buyer abandons checkout, the listing simply stays Free/claimed.
     if (isPaid) {
-      setStatus({ type: "success", message: "Listing created — redirecting to secure checkout to start your free trial…" });
+      setStatus({
+        type: "success",
+        message: selectedPlan === "gold"
+          ? "Listing created — redirecting to secure checkout to activate Gold…"
+          : "Listing created — redirecting to secure checkout to start your free trial…",
+      });
       try {
         const subRes = await fetch("/api/directory/subscribe", {
           method: "POST",
@@ -260,13 +270,13 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* ── Plan picker (Gold → Silver → Free), scrollable ── */}
+      {/* ── Plan picker — Gold / Silver / Free shown side by side, same design ── */}
       <div>
         <p className="text-sm font-semibold text-slate-800">Choose your plan</p>
         <p className="mt-0.5 text-xs text-slate-500">
-          Free publishes instantly. Silver or Gold start a free trial — a card is required at checkout, with no charge until the trial ends.
+          Free publishes instantly. Silver starts a free trial; Gold subscribes immediately. A card is required at checkout for paid plans — no charge on Silver until the trial ends.
         </p>
-        <div className="mt-3 max-h-[440px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 p-3" role="radiogroup" aria-label="Choose your plan">
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="radiogroup" aria-label="Choose your plan">
           {planCards.map((p) => {
             const active = selectedPlan === p.key;
             return (
@@ -276,33 +286,31 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
                 role="radio"
                 aria-checked={active}
                 onClick={() => setSelectedPlan(p.key)}
-                className={`block w-full rounded-2xl border bg-white p-4 text-left transition ${active ? `border-transparent ring-2 ${p.ring}` : "border-slate-200 hover:border-slate-300"}`}
+                className={`flex h-full flex-col rounded-2xl border bg-white p-4 text-left transition ${active ? `border-transparent ring-2 ${p.ring}` : "border-slate-200 hover:border-slate-300"}`}
               >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className={`text-xs font-bold uppercase tracking-[0.18em] ${p.header}`}>{p.label}</span>
-                    {p.badge && <span className="rounded-full bg-sky-950 px-2 py-0.5 text-[10px] font-bold text-white">{p.badge}</span>}
-                  </div>
-                  <div className="text-right">
-                    {p.price ? (
-                      <>
-                        <span className="text-lg font-extrabold text-slate-900">{fmtDollars(p.price.cents)}</span>
-                        <span className="text-xs font-semibold text-slate-500">/month</span>
-                        {p.price.trial > 0 && <div className="text-[11px] font-semibold text-emerald-700">{p.price.trial}-day free trial</div>}
-                      </>
-                    ) : (
-                      <span className="text-lg font-extrabold text-slate-900">Free</span>
-                    )}
-                  </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`text-xs font-bold uppercase tracking-[0.18em] ${p.header}`}>{p.label}</span>
+                  {p.badge && <span className="rounded-full bg-sky-950 px-2 py-0.5 text-[10px] font-bold text-white">{p.badge}</span>}
                 </div>
-                <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
+                <div className="mt-2">
+                  {p.price ? (
+                    <>
+                      <span className="text-2xl font-extrabold text-slate-900">{fmtDollars(p.price.cents)}</span>
+                      <span className="text-xs font-semibold text-slate-500">/month</span>
+                      {p.price.trial > 0 && <div className="text-[11px] font-semibold text-emerald-700">{p.price.trial}-day free trial</div>}
+                    </>
+                  ) : (
+                    <span className="text-2xl font-extrabold text-slate-900">Free</span>
+                  )}
+                </div>
+                <ul className="mt-3 grid gap-1.5">
                   {p.features.map((f) => (
                     <li key={f} className="flex items-start gap-1.5 text-xs text-slate-600">
                       <span className="mt-0.5 shrink-0 text-emerald-600">✓</span> {f}
                     </li>
                   ))}
                 </ul>
-                <span className={`mt-3 inline-flex items-center gap-1.5 text-xs font-semibold ${active ? "text-sky-800" : "text-slate-400"}`}>
+                <span className={`mt-auto inline-flex items-center gap-1.5 pt-3 text-xs font-semibold ${active ? "text-sky-800" : "text-slate-400"}`}>
                   <span className={`inline-block h-3.5 w-3.5 rounded-full border ${active ? "border-sky-700 bg-sky-700" : "border-slate-300"}`} />
                   {active ? "Selected" : "Select"}
                 </span>
@@ -496,9 +504,16 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         )}
       </div>
 
+      {/* Public point of contact — a phone OR an email is enough (not both). Some
+          businesses prefer not to publish a phone. This is SEPARATE from the phone
+          on your account, which is always required. */}
+      <p className="text-xs font-normal text-slate-500">
+        Point of contact — provide a phone number <span className="font-semibold">or</span> an email address (you don&rsquo;t have to publish both). This is separate from the phone on your account.
+      </p>
+
       <div className="grid gap-6 md:grid-cols-2">
         <label className="block text-sm font-semibold text-slate-800">
-          <span>Phone number</span>
+          <span>Phone number <span className="font-normal text-slate-400">(or email)</span></span>
           <input
             type="tel"
             value={form.phone}
@@ -507,7 +522,6 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
             className={`mt-2 w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${
               phoneCheck && !phoneCheck.valid ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"
             }`}
-            required
           />
           {phoneCheck && !phoneCheck.valid && (
             <p className="mt-1.5 text-xs font-medium text-rose-600">{phoneCheck.message}</p>
@@ -531,13 +545,12 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
       </div>
 
       <label className="block text-sm font-semibold text-slate-800">
-        <span>Business email</span>
+        <span>Business email <span className="font-normal text-slate-400">(or phone)</span></span>
         <input
           type="email"
           value={form.businessEmail}
           onChange={(event) => setForm({ ...form, businessEmail: event.target.value })}
           className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-          required
         />
       </label>
 
@@ -616,7 +629,13 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
         className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Submitting…" : isPaid ? `Continue to secure checkout — start ${selectedPlan === "gold" ? "Gold" : "Silver"} trial →` : "Submit & publish free listing"}
+        {loading
+          ? "Submitting…"
+          : isPaid
+          ? selectedPlan === "gold"
+            ? "Continue to secure checkout — subscribe to Gold →"
+            : "Continue to secure checkout — start Silver trial →"
+          : "Submit & publish free listing"}
       </button>
     </form>
   );

@@ -51,8 +51,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "You must accept the platform terms and disclaimer to continue." }, { status: 400 });
   }
 
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) return NextResponse.json({ error: "Email is already registered." }, { status: 400 });
+  // One phone = one account, one email = one account — across every account type.
+  const existing = await prisma.user.findFirst({ where: { OR: [{ email }, { phone }] } });
+  if (existing) {
+    return NextResponse.json(
+      {
+        error: "There's already an account using this email or phone number. If it's yours, you can reset your password.",
+        code: "account_exists",
+      },
+      { status: 400 },
+    );
+  }
 
   const password_hash = await hashPassword(password);
 

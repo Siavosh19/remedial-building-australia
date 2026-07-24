@@ -68,6 +68,7 @@ export default async function DashboardProfilePage() {
           <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">ABN</p>
             <p className="mt-2 font-semibold text-slate-900">{company?.abn ?? "—"}</p>
+            <p className="mt-1 text-xs font-normal text-slate-400">Locked — contact us to change this.</p>
           </div>
           <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Profile completeness</p>

@@ -39,7 +39,15 @@ export async function POST(request: NextRequest) {
   if (!STATES.includes(state as LocationState)) return NextResponse.json({ error: "Invalid state." }, { status: 400 });
   if (!suburb) return NextResponse.json({ error: "Suburb is required." }, { status: 400 });
   if (!/^\d{4}$/.test(postcode)) return NextResponse.json({ error: "Postcode must be 4 digits." }, { status: 400 });
-  if (!businessEmail || !EMAIL_RE.test(businessEmail)) return NextResponse.json({ error: "A valid business email is required." }, { status: 400 });
+  // Public point of contact: a phone OR an email is enough (not both). Some
+  // businesses prefer not to publish a phone. The mandatory/unique ACCOUNT phone
+  // is captured separately at signup — this is only the listing's public contact.
+  if (!phone && !businessEmail) {
+    return NextResponse.json({ error: "Please provide a phone number or an email address so customers can contact you." }, { status: 400 });
+  }
+  if (businessEmail && !EMAIL_RE.test(businessEmail)) {
+    return NextResponse.json({ error: "Please enter a valid business email, or leave it blank and provide a phone number instead." }, { status: 400 });
+  }
   // Description is optional: Free listings carry none (their card shows only the
   // business name + contacts). Silver/Gold require it, enforced on the client.
 
@@ -55,12 +63,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "We couldn't find this ABN in the Australian Business Register. Please check it and try again." }, { status: 400 });
   }
 
-  // ── Australian phone number ────────────────────────────────────────────────────
-  const phoneCheck = validateAuPhone(phone);
-  if (!phoneCheck.valid) {
-    return NextResponse.json({ error: phoneCheck.message }, { status: 400 });
+  // ── Australian phone number (optional — validated only when provided) ───────────
+  let phoneNational = "";
+  let phoneType: string | null = null;
+  if (phone) {
+    const phoneCheck = validateAuPhone(phone);
+    if (!phoneCheck.valid) {
+      return NextResponse.json({ error: phoneCheck.message }, { status: 400 });
+    }
+    phoneNational = phoneCheck.national!;
+    phoneType = phoneCheck.type;
   }
-  const phoneNational = phoneCheck.national!;
 
   // ── Service area (radius / entire state / Australia-wide) + geocode ─────────────
   const serviceAreaType = ["radius", "state", "nationwide"].includes(String(body.serviceAreaType))
@@ -110,11 +123,11 @@ export async function POST(request: NextRequest) {
         (abnCheck.entityName ? ` — registered as "${abnCheck.entityName}"` : "") +
         (abnCheck.gstRegistered ? ", GST-registered" : "") +
         (nameMismatch ? " ⚠ registered name differs from listing name" : "") +
-        `. Phone verified as AU ${phoneCheck.type}.`
-      : `ABN ${abn}: format/checksum OK (live ABR check not configured). Phone verified as AU ${phoneCheck.type}.`);
+        `. ${phoneType ? `Phone verified as AU ${phoneType}.` : "No phone provided (email contact)."}`
+      : `ABN ${abn}: format/checksum OK (live ABR check not configured). ${phoneType ? `Phone verified as AU ${phoneType}.` : "No phone provided (email contact)."}`);
 
   // Confidence: ABN +10, Phone +15, Website +10, live-verified ABN +20.
-  const confidence_score = 10 + 15 + (website ? 10 : 0) + (abnCheck.active ? 20 : 0);
+  const confidence_score = 10 + (phoneNational ? 15 : 0) + (website ? 10 : 0) + (abnCheck.active ? 20 : 0);
 
   // Auto-approve: every listing that reaches this point has already cleared ABN
   // validation — a valid 11-digit checksum, plus an ACTIVE status when the live
@@ -139,7 +152,7 @@ export async function POST(request: NextRequest) {
       is_claimed: false,
       users: { none: {} },
       OR: [
-        { email: businessEmail },
+        ...(businessEmail ? [{ email: businessEmail }] : []),
         { name: { equals: companyName, mode: "insensitive" } },
       ],
     },
@@ -213,7 +226,7 @@ export async function POST(request: NextRequest) {
         name: companyName,
         abn,
         website: website || null,
-        phone: phoneNational,
+        phone: phoneNational || null,
         email: businessEmail,
         description,
         full_description: fullDescription || null,

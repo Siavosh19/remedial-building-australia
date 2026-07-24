@@ -130,7 +130,7 @@ export default function DirectorySignupPage() {
     company: "",
     jobRole: "",
   });
-  const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [status, setStatus] = useState<{ type: "success" | "error"; message: string; showReset?: boolean } | null>(null);
   const [loading, setLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
   // Resend the verification email from the "check your inbox" screen (50s cooldown).
@@ -212,7 +212,7 @@ export default function DirectorySignupPage() {
     setLoading(false);
 
     if (!response.ok) {
-      setStatus({ type: "error", message: result.error ?? "Unable to submit. Please try again." });
+      setStatus({ type: "error", message: result.error ?? "Unable to submit. Please try again.", showReset: result.code === "account_exists" });
       return;
     }
     setStatus({ type: "success", message: result.message ?? "Verification email sent. Please check your inbox to continue." });
@@ -476,7 +476,18 @@ export default function DirectorySignupPage() {
                   <TurnstileWidget onToken={setTurnstileToken} />
 
                   {status?.type === "error" ? (
-                    <div className="rounded-2xl bg-rose-100 px-4 py-3 text-sm text-rose-900">{status.message}</div>
+                    <div className="rounded-2xl bg-rose-100 px-4 py-3 text-sm text-rose-900">
+                      {status.message}
+                      {status.showReset ? (
+                        <>
+                          {" "}
+                          <a href="/directory/forgot-password" className="font-semibold underline underline-offset-2">
+                            Reset your password
+                          </a>
+                          .
+                        </>
+                      ) : null}
+                    </div>
                   ) : null}
 
                   <button
