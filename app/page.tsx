@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
-  title: "Remedial Building Australia | Remedial Building Advice, Defects & Repair Systems",
+  title: "Remedial Building Australia | Strata Directory & Remedial Building Platform",
   description:
-    "Australia's strata and remedial building directory — connect owners corporations and strata managers with remedial contractors, consultants, engineers and suppliers. Plus Strata Connect quote requests, a defect library, repair systems, industry news and expert remedial advice.",
+    "Australia's strata directory and remedial building platform for jobs, technical resources and industry connections.",
   alternates: { canonical: "/" },
 };
 
