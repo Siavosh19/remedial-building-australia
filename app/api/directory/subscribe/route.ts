@@ -60,11 +60,15 @@ export async function POST(request: NextRequest) {
   }
 
   // Admin-managed plan from the DB is the source of truth for price + trial.
+  // Gold (featured) has NO free trial — billed immediately at checkout. Silver
+  // keeps its admin-configured trial.
   const plan = await getDirectoryPlan(mapped.tier, mapped.interval);
-  const trialDays = plan?.trial_days ?? 60;
+  const trialDays = planType === "featured" ? 0 : (plan?.trial_days ?? 60);
+  const hasTrial = trialDays > 0;
 
   // Manual fallback when Stripe isn't configured OR this plan hasn't been synced
-  // to a Stripe price yet — grant a manual trial so the listing still upgrades.
+  // to a Stripe price yet — activate the listing so it still upgrades. Silver
+  // gets a manual trial; Gold (no trial) goes straight to active.
   if (!stripe || !plan?.stripe_price_id) {
     const trialEnd = new Date();
     trialEnd.setDate(trialEnd.getDate() + trialDays);
@@ -80,23 +84,30 @@ export async function POST(request: NextRequest) {
           ...(planType === "featured" ? { is_featured: true } : {}),
         },
       });
+      const adminNote = hasTrial
+        ? "Manual trial — Stripe price not configured"
+        : "Manual activation (no trial) — Stripe price not configured";
       await tx.directorySubscription.upsert({
         where: { company_id: company.id },
         create: {
           company_id: company.id, plan_type: planType, billing_cycle: billingCycle,
-          subscription_status: "trialing", trial_started_at: new Date(), trial_ends_at: trialEnd,
-          admin_notes: "Manual trial — Stripe price not configured",
+          subscription_status: hasTrial ? "trialing" : "active",
+          trial_started_at: hasTrial ? new Date() : null,
+          trial_ends_at: hasTrial ? trialEnd : null,
+          admin_notes: adminNote,
         },
         update: {
           plan_type: planType, billing_cycle: billingCycle,
-          subscription_status: "trialing", trial_started_at: new Date(), trial_ends_at: trialEnd,
-          admin_notes: "Manual trial — Stripe price not configured",
+          subscription_status: hasTrial ? "trialing" : "active",
+          trial_started_at: hasTrial ? new Date() : null,
+          trial_ends_at: hasTrial ? trialEnd : null,
+          admin_notes: adminNote,
         },
       });
     });
 
     sendNewSubscriptionAdminEmail({ companyName: company.name, planLabel: planType === "featured" ? "Gold" : "Silver", billingCycle, changeType: "new" }).catch(() => {});
-    return NextResponse.json({ success: true, mode: "manual_trial", trialEndsAt: trialEnd.toISOString() });
+    return NextResponse.json({ success: true, mode: hasTrial ? "manual_trial" : "manual_active", trialEndsAt: hasTrial ? trialEnd.toISOString() : null });
   }
 
   // Stripe checkout session

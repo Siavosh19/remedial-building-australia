@@ -499,7 +499,10 @@ model User {
   email             String       @unique
   password_hash     String
   full_name         String?
-  phone             String?
+  // One phone = one account. Enforced at signup across all account types and by a
+  // DB unique index (migration 20260724_user_phone_unique). Stored in normalised
+  // AU national form (validateAuPhone) so uniqueness compares like-for-like.
+  phone             String?      @unique
   role              UserRole
   account_type      AccountType?
   supplier_id       Int?

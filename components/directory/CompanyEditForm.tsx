@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import CategorySearch from "@/components/directory/CategorySearch";
 import SecondaryCategories from "@/components/directory/SecondaryCategories";
 import { DESC_MAX_CHARS } from "@/lib/directory-tier";
 
@@ -49,6 +48,10 @@ export default function CompanyEditForm({ company, categories }: Props) {
   const isClaimed = true;
   const isPaid = company.plan_type === "claimed" || company.plan_type === "featured";
   const photoLimit = isPaid ? 15 : 0;
+  // Primary category is locked after signup — resolve its display name for the
+  // read-only field. Falls back to a dash if the category can't be found.
+  const primaryCategoryName =
+    categories.find((c) => c.id === company.main_category_id)?.name ?? "—";
   const location = company.locations[0];
   const secondaryIds = company.company_categories
     .filter((cc) => !cc.is_primary)
@@ -98,6 +101,13 @@ export default function CompanyEditForm({ company, categories }: Props) {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    // Point of contact: a phone OR an email is required — not both.
+    if (!form.phone.trim() && !form.businessEmail.trim()) {
+      setStatus({ type: "error", message: "Add at least one point of contact — a phone number or an email address." });
+      return;
+    }
+
     setStatus(null);
     setLoading(true);
 
@@ -188,11 +198,16 @@ export default function CompanyEditForm({ company, categories }: Props) {
 
           <div className="block text-sm font-semibold text-slate-800">
             <span>Primary category</span>
-            <CategorySearch
-              categories={categories}
-              value={form.mainCategoryId}
-              onChange={(id) => setForm({ ...form, mainCategoryId: id })}
+            {/* Locked after signup — the primary category is set once during company
+                setup and can only be changed by administration. Shown but disabled. */}
+            <input
+              type="text"
+              value={primaryCategoryName}
+              readOnly
+              disabled
+              className="mt-2 w-full cursor-not-allowed rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm text-slate-500"
             />
+            <span className="mt-1 block text-xs font-normal text-slate-400">Locked — contact us to change this.</span>
           </div>
         </div>
 
@@ -208,28 +223,33 @@ export default function CompanyEditForm({ company, categories }: Props) {
           </div>
         )}
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <label className="block text-sm font-semibold text-slate-800">
-            <span>Phone</span>
-            <input
-              type="tel"
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-              required
-            />
-          </label>
+        {/* Public point of contact — either a phone OR an email is enough (not both).
+            This is separate from the account's login phone/email. */}
+        <div>
+          <p className="mb-2 text-xs font-normal text-slate-500">
+            Point of contact — provide a phone number <span className="font-semibold">or</span> an email address (at least one).
+          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            <label className="block text-sm font-semibold text-slate-800">
+              <span>Phone <span className="font-normal text-slate-400">(or email)</span></span>
+              <input
+                type="tel"
+                value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+              />
+            </label>
 
-          <label className="block text-sm font-semibold text-slate-800">
-            <span>Business email</span>
-            <input
-              type="email"
-              value={form.businessEmail}
-              onChange={(e) => setForm({ ...form, businessEmail: e.target.value })}
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-              required
-            />
-          </label>
+            <label className="block text-sm font-semibold text-slate-800">
+              <span>Business email <span className="font-normal text-slate-400">(or phone)</span></span>
+              <input
+                type="email"
+                value={form.businessEmail}
+                onChange={(e) => setForm({ ...form, businessEmail: e.target.value })}
+                className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+              />
+            </label>
+          </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
@@ -324,6 +344,13 @@ export default function CompanyEditForm({ company, categories }: Props) {
             <span className={`shrink-0 tabular-nums ${form.tagline.length >= 35 ? "font-semibold text-amber-600" : ""}`}>{form.tagline.length}/35</span>
           </span>
         </label>
+
+        {/* Silver/Gold-only tip shown above the short-description box. */}
+        {isPaid && (
+          <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">
+            💡 Tip: A clear, benefit-focused short description helps you stand out on listing cards and win more quote requests.
+          </p>
+        )}
 
         <label className="block text-sm font-semibold text-slate-800">
           <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
