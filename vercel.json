@@ -16,6 +16,10 @@
     {
       "path": "/api/industry-jobs/expire",
       "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/directory/verify-reminders",
+      "schedule": "0 * * * *"
     }
   ]
 }

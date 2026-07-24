@@ -506,6 +506,8 @@ model User {
   is_verified       Boolean      @default(false)
   suspended         Boolean      @default(false)
   email_verified_at DateTime?
+  verify_reminder_stage   Int      @default(0)
+  verify_reminder_last_at DateTime?
   terms_accepted_at DateTime?
   terms_version     String?
   last_login_at     DateTime?
