@@ -51,7 +51,7 @@ const PLANS: Plan[] = [
       { t: "Listed in directory search" },
       { t: "Does not receive quote requests", neg: true },
     ],
-    cardStyle: { backgroundColor: "#F0FDF4", borderColor: "#86EFAC" },
+    cardStyle: { backgroundColor: "#FFFFFF", borderColor: "#000000" },
     iconColor: "#16A34A",
     badgeStyle: null,
     glow: false,

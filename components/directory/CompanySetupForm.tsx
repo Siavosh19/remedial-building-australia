@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
+import { Check, X } from "lucide-react";
 import CategorySearch from "@/components/directory/CategorySearch";
 import SuburbAutocomplete from "@/components/directory/SuburbAutocomplete";
 import { postcodeToState } from "@/lib/au-locations";
@@ -21,29 +22,77 @@ const fmtDollars = (cents: number) => {
   return Number.isInteger(d) ? `$${d.toLocaleString("en-AU")}` : `$${d.toFixed(2)}`;
 };
 
-// Feature copy mirrors the /directory/pricing cards (single wording source).
-const FREE_FEATURES = [
-  "Public business profile",
-  "Phone, email and website",
-  "Listed in directory search",
-  "Does not receive quote requests",
-];
-const SILVER_FEATURES = [
-  "Everything in Free",
-  "Receive quote requests",
-  "3 lead credits per week",
-  "Request Quote button on your listing",
-  "Shown within 50 km of the searcher — above all Free listings",
-  "Company logo + up to 15 project photos",
-  "On-card description (up to 114 characters) + tagline",
-];
-const GOLD_FEATURES = [
-  "Everything in Silver",
-  "7 lead credits per week",
-  "Featured placement — above Silver & Free listings",
-  "Highlighted card + Gold Featured badge",
-  "Only 3 Gold businesses per category in your State",
-  "Shown across your whole State — not distance-limited",
+// Plan-card design tokens — mirror the subscription/marketing cards so the plan
+// picker looks the same across the site. Free is intentionally white with a
+// black border; Silver/Gold use the brushed-metal gradients.
+const SILVER_GRADIENT = "linear-gradient(135deg, #A8ADB4 0%, #F5F7F9 28%, #C7CCD2 50%, #FAFBFC 72%, #9197A0 100%)";
+const GOLD_GRADIENT = "linear-gradient(135deg, #BF953F 0%, #FCF6BA 28%, #D4AF37 50%, #FBF5B7 72%, #AA771C 100%)";
+
+type PlanMeta = {
+  key: PlanChoice;
+  smallLabel: string;
+  title: string;
+  tagline: string;
+  everything?: string;
+  features: { t: string; neg?: boolean }[];
+  cardStyle: CSSProperties;
+  iconColor: string;
+  badge?: string;
+  glow?: boolean;
+};
+
+// Feature copy mirrors the /directory/pricing + subscription cards.
+const PLAN_META: PlanMeta[] = [
+  {
+    key: "free",
+    smallLabel: "Free Listing",
+    title: "Free",
+    tagline: "Build your professional online presence.",
+    features: [
+      { t: "Public business profile" },
+      { t: "Business description" },
+      { t: "Phone, email and website" },
+      { t: "Listed in directory search" },
+      { t: "Does not receive quote requests", neg: true },
+    ],
+    cardStyle: { backgroundColor: "#FFFFFF", borderColor: "#000000" },
+    iconColor: "#16A34A",
+  },
+  {
+    key: "silver",
+    smallLabel: "Silver",
+    title: "Silver",
+    tagline: "Receive project opportunities.",
+    everything: "Everything in Free, plus",
+    features: [
+      { t: "Receive quote requests" },
+      { t: "Request Quote button on your listing" },
+      { t: "Rank above Free listings — within 50 km" },
+      { t: "3 lead credits per week" },
+      { t: "Company logo + up to 15 project photos" },
+      { t: "On-card description (up to 114 characters) + tagline" },
+    ],
+    cardStyle: { background: SILVER_GRADIENT, borderColor: "#8A9099", boxShadow: "0 10px 30px rgba(120,128,138,0.32)" },
+    iconColor: "#0F2540",
+  },
+  {
+    key: "gold",
+    smallLabel: "Gold",
+    title: "Gold",
+    tagline: "Maximum exposure.",
+    everything: "Everything in Silver, plus",
+    features: [
+      { t: "Featured placement — above Silver & Free listings" },
+      { t: "Gold Featured badge" },
+      { t: "7 lead credits per week" },
+      { t: "Shown across your whole State — not distance-limited" },
+      { t: "Only 3 Gold businesses per category in your State" },
+    ],
+    cardStyle: { background: GOLD_GRADIENT, borderColor: "#AA771C", boxShadow: "0 12px 34px rgba(170,119,28,0.42)" },
+    iconColor: "#8A6A14",
+    badge: "Recommended",
+    glow: true,
+  },
 ];
 
 type AbnResult = {
@@ -262,64 +311,89 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
     window.setTimeout(() => { window.location.href = "/directory/dashboard"; }, 2000);
   }
 
-  const planCards: Array<{ key: PlanChoice; label: string; price?: PlanPricing; features: string[]; ring: string; header: string; badge?: string }> = [
-    { key: "gold", label: "Gold", price: plans.gold, features: GOLD_FEATURES, ring: "ring-amber-400", header: "text-amber-700", badge: "★ Recommended" },
-    { key: "silver", label: "Silver", price: plans.silver, features: SILVER_FEATURES, ring: "ring-slate-400", header: "text-slate-700" },
-    { key: "free", label: "Free Listing", features: FREE_FEATURES, ring: "ring-emerald-400", header: "text-emerald-700" },
-  ];
+  const priceFor = (key: PlanChoice): PlanPricing | null =>
+    key === "silver" ? plans.silver : key === "gold" ? plans.gold : null;
+
+  // The plan-picker card grid — rendered lower down the form (just above the
+  // description/submit area) so people fill in their business details first.
+  const planPicker = (
+    <div>
+      <p className="text-base font-bold text-slate-900">Choose your plan</p>
+      <p className="mt-0.5 text-xs text-slate-500">
+        Free publishes instantly. Silver starts a free trial; Gold subscribes immediately. A card is required at checkout for paid plans — no charge on Silver until the trial ends.
+      </p>
+      <div className="mt-4 grid items-stretch gap-5 md:grid-cols-3" role="radiogroup" aria-label="Choose your plan">
+        {PLAN_META.map((plan) => {
+          const active = selectedPlan === plan.key;
+          const price = priceFor(plan.key);
+          const priceMain = plan.key === "free" ? "$0" : price ? fmtDollars(price.cents) : "—";
+          const trial = price?.trial ?? 0;
+          return (
+            <button
+              key={plan.key}
+              type="button"
+              role="radio"
+              aria-checked={active}
+              onClick={() => setSelectedPlan(plan.key)}
+              className={`group relative flex flex-col rounded-3xl border-2 p-6 text-left transition-all duration-300 ease-out hover:-translate-y-1 ${plan.glow ? "rba-plan-gold" : "shadow-sm hover:shadow-xl"} ${active ? "ring-2 ring-sky-600 ring-offset-2" : ""}`}
+              style={plan.cardStyle}
+            >
+              {plan.badge && (
+                <div
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[11px] font-bold uppercase tracking-wider shadow-md"
+                  style={{ background: "linear-gradient(135deg, #E6C25A, #C99A2E)", color: "#0A2540" }}
+                >
+                  ★ {plan.badge}
+                </div>
+              )}
+              {/* Header block — fixed min-height so dividers/checklists align across cards */}
+              <div className="flex min-h-[150px] flex-col">
+                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500">{plan.smallLabel}</p>
+                <h3 className="mt-1 text-2xl font-extrabold text-[#0F2540]">{plan.title}</h3>
+                <div className="mt-2 flex items-baseline gap-1">
+                  <span className="text-3xl font-extrabold leading-none text-[#0F2540]">{priceMain}</span>
+                  <span className="text-sm font-semibold text-slate-500">/month</span>
+                </div>
+                {trial > 0 && <p className="mt-1 text-xs font-semibold text-emerald-700">{trial}-day free trial</p>}
+                <p className="mt-2 text-sm font-medium text-slate-600">{plan.tagline}</p>
+                {plan.everything && (
+                  <p className="mt-auto pt-3 text-[11px] font-bold uppercase tracking-wide text-slate-500">{plan.everything}</p>
+                )}
+              </div>
+              <div className="border-t border-slate-300/70" />
+              <ul className="mt-4 flex-1 space-y-2.5">
+                {plan.features.map((f) => (
+                  <li key={f.t} className="flex items-start gap-2 text-sm leading-snug">
+                    {f.neg ? (
+                      <X size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-slate-400" />
+                    ) : (
+                      <Check size={16} strokeWidth={3} className="mt-0.5 shrink-0" style={{ color: plan.iconColor }} />
+                    )}
+                    <span className={f.neg ? "text-slate-400" : "text-slate-700"}>{f.t}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-5">
+                <span
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                    active ? "bg-[#0F2540] text-white shadow-md" : "border-2 border-[#0F2540]/25 bg-white/70 text-[#0F2540]"
+                  }`}
+                >
+                  <span className={`inline-flex h-4 w-4 items-center justify-center rounded-full border-2 ${active ? "border-white bg-white/20" : "border-[#0F2540]/40"}`}>
+                    {active && <Check size={11} strokeWidth={4} className="text-white" />}
+                  </span>
+                  {active ? "Selected" : "Select this plan"}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* ── Plan picker — Gold / Silver / Free shown side by side, same design ── */}
-      <div>
-        <p className="text-sm font-semibold text-slate-800">Choose your plan</p>
-        <p className="mt-0.5 text-xs text-slate-500">
-          Free publishes instantly. Silver starts a free trial; Gold subscribes immediately. A card is required at checkout for paid plans — no charge on Silver until the trial ends.
-        </p>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="radiogroup" aria-label="Choose your plan">
-          {planCards.map((p) => {
-            const active = selectedPlan === p.key;
-            return (
-              <button
-                key={p.key}
-                type="button"
-                role="radio"
-                aria-checked={active}
-                onClick={() => setSelectedPlan(p.key)}
-                className={`flex h-full flex-col rounded-2xl border bg-white p-4 text-left transition ${active ? `border-transparent ring-2 ${p.ring}` : "border-slate-200 hover:border-slate-300"}`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className={`text-xs font-bold uppercase tracking-[0.18em] ${p.header}`}>{p.label}</span>
-                  {p.badge && <span className="rounded-full bg-sky-950 px-2 py-0.5 text-[10px] font-bold text-white">{p.badge}</span>}
-                </div>
-                <div className="mt-2">
-                  {p.price ? (
-                    <>
-                      <span className="text-2xl font-extrabold text-slate-900">{fmtDollars(p.price.cents)}</span>
-                      <span className="text-xs font-semibold text-slate-500">/month</span>
-                      {p.price.trial > 0 && <div className="text-[11px] font-semibold text-emerald-700">{p.price.trial}-day free trial</div>}
-                    </>
-                  ) : (
-                    <span className="text-2xl font-extrabold text-slate-900">Free</span>
-                  )}
-                </div>
-                <ul className="mt-3 grid gap-1.5">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-1.5 text-xs text-slate-600">
-                      <span className="mt-0.5 shrink-0 text-emerald-600">✓</span> {f}
-                    </li>
-                  ))}
-                </ul>
-                <span className={`mt-auto inline-flex items-center gap-1.5 pt-3 text-xs font-semibold ${active ? "text-sky-800" : "text-slate-400"}`}>
-                  <span className={`inline-block h-3.5 w-3.5 rounded-full border ${active ? "border-sky-700 bg-sky-700" : "border-slate-300"}`} />
-                  {active ? "Selected" : "Select"}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <div className="grid gap-6 md:grid-cols-2">
         <label className="block text-sm font-semibold text-slate-800">
           <span>Company name</span>
@@ -569,6 +643,9 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
           <span className={`shrink-0 tabular-nums ${form.tagline.length >= 35 ? "font-semibold text-amber-600" : ""}`}>{form.tagline.length}/35</span>
         </span>
       </label>
+
+      {/* Plan picker moved here — after business details, before description + submit */}
+      {planPicker}
 
       {isPaid ? (
         <label className="block text-sm font-semibold text-slate-800">
