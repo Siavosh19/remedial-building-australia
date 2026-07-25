@@ -55,7 +55,7 @@ const PLAN_META: PlanMeta[] = [
       { t: "Listed in directory search" },
       { t: "Does not receive quote requests", neg: true },
     ],
-    cardStyle: { backgroundColor: "#FFFFFF", borderColor: "#000000" },
+    cardStyle: { backgroundColor: "#FFFFFF", borderColor: "#000000", borderWidth: "1px" },
     iconColor: "#16A34A",
   },
   {
