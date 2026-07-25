@@ -644,9 +644,6 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         </span>
       </label>
 
-      {/* Plan picker moved here — after business details, before description + submit */}
-      {planPicker}
-
       {isPaid ? (
         <label className="block text-sm font-semibold text-slate-800">
           <span>Short description <span className="font-normal text-slate-400">(listing card)</span></span>
@@ -667,7 +664,7 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         </label>
       ) : (
         <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500">
-          Free listings show your business name and contact details only — no description. Choose <span className="font-semibold text-slate-700">Silver</span> or <span className="font-semibold text-slate-700">Gold</span> above to add an on-card description (up to {DESC_MAX_CHARS} characters), a logo and photos.
+          Free listings show your business name and contact details only — no description. Choose <span className="font-semibold text-slate-700">Silver</span> or <span className="font-semibold text-slate-700">Gold</span> below to add an on-card description (up to {DESC_MAX_CHARS} characters), a logo and photos.
         </div>
       )}
 
@@ -682,6 +679,9 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         />
         <span className="mt-1 block text-xs font-normal text-slate-400">The full write-up shown on your public profile page — up to ~1000 words. If left blank, your short description is used.</span>
       </label>
+
+      {/* Plan picker — sits between the description fields and the newsletter opt-in */}
+      {planPicker}
 
       <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
         <input
