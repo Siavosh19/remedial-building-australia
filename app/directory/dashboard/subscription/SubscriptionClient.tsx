@@ -51,7 +51,7 @@ const PLANS: Plan[] = [
       { t: "Listed in directory search" },
       { t: "Does not receive quote requests", neg: true },
     ],
-    cardStyle: { backgroundColor: "#F0FDF4", borderColor: "#86EFAC" },
+    cardStyle: { backgroundColor: "#FFFFFF", borderColor: "#000000", borderWidth: "1px" },
     iconColor: "#16A34A",
     badgeStyle: null,
     glow: false,
@@ -74,7 +74,8 @@ const PLANS: Plan[] = [
     ],
     cardStyle: { background: SILVER_GRADIENT, borderColor: "#8A9099", boxShadow: "0 10px 30px rgba(120,128,138,0.32)" },
     iconColor: "#0F2540",
-    badgeStyle: null,
+    badge: "Recommended",
+    badgeStyle: "navy",
     glow: false,
   },
   {
@@ -92,9 +93,8 @@ const PLANS: Plan[] = [
     ],
     cardStyle: { background: GOLD_GRADIENT, borderColor: "#AA771C", boxShadow: "0 12px 34px rgba(170,119,28,0.42)" },
     iconColor: "#8A6A14",
-    badge: "Premium",
-    badgeStyle: "gold",
-    glow: true,
+    badgeStyle: null,
+    glow: false,
   },
 ];
 
