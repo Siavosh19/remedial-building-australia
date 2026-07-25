@@ -74,6 +74,7 @@ const PLAN_META: PlanMeta[] = [
     ],
     cardStyle: { background: SILVER_GRADIENT, borderColor: "#8A9099", boxShadow: "0 10px 30px rgba(120,128,138,0.32)" },
     iconColor: "#0F2540",
+    badge: "Recommended",
   },
   {
     key: "gold",
@@ -90,8 +91,6 @@ const PLAN_META: PlanMeta[] = [
     ],
     cardStyle: { background: GOLD_GRADIENT, borderColor: "#AA771C", boxShadow: "0 12px 34px rgba(170,119,28,0.42)" },
     iconColor: "#8A6A14",
-    badge: "Recommended",
-    glow: true,
   },
 ];
 
@@ -107,7 +106,7 @@ type AbnResult = {
 };
 
 export default function CompanySetupForm({ categories, plans }: { categories: { id: number; name: string }[]; plans: SignupPlans }) {
-  const [selectedPlan, setSelectedPlan] = useState<PlanChoice>("free");
+  const [selectedPlan, setSelectedPlan] = useState<PlanChoice>("silver");
   const [form, setForm] = useState({
     companyName: "",
     abn: "",
@@ -341,7 +340,7 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
               {plan.badge && (
                 <div
                   className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[11px] font-bold uppercase tracking-wider shadow-md"
-                  style={{ background: "linear-gradient(135deg, #E6C25A, #C99A2E)", color: "#0A2540" }}
+                  style={{ backgroundColor: "#0F2540", color: "#fff" }}
                 >
                   ★ {plan.badge}
                 </div>
