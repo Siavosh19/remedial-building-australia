@@ -245,7 +245,7 @@ export default function PortalSidebar({ email, companySlug = null }: { email: st
       )}
 
       {/* ── Desktop sidebar ──────────────────────────────────────────────────── */}
-      <aside className="hidden w-64 shrink-0 flex-col border-r border-sky-900/40 bg-sky-950 md:flex">
+      <aside className="hidden w-64 shrink-0 flex-col border-r border-sky-900/40 bg-sky-950 md:flex md:sticky md:top-0 md:h-screen">
         <div className="flex h-16 items-center border-b border-white/10 px-5">
           <Link href="/" className="text-sm font-bold tracking-tight text-white transition hover:text-sky-300">
             Remedial Building Australia

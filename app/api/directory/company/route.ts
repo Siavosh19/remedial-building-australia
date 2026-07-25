@@ -317,7 +317,20 @@ export async function PATCH(request: NextRequest) {
 
   const companyData: Record<string, unknown> = {};
   if (typeof body.companyName === "string" && body.companyName.trim()) companyData.name = body.companyName.trim();
-  if (typeof body.phone === "string" && body.phone.trim()) companyData.phone = body.phone.trim();
+  // Public contact phone. An empty string means the user cleared the field, so
+  // store null to actually remove it — otherwise a deleted number lingers on the
+  // profile and search results. Validate + normalise to national form when present
+  // (mirrors POST).
+  if (typeof body.phone === "string") {
+    const p = body.phone.trim();
+    if (p) {
+      const phoneCheck = validateAuPhone(p);
+      if (!phoneCheck.valid) return NextResponse.json({ error: phoneCheck.message }, { status: 400 });
+      companyData.phone = phoneCheck.national!;
+    } else {
+      companyData.phone = null;
+    }
+  }
   if (typeof body.website === "string") companyData.website = body.website.trim() || null;
   if (typeof body.facebook === "string") companyData.facebook_url = body.facebook.trim() || null;
   if (typeof body.instagram === "string") companyData.instagram_url = body.instagram.trim() || null;
@@ -336,6 +349,15 @@ export async function PATCH(request: NextRequest) {
   if (typeof body.licenceType === "string") companyData.licence_type = body.licenceType.trim() || null;
   if (typeof body.insuranceDetails === "string") companyData.insurance_details = body.insuranceDetails.trim() || null;
   if (typeof body.yearEstablished === "number") companyData.year_established = body.yearEstablished;
+
+  // Never leave a listing with no public point of contact — mirror the create
+  // rule (a phone OR an email is required). Compares against the values as they
+  // will be after this update.
+  const effectivePhone = "phone" in companyData ? companyData.phone : company.phone;
+  const effectiveEmail = "email" in companyData ? companyData.email : company.email;
+  if (!effectivePhone && !effectiveEmail) {
+    return NextResponse.json({ error: "Add at least one point of contact — a phone number or an email address." }, { status: 400 });
+  }
 
   if (Object.keys(companyData).length > 0) {
     await prisma.company.update({ where: { id: company.id }, data: companyData });
