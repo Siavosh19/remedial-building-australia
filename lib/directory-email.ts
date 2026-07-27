@@ -138,7 +138,8 @@ export async function sendAdminNewSignupEmail(data: {
   website?: string | null;
   businessEmail?: string | null;
   accountEmail?: string | null; // login email of the account holder
-  phone?: string | null;
+  phone?: string | null; // public listing phone (optional)
+  accountPhone?: string | null; // mandatory account phone from signup
   abn?: string | null;
 }) {
   const reviewLink = `${SITE_URL}/directory/admin-review`;
@@ -155,7 +156,8 @@ export async function sendAdminNewSignupEmail(data: {
     ["Website", data.website || "—"],
     ["Business email", data.businessEmail || "—"],
     ["Account email", data.accountEmail || "—"],
-    ["Phone", data.phone || "—"],
+    ["Account phone", data.accountPhone || "—"],
+    ["Listing phone", data.phone || "—"],
     ["ABN", data.abn || "—"],
   ];
   const rowHtml = rows

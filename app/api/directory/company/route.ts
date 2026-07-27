@@ -300,6 +300,7 @@ export async function POST(request: NextRequest) {
     businessEmail: businessEmail || null,
     accountEmail: user.email,
     phone: phoneNational || null,
+    accountPhone: user.phone || null,
     abn: abn || null,
   }).catch(() => {});
 
