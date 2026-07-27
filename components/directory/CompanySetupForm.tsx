@@ -237,6 +237,8 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         description: isPaid ? form.description : "",
         mainCategoryId: Number(form.mainCategoryId),
         otherCategory: isOtherCategory ? otherCategory.trim() : "",
+        // The plan the business chose — surfaced in the admin new-signup email.
+        selectedPlan,
       }),
     });
 

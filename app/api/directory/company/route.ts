@@ -283,13 +283,25 @@ export async function POST(request: NextRequest) {
 
   // Notify admin of new signup — fire and forget
   const category = await prisma.category.findUnique({ where: { id: resolvedCategoryId }, select: { name: true } });
-  sendAdminNewSignupEmail(
+  // The plan the business chose on the form (they upgrade to it at Stripe checkout;
+  // the listing itself is created on Free/basic until that completes).
+  const planLabel =
+    body.selectedPlan === "gold" ? "Gold" : body.selectedPlan === "silver" ? "Silver" : "Free Listing";
+  sendAdminNewSignupEmail({
     companyName,
-    user.full_name ?? businessEmail,
-    businessEmail,
+    contactName: user.full_name ?? "",
+    suburb,
+    postcode,
     state,
-    category?.name ?? "Unknown"
-  ).catch(() => {});
+    accountType: planLabel,
+    category: category?.name ?? "Unknown",
+    status: companyStatus,
+    website: website || null,
+    businessEmail: businessEmail || null,
+    accountEmail: user.email,
+    phone: phoneNational || null,
+    abn: abn || null,
+  }).catch(() => {});
 
   // Auto-approved → tell the owner their listing is live (the same confirmation
   // the admin "approve" action sends). Manual-review listings still wait for the
