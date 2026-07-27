@@ -237,7 +237,7 @@ const CATEGORY_INTENT: CategoryIntent[] = [
   },
   {
     patterns: ["facade", "façade", "cladding", "external wall", "external envelope", "render", "rendering"],
-    categories: ["Facade Contractor", "Cladding", "Rendering & Coating"],
+    categories: ["Facade Contractor", "Cladding", "Rendering & Skimming"],
   },
   {
     patterns: ["engineer", "engineering", "structural engineer", "structural assessment", "structural", "civil engineer", "geotechnical"],
@@ -303,7 +303,7 @@ const CATEGORY_INTENT: CategoryIntent[] = [
   },
   {
     patterns: ["plaster", "plasterer", "plasterers", "plastering", "gyprock", "gyprocker", "gyprocking", "plasterboard", "cornice", "wall lining", "ceiling lining"],
-    categories: ["Plastering & Gyprock Service", "Rendering & Coating"],
+    categories: ["Plastering & Gyprock Service", "Rendering & Skimming"],
   },
   {
     patterns: ["fire safety", "fire protection", "fire compliance"],
