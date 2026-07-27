@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type { LocationState, CompanyStatus, AdminReviewStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
-import { sendAdminNewSignupEmail, sendCompanyStatusEmail } from "@/lib/directory-email";
+import { sendCompanyStatusEmail } from "@/lib/directory-email";
 import { verifyAbn, abnNameMismatch } from "@/lib/abn";
 import { validateAuPhone } from "@/lib/phone-au";
 import { postcodeToState } from "@/lib/au-locations";
@@ -281,15 +281,10 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Notify admin of new signup — fire and forget
-  const category = await prisma.category.findUnique({ where: { id: resolvedCategoryId }, select: { name: true } });
-  sendAdminNewSignupEmail(
-    companyName,
-    user.full_name ?? businessEmail,
-    businessEmail,
-    state,
-    category?.name ?? "Unknown"
-  ).catch(() => {});
+  // Admin new-listing notification disabled — it was consuming the Resend daily
+  // allowance (100/day). Re-enable by restoring the import + call if needed.
+  // const category = await prisma.category.findUnique({ where: { id: resolvedCategoryId }, select: { name: true } });
+  // sendAdminNewSignupEmail(companyName, user.full_name ?? businessEmail, businessEmail, state, category?.name ?? "Unknown").catch(() => {});
 
   // Auto-approved → tell the owner their listing is live (the same confirmation
   // the admin "approve" action sends). Manual-review listings still wait for the

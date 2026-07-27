@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, createAuthToken } from "@/lib/directory-auth";
-import { sendDirectoryVerificationEmail, sendAdminSignupNotification } from "@/lib/directory-email";
+import { sendDirectoryVerificationEmail } from "@/lib/directory-email";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { validateAuPhone } from "@/lib/phone-au";
 
@@ -111,7 +111,9 @@ export async function POST(request: NextRequest) {
       { status: 502 },
     );
   }
-  sendAdminSignupNotification(fullName, email, accountType).catch(() => {});
+  // Admin new-signup notification disabled — it was consuming the Resend daily
+  // allowance (100/day). Re-enable by restoring the import + call if needed.
+  // sendAdminSignupNotification(fullName, email, accountType).catch(() => {});
 
   const messages = {
     directory: "Verification email sent. Please check your inbox to verify your account, then set up your company listing.",
