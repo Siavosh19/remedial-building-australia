@@ -237,6 +237,8 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         description: isPaid ? form.description : "",
         mainCategoryId: Number(form.mainCategoryId),
         otherCategory: isOtherCategory ? otherCategory.trim() : "",
+        // Surfaced in the admin new-signup email (Free / Silver / Gold).
+        selectedPlan,
       }),
     });
 

@@ -126,20 +126,52 @@ export async function sendLeadConfirmationEmail(name: string, email: string) {
   await sendEmail("Your enquiry has been received", email, html, text);
 }
 
-export async function sendAdminNewSignupEmail(companyName: string, ownerName: string, ownerEmail: string, state: string, category: string) {
+export async function sendAdminNewSignupEmail(data: {
+  companyName: string;
+  contactName: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  accountType: string; // "Free Listing" | "Silver" | "Gold"
+  category: string;
+  status: string; // published / draft
+  website?: string | null;
+  businessEmail?: string | null;
+  accountEmail?: string | null; // login email of the account holder
+  phone?: string | null; // public listing phone (optional)
+  accountPhone?: string | null; // mandatory account phone from signup
+  abn?: string | null;
+}) {
   const reviewLink = `${SITE_URL}/directory/admin-review`;
+  const location = [data.suburb, data.postcode].filter(Boolean).join("  ") + (data.state ? `  (${data.state})` : "");
+  const statusLabel = data.status === "published" ? "Published (live)" : "Draft — pending review";
+  const rows: Array<[string, string]> = [
+    ["Business name", data.companyName],
+    ["Contact name", data.contactName || "—"],
+    ["Suburb / Postcode", location || "—"],
+    ["Account type", data.accountType],
+    ["Category", data.category],
+    ["Status", statusLabel],
+    ["Website", data.website || "—"],
+    ["Business email", data.businessEmail || "—"],
+    ["Account email", data.accountEmail || "—"],
+    ["Account phone", data.accountPhone || "—"],
+    ["Listing phone", data.phone || "—"],
+    ["ABN", data.abn || "—"],
+  ];
+  const rowHtml = rows
+    .map(
+      ([label, value]) =>
+        `<tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">${safeHtml(label)}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(value)}</td></tr>`,
+    )
+    .join("");
   const html = emailWrapper(
     "New directory signup",
     `<p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155;">A new business has submitted a listing for review.</p>
-     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">
-       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;width:38%;">Company</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(companyName)}</td></tr>
-       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Owner</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(ownerName)} — ${safeHtml(ownerEmail)}</td></tr>
-       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">State</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(state)}</td></tr>
-       <tr><td style="padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px;font-weight:600;color:#64748b;">Category</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:14px;color:#0f172a;">${safeHtml(category)}</td></tr>
-     </table>
-     <p style="margin:0;"><a href="${reviewLink}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Review in Admin Panel →</a></p>`
+     <table style="width:100%;border-collapse:collapse;margin:0 0 22px;">${rowHtml}</table>
+     <p style="margin:0;"><a href="${reviewLink}" style="display:inline-block;padding:12px 22px;background:#0f172a;color:#ffffff;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;">Review in Admin Panel →</a></p>`,
   );
-  const text = `New signup: ${companyName}\nOwner: ${ownerName} (${ownerEmail})\nState: ${state} | Category: ${category}\n\nReview at: ${reviewLink}`;
+  const text = rows.map(([l, v]) => `${l}: ${v}`).join("\n") + `\n\nReview at: ${reviewLink}`;
   await sendEmail("New directory listing submitted for review", "info@remedialbuildingaustralia.com.au", html, text);
 }
 

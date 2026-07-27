@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type { LocationState, CompanyStatus, AdminReviewStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
-import { sendCompanyStatusEmail } from "@/lib/directory-email";
+import { sendAdminNewSignupEmail, sendCompanyStatusEmail } from "@/lib/directory-email";
 import { verifyAbn, abnNameMismatch } from "@/lib/abn";
 import { validateAuPhone } from "@/lib/phone-au";
 import { postcodeToState } from "@/lib/au-locations";
@@ -281,10 +281,26 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Admin new-listing notification disabled — it was consuming the Resend daily
-  // allowance (100/day). Re-enable by restoring the import + call if needed.
-  // const category = await prisma.category.findUnique({ where: { id: resolvedCategoryId }, select: { name: true } });
-  // sendAdminNewSignupEmail(companyName, user.full_name ?? businessEmail, businessEmail, state, category?.name ?? "Unknown").catch(() => {});
+  // Notify admin of new signup — fire and forget. Full details in one email.
+  const category = await prisma.category.findUnique({ where: { id: resolvedCategoryId }, select: { name: true } });
+  const planLabel =
+    body.selectedPlan === "gold" ? "Gold" : body.selectedPlan === "silver" ? "Silver" : "Free Listing";
+  sendAdminNewSignupEmail({
+    companyName,
+    contactName: user.full_name ?? "",
+    suburb,
+    postcode,
+    state,
+    accountType: planLabel,
+    category: category?.name ?? "Unknown",
+    status: companyStatus,
+    website: website || null,
+    businessEmail: businessEmail || null,
+    accountEmail: user.email,
+    phone: phoneNational || null,
+    accountPhone: user.phone || null,
+    abn: abn || null,
+  }).catch(() => {});
 
   // Auto-approved → tell the owner their listing is live (the same confirmation
   // the admin "approve" action sends). Manual-review listings still wait for the
