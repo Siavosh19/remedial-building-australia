@@ -155,15 +155,17 @@ function QuoteButtons({ outlined = false }: { outlined?: boolean }) {
 // Description is optional so it is not shown here; a single point of contact
 // (phone/email) mirrors the free-listing requirement.
 // Small circular contact icon — mirrors the live directory card's ContactIconRow
-// (email + website), rendered statically for the preview.
-function SnapshotContactIcon({ kind }: { kind: "email" | "website" }) {
+// (phone + email + website), rendered statically for the preview.
+function SnapshotContactIcon({ kind, size = 32 }: { kind: "phone" | "email" | "website"; size?: number }) {
   return (
     <span
       className="inline-flex shrink-0 items-center justify-center rounded-full"
-      style={{ width: 32, height: 32, background: "#EEF3F8", color: kind === "website" ? "#185FA5" : "#16324F" }}
+      style={{ width: size, height: size, background: "#EEF3F8", color: kind === "website" ? "#185FA5" : "#16324F" }}
     >
       <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        {kind === "email"
+        {kind === "phone"
+          ? (<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />)
+          : kind === "email"
           ? (<><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></>)
           : (<><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20" /></>)}
       </svg>
@@ -203,9 +205,10 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
               Trusted local specialists — quality workmanship, fully insured, servicing strata and commercial projects.
             </p>
             <p className="mt-1.5 text-xs text-slate-500">Your Suburb, State</p>
-            <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
-              <span>📞 000 000 000</span>
-              <span>✉ you@yourbusiness.com.au</span>
+            <p className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
+              <span className="inline-flex items-center gap-1.5"><span aria-hidden>📞</span> 000 000 000</span>
+              <span className="inline-flex items-center gap-1.5"><span aria-hidden>✉️</span> you@yourbusiness.com.au</span>
+              <span className="inline-flex items-center gap-1.5"><span aria-hidden>🌐</span> yourbusiness.com.au</span>
             </p>
           </div>
           <QuoteButtons outlined={!gold} />
@@ -247,6 +250,7 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
           {/* Row 4: contact icons (left) + View Profile (right) */}
           <div className="mt-3 flex items-center justify-between gap-2">
             <div className="flex gap-1.5">
+              <SnapshotContactIcon kind="phone" />
               <SnapshotContactIcon kind="email" />
               <SnapshotContactIcon kind="website" />
             </div>
@@ -261,23 +265,54 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
 }
 
 function FreeSnapshot() {
+  const rows = ["Business Name One", "Business Name Two"];
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200">
-      {["Business Name One", "Business Name Two"].map((name, i) => (
-        <div key={name} className={`flex items-start justify-between gap-3 px-5 py-4 ${i === 0 ? "border-b-2 border-slate-300" : ""} bg-slate-50/60`}>
-          <div className="min-w-0">
-            <span className="rounded-full bg-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600">Access Equipment</span>
-            <p className="mt-1.5 text-sm font-bold text-slate-700">
-              {name} <span className="font-normal text-slate-400">(Your Suburb, State)</span>
-            </p>
-            <p className="mt-0.5 text-xs text-slate-500">00 0000 0000 · info@yourbusiness.com.au · yourbusiness.com.au</p>
+    <>
+      {/* ── Desktop (≥640px) ── */}
+      <div className="hidden overflow-hidden rounded-2xl border border-slate-200 sm:block">
+        {rows.map((name, i) => (
+          <div key={name} className={`flex items-start justify-between gap-3 px-5 py-4 ${i === 0 ? "border-b-2 border-slate-300" : ""} bg-slate-50/60`}>
+            <div className="min-w-0">
+              <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: "#E3EEFB", color: "#185FA5" }}>Waterproofing</span>
+              <p className="mt-1.5 text-sm font-bold text-slate-700">
+                {name} <span className="font-normal text-slate-400">(Your Suburb, State)</span>
+              </p>
+              <p className="mt-0.5 text-xs text-slate-500">00 0000 0000 · info@yourbusiness.com.au · yourbusiness.com.au</p>
+            </div>
+            <div className="flex shrink-0 gap-1.5">
+              <span className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">View Profile</span>
+              <span className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">Claim this profile</span>
+            </div>
           </div>
-          <div className="hidden shrink-0 gap-2 sm:flex">
-            <span className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">View Profile</span>
+        ))}
+      </div>
+
+      {/* ── Mobile (<640px) — mirrors the live directory Free card:
+           blue category chip + Suburb/State → serif name → contact icons ·
+           View Profile · Claim this profile (three equal thirds). ── */}
+      <div className="space-y-2 sm:hidden">
+        {rows.map((name) => (
+          <div key={name} style={{ borderRadius: 12, border: "0.5px solid #DDE4EC", padding: "12px 14px", background: "#fff" }}>
+            {/* Row 1: blue category chip (left) + Suburb, State (right) */}
+            <div className="flex items-center justify-between gap-2">
+              <span className="min-w-0 truncate rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "#E3EEFB", color: "#185FA5" }}>Waterproofing</span>
+              <span className="shrink-0 truncate text-right text-[12px] text-slate-400" style={{ maxWidth: "55%" }}>Your Suburb, State</span>
+            </div>
+            {/* Row 2: business name (serif) */}
+            <div className="mt-2 min-w-0 truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 17, lineHeight: 1.2, color: "#16324F" }}>{name}</div>
+            {/* Row 3: contact icons · View Profile · Claim this profile */}
+            <div className="mt-2.5 flex items-center gap-2">
+              <div className="flex min-w-0 flex-1 justify-start gap-1">
+                <SnapshotContactIcon kind="phone" size={28} />
+                <SnapshotContactIcon kind="email" size={28} />
+              </div>
+              <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-center text-[11px] font-semibold text-white" style={{ background: "#16324F" }}>View Profile</span>
+              <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-center text-[11px] font-semibold" style={{ border: "0.5px solid #C6D2DE", color: "#16324F" }}>Claim this profile</span>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 }
 
