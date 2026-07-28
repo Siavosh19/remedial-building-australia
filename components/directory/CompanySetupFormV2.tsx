@@ -56,9 +56,10 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
     key: "gold",
     smallLabel: "Gold",
     title: "Gold",
-    tagline: "Maximum exposure.",
+    tagline: "Maximum exposure and project opportunities",
     everything: "Everything in Silver, plus",
     features: [
+      { t: "Receive quote requests" },
       { t: "Featured placement — above Silver & Free listings" },
       { t: "Gold Featured badge" },
       { t: "7 lead credits per week" },
@@ -144,18 +145,25 @@ function QuoteButtons({ outlined = false }: { outlined?: boolean }) {
   );
 }
 
-function GoldSnapshot() {
+// Gold & Silver share the SAME premium layout — only the colour differs.
+// Description is optional so it is not shown here; a single point of contact
+// (phone/email) mirrors the free-listing requirement.
+function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
+  const gold = tier === "gold";
   return (
-    <div className="rounded-2xl p-[3px] shadow-sm" style={{ background: GOLD_BRUSH }}>
+    <div className="rounded-2xl p-[3px] shadow-sm" style={{ background: gold ? GOLD_BRUSH : SILVER_BRUSH }}>
       <div className="relative rounded-xl bg-white px-5 pb-5 pt-7">
         <span
           className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
-          style={{ background: GOLD_RIBBON, boxShadow: "0 4px 14px rgba(184,150,62,0.45)" }}
+          style={{ background: gold ? GOLD_RIBBON : SILVER_RIBBON, boxShadow: gold ? "0 4px 14px rgba(184,150,62,0.45)" : "0 3px 10px rgba(71,85,105,0.35)" }}
         >
-          ⭐ Gold Featured
+          {gold ? "⭐ Gold Featured" : "Silver — Available"}
         </span>
         <div className="flex items-start gap-3">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-extrabold text-[#7a5c1e]" style={{ background: "#fff6da" }}>
+          <div
+            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-extrabold ${gold ? "text-[#7a5c1e]" : "bg-slate-100 text-slate-500"}`}
+            style={gold ? { background: "#fff6da" } : undefined}
+          >
             YB
           </div>
           <div className="min-w-0 flex-1">
@@ -163,44 +171,16 @@ function GoldSnapshot() {
               Your Business Name <span className="font-semibold text-slate-400">| Remedial Builder</span>
             </p>
             <div className="mt-1 flex flex-wrap gap-1.5">
-              <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold text-[#7a5c1e]" style={{ background: "#fff6da" }}>Waterproofing</span>
-              <span className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-black" style={{ background: "#fbf3d9" }}>&lt; 1 km away</span>
+              <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${gold ? "text-[#7a5c1e]" : "text-slate-600"}`} style={{ background: gold ? "#fff6da" : "#e2e8f0" }}>Waterproofing</span>
+              <span className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" style={{ background: "#f1f5f9" }}>&lt; 1 km away</span>
             </div>
-            <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-600">
-              Specialist remedial and waterproofing contractor servicing strata and commercial buildings across the state.
-            </p>
-          </div>
-          <QuoteButtons />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SilverSnapshot() {
-  return (
-    <div className="rounded-2xl p-[3px] shadow-sm" style={{ background: SILVER_BRUSH }}>
-      <div className="relative rounded-xl bg-white px-5 pb-5 pt-7">
-        <span
-          className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
-          style={{ background: SILVER_RIBBON, boxShadow: "0 3px 10px rgba(71,85,105,0.35)" }}
-        >
-          Silver — Available
-        </span>
-        <div className="flex items-start gap-3">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-lg font-extrabold text-slate-500">YB</div>
-          <div className="min-w-0 flex-1">
-            <p className="text-base font-extrabold text-sky-950">
-              Your Business Name <span className="font-semibold text-slate-400">| Waterproofing Contractor</span>
-            </p>
-            <p className="mt-1 text-xs text-slate-500">Your Suburb, State</p>
-            <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+            <p className="mt-1.5 text-xs text-slate-500">Your Suburb, State</p>
+            <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
               <span>📞 000 000 000</span>
               <span>✉ you@yourbusiness.com.au</span>
-              <span>🌐 yourbusiness.com.au</span>
             </p>
           </div>
-          <QuoteButtons outlined />
+          <QuoteButtons outlined={!gold} />
         </div>
       </div>
     </div>
@@ -211,7 +191,7 @@ function FreeSnapshot() {
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200">
       {["Business Name One", "Business Name Two"].map((name, i) => (
-        <div key={name} className={`flex items-start justify-between gap-3 px-5 py-4 ${i === 0 ? "border-b border-slate-200" : ""} bg-slate-50/60`}>
+        <div key={name} className={`flex items-start justify-between gap-3 px-5 py-4 ${i === 0 ? "border-b-2 border-slate-300" : ""} bg-slate-50/60`}>
           <div className="min-w-0">
             <span className="rounded-full bg-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600">Access Equipment</span>
             <p className="mt-1.5 text-sm font-bold text-slate-700">
@@ -229,8 +209,8 @@ function FreeSnapshot() {
 }
 
 const SNAPSHOT: Record<PlanChoice, () => React.JSX.Element> = {
-  gold: GoldSnapshot,
-  silver: SilverSnapshot,
+  gold: () => <PremiumSnapshot tier="gold" />,
+  silver: () => <PremiumSnapshot tier="silver" />,
   free: FreeSnapshot,
 };
 const SNAPSHOT_CAPTION: Record<PlanChoice, string> = {
@@ -439,14 +419,15 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
           window.location.href = "/directory/dashboard/subscription";
           return;
         }
-        // Subscribe failed (e.g. Gold full in this State) — listing is live as
+        // Subscribe failed (e.g. Gold full in this State) — the paid listing is
+        // saved as a draft (not published) until checkout completes.
         // Free; send them to the dashboard with the reason.
         setLoading(false);
-        setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Your listing is live as a Free listing — you can upgrade anytime from your dashboard." });
+        setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Your listing is saved as a draft — complete payment from your dashboard to publish it." });
         window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
       } catch {
         setLoading(false);
-        setStatus({ type: "error", message: "We couldn't reach checkout. Your listing is live as Free — upgrade anytime from your dashboard." });
+        setStatus({ type: "error", message: "We couldn't reach checkout. Your listing is saved as a draft — complete payment from your dashboard to publish it." });
         window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
       }
       return;
@@ -503,7 +484,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
               : key === "silver" ? "Start Silver trial →"
               : "Submit & publish free listing";
             return (
-              <div key={key} className="space-y-4 border-b border-slate-200 pb-10 last:border-0 last:pb-0">
+              <div key={key} className="space-y-4 border-b-2 border-slate-300 pb-10 last:border-b-2 last:border-slate-300">
                 {/* 1 ── Title + price on white, left-aligned, plan-coloured (Gold/Silver/black) ── */}
                 <div>
                   {plan.badge && (
@@ -525,8 +506,10 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                   <p className="mt-2 text-center text-xs text-slate-500">{SNAPSHOT_CAPTION[key]}</p>
                 </div>
 
-                {/* 3 ── Explanation ── */}
-                <p className="text-sm font-medium text-slate-600">{plan.tagline}</p>
+                {/* 3 ── Explanation (Gold: bold black with a star) ── */}
+                <p className={key === "gold" ? "text-sm font-bold text-slate-900" : "text-sm font-medium text-slate-600"}>
+                  {key === "gold" ? "★ " : ""}{plan.tagline}
+                </p>
 
                 {/* 4 ── Features — negatives shown in red ── */}
                 <div>
@@ -547,8 +530,8 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                   </ul>
                 </div>
 
-                {/* 5 ── Subscribe button — centred at the bottom ── */}
-                <div className="flex justify-center pt-1">
+                {/* 5 ── Subscribe button — centred, divided from the card above ── */}
+                <div className="flex justify-center border-t border-slate-200 pt-5">
                   <button
                     type="button"
                     onClick={() => submitPlan(key)}

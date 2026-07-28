@@ -169,7 +169,7 @@ async function syncSubscription(companyId: number, sub: Stripe.Subscription) {
         plan_type: isActive ? planType : "basic",
         is_featured: isActive && planType === "featured",
         quote_requests_enabled: isActive && (planType === "claimed" || planType === "featured"),
-        ...(isActive ? { listing_claim_status: "claimed", is_claimed: true } : {}),
+        ...(isActive ? { status: "published", listing_claim_status: "claimed", is_claimed: true } : {}),
       },
     });
   });

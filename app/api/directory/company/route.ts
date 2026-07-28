@@ -138,6 +138,9 @@ export async function POST(request: NextRequest) {
   // auto-approved listing stays fully removable via the admin review queue.
   const autoApprove = abnCheck.validFormat;
   const companyStatus: CompanyStatus = autoApprove ? "published" : "draft";
+  // Silver/Gold must NOT go live until Stripe checkout completes. New paid
+  // listings are created as draft and published by the webhook on activation.
+  const isPaidPlan = body.selectedPlan === "silver" || body.selectedPlan === "gold";
   const queueStatus: AdminReviewStatus = autoApprove ? "published" : "discovered";
   const approvalNote = autoApprove
     ? "Auto-approved on submission — ABN confirmed active with the ABR."
@@ -255,7 +258,7 @@ export async function POST(request: NextRequest) {
         full_description: fullDescription || null,
         tagline: tagline || null,
         main_category_id: resolvedCategoryId,
-        status: companyStatus,
+        status: isPaidPlan ? "draft" : companyStatus,
         profile_status: profileStatus,
         confidence_score,
         is_claimed: true,
@@ -328,7 +331,7 @@ export async function POST(request: NextRequest) {
   // Auto-approved → tell the owner their listing is live (the same confirmation
   // the admin "approve" action sends). Manual-review listings still wait for the
   // admin decision email as before.
-  if (autoApprove) {
+  if (autoApprove && !isPaidPlan) {
     sendCompanyStatusEmail(user.full_name ?? businessEmail, user.email, companyName, true).catch(() => {});
   }
 
