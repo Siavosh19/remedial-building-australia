@@ -1612,10 +1612,14 @@ model MeasureMapProject {
   archived_at       DateTime?
   deleted_at        DateTime?
 
-  drawings      MeasureMapDrawing[]
-  drawing_pages MeasureMapDrawingPage[]
-  takeoff_items MeasureMapTakeoffItem[]
-  measurements  MeasureMapMeasurement[]
+  drawings        MeasureMapDrawing[]
+  drawing_pages   MeasureMapDrawingPage[]
+  takeoff_items   MeasureMapTakeoffItem[]
+  measurements    MeasureMapMeasurement[]
+  work_categories MeasureMapWorkCategory[]
+  estimate_items  MeasureMapEstimateItem[]
+  revisions       MeasureMapEstimateRevision[]
+  activity_logs   MeasureMapActivityLog[]
 
   @@index([owner_user_id])
   @@index([status])
@@ -1695,7 +1699,7 @@ model MeasureMapTakeoffItem {
 model MeasureMapMeasurement {
   id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   project_id          String    @db.Uuid
-  takeoff_item_id     String    @db.Uuid
+  takeoff_item_id     String?   @db.Uuid // legacy — retired in migration 003
   owner_user_id       Int
   source_type         String // map | drawing
   source_id           String?   @db.Uuid
@@ -1708,10 +1712,146 @@ model MeasureMapMeasurement {
   updated_at          DateTime  @updatedAt
   deleted_at          DateTime?
 
-  project      MeasureMapProject     @relation(fields: [project_id], references: [id], onDelete: Cascade)
-  takeoff_item MeasureMapTakeoffItem @relation(fields: [takeoff_item_id], references: [id], onDelete: Cascade)
+  // Shared estimating model (migration 002)
+  category_id      String?  @db.Uuid
+  estimate_item_id String?  @db.Uuid
+  measurement_mode String? // free | structured
+  measurement_type String? // area | linear | perimeter | count
+  name             String?
+  description      String?
+  colour           String?
+  plan_id          String?  @db.Uuid // -> measuremap_drawings (scalar FK)
+  plan_page_id     String?  @db.Uuid // -> measuremap_drawing_pages (scalar FK)
+  map_reference    String?
+  is_visible       Boolean  @default(true)
+  created_by       Int?
+
+  project       MeasureMapProject       @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  takeoff_item  MeasureMapTakeoffItem?  @relation(fields: [takeoff_item_id], references: [id], onDelete: Cascade)
+  category      MeasureMapWorkCategory? @relation(fields: [category_id], references: [id], onDelete: SetNull)
+  estimate_item MeasureMapEstimateItem? @relation(fields: [estimate_item_id], references: [id], onDelete: SetNull)
 
   @@index([project_id])
   @@index([takeoff_item_id])
+  @@index([estimate_item_id])
+  @@index([category_id])
+  @@index([plan_id])
   @@map("measuremap_measurements")
+}
+
+// ── Shared estimating structure (migration 002) ────────────────────────────
+// Work categories, estimate items, revisions and activity — one shared spine
+// behind Map Measure, Plans & Takeoffs and the Estimate.
+
+model MeasureMapWorkCategory {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id    String    @db.Uuid
+  owner_user_id Int
+  name          String
+  description   String?
+  sort_order    Int       @default(0)
+  created_by    Int?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  deleted_at    DateTime?
+
+  project        MeasureMapProject       @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  estimate_items MeasureMapEstimateItem[]
+  measurements   MeasureMapMeasurement[]
+
+  @@index([project_id])
+  @@index([owner_user_id])
+  @@map("measuremap_work_categories")
+}
+
+model MeasureMapEstimateItem {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id        String    @db.Uuid
+  category_id       String?   @db.Uuid
+  owner_user_id     Int
+  name              String
+  description       String?
+  unit              String    @default("ea") // m | m2 | m3 | ea | hr | day | item | lump
+  measurement_type  String? // area | linear | perimeter | count
+  colour            String    @default("#0369a1")
+  row_type          String    @default("measured") // measured | manual_quantity | lump_sum | provisional_sum | optional | heading | note | subtotal
+  manual_quantity   Float     @default(0)
+  quantity_override Float?
+  waste_percent     Float     @default(0)
+  material_rate     Float     @default(0)
+  labour_rate       Float     @default(0)
+  equipment_rate    Float     @default(0)
+  subcontract_rate  Float     @default(0)
+  other_rate        Float     @default(0)
+  lump_sum_amount   Float     @default(0)
+  markup_percent    Float     @default(0)
+  is_visible        Boolean   @default(true)
+  is_locked         Boolean   @default(false)
+  sort_order        Int       @default(0)
+  created_by        Int?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  deleted_at        DateTime?
+
+  project         MeasureMapProject                     @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  category        MeasureMapWorkCategory?               @relation(fields: [category_id], references: [id], onDelete: SetNull)
+  measurements    MeasureMapMeasurement[]
+  revision_values MeasureMapEstimateItemRevisionValue[]
+
+  @@index([project_id])
+  @@index([category_id])
+  @@index([owner_user_id])
+  @@map("measuremap_estimate_items")
+}
+
+model MeasureMapEstimateRevision {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id      String   @db.Uuid
+  revision_number Int
+  name            String?
+  status          String   @default("draft") // draft | issued | superseded | won | lost
+  created_by      Int?
+  created_at      DateTime @default(now())
+
+  project MeasureMapProject                     @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  values  MeasureMapEstimateItemRevisionValue[]
+
+  @@unique([project_id, revision_number])
+  @@index([project_id])
+  @@map("measuremap_estimate_revisions")
+}
+
+model MeasureMapEstimateItemRevisionValue {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  revision_id      String   @db.Uuid
+  estimate_item_id String   @db.Uuid
+  quantity         Float?
+  rates            Json?
+  cost_values      Json?
+  markup_percent   Float?
+  selling_price    Float?
+  created_at       DateTime @default(now())
+
+  revision      MeasureMapEstimateRevision @relation(fields: [revision_id], references: [id], onDelete: Cascade)
+  estimate_item MeasureMapEstimateItem     @relation(fields: [estimate_item_id], references: [id], onDelete: Cascade)
+
+  @@unique([revision_id, estimate_item_id])
+  @@index([revision_id])
+  @@map("measuremap_estimate_item_revision_values")
+}
+
+model MeasureMapActivityLog {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id  String   @db.Uuid
+  user_id     Int?
+  action      String
+  entity_type String?
+  entity_id   String?
+  metadata    Json?
+  created_at  DateTime @default(now())
+
+  project MeasureMapProject @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  @@index([project_id, created_at])
+  @@map("measuremap_activity_logs")
 }
