@@ -25,7 +25,7 @@ export default async function MeasureMapDashboardPage({
         </div>
         <Link
           href="/measuremap/projects/new"
-          className="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+          className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
         >
           <Plus className="h-4 w-4" /> New Project
         </Link>
@@ -36,13 +36,13 @@ export default async function MeasureMapDashboardPage({
         <div className="flex items-center gap-1 rounded-md border border-slate-200 bg-white p-0.5 text-xs font-semibold">
           <Link
             href="/measuremap"
-            className={`rounded px-3 py-1.5 transition ${!includeArchived ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-800"}`}
+            className={`rounded px-3 py-1.5 transition ${!includeArchived ? "bg-blue-600 text-white" : "text-slate-500 hover:text-slate-800"}`}
           >
             Active
           </Link>
           <Link
             href="/measuremap?view=all"
-            className={`rounded px-3 py-1.5 transition ${includeArchived ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-800"}`}
+            className={`rounded px-3 py-1.5 transition ${includeArchived ? "bg-blue-600 text-white" : "text-slate-500 hover:text-slate-800"}`}
           >
             All
           </Link>
@@ -60,7 +60,7 @@ export default async function MeasureMapDashboardPage({
           {!q && (
             <Link
               href="/measuremap/projects/new"
-              className="mt-5 inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+              className="mt-5 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
             >
               <Plus className="h-4 w-4" /> New Project
             </Link>

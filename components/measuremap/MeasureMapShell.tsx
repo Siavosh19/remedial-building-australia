@@ -17,11 +17,11 @@ export default function MeasureMapShell({
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-slate-900 text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-sky-950 text-white">
               <Ruler className="h-4 w-4" />
             </span>
-            <Link href="/measuremap" className="text-sm font-bold tracking-tight">
-              RBA <span className="text-red-600">MeasureMap</span>
+            <Link href="/measuremap" className="text-sm font-bold tracking-tight text-sky-950">
+              RBA <span className="text-blue-600">MeasureMap</span>
             </Link>
             <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">
               Private beta

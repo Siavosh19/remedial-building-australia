@@ -41,7 +41,7 @@ export default function ProjectCard({ project }: { project: ProjectListItem }) {
       <div className="flex flex-1 flex-col p-3">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <Link href={`/measuremap/projects/${project.id}`} className="block truncate text-sm font-semibold text-slate-900 hover:text-red-600">
+            <Link href={`/measuremap/projects/${project.id}`} className="block truncate text-sm font-semibold text-sky-950 hover:text-blue-600">
               {title}
             </Link>
             {project.project_name && (
@@ -62,7 +62,7 @@ export default function ProjectCard({ project }: { project: ProjectListItem }) {
 
         <Link
           href={`/measuremap/projects/${project.id}`}
-          className="mt-3 block rounded-md bg-slate-900 px-3 py-1.5 text-center text-xs font-semibold text-white transition hover:bg-slate-800"
+          className="mt-3 block rounded-md bg-blue-600 px-3 py-1.5 text-center text-xs font-semibold text-white transition hover:bg-blue-700"
         >
           Open project
         </Link>

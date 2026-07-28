@@ -70,6 +70,7 @@ export default function MapWorkspace({
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
   const sourceRef = useRef<VectorSource>(new VectorSource());
+  const parcelSourceRef = useRef<VectorSource>(new VectorSource());
   const cadastreRef = useRef<TileLayer<TileArcGISRest> | null>(null);
   const drawRef = useRef<Draw | null>(null);
   const modifyRef = useRef<Modify | null>(null);
@@ -89,6 +90,7 @@ export default function MapWorkspace({
   const [showLabels, setShowLabels] = useState(true);
   const [showCadastre, setShowCadastre] = useState(true); // property/lot boundaries on by default
   const [colourPickerFor, setColourPickerFor] = useState<string | null>(null);
+  const [parcelInfo, setParcelInfo] = useState<{ lotId: string | null; planLabel: string | null } | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [selectedMeasurementId, setSelectedMeasurementId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
@@ -165,12 +167,22 @@ export default function MapWorkspace({
     });
     cadastreRef.current = cadastre;
 
+    // Highlight for THE project's parcel (populated by the parcel fetch below).
+    const parcelLayer = new VectorLayer({
+      source: parcelSourceRef.current,
+      style: new Style({
+        // Nearmap-style dashed highlight of THE property parcel.
+        stroke: new Stroke({ color: "#f59e0b", width: 3, lineDash: [8, 6] }),
+        fill: new Fill({ color: "rgba(245,158,11,0.08)" }),
+      }),
+    });
+
     const vector = new VectorLayer({ source: sourceRef.current, style: styleFor as never });
 
     const centre = fromLonLat([project.longitude ?? 151.21, project.latitude ?? -33.87]);
     const map = new Map({
       target: mapEl.current,
-      layers: [imagery, cadastre, vector],
+      layers: [imagery, cadastre, parcelLayer, vector],
       controls: defaultControls({ attribution: false }).extend([
         new FullScreen(),
         new Attribution({ collapsible: true }),
@@ -191,7 +203,7 @@ export default function MapWorkspace({
       const markerLayer = new VectorLayer({
         source: new VectorSource({ features: [new Feature(new Point(centre))] }),
         style: new Style({
-          image: new CircleStyle({ radius: 6, fill: new Fill({ color: "#2563eb" }), stroke: new Stroke({ color: "#fff", width: 2 }) }),
+          image: new CircleStyle({ radius: 7, fill: new Fill({ color: "#f97316" }), stroke: new Stroke({ color: "#fff", width: 2 }) }),
         }),
       });
       map.addLayer(markerLayer);
@@ -419,6 +431,24 @@ export default function MapWorkspace({
 
   useEffect(() => { cadastreRef.current?.setVisible(showCadastre); }, [showCadastre]);
 
+  // Highlight the specific parcel that contains the project address.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/measuremap/projects/${project.id}/parcel`);
+        if (!res.ok) return;
+        const { parcel } = await res.json();
+        if (cancelled || !parcel?.geometry) return;
+        const g = geojson.readGeometry(parcel.geometry, { dataProjection: "EPSG:4326", featureProjection: MAP_PROJ });
+        parcelSourceRef.current.clear();
+        parcelSourceRef.current.addFeature(new Feature(g));
+        setParcelInfo({ lotId: parcel.lotId, planLabel: parcel.planLabel });
+      } catch { /* boundary highlight is best-effort */ }
+    })();
+    return () => { cancelled = true; };
+  }, [project.id]);
+
   function fitToScreen() {
     const map = mapRef.current;
     if (!map) return;
@@ -500,9 +530,23 @@ export default function MapWorkspace({
     <div className="flex h-full">
       {/* LEFT QUANTITY PANEL */}
       <aside className="flex w-72 shrink-0 flex-col border-r border-slate-200 bg-white">
+        {/* Property panel — which property this project is about (Nearmap-style) */}
+        <div className="border-b border-slate-200 bg-sky-50/60 px-3 py-2.5">
+          <p className="text-[10px] font-bold uppercase tracking-wide text-sky-700">Property</p>
+          <p className="mt-0.5 text-sm font-semibold leading-snug text-sky-950">{project.full_address}</p>
+          {project.latitude != null && project.longitude != null && (
+            <p className="mt-0.5 text-[11px] text-slate-500">
+              {project.latitude.toFixed(6)}, {project.longitude.toFixed(6)}
+            </p>
+          )}
+          {parcelInfo?.lotId && (
+            <p className="mt-1 text-xs text-slate-600">Parcel <span className="font-semibold text-sky-950">{parcelInfo.lotId}</span></p>
+          )}
+        </div>
+
         <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2">
           <span className="text-xs font-bold uppercase tracking-wide text-slate-500">Takeoff items</span>
-          <button onClick={() => setAdding((v) => !v)} className="inline-flex items-center gap-1 rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white hover:bg-slate-800">
+          <button onClick={() => setAdding((v) => !v)} className="inline-flex items-center gap-1 rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700">
             <Plus className="h-3.5 w-3.5" /> Add
           </button>
         </div>
@@ -516,7 +560,7 @@ export default function MapWorkspace({
           {items.map((it) => {
             const isOpen = expanded[it.id];
             return (
-              <div key={it.id} className={`border-b border-slate-100 ${activeItemId === it.id ? "bg-slate-50" : ""}`}>
+              <div key={it.id} className={`border-b border-slate-100 ${activeItemId === it.id ? "bg-blue-50" : ""}`}>
                 <div className="flex items-center gap-1.5 px-2 py-2">
                   <button onClick={() => setExpanded((e) => ({ ...e, [it.id]: !e[it.id] }))} className="text-slate-400 hover:text-slate-700">
                     {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -543,7 +587,7 @@ export default function MapWorkspace({
                     )}
                   </div>
                   <button onClick={() => { setActiveItemId(it.id); setTool(it.measurement_type as Tool); }} className="min-w-0 flex-1 text-left">
-                    <span className="block truncate text-sm font-medium text-slate-800">{it.name}</span>
+                    <span className="block truncate text-sm font-medium text-sky-950">{it.name}</span>
                     <span className="block text-[11px] text-slate-400">{it.measurement_type} · {it.measurements.length}</span>
                   </button>
                   <span className="shrink-0 text-xs font-semibold text-slate-700">{fmt(itemTotal(it), it.measurement_type)}</span>
@@ -585,7 +629,7 @@ export default function MapWorkspace({
               key={id}
               onClick={() => pickTool(id)}
               title={label}
-              className={`flex h-8 w-8 items-center justify-center rounded-md transition ${tool === id ? "bg-slate-900 text-white" : "text-slate-600 hover:bg-slate-100"}`}
+              className={`flex h-8 w-8 items-center justify-center rounded-md transition ${tool === id ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100"}`}
             >
               <Icon className="h-4 w-4" />
             </button>
@@ -640,7 +684,7 @@ export default function MapWorkspace({
 
 function ToggleChip({ active, onClick, Icon, label }: { active: boolean; onClick: () => void; Icon: typeof Ruler; label: string }) {
   return (
-    <button onClick={onClick} className={`flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium shadow-sm transition ${active ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 bg-white/95 text-slate-600 hover:bg-slate-50"}`}>
+    <button onClick={onClick} className={`flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium shadow-sm transition ${active ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 bg-white/95 text-slate-600 hover:bg-slate-50"}`}>
       <Icon className="h-3.5 w-3.5" /> {label}
     </button>
   );
@@ -657,7 +701,7 @@ function AddItemForm({ onAdd, onCancel, usedColours }: { onAdd: (name: string, t
       <input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="Item name (e.g. Roof membrane area)" className="w-full rounded border border-slate-300 px-2 py-1.5 text-sm outline-none focus:border-slate-500" />
       <div className="mt-2 grid grid-cols-4 gap-1">
         {(["length", "perimeter", "area", "count"] as MeasurementType[]).map((t) => (
-          <button key={t} onClick={() => setType(t)} className={`rounded px-1.5 py-1 text-[11px] font-medium capitalize ${type === t ? "bg-slate-900 text-white" : "bg-white text-slate-600 hover:bg-slate-100"}`}>{t}</button>
+          <button key={t} onClick={() => setType(t)} className={`rounded px-1.5 py-1 text-[11px] font-medium capitalize ${type === t ? "bg-blue-600 text-white" : "bg-white text-slate-600 hover:bg-slate-100"}`}>{t}</button>
         ))}
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
@@ -666,7 +710,7 @@ function AddItemForm({ onAdd, onCancel, usedColours }: { onAdd: (name: string, t
         ))}
       </div>
       <div className="mt-2 flex gap-2">
-        <button onClick={() => onAdd(name.trim() || `${type} item`, type, colour)} className="flex-1 rounded bg-red-600 px-2 py-1.5 text-xs font-semibold text-white hover:bg-red-700">Add item</button>
+        <button onClick={() => onAdd(name.trim() || `${type} item`, type, colour)} className="flex-1 rounded bg-blue-600 px-2 py-1.5 text-xs font-semibold text-white hover:bg-blue-700">Add item</button>
         <button onClick={onCancel} className="rounded px-2 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-800">Cancel</button>
       </div>
     </div>
