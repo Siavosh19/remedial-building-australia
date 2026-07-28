@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { LocationState, CompanyStatus, AdminReviewStatus } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { sendAdminNewSignupEmail, sendCompanyStatusEmail } from "@/lib/directory-email";
@@ -158,6 +159,28 @@ export async function POST(request: NextRequest) {
     },
     include: { admin_review_queue: { take: 1 } },
   });
+
+  // ── ABN uniqueness: one ABN = one business on the directory ────────────────
+  // A person may run several businesses under one phone/email, but an ABN must map
+  // to a single listing. Stored ABNs vary in formatting, so compare on digits only.
+  // Exclude the scraped listing this user is about to claim — same business, not a clash.
+  const abnClash = await prisma.$queryRaw<{ id: number }[]>(
+    Prisma.sql`
+      SELECT id FROM companies
+      WHERE regexp_replace(COALESCE(abn, ''), '[^0-9]', '', 'g') = ${abnCheck.abn}
+      ${scraped ? Prisma.sql`AND id <> ${scraped.id}` : Prisma.empty}
+      LIMIT 1`,
+  );
+  if (abnClash.length > 0) {
+    return NextResponse.json(
+      {
+        error:
+          "This ABN is already registered to another business on our directory. If this is your business, please contact us at info@remedialbuildingaustralia.com.au and we'll help sort it out.",
+        code: "abn_in_use",
+      },
+      { status: 400 },
+    );
+  }
 
   if (scraped) {
     // Claim the existing scraped record
