@@ -16,7 +16,7 @@ import type Geometry from "ol/geom/Geometry";
 import { Draw, Modify, Select } from "ol/interaction";
 import { fromLonLat } from "ol/proj";
 import { getLength, getArea } from "ol/sphere";
-import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle } from "ol/style";
+import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import Overlay from "ol/Overlay";
 import Polygon from "ol/geom/Polygon";
@@ -33,6 +33,13 @@ import * as api from "./api";
 
 const MAP_PROJ = "EPSG:3857";
 const geojson = new GeoJSON();
+
+// Nearmap-style downward teardrop pin (orange), anchored at its tip.
+const PIN_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40">' +
+  '<path d="M14 39 C14 39 25 22 25 14 A11 11 0 1 0 3 14 C3 22 14 39 14 39 Z" fill="#f97316" stroke="#ffffff" stroke-width="2.5"/>' +
+  '<circle cx="14" cy="14" r="4.5" fill="#ffffff"/></svg>';
+const PIN_SRC = "data:image/svg+xml;utf8," + encodeURIComponent(PIN_SVG);
 
 type Tool = "select" | "pan" | "length" | "perimeter" | "area" | "count";
 type Item = api.ApiItem;
@@ -88,7 +95,7 @@ export default function MapWorkspace({
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const [showMeasurements, setShowMeasurements] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
-  const [showCadastre, setShowCadastre] = useState(true); // property/lot boundaries on by default
+  const [showCadastre, setShowCadastre] = useState(false); // ALL-lots overlay off by default; we highlight only the project's parcel
   const [colourPickerFor, setColourPickerFor] = useState<string | null>(null);
   const [parcelInfo, setParcelInfo] = useState<{ lotId: string | null; planLabel: string | null } | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -162,7 +169,7 @@ export default function MapWorkspace({
         url: "https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Cadastre/MapServer",
         params: { TRANSPARENT: true },
       }),
-      visible: true, // property/lot boundaries on by default (toggle top-right)
+      visible: false, // optional "all boundaries" overlay (toggle top-right)
       opacity: 0.9,
     });
     cadastreRef.current = cadastre;
@@ -203,7 +210,7 @@ export default function MapWorkspace({
       const markerLayer = new VectorLayer({
         source: new VectorSource({ features: [new Feature(new Point(centre))] }),
         style: new Style({
-          image: new CircleStyle({ radius: 7, fill: new Fill({ color: "#f97316" }), stroke: new Stroke({ color: "#fff", width: 2 }) }),
+          image: new Icon({ src: PIN_SRC, anchor: [0.5, 1], scale: 1 }),
         }),
       });
       map.addLayer(markerLayer);
@@ -444,6 +451,11 @@ export default function MapWorkspace({
         parcelSourceRef.current.clear();
         parcelSourceRef.current.addFeature(new Feature(g));
         setParcelInfo({ lotId: parcel.lotId, planLabel: parcel.planLabel });
+        // Frame the map on the single property so it's the focus.
+        const ext = g.getExtent();
+        if (ext && Number.isFinite(ext[0]) && mapRef.current) {
+          mapRef.current.getView().fit(ext, { padding: [90, 90, 90, 90], maxZoom: 20, duration: 400 });
+        }
       } catch { /* boundary highlight is best-effort */ }
     })();
     return () => { cancelled = true; };
