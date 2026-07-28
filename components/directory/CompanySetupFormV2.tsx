@@ -26,6 +26,9 @@ const fmtDollars = (cents: number) => {
 // picker looks the same across the site.
 const SILVER_GRADIENT = "linear-gradient(135deg, #A8ADB4 0%, #F5F7F9 28%, #C7CCD2 50%, #FAFBFC 72%, #9197A0 100%)";
 const GOLD_GRADIENT = "linear-gradient(135deg, #BF953F 0%, #FCF6BA 28%, #D4AF37 50%, #FBF5B7 72%, #AA771C 100%)";
+// Metallic gradients tuned for TEXT on white — darker stops so the title stays readable while still shining.
+const GOLD_TEXT_GRADIENT = "linear-gradient(135deg, #A9791C 0%, #E6C15A 26%, #B0810E 50%, #F0D583 74%, #8A6A14 100%)";
+const SILVER_TEXT_GRADIENT = "linear-gradient(135deg, #556070 0%, #A9B2BE 26%, #6B7683 50%, #C2CAD4 74%, #48505C 100%)";
 
 // Brushed-metal + ribbon tokens for the "as shown live in the directory" preview
 // snapshots (mirror the marketing guide / real directory cards).
@@ -45,6 +48,7 @@ type PlanMeta = {
   cardStyle: CSSProperties;
   iconColor: string;
   titleColor: string;
+  titleGradient?: string;
   badge?: string;
   glow?: boolean;
 };
@@ -69,6 +73,7 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
     cardStyle: { background: GOLD_GRADIENT, borderColor: "#AA771C", boxShadow: "0 12px 34px rgba(170,119,28,0.42)" },
     iconColor: "#8A6A14",
     titleColor: "#B0810E",
+    titleGradient: GOLD_TEXT_GRADIENT,
     badge: "Best exposure",
     glow: true,
   },
@@ -89,6 +94,7 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
     cardStyle: { background: SILVER_GRADIENT, borderColor: "#8A9099", boxShadow: "0 10px 30px rgba(120,128,138,0.32)" },
     iconColor: "#0F2540",
     titleColor: "#6B7280",
+    titleGradient: SILVER_TEXT_GRADIENT,
     badge: "Recommended",
   },
   free: {
@@ -340,12 +346,8 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
       if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    if (isPaid && !form.description.trim()) {
-      setStatus({ type: "error", message: "A short description is required for Silver and Gold listings — add one on the details step." });
-      setStep(1);
-      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
+    // Description is OPTIONAL for Silver/Gold — an empty one just leaves the card
+    // without a description; never block submission on it.
     setStatus(null);
     setLoading(true);
 
@@ -463,9 +465,9 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
           ← Back to your details
         </button>
 
-        <div>
+        <div className="text-center">
           <p className="text-xl font-extrabold text-slate-900">Choose your listing type</p>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mx-auto mt-1 max-w-2xl text-sm text-slate-500">
             Free publishes instantly. Silver starts a free trial; Gold subscribes immediately. A card is required at checkout for paid plans — no charge on Silver until the trial ends.
           </p>
         </div>
@@ -494,7 +496,14 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                   )}
                   <p className={`text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 ${plan.badge ? "mt-2" : ""}`}>{plan.smallLabel}</p>
                   <div className="mt-0.5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <h3 className="text-3xl font-extrabold" style={{ color: plan.titleColor }}>{plan.title} {priceMain}</h3>
+                    <h3
+                      className="text-3xl font-extrabold"
+                      style={plan.titleGradient
+                        ? { background: plan.titleGradient, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent" }
+                        : { color: plan.titleColor }}
+                    >
+                      {plan.title} {priceMain}
+                    </h3>
                     <span className="text-sm font-semibold text-slate-500">/month</span>
                     {trial > 0 && <span className="text-xs font-semibold text-emerald-700">· {trial}-day free trial</span>}
                   </div>
@@ -819,7 +828,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
         />
         <span className="mt-1 flex justify-between gap-3 text-xs font-normal">
           <span className={descAtCap ? "font-semibold text-rose-600" : "text-slate-400"}>
-            {descAtCap ? `Max ${DESC_MAX_CHARS} characters` : `Shown on your Silver/Gold listing card — required for those plans. Free listings don't display a description.`}
+            {descAtCap ? `Max ${DESC_MAX_CHARS} characters` : `Optional — shown on your Silver/Gold listing card if you add one. Free listings don't display a description.`}
           </span>
           <span className={`shrink-0 tabular-nums ${descAtCap ? "font-semibold text-rose-600" : "text-slate-400"}`}>{descCharCount}/{DESC_MAX_CHARS}</span>
         </span>
