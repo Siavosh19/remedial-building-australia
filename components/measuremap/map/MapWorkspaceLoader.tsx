@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
-import type { ApiItem } from "./api";
+import type { ApiItem, ApiCategory } from "./api";
 
 // Client-side dynamic import with ssr:false — required because MapWorkspace pulls
 // in OpenLayers (browser-only) and must be code-split out of the main bundle.
@@ -18,6 +18,7 @@ const MapWorkspace = dynamic(() => import("./MapWorkspace"), {
 export default function MapWorkspaceLoader(props: {
   project: { id: string; latitude: number | null; longitude: number | null; full_address: string };
   initialItems: ApiItem[];
+  initialCategories: ApiCategory[];
 }) {
   return <MapWorkspace {...props} />;
 }

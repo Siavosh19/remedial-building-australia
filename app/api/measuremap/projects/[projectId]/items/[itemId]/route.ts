@@ -1,31 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getMeasureMapApiUser } from "@/lib/measuremap/access";
-import { updateMeasurement, deleteMeasurement } from "@/lib/measuremap/estimating";
+import { updateItem, deleteItem } from "@/lib/measuremap/estimating";
 
-type Ctx = { params: Promise<{ projectId: string; measurementId: string }> };
+type Ctx = { params: Promise<{ projectId: string; itemId: string }> };
 
 export async function PATCH(request: NextRequest, ctx: Ctx) {
   const user = await getMeasureMapApiUser(request);
   if (!user) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  const { measurementId } = await ctx.params;
+  const { itemId } = await ctx.params;
   const body = await request.json().catch(() => ({}));
   const patch: Record<string, unknown> = {};
-  if (body.geometry != null) patch.geometry = body.geometry;
-  if (typeof body.calculated_quantity === "number") patch.calculated_quantity = body.calculated_quantity;
-  if (typeof body.label === "string") patch.label = body.label;
   if (typeof body.name === "string") patch.name = body.name;
   if (typeof body.colour === "string") patch.colour = body.colour;
   if (typeof body.category_id === "string" || body.category_id === null) patch.category_id = body.category_id;
-  if (typeof body.estimate_item_id === "string" || body.estimate_item_id === null) patch.estimate_item_id = body.estimate_item_id;
   if (typeof body.is_visible === "boolean") patch.is_visible = body.is_visible;
-  const ok = await updateMeasurement(user.id, measurementId, patch);
+  if (typeof body.is_locked === "boolean") patch.is_locked = body.is_locked;
+  if (typeof body.sort_order === "number") patch.sort_order = body.sort_order;
+  const ok = await updateItem(user.id, itemId, patch);
   return NextResponse.json({ ok }, { status: ok ? 200 : 404 });
 }
 
 export async function DELETE(request: NextRequest, ctx: Ctx) {
   const user = await getMeasureMapApiUser(request);
   if (!user) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  const { measurementId } = await ctx.params;
-  const ok = await deleteMeasurement(user.id, measurementId);
+  const { itemId } = await ctx.params;
+  const ok = await deleteItem(user.id, itemId);
   return NextResponse.json({ ok }, { status: ok ? 200 : 404 });
 }
