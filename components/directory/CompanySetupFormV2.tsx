@@ -553,7 +553,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                     type="button"
                     onClick={() => submitPlan(key)}
                     disabled={disabled}
-                    className="rba-cta-shine inline-flex items-center justify-center rounded-2xl bg-sky-950 px-8 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rba-cta-shine inline-flex items-center justify-center rounded-2xl bg-sky-950 px-14 py-3.5 text-[1.3rem] font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {cta}
                   </button>
