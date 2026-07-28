@@ -44,6 +44,7 @@ type PlanMeta = {
   features: { t: string; neg?: boolean }[];
   cardStyle: CSSProperties;
   iconColor: string;
+  titleColor: string;
   badge?: string;
   glow?: boolean;
 };
@@ -66,6 +67,7 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
     ],
     cardStyle: { background: GOLD_GRADIENT, borderColor: "#AA771C", boxShadow: "0 12px 34px rgba(170,119,28,0.42)" },
     iconColor: "#8A6A14",
+    titleColor: "#B0810E",
     badge: "Best exposure",
     glow: true,
   },
@@ -85,6 +87,7 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
     ],
     cardStyle: { background: SILVER_GRADIENT, borderColor: "#8A9099", boxShadow: "0 10px 30px rgba(120,128,138,0.32)" },
     iconColor: "#0F2540",
+    titleColor: "#6B7280",
     badge: "Recommended",
   },
   free: {
@@ -98,9 +101,11 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
       { t: "Phone, email and website" },
       { t: "Listed in directory search" },
       { t: "Does not receive quote requests", neg: true },
+      { t: "No on-card description", neg: true },
     ],
     cardStyle: { backgroundColor: "#FFFFFF", borderColor: "#000000", borderWidth: "1px" },
     iconColor: "#16A34A",
+    titleColor: "#111827",
   },
 };
 
@@ -216,7 +221,6 @@ function FreeSnapshot() {
           </div>
           <div className="hidden shrink-0 gap-2 sm:flex">
             <span className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">View Profile</span>
-            <span className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">Claim this profile</span>
           </div>
         </div>
       ))}
@@ -239,9 +243,6 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
   // Two-step flow: step 1 collects the business details, step 2 is the plan
   // picker (Gold / Silver / Free stacked, each with its own submit button).
   const [step, setStep] = useState<1 | 2>(1);
-  // Selected plan — Silver by default. The single submit button at the bottom of
-  // step 2 changes its label/action to match the selected card.
-  const [selectedPlan, setSelectedPlan] = useState<PlanChoice>("silver");
   const [form, setForm] = useState({
     companyName: "",
     abn: "",
@@ -488,57 +489,47 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-10">
           {PLAN_ORDER.map((key) => {
             const plan = PLAN_META[key];
-            const active = selectedPlan === key;
             const price = priceFor(key);
             const priceMain = key === "free" ? "$0" : price ? fmtDollars(price.cents) : "—";
             const trial = price?.trial ?? 0;
             const Snapshot = SNAPSHOT[key];
+            const disabled = loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch);
+            const cta =
+              loading ? "Submitting…"
+              : key === "gold" ? "Subscribe to Gold →"
+              : key === "silver" ? "Start Silver trial →"
+              : "Submit & publish free listing";
             return (
-              <div key={key} className="space-y-4">
-                {/* ── The card — same design as the plan cards (no features inside) ── */}
-                <button
-                  type="button"
-                  role="radio"
-                  aria-checked={active}
-                  onClick={() => setSelectedPlan(key)}
-                  className={`group relative flex w-full flex-col rounded-3xl border-2 p-6 text-left transition-all duration-300 ease-out hover:-translate-y-0.5 ${plan.glow ? "rba-plan-gold" : "shadow-sm hover:shadow-xl"} ${active ? "ring-2 ring-sky-600 ring-offset-2" : ""}`}
-                  style={plan.cardStyle}
-                >
+              <div key={key} className="space-y-4 border-b border-slate-200 pb-10 last:border-0 last:pb-0">
+                {/* 1 ── Title + price on white, left-aligned, plan-coloured (Gold/Silver/black) ── */}
+                <div>
                   {plan.badge && (
-                    <div
-                      className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[11px] font-bold uppercase tracking-wider shadow-md"
-                      style={{ backgroundColor: "#0F2540", color: "#fff" }}
-                    >
+                    <span className="inline-block rounded-full bg-[#0F2540] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                       ★ {plan.badge}
-                    </div>
+                    </span>
                   )}
-                  <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500">{plan.smallLabel}</p>
-                  <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <h3 className="text-2xl font-extrabold text-[#0F2540]">{plan.title}</h3>
-                    <span className="text-3xl font-extrabold leading-none text-[#0F2540]">{priceMain}</span>
+                  <p className={`text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500 ${plan.badge ? "mt-2" : ""}`}>{plan.smallLabel}</p>
+                  <div className="mt-0.5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <h3 className="text-3xl font-extrabold" style={{ color: plan.titleColor }}>{plan.title} {priceMain}</h3>
                     <span className="text-sm font-semibold text-slate-500">/month</span>
                     {trial > 0 && <span className="text-xs font-semibold text-emerald-700">· {trial}-day free trial</span>}
                   </div>
-                  <p className="mt-2 text-sm font-medium text-slate-600">{plan.tagline}</p>
-                  <div className="mt-5">
-                    <span
-                      className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
-                        active ? "bg-[#0F2540] text-white shadow-md" : "border-2 border-[#0F2540]/25 bg-white/70 text-[#0F2540]"
-                      }`}
-                    >
-                      <span className={`inline-flex h-4 w-4 items-center justify-center rounded-full border-2 ${active ? "border-white bg-white/20" : "border-[#0F2540]/40"}`}>
-                        {active && <Check size={11} strokeWidth={4} className="text-white" />}
-                      </span>
-                      {active ? "Selected" : "Select this plan"}
-                    </span>
-                  </div>
-                </button>
+                </div>
 
-                {/* ── Features — under the card, in two columns to stay compact ── */}
-                <div className="px-1">
+                {/* 2 ── Live preview of how the listing appears in the directory ── */}
+                <div>
+                  <Snapshot />
+                  <p className="mt-2 text-center text-xs text-slate-500">{SNAPSHOT_CAPTION[key]}</p>
+                </div>
+
+                {/* 3 ── Explanation ── */}
+                <p className="text-sm font-medium text-slate-600">{plan.tagline}</p>
+
+                {/* 4 ── Features — negatives shown in red ── */}
+                <div>
                   {plan.everything && (
                     <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{plan.everything}</p>
                   )}
@@ -546,20 +537,26 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                     {plan.features.map((f) => (
                       <li key={f.t} className="flex items-start gap-2 text-sm leading-snug">
                         {f.neg ? (
-                          <X size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-slate-400" />
+                          <X size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-red-500" />
                         ) : (
                           <Check size={16} strokeWidth={3} className="mt-0.5 shrink-0" style={{ color: plan.iconColor }} />
                         )}
-                        <span className={f.neg ? "text-slate-400" : "text-slate-700"}>{f.t}</span>
+                        <span className={f.neg ? "text-red-600" : "text-slate-700"}>{f.t}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                {/* ── Live preview of how the listing appears in the directory ── */}
-                <div>
-                  <Snapshot />
-                  <p className="mt-2 text-center text-xs text-slate-500">{SNAPSHOT_CAPTION[key]}</p>
+                {/* 5 ── Subscribe button — centred at the bottom ── */}
+                <div className="flex justify-center pt-1">
+                  <button
+                    type="button"
+                    onClick={() => submitPlan(key)}
+                    disabled={disabled}
+                    className="inline-flex items-center justify-center rounded-2xl bg-sky-950 px-8 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {cta}
+                  </button>
                 </div>
               </div>
             );
@@ -567,22 +564,6 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
         </div>
 
         {statusBanner}
-
-        {/* One button, changing with the selected listing type (as it does now). */}
-        <button
-          type="button"
-          onClick={() => submitPlan(selectedPlan)}
-          disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
-          className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {loading
-            ? "Submitting…"
-            : selectedPlan === "gold"
-            ? "Continue to secure checkout — subscribe to Gold →"
-            : selectedPlan === "silver"
-            ? "Continue to secure checkout — start Silver trial →"
-            : "Submit & publish free listing"}
-        </button>
 
         <p className="text-center text-xs text-slate-500">
           You can upgrade, downgrade or cancel anytime from your dashboard — no lock-in contracts.
