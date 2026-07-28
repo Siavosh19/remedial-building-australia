@@ -154,6 +154,23 @@ function QuoteButtons({ outlined = false }: { outlined?: boolean }) {
 // Gold & Silver share the SAME premium layout — only the colour differs.
 // Description is optional so it is not shown here; a single point of contact
 // (phone/email) mirrors the free-listing requirement.
+// Small circular contact icon — mirrors the live directory card's ContactIconRow
+// (email + website), rendered statically for the preview.
+function SnapshotContactIcon({ kind }: { kind: "email" | "website" }) {
+  return (
+    <span
+      className="inline-flex shrink-0 items-center justify-center rounded-full"
+      style={{ width: 32, height: 32, background: "#EEF3F8", color: kind === "website" ? "#185FA5" : "#16324F" }}
+    >
+      <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        {kind === "email"
+          ? (<><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></>)
+          : (<><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20" /></>)}
+      </svg>
+    </span>
+  );
+}
+
 function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
   const gold = tier === "gold";
   return (
@@ -163,9 +180,11 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
           className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
           style={{ background: gold ? GOLD_RIBBON : SILVER_RIBBON, boxShadow: gold ? "0 4px 14px rgba(184,150,62,0.45)" : "0 3px 10px rgba(71,85,105,0.35)" }}
         >
-          {gold ? "⭐ Gold Featured" : "Silver — Available"}
+          {gold ? "⭐ Gold Featured" : "Silver"}
         </span>
-        <div className="flex items-start gap-3">
+
+        {/* ── Desktop (≥640px) — premium header ── */}
+        <div className="hidden items-start gap-3 sm:flex">
           <div
             className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-extrabold ${gold ? "text-[#7a5c1e]" : "bg-slate-100 text-slate-500"}`}
             style={gold ? { background: "#fff6da" } : undefined}
@@ -191,10 +210,50 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
           </div>
           <QuoteButtons outlined={!gold} />
         </div>
-        {/* Mobile: buttons as a footer row — mirrors the live directory card on phones */}
-        <div className="mt-3 flex items-center gap-2 sm:hidden">
-          <span className="flex-1 rounded-lg bg-sky-950 px-3 py-2 text-center text-xs font-bold text-white">View Profile →</span>
-          <span className="flex-1 rounded-lg bg-red-600 px-3 py-2 text-center text-xs font-bold text-white">Request Quote</span>
+
+        {/* ── Mobile (<640px) — mirrors the live directory card exactly:
+             category chip → logo + serif name + "📍 … km away" → 2-line
+             description → contact icons (left) + View Profile (right). ── */}
+        <div className="sm:hidden">
+          {/* Row 1: category chip */}
+          <span
+            className="inline-block max-w-full truncate rounded-full px-2.5 py-0.5 text-[12px] font-bold"
+            style={{ background: "#F1F1EF", color: "#5F5E5A", border: "0.5px solid #E2E2DE" }}
+          >
+            Waterproofing
+          </span>
+          {/* Row 2: 46px logo + stacked name / location */}
+          <div className="mt-3 flex items-start gap-3">
+            <div
+              className="flex shrink-0 items-center justify-center rounded-[10px] text-[15px] font-black"
+              style={{ width: 46, height: 46, background: gold ? "#fff6da" : "#f1f5f9", color: gold ? "#7a5c1e" : "#64748b" }}
+            >
+              YB
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 18, lineHeight: 1.2, color: "#16324F" }}>
+                Your Business Name
+              </div>
+              <div className="truncate" style={{ fontSize: 12, color: "#64748b" }}>📍 &lt; 1 km away · Your Suburb, State</div>
+            </div>
+          </div>
+          {/* Row 3: description (2 lines max) */}
+          <p
+            className="mt-2.5 text-[13px] leading-snug text-slate-600"
+            style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+          >
+            Trusted local specialists — quality workmanship, fully insured, servicing strata and commercial projects.
+          </p>
+          {/* Row 4: contact icons (left) + View Profile (right) */}
+          <div className="mt-3 flex items-center justify-between gap-2">
+            <div className="flex gap-1.5">
+              <SnapshotContactIcon kind="email" />
+              <SnapshotContactIcon kind="website" />
+            </div>
+            <span className="shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-[13px] font-semibold text-white" style={{ background: "#16324F" }}>
+              View Profile
+            </span>
+          </div>
         </div>
       </div>
     </div>
