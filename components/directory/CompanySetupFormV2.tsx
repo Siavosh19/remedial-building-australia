@@ -82,8 +82,11 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
     smallLabel: "Silver",
     title: "Silver",
     tagline: "Receive project opportunities.",
-    everything: "Everything in Free, plus",
     features: [
+      { t: "Public business profile" },
+      { t: "Business description" },
+      { t: "Phone, email and website" },
+      { t: "Listed in directory search" },
       { t: "Receive quote requests" },
       { t: "Request Quote button on your listing" },
       { t: "Rank above Free listings — within 75 km" },
@@ -264,55 +267,18 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
   );
 }
 
+// One free listing — a newly-created free listing is already claimed, so it
+// shows only the business name + a single "View Profile" button (no "Claim").
 function FreeSnapshot() {
-  const rows = ["Business Name One", "Business Name Two"];
   return (
-    <>
-      {/* ── Desktop (≥640px) ── */}
-      <div className="hidden overflow-hidden rounded-2xl border border-slate-200 sm:block">
-        {rows.map((name, i) => (
-          <div key={name} className={`flex items-start justify-between gap-3 px-5 py-4 ${i === 0 ? "border-b-2 border-slate-300" : ""} bg-slate-50/60`}>
-            <div className="min-w-0">
-              <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold" style={{ background: "#E3EEFB", color: "#185FA5" }}>Waterproofing</span>
-              <p className="mt-1.5 text-sm font-bold text-slate-700">
-                {name} <span className="font-normal text-slate-400">(Your Suburb, State)</span>
-              </p>
-              <p className="mt-0.5 text-xs text-slate-500">00 0000 0000 · info@yourbusiness.com.au · yourbusiness.com.au</p>
-            </div>
-            <div className="flex shrink-0 gap-1.5">
-              <span className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">View Profile</span>
-              <span className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">Claim this profile</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ── Mobile (<640px) — mirrors the live directory Free card:
-           blue category chip + Suburb/State → serif name → contact icons ·
-           View Profile · Claim this profile (three equal thirds). ── */}
-      <div className="space-y-2 sm:hidden">
-        {rows.map((name) => (
-          <div key={name} style={{ borderRadius: 12, border: "0.5px solid #DDE4EC", padding: "12px 14px", background: "#fff" }}>
-            {/* Row 1: blue category chip (left) + Suburb, State (right) */}
-            <div className="flex items-center justify-between gap-2">
-              <span className="min-w-0 truncate rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ background: "#E3EEFB", color: "#185FA5" }}>Waterproofing</span>
-              <span className="shrink-0 truncate text-right text-[12px] text-slate-400" style={{ maxWidth: "55%" }}>Your Suburb, State</span>
-            </div>
-            {/* Row 2: business name (serif) */}
-            <div className="mt-2 min-w-0 truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 17, lineHeight: 1.2, color: "#16324F" }}>{name}</div>
-            {/* Row 3: contact icons · View Profile · Claim this profile */}
-            <div className="mt-2.5 flex items-center gap-2">
-              <div className="flex min-w-0 flex-1 justify-start gap-1">
-                <SnapshotContactIcon kind="phone" size={28} />
-                <SnapshotContactIcon kind="email" size={28} />
-              </div>
-              <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-center text-[11px] font-semibold text-white" style={{ background: "#16324F" }}>View Profile</span>
-              <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap rounded-lg px-1 py-2 text-center text-[11px] font-semibold" style={{ border: "0.5px solid #C6D2DE", color: "#16324F" }}>Claim this profile</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
+    <div className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50/60 px-5 py-4">
+      <p className="min-w-0 truncate" style={{ fontFamily: "var(--font-dm-serif-up)", fontSize: 17, lineHeight: 1.2, color: "#16324F" }}>
+        Your Business Name
+      </p>
+      <span className="shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-[13px] font-semibold text-white" style={{ background: "#16324F" }}>
+        View Profile
+      </span>
+    </div>
   );
 }
 
@@ -324,7 +290,7 @@ const SNAPSHOT: Record<PlanChoice, () => React.JSX.Element> = {
 const SNAPSHOT_CAPTION: Record<PlanChoice, string> = {
   gold: "Gold Featured placement as shown live on the directory.",
   silver: "Silver placement as shown live on the directory.",
-  free: "Free listings as shown live on the directory.",
+  free: "Free listing as shown live on the directory.",
 };
 
 export default function CompanySetupFormV2({ categories, plans }: { categories: { id: number; name: string }[]; plans: SignupPlans }) {
@@ -584,9 +550,9 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
             const disabled = loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch);
             const cta =
               loading ? "Submitting…"
-              : key === "gold" ? "Subscribe to Gold →"
-              : key === "silver" ? "Start Silver trial →"
-              : "Submit & publish free listing";
+              : key === "gold" ? "Subscribe To Gold →"
+              : key === "silver" ? "Start Silver Trial →"
+              : "Submit & Publish Free Listing";
             return (
               <div key={key} className="space-y-4 rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_12px_34px_rgba(15,37,64,0.12)] sm:p-6">
                 {/* 1 ── Title + price on white, left-aligned, plan-coloured (Gold/Silver/black) ── */}
@@ -627,13 +593,15 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                   {plan.everything && (
                     <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{plan.everything}</p>
                   )}
-                  <ul className="mt-2 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+                  {/* Bullet text at 0.6× size and 0.5× spacing to fit more; green
+                      ticks on all plans (negatives keep the red cross). */}
+                  <ul className="mt-2 grid gap-x-4 gap-y-[5px] sm:grid-cols-2">
                     {plan.features.map((f) => (
-                      <li key={f.t} className="flex items-start gap-2 text-sm leading-snug">
+                      <li key={f.t} className="flex items-start gap-1" style={{ fontSize: "8.4px", lineHeight: 1.35 }}>
                         {f.neg ? (
-                          <X size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-red-500" />
+                          <X size={10} strokeWidth={2.5} className="mt-[1px] shrink-0 text-red-500" />
                         ) : (
-                          <Check size={16} strokeWidth={3} className="mt-0.5 shrink-0" style={{ color: plan.iconColor }} />
+                          <Check size={10} strokeWidth={3} className="mt-[1px] shrink-0" style={{ color: "#16A34A" }} />
                         )}
                         <span className={f.neg ? "text-red-600" : "text-slate-700"}>{f.t}</span>
                       </li>
@@ -642,7 +610,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                 </div>
 
                 {/* 5 ── Subscribe button — centred, divided from the card above ── */}
-                <div className="flex justify-center border-t border-slate-200 pt-5">
+                <div className="flex flex-col items-center gap-2 border-t border-slate-200 pt-5">
                   <button
                     type="button"
                     onClick={() => submitPlan(key)}
@@ -651,6 +619,9 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                   >
                     {cta}
                   </button>
+                  {key === "silver" && (
+                    <p className="text-xs font-medium text-slate-500">Cancel anytime, no contract, no commitment.</p>
+                  )}
                 </div>
               </div>
             );
