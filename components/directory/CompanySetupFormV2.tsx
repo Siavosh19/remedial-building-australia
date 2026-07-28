@@ -86,7 +86,7 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
     features: [
       { t: "Receive quote requests" },
       { t: "Request Quote button on your listing" },
-      { t: "Rank above Free listings — within 50 km" },
+      { t: "Rank above Free listings — within 75 km" },
       { t: "3 lead credits per month — 1 credit per lead you take" },
       { t: "Company logo + up to 15 project photos" },
       { t: "On-card description (up to 114 characters) + tagline" },
@@ -180,6 +180,9 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
               <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${gold ? "text-[#7a5c1e]" : "text-slate-600"}`} style={{ background: gold ? "#fff6da" : "#e2e8f0" }}>Waterproofing</span>
               <span className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-slate-600" style={{ background: "#f1f5f9" }}>&lt; 1 km away</span>
             </div>
+            <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-slate-600">
+              Trusted local specialists — quality workmanship, fully insured, servicing strata and commercial projects.
+            </p>
             <p className="mt-1.5 text-xs text-slate-500">Your Suburb, State</p>
             <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
               <span>📞 000 000 000</span>
@@ -187,6 +190,11 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
             </p>
           </div>
           <QuoteButtons outlined={!gold} />
+        </div>
+        {/* Mobile: buttons as a footer row — mirrors the live directory card on phones */}
+        <div className="mt-3 flex items-center gap-2 sm:hidden">
+          <span className="flex-1 rounded-lg bg-sky-950 px-3 py-2 text-center text-xs font-bold text-white">View Profile →</span>
+          <span className="flex-1 rounded-lg bg-red-600 px-3 py-2 text-center text-xs font-bold text-white">Request Quote</span>
         </div>
       </div>
     </div>
@@ -545,7 +553,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                     type="button"
                     onClick={() => submitPlan(key)}
                     disabled={disabled}
-                    className="inline-flex items-center justify-center rounded-2xl bg-sky-950 px-8 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rba-cta-shine inline-flex items-center justify-center rounded-2xl bg-sky-950 px-8 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {cta}
                   </button>

@@ -127,7 +127,7 @@ function planRank(row: { plan_type?: string | null }): number {
 // Membership visibility radius. Gold (featured) shows across the whole state; Silver
 // (claimed) and Free (basic) are capped at this many km from the searched suburb.
 // Keep this in sync with the plan cards and the marketing guide page.
-const SILVER_FREE_RADIUS_KM = 50;
+const SILVER_FREE_RADIUS_KM = 75;
 
 // ─── Synonym + typo-tolerant query analysis ─────────────────────────────────────
 // Three things are handled here, in JS, before the Prisma WHERE clause is built:
@@ -1064,7 +1064,7 @@ export async function GET(request: NextRequest) {
       // Membership visibility radius:
       //   • Gold (featured) shows across the whole state — results are already
       //     state-filtered (enforcedState), so Gold is never distance-capped.
-      //   • Silver (claimed) & Free (basic) are capped at 50km of the searched point,
+      //   • Silver (claimed) & Free (basic) are capped at 75km of the searched point,
       //     even if the business self-declares statewide/nationwide. A user-selected
       //     radius can only narrow this, never widen it.
       //   • Unknown distance (geocode miss) is kept and ranked last — never hidden.

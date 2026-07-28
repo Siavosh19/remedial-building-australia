@@ -215,7 +215,7 @@ export default async function MarketingGuidePage() {
   const hierarchy = [
     { n: "1", name: "Banner", tone: "navy", desc: "Premium rotating showcase at the top of the page. Limited to 3 businesses per page. Above everything." },
     { n: "2", name: "Gold Featured", tone: "gold", desc: "Top of your category in your State. Only 3 Gold spots per category per State/Territory." },
-    { n: "3", name: "Silver", tone: "silver", desc: "Shown within 50 km of the searched suburb, above every Free listing for your category — closest Silver first." },
+    { n: "3", name: "Silver", tone: "silver", desc: "Shown within 75 km of the searched suburb, above every Free listing for your category — closest Silver first." },
     { n: "4", name: "Free Listing", tone: "plain", desc: "Standard directory entry — name, contact details, category and profile page." },
   ] as const;
 
@@ -341,7 +341,7 @@ export default async function MarketingGuidePage() {
 
             {/* Silver */}
             <Accordion
-              title="Silver — Within 50 km of the Searcher"
+              title="Silver — Within 75 km of the Searcher"
               subtitle="Above every Free listing for your category · 30-day free trial."
               badge="$49 / mo"
               badgeTone="silver"
@@ -349,7 +349,7 @@ export default async function MarketingGuidePage() {
               <div className="space-y-6">
                 <Includes
                   items={[
-                    "Shown within 50 km of the searched suburb, ranking above every Free listing for your category — if several hold Silver, they rank by distance, closest to the searcher on top",
+                    "Shown within 75 km of the searched suburb, ranking above every Free listing for your category — if several hold Silver, they rank by distance, closest to the searcher on top",
                     "Receive quote requests + Request Quote button on your listing",
                     "Logo & business description on your listing card",
                     "Professional tagline next to your name — Business Name | Waterproofing Contractor",

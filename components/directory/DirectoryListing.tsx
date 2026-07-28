@@ -1188,7 +1188,7 @@ export default function DirectoryListing({ categories }: Props) {
   const [coords, setCoords] = useState<Coords>(saved?.coords ?? null);
   const [category, setCategory] = useState(initialCategory);
   const [featured, setFeatured] = useState(saved?.featured ?? false);
-  const [radius, setRadius] = useState(saved?.radius ?? "50"); // default: within 50 km (Silver membership reach)
+  const [radius, setRadius] = useState(saved?.radius ?? "75"); // default: within 75 km (Silver membership reach)
   const [page, setPage] = useState(saved?.page ?? 1);
   const [showManual, setShowManual] = useState(saved?.showManual ?? false); // standard search hidden until toggled
   // Sticky "use manual search" notice — shows only after an AI result; dismiss is remembered.
@@ -1870,6 +1870,7 @@ export default function DirectoryListing({ categories }: Props) {
               <option value="10">Within 10 km</option>
               <option value="25">Within 25 km</option>
               <option value="50">Within 50 km</option>
+              <option value="75">Within 75 km</option>
               <option value="100">Within 100 km</option>
               <option value="250">Within 250 km</option>
               <option value="500">Within 500 km</option>

@@ -67,7 +67,7 @@ const PLAN_META: PlanMeta[] = [
     features: [
       { t: "Receive quote requests" },
       { t: "Request Quote button on your listing" },
-      { t: "Rank above Free listings — within 50 km" },
+      { t: "Rank above Free listings — within 75 km" },
       { t: "3 lead credits per month — 1 credit per lead you take" },
       { t: "Company logo + up to 15 project photos" },
       { t: "On-card description (up to 114 characters) + tagline" },

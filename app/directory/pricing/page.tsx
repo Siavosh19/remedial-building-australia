@@ -140,7 +140,7 @@ export default async function PricingPage() {
                 "3 lead credits per month — 1 credit per lead you take",
                 "Buy extra leads anytime — priced by urgency (from $5/lead)",
                 "Request Quote button on your listing",
-                "Shown within 50 km of the searcher — above all Free listings (closest first)",
+                "Shown within 75 km of the searcher — above all Free listings (closest first)",
                 "Company logo upload",
                 "Up to 15 project photos",
                 "Licence & insurance (self-declared)",
