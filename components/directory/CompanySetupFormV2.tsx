@@ -239,8 +239,9 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
   // Two-step flow: step 1 collects the business details, step 2 is the plan
   // picker (Gold / Silver / Free stacked, each with its own submit button).
   const [step, setStep] = useState<1 | 2>(1);
-  // Plan being submitted right now — drives isPaid-dependent submit logic.
-  const [submittingPlan, setSubmittingPlan] = useState<PlanChoice | null>(null);
+  // Selected plan — Silver by default. The single submit button at the bottom of
+  // step 2 changes its label/action to match the selected card.
+  const [selectedPlan, setSelectedPlan] = useState<PlanChoice>("silver");
   const [form, setForm] = useState({
     companyName: "",
     abn: "",
@@ -366,7 +367,6 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
     }
     setStatus(null);
     setLoading(true);
-    setSubmittingPlan(plan);
 
     // Accept a bare domain (e.g. "www.walsos.com.au") and normalise to a full URL
     // so the stored value works as a link on the public profile.
@@ -392,7 +392,6 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
 
     if (!response.ok) {
       setLoading(false);
-      setSubmittingPlan(null);
       setStatus({ type: "error", message: result.error ?? "Unable to submit company details." });
       return;
     }
@@ -442,12 +441,10 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
         // Subscribe failed (e.g. Gold full in this State) — listing is live as
         // Free; send them to the dashboard with the reason.
         setLoading(false);
-        setSubmittingPlan(null);
         setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Your listing is live as a Free listing — you can upgrade anytime from your dashboard." });
         window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
       } catch {
         setLoading(false);
-        setSubmittingPlan(null);
         setStatus({ type: "error", message: "We couldn't reach checkout. Your listing is live as Free — upgrade anytime from your dashboard." });
         window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
       }
@@ -472,7 +469,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
     </div>
   ) : null;
 
-  // ── STEP 2 — choose your plan (Gold → Silver → Free, stacked) ────────────────
+  // ── STEP 2 — choose your listing type (Gold → Silver → Free, stacked) ────────
   if (step === 2) {
     return (
       <div className="space-y-6">
@@ -485,84 +482,82 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
         </button>
 
         <div>
-          <p className="text-xl font-extrabold text-slate-900">Choose your plan</p>
+          <p className="text-xl font-extrabold text-slate-900">Choose your listing type</p>
           <p className="mt-1 text-sm text-slate-500">
             Free publishes instantly. Silver starts a free trial; Gold subscribes immediately. A card is required at checkout for paid plans — no charge on Silver until the trial ends.
           </p>
         </div>
 
-        {statusBanner}
-
-        <div className="space-y-6">
+        <div className="space-y-8">
           {PLAN_ORDER.map((key) => {
             const plan = PLAN_META[key];
+            const active = selectedPlan === key;
             const price = priceFor(key);
             const priceMain = key === "free" ? "$0" : price ? fmtDollars(price.cents) : "—";
             const trial = price?.trial ?? 0;
             const Snapshot = SNAPSHOT[key];
-            const submittingThis = loading && submittingPlan === key;
-            const ctaLabel =
-              key === "gold" ? "Subscribe to Gold — continue to secure checkout →"
-              : key === "silver" ? "Start Silver free trial — continue to secure checkout →"
-              : "Submit & publish free listing";
             return (
-              <div
-                key={key}
-                className={`relative rounded-3xl border-2 p-6 transition-all sm:p-7 ${plan.glow ? "rba-plan-gold" : "shadow-sm"}`}
-                style={plan.cardStyle}
-              >
-                {plan.badge && (
-                  <div
-                    className="absolute -top-3.5 left-8 whitespace-nowrap rounded-full px-4 py-1 text-[11px] font-bold uppercase tracking-wider shadow-md"
-                    style={{ backgroundColor: "#0F2540", color: "#fff" }}
-                  >
-                    ★ {plan.badge}
-                  </div>
-                )}
-
-                {/* ── The card: name, price, tagline + the plan's own submit button ── */}
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500">{plan.smallLabel}</p>
-                    <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                      <h3 className="text-2xl font-extrabold text-[#0F2540]">{plan.title}</h3>
-                      <span className="text-2xl font-extrabold leading-none text-[#0F2540]">{priceMain}</span>
-                      <span className="text-sm font-semibold text-slate-500">/month</span>
-                      {trial > 0 && <span className="text-xs font-semibold text-emerald-700">· {trial}-day free trial</span>}
+              <div key={key} className="space-y-4">
+                {/* ── The card — same design as the plan cards (no features inside) ── */}
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() => setSelectedPlan(key)}
+                  className={`group relative flex w-full flex-col rounded-3xl border-2 p-6 text-left transition-all duration-300 ease-out hover:-translate-y-0.5 ${plan.glow ? "rba-plan-gold" : "shadow-sm hover:shadow-xl"} ${active ? "ring-2 ring-sky-600 ring-offset-2" : ""}`}
+                  style={plan.cardStyle}
+                >
+                  {plan.badge && (
+                    <div
+                      className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[11px] font-bold uppercase tracking-wider shadow-md"
+                      style={{ backgroundColor: "#0F2540", color: "#fff" }}
+                    >
+                      ★ {plan.badge}
                     </div>
-                    <p className="mt-1 text-sm font-medium text-slate-600">{plan.tagline}</p>
+                  )}
+                  <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500">{plan.smallLabel}</p>
+                  <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <h3 className="text-2xl font-extrabold text-[#0F2540]">{plan.title}</h3>
+                    <span className="text-3xl font-extrabold leading-none text-[#0F2540]">{priceMain}</span>
+                    <span className="text-sm font-semibold text-slate-500">/month</span>
+                    {trial > 0 && <span className="text-xs font-semibold text-emerald-700">· {trial}-day free trial</span>}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => submitPlan(key)}
-                    disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
-                    className="inline-flex w-full shrink-0 items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-                  >
-                    {submittingThis ? "Submitting…" : ctaLabel}
-                  </button>
+                  <p className="mt-2 text-sm font-medium text-slate-600">{plan.tagline}</p>
+                  <div className="mt-5">
+                    <span
+                      className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                        active ? "bg-[#0F2540] text-white shadow-md" : "border-2 border-[#0F2540]/25 bg-white/70 text-[#0F2540]"
+                      }`}
+                    >
+                      <span className={`inline-flex h-4 w-4 items-center justify-center rounded-full border-2 ${active ? "border-white bg-white/20" : "border-[#0F2540]/40"}`}>
+                        {active && <Check size={11} strokeWidth={4} className="text-white" />}
+                      </span>
+                      {active ? "Selected" : "Select this plan"}
+                    </span>
+                  </div>
+                </button>
+
+                {/* ── Features — under the card, in two columns to stay compact ── */}
+                <div className="px-1">
+                  {plan.everything && (
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{plan.everything}</p>
+                  )}
+                  <ul className="mt-2 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+                    {plan.features.map((f) => (
+                      <li key={f.t} className="flex items-start gap-2 text-sm leading-snug">
+                        {f.neg ? (
+                          <X size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-slate-400" />
+                        ) : (
+                          <Check size={16} strokeWidth={3} className="mt-0.5 shrink-0" style={{ color: plan.iconColor }} />
+                        )}
+                        <span className={f.neg ? "text-slate-400" : "text-slate-700"}>{f.t}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <div className="mt-5 border-t border-slate-300/70" />
-
-                {/* ── Features below, in two columns to stay compact ── */}
-                {plan.everything && (
-                  <p className="mt-4 text-[11px] font-bold uppercase tracking-wide text-slate-500">{plan.everything}</p>
-                )}
-                <ul className="mt-3 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
-                  {plan.features.map((f) => (
-                    <li key={f.t} className="flex items-start gap-2 text-sm leading-snug">
-                      {f.neg ? (
-                        <X size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-slate-400" />
-                      ) : (
-                        <Check size={16} strokeWidth={3} className="mt-0.5 shrink-0" style={{ color: plan.iconColor }} />
-                      )}
-                      <span className={f.neg ? "text-slate-400" : "text-slate-700"}>{f.t}</span>
-                    </li>
-                  ))}
-                </ul>
-
                 {/* ── Live preview of how the listing appears in the directory ── */}
-                <div className="mt-6 rounded-2xl bg-white/60 p-3 sm:p-4">
+                <div>
                   <Snapshot />
                   <p className="mt-2 text-center text-xs text-slate-500">{SNAPSHOT_CAPTION[key]}</p>
                 </div>
@@ -570,6 +565,24 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
             );
           })}
         </div>
+
+        {statusBanner}
+
+        {/* One button, changing with the selected listing type (as it does now). */}
+        <button
+          type="button"
+          onClick={() => submitPlan(selectedPlan)}
+          disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
+          className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loading
+            ? "Submitting…"
+            : selectedPlan === "gold"
+            ? "Continue to secure checkout — subscribe to Gold →"
+            : selectedPlan === "silver"
+            ? "Continue to secure checkout — start Silver trial →"
+            : "Submit & publish free listing"}
+        </button>
 
         <p className="text-center text-xs text-slate-500">
           You can upgrade, downgrade or cancel anytime from your dashboard — no lock-in contracts.
@@ -874,23 +887,15 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
 
       {statusBanner}
 
-      {/* Two actions: publish a Free listing straight away, or continue to the
-          plan picker (Gold / Silver / Free) on step 2. */}
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <button
-          type="button"
-          onClick={() => submitPlan("free")}
-          disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
-          className="inline-flex w-full items-center justify-center rounded-2xl border-2 border-sky-950 bg-white px-5 py-3 text-sm font-semibold text-sky-950 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-1"
-        >
-          {loading && submittingPlan === "free" ? "Submitting…" : "Submit & publish free listing"}
-        </button>
+      {/* One step left — continue to the listing-type picker (Gold / Silver / Free). */}
+      <div>
+        <p className="text-center text-sm font-semibold text-slate-500">One step left — choose your listing type.</p>
         <button
           type="submit"
           disabled={loading || status?.type === "success" || abnIsBad || Boolean(postcodeMismatch)}
-          className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-1"
+          className="mt-3 inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Choose a plan →
+          Choose your listing type →
         </button>
       </div>
     </form>
