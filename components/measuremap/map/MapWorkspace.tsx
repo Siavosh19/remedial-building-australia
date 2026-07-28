@@ -18,6 +18,9 @@ import { fromLonLat } from "ol/proj";
 import { getLength, getArea } from "ol/sphere";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
+import Overlay from "ol/Overlay";
+import Polygon from "ol/geom/Polygon";
+import LineString from "ol/geom/LineString";
 import { defaults as defaultControls, FullScreen, Attribution } from "ol/control";
 import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
@@ -74,6 +77,9 @@ export default function MapWorkspace({
   // Undo/redo track created measurements (the common "oops, remove that" case).
   const undoStackRef = useRef<Snapshot[]>([]);
   const redoStackRef = useRef<Snapshot[]>([]);
+  // Live measurement tooltip shown while drawing.
+  const measureTipRef = useRef<HTMLDivElement>(null);
+  const measureOverlayRef = useRef<Overlay | null>(null);
 
   const [items, setItems] = useState<Item[]>(initialItems);
   const [activeItemId, setActiveItemId] = useState<string | null>(initialItems[0]?.id ?? null);
@@ -81,7 +87,8 @@ export default function MapWorkspace({
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const [showMeasurements, setShowMeasurements] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
-  const [showCadastre, setShowCadastre] = useState(false);
+  const [showCadastre, setShowCadastre] = useState(true); // property/lot boundaries on by default
+  const [colourPickerFor, setColourPickerFor] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [selectedMeasurementId, setSelectedMeasurementId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
@@ -153,7 +160,7 @@ export default function MapWorkspace({
         url: "https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Cadastre/MapServer",
         params: { TRANSPARENT: true },
       }),
-      visible: false,
+      visible: true, // property/lot boundaries on by default (toggle top-right)
       opacity: 0.9,
     });
     cadastreRef.current = cadastre;
@@ -171,6 +178,13 @@ export default function MapWorkspace({
       view: new View({ center: centre, zoom: 19, maxZoom: 22 }),
     });
     mapRef.current = map;
+
+    // Live-measurement tooltip overlay (positioned while drawing).
+    if (measureTipRef.current) {
+      const ov = new Overlay({ element: measureTipRef.current, offset: [12, 0], positioning: "center-left", stopEvent: false });
+      map.addOverlay(ov);
+      measureOverlayRef.current = ov;
+    }
 
     // Project marker.
     if (project.latitude != null && project.longitude != null) {
@@ -249,6 +263,31 @@ export default function MapWorkspace({
         type: DRAW_TYPE[tool],
         ...(tool === "length" ? { maxPoints: 2 } : {}),
       });
+      const tip = measureTipRef.current;
+      const ov = measureOverlayRef.current;
+      const mtype = active.measurement_type as MeasurementType;
+      if (tool !== "count" && tip && ov) {
+        draw.on("drawstart", (e) => {
+          const g = e.feature.getGeometry();
+          if (!g) return;
+          g.on("change", () => {
+            let text = "", coord: number[] | undefined;
+            if (g instanceof Polygon) {
+              text = fmt(getArea(g, { projection: MAP_PROJ }), "area");
+              coord = g.getInteriorPoint().getCoordinates();
+            } else if (g instanceof LineString) {
+              text = fmt(getLength(g, { projection: MAP_PROJ }), mtype);
+              coord = g.getLastCoordinate();
+            }
+            tip.textContent = text;
+            tip.style.display = text ? "block" : "none";
+            if (coord) ov.setPosition(coord);
+          });
+        });
+        const hideTip = () => { tip.style.display = "none"; ov.setPosition(undefined); };
+        draw.on("drawend", hideTip);
+        draw.on("drawabort", hideTip);
+      }
       draw.on("drawend", (e) => void handleDrawEnd(active, e.feature));
       map.addInteraction(draw);
       drawRef.current = draw;
@@ -419,6 +458,13 @@ export default function MapWorkspace({
     try { await api.patchItem(project.id, it.id, { is_visible: !it.is_visible }); } catch { /* visual only */ }
   }
 
+  async function changeItemColour(it: Item, colour: string) {
+    setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, colour } : i));
+    setColourPickerFor(null);
+    sourceRef.current.changed(); // restyle existing geometry immediately
+    try { await api.patchItem(project.id, it.id, { colour }); } catch { setSaveStatus("error"); }
+  }
+
   async function deleteItem(it: Item) {
     if (!confirm(`Delete takeoff item “${it.name}” and its ${it.measurements.length} measurement(s)?`)) return;
     it.measurements.forEach((m) => { const f = sourceRef.current.getFeatureById(m.id); if (f) sourceRef.current.removeFeature(f); });
@@ -475,7 +521,27 @@ export default function MapWorkspace({
                   <button onClick={() => setExpanded((e) => ({ ...e, [it.id]: !e[it.id] }))} className="text-slate-400 hover:text-slate-700">
                     {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                   </button>
-                  <span className="h-3 w-3 shrink-0 rounded-sm" style={{ backgroundColor: it.colour }} />
+                  <div className="relative shrink-0">
+                    <button
+                      onClick={() => setColourPickerFor((v) => (v === it.id ? null : it.id))}
+                      title="Change colour"
+                      className="h-4 w-4 rounded-sm ring-1 ring-slate-300 ring-offset-1 transition hover:scale-110"
+                      style={{ backgroundColor: it.colour }}
+                    />
+                    {colourPickerFor === it.id && (
+                      <div className="absolute left-0 top-6 z-30 flex w-32 flex-wrap gap-1 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+                        {TAKEOFF_COLOURS.map((c) => (
+                          <button
+                            key={c}
+                            onClick={() => changeItemColour(it, c)}
+                            className={`h-5 w-5 rounded-full border-2 ${it.colour === c ? "border-slate-900" : "border-transparent"}`}
+                            style={{ backgroundColor: c }}
+                            aria-label={c}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <button onClick={() => { setActiveItemId(it.id); setTool(it.measurement_type as Tool); }} className="min-w-0 flex-1 text-left">
                     <span className="block truncate text-sm font-medium text-slate-800">{it.name}</span>
                     <span className="block text-[11px] text-slate-400">{it.measurement_type} · {it.measurements.length}</span>
@@ -558,6 +624,13 @@ export default function MapWorkspace({
         <div className="absolute bottom-2 right-3 z-10 max-w-xs rounded bg-amber-50/95 px-2 py-1 text-[10px] leading-tight text-amber-800 shadow-sm">
           Aerial measurements are approximate and must be verified against drawings or onsite conditions.
         </div>
+
+        {/* Live measurement tooltip (moved onto the map by an OL overlay) */}
+        <div
+          ref={measureTipRef}
+          style={{ display: "none" }}
+          className="pointer-events-none whitespace-nowrap rounded bg-slate-900 px-1.5 py-0.5 text-xs font-semibold text-white shadow"
+        />
 
         <div ref={mapEl} className="h-full w-full bg-slate-200" />
       </div>
