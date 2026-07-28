@@ -123,6 +123,15 @@ export async function setProjectStatus(ownerUserId: number, projectId: string, s
   return res.count > 0;
 }
 
+/** Correct the project's pinned location (from click-to-select on the map). */
+export async function updateProjectLocation(ownerUserId: number, projectId: string, latitude: number, longitude: number) {
+  const res = await prisma.measureMapProject.updateMany({
+    where: { id: projectId, owner_user_id: ownerUserId, deleted_at: null },
+    data: { latitude, longitude },
+  });
+  return res.count > 0;
+}
+
 /** Soft delete — hidden everywhere, recoverable, storage cleanup handled later. */
 export async function softDeleteProject(ownerUserId: number, projectId: string) {
   const res = await prisma.measureMapProject.updateMany({

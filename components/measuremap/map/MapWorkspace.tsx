@@ -14,7 +14,7 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import { Draw, Modify, Select } from "ol/interaction";
-import { fromLonLat } from "ol/proj";
+import { fromLonLat, toLonLat } from "ol/proj";
 import { getLength, getArea } from "ol/sphere";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
@@ -78,6 +78,8 @@ export default function MapWorkspace({
   const mapRef = useRef<Map | null>(null);
   const sourceRef = useRef<VectorSource>(new VectorSource());
   const parcelSourceRef = useRef<VectorSource>(new VectorSource());
+  const markerSourceRef = useRef<VectorSource>(new VectorSource());
+  const markerFeatureRef = useRef<Feature | null>(null);
   const cadastreRef = useRef<TileLayer<TileArcGISRest> | null>(null);
   const drawRef = useRef<Draw | null>(null);
   const modifyRef = useRef<Modify | null>(null);
@@ -98,6 +100,9 @@ export default function MapWorkspace({
   const [showCadastre, setShowCadastre] = useState(false); // ALL-lots overlay off by default; we highlight only the project's parcel
   const [colourPickerFor, setColourPickerFor] = useState<string | null>(null);
   const [parcelInfo, setParcelInfo] = useState<{ lotId: string | null; planLabel: string | null } | null>(null);
+  const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: project.latitude, lng: project.longitude });
+  const [placing, setPlacing] = useState(false);
+  const placingRef = useRef(false); placingRef.current = placing;
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [selectedMeasurementId, setSelectedMeasurementId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
@@ -205,16 +210,24 @@ export default function MapWorkspace({
       measureOverlayRef.current = ov;
     }
 
-    // Project marker.
+    // Project marker (ref'd so click-to-select can move it).
+    const markerLayer = new VectorLayer({
+      source: markerSourceRef.current,
+      style: new Style({ image: new Icon({ src: PIN_SRC, anchor: [0.5, 1], scale: 1 }) }),
+    });
+    map.addLayer(markerLayer);
     if (project.latitude != null && project.longitude != null) {
-      const markerLayer = new VectorLayer({
-        source: new VectorSource({ features: [new Feature(new Point(centre))] }),
-        style: new Style({
-          image: new Icon({ src: PIN_SRC, anchor: [0.5, 1], scale: 1 }),
-        }),
-      });
-      map.addLayer(markerLayer);
+      const mf = new Feature(new Point(centre));
+      markerFeatureRef.current = mf;
+      markerSourceRef.current.addFeature(mf);
     }
+
+    // Click-to-select: when in "Set property" mode, a click sets the property.
+    map.on("singleclick", (e) => {
+      if (!placingRef.current) return;
+      const [lng, lat] = toLonLat(e.coordinate);
+      void setPropertyAt(lat, lng, e.coordinate);
+    });
 
     // Load existing measurements as features.
     for (const it of initialItems) {
@@ -500,6 +513,45 @@ export default function MapWorkspace({
     try { await api.patchItem(project.id, it.id, { is_visible: !it.is_visible }); } catch { /* visual only */ }
   }
 
+  // Click-to-select the correct property. The clicked point is inside the lot,
+  // so the parcel query is exact (no geocoder guesswork). Saves the coordinates.
+  async function setPropertyAt(lat: number, lng: number, coordinate: number[]) {
+    if (markerFeatureRef.current) {
+      markerFeatureRef.current.setGeometry(new Point(coordinate));
+    } else {
+      const mf = new Feature(new Point(coordinate));
+      markerFeatureRef.current = mf;
+      markerSourceRef.current.addFeature(mf);
+    }
+    setCoords({ lat, lng });
+    setPlacing(false);
+    setSaveStatus("saving");
+    try {
+      const res = await fetch(`/api/measuremap/projects/${project.id}/parcel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ latitude: lat, longitude: lng }),
+      });
+      if (!res.ok) throw new Error("save failed");
+      const { parcel } = await res.json();
+      parcelSourceRef.current.clear();
+      if (parcel?.geometry) {
+        const g = geojson.readGeometry(parcel.geometry, { dataProjection: "EPSG:4326", featureProjection: MAP_PROJ });
+        parcelSourceRef.current.addFeature(new Feature(g));
+        setParcelInfo({ lotId: parcel.lotId, planLabel: parcel.planLabel });
+        const ext = g.getExtent();
+        if (ext && Number.isFinite(ext[0]) && mapRef.current) {
+          mapRef.current.getView().fit(ext, { padding: [90, 90, 90, 90], maxZoom: 20, duration: 400 });
+        }
+      } else {
+        setParcelInfo(null);
+      }
+      setSaveStatus("saved");
+    } catch {
+      setSaveStatus("error");
+    }
+  }
+
   async function changeItemColour(it: Item, colour: string) {
     setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, colour } : i));
     setColourPickerFor(null);
@@ -546,14 +598,18 @@ export default function MapWorkspace({
         <div className="border-b border-slate-200 bg-sky-50/60 px-3 py-2.5">
           <p className="text-[10px] font-bold uppercase tracking-wide text-sky-700">Property</p>
           <p className="mt-0.5 text-sm font-semibold leading-snug text-sky-950">{project.full_address}</p>
-          {project.latitude != null && project.longitude != null && (
-            <p className="mt-0.5 text-[11px] text-slate-500">
-              {project.latitude.toFixed(6)}, {project.longitude.toFixed(6)}
-            </p>
+          {coords.lat != null && coords.lng != null && (
+            <p className="mt-0.5 text-[11px] text-slate-500">{coords.lat.toFixed(6)}, {coords.lng.toFixed(6)}</p>
           )}
           {parcelInfo?.lotId && (
             <p className="mt-1 text-xs text-slate-600">Parcel <span className="font-semibold text-sky-950">{parcelInfo.lotId}</span></p>
           )}
+          <button
+            onClick={() => { if (!placing) setTool("pan"); setPlacing((v) => !v); }}
+            className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1.5 text-xs font-semibold transition ${placing ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"}`}
+          >
+            <MapPin className="h-3.5 w-3.5" /> {placing ? "Click your property on the map…" : "Set / correct property"}
+          </button>
         </div>
 
         <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2">
@@ -680,6 +736,12 @@ export default function MapWorkspace({
         <div className="absolute bottom-2 right-3 z-10 max-w-xs rounded bg-amber-50/95 px-2 py-1 text-[10px] leading-tight text-amber-800 shadow-sm">
           Aerial measurements are approximate and must be verified against drawings or onsite conditions.
         </div>
+
+        {placing && (
+          <div className="absolute left-1/2 top-16 z-20 -translate-x-1/2 rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg">
+            Click your property on the map to set it
+          </div>
+        )}
 
         {/* Live measurement tooltip (moved onto the map by an OL overlay) */}
         <div
