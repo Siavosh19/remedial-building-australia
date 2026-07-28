@@ -111,11 +111,15 @@ type NswHit = { properties: { address: string }; geometry: { coordinates: [numbe
 async function nswSearch(q: string): Promise<AddressSuggestion[]> {
   const tokens = q.toUpperCase().replace(/[^A-Z0-9\s/]/g, " ").trim().split(/\s+/).filter(Boolean);
   if (!tokens.length) return [];
-  const like = "%" + tokens.join("%") + "%";
-  const where = `UPPER(address) LIKE '${like.replace(/'/g, "''")}'`;
+  // PREFIX match (no leading wildcard). Stored addresses are uppercase and start
+  // with the house number, so `address LIKE 'TYPED%'` uses the index and returns
+  // in ~0.2s vs ~11s for a '%...%' scan. Users type left-to-right (number → street
+  // → suburb), which matches the stored "98 MOUNT STREET COOGEE" order.
+  const prefix = tokens.join(" ") + "%";
+  const where = `address LIKE '${prefix.replace(/'/g, "''")}'`;
   const url =
     `${NSW_ADDRESS_LAYER}?where=${encodeURIComponent(where)}` +
-    `&outFields=address&returnGeometry=true&outSR=4326&resultRecordCount=25&f=geojson`;
+    `&outFields=address&returnGeometry=true&outSR=4326&resultRecordCount=15&f=geojson`;
   const res = await fetch(url, { next: { revalidate: 3600 } });
   if (!res.ok) return [];
   const data = await res.json();
