@@ -14,19 +14,22 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import { Draw, Modify, Select } from "ol/interaction";
+import { createBox } from "ol/interaction/Draw";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { getLength, getArea } from "ol/sphere";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import Overlay from "ol/Overlay";
-import Polygon from "ol/geom/Polygon";
+import Polygon, { fromCircle } from "ol/geom/Polygon";
 import LineString from "ol/geom/LineString";
+import type CircleGeom from "ol/geom/Circle";
 import { defaults as defaultControls, FullScreen, Attribution } from "ol/control";
 import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 
 import {
   MousePointer2, Hand, Ruler, Spline, Pentagon, MapPin, Undo2, Redo2, Trash2, Maximize, Layers, Plus, Loader2, Check, Eye, EyeOff, ChevronRight, ChevronDown,
+  Square, Circle, Camera, Copy, Navigation, X,
 } from "lucide-react";
 import { TAKEOFF_COLOURS, type MeasurementType } from "@/types/measuremap";
 import * as api from "./api";
@@ -41,12 +44,12 @@ const PIN_SVG =
   '<circle cx="14" cy="14" r="4.5" fill="#ffffff"/></svg>';
 const PIN_SRC = "data:image/svg+xml;utf8," + encodeURIComponent(PIN_SVG);
 
-type Tool = "select" | "pan" | "length" | "perimeter" | "area" | "count";
+type Tool = "select" | "pan" | "length" | "perimeter" | "area" | "count" | "rectangle" | "circle";
 type Item = api.ApiItem;
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 type Snapshot = { measurementId: string; itemId: string; gj: unknown; quantity: number; unit: string; label: string | null; idx?: number; mtype: string };
 
-const DRAW_TYPE: Record<Exclude<Tool, "select" | "pan">, "LineString" | "Polygon" | "Point"> = {
+const DRAW_TYPE: Record<"length" | "perimeter" | "area" | "count", "LineString" | "Polygon" | "Point"> = {
   length: "LineString", perimeter: "LineString", area: "Polygon", count: "Point",
 };
 
@@ -65,6 +68,17 @@ function fmt(q: number, type: string): string {
 function itemTotal(it: Item): number {
   if (it.measurement_type === "count") return it.measurements.length;
   return it.measurements.reduce((s, m) => s + m.calculated_quantity, 0);
+}
+
+// Decimal degrees → degrees/minutes/seconds (Nearmap-style secondary coordinate).
+function toDMS(dec: number, isLat: boolean): string {
+  const dir = isLat ? (dec >= 0 ? "N" : "S") : (dec >= 0 ? "E" : "W");
+  const a = Math.abs(dec);
+  const d = Math.floor(a);
+  const mf = (a - d) * 60;
+  const m = Math.floor(mf);
+  const s = Math.round((mf - m) * 60);
+  return `${d}° ${m}' ${s}" ${dir}`;
 }
 
 export default function MapWorkspace({
@@ -108,6 +122,8 @@ export default function MapWorkspace({
   const [adding, setAdding] = useState(false);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
+  const [showProperty, setShowProperty] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   const refreshUndoFlags = useCallback(() => {
     setCanUndo(undoStackRef.current.length > 0);
@@ -167,12 +183,14 @@ export default function MapWorkspace({
       source: new TileArcGISRest({
         url: "https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Imagery/MapServer",
         attributions: "Imagery © NSW Spatial Services (CC BY 4.0)",
+        crossOrigin: "anonymous", // allows screenshot export without tainting the canvas
       }),
     });
     const cadastre = new TileLayer({
       source: new TileArcGISRest({
         url: "https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Cadastre/MapServer",
         params: { TRANSPARENT: true },
+        crossOrigin: "anonymous",
       }),
       visible: false, // optional "all boundaries" overlay (toggle top-right)
       opacity: 0.9,
@@ -290,15 +308,19 @@ export default function MapWorkspace({
     if (tool !== "pan") {
       const active = itemsRef.current.find((i) => i.id === activeIdRef.current);
       if (!active) return; // no active item → nothing to draw into
+      const isRect = tool === "rectangle";
+      const isCircle = tool === "circle";
+      const drawType = isRect || isCircle ? "Circle" : DRAW_TYPE[tool as Exclude<Tool, "select" | "pan" | "rectangle" | "circle">];
       const draw = new Draw({
         source: sourceRef.current,
-        type: DRAW_TYPE[tool],
+        type: drawType,
+        ...(isRect ? { geometryFunction: createBox() } : {}),
         ...(tool === "length" ? { maxPoints: 2 } : {}),
       });
       const tip = measureTipRef.current;
       const ov = measureOverlayRef.current;
       const mtype = active.measurement_type as MeasurementType;
-      if (tool !== "count" && tip && ov) {
+      if (tool !== "count" && !isCircle && tip && ov) {
         draw.on("drawstart", (e) => {
           const g = e.feature.getGeometry();
           if (!g) return;
@@ -320,7 +342,14 @@ export default function MapWorkspace({
         draw.on("drawend", hideTip);
         draw.on("drawabort", hideTip);
       }
-      draw.on("drawend", (e) => void handleDrawEnd(active, e.feature));
+      draw.on("drawend", (e) => {
+        // Circle geometry has no geodesic area; convert to a polygon first.
+        if (isCircle) {
+          const g = e.feature.getGeometry();
+          if (g && g.getType() === "Circle") e.feature.setGeometry(fromCircle(g as CircleGeom));
+        }
+        void handleDrawEnd(active, e.feature);
+      });
       map.addInteraction(draw);
       drawRef.current = draw;
     }
@@ -485,14 +514,76 @@ export default function MapWorkspace({
     }
   }
 
+  // Export the current map view as a PNG (imagery tiles use crossOrigin so the
+  // canvas isn't tainted). Composites all OL layer canvases into one.
+  function screenshot() {
+    const map = mapRef.current;
+    if (!map) return;
+    map.once("rendercomplete", () => {
+      const size = map.getSize();
+      if (!size) return;
+      const out = document.createElement("canvas");
+      out.width = size[0];
+      out.height = size[1];
+      const ctx = out.getContext("2d");
+      if (!ctx) return;
+      ctx.fillStyle = "#e5e7eb";
+      ctx.fillRect(0, 0, size[0], size[1]);
+      map.getViewport().querySelectorAll<HTMLCanvasElement>(".ol-layer canvas, canvas.ol-layer").forEach((canvas) => {
+        if (canvas.width === 0) return;
+        const parent = canvas.parentNode as HTMLElement | null;
+        const op = parent?.style?.opacity ?? canvas.style.opacity;
+        ctx.globalAlpha = op === "" ? 1 : Number(op);
+        const tf = canvas.style.transform.match(/^matrix\(([^)]+)\)$/);
+        if (tf) {
+          const t = tf[1].split(",").map(Number);
+          ctx.setTransform(t[0], t[1], t[2], t[3], t[4], t[5]);
+        }
+        ctx.drawImage(canvas, 0, 0);
+      });
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.globalAlpha = 1;
+      try {
+        const link = document.createElement("a");
+        link.download = "measuremap.png";
+        link.href = out.toDataURL("image/png");
+        link.click();
+      } catch (err) {
+        console.error("[measuremap] screenshot failed:", err);
+        setSaveStatus("error");
+      }
+    });
+    map.renderSync();
+  }
+
+  function copyCoords() {
+    if (coords.lat == null || coords.lng == null) return;
+    navigator.clipboard?.writeText(`${coords.lat}, ${coords.lng}`).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }).catch(() => {});
+  }
+
+  function openStreetView() {
+    const url = coords.lat != null && coords.lng != null
+      ? `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${coords.lat},${coords.lng}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(project.full_address)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function openGoogleMaps() {
+    const q = coords.lat != null && coords.lng != null ? `${coords.lat},${coords.lng}` : project.full_address;
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`, "_blank", "noopener,noreferrer");
+  }
+
   // ── Takeoff item actions ──────────────────────────────────────────────────
-  async function addItem(name: string, type: MeasurementType, colour: string) {
+  async function addItem(name: string, type: MeasurementType, colour: string, toolAfter?: Tool) {
     setSaveStatus("saving");
     try {
       const created = await api.createItem(project.id, { name, measurement_type: type, colour, source_type: "map", sort_order: items.length });
       setItems((prev) => [...prev, created]);
       setActiveItemId(created.id);
-      setTool(type);
+      setTool(toolAfter ?? type);
       setSaveStatus("saved");
       setAdding(false);
     } catch { setSaveStatus("error"); }
@@ -573,17 +664,22 @@ export default function MapWorkspace({
     { id: "length", label: "Length", Icon: Ruler },
     { id: "perimeter", label: "Perimeter", Icon: Spline },
     { id: "area", label: "Area", Icon: Pentagon },
+    { id: "rectangle", label: "Rectangle area", Icon: Square },
+    { id: "circle", label: "Circle area", Icon: Circle },
     { id: "count", label: "Count", Icon: MapPin },
   ] as { id: Tool; label: string; Icon: typeof Ruler }[]), []);
 
   function pickTool(t: Tool) {
-    if (["length", "perimeter", "area", "count"].includes(t)) {
-      if (!activeItem || activeItem.measurement_type !== t) {
+    const drawTools = ["length", "perimeter", "area", "count", "rectangle", "circle"];
+    if (drawTools.includes(t)) {
+      // rectangle & circle produce AREA measurements.
+      const neededType: MeasurementType = t === "rectangle" || t === "circle" ? "area" : (t as MeasurementType);
+      if (!activeItem || activeItem.measurement_type !== neededType) {
         // Auto-create a matching item so there is always something to draw into.
-        const count = items.filter((i) => i.measurement_type === t).length + 1;
+        const count = items.filter((i) => i.measurement_type === neededType).length + 1;
         const labels: Record<MeasurementType, string> = { length: "Length", perimeter: "Perimeter", area: "Area", count: "Count" };
-        const name = labels[t as MeasurementType] + " " + count;
-        void addItem(name, t as MeasurementType, TAKEOFF_COLOURS[items.length % TAKEOFF_COLOURS.length]);
+        const name = labels[neededType] + " " + count;
+        void addItem(name, neededType, TAKEOFF_COLOURS[items.length % TAKEOFF_COLOURS.length], t);
         return;
       }
     }
@@ -594,24 +690,6 @@ export default function MapWorkspace({
     <div className="flex h-full">
       {/* LEFT QUANTITY PANEL */}
       <aside className="flex w-72 shrink-0 flex-col border-r border-slate-200 bg-white">
-        {/* Property panel — which property this project is about (Nearmap-style) */}
-        <div className="border-b border-slate-200 bg-sky-50/60 px-3 py-2.5">
-          <p className="text-[10px] font-bold uppercase tracking-wide text-sky-700">Property</p>
-          <p className="mt-0.5 text-sm font-semibold leading-snug text-sky-950">{project.full_address}</p>
-          {coords.lat != null && coords.lng != null && (
-            <p className="mt-0.5 text-[11px] text-slate-500">{coords.lat.toFixed(6)}, {coords.lng.toFixed(6)}</p>
-          )}
-          {parcelInfo?.lotId && (
-            <p className="mt-1 text-xs text-slate-600">Parcel <span className="font-semibold text-sky-950">{parcelInfo.lotId}</span></p>
-          )}
-          <button
-            onClick={() => { if (!placing) setTool("pan"); setPlacing((v) => !v); }}
-            className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1.5 text-xs font-semibold transition ${placing ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"}`}
-          >
-            <MapPin className="h-3.5 w-3.5" /> {placing ? "Click your property on the map…" : "Set / correct property"}
-          </button>
-        </div>
-
         <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2">
           <span className="text-xs font-bold uppercase tracking-wide text-slate-500">Takeoff items</span>
           <button onClick={() => setAdding((v) => !v)} className="inline-flex items-center gap-1 rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700">
@@ -715,10 +793,14 @@ export default function MapWorkspace({
           <button onClick={fitToScreen} title="Fit to screen" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100">
             <Maximize className="h-4 w-4" />
           </button>
+          <button onClick={screenshot} title="Screenshot (PNG)" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100">
+            <Camera className="h-4 w-4" />
+          </button>
         </div>
 
         {/* Right controls */}
         <div className="absolute right-3 top-3 z-10 flex flex-col gap-1.5">
+          <ToggleChip active={showProperty} onClick={() => setShowProperty((v) => !v)} Icon={MapPin} label="Property" />
           <ToggleChip active={showCadastre} onClick={() => setShowCadastre((v) => !v)} Icon={Layers} label="Boundaries" />
           <ToggleChip active={showMeasurements} onClick={() => setShowMeasurements((v) => !v)} Icon={showMeasurements ? Eye : EyeOff} label="Measurements" />
           <ToggleChip active={showLabels} onClick={() => setShowLabels((v) => !v)} Icon={Ruler} label="Labels" />
@@ -752,6 +834,55 @@ export default function MapWorkspace({
 
         <div ref={mapEl} className="h-full w-full bg-slate-200" />
       </div>
+
+      {/* RIGHT PROPERTY PANEL (Nearmap-style) */}
+      {showProperty && (
+        <aside className="flex w-[300px] shrink-0 flex-col border-l border-slate-200 bg-white">
+          <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+            <span className="text-sm font-bold text-sky-950">Property</span>
+            <button onClick={() => setShowProperty(false)} className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-auto p-4">
+            <p className="text-sm font-semibold leading-snug text-sky-950">{project.full_address}</p>
+            {coords.lat != null && coords.lng != null && (
+              <div className="mt-2 space-y-0.5 text-xs text-slate-500">
+                <p>{coords.lat.toFixed(6)}, {coords.lng.toFixed(6)}</p>
+                <p>{toDMS(coords.lat, true)}, {toDMS(coords.lng, false)}</p>
+              </div>
+            )}
+
+            <div className="mt-3 flex gap-2">
+              <button onClick={openStreetView} title="Open Street View" className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-md border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+                <Eye className="h-4 w-4" /> Street View
+              </button>
+              <button onClick={openGoogleMaps} title="Open in Google Maps" className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-50">
+                <Navigation className="h-4 w-4" />
+              </button>
+              <button onClick={copyCoords} title="Copy coordinates" className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-50">
+                {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+              </button>
+            </div>
+
+            <div className="my-4 border-t border-slate-200" />
+
+            <p className="text-[10px] font-bold uppercase tracking-wide text-sky-700">Parcel details</p>
+            {parcelInfo?.lotId ? (
+              <p className="mt-1 text-sm text-slate-700">Lot/DP <span className="font-semibold text-sky-950">{parcelInfo.lotId}</span></p>
+            ) : (
+              <p className="mt-1 text-xs text-slate-400">No parcel matched — use “Set / correct property”.</p>
+            )}
+
+            <button
+              onClick={() => { if (!placing) setTool("pan"); setPlacing((v) => !v); }}
+              className={`mt-4 flex w-full items-center justify-center gap-1.5 rounded-md border px-2 py-2 text-xs font-semibold transition ${placing ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"}`}
+            >
+              <MapPin className="h-3.5 w-3.5" /> {placing ? "Click your property on the map…" : "Set / correct property"}
+            </button>
+          </div>
+        </aside>
+      )}
     </div>
   );
 }
