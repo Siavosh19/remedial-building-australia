@@ -1719,7 +1719,7 @@ export default function DirectoryListing({ categories }: Props) {
                       <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-cyan-200 transition hover:ring-cyan-400">
                         {active.name}
                         <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
-                          {activeIsBest ? "Best" : "Selected"}
+                          {activeIsBest ? "Best AI match" : "Selected"}
                         </span>
                         <span className="text-slate-400">▾</span>
                       </summary>
@@ -1747,7 +1747,7 @@ export default function DirectoryListing({ categories }: Props) {
                               <span className="flex min-w-0 items-center gap-1.5">
                                 <span className="truncate">{o.name}</span>
                                 {isBest && (
-                                  <span className="shrink-0 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">Best</span>
+                                  <span className="shrink-0 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">Best AI match</span>
                                 )}
                               </span>
                               {isActive && (
@@ -1763,7 +1763,7 @@ export default function DirectoryListing({ categories }: Props) {
                   ) : (
                     <span className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-bold text-slate-900 shadow-sm ring-1 ring-cyan-200">
                       {matched.name}
-                      <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">Best</span>
+                      <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">Best AI match</span>
                     </span>
                   )}
                 </div>
@@ -1778,10 +1778,10 @@ export default function DirectoryListing({ categories }: Props) {
               type="button"
               onClick={() => setShowManual((v) => !v)}
               aria-expanded={showManual}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-sky-300 hover:text-sky-800"
+              className={`inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-sm font-semibold shadow-sm transition ${!showManual && aiMatch?.matched && !aiLoading ? "border-orange-300 text-orange-600 hover:border-orange-400 hover:text-orange-700" : "border-slate-200 text-slate-600 hover:border-sky-300 hover:text-sky-800"}`}
             >
-              {showManual ? "Hide standard search" : "Prefer to search yourself? Use the standard search"}
-              <span aria-hidden className={`text-slate-400 transition-transform ${showManual ? "rotate-180" : ""}`}>▾</span>
+              {showManual ? "Hide standard search" : aiMatch?.matched && !aiLoading ? "Can't find the right business? Use manual search to pick your own category" : "Prefer to search yourself? Use the standard search"}
+              <span aria-hidden className={`transition-transform ${showManual ? "rotate-180" : ""} ${!showManual && aiMatch?.matched && !aiLoading ? "text-orange-400" : "text-slate-400"}`}>▾</span>
             </button>
           </div>
 
