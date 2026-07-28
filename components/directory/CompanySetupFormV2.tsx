@@ -175,7 +175,7 @@ function PremiumSnapshot({ tier }: { tier: "gold" | "silver" }) {
   const gold = tier === "gold";
   return (
     <div className="rounded-2xl p-[3px] shadow-sm" style={{ background: gold ? GOLD_BRUSH : SILVER_BRUSH }}>
-      <div className="relative rounded-xl bg-white px-5 pb-5 pt-7">
+      <div className="relative rounded-xl bg-white px-4 pb-4 pt-7 sm:px-5 sm:pb-5">
         <span
           className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
           style={{ background: gold ? GOLD_RIBBON : SILVER_RIBBON, boxShadow: gold ? "0 4px 14px rgba(184,150,62,0.45)" : "0 3px 10px rgba(71,85,105,0.35)" }}
@@ -553,7 +553,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
               : key === "silver" ? "Start Silver trial →"
               : "Submit & publish free listing";
             return (
-              <div key={key} className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_12px_34px_rgba(15,37,64,0.12)]">
+              <div key={key} className="space-y-4 rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_12px_34px_rgba(15,37,64,0.12)] sm:p-6">
                 {/* 1 ── Title + price on white, left-aligned, plan-coloured (Gold/Silver/black) ── */}
                 <div>
                   {plan.badge && (

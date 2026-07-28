@@ -64,8 +64,8 @@ export default async function DirectoryCompanySetupPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
     <AuthHeader />
-    <div className="mx-auto max-w-5xl px-6 py-10">
-    <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
+    <div className="mx-auto max-w-5xl px-3 py-6 sm:px-6 sm:py-10">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-10">
       <h1 className="text-3xl font-extrabold text-slate-950">Grow your business with Remedial Building Australia</h1>
       <p className="mt-3 text-slate-600">Complete your company profile — once your ABN is confirmed, your listing goes live in the directory automatically.</p>
       <ul className="mt-6 grid gap-2 sm:grid-cols-2">
