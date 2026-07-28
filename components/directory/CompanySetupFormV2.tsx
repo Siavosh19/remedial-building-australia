@@ -66,7 +66,7 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
       { t: "Receive quote requests" },
       { t: "Featured placement — above Silver & Free listings" },
       { t: "Gold Featured badge" },
-      { t: "7 lead credits per week" },
+      { t: "7 lead credits per month — 1 credit per lead you take" },
       { t: "Shown across your whole State — not distance-limited" },
       { t: "Only 3 Gold businesses per category in your State" },
     ],
@@ -87,7 +87,7 @@ const PLAN_META: Record<PlanChoice, PlanMeta> = {
       { t: "Receive quote requests" },
       { t: "Request Quote button on your listing" },
       { t: "Rank above Free listings — within 50 km" },
-      { t: "3 lead credits per week" },
+      { t: "3 lead credits per month — 1 credit per lead you take" },
       { t: "Company logo + up to 15 project photos" },
       { t: "On-card description (up to 114 characters) + tagline" },
     ],
@@ -486,7 +486,7 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
               : key === "silver" ? "Start Silver trial →"
               : "Submit & publish free listing";
             return (
-              <div key={key} className="space-y-4 border-b-2 border-slate-300 pb-10 last:border-b-2 last:border-slate-300">
+              <div key={key} className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_12px_34px_rgba(15,37,64,0.12)]">
                 {/* 1 ── Title + price on white, left-aligned, plan-coloured (Gold/Silver/black) ── */}
                 <div>
                   {plan.badge && (
