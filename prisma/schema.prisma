@@ -1575,3 +1575,143 @@ model LeadWalletTxn {
   @@index([company_id])
   @@map("lead_wallet_txns")
 }
+
+// ============================================================================
+// RBA MeasureMap — private quantity-takeoff module (separate product).
+// See docs/measuremap/001_foundation.sql for the matching DB migration.
+// owner_user_id is a plain Int column (FK to users.id enforced in SQL) so the
+// shared User model does not need to change. No relation to existing models.
+// ============================================================================
+
+model MeasureMapAccess {
+  user_id    Int      @id
+  email      String?
+  role       String   @default("tester") // owner | tester | subscriber
+  status     String   @default("active") // active | inactive
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("measuremap_access")
+}
+
+model MeasureMapProject {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner_user_id     Int
+  project_name      String?
+  project_reference String?
+  full_address      String
+  suburb            String?
+  state             String?
+  postcode          String?
+  latitude          Float?
+  longitude         Float?
+  notes             String?
+  status            String    @default("active") // active | archived
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  archived_at       DateTime?
+  deleted_at        DateTime?
+
+  drawings      MeasureMapDrawing[]
+  drawing_pages MeasureMapDrawingPage[]
+  takeoff_items MeasureMapTakeoffItem[]
+  measurements  MeasureMapMeasurement[]
+
+  @@index([owner_user_id])
+  @@index([status])
+  @@index([updated_at])
+  @@map("measuremap_projects")
+}
+
+model MeasureMapDrawing {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id    String    @db.Uuid
+  owner_user_id Int
+  filename      String
+  storage_path  String
+  mime_type     String?
+  file_size     BigInt?
+  page_count    Int       @default(1)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  deleted_at    DateTime?
+
+  project MeasureMapProject       @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  pages   MeasureMapDrawingPage[]
+
+  @@index([project_id])
+  @@index([owner_user_id])
+  @@map("measuremap_drawings")
+}
+
+model MeasureMapDrawingPage {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  drawing_id       String   @db.Uuid
+  project_id       String   @db.Uuid
+  page_number      Int
+  page_width       Float?
+  page_height      Float?
+  rotation         Int      @default(0)
+  pixels_per_metre Float?
+  scale_status     String   @default("unscaled") // unscaled | scaled
+  calibration_data Json?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  drawing MeasureMapDrawing @relation(fields: [drawing_id], references: [id], onDelete: Cascade)
+  project MeasureMapProject @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  @@unique([drawing_id, page_number])
+  @@index([drawing_id])
+  @@index([project_id])
+  @@map("measuremap_drawing_pages")
+}
+
+model MeasureMapTakeoffItem {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id       String    @db.Uuid
+  owner_user_id    Int
+  source_type      String // map | drawing
+  source_id        String?   @db.Uuid
+  name             String
+  measurement_type String // length | perimeter | area | count
+  colour           String    @default("#e11d48")
+  unit             String // m | m2 | ea
+  is_visible       Boolean   @default(true)
+  is_locked        Boolean   @default(false)
+  sort_order       Int       @default(0)
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+  deleted_at       DateTime?
+
+  project      MeasureMapProject       @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  measurements MeasureMapMeasurement[]
+
+  @@index([project_id])
+  @@index([owner_user_id])
+  @@map("measuremap_takeoff_items")
+}
+
+model MeasureMapMeasurement {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id          String    @db.Uuid
+  takeoff_item_id     String    @db.Uuid
+  owner_user_id       Int
+  source_type         String // map | drawing
+  source_id           String?   @db.Uuid
+  geometry            Json
+  calculated_quantity Float     @default(0)
+  unit                String
+  label               String?
+  sort_order          Int       @default(0)
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
+  deleted_at          DateTime?
+
+  project      MeasureMapProject     @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  takeoff_item MeasureMapTakeoffItem @relation(fields: [takeoff_item_id], references: [id], onDelete: Cascade)
+
+  @@index([project_id])
+  @@index([takeoff_item_id])
+  @@map("measuremap_measurements")
+}
