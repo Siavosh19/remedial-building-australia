@@ -4,13 +4,14 @@ import "server-only";
 // MeasureMap address lookup / geocoding — provider-agnostic service.
 //
 // The active provider is chosen by env MEASUREMAP_GEOCODER:
+//   "nsw"       → NSW Spatial Services AddressPoint (DEFAULT — free, keyless,
+//                 rooftop-accurate; the same authoritative data SIX Maps uses)
 //   "google"    → Google Geocoding API   (needs GOOGLE_MAPS_API_KEY)
 //   "geoscape"  → Geoscape Predictive    (needs GEOSCAPE_API_KEY)
-//   "nominatim" → OpenStreetMap, keyless  (DEFAULT — works with no setup)
+//   "nominatim" → OpenStreetMap, keyless  (street-level only; last resort)
 //
-// If a paid provider is selected but its key is missing, we fall back to
-// Nominatim and warn, so a missing key degrades gracefully instead of breaking
-// project creation. Callers only ever touch searchAddresses()/resolveAddress().
+// If a paid provider is selected but its key is missing, we fall back to the
+// NSW provider. Callers only ever touch searchAddresses()/resolveAddress().
 // ============================================================================
 
 export type AddressSuggestion = {
@@ -27,22 +28,22 @@ export type ResolvedAddress = {
   longitude: number;
 };
 
-type Provider = "google" | "geoscape" | "nominatim";
+type Provider = "nsw" | "google" | "geoscape" | "nominatim";
 
 const UA = "RemedialBuildingAustralia-MeasureMap/1.0 (info@remedialbuildingaustralia.com.au)";
 
 function activeProvider(): Provider {
-  const want = (process.env.MEASUREMAP_GEOCODER ?? "nominatim").toLowerCase();
+  const want = (process.env.MEASUREMAP_GEOCODER ?? "nsw").toLowerCase();
   if (want === "google" && !process.env.GOOGLE_MAPS_API_KEY) {
-    console.warn("[measuremap] MEASUREMAP_GEOCODER=google but GOOGLE_MAPS_API_KEY unset — using nominatim");
-    return "nominatim";
+    console.warn("[measuremap] MEASUREMAP_GEOCODER=google but GOOGLE_MAPS_API_KEY unset — using nsw");
+    return "nsw";
   }
   if (want === "geoscape" && !process.env.GEOSCAPE_API_KEY) {
-    console.warn("[measuremap] MEASUREMAP_GEOCODER=geoscape but GEOSCAPE_API_KEY unset — using nominatim");
-    return "nominatim";
+    console.warn("[measuremap] MEASUREMAP_GEOCODER=geoscape but GEOSCAPE_API_KEY unset — using nsw");
+    return "nsw";
   }
-  if (want === "google" || want === "geoscape") return want;
-  return "nominatim";
+  if (want === "google" || want === "geoscape" || want === "nominatim") return want;
+  return "nsw";
 }
 
 export async function searchAddresses(query: string): Promise<AddressSuggestion[]> {
@@ -54,8 +55,10 @@ export async function searchAddresses(query: string): Promise<AddressSuggestion[
         return await googleSearch(q);
       case "geoscape":
         return await geoscapeSearch(q);
-      default:
+      case "nominatim":
         return await nominatimSearch(q);
+      default:
+        return await nswSearch(q);
     }
   } catch (err) {
     console.error("[measuremap] address search failed:", err);
@@ -70,13 +73,82 @@ export async function resolveAddress(id: string): Promise<ResolvedAddress | null
         return await googleResolve(id);
       case "geoscape":
         return await geoscapeResolve(id);
-      default:
+      case "nominatim":
         return await nominatimResolve(id);
+      default:
+        return await nswResolve(id);
     }
   } catch (err) {
     console.error("[measuremap] address resolve failed:", err);
     return null;
   }
+}
+
+// ── NSW Spatial Services AddressPoint (default — free, rooftop-accurate) ─────
+// Same authoritative NSW address data SIX Maps uses. Returns the point INSIDE
+// the parcel, so the downstream cadastre lookup lands on the correct lot.
+const NSW_ADDRESS_LAYER =
+  "https://portal.spatial.nsw.gov.au/server/rest/services/NSW_Geocoded_Addressing_Theme/FeatureServer/1/query";
+
+const STREET_TYPES = new Set([
+  "STREET", "ST", "ROAD", "RD", "AVENUE", "AVE", "AV", "LANE", "LN", "PLACE", "PL",
+  "DRIVE", "DR", "COURT", "CT", "CRESCENT", "CRES", "CR", "CLOSE", "CL", "PARADE", "PDE",
+  "WAY", "TERRACE", "TCE", "HIGHWAY", "HWY", "CIRCUIT", "CCT", "BOULEVARD", "BVD",
+  "GROVE", "GR", "ESPLANADE", "ESP", "SQUARE", "SQ", "WALK", "RISE", "ROW", "LOOP",
+]);
+
+// Suburb = the tokens that follow the last recognised street-type word.
+function suburbFromAddress(addr: string): string | null {
+  const parts = addr.trim().split(/\s+/);
+  let lastStreetIdx = -1;
+  parts.forEach((p, i) => { if (STREET_TYPES.has(p.toUpperCase())) lastStreetIdx = i; });
+  if (lastStreetIdx < 0 || lastStreetIdx >= parts.length - 1) return null;
+  return parts.slice(lastStreetIdx + 1).join(" ");
+}
+
+type NswHit = { properties: { address: string }; geometry: { coordinates: [number, number] } };
+
+async function nswSearch(q: string): Promise<AddressSuggestion[]> {
+  const tokens = q.toUpperCase().replace(/[^A-Z0-9\s/]/g, " ").trim().split(/\s+/).filter(Boolean);
+  if (!tokens.length) return [];
+  const like = "%" + tokens.join("%") + "%";
+  const where = `UPPER(address) LIKE '${like.replace(/'/g, "''")}'`;
+  const url =
+    `${NSW_ADDRESS_LAYER}?where=${encodeURIComponent(where)}` +
+    `&outFields=address&returnGeometry=true&outSR=4326&resultRecordCount=25&f=geojson`;
+  const res = await fetch(url, { next: { revalidate: 3600 } });
+  if (!res.ok) return [];
+  const data = await res.json();
+  const hits = (data.features ?? []) as NswHit[];
+
+  // Dedupe by rounded coordinate, keeping the shortest label (the base street
+  // address rather than each unit that shares the same point).
+  const byCoord = new Map<string, { label: string; lng: number; lat: number }>();
+  for (const h of hits) {
+    const [lng, lat] = h.geometry.coordinates;
+    const key = `${lng.toFixed(6)},${lat.toFixed(6)}`;
+    const label = h.properties.address;
+    const cur = byCoord.get(key);
+    if (!cur || label.length < cur.label.length) byCoord.set(key, { label, lng, lat });
+  }
+  return Array.from(byCoord.values()).slice(0, 6).map((e) => ({
+    id: "nsw:" + Buffer.from(JSON.stringify({
+      full_address: `${e.label} NSW`,
+      suburb: suburbFromAddress(e.label),
+      state: "NSW",
+      postcode: null,
+      latitude: e.lat,
+      longitude: e.lng,
+    })).toString("base64"),
+    label: e.label,
+  }));
+}
+
+async function nswResolve(id: string): Promise<ResolvedAddress | null> {
+  if (!id.startsWith("nsw:")) return null;
+  const parsed = JSON.parse(Buffer.from(id.slice(4), "base64").toString("utf8")) as ResolvedAddress;
+  if (!Number.isFinite(parsed.latitude) || !Number.isFinite(parsed.longitude)) return null;
+  return parsed;
 }
 
 // ── Nominatim (keyless default) ─────────────────────────────────────────────
