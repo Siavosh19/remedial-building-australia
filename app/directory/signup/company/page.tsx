@@ -2,7 +2,14 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import CompanySetupForm, { type SignupPlans } from "@/components/directory/CompanySetupForm";
+import CompanySetupFormV2 from "@/components/directory/CompanySetupFormV2";
 import AuthHeader from "@/components/AuthHeader";
+
+// Preview gate: the redesigned two-step plan flow is shown ONLY to this account
+// for review/approval before it rolls out to everyone. Everyone else keeps the
+// current single-page form. Remove this gate (and use V2 unconditionally) once
+// the design is approved.
+const PLAN_FLOW_PREVIEW_EMAIL = "remedial1@atomicmail.io";
 
 // Plan pricing shown on the signup plan-picker. Pulled from the admin-managed
 // `plans` table (same source as /directory/pricing), with a founding-offer
@@ -74,7 +81,11 @@ export default async function DirectoryCompanySetupPage() {
         ))}
       </ul>
       <div className="mt-10">
-        <CompanySetupForm categories={categories} plans={plans} />
+        {user.email?.toLowerCase() === PLAN_FLOW_PREVIEW_EMAIL ? (
+          <CompanySetupFormV2 categories={categories} plans={plans} />
+        ) : (
+          <CompanySetupForm categories={categories} plans={plans} />
+        )}
       </div>
     </div>
     </div>
