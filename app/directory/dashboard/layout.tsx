@@ -37,34 +37,34 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       <PortalSidebar email={user.email} companySlug={company?.slug ?? null} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Top bar — hamburger space (mobile), listing name/plan, role switch, bell */}
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-slate-200 bg-white pl-16 pr-4 md:pl-6">
-          <div className="min-w-0 flex-1">
-            <span className="truncate text-sm font-semibold text-sky-950 sm:text-base">
-              {company ? company.name : "Business portal"}
-            </span>
-            {company && planDisplay && (
-              <span className={`ml-2 hidden rounded-full px-2.5 py-0.5 text-[11px] font-bold tracking-wide sm:inline ${statusCls}`}>
-                {planDisplay}
-              </span>
-            )}
-          </div>
-          <RoleSwitcher className="hidden md:inline-flex" />
-          <NotificationBell />
-          {company && (
-            <a
-              href={`/directory/company/${company.slug}`}
-              target="_blank"
-              className="hidden rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-sky-800 transition hover:border-sky-300 sm:inline-block"
-            >
-              View listing ↗
-            </a>
-          )}
-        </header>
+        {/* Sticky top region: full-width tab bar over an identity/actions bar */}
+        <div className="sticky top-0 z-30">
+          {/* Full-width role tabs across the top (does not touch the sidebar) */}
+          <RoleSwitcher />
 
-        {/* Mobile role switch — full width under the bar */}
-        <div className="border-b border-slate-200 bg-white px-4 py-2 md:hidden">
-          <RoleSwitcher className="flex w-full" />
+          {/* Identity + actions row — listing name/plan, bell, view listing */}
+          <header className="flex h-14 items-center gap-3 border-b border-slate-200 bg-white pl-16 pr-4 md:pl-6">
+            <div className="min-w-0 flex-1">
+              <span className="truncate text-sm font-semibold text-sky-950 sm:text-base">
+                {company ? company.name : "Business portal"}
+              </span>
+              {company && planDisplay && (
+                <span className={`ml-2 hidden rounded-full px-2.5 py-0.5 text-[11px] font-bold tracking-wide sm:inline ${statusCls}`}>
+                  {planDisplay}
+                </span>
+              )}
+            </div>
+            <NotificationBell />
+            {company && (
+              <a
+                href={`/directory/company/${company.slug}`}
+                target="_blank"
+                className="hidden rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-sky-800 transition hover:border-sky-300 sm:inline-block"
+              >
+                View listing ↗
+              </a>
+            )}
+          </header>
         </div>
 
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-24 sm:px-6 sm:pt-8 md:pb-10">

@@ -30,21 +30,21 @@ export default async function ClientLayout({ children }: { children: ReactNode }
       <ClientPortalSidebar email={user.email} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Top bar — hamburger space (mobile), role switch, bell */}
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-slate-200 bg-white pl-16 pr-4 md:pl-6">
-          <div className="min-w-0 flex-1">
-            <span className="truncate text-sm font-semibold text-sky-950 sm:text-base">{brandName}</span>
-            <span className="ml-2 hidden rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold tracking-wide text-slate-600 sm:inline">
-              Client
-            </span>
-          </div>
-          <RoleSwitcher className="hidden md:inline-flex" />
-          <NotificationBell />
-        </header>
+        {/* Sticky top region: full-width tab bar over an identity bar */}
+        <div className="sticky top-0 z-30">
+          {/* Full-width role tabs across the top (does not touch the sidebar) */}
+          <RoleSwitcher />
 
-        {/* Mobile role switch — full width under the bar */}
-        <div className="border-b border-slate-200 bg-white px-4 py-2 md:hidden">
-          <RoleSwitcher className="flex w-full" />
+          {/* Identity row — business name / client badge, bell */}
+          <header className="flex h-14 items-center gap-3 border-b border-slate-200 bg-white pl-16 pr-4 md:pl-6">
+            <div className="min-w-0 flex-1">
+              <span className="truncate text-sm font-semibold text-sky-950 sm:text-base">{brandName}</span>
+              <span className="ml-2 hidden rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold tracking-wide text-slate-600 sm:inline">
+                Client
+              </span>
+            </div>
+            <NotificationBell />
+          </header>
         </div>
 
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">{children}</main>
