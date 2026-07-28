@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 // 48px project tab bar. Sky-blue active state (primary #0369a1) matching the
-// Remedial Estimating design system. Only routes that exist are shown.
+// MapMeasure design system. Only routes that exist are shown.
 export default function WorkspaceTabs({ projectId }: { projectId: string }) {
   const pathname = usePathname();
   const base = `/measuremap/projects/${projectId}`;

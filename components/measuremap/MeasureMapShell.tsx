@@ -2,9 +2,9 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { Bell, HelpCircle, Ruler } from "lucide-react";
 
-// Global chrome for the MeasureMap workspace. Matches the Remedial Estimating
-// design system (dark navy top bar, sky-blue primary, red accents) so the
-// takeoff tool reads as part of the main product while staying self-contained.
+// Global chrome for MapMeasure — estimating & takeoff software.
+// Dark navy top bar, sky-blue primary, red accents; self-contained so the tool
+// reads as its own product while still living inside the RBA app.
 //
 // Palette: navy #082f49 (sky-950) bar · primary #0369a1 (sky-700) ·
 // accent #38bdf8 (sky-400) · destructive/notification #dc2626 (red-600).
@@ -30,9 +30,9 @@ export default function MeasureMapShell({
             <Ruler size={18} strokeWidth={2.2} />
           </div>
           <div className="leading-none">
-            <div className="text-[14px] font-bold tracking-[0.4px]">REMEDIAL</div>
-            <div className="mt-1 text-[9px] font-semibold tracking-[1.3px] text-[#38bdf8]">
-              MEASUREMAP
+            <div className="text-[15px] font-bold tracking-[0.2px]">MapMeasure</div>
+            <div className="mt-1 text-[8.5px] font-semibold tracking-[1.1px] text-[#38bdf8]">
+              ESTIMATING &amp; TAKEOFF
             </div>
           </div>
         </Link>

@@ -4,7 +4,7 @@
 // ssr:false, so `ol` never enters the main RBA bundle — it loads only when this
 // map route opens.
 //
-// UI skin: Remedial Estimating design system — sky-blue primary (#0369a1),
+// UI skin: MapMeasure design system — sky-blue primary (#0369a1),
 // navy dark chrome (#082f49 / #0c2b3f), white surfaces, red destructive
 // (#dc2626). The map engine (SIX Maps imagery/cadastre, geocoding, geodesic
 // measurement) is unchanged from the approved version.

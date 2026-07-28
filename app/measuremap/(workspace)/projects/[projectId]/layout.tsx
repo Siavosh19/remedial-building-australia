@@ -9,8 +9,8 @@ import WorkspaceTabs from "@/components/measuremap/WorkspaceTabs";
 // Shared chrome for a single project's workspace (Overview / Map / Drawings /
 // Export). Loads + ownership-checks the project once for all tabs.
 //
-// Layout: 84px project header + 48px tab bar, matching the Remedial Estimating
-// design system (sky-blue primary #0369a1, white surfaces, red destructive).
+// Layout: 84px project header + 48px tab bar in the MapMeasure design system
+// (sky-blue primary #0369a1, white surfaces, red destructive).
 export default async function ProjectLayout({
   children,
   params,
