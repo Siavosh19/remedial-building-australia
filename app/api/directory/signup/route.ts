@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, createAuthToken } from "@/lib/directory-auth";
-import { sendDirectoryVerificationEmail, sendAdminSignupNotification } from "@/lib/directory-email";
+import { sendDirectoryVerificationEmail } from "@/lib/directory-email";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { validateAuPhone } from "@/lib/phone-au";
 
@@ -111,7 +111,10 @@ export async function POST(request: NextRequest) {
       { status: 502 },
     );
   }
-  sendAdminSignupNotification(fullName, email, accountType).catch(() => {});
+  // Account-creation admin email intentionally disabled — the admin only wants the
+  // single "New directory listing" email (which has full details). Restore the
+  // import + this call to re-enable the account-creation notification.
+  // sendAdminSignupNotification(fullName, email, accountType).catch(() => {});
 
   const messages = {
     directory: "Verification email sent. Please check your inbox to verify your account, then set up your company listing.",
