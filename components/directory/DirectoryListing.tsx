@@ -1191,6 +1191,19 @@ export default function DirectoryListing({ categories }: Props) {
   const [radius, setRadius] = useState(saved?.radius ?? "50"); // default: within 50 km (Silver membership reach)
   const [page, setPage] = useState(saved?.page ?? 1);
   const [showManual, setShowManual] = useState(saved?.showManual ?? false); // standard search hidden until toggled
+  // Sticky "use manual search" notice — shows only after an AI result; dismiss is remembered.
+  const [aiNoticeDismissed, setAiNoticeDismissed] = useState(false);
+  const [siteHeaderH, setSiteHeaderH] = useState(72);
+  useEffect(() => {
+    try { if (localStorage.getItem("rba_ai_manual_notice_dismissed") === "1") setAiNoticeDismissed(true); } catch {}
+    const measure = () => {
+      const h = (document.querySelector("[data-site-header]") as HTMLElement | null)?.offsetHeight;
+      if (h) setSiteHeaderH(h);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   // The directory starts EMPTY — no listings until the visitor searches/filters.
   const [companies, setCompanies] = useState<CompanyResult[]>([]);
@@ -1606,6 +1619,29 @@ export default function DirectoryListing({ categories }: Props) {
     <>
       {/* Confirm popup for phone / email / website taps (mounted once) */}
       <ContactConfirmModal />
+      {/* Sticky notice — appears ONLY after an AI search returns a result; opens the manual search. */}
+      {!aiLoading && aiMatch?.matched && !aiNoticeDismissed && !showManual && (
+        <div className="sticky z-40 border-b border-amber-200 bg-amber-50/95 backdrop-blur" style={{ top: siteHeaderH }}>
+          <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-1.5">
+            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold text-white" aria-hidden>!</span>
+            <button
+              type="button"
+              onClick={() => { setShowManual(true); if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              className="min-w-0 flex-1 truncate text-left text-xs font-medium text-amber-900 underline decoration-amber-400 underline-offset-2 hover:text-amber-950 sm:text-sm"
+            >
+              Can&apos;t find the right business? Use manual search to pick your own category
+            </button>
+            <button
+              type="button"
+              onClick={() => { setAiNoticeDismissed(true); try { localStorage.setItem("rba_ai_manual_notice_dismissed", "1"); } catch {} }}
+              aria-label="Dismiss"
+              className="shrink-0 rounded p-1 text-amber-500 transition hover:bg-amber-100 hover:text-amber-800"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden><path d="M18 6 6 18M6 6l12 12" /></svg>
+            </button>
+          </div>
+        </div>
+      )}
       {/* ── Search + filters ─────────────────────────────────────────────── */}
       <div className="relative z-30 bg-white shadow-[0_8px_24px_rgba(15,37,64,0.12)]">
         <div className="mx-auto max-w-7xl px-6 py-5">
