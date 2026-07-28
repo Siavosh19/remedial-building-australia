@@ -68,7 +68,7 @@ const PLAN_META: PlanMeta[] = [
       { t: "Receive quote requests" },
       { t: "Request Quote button on your listing" },
       { t: "Rank above Free listings — within 50 km" },
-      { t: "3 lead credits per week" },
+      { t: "3 lead credits per month — 1 credit per lead you take" },
       { t: "Company logo + up to 15 project photos" },
       { t: "On-card description (up to 114 characters) + tagline" },
     ],
@@ -85,7 +85,7 @@ const PLAN_META: PlanMeta[] = [
     features: [
       { t: "Featured placement — above Silver & Free listings" },
       { t: "Gold Featured badge" },
-      { t: "7 lead credits per week" },
+      { t: "7 lead credits per month — 1 credit per lead you take" },
       { t: "Shown across your whole State — not distance-limited" },
       { t: "Only 3 Gold businesses per category in your State" },
     ],

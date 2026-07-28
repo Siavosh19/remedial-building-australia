@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getDirectoryUserFromRequest } from "@/lib/directory-auth";
 import { createNotification } from "@/lib/notifications";
 import { dirTier } from "@/lib/directory-tier";
-import { WEEKLY_INTEREST_CAP } from "@/lib/quote-options";
+import { MONTHLY_INTEREST_CAP } from "@/lib/quote-options";
 import { sendBusinessInterestedClientEmail } from "@/lib/directory-email";
 
 export const runtime = "nodejs";
@@ -13,16 +13,14 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildi
 
 type Params = { params: Promise<{ id: string }> };
 
-// Monday 00:00 of the current week (local server time) — the window the weekly
-// interest allowance is counted against.
-function startOfWeek(): Date {
+// First day 00:00 of the current calendar month (local server time) — the window
+// the monthly interest allowance is counted against.
+function startOfMonth(): Date {
   const n = new Date();
-  const day = (n.getDay() + 6) % 7; // 0 = Monday
-  const d = new Date(n.getFullYear(), n.getMonth(), n.getDate() - day);
-  return d;
+  return new Date(n.getFullYear(), n.getMonth(), 1);
 }
 
-// A contractor taps "Interested" on a lead. Subject to a weekly allowance by tier
+// A contractor taps "Interested" on a lead. Subject to a monthly allowance by tier
 // (Silver 3, Gold 7). We record the interest and refer them to the client (bell +
 // push). Contact details are NOT exchanged yet — that happens only once the
 // client proceeds with this business (client_requested_at).
@@ -58,27 +56,27 @@ export async function POST(request: NextRequest, { params }: Params) {
     },
   });
   if (!delivery) return NextResponse.json({ error: "Lead not found." }, { status: 404 });
-  // Never spend a weekly lead on a request the client has already closed.
+  // Never spend a monthly lead on a request the client has already closed.
   if (delivery.request.status === "closed") {
     return NextResponse.json({ error: "The client has closed this request." }, { status: 409 });
   }
 
   // Idempotent — tapping again is a no-op that still returns ok.
   if (!delivery.interested_at) {
-    // Enforce the weekly interest allowance for this tier before recording.
+    // Enforce the monthly interest allowance for this tier before recording.
     const tier = dirTier(company.plan_type);
-    const cap = WEEKLY_INTEREST_CAP[tier] ?? 0;
-    const usedThisWeek = await prisma.quoteRequestDelivery.count({
-      where: { company_id: company.id, interested_at: { gte: startOfWeek() } },
+    const cap = MONTHLY_INTEREST_CAP[tier] ?? 0;
+    const usedThisMonth = await prisma.quoteRequestDelivery.count({
+      where: { company_id: company.id, interested_at: { gte: startOfMonth() } },
     });
-    if (usedThisWeek >= cap) {
+    if (usedThisMonth >= cap) {
       return NextResponse.json(
         {
           error:
             cap === 0
               ? "Your plan does not include leads. Upgrade to express interest in leads."
-              : `You've used all ${cap} of your ${tier === "gold" ? "Gold" : "Silver"} leads for this week. Your allowance resets on Monday.`,
-          code: "weekly_cap_reached",
+              : `You've used all ${cap} of your ${tier === "gold" ? "Gold" : "Silver"} leads for this month. Your allowance resets on the 1st.`,
+          code: "monthly_cap_reached",
         },
         { status: 429 },
       );

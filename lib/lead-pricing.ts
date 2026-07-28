@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { URGENCY_OPTIONS } from "@/lib/quote-options";
 
 // Pay-per-lead pricing. A business that has used its weekly interest allowance
-// (WEEKLY_INTEREST_CAP) can still buy a lead — the price depends on the client's
+// (MONTHLY_INTEREST_CAP) can still buy a lead — the price depends on the client's
 // urgency: an emergency job is worth more than one at planning/budgeting stage.
 //
 // Prices live in the admin-managed `lead_prices` table (one row per urgency) so

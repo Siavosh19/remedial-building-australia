@@ -57,10 +57,10 @@ export const LEAD_OUTCOME_OPTIONS = [
 export const LEAD_OUTCOME_IDS = LEAD_OUTCOME_OPTIONS.map((o) => o.id);
 
 // Weekly interest-click allowance by visual tier (see lib/directory-tier dirTier).
-// A business may express interest in at most this many leads per calendar week
-// (Mon–Sun). Beyond it they must wait for the week to roll over (or buy extra
-// later). Free listings never receive leads, so 0.
-export const WEEKLY_INTEREST_CAP: Record<string, number> = { gold: 7, silver: 3, free: 0 };
+// A business may express interest in at most this many leads per calendar MONTH.
+// Beyond it they must wait for the month to roll over (or buy extra later).
+// Free listings never receive leads, so 0.
+export const MONTHLY_INTEREST_CAP: Record<string, number> = { gold: 7, silver: 3, free: 0 };
 
 function toMap(options: readonly { id: string; label: string }[]) {
   return Object.fromEntries(options.map((o) => [o.id, o.label])) as Record<string, string>;

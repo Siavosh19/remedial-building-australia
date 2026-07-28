@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { planLabel } from "@/lib/plans";
-import { URGENCY_LABELS, WEEKLY_INTEREST_CAP } from "@/lib/quote-options";
+import { URGENCY_LABELS, MONTHLY_INTEREST_CAP } from "@/lib/quote-options";
 import { dirTier } from "@/lib/directory-tier";
 import { ResponseStatusBadge } from "@/components/client/badges";
 
@@ -82,13 +82,13 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
   // Weekly interest allowance for this tier and how many remain (Mon–Sun),
   // mirrored from the lead detail page — surfaced at the top of the list.
   const tier = dirTier(company.plan_type);
-  const weeklyCap = WEEKLY_INTEREST_CAP[tier] ?? 0;
+  const monthlyCap = MONTHLY_INTEREST_CAP[tier] ?? 0;
   const now = new Date();
-  const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
-  const weeklyUsed = await prisma.quoteRequestDelivery.count({
-    where: { company_id: company.id, interested_at: { gte: weekStart } },
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthlyUsed = await prisma.quoteRequestDelivery.count({
+    where: { company_id: company.id, interested_at: { gte: monthStart } },
   });
-  const weeklyRemaining = Math.max(0, weeklyCap - weeklyUsed);
+  const monthlyRemaining = Math.max(0, monthlyCap - monthlyUsed);
 
   return (
     <div className="space-y-6">
@@ -102,11 +102,11 @@ export default async function LeadRequestsPage({ searchParams }: { searchParams:
         </p>
       </div>
 
-      {/* Weekly interest allowance — free leads left this week (resets Monday) */}
+      {/* Monthly interest allowance — free leads left this month (resets on the 1st) */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-sm">
-        <span className="font-semibold text-sky-900">{weeklyRemaining} of {weeklyCap} free {weeklyCap === 1 ? "lead" : "leads"} left this week</span>
-        <span className="text-sky-700">· resets Monday</span>
-        {weeklyRemaining === 0 && weeklyCap > 0 && (
+        <span className="font-semibold text-sky-900">{monthlyRemaining} of {monthlyCap} free {monthlyCap === 1 ? "lead" : "leads"} left this month</span>
+        <span className="text-sky-700">· resets on the 1st</span>
+        {monthlyRemaining === 0 && monthlyCap > 0 && (
           <span className="text-sky-700">· you can still <span className="font-semibold">buy leads</span> by urgency — open any lead to purchase</span>
         )}
       </div>

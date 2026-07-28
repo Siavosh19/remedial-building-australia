@@ -10,7 +10,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildi
 // Broadcast a submitted request to EVERY matching Silver/Gold business in its
 // category. Businesses can review all matching leads; the scarcity sits at the
 // interest step instead — a business may only express interest in a limited
-// number of leads per week (WEEKLY_INTEREST_CAP, enforced in the interested
+// number of leads per month (MONTHLY_INTEREST_CAP, enforced in the interested
 // route). This replaces the old "client hand-picks 5" flow. Reusable by both
 // intake streams:
 //   • Portal (manual): called immediately on submit — no approval.

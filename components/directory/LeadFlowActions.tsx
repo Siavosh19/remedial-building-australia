@@ -15,8 +15,8 @@ export default function LeadFlowActions({
   interested,
   clientRequested,
   requestClosed,
-  weeklyRemaining,
-  weeklyCap,
+  monthlyRemaining,
+  monthlyCap,
   tierLabel,
   canBuy,
   leadPriceCents,
@@ -28,8 +28,8 @@ export default function LeadFlowActions({
   interested: boolean;
   clientRequested: boolean;
   requestClosed?: boolean;
-  weeklyRemaining?: number;
-  weeklyCap?: number;
+  monthlyRemaining?: number;
+  monthlyCap?: number;
   tierLabel?: string;
   // Pay-per-lead: only Silver/Gold can buy once the weekly allowance is used up.
   canBuy?: boolean;
@@ -245,8 +245,8 @@ export default function LeadFlowActions({
   }
 
   // ── Phase 1: new lead — Interested / Not interested ────────────────────────
-  const showAllowance = typeof weeklyRemaining === "number" && typeof weeklyCap === "number";
-  const capped = showAllowance && weeklyRemaining! <= 0;
+  const showAllowance = typeof monthlyRemaining === "number" && typeof monthlyCap === "number";
+  const capped = showAllowance && monthlyRemaining! <= 0;
   const price = leadPriceCents ?? 0;
   const wallet = walletCents ?? 0;
   const fromWallet = wallet >= price && price > 0;
@@ -257,7 +257,7 @@ export default function LeadFlowActions({
       <div className="space-y-3">
         <p className="text-sm font-semibold text-slate-800">Are you interested in this lead?</p>
         <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800">
-          {`You've used all ${weeklyCap} of your ${tierLabel ?? ""} weekly leads — resets Monday.`.replace("  ", " ")}
+          {`You've used all ${monthlyCap} of your ${tierLabel ?? ""} monthly leads — resets on the 1st.`.replace("  ", " ")}
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4">
           <p className="text-sm font-bold text-slate-900">Buy this lead now — {fmt(price)}</p>
@@ -296,7 +296,7 @@ export default function LeadFlowActions({
           </div>
         </div>
         <p className="text-xs leading-5 text-slate-500">
-          A bought lead doesn&apos;t count against next week&apos;s allowance. The client&apos;s contact details are
+          A bought lead doesn&apos;t count against next month&apos;s allowance. The client&apos;s contact details are
           exchanged only once they proceed with your business.
         </p>
         {error && <p className="text-sm text-rose-700">{error}</p>}
@@ -308,10 +308,10 @@ export default function LeadFlowActions({
     <div className="space-y-3">
       <p className="text-sm font-semibold text-slate-800">Are you interested in this lead?</p>
       {showAllowance && (
-        <div className={`rounded-xl border px-4 py-2.5 text-sm font-semibold ${weeklyRemaining! > 0 ? "border-sky-100 bg-sky-50 text-sky-900" : "border-amber-100 bg-amber-50 text-amber-800"}`}>
-          {weeklyRemaining! > 0
-            ? `${weeklyRemaining} of ${weeklyCap} ${tierLabel ?? ""} leads left this week`.replace("  ", " ")
-            : `You've used all ${weeklyCap} of your ${tierLabel ?? ""} leads this week — resets Monday.`.replace("  ", " ")}
+        <div className={`rounded-xl border px-4 py-2.5 text-sm font-semibold ${monthlyRemaining! > 0 ? "border-sky-100 bg-sky-50 text-sky-900" : "border-amber-100 bg-amber-50 text-amber-800"}`}>
+          {monthlyRemaining! > 0
+            ? `${monthlyRemaining} of ${monthlyCap} ${tierLabel ?? ""} leads left this month`.replace("  ", " ")
+            : `You've used all ${monthlyCap} of your ${tierLabel ?? ""} leads this month — resets on the 1st.`.replace("  ", " ")}
         </div>
       )}
       <div className="flex flex-wrap gap-2">
