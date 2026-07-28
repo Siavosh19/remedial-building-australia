@@ -2,31 +2,33 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Map as MapIcon, FileText, Download } from "lucide-react";
 
+// 48px project tab bar. Sky-blue active state (primary #0369a1) matching the
+// Remedial Estimating design system. Only routes that exist are shown.
 export default function WorkspaceTabs({ projectId }: { projectId: string }) {
   const pathname = usePathname();
   const base = `/measuremap/projects/${projectId}`;
   const tabs = [
-    { href: `${base}/overview`, label: "Overview", icon: LayoutDashboard },
-    { href: `${base}/map`, label: "Map Measure", icon: MapIcon },
-    { href: `${base}/drawings`, label: "Plans & Takeoffs", icon: FileText },
-    { href: `${base}/export`, label: "Export", icon: Download },
+    { href: `${base}/overview`, label: "Overview" },
+    { href: `${base}/map`, label: "Map Measure" },
+    { href: `${base}/drawings`, label: "Plans & Takeoffs" },
+    { href: `${base}/export`, label: "Export" },
   ];
   return (
-    <div className="flex gap-1 border-b border-slate-200 bg-white px-3 text-sm font-semibold">
+    <div className="flex h-12 items-end border-b border-[#D8DDE1] bg-white px-5">
       {tabs.map((t) => {
         const active = pathname === t.href || (t.href.endsWith("/overview") && pathname === base);
-        const Icon = t.icon;
         return (
           <Link
             key={t.href}
             href={t.href}
-            className={`flex items-center gap-1.5 border-b-2 px-3 py-2 transition ${
-              active ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-800"
-            }`}
+            className={[
+              "relative flex h-full items-center px-5 text-[13px] font-medium transition",
+              active ? "text-[#0369a1]" : "text-[#343A3E] hover:text-[#0c4a6e]",
+            ].join(" ")}
           >
-            <Icon className="h-4 w-4" /> {t.label}
+            {t.label}
+            {active && <span className="absolute bottom-0 left-0 h-[3px] w-full bg-[#0369a1]" />}
           </Link>
         );
       })}

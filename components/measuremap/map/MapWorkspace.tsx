@@ -3,6 +3,11 @@
 // The whole module (OpenLayers included) is code-split behind next/dynamic with
 // ssr:false, so `ol` never enters the main RBA bundle — it loads only when this
 // map route opens.
+//
+// UI skin: Remedial Estimating design system — sky-blue primary (#0369a1),
+// navy dark chrome (#082f49 / #0c2b3f), white surfaces, red destructive
+// (#dc2626). The map engine (SIX Maps imagery/cadastre, geocoding, geodesic
+// measurement) is unchanged from the approved version.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
@@ -17,6 +22,7 @@ import { Draw, Modify, Select } from "ol/interaction";
 import { createBox } from "ol/interaction/Draw";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { getLength, getArea } from "ol/sphere";
+import { createEmpty, extend as extendExtent, isEmpty as extentIsEmpty } from "ol/extent";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import Overlay from "ol/Overlay";
@@ -28,8 +34,8 @@ import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 
 import {
-  MousePointer2, Hand, Ruler, Spline, Pentagon, MapPin, Undo2, Redo2, Trash2, Maximize, Layers, Plus, Loader2, Check, Eye, EyeOff, ChevronRight, ChevronDown,
-  Square, Circle, Camera, Copy, Navigation, X,
+  MousePointer2, Move, Ruler, Spline, Pentagon, MapPin, Undo2, Redo2, Trash2, Maximize2, Plus, Loader2, Check, Eye, EyeOff,
+  Camera, Copy, Navigation, X, Search, Settings2, Folder, Minus, Save, RotateCcw, ChevronDown, Layers, Map as MapIcon, Crosshair,
 } from "lucide-react";
 import { TAKEOFF_COLOURS, type MeasurementType } from "@/types/measuremap";
 import * as api from "./api";
@@ -37,10 +43,10 @@ import * as api from "./api";
 const MAP_PROJ = "EPSG:3857";
 const geojson = new GeoJSON();
 
-// Nearmap-style downward teardrop pin (orange), anchored at its tip.
+// Nearmap-style downward teardrop pin (sky-blue), anchored at its tip.
 const PIN_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40">' +
-  '<path d="M14 39 C14 39 25 22 25 14 A11 11 0 1 0 3 14 C3 22 14 39 14 39 Z" fill="#f97316" stroke="#ffffff" stroke-width="2.5"/>' +
+  '<path d="M14 39 C14 39 25 22 25 14 A11 11 0 1 0 3 14 C3 22 14 39 14 39 Z" fill="#0369a1" stroke="#ffffff" stroke-width="2.5"/>' +
   '<circle cx="14" cy="14" r="4.5" fill="#ffffff"/></svg>';
 const PIN_SRC = "data:image/svg+xml;utf8," + encodeURIComponent(PIN_SVG);
 
@@ -52,6 +58,10 @@ type Snapshot = { measurementId: string; itemId: string; gj: unknown; quantity: 
 const DRAW_TYPE: Record<"length" | "perimeter" | "area" | "count", "LineString" | "Polygon" | "Point"> = {
   length: "LineString", perimeter: "LineString", area: "Polygon", count: "Point",
 };
+
+// Friendly labels + the list grouping order used by the left panel.
+const TYPE_LABEL: Record<MeasurementType, string> = { area: "Area", length: "Distance", perimeter: "Perimeter", count: "Count" };
+const GROUP_ORDER: MeasurementType[] = ["area", "length", "perimeter", "count"];
 
 function computeQuantity(geom: Geometry, type: MeasurementType): number {
   if (type === "count") return 1;
@@ -70,15 +80,14 @@ function itemTotal(it: Item): number {
   return it.measurements.reduce((s, m) => s + m.calculated_quantity, 0);
 }
 
-// Decimal degrees → degrees/minutes/seconds (Nearmap-style secondary coordinate).
-function toDMS(dec: number, isLat: boolean): string {
-  const dir = isLat ? (dec >= 0 ? "N" : "S") : (dec >= 0 ? "E" : "W");
-  const a = Math.abs(dec);
-  const d = Math.floor(a);
-  const mf = (a - d) * 60;
-  const m = Math.floor(mf);
-  const s = Math.round((mf - m) * 60);
-  return `${d}° ${m}' ${s}" ${dir}`;
+// Panel-friendly quantity (thousands separators, unit split out).
+function uiQty(it: Item): { value: string; unit: string } {
+  if (it.measurement_type === "count") return { value: String(it.measurements.length), unit: "" };
+  const total = itemTotal(it);
+  return {
+    value: total.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+    unit: it.measurement_type === "area" ? "m²" : "m",
+  };
 }
 
 export default function MapWorkspace({
@@ -104,6 +113,10 @@ export default function MapWorkspace({
   // Live measurement tooltip shown while drawing.
   const measureTipRef = useRef<HTMLDivElement>(null);
   const measureOverlayRef = useRef<Overlay | null>(null);
+  // Status-bar spans updated imperatively (avoids a React re-render per mousemove).
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const zoomRef = useRef<HTMLSpanElement>(null);
+  const scaleRef = useRef<HTMLSpanElement>(null);
 
   const [items, setItems] = useState<Item[]>(initialItems);
   const [activeItemId, setActiveItemId] = useState<string | null>(initialItems[0]?.id ?? null);
@@ -117,13 +130,15 @@ export default function MapWorkspace({
   const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: project.latitude, lng: project.longitude });
   const [placing, setPlacing] = useState(false);
   const placingRef = useRef(false); placingRef.current = placing;
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [selectedMeasurementId, setSelectedMeasurementId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
-  const [showProperty, setShowProperty] = useState(true);
+  const [showDetails, setShowDetails] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [search, setSearch] = useState("");
+  const [draftName, setDraftName] = useState("");
+  const [wastePct, setWastePct] = useState("0");
 
   const refreshUndoFlags = useCallback(() => {
     setCanUndo(undoStackRef.current.length > 0);
@@ -144,7 +159,7 @@ export default function MapWorkspace({
     const itemId = feature.get("itemId") as string;
     const it = itemsRef.current.find((i) => i.id === itemId);
     if (it && !it.is_visible) return undefined;
-    const colour = it?.colour ?? "#e11d48";
+    const colour = it?.colour ?? "#0369a1";
     const mtype = (feature.get("mtype") as string) ?? "length";
     const selected = feature.get("measurementId") === selMeasRef.current;
     const qty = feature.get("qty") as number | undefined;
@@ -192,7 +207,7 @@ export default function MapWorkspace({
         params: { TRANSPARENT: true },
         crossOrigin: "anonymous",
       }),
-      visible: false, // optional "all boundaries" overlay (toggle top-right)
+      visible: false, // optional "all boundaries" overlay (toggle in Map Layers)
       opacity: 0.9,
     });
     cadastreRef.current = cadastre;
@@ -201,9 +216,9 @@ export default function MapWorkspace({
     const parcelLayer = new VectorLayer({
       source: parcelSourceRef.current,
       style: new Style({
-        // Nearmap-style dashed highlight of THE property parcel.
-        stroke: new Stroke({ color: "#f59e0b", width: 3, lineDash: [8, 6] }),
-        fill: new Fill({ color: "rgba(245,158,11,0.08)" }),
+        // Dashed highlight of THE property parcel (sky-blue).
+        stroke: new Stroke({ color: "#0369a1", width: 3, lineDash: [8, 6] }),
+        fill: new Fill({ color: "rgba(3,105,161,0.08)" }),
       }),
     });
 
@@ -213,7 +228,7 @@ export default function MapWorkspace({
     const map = new Map({
       target: mapEl.current,
       layers: [imagery, cadastre, parcelLayer, vector],
-      controls: defaultControls({ attribution: false }).extend([
+      controls: defaultControls({ attribution: false, zoom: false }).extend([
         new FullScreen(),
         new Attribution({ collapsible: true }),
       ]),
@@ -246,6 +261,28 @@ export default function MapWorkspace({
       const [lng, lat] = toLonLat(e.coordinate);
       void setPropertyAt(lat, lng, e.coordinate);
     });
+
+    // Status bar: live cursor coordinate + zoom + nominal scale.
+    map.on("pointermove", (e) => {
+      if (e.dragging) return;
+      const [lng, lat] = toLonLat(e.coordinate);
+      if (cursorRef.current) cursorRef.current.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    });
+    const updateStatus = () => {
+      const v = map.getView();
+      const z = v.getZoom();
+      if (zoomRef.current && z != null) zoomRef.current.textContent = z.toFixed(1);
+      const res = v.getResolution();
+      const center = v.getCenter();
+      if (res && scaleRef.current) {
+        const lat = center ? toLonLat(center)[1] : -33.87;
+        const mpp = res * Math.cos((lat * Math.PI) / 180); // web-mercator scale correction
+        const scale = Math.round((mpp * 96) / 0.0254);
+        scaleRef.current.textContent = `1 : ${scale.toLocaleString("en-AU")}`;
+      }
+    };
+    map.on("moveend", updateStatus);
+    updateStatus();
 
     // Load existing measurements as features.
     for (const it of initialItems) {
@@ -480,6 +517,14 @@ export default function MapWorkspace({
 
   useEffect(() => { cadastreRef.current?.setVisible(showCadastre); }, [showCadastre]);
 
+  // Seed the details form when the active item changes.
+  useEffect(() => {
+    setDraftName(activeItem?.name ?? "");
+    setWastePct("0");
+    setColourPickerFor(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeItemId]);
+
   // Highlight the specific parcel that contains the project address.
   useEffect(() => {
     let cancelled = false;
@@ -513,6 +558,26 @@ export default function MapWorkspace({
       map.getView().animate({ center: fromLonLat([project.longitude, project.latitude]), zoom: 19, duration: 250 });
     }
   }
+
+  function recenter() {
+    const map = mapRef.current;
+    if (!map) return;
+    const pext = parcelSourceRef.current.getExtent();
+    if (parcelSourceRef.current.getFeatures().length && pext && Number.isFinite(pext[0])) {
+      map.getView().fit(pext, { padding: [90, 90, 90, 90], maxZoom: 20, duration: 300 });
+    } else if (project.latitude != null && project.longitude != null) {
+      map.getView().animate({ center: fromLonLat([project.longitude, project.latitude]), zoom: 19, duration: 300 });
+    }
+  }
+
+  function zoomBy(delta: number) {
+    const v = mapRef.current?.getView();
+    if (!v) return;
+    v.animate({ zoom: (v.getZoom() ?? 19) + delta, duration: 200 });
+  }
+
+  function finishDrawing() { drawRef.current?.finishDrawing(); }
+  function cancelDrawing() { drawRef.current?.abortDrawing(); setTool("pan"); }
 
   // Export the current map view as a PNG (imagery tiles use crossOrigin so the
   // canvas isn't tainted). Composites all OL layer canvases into one.
@@ -583,20 +648,25 @@ export default function MapWorkspace({
       const created = await api.createItem(project.id, { name, measurement_type: type, colour, source_type: "map", sort_order: items.length });
       setItems((prev) => [...prev, created]);
       setActiveItemId(created.id);
+      setShowDetails(true);
       setTool(toolAfter ?? type);
       setSaveStatus("saved");
       setAdding(false);
     } catch { setSaveStatus("error"); }
   }
 
-  async function selectMeasurementFromPanel(id: string) {
-    setSelectedMeasurementId(id);
-    const f = sourceRef.current.getFeatureById(id);
+  function selectItem(it: Item) {
+    setActiveItemId(it.id);
+    setShowDetails(true);
     const map = mapRef.current;
-    if (f && map) {
+    if (!map) return;
+    const ext = createEmpty();
+    sourceRef.current.getFeatures().forEach((f) => {
+      if (f.get("itemId") !== it.id) return;
       const g = f.getGeometry();
-      if (g) map.getView().fit(g.getExtent(), { padding: [80, 80, 80, 80], maxZoom: 21, duration: 250 });
-    }
+      if (g) extendExtent(ext, g.getExtent());
+    });
+    if (!extentIsEmpty(ext)) map.getView().fit(ext, { padding: [80, 80, 80, 80], maxZoom: 21, duration: 250 });
   }
 
   async function toggleItemVisible(it: Item) {
@@ -650,8 +720,24 @@ export default function MapWorkspace({
     try { await api.patchItem(project.id, it.id, { colour }); } catch { setSaveStatus("error"); }
   }
 
+  async function saveDetails() {
+    const it = activeItem;
+    if (!it) return;
+    const name = draftName.trim() || it.name;
+    setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, name } : i));
+    setSaveStatus("saving");
+    try { await api.patchItem(project.id, it.id, { name }); setSaveStatus("saved"); }
+    catch { setSaveStatus("error"); }
+  }
+
+  function duplicateItem() {
+    const it = activeItem;
+    if (!it) return;
+    void addItem(`${it.name} copy`, it.measurement_type as MeasurementType, it.colour, "pan");
+  }
+
   async function deleteItem(it: Item) {
-    if (!confirm(`Delete takeoff item “${it.name}” and its ${it.measurements.length} measurement(s)?`)) return;
+    if (!confirm(`Delete “${it.name}” and its ${it.measurements.length} measurement(s)?`)) return;
     it.measurements.forEach((m) => { const f = sourceRef.current.getFeatureById(m.id); if (f) sourceRef.current.removeFeature(f); });
     setItems((prev) => prev.filter((i) => i.id !== it.id));
     if (activeItemId === it.id) setActiveItemId(null);
@@ -660,12 +746,10 @@ export default function MapWorkspace({
 
   const toolBtns = useMemo(() => ([
     { id: "select", label: "Select", Icon: MousePointer2 },
-    { id: "pan", label: "Pan", Icon: Hand },
-    { id: "length", label: "Length", Icon: Ruler },
+    { id: "pan", label: "Pan", Icon: Move },
+    { id: "length", label: "Distance", Icon: Ruler },
     { id: "perimeter", label: "Perimeter", Icon: Spline },
     { id: "area", label: "Area", Icon: Pentagon },
-    { id: "rectangle", label: "Rectangle area", Icon: Square },
-    { id: "circle", label: "Circle area", Icon: Circle },
     { id: "count", label: "Count", Icon: MapPin },
   ] as { id: Tool; label: string; Icon: typeof Ruler }[]), []);
 
@@ -677,8 +761,7 @@ export default function MapWorkspace({
       if (!activeItem || activeItem.measurement_type !== neededType) {
         // Auto-create a matching item so there is always something to draw into.
         const count = items.filter((i) => i.measurement_type === neededType).length + 1;
-        const labels: Record<MeasurementType, string> = { length: "Length", perimeter: "Perimeter", area: "Area", count: "Count" };
-        const name = labels[neededType] + " " + count;
+        const name = `${TYPE_LABEL[neededType]} ${count}`;
         void addItem(name, neededType, TAKEOFF_COLOURS[items.length % TAKEOFF_COLOURS.length], t);
         return;
       }
@@ -686,212 +769,455 @@ export default function MapWorkspace({
     setTool(t);
   }
 
+  // Derived list data for the left panel.
+  const q = search.trim().toLowerCase();
+  const visibleItems = q ? items.filter((i) => i.name.toLowerCase().includes(q)) : items;
+  const groups = GROUP_ORDER.map((type) => ({ type, list: visibleItems.filter((i) => i.measurement_type === type) }));
+  const measCount = items.reduce((s, i) => s + i.measurements.length, 0);
+  const isDrawing = tool === "length" || tool === "perimeter" || tool === "area" || tool === "count";
+
   return (
     <div className="flex h-full">
-      {/* LEFT QUANTITY PANEL */}
-      <aside className="flex w-72 shrink-0 flex-col border-r border-slate-200 bg-white">
-        <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2">
-          <span className="text-xs font-bold uppercase tracking-wide text-slate-500">Takeoff items</span>
-          <button onClick={() => setAdding((v) => !v)} className="inline-flex items-center gap-1 rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700">
-            <Plus className="h-3.5 w-3.5" /> Add
-          </button>
-        </div>
+      {/* ── LEFT: Map Layers + Measurements (288px) ─────────────────────── */}
+      <aside className="flex w-[288px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white">
+        <section className="border-b border-[#E2E5E7] px-4 py-4">
+          <h2 className="mb-2 text-[12px] font-semibold uppercase tracking-wide text-[#383E42]">Map Layers</h2>
+          <LayerRow label="Satellite" Icon={MapIcon} checked locked />
+          <LayerRow label="Measurements" Icon={Eye} checked={showMeasurements} onToggle={() => setShowMeasurements((v) => !v)} />
+          <LayerRow label="Labels" Icon={Ruler} checked={showLabels} onToggle={() => setShowLabels((v) => !v)} />
+          <LayerRow label="Property Boundaries" Icon={Layers} checked={showCadastre} onToggle={() => setShowCadastre((v) => !v)} />
+        </section>
 
-        {adding && <AddItemForm onAdd={addItem} onCancel={() => setAdding(false)} usedColours={items.map((i) => i.colour)} />}
+        <section className="flex min-h-0 flex-1 flex-col">
+          <div className="px-4 pt-4">
+            <h2 className="text-[12px] font-semibold uppercase tracking-wide text-[#383E42]">Measurements</h2>
 
-        <div className="min-h-0 flex-1 overflow-auto">
-          {items.length === 0 && !adding && (
-            <p className="px-3 py-6 text-center text-xs text-slate-400">No items yet. Add one, or pick a measurement tool to start.</p>
-          )}
-          {items.map((it) => {
-            const isOpen = expanded[it.id];
-            return (
-              <div key={it.id} className={`border-b border-slate-100 ${activeItemId === it.id ? "bg-blue-50" : ""}`}>
-                <div className="flex items-center gap-1.5 px-2 py-2">
-                  <button onClick={() => setExpanded((e) => ({ ...e, [it.id]: !e[it.id] }))} className="text-slate-400 hover:text-slate-700">
-                    {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                  </button>
-                  <div className="relative shrink-0">
-                    <button
-                      onClick={() => setColourPickerFor((v) => (v === it.id ? null : it.id))}
-                      title="Change colour"
-                      className="h-4 w-4 rounded-sm ring-1 ring-slate-300 ring-offset-1 transition hover:scale-110"
-                      style={{ backgroundColor: it.colour }}
-                    />
-                    {colourPickerFor === it.id && (
-                      <div className="absolute left-0 top-6 z-30 flex w-32 flex-wrap gap-1 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
-                        {TAKEOFF_COLOURS.map((c) => (
-                          <button
-                            key={c}
-                            onClick={() => changeItemColour(it, c)}
-                            className={`h-5 w-5 rounded-full border-2 ${it.colour === c ? "border-slate-900" : "border-transparent"}`}
-                            style={{ backgroundColor: c }}
-                            aria-label={c}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <button onClick={() => { setActiveItemId(it.id); setTool(it.measurement_type as Tool); }} className="min-w-0 flex-1 text-left">
-                    <span className="block truncate text-sm font-medium text-sky-950">{it.name}</span>
-                    <span className="block text-[11px] text-slate-400">{it.measurement_type} · {it.measurements.length}</span>
-                  </button>
-                  <span className="shrink-0 text-xs font-semibold text-slate-700">{fmt(itemTotal(it), it.measurement_type)}</span>
-                  <button onClick={() => toggleItemVisible(it)} className="text-slate-400 hover:text-slate-700" title="Toggle visibility">
-                    {it.is_visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                  </button>
-                  <button onClick={() => deleteItem(it)} className="text-slate-400 hover:text-red-600" title="Delete item">
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-                {isOpen && (
-                  <ul className="pb-1 pl-9 pr-2">
-                    {it.measurements.map((m, i) => (
-                      <li key={m.id}>
-                        <button
-                          onClick={() => selectMeasurementFromPanel(m.id)}
-                          className={`flex w-full items-center justify-between rounded px-2 py-1 text-left text-xs ${selectedMeasurementId === m.id ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50"}`}
-                        >
-                          <span>{it.measurement_type === "count" ? `Point ${i + 1}` : `${it.measurement_type} ${i + 1}`}</span>
-                          <span className="font-medium">{fmt(it.measurement_type === "count" ? 1 : m.calculated_quantity, it.measurement_type)}</span>
-                        </button>
-                      </li>
-                    ))}
-                    {it.measurements.length === 0 && <li className="px-2 py-1 text-[11px] text-slate-400">No measurements yet</li>}
-                  </ul>
-                )}
+            <button
+              onClick={() => setAdding((v) => !v)}
+              className="mt-3 flex h-9 w-full items-center justify-center gap-2 rounded bg-[#0369a1] text-[13px] font-semibold text-white transition hover:bg-[#075985]"
+            >
+              <Plus size={16} /> New Measurement
+            </button>
+
+            <div className="mt-3 flex gap-2">
+              <div className="flex h-9 min-w-0 flex-1 items-center rounded border border-[#D7DCE0] px-3">
+                <Search size={15} className="mr-2 text-[#747B80]" />
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="min-w-0 flex-1 border-0 bg-transparent text-[12px] outline-none"
+                  placeholder="Search measurements"
+                />
               </div>
-            );
-          })}
-        </div>
+              <button className="grid h-9 w-9 place-items-center rounded border border-[#D7DCE0] text-[#586066]" title="List settings">
+                <Settings2 size={15} />
+              </button>
+            </div>
+          </div>
+
+          {adding && <AddItemForm onAdd={addItem} onCancel={() => setAdding(false)} usedColours={items.map((i) => i.colour)} />}
+
+          <div className="mt-3 min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+            {items.length === 0 && !adding && (
+              <p className="py-6 text-center text-[12px] text-[#8A9196]">
+                No measurements yet. Add one, or pick a tool to start drawing.
+              </p>
+            )}
+
+            {groups.map(({ type, list }) => list.length > 0 && (
+              <section key={type} className="mt-4 first:mt-1">
+                <h3 className="mb-1 text-[11px] font-semibold text-[#484F54]">
+                  {TYPE_LABEL[type].toUpperCase()} ({list.length})
+                </h3>
+                {list.map((it) => {
+                  const active = it.id === activeItemId;
+                  const { value, unit } = uiQty(it);
+                  return (
+                    <button
+                      key={it.id}
+                      onClick={() => selectItem(it)}
+                      className={[
+                        "grid h-9 w-full grid-cols-[12px_minmax(0,1fr)_auto_24px] items-center gap-2 rounded px-1 text-left transition",
+                        active ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]",
+                      ].join(" ")}
+                    >
+                      <span className="h-[10px] w-[10px] rounded-sm" style={{ backgroundColor: it.colour }} />
+                      <span className={`truncate text-[12px] ${active ? "font-semibold text-[#0c4a6e]" : "text-[#30363A]"}`}>{it.name}</span>
+                      <span className="whitespace-nowrap text-right text-[11px] text-[#586066]">
+                        {value}{unit && ` ${unit}`}
+                      </span>
+                      <span
+                        role="button"
+                        tabIndex={-1}
+                        onClick={(e) => { e.stopPropagation(); void toggleItemVisible(it); }}
+                        className="grid h-7 w-7 place-items-center rounded text-[#586066] hover:bg-[#E8EBED]"
+                        title="Toggle visibility"
+                      >
+                        {it.is_visible ? <Eye size={14} /> : <EyeOff size={14} />}
+                      </span>
+                    </button>
+                  );
+                })}
+              </section>
+            ))}
+          </div>
+
+          <div className="border-t border-[#E1E5E7] p-4">
+            <button className="flex h-9 w-full items-center justify-center gap-2 rounded border border-[#C9D0D4] bg-white text-[12px] font-semibold text-[#4B5155]" title="Coming soon" disabled>
+              <Folder size={15} /> Import Measurements
+            </button>
+          </div>
+        </section>
       </aside>
 
-      {/* CENTRE: toolbar + map */}
-      <div className="relative min-w-0 flex-1">
-        {/* Toolbar */}
-        <div className="absolute left-1/2 top-3 z-10 flex -translate-x-1/2 items-center gap-1 rounded-lg border border-slate-200 bg-white/95 p-1 shadow-sm backdrop-blur">
-          {toolBtns.map(({ id, label, Icon }) => (
-            <button
-              key={id}
-              onClick={() => pickTool(id)}
-              title={label}
-              className={`flex h-8 w-8 items-center justify-center rounded-md transition ${tool === id ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100"}`}
-            >
-              <Icon className="h-4 w-4" />
+      {/* ── CENTRE: toolbar + live map + status bar ─────────────────────── */}
+      <section className="relative min-w-0 flex-1 overflow-hidden bg-[#0c2b3f]">
+        {/* Floating toolbar (top-left) */}
+        <div className="absolute left-4 top-4 z-20 flex h-[58px] items-stretch rounded-md border border-white/15 bg-[#082f49]/95 p-1 shadow-xl backdrop-blur">
+          {toolBtns.map(({ id, label, Icon }) => {
+            const active = tool === id;
+            return (
+              <button
+                key={id}
+                onClick={() => pickTool(id)}
+                title={label}
+                className={[
+                  "flex w-[62px] flex-col items-center justify-center gap-1 rounded text-[10px] text-white transition",
+                  active ? "bg-[#0369a1]" : "hover:bg-white/10",
+                ].join(" ")}
+              >
+                <Icon size={18} />
+                <span>{label}</span>
+              </button>
+            );
+          })}
+
+          <div className="mx-1 w-px bg-white/15" />
+          <ToolbarBtn label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} />
+          <ToolbarBtn label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} />
+          <div className="mx-1 w-px bg-white/15" />
+          <ToolbarBtn label="Fit" Icon={Maximize2} onClick={fitToScreen} />
+          <ToolbarBtn label="Export" Icon={Camera} onClick={screenshot} />
+        </div>
+
+        {/* Drawing hint bar */}
+        {isDrawing && (
+          <div className="absolute left-1/2 top-[86px] z-30 flex -translate-x-1/2 items-center gap-3 rounded-md border border-[#7dd3fc] bg-white px-4 py-2 shadow-lg">
+            <span className="text-[12px] font-medium text-[#30363A]">
+              Click points on the map to draw the {TYPE_LABEL[tool as MeasurementType].toLowerCase()}.
+            </span>
+            <button onClick={finishDrawing} className="h-8 rounded bg-[#0369a1] px-4 text-[12px] font-semibold text-white hover:bg-[#075985]">
+              Finish
             </button>
-          ))}
-          <span className="mx-1 h-6 w-px bg-slate-200" />
-          <button onClick={() => void undo()} disabled={!canUndo} title="Undo" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100 disabled:opacity-30">
-            <Undo2 className="h-4 w-4" />
-          </button>
-          <button onClick={() => void redo()} disabled={!canRedo} title="Redo" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100 disabled:opacity-30">
-            <Redo2 className="h-4 w-4" />
-          </button>
-          <button onClick={() => void deleteSelected()} disabled={!selectedMeasurementId} title="Delete selected" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100 disabled:opacity-30">
-            <Trash2 className="h-4 w-4" />
-          </button>
-          <button onClick={fitToScreen} title="Fit to screen" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100">
-            <Maximize className="h-4 w-4" />
-          </button>
-          <button onClick={screenshot} title="Screenshot (PNG)" className="flex h-8 w-8 items-center justify-center rounded-md text-slate-600 hover:bg-slate-100">
-            <Camera className="h-4 w-4" />
-          </button>
-        </div>
+            <button onClick={cancelDrawing} className="h-8 rounded border border-[#C9CFD3] px-3 text-[12px] text-[#4B5155]">
+              Cancel
+            </button>
+          </div>
+        )}
 
-        {/* Right controls */}
-        <div className="absolute right-3 top-3 z-10 flex flex-col gap-1.5">
-          <ToggleChip active={showProperty} onClick={() => setShowProperty((v) => !v)} Icon={MapPin} label="Property" />
-          <ToggleChip active={showCadastre} onClick={() => setShowCadastre((v) => !v)} Icon={Layers} label="Boundaries" />
-          <ToggleChip active={showMeasurements} onClick={() => setShowMeasurements((v) => !v)} Icon={showMeasurements ? Eye : EyeOff} label="Measurements" />
-          <ToggleChip active={showLabels} onClick={() => setShowLabels((v) => !v)} Icon={Ruler} label="Labels" />
-        </div>
-
-        {/* Save status */}
-        <div className="absolute bottom-2 left-3 z-10 rounded bg-white/90 px-2 py-1 text-xs shadow-sm">
-          {saveStatus === "saving" && <span className="flex items-center gap-1 text-slate-500"><Loader2 className="h-3 w-3 animate-spin" /> Saving…</span>}
-          {saveStatus === "saved" && <span className="flex items-center gap-1 text-green-600"><Check className="h-3 w-3" /> Saved</span>}
-          {saveStatus === "error" && <span className="text-red-600">Save failed — retry</span>}
-          {saveStatus === "idle" && <span className="text-slate-400">Ready</span>}
-        </div>
-
-        {/* Disclaimer */}
-        <div className="absolute bottom-2 right-3 z-10 max-w-xs rounded bg-amber-50/95 px-2 py-1 text-[10px] leading-tight text-amber-800 shadow-sm">
-          Aerial measurements are approximate and must be verified against drawings or onsite conditions.
+        {/* Address / property card (top-right) */}
+        <div className="absolute right-4 top-4 z-20 w-[272px] overflow-hidden rounded-md border border-[#D5DADD] bg-white shadow-lg">
+          <div className="flex items-start gap-2 px-3 py-2.5">
+            <MapPin size={16} className="mt-0.5 shrink-0 text-[#0369a1]" />
+            <div className="min-w-0">
+              <p className="text-[12px] font-medium leading-snug text-[#212121]">{project.full_address}</p>
+              {parcelInfo?.lotId && (
+                <p className="mt-0.5 text-[11px] text-[#5D6469]">Lot/DP <span className="font-semibold text-[#0c4a6e]">{parcelInfo.lotId}</span></p>
+              )}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 border-t border-[#E2E5E7]">
+            <button onClick={recenter} className="flex h-9 items-center justify-center gap-1.5 text-[11px] font-medium text-[#30363A] hover:bg-[#F4F5F6]">
+              <Crosshair size={13} /> Re-centre
+            </button>
+            <button onClick={openStreetView} className="flex h-9 items-center justify-center gap-1.5 border-l border-[#E2E5E7] text-[11px] font-medium text-[#30363A] hover:bg-[#F4F5F6]">
+              <Eye size={13} /> Street View
+            </button>
+          </div>
+          <div className="grid grid-cols-3 border-t border-[#E2E5E7] text-[#586066]">
+            <button onClick={copyCoords} className="flex h-8 items-center justify-center gap-1 text-[10px] hover:bg-[#F4F5F6]" title="Copy coordinates">
+              {copied ? <Check size={12} className="text-[#0369a1]" /> : <Copy size={12} />} Copy
+            </button>
+            <button onClick={openGoogleMaps} className="flex h-8 items-center justify-center gap-1 border-l border-[#E2E5E7] text-[10px] hover:bg-[#F4F5F6]" title="Open in Google Maps">
+              <Navigation size={12} /> Maps
+            </button>
+            <button
+              onClick={() => { if (!placing) setTool("pan"); setPlacing((v) => !v); }}
+              className={[
+                "flex h-8 items-center justify-center gap-1 border-l border-[#E2E5E7] text-[10px]",
+                placing ? "bg-[#0369a1] text-white" : "hover:bg-[#F4F5F6]",
+              ].join(" ")}
+              title="Click the map to correct the property pin"
+            >
+              <MapPin size={12} /> Set pin
+            </button>
+          </div>
         </div>
 
         {placing && (
-          <div className="absolute left-1/2 top-16 z-20 -translate-x-1/2 rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg">
+          <div className="absolute left-1/2 top-[86px] z-30 -translate-x-1/2 rounded-md bg-[#0369a1] px-3 py-1.5 text-[12px] font-semibold text-white shadow-lg">
             Click your property on the map to set it
           </div>
+        )}
+
+        {/* Zoom controls (bottom-right, above status bar) */}
+        <div className="absolute bottom-[54px] right-4 z-20 flex flex-col overflow-hidden rounded border border-white/20 bg-[#082f49]/90 text-white shadow-lg">
+          <button onClick={() => zoomBy(1)} className="grid h-10 w-10 place-items-center border-b border-white/15 hover:bg-white/10" aria-label="Zoom in">
+            <Plus size={18} />
+          </button>
+          <button onClick={() => zoomBy(-1)} className="grid h-10 w-10 place-items-center hover:bg-white/10" aria-label="Zoom out">
+            <Minus size={18} />
+          </button>
+        </div>
+
+        {/* Save status (bottom-left, above status bar) */}
+        <div className="absolute bottom-[54px] left-4 z-20 rounded bg-white/90 px-2 py-1 text-[11px] shadow-sm">
+          {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-3 w-3 animate-spin" /> Saving…</span>}
+          {saveStatus === "saved" && <span className="flex items-center gap-1 text-[#0369a1]"><Check className="h-3 w-3" /> Saved</span>}
+          {saveStatus === "error" && <span className="text-[#dc2626]">Save failed — retry</span>}
+          {saveStatus === "idle" && <span className="text-[#8A9196]">Ready</span>}
+        </div>
+
+        {/* Reopen Details tab when panel is closed */}
+        {!showDetails && activeItem && (
+          <button
+            onClick={() => setShowDetails(true)}
+            className="absolute right-0 top-1/2 z-20 flex h-10 -translate-y-1/2 items-center gap-1.5 rounded-l-md bg-white px-3 text-[12px] font-semibold text-[#30363A] shadow-lg"
+          >
+            <ChevronDown className="rotate-90" size={15} /> Details
+          </button>
         )}
 
         {/* Live measurement tooltip (moved onto the map by an OL overlay) */}
         <div
           ref={measureTipRef}
           style={{ display: "none" }}
-          className="pointer-events-none whitespace-nowrap rounded bg-slate-900 px-1.5 py-0.5 text-xs font-semibold text-white shadow"
+          className="pointer-events-none whitespace-nowrap rounded bg-[#082f49] px-1.5 py-0.5 text-[12px] font-semibold text-white shadow"
         />
 
-        <div ref={mapEl} className="h-full w-full bg-slate-200" />
-      </div>
+        {/* The live SIX Maps / OpenLayers canvas */}
+        <div ref={mapEl} className="h-full w-full bg-[#0c2b3f]" />
 
-      {/* RIGHT PROPERTY PANEL (Nearmap-style) */}
-      {showProperty && (
-        <aside className="flex w-[300px] shrink-0 flex-col border-l border-slate-200 bg-white">
-          <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-            <span className="text-sm font-bold text-sky-950">Property</span>
-            <button onClick={() => setShowProperty(false)} className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700">
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="min-h-0 flex-1 overflow-auto p-4">
-            <p className="text-sm font-semibold leading-snug text-sky-950">{project.full_address}</p>
-            {coords.lat != null && coords.lng != null && (
-              <div className="mt-2 space-y-0.5 text-xs text-slate-500">
-                <p>{coords.lat.toFixed(6)}, {coords.lng.toFixed(6)}</p>
-                <p>{toDMS(coords.lat, true)}, {toDMS(coords.lng, false)}</p>
-              </div>
-            )}
+        {/* Bottom status bar (42px) */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 flex h-[42px] items-center bg-[#082f49]/95 px-5 text-[11px] text-white/90 backdrop-blur">
+          <span>Scale <span ref={scaleRef} className="font-medium text-white">—</span></span>
+          <span className="mx-4 h-4 w-px bg-white/20" />
+          <span>Zoom <span ref={zoomRef} className="font-medium text-white">—</span></span>
+          <span className="mx-4 h-4 w-px bg-white/20" />
+          <span className="hidden sm:inline">Cursor <span ref={cursorRef} className="font-medium text-white">—</span></span>
+          <span className="ml-auto">Measurements: <span className="font-medium text-white">{measCount}</span></span>
+        </div>
+      </section>
 
-            <div className="mt-3 flex gap-2">
-              <button onClick={openStreetView} title="Open Street View" className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-md border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
-                <Eye className="h-4 w-4" /> Street View
-              </button>
-              <button onClick={openGoogleMaps} title="Open in Google Maps" className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-50">
-                <Navigation className="h-4 w-4" />
-              </button>
-              <button onClick={copyCoords} title="Copy coordinates" className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition hover:bg-slate-50">
-                {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
-              </button>
-            </div>
-
-            <div className="my-4 border-t border-slate-200" />
-
-            <p className="text-[10px] font-bold uppercase tracking-wide text-sky-700">Parcel details</p>
-            {parcelInfo?.lotId ? (
-              <p className="mt-1 text-sm text-slate-700">Lot/DP <span className="font-semibold text-sky-950">{parcelInfo.lotId}</span></p>
-            ) : (
-              <p className="mt-1 text-xs text-slate-400">No parcel matched — use “Set / correct property”.</p>
-            )}
-
-            <button
-              onClick={() => { if (!placing) setTool("pan"); setPlacing((v) => !v); }}
-              className={`mt-4 flex w-full items-center justify-center gap-1.5 rounded-md border px-2 py-2 text-xs font-semibold transition ${placing ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"}`}
-            >
-              <MapPin className="h-3.5 w-3.5" /> {placing ? "Click your property on the map…" : "Set / correct property"}
-            </button>
-          </div>
-        </aside>
+      {/* ── RIGHT: Measurement Details (310px) ──────────────────────────── */}
+      {showDetails && activeItem && (
+        <MeasurementDetails
+          item={activeItem}
+          draftName={draftName}
+          onNameChange={setDraftName}
+          wastePct={wastePct}
+          onWasteChange={setWastePct}
+          colourPickerOpen={colourPickerFor === activeItem.id}
+          onToggleColourPicker={() => setColourPickerFor((v) => (v === activeItem.id ? null : activeItem.id))}
+          onPickColour={(c) => changeItemColour(activeItem, c)}
+          onSave={saveDetails}
+          onDuplicate={duplicateItem}
+          onDelete={() => deleteItem(activeItem)}
+          onClose={() => setShowDetails(false)}
+        />
       )}
     </div>
   );
 }
 
-function ToggleChip({ active, onClick, Icon, label }: { active: boolean; onClick: () => void; Icon: typeof Ruler; label: string }) {
+function ToolbarBtn({ label, Icon, onClick, disabled = false }: { label: string; Icon: typeof Ruler; onClick: () => void; disabled?: boolean }) {
   return (
-    <button onClick={onClick} className={`flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium shadow-sm transition ${active ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 bg-white/95 text-slate-600 hover:bg-slate-50"}`}>
-      <Icon className="h-3.5 w-3.5" /> {label}
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      title={label}
+      className="flex w-[62px] flex-col items-center justify-center gap-1 rounded text-[10px] text-white transition hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent"
+    >
+      <Icon size={18} />
+      <span>{label}</span>
     </button>
+  );
+}
+
+function LayerRow({
+  label,
+  Icon,
+  checked = false,
+  locked = false,
+  onToggle,
+}: {
+  label: string;
+  Icon: typeof Ruler;
+  checked?: boolean;
+  locked?: boolean;
+  onToggle?: () => void;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      disabled={locked}
+      className="flex h-9 w-full items-center text-[13px] text-[#30363A] disabled:cursor-default"
+    >
+      <Icon size={16} className="mr-3 text-[#586066]" />
+      <span>{label}</span>
+      <span
+        className={[
+          "ml-auto grid h-[18px] w-[18px] place-items-center rounded border",
+          checked ? "border-[#0369a1] bg-[#0369a1] text-white" : "border-[#AEB5BA] bg-white",
+        ].join(" ")}
+      >
+        {checked && <Check size={12} strokeWidth={3} />}
+      </span>
+    </button>
+  );
+}
+
+function MeasurementDetails({
+  item,
+  draftName,
+  onNameChange,
+  wastePct,
+  onWasteChange,
+  colourPickerOpen,
+  onToggleColourPicker,
+  onPickColour,
+  onSave,
+  onDuplicate,
+  onDelete,
+  onClose,
+}: {
+  item: Item;
+  draftName: string;
+  onNameChange: (v: string) => void;
+  wastePct: string;
+  onWasteChange: (v: string) => void;
+  colourPickerOpen: boolean;
+  onToggleColourPicker: () => void;
+  onPickColour: (c: string) => void;
+  onSave: () => void;
+  onDuplicate: () => void;
+  onDelete: () => void;
+  onClose: () => void;
+}) {
+  const { value, unit } = uiQty(item);
+  const isCount = item.measurement_type === "count";
+  const waste = Number(wastePct) || 0;
+  const adjusted = isCount
+    ? value
+    : (itemTotal(item) * (1 + waste / 100)).toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  return (
+    <aside className="flex w-[310px] shrink-0 flex-col border-l border-[#D7DCE0] bg-white">
+      <header className="flex h-[52px] shrink-0 items-center justify-between border-b border-[#E2E5E7] px-4">
+        <h2 className="text-[12px] font-semibold uppercase tracking-wide text-[#383E42]">Measurement Details</h2>
+        <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded text-[#586066] hover:bg-[#F1F3F4]">
+          <X size={17} />
+        </button>
+      </header>
+
+      <div className="min-h-0 flex-1 overflow-y-auto p-4">
+        <div className="mb-5 flex items-center gap-3">
+          <span className="h-6 w-6 rounded" style={{ backgroundColor: item.colour }} />
+          <h3 className="truncate text-[14px] font-semibold text-[#212121]">{item.name}</h3>
+        </div>
+
+        <Field label="Name">
+          <input
+            value={draftName}
+            onChange={(e) => onNameChange(e.target.value)}
+            className="h-9 w-full rounded border border-[#D3D9DD] px-3 text-[12px] outline-none focus:border-[#0369a1]"
+          />
+        </Field>
+
+        <Field label="Measurement Type">
+          <div className="flex h-9 items-center rounded border border-[#D3D9DD] bg-[#F7F8F9] px-3 text-[12px] text-[#4B5155]">
+            {TYPE_LABEL[item.measurement_type as MeasurementType]}
+          </div>
+        </Field>
+
+        <Field label="Colour">
+          <div className="relative">
+            <button
+              onClick={onToggleColourPicker}
+              className="h-8 w-20 rounded border border-[#D3D9DD]"
+              style={{ backgroundColor: item.colour }}
+              aria-label="Change colour"
+            />
+            {colourPickerOpen && (
+              <div className="absolute left-0 top-9 z-30 flex w-40 flex-wrap gap-1.5 rounded-md border border-[#D7DCE0] bg-white p-2 shadow-lg">
+                {TAKEOFF_COLOURS.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => onPickColour(c)}
+                    className={`h-6 w-6 rounded-full border-2 ${item.colour === c ? "border-[#212121]" : "border-transparent"}`}
+                    style={{ backgroundColor: c }}
+                    aria-label={c}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </Field>
+
+        <Field label="Quantity">
+          <div className="grid grid-cols-[1fr_64px]">
+            <div className="flex h-9 items-center rounded-l border border-[#D3D9DD] bg-[#F7F8F9] px-3 text-[12px] font-semibold text-[#212121]">
+              {value}
+            </div>
+            <div className="grid h-9 place-items-center rounded-r border-y border-r border-[#D3D9DD] bg-[#F7F8F9] text-[12px] text-[#4B5155]">
+              {unit || "No."}
+            </div>
+          </div>
+        </Field>
+
+        {!isCount && (
+          <>
+            <Field label="Waste %">
+              <div className="grid grid-cols-[1fr_50px]">
+                <input
+                  value={wastePct}
+                  onChange={(e) => onWasteChange(e.target.value.replace(/[^0-9.]/g, ""))}
+                  inputMode="decimal"
+                  className="h-9 rounded-l border border-[#D3D9DD] px-3 text-[12px] outline-none focus:border-[#0369a1]"
+                />
+                <div className="grid h-9 place-items-center rounded-r border-y border-r border-[#D3D9DD] text-[12px] text-[#4B5155]">%</div>
+              </div>
+            </Field>
+
+            <div className="mb-5 border-b border-[#E3E6E8] pb-4">
+              <div className="text-[11px] text-[#666D72]">Adjusted Quantity</div>
+              <div className="mt-1 text-[13px] font-semibold text-[#212121]">{adjusted} {unit}</div>
+            </div>
+          </>
+        )}
+      </div>
+
+      <footer className="grid shrink-0 grid-cols-2 gap-3 border-t border-[#DDE1E4] bg-white p-4">
+        <button onClick={onDuplicate} className="flex h-9 items-center justify-center gap-2 rounded border border-[#C9D0D4] text-[12px] font-semibold text-[#30363A] hover:bg-[#F5F6F7]">
+          <RotateCcw size={14} /> Duplicate
+        </button>
+        <button onClick={onSave} className="flex h-9 items-center justify-center gap-2 rounded bg-[#0369a1] text-[12px] font-semibold text-white hover:bg-[#075985]">
+          <Save size={14} /> Save
+        </button>
+        <button onClick={onDelete} className="col-span-2 flex h-9 items-center justify-center gap-2 rounded border border-[#dc2626] bg-white text-[12px] font-semibold text-[#dc2626] hover:bg-[#FEF2F2]">
+          <Trash2 size={14} /> Delete Measurement
+        </button>
+      </footer>
+    </aside>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="mb-4 block">
+      <span className="mb-1.5 block text-[11px] font-medium text-[#5D6469]">{label}</span>
+      {children}
+    </label>
   );
 }
 
@@ -902,21 +1228,41 @@ function AddItemForm({ onAdd, onCancel, usedColours }: { onAdd: (name: string, t
   const [colour, setColour] = useState(firstFree);
 
   return (
-    <div className="border-b border-slate-200 bg-slate-50 p-3">
-      <input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="Item name (e.g. Roof membrane area)" className="w-full rounded border border-slate-300 px-2 py-1.5 text-sm outline-none focus:border-slate-500" />
+    <div className="mx-4 mt-3 rounded-md border border-[#D7DCE0] bg-[#F7F9FB] p-3">
+      <input
+        autoFocus
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name (e.g. Roof membrane area)"
+        className="w-full rounded border border-[#D3D9DD] px-2 py-1.5 text-[12px] outline-none focus:border-[#0369a1]"
+      />
       <div className="mt-2 grid grid-cols-4 gap-1">
-        {(["length", "perimeter", "area", "count"] as MeasurementType[]).map((t) => (
-          <button key={t} onClick={() => setType(t)} className={`rounded px-1.5 py-1 text-[11px] font-medium capitalize ${type === t ? "bg-blue-600 text-white" : "bg-white text-slate-600 hover:bg-slate-100"}`}>{t}</button>
+        {(["area", "length", "perimeter", "count"] as MeasurementType[]).map((t) => (
+          <button
+            key={t}
+            onClick={() => setType(t)}
+            className={`rounded px-1.5 py-1 text-[11px] font-medium ${type === t ? "bg-[#0369a1] text-white" : "bg-white text-[#586066] hover:bg-[#EAF3FA]"}`}
+          >
+            {TYPE_LABEL[t]}
+          </button>
         ))}
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {TAKEOFF_COLOURS.map((c) => (
-          <button key={c} onClick={() => setColour(c)} className={`h-5 w-5 rounded-full border-2 ${colour === c ? "border-slate-900" : "border-transparent"}`} style={{ backgroundColor: c }} aria-label={c} />
+          <button
+            key={c}
+            onClick={() => setColour(c)}
+            className={`h-5 w-5 rounded-full border-2 ${colour === c ? "border-[#212121]" : "border-transparent"}`}
+            style={{ backgroundColor: c }}
+            aria-label={c}
+          />
         ))}
       </div>
       <div className="mt-2 flex gap-2">
-        <button onClick={() => onAdd(name.trim() || `${type} item`, type, colour)} className="flex-1 rounded bg-blue-600 px-2 py-1.5 text-xs font-semibold text-white hover:bg-blue-700">Add item</button>
-        <button onClick={onCancel} className="rounded px-2 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-800">Cancel</button>
+        <button onClick={() => onAdd(name.trim() || `${TYPE_LABEL[type]} item`, type, colour)} className="flex-1 rounded bg-[#0369a1] px-2 py-1.5 text-[12px] font-semibold text-white hover:bg-[#075985]">
+          Add
+        </button>
+        <button onClick={onCancel} className="rounded px-2 py-1.5 text-[12px] font-medium text-[#586066] hover:text-[#212121]">Cancel</button>
       </div>
     </div>
   );
