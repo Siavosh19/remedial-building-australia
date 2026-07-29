@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { tierLabel } from "@/lib/directory-tier";
+import DirectorySignupCategoryCell from "@/components/directory/DirectorySignupCategoryCell";
 
 export const dynamic = "force-dynamic";
 
@@ -11,15 +12,22 @@ const PLAN_BADGE: Record<string, string> = {
 };
 
 export default async function DirectorySignupsPage() {
-  const companies = await prisma.company.findMany({
-    where: { users: { some: {} } },
-    orderBy: { created_at: "desc" },
-    include: {
-      main_category: { select: { name: true } },
-      locations: { take: 1 },
-      directory_subscription: { select: { subscription_status: true, stripe_subscription_id: true } },
-    },
-  });
+  const [companies, categories] = await Promise.all([
+    prisma.company.findMany({
+      where: { users: { some: {} } },
+      orderBy: { created_at: "desc" },
+      include: {
+        main_category: { select: { id: true, name: true } },
+        locations: { take: 1 },
+        directory_subscription: { select: { subscription_status: true, stripe_subscription_id: true } },
+      },
+    }),
+    prisma.category.findMany({
+      where: { is_active: true, parent_id: null },
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    }),
+  ]);
 
   return (
     <div>
@@ -56,7 +64,14 @@ export default async function DirectorySignupsPage() {
                   <div className="font-medium text-slate-900">{c.name}</div>
                   <div className="text-xs text-slate-400">{c.email ?? "—"}</div>
                 </td>
-                <td className="px-4 py-3 text-slate-500">{c.main_category?.name ?? "—"}</td>
+                <td className="px-4 py-3">
+                  <DirectorySignupCategoryCell
+                    companyId={c.id}
+                    categoryId={c.main_category?.id ?? null}
+                    categoryName={c.main_category?.name ?? null}
+                    categories={categories}
+                  />
+                </td>
                 <td className="px-4 py-3 text-slate-500">{c.locations[0] ? `${c.locations[0].suburb}, ${c.locations[0].state}` : "—"}</td>
                 <td className="px-4 py-3">
                   {(() => {

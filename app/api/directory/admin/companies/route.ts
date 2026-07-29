@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/directory-auth";
 import { Prisma } from "@prisma/client";
+import { bustDirectoryCache } from "@/lib/directory-cache";
 
 const PAGE_SIZE = 50;
 const VALID_STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
@@ -57,6 +58,68 @@ export async function GET(request: NextRequest) {
   ]);
 
   return NextResponse.json({ items, total, page, pageSize: PAGE_SIZE, totalPages: Math.ceil(total / PAGE_SIZE) });
+}
+
+// Change a company's primary category. Keeps the CompanyCategory "primary" mirror
+// row in sync (replace semantics: the old primary row is dropped, the new one is set
+// primary + approved) so directory search — which only matches approved
+// company_categories — reflects the change immediately.
+export async function PATCH(request: NextRequest) {
+  const admin = await getAdminFromRequest(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const body = await request.json().catch(() => null);
+  if (!body) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+
+  const companyId = Number(body.id);
+  const newCategoryId = Number(body.main_category_id);
+  if (!companyId) return NextResponse.json({ error: "Missing company id" }, { status: 400 });
+  if (!newCategoryId || newCategoryId <= 0) {
+    return NextResponse.json({ error: "Pick a valid category" }, { status: 400 });
+  }
+
+  const [company, category] = await Promise.all([
+    prisma.company.findUnique({ where: { id: companyId }, select: { id: true } }),
+    prisma.category.findUnique({ where: { id: newCategoryId }, select: { id: true } }),
+  ]);
+  if (!company) return NextResponse.json({ error: "Company not found" }, { status: 404 });
+  if (!category) return NextResponse.json({ error: "Category not found" }, { status: 404 });
+
+  await prisma.$transaction(async (tx) => {
+    // 1. The FK on the company record.
+    await tx.company.update({ where: { id: companyId }, data: { main_category_id: newCategoryId } });
+
+    // 2. Drop the old primary mirror row(s).
+    await tx.companyCategory.deleteMany({ where: { company_id: companyId, is_primary: true } });
+
+    // 3. Promote an existing junction row for the new category, or create one.
+    const existing = await tx.companyCategory.findFirst({
+      where: { company_id: companyId, category_id: newCategoryId },
+      select: { id: true },
+    });
+    if (existing) {
+      await tx.companyCategory.update({
+        where: { id: existing.id },
+        data: { is_primary: true, is_approved: true, approved_at: new Date(), approved_by: admin.id },
+      });
+    } else {
+      await tx.companyCategory.create({
+        data: {
+          company_id: companyId,
+          category_id: newCategoryId,
+          is_primary: true,
+          is_approved: true,
+          approved_at: new Date(),
+          approved_by: admin.id,
+        },
+      });
+    }
+  });
+
+  // Reflect the new category in directory search immediately (matches other edit routes).
+  bustDirectoryCache();
+
+  return NextResponse.json({ ok: true });
 }
 
 export async function DELETE(request: NextRequest) {
