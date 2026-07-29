@@ -50,6 +50,18 @@ const PIN_SRC = "data:image/svg+xml;utf8," + encodeURIComponent(PIN_SVG);
 // Construction-markup palette for items/measurements.
 const COLOURS = ["#0369a1", "#7c3aed", "#dc2626", "#0f7a4d", "#b45309", "#0891b2", "#db2777", "#4f46e5", "#65a30d", "#334155"];
 
+// A right-pointing arrowhead in the item colour, placed + rotated at a line end
+// so distance measurements read as dimension lines (←——→).
+function arrowStyle(colour: string, coord: number[], rotation: number): Style {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'>` +
+    `<path d='M8 3 L14 9 L8 15' fill='none' stroke='${colour}' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>`;
+  return new Style({
+    geometry: new Point(coord),
+    image: new Icon({ src: "data:image/svg+xml;utf8," + encodeURIComponent(svg), anchor: [0.8, 0.5], rotateWithView: true, rotation: -rotation }),
+  });
+}
+
 type MType = "area" | "linear" | "perimeter" | "count";
 type Tool = "select" | "pan" | MType;
 type Item = api.ApiItem;
@@ -149,7 +161,7 @@ export default function MapWorkspace({
   const showLabelsRef = useRef(showLabels); showLabelsRef.current = showLabels;
   const selMeasRef = useRef(selectedMeasurementId); selMeasRef.current = selectedMeasurementId;
 
-  const styleFor = useCallback((feature: FeatureLike): Style | undefined => {
+  const styleFor = useCallback((feature: FeatureLike): Style | Style[] | undefined => {
     if (!showMeasRef.current) return undefined;
     const itemId = feature.get("itemId") as string;
     const it = itemsRef.current.find((i) => i.id === itemId);
@@ -178,7 +190,20 @@ export default function MapWorkspace({
         text,
       });
     }
-    return new Style({ stroke, fill: mtype === "area" ? new Fill({ color: colour + "33" }) : undefined, text });
+    const base = new Style({ stroke, fill: mtype === "area" ? new Fill({ color: colour + "33" }) : undefined, text });
+    // Distance lines get an arrowhead at each end (dimension-line look).
+    if (mtype === "linear") {
+      const g = feature.getGeometry();
+      if (g instanceof LineString) {
+        const c = g.getCoordinates();
+        if (c.length >= 2) {
+          const s = c[0], e = c[c.length - 1];
+          const rot = Math.atan2(e[1] - s[1], e[0] - s[0]);
+          return [base, arrowStyle(colour, e, rot), arrowStyle(colour, s, rot + Math.PI)];
+        }
+      }
+    }
+    return base;
   }, []);
 
   // ── Map init (once) ───────────────────────────────────────────────────────
