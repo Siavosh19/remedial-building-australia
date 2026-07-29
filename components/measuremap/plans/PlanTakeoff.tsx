@@ -15,30 +15,41 @@ import { getCenter } from "ol/extent";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import Feature from "ol/Feature";
+import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import LineString from "ol/geom/LineString";
 import Polygon from "ol/geom/Polygon";
 import { Draw, Select, Modify } from "ol/interaction";
-import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle } from "ol/style";
+import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import { defaults as defaultControls } from "ol/control";
 import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
-import { MousePointer2, Move, Ruler, Spline, Pentagon, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check, Maximize2 } from "lucide-react";
+import {
+  MousePointer2, Move, Ruler, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
+  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2,
+} from "lucide-react";
 import * as api from "../map/api";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).toString();
 
 type MType = "area" | "linear" | "perimeter" | "count";
-type Tool = "select" | "pan" | "scale" | MType;
+type Tool = "select" | "pan" | "scale" | "dimension" | "area" | "linear" | "count";
 type Item = api.ApiItem;
 type Plan = { id: string; filename: string; mime_type: string | null; url: string | null; page: { id: string; pixels_per_metre: number | null; scale_status: string } | null };
+type Snapshot = { measurementId: string; itemId: string; gj: unknown; qty: number; unit: string; mtype: MType; idx?: number };
 
 const geojson = new GeoJSON();
 const COLOURS = ["#0369a1", "#7c3aed", "#dc2626", "#0f7a4d", "#b45309", "#0891b2", "#db2777", "#4f46e5", "#65a30d", "#334155"];
-const DRAW_TYPE: Record<MType, "LineString" | "Polygon" | "Point"> = { linear: "LineString", perimeter: "LineString", area: "Polygon", count: "Point" };
-const TYPE_LABEL: Record<MType, string> = { area: "Area", linear: "Distance", perimeter: "Perimeter", count: "Count" };
+const TYPE_LABEL: Record<MType, string> = { area: "Area", linear: "Distance", perimeter: "Linear", count: "Count" };
 const UNIT_FOR: Record<MType, string> = { area: "m2", linear: "m", perimeter: "m", count: "ea" };
+// tool → geometry + stored measurement_type
+const TOOL_META: Record<"dimension" | "area" | "linear" | "count", { geom: "LineString" | "Polygon" | "Point"; maxPoints?: number; type: MType }> = {
+  dimension: { geom: "LineString", maxPoints: 2, type: "linear" },
+  linear: { geom: "LineString", type: "perimeter" },
+  area: { geom: "Polygon", type: "area" },
+  count: { geom: "Point", type: "count" },
+};
 
 function fmt(q: number, type: string): string {
   if (type === "count") return `${Math.round(q)} ea`;
@@ -48,6 +59,11 @@ function fmt(q: number, type: string): string {
 function itemTotal(it: Item): number {
   if (it.measurement_type === "count") return it.measurements.length;
   return it.measurements.reduce((s, m) => s + m.calculated_quantity, 0);
+}
+// Arrowhead for dimension lines.
+function arrowStyle(colour: string, coord: number[], rotation: number): Style {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'><path d='M8 3 L14 9 L8 15' fill='none' stroke='${colour}' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>`;
+  return new Style({ geometry: new Point(coord), image: new Icon({ src: "data:image/svg+xml;utf8," + encodeURIComponent(svg), anchor: [0.8, 0.5], rotateWithView: true, rotation: -rotation }) });
 }
 
 async function loadImage(plan: Plan): Promise<{ url: string; width: number; height: number } | null> {
@@ -81,6 +97,8 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   const selectRef = useRef<Select | null>(null);
   const modifyRef = useRef<Modify | null>(null);
   const ppmRef = useRef<number | null>(plan.page?.pixels_per_metre ?? null);
+  const undoRef = useRef<Snapshot[]>([]);
+  const redoRef = useRef<Snapshot[]>([]);
 
   const [items, setItems] = useState<Item[]>([]);
   const [activeItemId, setActiveItemId] = useState<string | null>(null);
@@ -90,14 +108,17 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   const [selectedMeasurementId, setSelectedMeasurementId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
 
   const itemsRef = useRef(items); itemsRef.current = items;
   const activeIdRef = useRef(activeItemId); activeIdRef.current = activeItemId;
   const selRef = useRef(selectedMeasurementId); selRef.current = selectedMeasurementId;
   ppmRef.current = ppm;
   const pageId = plan.page?.id ?? null;
+  const refreshUndo = () => { setCanUndo(undoRef.current.length > 0); setCanRedo(redoRef.current.length > 0); };
 
-  const styleFor = useCallback((feature: FeatureLike): Style | undefined => {
+  const styleFor = useCallback((feature: FeatureLike): Style | Style[] | undefined => {
     const itemId = feature.get("itemId") as string;
     const it = itemsRef.current.find((i) => i.id === itemId);
     if (it && !it.is_visible) return undefined;
@@ -112,30 +133,35 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
       stroke: new Stroke({ color: "#fff", width: 3 }), offsetY: mtype === "count" ? -12 : 0, overflow: true,
     });
     if (mtype === "count") return new Style({ image: new CircleStyle({ radius: selected ? 7 : 5, fill: new Fill({ color: colour }), stroke: new Stroke({ color: "#fff", width: 2 }) }), text });
-    return new Style({ stroke: new Stroke({ color: colour, width: selected ? 4 : 2.5 }), fill: mtype === "area" ? new Fill({ color: colour + "33" }) : undefined, text });
+    const base = new Style({ stroke: new Stroke({ color: colour, width: selected ? 4 : 2.5 }), fill: mtype === "area" ? new Fill({ color: colour + "33" }) : undefined, text });
+    if (mtype === "linear" && feature.get("dimension")) {
+      const g = feature.getGeometry();
+      if (g instanceof LineString) {
+        const c = g.getCoordinates();
+        if (c.length >= 2) { const s = c[0], e = c[c.length - 1]; const rot = Math.atan2(e[1] - s[1], e[0] - s[0]); return [base, arrowStyle(colour, e, rot), arrowStyle(colour, s, rot + Math.PI)]; }
+      }
+    }
+    return base;
   }, []);
 
-  // Init map once the image is measured.
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const img = await loadImage(plan).catch(() => null);
+      const img = await loadImage(plan).catch((e) => { console.error("[measuremap] plan load", e); return null; });
       if (cancelled) return;
-      if (!img || !mapEl.current) { setError("Couldn't load this plan."); setLoading(false); return; }
+      if (!img || !mapEl.current) { setError("Couldn't load this plan (PDF worker or file issue)."); setLoading(false); return; }
       const extent = [0, 0, img.width, img.height];
       const projection = new Projection({ code: "plan-px", units: "pixels", extent });
       const imageLayer = new ImageLayer({ source: new Static({ url: img.url, projection, imageExtent: extent }) });
       const vector = new VectorLayer({ source: sourceRef.current, style: styleFor as never });
       const map = new Map({
-        target: mapEl.current,
-        layers: [imageLayer, vector],
+        target: mapEl.current, layers: [imageLayer, vector],
         controls: defaultControls({ zoom: false, attribution: false }),
         view: new View({ projection, center: getCenter(extent), zoom: 1, maxZoom: 8, extent }),
       });
       map.getView().fit(extent, { padding: [20, 20, 20, 20] });
       mapRef.current = map;
       setLoading(false);
-      // Load existing takeoffs for this plan.
       try {
         const res = await fetch(`/api/measuremap/projects/${projectId}/drawings/${plan.id}/takeoffs`);
         const data = await res.json();
@@ -152,15 +178,16 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     try {
       const g = geojson.readGeometry(m.geometry as object);
       const f = new Feature(g);
+      const mtype = (it.measurement_type ?? m.measurement_type) as string;
       f.setId(m.id); f.set("measurementId", m.id); f.set("itemId", it.id);
-      f.set("mtype", it.measurement_type ?? m.measurement_type); f.set("qty", m.calculated_quantity);
+      f.set("mtype", mtype); f.set("qty", m.calculated_quantity);
+      if (mtype === "linear") f.set("dimension", true);
       if (idx != null) f.set("idx", idx);
-      else if ((it.measurement_type ?? m.measurement_type) === "count") f.set("idx", it.measurements.indexOf(m) + 1);
+      else if (mtype === "count") f.set("idx", it.measurements.indexOf(m) + 1);
       sourceRef.current.addFeature(f);
-    } catch { /* skip bad geometry */ }
+    } catch { /* skip */ }
   }
 
-  // Tool wiring.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -186,9 +213,9 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
       return;
     }
 
-    const mtype = tool as MType;
-    const draw = new Draw({ source: sourceRef.current, type: DRAW_TYPE[mtype], ...(mtype === "linear" ? { maxPoints: 2 } : {}) });
-    draw.on("drawend", (e) => { void handleDrawEnd(mtype, e.feature); });
+    const meta = TOOL_META[tool];
+    const draw = new Draw({ source: sourceRef.current, type: meta.geom, ...(meta.maxPoints ? { maxPoints: meta.maxPoints } : {}) });
+    draw.on("drawend", (e) => { void handleDrawEnd(tool as "dimension" | "area" | "linear" | "count", e.feature); });
     map.addInteraction(draw); drawRef.current = draw;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tool, loading]);
@@ -204,10 +231,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     const newPpm = px / metres;
     setPpm(newPpm); ppmRef.current = newPpm;
     setSaveStatus("saving");
-    try {
-      await fetch(`/api/measuremap/projects/${projectId}/drawings/${plan.id}/scale`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pixels_per_metre: newPpm }) });
-      setSaveStatus("saved");
-    } catch { setSaveStatus("error"); }
+    try { await fetch(`/api/measuremap/projects/${projectId}/drawings/${plan.id}/scale`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pixels_per_metre: newPpm }) }); setSaveStatus("saved"); } catch { setSaveStatus("error"); }
   }
 
   function qtyFor(geom: Geometry, mtype: MType): number {
@@ -228,31 +252,25 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     } catch { setSaveStatus("error"); return null; }
   }
 
-  async function handleDrawEnd(mtype: MType, feature: Feature<Geometry>) {
+  async function handleDrawEnd(t: "dimension" | "area" | "linear" | "count", feature: Feature<Geometry>) {
     const geom = feature.getGeometry();
     if (!geom) return;
-    if (!ppmRef.current) {
-      sourceRef.current.removeFeature(feature);
-      setTool("select");
-      alert("Set the scale first: pick “Set Scale”, trace a known dimension, and enter its real length.");
-      return;
-    }
+    if (!ppmRef.current) { sourceRef.current.removeFeature(feature); setTool("select"); alert("Set the scale first: pick “Scale”, trace a known dimension, and enter its real length."); return; }
+    const mtype = TOOL_META[t].type;
     const item = await ensureItem(mtype);
     if (!item) { sourceRef.current.removeFeature(feature); setTool("select"); return; }
     const qty = qtyFor(geom, mtype);
     const gj = geojson.writeGeometryObject(geom);
     const idx = mtype === "count" ? item.measurements.length + 1 : undefined;
     feature.set("itemId", item.id); feature.set("mtype", mtype); feature.set("qty", qty);
+    if (t === "dimension") feature.set("dimension", true);
     if (idx != null) feature.set("idx", idx);
     setSaveStatus("saving");
     try {
-      const { id } = await api.createMeasurement(projectId, {
-        estimate_item_id: item.id, category_id: item.category_id, geometry: gj, calculated_quantity: qty,
-        unit: item.unit, measurement_type: mtype, measurement_mode: item.category_id ? "structured" : "free",
-        label: idx != null ? String(idx) : null, source_type: "drawing", plan_id: plan.id, plan_page_id: pageId, sort_order: item.measurements.length,
-      });
+      const { id } = await api.createMeasurement(projectId, { estimate_item_id: item.id, category_id: item.category_id, geometry: gj, calculated_quantity: qty, unit: item.unit, measurement_type: mtype, measurement_mode: item.category_id ? "structured" : "free", label: idx != null ? String(idx) : null, source_type: "drawing", plan_id: plan.id, plan_page_id: pageId, sort_order: item.measurements.length });
       feature.setId(id); feature.set("measurementId", id);
       setItems((prev) => prev.map((i) => i.id === item.id ? { ...i, measurements: [...i.measurements, { id, estimate_item_id: item.id, category_id: item.category_id, measurement_mode: "free", measurement_type: mtype, source_type: "drawing", name: null, colour: item.colour, geometry: gj, calculated_quantity: qty, unit: item.unit, label: idx != null ? String(idx) : null, is_visible: true, sort_order: i.measurements.length }] } : i));
+      undoRef.current.push({ measurementId: id, itemId: item.id, gj, qty, unit: item.unit, mtype, idx }); redoRef.current = []; refreshUndo();
       setSaveStatus("saved");
     } catch { setSaveStatus("error"); sourceRef.current.removeFeature(feature); }
     if (mtype !== "count") setTool("select");
@@ -268,21 +286,39 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     const gj = geojson.writeGeometryObject(g);
     (feature as Feature).set("qty", qty);
     setSaveStatus("saving");
-    try {
-      await api.patchMeasurement(projectId, id, { geometry: gj, calculated_quantity: qty });
-      setItems((prev) => prev.map((i) => i.id === itemId ? { ...i, measurements: i.measurements.map((m) => m.id === id ? { ...m, geometry: gj, calculated_quantity: qty } : m) } : i));
-      setSaveStatus("saved");
-    } catch { setSaveStatus("error"); }
+    try { await api.patchMeasurement(projectId, id, { geometry: gj, calculated_quantity: qty }); setItems((prev) => prev.map((i) => i.id === itemId ? { ...i, measurements: i.measurements.map((m) => m.id === id ? { ...m, geometry: gj, calculated_quantity: qty } : m) } : i)); setSaveStatus("saved"); } catch { setSaveStatus("error"); }
   }
 
   useEffect(() => { sourceRef.current.changed(); }, [items, selectedMeasurementId]);
 
-  async function deleteMeasurement(id: string) {
+  async function removeMeasurement(id: string) {
     selectRef.current?.getFeatures().clear();
     const f = sourceRef.current.getFeatureById(id);
     if (f) sourceRef.current.removeFeature(f);
     setSelectedMeasurementId(null);
     try { await api.removeMeasurement(projectId, id); setItems((prev) => prev.map((i) => ({ ...i, measurements: i.measurements.filter((m) => m.id !== id) })).filter((i) => i.measurements.length > 0)); } catch { setSaveStatus("error"); }
+  }
+  async function undo() {
+    const s = undoRef.current.pop();
+    if (!s) return;
+    const f = sourceRef.current.getFeatureById(s.measurementId);
+    if (f) sourceRef.current.removeFeature(f);
+    setItems((prev) => prev.map((i) => i.id === s.itemId ? { ...i, measurements: i.measurements.filter((m) => m.id !== s.measurementId) } : i));
+    try { await api.removeMeasurement(projectId, s.measurementId); redoRef.current.push(s); refreshUndo(); } catch { setSaveStatus("error"); }
+  }
+  async function redo() {
+    const s = redoRef.current.pop();
+    if (!s) return;
+    try {
+      const { id } = await api.createMeasurement(projectId, { estimate_item_id: s.itemId, geometry: s.gj, calculated_quantity: s.qty, unit: s.unit, measurement_type: s.mtype, source_type: "drawing", plan_id: plan.id, plan_page_id: pageId, label: s.idx != null ? String(s.idx) : null });
+      const g = geojson.readGeometry(s.gj as object);
+      const f = new Feature(g); f.setId(id); f.set("measurementId", id); f.set("itemId", s.itemId); f.set("mtype", s.mtype); f.set("qty", s.qty);
+      if (s.mtype === "linear") f.set("dimension", true);
+      if (s.idx != null) f.set("idx", s.idx);
+      sourceRef.current.addFeature(f);
+      setItems((prev) => prev.map((i) => i.id === s.itemId ? { ...i, measurements: [...i.measurements, { id, estimate_item_id: s.itemId, category_id: null, measurement_mode: "free", measurement_type: s.mtype, source_type: "drawing", name: null, colour: null, geometry: s.gj, calculated_quantity: s.qty, unit: s.unit, label: null, is_visible: true, sort_order: i.measurements.length }] } : i));
+      undoRef.current.push({ ...s, measurementId: id }); refreshUndo();
+    } catch { setSaveStatus("error"); }
   }
   async function deleteItem(it: Item) {
     if (!confirm(`Delete “${it.name}” and its ${it.measurements.length} measurement(s)?`)) return;
@@ -294,66 +330,92 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, is_visible: !i.is_visible } : i));
     try { await api.patchItem(projectId, it.id, { is_visible: !it.is_visible }); } catch { /* visual */ }
   }
+  function zoomBy(d: number) { const v = mapRef.current?.getView(); if (v) v.animate({ zoom: (v.getZoom() ?? 1) + d, duration: 150 }); }
+  function rotate() { const v = mapRef.current?.getView(); if (v) v.animate({ rotation: (v.getRotation() ?? 0) + Math.PI / 2, duration: 200 }); }
   function fit() { const m = mapRef.current; if (m) { const ext = sourceRef.current.getExtent(); if (sourceRef.current.getFeatures().length && ext && Number.isFinite(ext[0])) m.getView().fit(ext, { padding: [40, 40, 40, 40], maxZoom: 8, duration: 200 }); } }
 
-  const tools: { id: Tool; label: string; Icon: typeof Ruler }[] = [
-    { id: "select", label: "Select", Icon: MousePointer2 }, { id: "pan", label: "Pan", Icon: Move },
-    { id: "scale", label: "Set Scale", Icon: PencilRuler }, { id: "linear", label: "Distance", Icon: Ruler },
-    { id: "perimeter", label: "Perimeter", Icon: Spline }, { id: "area", label: "Area", Icon: Pentagon }, { id: "count", label: "Count", Icon: MapPin },
-  ];
-
   return (
-    <div className="flex h-full">
-      {/* Takeoff list */}
-      <aside className="flex w-[260px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white">
-        <div className="border-b border-[#E2E5E7] px-4 py-3">
-          <h3 className="text-[12px] font-semibold uppercase tracking-wide text-[#383E42]">Plan takeoffs</h3>
-          <div className={`mt-2 flex items-center gap-1.5 rounded px-2 py-1.5 text-[11px] font-medium ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}>
-            <PencilRuler size={12} /> {ppm ? `Scale set (${ppm.toFixed(1)} px/m)` : "Scale not set — pick “Set Scale”"}
-          </div>
-        </div>
-        <div className="min-h-0 flex-1 overflow-y-auto p-2">
-          {items.length === 0 && <p className="px-2 py-6 text-center text-[12px] text-[#8A9196]">No takeoffs yet. Set the scale, then pick a tool and measure on the plan.</p>}
-          {items.map((it) => (
-            <div key={it.id} className="group mb-1 flex items-center gap-2 rounded px-2 py-1.5 hover:bg-[#F5F6F7]">
-              <span className="h-[10px] w-[10px] shrink-0 rounded-sm" style={{ backgroundColor: it.colour }} />
-              <button onClick={() => { setActiveItemId(it.id); fit(); }} className="min-w-0 flex-1 text-left">
-                <span className="block truncate text-[12px] font-medium text-[#30363A]">{it.name}</span>
-                <span className="block text-[10px] text-[#8A9196]">{fmt(itemTotal(it), it.measurement_type ?? "area")}</span>
-              </button>
-              <button onClick={() => toggleVisible(it)} className="text-[#586066] hover:text-[#30363A]">{it.is_visible ? <Eye size={13} /> : <EyeOff size={13} />}</button>
-              <button onClick={() => deleteItem(it)} className="text-[#8A9196] opacity-0 hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={13} /></button>
-            </div>
-          ))}
-        </div>
-      </aside>
-
-      {/* Canvas */}
-      <section className="relative min-w-0 flex-1 bg-[#0c2b3f]">
-        <div className="absolute left-3 top-3 z-20 flex items-stretch rounded-md border border-white/15 bg-[#082f49]/95 p-1 shadow-xl">
-          {tools.map(({ id, label, Icon }) => (
-            <button key={id} onClick={() => setTool(id)} title={label} className={["flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] text-white", tool === id ? "bg-[#0369a1]" : "hover:bg-white/10"].join(" ")}>
-              <Icon size={16} /><span>{label}</span>
-            </button>
-          ))}
-          <div className="mx-1 w-px bg-white/15" />
-          <button onClick={fit} title="Fit" className="flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] text-white hover:bg-white/10"><Maximize2 size={16} /><span>Fit</span></button>
-        </div>
-
-        {tool === "scale" && <div className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-md bg-white px-3 py-1.5 text-[12px] font-medium text-[#30363A] shadow-lg">Trace a known dimension (2 clicks), then enter its real length.</div>}
-        {selectedMeasurementId && tool === "select" && <button onClick={() => deleteMeasurement(selectedMeasurementId)} className="absolute right-3 top-3 z-20 flex items-center gap-1 rounded-md border border-[#dc2626] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#dc2626] shadow"><Trash2 size={13} /> Delete</button>}
-
-        <div className="absolute bottom-3 left-3 z-20 rounded bg-white/90 px-2 py-1 text-[11px] shadow-sm">
-          {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-3 w-3 animate-spin" /> Saving…</span>}
+    <div className="flex h-full flex-col">
+      {/* Ribbon toolbar */}
+      <div className="flex shrink-0 items-stretch gap-0 border-b border-[#D5DADD] bg-white px-2 py-1">
+        <Group label="Zoom / Pan">
+          <TBtn label="Fit" Icon={Maximize2} onClick={fit} />
+          <TBtn label="In" Icon={ZoomIn} onClick={() => zoomBy(1)} />
+          <TBtn label="Out" Icon={ZoomOut} onClick={() => zoomBy(-1)} />
+          <TBtn label="Pan" Icon={Move} active={tool === "pan"} onClick={() => setTool("pan")} />
+        </Group>
+        <Group label="Measure">
+          <TBtn label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => setTool("scale")} />
+          <TBtn label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => setTool("dimension")} />
+        </Group>
+        <Group label="Takeoff">
+          <TBtn label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => setTool("area")} />
+          <TBtn label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => setTool("linear")} />
+          <TBtn label="Count" Icon={MapPin} active={tool === "count"} onClick={() => setTool("count")} />
+        </Group>
+        <Group label="Edit" last>
+          <TBtn label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => setTool("select")} />
+          <TBtn label="Rotate" Icon={RotateCw} onClick={rotate} />
+          <TBtn label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} />
+          <TBtn label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} />
+          <TBtn label="Delete" Icon={Trash2} onClick={() => selectedMeasurementId && void removeMeasurement(selectedMeasurementId)} disabled={!selectedMeasurementId} />
+        </Group>
+        <div className="ml-auto flex items-center gap-2 pr-2 text-[11px]">
+          <span className={`flex items-center gap-1 rounded px-2 py-1 font-medium ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}>
+            <PencilRuler size={12} /> {ppm ? `Scale ${ppm.toFixed(1)} px/m` : "Scale not set"}
+          </span>
+          {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-3 w-3 animate-spin" /> Saving</span>}
           {saveStatus === "saved" && <span className="flex items-center gap-1 text-[#0369a1]"><Check className="h-3 w-3" /> Saved</span>}
           {saveStatus === "error" && <span className="text-[#dc2626]">Save failed</span>}
-          {saveStatus === "idle" && <span className="text-[#8A9196]">Ready</span>}
         </div>
+      </div>
 
-        {loading && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/80"><Loader2 className="h-6 w-6 animate-spin" /><span className="ml-2 text-sm">Loading plan…</span></div>}
-        {error && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/70"><span className="text-sm">{error}</span></div>}
-        <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
-      </section>
+      <div className="flex min-h-0 flex-1">
+        {/* Takeoff list */}
+        <aside className="flex w-[240px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white">
+          <div className="border-b border-[#E2E5E7] px-3 py-2.5"><h3 className="text-[12px] font-semibold uppercase tracking-wide text-[#383E42]">Takeoffs</h3></div>
+          <div className="min-h-0 flex-1 overflow-y-auto p-2">
+            {items.length === 0 && <p className="px-2 py-6 text-center text-[12px] text-[#8A9196]">No takeoffs yet. Set the scale, then measure on the plan.</p>}
+            {items.map((it) => (
+              <div key={it.id} className="group mb-1 flex items-center gap-2 rounded px-2 py-1.5 hover:bg-[#F5F6F7]">
+                <span className="h-[10px] w-[10px] shrink-0 rounded-sm" style={{ backgroundColor: it.colour }} />
+                <button onClick={() => { setActiveItemId(it.id); fit(); }} className="min-w-0 flex-1 text-left">
+                  <span className="block truncate text-[12px] font-medium text-[#30363A]">{it.name}</span>
+                  <span className="block text-[10px] text-[#8A9196]">{fmt(itemTotal(it), it.measurement_type ?? "area")}</span>
+                </button>
+                <button onClick={() => toggleVisible(it)} className="text-[#586066] hover:text-[#30363A]">{it.is_visible ? <Eye size={13} /> : <EyeOff size={13} />}</button>
+                <button onClick={() => deleteItem(it)} className="text-[#8A9196] opacity-0 hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={13} /></button>
+              </div>
+            ))}
+          </div>
+        </aside>
+
+        {/* Canvas */}
+        <section className="relative min-w-0 flex-1 bg-[#0c2b3f]">
+          {tool === "scale" && <div className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-md bg-white px-3 py-1.5 text-[12px] font-medium text-[#30363A] shadow-lg">Trace a known dimension (2 clicks), then enter its real length.</div>}
+          {loading && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/80"><Loader2 className="h-6 w-6 animate-spin" /><span className="ml-2 text-sm">Loading plan…</span></div>}
+          {error && <div className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-white/70"><span className="text-sm">{error}</span></div>}
+          <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
+        </section>
+      </div>
     </div>
+  );
+}
+
+function Group({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
+  return (
+    <div className={`flex flex-col items-center px-2 ${last ? "" : "border-r border-[#E7EAEC]"}`}>
+      <div className="flex items-stretch gap-0.5">{children}</div>
+      <span className="mt-0.5 text-[9px] uppercase tracking-wide text-[#9AA0A5]">{label}</span>
+    </div>
+  );
+}
+
+function TBtn({ label, Icon, onClick, active, disabled }: { label: string; Icon: typeof Ruler; onClick: () => void; active?: boolean; disabled?: boolean }) {
+  return (
+    <button onClick={onClick} disabled={disabled} title={label}
+      className={["flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] transition", active ? "bg-[#0369a1] text-white" : "text-[#343A3E] hover:bg-[#F1F3F4]", disabled ? "opacity-30" : ""].join(" ")}>
+      <Icon size={17} /><span>{label}</span>
+    </button>
   );
 }
