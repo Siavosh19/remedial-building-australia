@@ -18,7 +18,7 @@ import VectorSource from "ol/source/Vector";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
-import { Draw, Modify, Select } from "ol/interaction";
+import { Draw, Select, Translate } from "ol/interaction";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { getLength, getArea } from "ol/sphere";
 import { createEmpty, extend as extendExtent, isEmpty as extentIsEmpty } from "ol/extent";
@@ -33,7 +33,7 @@ import "ol/ol.css";
 
 import {
   MousePointer2, Move, Ruler, Spline, Pentagon, MapPin, Trash2, Maximize2, Plus, Loader2, Check, Eye, EyeOff,
-  Camera, Copy, Search, Layers, Map as MapIcon, Crosshair, MoreVertical, FolderPlus, ChevronDown, ChevronRight, Pencil, Palette, FolderInput,
+  Camera, Copy, Search, Layers, Map as MapIcon, Crosshair, MoreVertical, FolderPlus, ChevronDown, ChevronRight, Pencil, Palette, FolderInput, List, X,
 } from "lucide-react";
 import * as api from "./api";
 
@@ -103,8 +103,9 @@ export default function MapWorkspace({
   const markerFeatureRef = useRef<Feature | null>(null);
   const cadastreRef = useRef<TileLayer<TileArcGISRest> | null>(null);
   const drawRef = useRef<Draw | null>(null);
-  const modifyRef = useRef<Modify | null>(null);
+  const translateRef = useRef<Translate | null>(null);
   const selectRef = useRef<Select | null>(null);
+  const lastCountRef = useRef(0);
   const measureTipRef = useRef<HTMLDivElement>(null);
   const measureOverlayRef = useRef<Overlay | null>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
@@ -120,6 +121,8 @@ export default function MapWorkspace({
   const [showMeasurements, setShowMeasurements] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
   const [showCadastre, setShowCadastre] = useState(false);
+  const [showSiteDetails, setShowSiteDetails] = useState(true);
+  const [showMeasList, setShowMeasList] = useState(true);
   const [parcelInfo, setParcelInfo] = useState<{ lotId: string | null; planLabel: string | null } | null>(null);
   const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: project.latitude, lng: project.longitude });
   const [placing, setPlacing] = useState(false);
@@ -291,11 +294,11 @@ export default function MapWorkspace({
     const map = mapRef.current;
     if (!map) return;
     if (drawRef.current) { map.removeInteraction(drawRef.current); drawRef.current = null; }
-    if (modifyRef.current) { map.removeInteraction(modifyRef.current); modifyRef.current = null; }
+    if (translateRef.current) { map.removeInteraction(translateRef.current); translateRef.current = null; }
     if (selectRef.current) { map.removeInteraction(selectRef.current); selectRef.current = null; }
 
     if (tool === "select") {
-      const select = new Select({ style: styleFor as never, hitTolerance: 6 });
+      const select = new Select({ style: styleFor as never, hitTolerance: 8 });
       select.on("select", (e) => {
         const f = e.selected[0];
         const id = f ? (f.get("measurementId") as string) : null;
@@ -305,12 +308,13 @@ export default function MapWorkspace({
           if (itemId) setActiveItemId(itemId);
         }
       });
-      const modify = new Modify({ source: sourceRef.current });
-      modify.on("modifyend", (e) => { e.features.forEach((f) => void persistGeometry(f)); });
+      // Drag a selected measurement to move the whole shape (no vertex handles).
+      const translate = new Translate({ features: select.getFeatures() });
+      translate.on("translateend", (e) => { e.features.forEach((f) => void persistGeometry(f)); });
       map.addInteraction(select);
-      map.addInteraction(modify);
+      map.addInteraction(translate);
       selectRef.current = select;
-      modifyRef.current = modify;
+      translateRef.current = translate;
       return;
     }
 
@@ -370,7 +374,19 @@ export default function MapWorkspace({
 
   async function handleDrawEnd(mtype: MType, feature: Feature<Geometry>) {
     const geom = feature.getGeometry();
-    if (!geom) { return; }
+    if (!geom) return;
+    // Count is continuous: keep dropping points until a double-click (two clicks
+    // within 350ms) — the second click is discarded and we return to Select.
+    if (mtype === "count") {
+      const now = Date.now();
+      if (now - lastCountRef.current < 350) {
+        sourceRef.current.removeFeature(feature);
+        lastCountRef.current = 0;
+        setTool("select");
+        return;
+      }
+      lastCountRef.current = now;
+    }
     const item = await ensureItem(mtype);
     if (!item) { sourceRef.current.removeFeature(feature); setTool("select"); return; }
 
@@ -409,8 +425,9 @@ export default function MapWorkspace({
       setSaveStatus("error");
       sourceRef.current.removeFeature(feature);
     }
-    // Auto-return to Select after finishing a measurement.
-    setTool("select");
+    // Line/area/perimeter finish on double-click → back to Select.
+    // Count stays active for continuous placing (double-click finishes it).
+    if (mtype !== "count") setTool("select");
   }
 
   async function persistGeometry(feature: FeatureLike) {
@@ -679,7 +696,7 @@ export default function MapWorkspace({
   return (
     <div className="flex h-full" onClick={() => { setMenuFor(null); setColourFor(null); setMoveFor(null); }}>
       {/* ── LEFT PANEL ─────────────────────────────────────────────────── */}
-      <aside className="flex w-[300px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white">
+      <aside className={`flex shrink-0 flex-col border-r border-[#D7DCE0] bg-white ${showMeasList ? "w-[300px]" : "w-[212px]"}`}>
         {/* Map Layers */}
         <section className="border-b border-[#E2E5E7] px-4 py-3">
           <div className="mb-1 flex items-center gap-2 text-[13px] font-bold text-[#212121]">
@@ -687,12 +704,15 @@ export default function MapWorkspace({
             <span className="ml-auto rounded bg-[#EAF3FA] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#0369a1]">On</span>
           </div>
           <div className="mt-2 space-y-0.5">
+            <LayerToggle label="Site Details" Icon={MapPin} checked={showSiteDetails} onToggle={() => setShowSiteDetails((v) => !v)} />
+            <LayerToggle label="Measurement List" Icon={List} checked={showMeasList} onToggle={() => setShowMeasList((v) => !v)} />
             <LayerToggle label="Measurements" Icon={Eye} checked={showMeasurements} onToggle={() => setShowMeasurements((v) => !v)} />
             <LayerToggle label="Labels" Icon={Ruler} checked={showLabels} onToggle={() => setShowLabels((v) => !v)} />
             <LayerToggle label="Property Boundaries" Icon={Layers} checked={showCadastre} onToggle={() => setShowCadastre((v) => !v)} />
           </div>
         </section>
 
+        {showMeasList && (<>
         {/* Measurements / categories */}
         <div className="flex items-center justify-between px-4 pt-3">
           <h2 className="text-[12px] font-semibold uppercase tracking-wide text-[#383E42]">Measurements</h2>
@@ -785,6 +805,7 @@ export default function MapWorkspace({
             ? <span className="flex items-center gap-1.5 text-[#0369a1]"><Check size={13} /> Measuring into <b className="font-semibold">{categories.find((c) => c.id === activeCategoryId)?.name}</b></span>
             : <span className="text-[#8A9196]">Measuring freely — pick a category above to file measurements.</span>}
         </div>
+        </>)}
       </aside>
 
       {/* ── CENTRE: toolbar + map ─────────────────────────────────────────── */}
@@ -805,21 +826,25 @@ export default function MapWorkspace({
         {tool !== "select" && tool !== "pan" && (
           <div className="absolute left-1/2 top-[72px] z-30 flex -translate-x-1/2 items-center gap-3 rounded-md border border-[#7dd3fc] bg-white px-4 py-2 shadow-lg">
             <span className="text-[12px] font-medium text-[#30363A]">
-              Click on the map to draw the {TYPE_LABEL[tool as MType].toLowerCase()}{tool !== "count" ? " (double-click to finish)" : ""}.
+              {tool === "count"
+                ? "Click to drop count points; double-click to finish."
+                : `Click on the map to draw the ${TYPE_LABEL[tool as MType].toLowerCase()}.`}
             </span>
-            <button onClick={() => drawRef.current?.finishDrawing()} className="h-8 rounded bg-[#0369a1] px-4 text-[12px] font-semibold text-white hover:bg-[#075985]">Finish</button>
+            <button onClick={() => { if (tool === "count") setTool("select"); else drawRef.current?.finishDrawing(); }} className="h-8 rounded bg-[#0369a1] px-4 text-[12px] font-semibold text-white hover:bg-[#075985]">Finish</button>
             <button onClick={() => { drawRef.current?.abortDrawing(); setTool("select"); }} className="h-8 rounded border border-[#C9CFD3] px-3 text-[12px] text-[#4B5155]">Cancel</button>
           </div>
         )}
 
-        {/* Compact address card */}
-        <div className="absolute right-4 top-4 z-20 w-[224px] overflow-hidden rounded-md border border-[#D5DADD] bg-white shadow-lg">
+        {/* Compact address card (moved left to clear the top-right map control) */}
+        {showSiteDetails && (
+        <div className="absolute right-14 top-3 z-20 w-[224px] overflow-hidden rounded-md border border-[#D5DADD] bg-white shadow-lg">
           <div className="flex items-start gap-2 px-3 py-2">
             <MapPin size={15} className="mt-0.5 shrink-0 text-[#0369a1]" />
-            <p className="text-[11px] leading-snug text-[#212121]">
+            <p className="min-w-0 flex-1 text-[11px] leading-snug text-[#212121]">
               {parcelInfo?.lotId && <span className="font-semibold text-[#0c4a6e]">(Lot/DP {parcelInfo.lotId}) </span>}
               {project.full_address}
             </p>
+            <button onClick={() => setShowSiteDetails(false)} className="grid h-5 w-5 shrink-0 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]" title="Hide (re-open via Site Details)"><X size={13} /></button>
           </div>
           <div className="grid grid-cols-3 border-t border-[#E2E5E7] text-[#586066]">
             <button onClick={recenter} className="flex h-8 items-center justify-center gap-1 text-[10px] hover:bg-[#F4F5F6]" title="Re-centre"><Crosshair size={12} /> Centre</button>
@@ -831,6 +856,7 @@ export default function MapWorkspace({
             <MapPin size={11} /> {placing ? "Click the map…" : "Set / correct pin"}
           </button>
         </div>
+        )}
 
         {placing && (
           <div className="absolute left-1/2 top-[72px] z-30 -translate-x-1/2 rounded-md bg-[#0369a1] px-3 py-1.5 text-[12px] font-semibold text-white shadow-lg">
