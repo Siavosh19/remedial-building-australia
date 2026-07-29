@@ -175,6 +175,7 @@ export default function MapWorkspace({
   const [renaming, setRenaming] = useState<{ kind: "item" | "category"; id: string } | null>(null);
   const [colourFor, setColourFor] = useState<string | null>(null);
   const [moveFor, setMoveFor] = useState<string | null>(null);
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number; id: string; itemId: string | null; kind: "measurement" | "annotation" } | null>(null);
 
   // Latest-state refs so OL callbacks read current values without rebinding.
   const itemsRef = useRef(items); itemsRef.current = items;
@@ -323,6 +324,20 @@ export default function MapWorkspace({
       if (!placingRef.current) return;
       const [lng, lat] = toLonLat(e.coordinate);
       void setPropertyAt(lat, lng, e.coordinate);
+    });
+
+    // Right-click a measurement/markup on the map → rename / delete menu.
+    mapEl.current.addEventListener("contextmenu", (ev) => {
+      ev.preventDefault();
+      let hit: FeatureLike | undefined;
+      map.forEachFeatureAtPixel(map.getEventPixel(ev), (f) => { if (f.get("measurementId")) { hit = f; return true; } return false; }, { hitTolerance: 6 });
+      if (hit) {
+        const mid = hit.get("measurementId") as string;
+        setSelectedMeasurementId(mid);
+        setCtxMenu({ x: ev.clientX, y: ev.clientY, id: mid, itemId: (hit.get("itemId") as string) ?? null, kind: hit.get("kind") === "annotation" ? "annotation" : "measurement" });
+      } else {
+        setCtxMenu(null);
+      }
     });
 
     map.on("pointermove", (e) => {
@@ -625,20 +640,54 @@ export default function MapWorkspace({
     } catch { setSaveStatus("error"); }
   }
 
-  const deleteSelected = useCallback(async () => {
-    const id = selMeasRef.current;
-    if (!id) return;
-    const f = sourceRef.current.getFeatureById(id);
-    if (f) sourceRef.current.removeFeature(f);
-    else { const af = annotationSourceRef.current.getFeatureById(id); if (af) annotationSourceRef.current.removeFeature(af); }
-    setSelectedMeasurementId(null);
+  // Remove a measurement/annotation completely: clear the OL select overlay
+  // (else the removed feature keeps drawing), remove the feature from its
+  // source, delete the record, and drop the parent item if it's now empty.
+  const removeById = useCallback(async (id: string) => {
+    selectRef.current?.getFeatures().clear();
+    let feat = sourceRef.current.getFeatureById(id);
+    const isAnnotation = !feat;
+    if (feat) sourceRef.current.removeFeature(feat);
+    else { feat = annotationSourceRef.current.getFeatureById(id); if (feat) annotationSourceRef.current.removeFeature(feat); }
+    const itemId = feat?.get("itemId") as string | undefined;
+    if (selMeasRef.current === id) setSelectedMeasurementId(null);
     setSaveStatus("saving");
     try {
       await api.removeMeasurement(project.id, id);
-      setItems((prev) => prev.map((i) => ({ ...i, measurements: i.measurements.filter((m) => m.id !== id) })));
+      if (!isAnnotation && itemId) {
+        const it = itemsRef.current.find((i) => i.id === itemId);
+        const willEmpty = it ? it.measurements.filter((m) => m.id !== id).length === 0 : false;
+        setItems((prev) => {
+          const mapped = prev.map((i) => i.id === itemId ? { ...i, measurements: i.measurements.filter((m) => m.id !== id) } : i);
+          return willEmpty ? mapped.filter((i) => i.id !== itemId) : mapped;
+        });
+        if (willEmpty) { try { await api.removeItem(project.id, itemId); } catch { /* item cleanup best-effort */ } }
+      } else {
+        setItems((prev) => prev.map((i) => ({ ...i, measurements: i.measurements.filter((m) => m.id !== id) })));
+      }
       setSaveStatus("saved");
     } catch { setSaveStatus("error"); }
   }, [project.id]);
+
+  const deleteSelected = useCallback(() => { const id = selMeasRef.current; if (id) void removeById(id); }, [removeById]);
+
+  async function renameFromCtx() {
+    if (!ctxMenu) return;
+    if (ctxMenu.kind === "annotation") {
+      const f = annotationSourceRef.current.getFeatureById(ctxMenu.id);
+      const cur = (f?.get("annName") as string) ?? "";
+      const t = window.prompt("Edit text / comment:", cur);
+      if (t == null) return;
+      const name = t.trim() || null;
+      if (f) { f.set("annName", name); annotationSourceRef.current.changed(); }
+      try { await api.patchMeasurement(project.id, ctxMenu.id, { name: name ?? "" }); } catch { setSaveStatus("error"); }
+    } else if (ctxMenu.itemId) {
+      const it = items.find((i) => i.id === ctxMenu.itemId);
+      const t = window.prompt("Rename measurement:", it?.name ?? "");
+      if (t == null || !t.trim()) return;
+      void renameItem(ctxMenu.itemId, t.trim());
+    }
+  }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -647,7 +696,7 @@ export default function MapWorkspace({
         if (tag === "INPUT" || tag === "TEXTAREA") return;
         e.preventDefault(); void deleteSelected();
       }
-      if (e.key === "Escape") { drawRef.current?.abortDrawing(); setMenuFor(null); setColourFor(null); setMoveFor(null); }
+      if (e.key === "Escape") { drawRef.current?.abortDrawing(); setMenuFor(null); setColourFor(null); setMoveFor(null); setCtxMenu(null); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -882,7 +931,7 @@ export default function MapWorkspace({
   const cursorClass = tool === "pan" ? "cursor-grab active:cursor-grabbing" : tool === "select" ? "cursor-default" : "cursor-crosshair";
 
   return (
-    <div className="flex h-full" onClick={() => { setMenuFor(null); setColourFor(null); setMoveFor(null); }}>
+    <div className="flex h-full" onClick={() => { setMenuFor(null); setColourFor(null); setMoveFor(null); setCtxMenu(null); }}>
       {/* ── LEFT PANEL ─────────────────────────────────────────────────── */}
       <aside className={`flex shrink-0 flex-col border-r border-[#D7DCE0] bg-white ${showMeasList ? "w-[300px]" : "w-[212px]"}`}>
         {/* Map Layers */}
@@ -1140,6 +1189,15 @@ export default function MapWorkspace({
           <span className="ml-auto">Measurements: <span className="font-medium text-white">{measCount}</span></span>
         </div>
       </section>
+
+      {/* Right-click context menu (rename / delete) */}
+      {ctxMenu && (
+        <div style={{ left: ctxMenu.x, top: ctxMenu.y }} onClick={(e) => e.stopPropagation()}
+          className="fixed z-50 w-[160px] overflow-hidden rounded-md border border-[#D7DCE0] bg-white py-1 shadow-lg">
+          <MenuItem Icon={Pencil} label={ctxMenu.kind === "annotation" ? "Edit text" : "Rename"} onClick={() => { void renameFromCtx(); setCtxMenu(null); }} />
+          <MenuItem Icon={Trash2} label="Delete" danger onClick={() => { void removeById(ctxMenu.id); setCtxMenu(null); }} />
+        </div>
+      )}
     </div>
   );
 }
