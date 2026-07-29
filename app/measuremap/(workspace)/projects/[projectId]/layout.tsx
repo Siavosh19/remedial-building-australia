@@ -28,29 +28,29 @@ export default async function ProjectLayout({
 
   return (
     <div className="flex h-[calc(100dvh-3.5rem)] flex-col">
-      {/* Project header (84px) */}
-      <section className="flex h-[84px] items-center border-b border-[#D8DDE1] bg-white px-6">
+      {/* Project header (compact — reclaims vertical space for the workspace) */}
+      <section className="flex h-[60px] items-center border-b border-[#D8DDE1] bg-white px-5">
         <Link
           href="/measuremap"
-          className="mr-5 grid h-9 w-9 shrink-0 place-items-center rounded text-[#30363A] hover:bg-[#F0F2F3]"
+          className="mr-3 grid h-8 w-8 shrink-0 place-items-center rounded text-[#30363A] hover:bg-[#F0F2F3]"
           aria-label="Back to projects"
         >
-          <ChevronLeft size={23} />
+          <ChevronLeft size={22} />
         </Link>
 
         <div className="min-w-0">
-          <h1 className="truncate text-[22px] font-semibold leading-7 text-[#212121]">{title}</h1>
-          <p className="mt-1 truncate text-[13px] text-[#5D6469]">{project.full_address}</p>
+          <h1 className="truncate text-[19px] font-bold leading-6 text-[#212121]">{title}</h1>
+          {project.project_name && (
+            <p className="truncate text-[12px] text-[#5D6469]">{project.full_address}</p>
+          )}
         </div>
 
-        <div className="ml-auto flex shrink-0 items-end gap-6">
-          <div>
-            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.3px] text-[#6C7378]">
-              Status
-            </div>
+        <div className="ml-auto flex shrink-0 items-center gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.3px] text-[#6C7378]">Status</span>
             <span
               className={[
-                "flex h-9 min-w-[100px] items-center rounded border px-3 text-[13px] font-semibold",
+                "flex h-8 items-center rounded border px-3 text-[13px] font-semibold",
                 isActive
                   ? "border-[#0369a1] bg-[#F0F7FC] text-[#0369a1]"
                   : "border-[#D7DCE0] bg-[#F5F6F7] text-[#6C7378]",
@@ -60,24 +60,22 @@ export default async function ProjectLayout({
             </span>
           </div>
 
-          <div>
-            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.3px] text-[#6C7378]">
-              Reference
-            </div>
-            <span className="flex h-9 min-w-[120px] items-center rounded border border-[#D7DCE0] bg-white px-3 text-[13px] text-[#212121]">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.3px] text-[#6C7378]">Ref</span>
+            <span className="flex h-8 min-w-[90px] items-center rounded border border-[#D7DCE0] bg-white px-3 text-[13px] text-[#212121]">
               {project.project_reference || "—"}
             </span>
           </div>
 
           <Link
             href={`/measuremap/projects/${projectId}/export`}
-            className="flex h-9 items-center gap-2 rounded bg-[#0369a1] px-4 text-[13px] font-semibold text-white transition hover:bg-[#075985]"
+            className="flex h-8 items-center gap-2 rounded bg-[#0369a1] px-4 text-[13px] font-semibold text-white transition hover:bg-[#075985]"
           >
             <Download size={15} />
             Export
           </Link>
 
-          <button className="flex h-9 min-w-[142px] items-center justify-between rounded border border-[#D7DCE0] bg-white px-4 text-[13px] font-semibold text-[#30363A]">
+          <button className="flex h-8 items-center justify-between gap-2 rounded border border-[#D7DCE0] bg-white px-3 text-[13px] font-semibold text-[#30363A]">
             Project Actions
             <ChevronDown size={14} />
           </button>

@@ -427,30 +427,30 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const uncategorised = items.filter((i) => !i.category_id);
 
   return (
-    <div className="flex h-full flex-col gap-2" onClick={() => { setColourFor(null); }}>
+    <div className="flex h-full flex-col gap-3" onClick={() => { setColourFor(null); }}>
       {/* Ribbon */}
-      <div className="flex shrink-0 items-stretch rounded-lg border border-[#D5DADD] bg-white px-2 py-1 shadow-md" onClick={(e) => e.stopPropagation()}>
+      <div className="flex shrink-0 items-stretch rounded-xl border border-[#D5DADD] bg-white px-3 py-2 shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
         <Group label="Zoom / Pan" tone="#343A3E"><TBtn tone="#343A3E" label="Fit" Icon={Maximize2} onClick={fitPage} /><TBtn tone="#343A3E" label="In" Icon={ZoomIn} onClick={() => zoomBy(0.5)} /><TBtn tone="#343A3E" label="Out" Icon={ZoomOut} onClick={() => zoomBy(-0.5)} /><TBtn tone="#343A3E" label="Pan" Icon={Move} active={tool === "pan"} onClick={() => pickTool("pan")} /></Group>
         <Group label="Measure" tone="#0369a1"><TBtn tone="#0369a1" label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => pickTool("scale")} /><TBtn tone="#0369a1" label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => pickTool("dimension")} /></Group>
         <Group label="Takeoff" tone="#0f7a4d"><TBtn tone="#0f7a4d" label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => pickTool("area")} /><TBtn tone="#0f7a4d" label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => pickTool("linear")} /><TBtn tone="#0f7a4d" label="Count" Icon={MapPin} active={tool === "count"} onClick={() => pickTool("count")} /></Group>
         <Group label="Edit" tone="#dc2626" last><TBtn tone="#dc2626" label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn tone="#dc2626" label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn tone="#dc2626" label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn tone="#dc2626" label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn tone="#dc2626" label="Delete" Icon={Trash2} onClick={() => selectedMeasurementId && void removeMeasurement(selectedMeasurementId)} disabled={!selectedMeasurementId} /></Group>
-        <div className="ml-auto flex items-center gap-2 pr-2 text-[11px]">
-          <span className={`flex items-center gap-1 rounded px-2 py-1 font-semibold ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}><PencilRuler size={12} /> {ppm ? "SCALED" : "NOT SCALED"}</span>
-          {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-3 w-3 animate-spin" /> Saving</span>}
-          {saveStatus === "saved" && <span className="flex items-center gap-1 text-[#0369a1]"><Check className="h-3 w-3" /> Saved</span>}
+        <div className="ml-auto flex items-center gap-2 pr-2 text-[13px]">
+          <span className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 font-bold ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}><PencilRuler size={14} /> {ppm ? `SCALED 1:${Math.round(5669.29 / ppm)}` : "NOT SCALED"}</span>
+          {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-4 w-4 animate-spin" /> Saving</span>}
+          {saveStatus === "saved" && <span className="flex items-center gap-1 text-[#0369a1]"><Check className="h-4 w-4" /> Saved</span>}
           {saveStatus === "error" && <span className="text-[#dc2626]">Save failed</span>}
         </div>
       </div>
 
-      <div className="flex min-h-0 flex-1 gap-2">
+      <div className="flex min-h-0 flex-1 gap-3">
         {/* Left panel — categories + items (Map Measure parity) */}
-        <aside className="flex w-[260px] shrink-0 flex-col overflow-hidden rounded-lg border border-[#D7DCE0] bg-white shadow-md" onClick={(e) => e.stopPropagation()}>
+        <aside className="flex w-[300px] shrink-0 flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
           <div className="px-3 pt-3">
-            <button onClick={() => setAddingCategory((v) => !v)} className="flex h-9 w-full items-center justify-center gap-2 rounded bg-[#0369a1] text-[13px] font-semibold text-white hover:bg-[#075985]"><FolderPlus size={16} /> Add Category</button>
+            <button onClick={() => setAddingCategory((v) => !v)} className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white hover:bg-[#075985]"><FolderPlus size={18} /> Add Category</button>
             {addingCategory && <AddCategoryForm onAdd={addCategory} onCancel={() => setAddingCategory(false)} />}
           </div>
           <div className="mt-2 min-h-0 flex-1 overflow-y-auto px-2 pb-3">
-            {items.length === 0 && categories.length === 0 && <p className="px-2 py-6 text-center text-[12px] text-[#8A9196]">No takeoffs yet. Set scale, add a category or just pick a tool and measure.</p>}
+            {items.length === 0 && categories.length === 0 && <p className="px-2 py-6 text-center text-[13px] text-[#8A9196]">No takeoffs yet. Set scale, add a category or just pick a tool and measure.</p>}
             {groups.map(({ category, list }) => (
               <PlanCategory key={category.id} category={category} list={list} active={activeCategoryId === category.id} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming}
                 onSetActive={() => setActiveCategoryId(activeCategoryId === category.id ? null : category.id)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename}
@@ -461,13 +461,13 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
                 onSetActive={() => setActiveCategoryId(null)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename} />
             )}
           </div>
-          <div className="border-t border-[#E1E5E7] px-3 py-2 text-[11px]">
-            {activeCategoryId ? <span className="flex items-center gap-1.5 text-[#0369a1]"><Check size={13} /> Filing into <b>{categories.find((c) => c.id === activeCategoryId)?.name}</b></span> : <span className="text-[#8A9196]">Uncategorised — pick a category to file measurements.</span>}
+          <div className="border-t border-[#E1E5E7] px-3 py-2.5 text-[12px]">
+            {activeCategoryId ? <span className="flex items-center gap-1.5 font-medium text-[#0369a1]"><Check size={14} /> Filing into <b>{categories.find((c) => c.id === activeCategoryId)?.name}</b></span> : <span className="text-[#8A9196]">Uncategorised — pick a category to file measurements.</span>}
           </div>
         </aside>
 
         {/* Canvas */}
-        <section className="relative min-w-0 flex-1 overflow-hidden rounded-lg bg-[#565b5e] shadow-md" onClick={(e) => e.stopPropagation()}>
+        <section className="relative min-w-0 flex-1 overflow-hidden rounded-xl bg-[#565b5e] shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
           {namePopupOpen && pendingType && (
             <div className="absolute left-1/2 top-3 z-30 w-[280px] -translate-x-1/2 rounded-md border border-[#7dd3fc] bg-white p-3 shadow-lg">
               <div className="mb-2 flex items-center justify-between"><span className="text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">New {TYPE_LABEL[TOOL_META[pendingType].type]} measurement</span><button onClick={() => setNamePopupOpen(false)} className="grid h-5 w-5 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={13} /></button></div>
@@ -484,11 +484,11 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
           <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px" style={{ left: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
           <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
           {/* Status bar: Ortho / Snap / cursor */}
-          <div className="absolute bottom-0 left-0 right-0 z-20 flex h-8 items-center gap-2 bg-[#082f49]/95 px-3 text-[11px] text-white/90 backdrop-blur">
-            <button onClick={() => setOrthoOn((v) => !v)} title="Constrain to horizontal/vertical" className={["rounded px-2 py-0.5 font-semibold", orthoOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Ortho</button>
-            <button onClick={() => setSnapOn((v) => !v)} title="Snap to existing points/edges" className={["rounded px-2 py-0.5 font-semibold", snapOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Snap</button>
-            <button onClick={() => setShowMeas((v) => !v)} title="Show/hide all takeoffs on this page" className={["rounded px-2 py-0.5 font-semibold", showMeas ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Takeoffs</button>
-            <span className="ml-auto">Cursor <span ref={cursorRef} className="font-medium text-white">—</span></span>
+          <div className="absolute bottom-0 left-0 right-0 z-20 flex h-9 items-center gap-2 bg-[#082f49]/95 px-3 text-[13px] text-white/90 backdrop-blur">
+            <button onClick={() => setOrthoOn((v) => !v)} title="Constrain to horizontal/vertical" className={["rounded px-2.5 py-1 font-bold", orthoOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Ortho</button>
+            <button onClick={() => setSnapOn((v) => !v)} title="Snap to existing points/edges" className={["rounded px-2.5 py-1 font-bold", snapOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Snap</button>
+            <button onClick={() => setShowMeas((v) => !v)} title="Show/hide all takeoffs on this page" className={["rounded px-2.5 py-1 font-bold", showMeas ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Takeoffs</button>
+            <span className="ml-auto">Cursor <span ref={cursorRef} className="font-semibold text-white">—</span></span>
           </div>
         </section>
       </div>
@@ -532,11 +532,11 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
 }
 
 function Group({ label, children, last, tone }: { label: string; children: React.ReactNode; last?: boolean; tone?: string }) {
-  return <div className={`flex flex-col items-center px-2 ${last ? "" : "border-r border-[#E7EAEC]"}`}><div className="flex items-stretch gap-0.5">{children}</div><span className="mt-0.5 text-[9px] font-semibold uppercase tracking-wide" style={{ color: tone ?? "#9AA0A5" }}>{label}</span></div>;
+  return <div className={`flex flex-col items-center px-2.5 ${last ? "" : "border-r border-[#E7EAEC]"}`}><div className="flex items-stretch gap-0.5">{children}</div><span className="mt-1 text-[11px] font-bold uppercase tracking-wide" style={{ color: tone ?? "#9AA0A5" }}>{label}</span></div>;
 }
 function TBtn({ label, Icon, onClick, active, disabled, tone }: { label: string; Icon: typeof MapPin; onClick: () => void; active?: boolean; disabled?: boolean; tone?: string }) {
   const t = tone ?? "#343A3E";
-  return <button onClick={onClick} disabled={disabled} title={label} style={active ? { backgroundColor: t, color: "#fff" } : { color: t }} className={["flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] transition", active ? "" : "hover:bg-[#F1F3F4]", disabled ? "opacity-30" : ""].join(" ")}><Icon size={17} /><span>{label}</span></button>;
+  return <button onClick={onClick} disabled={disabled} title={label} style={active ? { backgroundColor: t, color: "#fff" } : { color: t }} className={["flex w-[62px] flex-col items-center justify-center gap-1 rounded-lg py-1.5 text-[11px] font-semibold transition", active ? "" : "hover:bg-[#F1F3F4]", disabled ? "opacity-30" : ""].join(" ")}><Icon size={22} /><span>{label}</span></button>;
 }
 
 function AddCategoryForm({ onAdd, onCancel }: { onAdd: (n: string, d: string) => void; onCancel: () => void }) {
@@ -561,11 +561,11 @@ function PlanCategory(p: CatProps) {
   const [menu, setMenu] = useState(false);
   return (
     <section className="mb-1">
-      <div onClick={p.onSetActive} className={["group flex items-center gap-1.5 rounded px-2 py-1.5", p.active ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
-        <button onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }} className="text-[#8A9196]">{open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</button>
-        <span className={["min-w-0 flex-1 truncate text-[12px] font-semibold", p.active ? "text-[#0c4a6e]" : "text-[#30363A]"].join(" ")}>{p.category.name}</span>
-        {p.active && <span className="rounded bg-[#0369a1] px-1.5 py-0.5 text-[8px] font-bold uppercase text-white">Active</span>}
-        <span className="rounded bg-[#ECEFF1] px-1.5 py-0.5 text-[9px] text-[#5D656A]">{p.list.length}</span>
+      <div onClick={p.onSetActive} className={["group flex items-center gap-1.5 rounded-lg px-2 py-2", p.active ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
+        <button onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }} className="text-[#8A9196]">{open ? <ChevronDown size={16} /> : <ChevronRight size={16} />}</button>
+        <span className={["min-w-0 flex-1 truncate text-[15px] font-bold", p.active ? "text-[#0c4a6e]" : "text-[#30363A]"].join(" ")}>{p.category.name}</span>
+        {p.active && <span className="rounded bg-[#0369a1] px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">Active</span>}
+        <span className="rounded bg-[#ECEFF1] px-1.5 py-0.5 text-[11px] font-semibold text-[#5D656A]">{p.list.length}</span>
         {!p.isFree && (
           <div className="relative">
             <button onClick={(e) => { e.stopPropagation(); setMenu((v) => !v); }} className="grid h-6 w-6 place-items-center rounded text-[#8A9196] opacity-0 transition hover:bg-[#E8EBED] group-hover:opacity-100"><MoreVertical size={13} /></button>
@@ -581,21 +581,21 @@ function PlanCategory(p: CatProps) {
       </div>
       {open && (
         <div className="ml-4 border-l border-[#EAECEE] pl-1">
-          {p.list.length === 0 && <p className="px-2 py-1 text-[10px] text-[#A2A8AC]">No takeoffs yet.</p>}
+          {p.list.length === 0 && <p className="px-2 py-1 text-[12px] text-[#A2A8AC]">No takeoffs yet.</p>}
           {p.list.map((it) => (
-            <div key={it.id} onClick={() => p.onSelectItem(it)} className={["group relative grid grid-cols-[14px_minmax(0,1fr)_auto_22px_22px] items-center gap-1.5 rounded px-1 py-1", p.activeItemId === it.id ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
+            <div key={it.id} onClick={() => p.onSelectItem(it)} className={["group relative grid grid-cols-[14px_minmax(0,1fr)_auto_26px_26px] items-center gap-1.5 rounded-lg px-1.5 py-1.5", p.activeItemId === it.id ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
               <div className="relative">
-                <button onClick={(e) => { e.stopPropagation(); p.onOpenColour(p.colourFor === it.id ? null : it.id); }} className="h-[11px] w-[11px] rounded-sm ring-1 ring-black/10" style={{ backgroundColor: it.colour }} />
+                <button onClick={(e) => { e.stopPropagation(); p.onOpenColour(p.colourFor === it.id ? null : it.id); }} className="h-[14px] w-[14px] rounded-sm ring-1 ring-black/10" style={{ backgroundColor: it.colour }} />
                 {p.colourFor === it.id && <div onClick={(e) => e.stopPropagation()} className="absolute left-0 top-5 z-30 flex w-[132px] flex-wrap gap-1 rounded-md border border-[#D7DCE0] bg-white p-2 shadow-lg">{COLOURS.map((c) => <button key={c} onClick={() => p.onRecolour(it, c)} className={`h-5 w-5 rounded-full border-2 ${it.colour === c ? "border-[#212121]" : "border-transparent"}`} style={{ backgroundColor: c }} />)}</div>}
               </div>
               {p.renaming === it.id ? (
-                <input autoFocus defaultValue={it.name} onClick={(e) => e.stopPropagation()} onBlur={(e) => p.onRename(it, e.target.value.trim() || it.name)} onKeyDown={(e) => { if (e.key === "Enter") p.onRename(it, (e.target as HTMLInputElement).value.trim() || it.name); }} className="min-w-0 rounded border border-[#0369a1] px-1 py-0.5 text-[12px] outline-none" />
+                <input autoFocus defaultValue={it.name} onClick={(e) => e.stopPropagation()} onBlur={(e) => p.onRename(it, e.target.value.trim() || it.name)} onKeyDown={(e) => { if (e.key === "Enter") p.onRename(it, (e.target as HTMLInputElement).value.trim() || it.name); }} className="min-w-0 rounded border border-[#0369a1] px-1 py-0.5 text-[14px] outline-none" />
               ) : (
-                <span onDoubleClick={(e) => { e.stopPropagation(); p.onStartRename(it.id); }} className={`min-w-0 truncate text-[12px] ${p.activeItemId === it.id ? "font-semibold text-[#0c4a6e]" : "text-[#30363A]"}`}>{it.name}</span>
+                <span onDoubleClick={(e) => { e.stopPropagation(); p.onStartRename(it.id); }} className={`min-w-0 truncate text-[14px] ${p.activeItemId === it.id ? "font-bold text-[#0c4a6e]" : "font-medium text-[#30363A]"}`}>{it.name}</span>
               )}
-              <span className="whitespace-nowrap text-right text-[10px] text-[#586066]">{fmt(itemTotal(it), it.measurement_type ?? "area")}</span>
-              <button onClick={(e) => { e.stopPropagation(); p.onToggleVisible(it); }} className="grid h-6 w-6 place-items-center rounded text-[#586066] hover:bg-[#E8EBED]">{it.is_visible ? <Eye size={13} /> : <EyeOff size={13} />}</button>
-              <button onClick={(e) => { e.stopPropagation(); p.onDeleteItem(it); }} className="grid h-6 w-6 place-items-center rounded text-[#8A9196] opacity-0 hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={13} /></button>
+              <span className="whitespace-nowrap text-right text-[12px] font-semibold text-[#586066]">{fmt(itemTotal(it), it.measurement_type ?? "area")}</span>
+              <button onClick={(e) => { e.stopPropagation(); p.onToggleVisible(it); }} className="grid h-7 w-7 place-items-center rounded text-[#586066] hover:bg-[#E8EBED]">{it.is_visible ? <Eye size={15} /> : <EyeOff size={15} />}</button>
+              <button onClick={(e) => { e.stopPropagation(); p.onDeleteItem(it); }} className="grid h-7 w-7 place-items-center rounded text-[#8A9196] opacity-0 hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={15} /></button>
             </div>
           ))}
         </div>
