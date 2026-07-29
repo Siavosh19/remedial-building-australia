@@ -1,15 +1,21 @@
+import { notFound } from "next/navigation";
 import { requireMeasureMapUser } from "@/lib/measuremap/access";
-import { Download } from "lucide-react";
+import { getOwnedProject } from "@/lib/measuremap/projects";
+import { getEstimateData } from "@/lib/measuremap/estimating";
+import ExportWorkspace from "@/components/measuremap/export/ExportWorkspace";
 
-export default async function ExportPage() {
-  await requireMeasureMapUser();
+export default async function ExportPage({ params }: { params: Promise<{ projectId: string }> }) {
+  const user = await requireMeasureMapUser();
+  const { projectId } = await params;
+  const project = await getOwnedProject(user.id, projectId);
+  if (!project) notFound();
+  const { categories, items } = await getEstimateData(user.id, projectId);
   return (
-    <div className="flex h-full items-center justify-center bg-slate-100 p-8">
-      <div className="max-w-sm rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center">
-        <Download className="mx-auto h-8 w-8 text-slate-300" />
-        <p className="mt-3 text-sm font-semibold text-slate-700">Excel export</p>
-        <p className="mt-1 text-sm text-slate-500">Quantity summary + detailed measurements as an .xlsx workbook. Arriving in Phase 5.</p>
-      </div>
-    </div>
+    <ExportWorkspace
+      projectName={project.project_name || project.full_address}
+      reference={project.project_reference || ""}
+      categories={categories.map((c) => ({ id: c.id, name: c.name }))}
+      items={items}
+    />
   );
 }

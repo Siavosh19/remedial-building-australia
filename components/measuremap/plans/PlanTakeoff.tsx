@@ -28,7 +28,7 @@ import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 import {
   MousePointer2, Move, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
-  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy, PanelLeftClose, PanelLeftOpen, GripVertical, FolderInput,
+  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy, PanelLeftClose, PanelLeftOpen, GripVertical, FolderInput, ImageDown, Printer,
 } from "lucide-react";
 import * as api from "../map/api";
 
@@ -584,6 +584,43 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   function zoomBy(d: number) { const v = mapRef.current?.getView(); if (v) v.animate({ zoom: (v.getZoom() ?? 1) + d, duration: 150 }); }
   function rotate() { const v = mapRef.current?.getView(); if (v) v.animate({ rotation: (v.getRotation() ?? 0) + Math.PI / 2, duration: 200 }); }
   function fitPage() { const m = mapRef.current; if (m) m.getView().fit(imageExtentRef.current, { padding: [40, 40, 40, 40], duration: 200 }); }
+
+  // Flatten the OpenLayers layer canvases (plan image + takeoff overlays) into one PNG.
+  function captureCanvas(): string | null {
+    const map = mapRef.current; const size = map?.getSize();
+    if (!map || !size) return null;
+    const out = document.createElement("canvas");
+    out.width = size[0]; out.height = size[1];
+    const ctx = out.getContext("2d"); if (!ctx) return null;
+    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, out.width, out.height);
+    map.getViewport().querySelectorAll<HTMLCanvasElement>(".ol-layer canvas").forEach((canvas) => {
+      if (canvas.width === 0) return;
+      const parent = canvas.parentElement as HTMLElement | null;
+      const opacity = parent?.style.opacity || canvas.style.opacity;
+      ctx.globalAlpha = opacity === "" ? 1 : Number(opacity);
+      const t = canvas.style.transform;
+      const m = /^matrix\(([^)]+)\)$/.exec(t);
+      if (m) { const v = m[1].split(",").map(Number); ctx.setTransform(v[0], v[1], v[2], v[3], v[4], v[5]); }
+      else ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(canvas, 0, 0);
+    });
+    ctx.globalAlpha = 1; ctx.setTransform(1, 0, 0, 1, 0, 0);
+    return out.toDataURL("image/png");
+  }
+  function withRender(cb: (url: string) => void) {
+    const map = mapRef.current; if (!map) return;
+    map.once("rendercomplete", () => { const url = captureCanvas(); if (url) cb(url); });
+    map.renderSync();
+  }
+  const exportName = () => `${drawing.filename.replace(/\.[^.]+$/, "")}-page${page.page_number}`;
+  function exportPNG() { withRender((url) => { const a = document.createElement("a"); a.href = url; a.download = `${exportName()}.png`; a.click(); }); }
+  function printPlan() {
+    withRender((url) => {
+      const w = window.open("", "_blank"); if (!w) return;
+      w.document.write(`<html><head><title>${exportName()}</title><style>@page{size:landscape;margin:8mm}body{margin:0}img{width:100%;height:auto}</style></head><body><img src="${url}" onload="setTimeout(function(){window.focus();window.print();},80)"/></body></html>`);
+      w.document.close();
+    });
+  }
   function startCatResize(e: React.MouseEvent) {
     e.preventDefault();
     const startX = e.clientX, startW = catW;
@@ -602,7 +639,8 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         <Group label="Zoom / Pan" tone="#343A3E"><TBtn tone="#343A3E" label="Fit" Icon={Maximize2} onClick={fitPage} /><TBtn tone="#343A3E" label="In" Icon={ZoomIn} onClick={() => zoomBy(0.5)} /><TBtn tone="#343A3E" label="Out" Icon={ZoomOut} onClick={() => zoomBy(-0.5)} /><TBtn tone="#343A3E" label="Pan" Icon={Move} active={tool === "pan"} onClick={() => pickTool("pan")} /></Group>
         <Group label="Measure" tone="#0369a1"><TBtn tone="#0369a1" label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => pickTool("scale")} /><TBtn tone="#0369a1" label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => pickTool("dimension")} /></Group>
         <Group label="Takeoff" tone="#0f7a4d"><TBtn tone="#0f7a4d" label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => pickTool("area")} /><TBtn tone="#0f7a4d" label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => pickTool("linear")} /><TBtn tone="#0f7a4d" label="Count" Icon={MapPin} active={tool === "count"} onClick={() => pickTool("count")} /></Group>
-        <Group label="Edit" tone="#dc2626" last><TBtn tone="#dc2626" label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn tone="#dc2626" label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn tone="#dc2626" label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn tone="#dc2626" label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn tone="#dc2626" label="Delete" Icon={Trash2} onClick={() => deleteSelectedRef.current()} disabled={!selectedMeasurementId} /></Group>
+        <Group label="Edit" tone="#dc2626"><TBtn tone="#dc2626" label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn tone="#dc2626" label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn tone="#dc2626" label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn tone="#dc2626" label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn tone="#dc2626" label="Delete" Icon={Trash2} onClick={() => deleteSelectedRef.current()} disabled={!selectedMeasurementId} /></Group>
+        <Group label="Output" tone="#334155" last><TBtn tone="#334155" label="Image" Icon={ImageDown} onClick={exportPNG} /><TBtn tone="#334155" label="Print" Icon={Printer} onClick={printPlan} /></Group>
         <div className="ml-auto flex items-center gap-2 pr-2 text-[13px]">
           <span className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 font-bold ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}><PencilRuler size={14} /> {ppm ? `SCALED 1:${Math.round(5669.29 / ppm)}` : "NOT SCALED"}</span>
           {saveStatus === "error" && <span className="text-[#dc2626]">Save failed</span>}
