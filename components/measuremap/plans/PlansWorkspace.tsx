@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil, GripVertical, PanelLeftClose, PanelLeftOpen, Sigma, Paperclip, StickyNote, RefreshCw } from "lucide-react";
+import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil, GripVertical, PanelLeftClose, PanelLeftOpen, Sigma, Paperclip, StickyNote, RefreshCw, Link2 } from "lucide-react";
 import PlanTakeoffLoader from "./PlanTakeoffLoader";
 import { supabase } from "@/lib/supabase";
 import * as api from "../map/api";
@@ -53,6 +53,10 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
   const [pageMenu, setPageMenu] = useState<string | null>(null);
   const [asideW, setAsideW] = useState(300);
   const [collapsed, setCollapsed] = useState(false);
+  const [linkOpen, setLinkOpen] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
   const [sumOpen, setSumOpen] = useState(true);
   const [attachOpen, setAttachOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
@@ -154,6 +158,17 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     } catch { setError("Upload failed"); } finally { setUploading(false); if (fileRef.current) fileRef.current.value = ""; }
   }
 
+  async function onImportUrl() {
+    const url = linkUrl.trim(); if (!url) return;
+    setError(null); setImporting(true);
+    try {
+      const res = await fetch(`${base}/drawings/import`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url }) });
+      const data = await res.json();
+      if (!res.ok || !data.drawing) { setError(data.error || "Import failed"); return; }
+      setDrawings((prev) => [data.drawing as Drawing, ...prev]); setLinkUrl(""); setLinkOpen(false); void openDrawing(data.drawing as Drawing);
+    } catch { setError("Import failed"); } finally { setImporting(false); }
+  }
+
   async function removeDrawing(d: Drawing) {
     if (!confirm(`Delete “${d.filename}”?`)) return;
     setDrawings((prev) => prev.filter((x) => x.id !== d.id));
@@ -206,14 +221,27 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
           <span className="mt-1 rotate-180 text-[12px] font-bold uppercase tracking-wide text-[#586066] [writing-mode:vertical-rl]">Plans</span>
         </aside>
       ) : (
-      <div className="relative flex shrink-0" style={{ width: asideW }} onClick={(e) => e.stopPropagation()}>
+      <div className="relative flex shrink-0" style={{ width: asideW }} onClick={(e) => e.stopPropagation()}
+        onDragOver={(e) => { e.preventDefault(); if (!dragOver) setDragOver(true); }}
+        onDragLeave={(e) => { if (e.currentTarget === e.target) setDragOver(false); }}
+        onDrop={(e) => { e.preventDefault(); setDragOver(false); void onFiles(e.dataTransfer.files); }}>
       <aside className="flex w-full flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]">
         <div className="border-b border-[#E2E5E7] p-3">
           <button onClick={() => fileRef.current?.click()} disabled={uploading} className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white transition hover:bg-[#075985] disabled:opacity-60">
             {uploading ? <><Loader2 className="h-5 w-5 animate-spin" /> Uploading…</> : <><Upload size={18} /> Upload Plans</>}
           </button>
           <input ref={fileRef} type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,application/pdf,image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
-          <p className="mt-2 text-center text-[12px] text-[#8A9196]">PDF, PNG, JPG or WEBP · up to 40 MB</p>
+          <div className="mt-2 flex items-center justify-center gap-1.5 text-[11px] text-[#8A9196]">
+            <button onClick={() => setLinkOpen((v) => !v)} className="flex items-center gap-1 font-semibold text-[#0369a1] hover:underline"><Link2 size={12} /> Import from link</button>
+            <span>· or drag &amp; drop</span>
+          </div>
+          {linkOpen && (
+            <div className="mt-2 flex gap-1">
+              <input value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") void onImportUrl(); }} placeholder="Dropbox / Drive / OneDrive share link…" className="h-8 min-w-0 flex-1 rounded border border-[#D7DCE0] px-2 text-[12px] outline-none focus:border-[#0369a1]" />
+              <button onClick={() => void onImportUrl()} disabled={importing || !linkUrl.trim()} className="flex h-8 shrink-0 items-center rounded bg-[#0369a1] px-3 text-[12px] font-semibold text-white hover:bg-[#075985] disabled:opacity-50">{importing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add"}</button>
+            </div>
+          )}
+          <p className="mt-2 text-center text-[11px] text-[#8A9196]">PDF, PNG, JPG or WEBP · up to 40 MB</p>
           {error && <p className="mt-2 flex items-center gap-1 text-[13px] text-[#dc2626]"><AlertTriangle size={14} /> {error}</p>}
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto p-2">
@@ -321,6 +349,7 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
           )}
         </div>
       </aside>
+      {dragOver && <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center rounded-xl border-2 border-dashed border-[#0369a1] bg-[#0369a1]/10 text-[13px] font-bold text-[#0369a1]">Drop plans to upload</div>}
       {/* drag to resize */}
       <div onMouseDown={startResize} title="Drag to resize" className="absolute -right-1.5 top-0 z-10 flex h-full w-3 cursor-col-resize items-center justify-center group">
         <GripVertical size={14} className="text-[#B7BEC3] opacity-0 group-hover:opacity-100" />
