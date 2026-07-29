@@ -36,6 +36,7 @@ export type ApiItem = {
   id: string;
   category_id: string | null;
   name: string;
+  description: string | null;
   measurement_type: string | null;
   colour: string;
   unit: string;

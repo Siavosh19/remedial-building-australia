@@ -121,6 +121,10 @@ function uiQty(it: Item): string {
   return `${total.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${unit}`;
 }
 
+function fmtNum(n: number): string {
+  return n.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 export default function MapWorkspace({
   project,
   initialItems,
@@ -183,6 +187,10 @@ export default function MapWorkspace({
   const [colourFor, setColourFor] = useState<string | null>(null);
   const [moveFor, setMoveFor] = useState<string | null>(null);
   const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number; id: string; itemId: string | null; kind: "measurement" | "annotation" } | null>(null);
+  const [showItemDetails, setShowItemDetails] = useState(false);
+  const [draftItemName, setDraftItemName] = useState("");
+  const [draftItemDesc, setDraftItemDesc] = useState("");
+  const [rotationDeg, setRotationDeg] = useState(0);
 
   // Latest-state refs so OL callbacks read current values without rebinding.
   const itemsRef = useRef(items); itemsRef.current = items;
@@ -716,6 +724,16 @@ export default function MapWorkspace({
   useEffect(() => { annotationLayerRef.current?.setVisible(showAnnotations); }, [showAnnotations]);
   // Whenever we're back in Select/Pan, the markup palette must be closed.
   useEffect(() => { if (tool === "select" || tool === "pan") setMarkupOpen(false); }, [tool]);
+  // Open the confirm/details popup when an item is selected or just created.
+  useEffect(() => {
+    if (!activeItemId) { setShowItemDetails(false); return; }
+    const it = itemsRef.current.find((i) => i.id === activeItemId);
+    setShowItemDetails(true);
+    setDraftItemName(it?.name ?? "");
+    setDraftItemDesc(it?.description ?? "");
+    setRotationDeg(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeItemId]);
 
   // Parcel highlight for the project address.
   useEffect(() => {
@@ -925,6 +943,47 @@ export default function MapWorkspace({
     if (!extentIsEmpty(ext)) map.getView().fit(ext, { padding: [80, 80, 80, 80], maxZoom: 21, duration: 250 });
   }
 
+  // Perimeter (m) of an area item, summed from its polygon rings.
+  function itemPerimeterFor(itemId: string): number {
+    let p = 0;
+    sourceRef.current.getFeatures().forEach((f) => {
+      if (f.get("itemId") !== itemId) return;
+      const g = f.getGeometry();
+      if (g instanceof Polygon) { const ring = g.getLinearRing(0); if (ring) p += getLength(new LineString(ring.getCoordinates()), { projection: MAP_PROJ }); }
+      else if (g instanceof LineString) { p += getLength(g, { projection: MAP_PROJ }); }
+    });
+    return p;
+  }
+
+  function rotateItem(deg: number) {
+    if (!activeItemId) return;
+    const delta = ((deg - rotationDeg) * Math.PI) / 180;
+    setRotationDeg(deg);
+    const feats = sourceRef.current.getFeatures().filter((f) => f.get("itemId") === activeItemId);
+    if (!feats.length) return;
+    const ext = createEmpty();
+    feats.forEach((f) => { const g = f.getGeometry(); if (g) extendExtent(ext, g.getExtent()); });
+    const anchor = [(ext[0] + ext[2]) / 2, (ext[1] + ext[3]) / 2];
+    feats.forEach((f) => { const g = f.getGeometry(); if (g) g.rotate(delta, anchor); });
+    sourceRef.current.changed();
+    feats.forEach((f) => void persistGeometry(f));
+  }
+
+  async function saveItemName() {
+    if (!activeItemId) return;
+    const name = draftItemName.trim();
+    if (!name) return;
+    setItems((prev) => prev.map((i) => i.id === activeItemId ? { ...i, name } : i));
+    try { await api.patchItem(project.id, activeItemId, { name }); } catch { setSaveStatus("error"); }
+  }
+
+  async function saveItemDesc() {
+    if (!activeItemId) return;
+    const description = draftItemDesc.trim() || null;
+    setItems((prev) => prev.map((i) => i.id === activeItemId ? { ...i, description } : i));
+    try { await api.patchItem(project.id, activeItemId, { description }); } catch { setSaveStatus("error"); }
+  }
+
   const toolBtns = useMemo(() => ([
     { id: "select", label: "Select", Icon: MousePointer2 },
     { id: "pan", label: "Pan", Icon: Move },
@@ -935,6 +994,7 @@ export default function MapWorkspace({
   ] as { id: Tool; label: string; Icon: typeof Ruler }[]), []);
 
   // Derived groupings for the left panel.
+  const activeItem = items.find((i) => i.id === activeItemId) ?? null;
   const q = search.trim().toLowerCase();
   const visibleItems = q ? items.filter((i) => i.name.toLowerCase().includes(q)) : items;
   const measCount = items.reduce((s, i) => s + i.measurements.length, 0);
@@ -1158,6 +1218,45 @@ export default function MapWorkspace({
         </div>
         )}
 
+        {/* Measurement confirm / details popup (under Site Details) */}
+        {showItemDetails && activeItem && (
+          <div className={`absolute right-14 z-20 w-[224px] overflow-hidden rounded-md border border-[#D5DADD] bg-white shadow-lg ${showSiteDetails ? "top-[150px]" : "top-3"}`}>
+            <div className="flex items-center gap-1 border-b border-[#E2E5E7] px-3 py-2">
+              <input value={draftItemName} onChange={(e) => setDraftItemName(e.target.value)} onBlur={saveItemName}
+                onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-[#212121] outline-none" />
+              <button onClick={() => setShowItemDetails(false)} className="grid h-6 w-6 shrink-0 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={14} /></button>
+            </div>
+            <div className="max-h-[46vh] overflow-y-auto px-3 py-3">
+              <textarea value={draftItemDesc} onChange={(e) => setDraftItemDesc(e.target.value)} onBlur={saveItemDesc}
+                placeholder="+ Add description"
+                className="mb-3 h-[38px] w-full resize-none rounded border border-transparent bg-[#F7F8F9] px-2 py-1.5 text-[11px] text-[#5D6469] outline-none placeholder:text-[#9AA0A5] focus:border-[#D3D9DD]" />
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">Measurements</div>
+              {activeItem.measurement_type === "area" && (<>
+                <DetailRow label="Area" value={fmtNum(itemTotal(activeItem))} unit="m²" />
+                <DetailRow label="Perimeter" value={fmtNum(itemPerimeterFor(activeItem.id))} unit="m" />
+              </>)}
+              {activeItem.measurement_type === "linear" && <DetailRow label="Distance" value={fmtNum(itemTotal(activeItem))} unit="m" />}
+              {activeItem.measurement_type === "perimeter" && <DetailRow label="Perimeter" value={fmtNum(itemTotal(activeItem))} unit="m" />}
+              {activeItem.measurement_type === "count" && <DetailRow label="Count" value={String(activeItem.measurements.length)} unit="ea" />}
+              <label className="mb-1 flex items-center justify-between">
+                <span className="text-[12px] text-[#30363A]">Rotation</span>
+                <span className="flex items-center gap-1">
+                  <input type="number" value={rotationDeg} onChange={(e) => rotateItem(Number(e.target.value) || 0)}
+                    className="h-8 w-[64px] rounded border border-[#D3D9DD] px-2 text-right text-[12px] outline-none focus:border-[#0369a1]" />
+                  <span className="text-[11px] text-[#586066]">deg</span>
+                </span>
+              </label>
+              <div className="my-3 border-t border-[#E3E6E8]" />
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">Details</div>
+              <div className="grid grid-cols-2 gap-2">
+                <input placeholder="+ Add label" className="h-8 rounded border border-[#D3D9DD] px-2 text-[11px] outline-none focus:border-[#0369a1]" />
+                <input placeholder="+ Add value" className="h-8 rounded border border-[#D3D9DD] px-2 text-[11px] outline-none focus:border-[#0369a1]" />
+              </div>
+            </div>
+          </div>
+        )}
+
         {placing && (
           <div className="absolute left-1/2 top-[72px] z-30 -translate-x-1/2 rounded-md bg-[#0369a1] px-3 py-1.5 text-[12px] font-semibold text-white shadow-lg">
             Click your property on the map to set it
@@ -1218,6 +1317,17 @@ function TB({ label, Icon, onClick }: { label: string; Icon: typeof Ruler; onCli
     <button onClick={onClick} title={label} className="flex w-[54px] flex-col items-center justify-center gap-0.5 rounded text-[9px] text-white transition hover:bg-white/10">
       <Icon size={17} /><span>{label}</span>
     </button>
+  );
+}
+
+function DetailRow({ label, value, unit }: { label: string; value: string; unit: string }) {
+  return (
+    <div className="mb-2 flex items-center justify-between">
+      <span className="text-[12px] text-[#30363A]">{label}</span>
+      <span className="flex items-center gap-1 rounded bg-[#F1F3F4] px-2.5 py-1.5 text-[12px] font-semibold text-[#212121]">
+        {value}<span className="text-[10px] font-normal text-[#586066]">{unit}</span>
+      </span>
+    </div>
   );
 }
 

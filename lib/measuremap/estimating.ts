@@ -36,6 +36,7 @@ export type ItemDTO = {
   id: string;
   category_id: string | null;
   name: string;
+  description: string | null;
   measurement_type: string | null;
   colour: string;
   unit: string;
@@ -136,6 +137,7 @@ export async function listItems(ownerUserId: number, projectId: string): Promise
     id: it.id,
     category_id: it.category_id,
     name: it.name,
+    description: it.description,
     measurement_type: it.measurement_type,
     colour: it.colour,
     unit: it.unit,
@@ -195,7 +197,7 @@ export async function createItem(
       created_by: ownerUserId,
     },
     select: {
-      id: true, category_id: true, name: true, measurement_type: true,
+      id: true, category_id: true, name: true, description: true, measurement_type: true,
       colour: true, unit: true, is_visible: true, sort_order: true,
     },
   });
@@ -205,7 +207,7 @@ export async function createItem(
 export async function updateItem(
   ownerUserId: number,
   itemId: string,
-  patch: Partial<{ name: string; colour: string; category_id: string | null; is_visible: boolean; is_locked: boolean; sort_order: number }>,
+  patch: Partial<{ name: string; description: string | null; colour: string; category_id: string | null; is_visible: boolean; is_locked: boolean; sort_order: number }>,
 ) {
   const res = await prisma.measureMapEstimateItem.updateMany({
     where: { id: itemId, owner_user_id: ownerUserId, deleted_at: null },

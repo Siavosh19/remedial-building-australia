@@ -11,6 +11,7 @@ export async function PATCH(request: NextRequest, ctx: Ctx) {
   const body = await request.json().catch(() => ({}));
   const patch: Record<string, unknown> = {};
   if (typeof body.name === "string") patch.name = body.name;
+  if (typeof body.description === "string" || body.description === null) patch.description = body.description;
   if (typeof body.colour === "string") patch.colour = body.colour;
   if (typeof body.category_id === "string" || body.category_id === null) patch.category_id = body.category_id;
   if (typeof body.is_visible === "boolean") patch.is_visible = body.is_visible;
