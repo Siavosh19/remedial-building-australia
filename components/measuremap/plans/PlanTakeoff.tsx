@@ -68,12 +68,51 @@ function itemTotal(it: Item): number {
 function orthoPoint(a: number[], b: number[]): number[] {
   return Math.abs(b[0] - a[0]) >= Math.abs(b[1] - a[1]) ? [b[0], a[1]] : [a[0], b[1]];
 }
+
+// AutoCAD-style object snap for raster plans: detect endpoints, corners and
+// intersections in the dark linework and return them as OpenLayers coordinates
+// (y-up, so image row `r` → y = h - r). Snap then latches the cursor onto these.
+function detectCorners(data: ImageData): number[][] {
+  const w = data.width, h = data.height, px = data.data;
+  const dark = (x: number, y: number) => { const i = (y * w + x) * 4; if (px[i + 3] < 40) return false; return px[i] * 0.299 + px[i + 1] * 0.587 + px[i + 2] * 0.114 < 150; };
+  const N = 24, R = 4, TWO_PI = Math.PI * 2;
+  const cos: number[] = [], sin: number[] = [];
+  for (let k = 0; k < N; k++) { const a = (TWO_PI * k) / N; cos.push(Math.round(Math.cos(a) * R)); sin.push(Math.round(Math.sin(a) * R)); }
+  const cell = 8, cols = Math.ceil(w / cell);
+  const best = new globalThis.Map<number, { x: number; y: number; s: number }>();
+  const hits: boolean[] = new Array(N);
+  for (let y = R + 1; y < h - R - 1; y += 2) {
+    for (let x = R + 1; x < w - R - 1; x += 2) {
+      if (!dark(x, y)) continue;
+      let cnt = 0;
+      for (let k = 0; k < N; k++) { const ok = dark(x + cos[k], y + sin[k]); hits[k] = ok; if (ok) cnt++; }
+      if (cnt === 0 || cnt >= N * 0.6) continue; // isolated speck or solid fill
+      let arcs = 0; const centers: number[] = [];
+      for (let k = 0; k < N; k++) {
+        if (hits[k] && !hits[(k + N - 1) % N]) {
+          arcs++; let len = 0, sum = 0, kk = k;
+          while (hits[kk % N] && len <= N) { sum += kk; len++; kk++; }
+          centers.push(((sum / len) % N) * (TWO_PI / N));
+        }
+      }
+      if (arcs === 0) continue;
+      if (arcs === 2) { let d = Math.abs(centers[0] - centers[1]); if (d > Math.PI) d = TWO_PI - d; if (Math.abs(d - Math.PI) < 0.44) continue; } // ~straight line → not a corner
+      const score = arcs >= 3 ? 3 : arcs === 2 ? 2 : 1; // junction > corner > endpoint
+      const b = Math.floor(y / cell) * cols + Math.floor(x / cell);
+      const cur = best.get(b);
+      if (!cur || score > cur.s) best.set(b, { x, y, s: score });
+    }
+  }
+  const out: number[][] = [];
+  best.forEach((p) => out.push([p.x, h - p.y]));
+  return out;
+}
 function arrowStyle(colour: string, coord: number[], rotation: number): Style {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'><path d='M8 3 L14 9 L8 15' fill='none' stroke='${colour}' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>`;
   return new Style({ geometry: new Point(coord), image: new Icon({ src: "data:image/svg+xml;utf8," + encodeURIComponent(svg), anchor: [0.8, 0.5], rotateWithView: true, rotation: -rotation }) });
 }
 
-async function loadImage(d: Drawing, pageNumber: number): Promise<{ url: string; width: number; height: number } | null> {
+async function loadImage(d: Drawing, pageNumber: number): Promise<{ url: string; width: number; height: number; data?: ImageData } | null> {
   if (!d.url) return null;
   const isPdf = (d.mime_type ?? "").includes("pdf") || /\.pdf$/i.test(d.filename);
   if (isPdf) {
@@ -85,11 +124,23 @@ async function loadImage(d: Drawing, pageNumber: number): Promise<{ url: string;
     const ctx = canvas.getContext("2d");
     if (!ctx) return null;
     await page.render({ canvasContext: ctx, viewport }).promise;
-    return { url: canvas.toDataURL("image/png"), width: canvas.width, height: canvas.height };
+    let data: ImageData | undefined;
+    try { data = ctx.getImageData(0, 0, canvas.width, canvas.height); } catch { /* skip snap */ }
+    return { url: canvas.toDataURL("image/png"), width: canvas.width, height: canvas.height, data };
   }
   return new Promise((resolve) => {
     const img = new Image();
-    img.onload = () => resolve({ url: d.url as string, width: img.naturalWidth, height: img.naturalHeight });
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      let data: ImageData | undefined;
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (ctx) { ctx.drawImage(img, 0, 0); data = ctx.getImageData(0, 0, canvas.width, canvas.height); }
+      } catch { /* cross-origin taint → snap to takeoffs only */ }
+      resolve({ url: d.url as string, width: img.naturalWidth, height: img.naturalHeight, data });
+    };
     img.onerror = () => resolve(null);
     img.src = d.url as string;
   });
@@ -111,11 +162,15 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const pendingRef = useRef<{ name: string; colour: string } | null>(null);
   const pendingScaleRef = useRef<number | null>(null); // real metres for the next scale line
   const snapRef = useRef<Snap | null>(null);
+  const cornerSnapRef = useRef<Snap | null>(null);
+  const cornerSourceRef = useRef<VectorSource>(new VectorSource());
   const orthoRef = useRef(false);
   const hLineRef = useRef<HTMLDivElement>(null);
   const vLineRef = useRef<HTMLDivElement>(null);
   const reticleRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
+  const hBarRef = useRef<HTMLDivElement>(null); // bottom scrollbar thumb
+  const vBarRef = useRef<HTMLDivElement>(null); // right scrollbar thumb
   const [snapOn, setSnapOn] = useState(true);
   const [orthoOn, setOrthoOn] = useState(false);
   const [showMeas, setShowMeas] = useState(true);
@@ -206,6 +261,24 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         if (reticleRef.current) reticleRef.current.style.transform = `translate(${e.pixel[0]}px, ${e.pixel[1]}px)`;
         if (cursorRef.current) cursorRef.current.textContent = ppmRef.current ? `${(e.coordinate[0] / ppmRef.current).toFixed(2)}, ${(e.coordinate[1] / ppmRef.current).toFixed(2)} m` : `${Math.round(e.coordinate[0])}, ${Math.round(e.coordinate[1])} px`;
       });
+      // Object-snap points from the plan's own linework (endpoints/corners/intersections).
+      if (img.data) {
+        try { const feats = detectCorners(img.data).map((c) => new Feature(new Point(c))); cornerSourceRef.current.clear(); cornerSourceRef.current.addFeatures(feats); }
+        catch (err) { console.error("[measuremap] corner detect failed", err); }
+      }
+      // Scrollbar thumbs reflect the visible window vs the whole page.
+      const updateBars = () => {
+        const size = map.getSize(); if (!size) return;
+        const ext = map.getView().calculateExtent(size);
+        const [iminx, iminy, imaxx, imaxy] = imageExtentRef.current;
+        const iw = imaxx - iminx, ih = imaxy - iminy; if (iw <= 0 || ih <= 0) return;
+        const clamp = (n: number) => Math.max(0, Math.min(1, n));
+        const hx = clamp((ext[0] - iminx) / iw), hw = clamp((ext[2] - ext[0]) / iw);
+        const vy = clamp((imaxy - ext[3]) / ih), vh = clamp((ext[3] - ext[1]) / ih); // OL y-up → top-based
+        if (hBarRef.current) { hBarRef.current.style.left = `${hx * 100}%`; hBarRef.current.style.width = `${Math.max(hw * 100, 3)}%`; }
+        if (vBarRef.current) { vBarRef.current.style.top = `${vy * 100}%`; vBarRef.current.style.height = `${Math.max(vh * 100, 3)}%`; }
+      };
+      map.on("postrender", updateBars); updateBars();
       setLoading(false);
       try {
         const [tk, cats] = await Promise.all([
@@ -241,6 +314,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     if (modifyRef.current) { map.removeInteraction(modifyRef.current); modifyRef.current = null; }
     if (translateRef.current) { map.removeInteraction(translateRef.current); translateRef.current = null; }
     if (snapRef.current) { map.removeInteraction(snapRef.current); snapRef.current = null; }
+    if (cornerSnapRef.current) { map.removeInteraction(cornerSnapRef.current); cornerSnapRef.current = null; }
 
     // Ortho: constrain the floating vertex to horizontal/vertical while drawing.
     const attachOrtho = (draw: Draw) => draw.on("drawstart", (e) => {
@@ -501,6 +575,13 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
             <div className="absolute h-[3px] w-[3px] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ backgroundColor: "rgba(220,38,38,1)" }} />
           </div>
           <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : "cursor-none"}`} />
+          {/* Scroll indicators (zoom/pan position within the whole page) */}
+          <div className="pointer-events-none absolute bottom-[38px] left-1 right-3 z-20 h-1.5 rounded-full bg-black/20">
+            <div ref={hBarRef} className="absolute top-0 h-full rounded-full bg-white/70" style={{ left: "0%", width: "100%" }} />
+          </div>
+          <div className="pointer-events-none absolute bottom-[46px] right-0.5 top-1 z-20 w-1.5 rounded-full bg-black/20">
+            <div ref={vBarRef} className="absolute left-0 w-full rounded-full bg-white/70" style={{ top: "0%", height: "100%" }} />
+          </div>
           {/* Status bar: Ortho / Snap / cursor */}
           <div className="absolute bottom-0 left-0 right-0 z-20 flex h-9 items-center gap-2 bg-[#082f49]/95 px-3 text-[13px] text-white/90 backdrop-blur">
             <button onClick={() => setOrthoOn((v) => !v)} title="Constrain to horizontal/vertical" className={["rounded px-2.5 py-1 font-bold", orthoOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Ortho</button>

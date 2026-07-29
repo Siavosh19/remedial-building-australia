@@ -173,9 +173,8 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
                       return (
                         <div key={p.id} className="relative border-b border-[#F1F3F4] last:border-b-0">
                           <div className={["group flex items-center gap-1 rounded px-2 py-2 text-left text-[14px]", selectedPageId === p.id ? "bg-[#EAF3FA] font-bold text-[#0c4a6e]" : "font-medium text-[#586066] hover:bg-[#F5F6F7]"].join(" ")}>
-                            <button onClick={() => setSelectedPageId(p.id)} className="flex min-w-0 flex-1 items-center gap-1.5 text-left">
-                              {p.scale_status === "scaled" && <PencilRuler size={13} className="shrink-0 text-[#0f7a4d]" />}
-                              {r && <span className="shrink-0 text-[11px] font-semibold text-[#0f7a4d]">Scaled {r}</span>}
+                            <button onClick={() => setSelectedPageId(p.id)} title={r ? `Scaled ${r}` : undefined} className="flex min-w-0 flex-1 items-center gap-1.5 text-left">
+                              {p.scale_status === "scaled" && <PencilRuler size={14} className="shrink-0 text-[#0f7a4d]" />}
                               <span className="truncate" onDoubleClick={(e) => { e.stopPropagation(); void renamePage(p); }}>{p.name}</span>
                             </button>
                             <button onClick={(e) => { e.stopPropagation(); setPageMenu(pageMenu === p.id ? null : p.id); }} className="grid h-6 w-6 shrink-0 place-items-center rounded text-[#8A9196] opacity-0 hover:bg-[#E8EBED] group-hover:opacity-100"><MoreVertical size={15} /></button>
