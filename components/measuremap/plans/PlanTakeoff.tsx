@@ -28,7 +28,7 @@ import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 import {
   MousePointer2, Move, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
-  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy, PanelLeftClose, PanelLeftOpen,
+  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy, PanelLeftClose, PanelLeftOpen, GripVertical,
 } from "lucide-react";
 import * as api from "../map/api";
 
@@ -190,6 +190,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const [canRedo, setCanRedo] = useState(false);
   const [addingCategory, setAddingCategory] = useState(false);
   const [catCollapsed, setCatCollapsed] = useState(false);
+  const [catW, setCatW] = useState(300);
   const [namePopupOpen, setNamePopupOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newColour, setNewColour] = useState(COLOURS[0]);
@@ -442,6 +443,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
 
   useEffect(() => { sourceRef.current.changed(); }, [items, selectedMeasurementId]);
   useEffect(() => { vectorLayerRef.current?.setVisible(showMeas); }, [showMeas]);
+  useEffect(() => { const t = setTimeout(() => mapRef.current?.updateSize(), 30); return () => clearTimeout(t); }, [catCollapsed, catW]);
 
   async function removeMeasurement(id: string) {
     selectRef.current?.getFeatures().clear();
@@ -499,6 +501,13 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   function zoomBy(d: number) { const v = mapRef.current?.getView(); if (v) v.animate({ zoom: (v.getZoom() ?? 1) + d, duration: 150 }); }
   function rotate() { const v = mapRef.current?.getView(); if (v) v.animate({ rotation: (v.getRotation() ?? 0) + Math.PI / 2, duration: 200 }); }
   function fitPage() { const m = mapRef.current; if (m) m.getView().fit(imageExtentRef.current, { padding: [40, 40, 40, 40], duration: 200 }); }
+  function startCatResize(e: React.MouseEvent) {
+    e.preventDefault();
+    const startX = e.clientX, startW = catW;
+    const onMove = (ev: MouseEvent) => setCatW(Math.min(560, Math.max(220, startW + ev.clientX - startX)));
+    const onUp = () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); mapRef.current?.updateSize(); };
+    window.addEventListener("mousemove", onMove); window.addEventListener("mouseup", onUp);
+  }
 
   const groups = categories.map((c) => ({ category: c, list: items.filter((i) => i.category_id === c.id) }));
   const uncategorised = items.filter((i) => !i.category_id);
@@ -527,7 +536,8 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
             <span className="mt-1 rotate-180 text-[12px] font-bold uppercase tracking-wide text-[#586066] [writing-mode:vertical-rl]">Categories</span>
           </aside>
         ) : (
-        <aside className="flex w-[300px] shrink-0 flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
+        <div className="relative flex shrink-0" style={{ width: catW }} onClick={(e) => e.stopPropagation()}>
+        <aside className="flex w-full flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]">
           <div className="px-3 pt-3">
             <div className="flex items-center gap-2">
               <button onClick={() => setAddingCategory((v) => !v)} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white hover:bg-[#075985]"><FolderPlus size={18} /> Add Category</button>
@@ -551,6 +561,10 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
             {activeCategoryId ? <span className="flex items-center gap-1.5 font-medium text-[#0369a1]"><Check size={14} /> Filing into <b>{categories.find((c) => c.id === activeCategoryId)?.name}</b></span> : <span className="text-[#8A9196]">Uncategorised — pick a category to file measurements.</span>}
           </div>
         </aside>
+        <div onMouseDown={startCatResize} title="Drag to resize" className="group absolute -right-1.5 top-0 z-10 flex h-full w-3 cursor-col-resize items-center justify-center">
+          <GripVertical size={14} className="text-[#B7BEC3] opacity-0 group-hover:opacity-100" />
+        </div>
+        </div>
         )}
 
         {/* Canvas */}

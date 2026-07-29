@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil } from "lucide-react";
+import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil, GripVertical, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import PlanTakeoffLoader from "./PlanTakeoffLoader";
 
 type Drawing = { id: string; filename: string; mime_type: string | null; file_size: number; page_count: number; created_at: string };
@@ -46,8 +46,18 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
   const [sortAsc, setSortAsc] = useState(true);
   const [filterScaled, setFilterScaled] = useState<"all" | "scaled" | "unscaled">("all");
   const [pageMenu, setPageMenu] = useState<string | null>(null);
+  const [asideW, setAsideW] = useState(300);
+  const [collapsed, setCollapsed] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const base = `/api/measuremap/projects/${projectId}`;
+
+  function startResize(e: React.MouseEvent) {
+    e.preventDefault();
+    const startX = e.clientX, startW = asideW;
+    const onMove = (ev: MouseEvent) => setAsideW(Math.min(560, Math.max(220, startW + ev.clientX - startX)));
+    const onUp = () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    window.addEventListener("mousemove", onMove); window.addEventListener("mouseup", onUp);
+  }
 
   async function openDrawing(d: Drawing) {
     setOpenId(d.id); setDetail(null); setSelectedPageId(null); setLoadingDetail(true);
@@ -127,12 +137,22 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
 
   return (
     <div className="flex h-full gap-3 bg-[#e5e7eb] p-3" onClick={() => setPageMenu(null)}>
-      {/* Plans + pages list */}
-      <aside className="flex w-[300px] shrink-0 flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
+      {/* Plans + pages list — collapsible + resizable */}
+      {collapsed ? (
+        <aside className="flex w-11 shrink-0 flex-col items-center gap-3 rounded-xl border border-[#D7DCE0] bg-white py-3 shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
+          <button onClick={() => setCollapsed(false)} title="Show plans" className="grid h-8 w-8 place-items-center rounded-lg text-[#0369a1] hover:bg-[#EAF3FA]"><PanelLeftOpen size={20} /></button>
+          <span className="mt-1 rotate-180 text-[12px] font-bold uppercase tracking-wide text-[#586066] [writing-mode:vertical-rl]">Plans</span>
+        </aside>
+      ) : (
+      <div className="relative flex shrink-0" style={{ width: asideW }} onClick={(e) => e.stopPropagation()}>
+      <aside className="flex w-full flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]">
         <div className="border-b border-[#E2E5E7] p-3">
-          <button onClick={() => fileRef.current?.click()} disabled={uploading} className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white transition hover:bg-[#075985] disabled:opacity-60">
-            {uploading ? <><Loader2 className="h-5 w-5 animate-spin" /> Uploading…</> : <><Upload size={18} /> Upload Plans</>}
-          </button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => fileRef.current?.click()} disabled={uploading} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white transition hover:bg-[#075985] disabled:opacity-60">
+              {uploading ? <><Loader2 className="h-5 w-5 animate-spin" /> Uploading…</> : <><Upload size={18} /> Upload Plans</>}
+            </button>
+            <button onClick={() => setCollapsed(true)} title="Collapse panel" className="grid h-11 w-9 shrink-0 place-items-center rounded-lg border border-[#D7DCE0] text-[#586066] hover:bg-[#F1F3F4]"><PanelLeftClose size={18} /></button>
+          </div>
           <input ref={fileRef} type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,application/pdf,image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
           <p className="mt-2 text-center text-[12px] text-[#8A9196]">PDF, PNG, JPG or WEBP · up to 40 MB</p>
           {error && <p className="mt-2 flex items-center gap-1 text-[13px] text-[#dc2626]"><AlertTriangle size={14} /> {error}</p>}
@@ -197,6 +217,12 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
           })}
         </div>
       </aside>
+      {/* drag to resize */}
+      <div onMouseDown={startResize} title="Drag to resize" className="absolute -right-1.5 top-0 z-10 flex h-full w-3 cursor-col-resize items-center justify-center group">
+        <GripVertical size={14} className="text-[#B7BEC3] opacity-0 group-hover:opacity-100" />
+      </div>
+      </div>
+      )}
 
       {/* Viewer / takeoff */}
       <section className="min-w-0 flex-1" onClick={(e) => e.stopPropagation()}>
