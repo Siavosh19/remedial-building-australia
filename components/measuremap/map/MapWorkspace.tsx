@@ -143,6 +143,7 @@ export default function MapWorkspace({
   const markerSourceRef = useRef<VectorSource>(new VectorSource());
   const annotationSourceRef = useRef<VectorSource>(new VectorSource());
   const annotationLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
+  const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
   const markerFeatureRef = useRef<Feature | null>(null);
   const cadastreRef = useRef<TileLayer<TileArcGISRest> | null>(null);
   const drawRef = useRef<Draw | null>(null);
@@ -209,10 +210,12 @@ export default function MapWorkspace({
     const colour = it?.colour ?? "#0369a1";
     const mtype = (feature.get("mtype") as string) ?? "linear";
     const selected = feature.get("measurementId") === selMeasRef.current;
+    const dim = !!selMeasRef.current && !selected; // fade the rest when one is selected
+    const strokeColour = dim ? colour + "59" : colour;
     const qty = feature.get("qty") as number | undefined;
     const idx = feature.get("idx") as number | undefined;
 
-    const stroke = new Stroke({ color: colour, width: selected ? 4 : 2 });
+    const stroke = new Stroke({ color: strokeColour, width: selected ? 4 : 2 });
     const text = showLabelsRef.current
       ? new TextStyle({
           text: mtype === "count" ? String(idx ?? "") : qty != null ? fmt(qty, mtype) : "",
@@ -226,11 +229,11 @@ export default function MapWorkspace({
 
     if (mtype === "count") {
       return new Style({
-        image: new CircleStyle({ radius: selected ? 7 : 5, fill: new Fill({ color: colour }), stroke: new Stroke({ color: "#fff", width: 2 }) }),
+        image: new CircleStyle({ radius: selected ? 7 : 5, fill: new Fill({ color: strokeColour }), stroke: new Stroke({ color: dim ? "#ffffffaa" : "#fff", width: 2 }) }),
         text,
       });
     }
-    const base = new Style({ stroke, fill: mtype === "area" ? new Fill({ color: colour + "33" }) : undefined, text });
+    const base = new Style({ stroke, fill: mtype === "area" ? new Fill({ color: colour + (dim ? "14" : "33") }) : undefined, text });
     // Distance lines get an arrowhead at each end (dimension-line look).
     if (mtype === "linear") {
       const g = feature.getGeometry();
@@ -239,7 +242,7 @@ export default function MapWorkspace({
         if (c.length >= 2) {
           const s = c[0], e = c[c.length - 1];
           const rot = Math.atan2(e[1] - s[1], e[0] - s[0]);
-          return [base, arrowStyle(colour, e, rot), arrowStyle(colour, s, rot + Math.PI)];
+          return [base, arrowStyle(strokeColour, e, rot), arrowStyle(strokeColour, s, rot + Math.PI)];
         }
       }
     }
@@ -303,6 +306,7 @@ export default function MapWorkspace({
     });
 
     const vector = new VectorLayer({ source: sourceRef.current, style: styleFor as never });
+    vectorLayerRef.current = vector;
     const annotationLayer = new VectorLayer({ source: annotationSourceRef.current, style: annStyle as never });
     annotationLayerRef.current = annotationLayer;
 
@@ -424,7 +428,12 @@ export default function MapWorkspace({
     if (selectRef.current) { map.removeInteraction(selectRef.current); selectRef.current = null; }
 
     if (tool === "select") {
-      const select = new Select({ hitTolerance: 8, style: ((f: FeatureLike) => (f.get("kind") === "annotation" ? annStyle(f) : styleFor(f))) as never });
+      const select = new Select({
+        hitTolerance: 8,
+        // Only measurements + markup are selectable — never the parcel boundary/marker.
+        layers: (layer) => layer === vectorLayerRef.current || layer === annotationLayerRef.current,
+        style: ((f: FeatureLike) => (f.get("kind") === "annotation" ? annStyle(f) : styleFor(f))) as never,
+      });
       select.on("select", (e) => {
         const f = e.selected[0];
         const id = f ? (f.get("measurementId") as string) : null;
