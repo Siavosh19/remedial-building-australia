@@ -58,6 +58,46 @@ export async function createDrawingWithFile(
   return { id: drawing.id, filename: file.filename, mime_type: file.mimeType, file_size: file.size, page_count: pageCount, created_at: drawing.created_at.toISOString() };
 }
 
+// Direct-to-storage upload (bypasses the serverless request-body limit ~4.5 MB
+// on Vercel). Create the drawing row + a short-lived signed upload URL; the
+// browser PUTs the bytes straight to Supabase, then calls finalizeDrawing.
+export async function createUploadTarget(
+  ownerUserId: number,
+  projectId: string,
+  filename: string,
+): Promise<{ drawingId: string; path: string; token: string } | null> {
+  const owned = await prisma.measureMapProject.findFirst({ where: { id: projectId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true } });
+  if (!owned) return null;
+  const drawing = await prisma.measureMapDrawing.create({
+    data: { project_id: projectId, owner_user_id: ownerUserId, filename, storage_path: "", mime_type: null, file_size: BigInt(0), page_count: 1 },
+  });
+  const path = drawingObjectPath(ownerUserId, projectId, drawing.id, filename);
+  const { data, error } = await supabaseAdmin.storage.from(MEASUREMAP_BUCKET).createSignedUploadUrl(path);
+  if (error || !data) { console.error("[measuremap] signed upload url failed:", error?.message); await prisma.measureMapDrawing.delete({ where: { id: drawing.id } }); return null; }
+  await prisma.measureMapDrawing.update({ where: { id: drawing.id }, data: { storage_path: path } });
+  return { drawingId: drawing.id, path, token: data.token };
+}
+
+// Record file metadata + create page rows after a direct upload completes.
+export async function finalizeDrawing(
+  ownerUserId: number,
+  projectId: string,
+  drawingId: string,
+  input: { mimeType: string | null; size: number; pageCount: number },
+): Promise<DrawingDTO | null> {
+  const d = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, project_id: projectId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true, filename: true, created_at: true } });
+  if (!d) return null;
+  const count = Math.max(1, Math.min(Math.floor(input.pageCount) || 1, 500));
+  const size = Math.max(0, Math.floor(input.size) || 0);
+  await prisma.measureMapDrawing.update({ where: { id: drawingId }, data: { mime_type: input.mimeType, file_size: BigInt(size), page_count: count } });
+  const existing = await prisma.measureMapDrawingPage.findMany({ where: { drawing_id: drawingId }, select: { page_number: true } });
+  const have = new Set(existing.map((e) => e.page_number));
+  const toCreate = [];
+  for (let n = 1; n <= count; n++) if (!have.has(n)) toCreate.push({ drawing_id: drawingId, project_id: projectId, page_number: n, scale_status: "unscaled" });
+  if (toCreate.length) await prisma.measureMapDrawingPage.createMany({ data: toCreate });
+  return { id: d.id, filename: d.filename, mime_type: input.mimeType, file_size: size, page_count: count, created_at: d.created_at.toISOString() };
+}
+
 export async function getDrawingDetail(ownerUserId: number, drawingId: string): Promise<PlanDetail | null> {
   const sel = {
     id: true, filename: true, mime_type: true, storage_path: true, page_count: true,

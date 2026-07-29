@@ -3,6 +3,10 @@
 import { useMemo, useRef, useState } from "react";
 import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil, GripVertical, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import PlanTakeoffLoader from "./PlanTakeoffLoader";
+import { supabase } from "@/lib/supabase";
+
+const MAX_BYTES = 40 * 1024 * 1024; // 40 MB
+const BUCKET = "measuremap-files";
 
 type Drawing = { id: string; filename: string; mime_type: string | null; file_size: number; page_count: number; created_at: string };
 type PlanPage = { id: string; page_number: number; pixels_per_metre: number | null; scale_status: string; name: string };
@@ -82,21 +86,22 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     setError(null); setUploading(true);
     try {
       for (const file of Array.from(files)) {
-        const form = new FormData(); form.append("file", file);
-        const res = await fetch(`${base}/drawings`, { method: "POST", body: form });
-        const data = await res.json();
-        if (!res.ok) { setError(data.error || "Upload failed"); continue; }
-        let drawing = data.drawing as Drawing;
-        // Break multi-page PDFs into pages using a reliable client-side count.
-        if ((file.type || "").includes("pdf") || /\.pdf$/i.test(file.name)) {
-          const n = await countPdfPagesClient(file);
-          if (n > 1 && n !== drawing.page_count) {
-            try { await fetch(`${base}/drawings/${drawing.id}/pages`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_count: n }) }); } catch { /* ignore */ }
-            drawing = { ...drawing, page_count: n };
-          }
-        }
-        setDrawings((prev) => [drawing, ...prev]);
-        void openDrawing(drawing);
+        if (file.size > MAX_BYTES) { setError(`${file.name} is over 40 MB`); continue; }
+        const isPdfFile = (file.type || "").includes("pdf") || /\.pdf$/i.test(file.name);
+        // 1. Get a signed upload URL (small JSON request — no body-size limit hit).
+        const signRes = await fetch(`${base}/drawings/upload`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ filename: file.name }) });
+        const sign = await signRes.json();
+        if (!signRes.ok) { setError(sign.error || "Upload failed"); continue; }
+        // 2. Upload bytes straight to Supabase Storage (bypasses the serverless limit).
+        const up = await supabase.storage.from(BUCKET).uploadToSignedUrl(sign.path, sign.token, file, { contentType: file.type || undefined });
+        if (up.error) { setError(`Upload failed: ${up.error.message}`); continue; }
+        // 3. Count PDF pages in-browser (reliable), then finalize the record.
+        const pageCount = isPdfFile ? await countPdfPagesClient(file) : 1;
+        const finRes = await fetch(`${base}/drawings/upload`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ drawing_id: sign.drawingId, mime_type: file.type || null, size: file.size, page_count: pageCount }) });
+        const fin = await finRes.json();
+        if (!finRes.ok || !fin.drawing) { setError(fin.error || "Upload failed"); continue; }
+        setDrawings((prev) => [fin.drawing as Drawing, ...prev]);
+        void openDrawing(fin.drawing as Drawing);
       }
     } catch { setError("Upload failed"); } finally { setUploading(false); if (fileRef.current) fileRef.current.value = ""; }
   }
