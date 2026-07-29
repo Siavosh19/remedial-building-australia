@@ -869,19 +869,6 @@ export default function MapWorkspace({
           </div>
         )}
 
-        {/* Drawing hint */}
-        {tool !== "select" && tool !== "pan" && !namePopupOpen && (
-          <div className="absolute left-1/2 top-[72px] z-30 flex -translate-x-1/2 items-center gap-3 rounded-md border border-[#7dd3fc] bg-white px-4 py-2 shadow-lg">
-            <span className="text-[12px] font-medium text-[#30363A]">
-              {tool === "count"
-                ? "Click to drop count points; double-click to finish."
-                : `Click on the map to draw the ${TYPE_LABEL[tool as MType].toLowerCase()}.`}
-            </span>
-            <button onClick={() => { if (tool === "count") setTool("select"); else drawRef.current?.finishDrawing(); }} className="h-8 rounded bg-[#0369a1] px-4 text-[12px] font-semibold text-white hover:bg-[#075985]">Finish</button>
-            <button onClick={() => { drawRef.current?.abortDrawing(); setTool("select"); }} className="h-8 rounded border border-[#C9CFD3] px-3 text-[12px] text-[#4B5155]">Cancel</button>
-          </div>
-        )}
-
         {/* Compact address card (moved left to clear the top-right map control) */}
         {showSiteDetails && (
         <div className="absolute right-14 top-3 z-20 w-[224px] overflow-hidden rounded-md border border-[#D5DADD] bg-white shadow-lg">
