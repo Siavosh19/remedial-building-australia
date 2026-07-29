@@ -157,6 +157,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const translateRef = useRef<Translate | null>(null);
   const dragBoxRef = useRef<DragBox | null>(null);
   const panRef = useRef<DragPan | null>(null);
+  const selectedIdsRef = useRef<Set<string>>(new Set());
   const deleteSelectedRef = useRef<(id?: string) => void>(() => {});
   const ppmRef = useRef<number | null>(page.pixels_per_metre ?? null);
   const undoRef = useRef<Snapshot[]>([]);
@@ -229,8 +230,10 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     if (it && !it.is_visible) return undefined;
     const colour = it?.colour ?? "#0369a1";
     const mtype = (feature.get("mtype") as string) ?? "linear";
-    const selected = feature.get("measurementId") === selRef.current;
-    const dim = !!selRef.current && !selected;
+    const mid = feature.get("measurementId") as string;
+    const selected = mid === selRef.current || selectedIdsRef.current.has(mid);
+    const anySel = !!selRef.current || selectedIdsRef.current.size > 0;
+    const dim = anySel && !selected;
     const strokeColour = dim ? colour + "59" : colour;
     const qty = feature.get("qty") as number | undefined;
     const idx = feature.get("idx") as number | undefined;
@@ -315,7 +318,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         const px = m.getEventPixel(ev);
         let hit: string | undefined;
         m.forEachFeatureAtPixel(px, (f) => { const id = f.get("measurementId") as string | undefined; if (id) { hit = id; return true; } return false; }, { layerFilter: (l) => l === vectorLayerRef.current, hitTolerance: 8 });
-        const hasSel = !!selRef.current || (selectRef.current?.getFeatures().getLength() ?? 0) > 0;
+        const hasSel = !!selRef.current || selectedIdsRef.current.size > 0 || (selectRef.current?.getFeatures().getLength() ?? 0) > 0;
         if (hit) deleteSelectedRef.current(hit);
         else if (hasSel) deleteSelectedRef.current();
       });
@@ -375,16 +378,19 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
 
     if (tool === "select") {
       const select = new Select({ style: styleFor as never, hitTolerance: 8, layers: (l) => l === vectorLayerRef.current });
-      select.on("select", (e) => { const f = e.selected[0]; setSelectedMeasurementId(f ? (f.get("measurementId") as string) : null); if (f?.get("itemId")) setActiveItemId(f.get("itemId") as string); });
+      select.on("select", (e) => { selectedIdsRef.current.clear(); const f = e.selected[0]; setSelectedMeasurementId(f ? (f.get("measurementId") as string) : null); if (f?.get("itemId")) setActiveItemId(f.get("itemId") as string); sourceRef.current.changed(); });
       // Marquee (box) select: hold left button and drag across takeoffs.
       const dragBox = new DragBox();
       dragBox.on("boxend", () => {
         const ext = dragBox.getGeometry().getExtent();
+        const ids = new Set<string>();
         const feats = select.getFeatures();
         feats.clear();
-        sourceRef.current.forEachFeatureInExtent(ext, (f) => { feats.push(f); });
-        const arr = feats.getArray();
-        setSelectedMeasurementId(arr.length ? (arr[arr.length - 1].get("measurementId") as string) : null);
+        sourceRef.current.forEachFeatureInExtent(ext, (f) => { const id = f.get("measurementId") as string; if (id) { ids.add(id); feats.push(f); } });
+        selectedIdsRef.current = ids;
+        const arr = Array.from(ids);
+        setSelectedMeasurementId(arr.length ? arr[arr.length - 1] : null);
+        sourceRef.current.changed(); // repaint with highlight
       });
       const modify = new Modify({ source: sourceRef.current });
       modify.on("modifyend", (e) => e.features.forEach((f) => void persistGeometry(f)));
@@ -416,9 +422,9 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
-      if (e.key === "Escape") { drawRef.current?.abortDrawing(); setTool("select"); setNamePopupOpen(false); setColourFor(null); }
+      if (e.key === "Escape") { drawRef.current?.abortDrawing(); setTool("select"); setNamePopupOpen(false); setColourFor(null); selectedIdsRef.current.clear(); setSelectedMeasurementId(null); sourceRef.current.changed(); }
       if ((e.key === "Delete" || e.key === "Backspace") && tag !== "INPUT" && tag !== "TEXTAREA") {
-        const hasSel = !!selRef.current || (selectRef.current?.getFeatures().getLength() ?? 0) > 0;
+        const hasSel = !!selRef.current || selectedIdsRef.current.size > 0 || (selectRef.current?.getFeatures().getLength() ?? 0) > 0;
         if (hasSel) { e.preventDefault(); deleteSelectedRef.current(); }
       }
     };
@@ -509,10 +515,12 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   async function deleteSelected(extraId?: string) {
     const ids = new Set<string>();
     selectRef.current?.getFeatures().forEach((f) => { const id = f.get("measurementId") as string; if (id) ids.add(id); });
+    selectedIdsRef.current.forEach((id) => ids.add(id));
     if (extraId) ids.add(extraId);
     if (!ids.size && selRef.current) ids.add(selRef.current);
     if (!ids.size) return;
     selectRef.current?.getFeatures().clear();
+    selectedIdsRef.current.clear();
     setSelectedMeasurementId(null);
     ids.forEach((id) => { const f = sourceRef.current.getFeatureById(id); if (f) sourceRef.current.removeFeature(f); });
     setItems((prev) => prev.map((i) => ({ ...i, measurements: i.measurements.filter((m) => !ids.has(m.id)) })).filter((i) => i.measurements.length > 0));
