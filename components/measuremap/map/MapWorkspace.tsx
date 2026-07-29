@@ -65,6 +65,13 @@ function arrowStyle(colour: string, coord: number[], rotation: number): Style {
   });
 }
 
+// Solid style for the in-progress sketch (OL's default sketch style is dashed).
+const SKETCH_STYLE = new Style({
+  stroke: new Stroke({ color: "#0369a1", width: 2 }),
+  fill: new Fill({ color: "rgba(3,105,161,0.12)" }),
+  image: new CircleStyle({ radius: 5, fill: new Fill({ color: "#0369a1" }), stroke: new Stroke({ color: "#ffffff", width: 1.5 }) }),
+});
+
 type MType = "area" | "linear" | "perimeter" | "count";
 type MarkupKind = "text" | "line" | "arrow" | "rect" | "rectfill" | "circle" | "circlefill" | "triangle";
 type Tool = "select" | "pan" | MType | `mk-${MarkupKind}`;
@@ -282,8 +289,8 @@ export default function MapWorkspace({
     const parcelLayer = new VectorLayer({
       source: parcelSourceRef.current,
       style: new Style({
-        stroke: new Stroke({ color: "#0369a1", width: 3, lineDash: [8, 6] }),
-        fill: new Fill({ color: "rgba(3,105,161,0.08)" }),
+        stroke: new Stroke({ color: "#0369a1", width: 3 }),
+        fill: new Fill({ color: "rgba(3,105,161,0.06)" }),
       }),
     });
 
@@ -440,6 +447,7 @@ export default function MapWorkspace({
       const draw = new Draw({
         source: annotationSourceRef.current,
         type: dtype,
+        style: SKETCH_STYLE,
         ...(kind === "line" || kind === "arrow" ? { maxPoints: 2 } : {}),
         ...(kind === "rect" || kind === "rectfill" ? { geometryFunction: createBox() } : {}),
       });
@@ -454,6 +462,7 @@ export default function MapWorkspace({
       const draw = new Draw({
         source: sourceRef.current,
         type: DRAW_TYPE[mtype],
+        style: SKETCH_STYLE,
         ...(mtype === "linear" ? { maxPoints: 2 } : {}),
       });
       const tip = measureTipRef.current;
@@ -696,7 +705,7 @@ export default function MapWorkspace({
         if (tag === "INPUT" || tag === "TEXTAREA") return;
         e.preventDefault(); void deleteSelected();
       }
-      if (e.key === "Escape") { drawRef.current?.abortDrawing(); setMenuFor(null); setColourFor(null); setMoveFor(null); setCtxMenu(null); }
+      if (e.key === "Escape") { drawRef.current?.abortDrawing(); setTool("select"); setNamePopupOpen(false); setMarkupOpen(false); setMenuFor(null); setColourFor(null); setMoveFor(null); setCtxMenu(null); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
