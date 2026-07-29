@@ -83,6 +83,25 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     } catch { /* ignore */ } finally { setSumLoading(false); }
   }
 
+  // Reopen the plan + page the user was last working on (per project, per device).
+  const RESTORE_KEY = `mm-last-${projectId}`;
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(RESTORE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw) as { drawingId?: string; pageId?: string };
+      const d = saved.drawingId ? drawings.find((x) => x.id === saved.drawingId) : undefined;
+      if (d) void openDrawing(d, saved.pageId);
+    } catch { /* ignore */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // Remember the current plan + page so a reopen lands in the same place.
+  useEffect(() => {
+    if (!openId) return;
+    try { localStorage.setItem(RESTORE_KEY, JSON.stringify({ drawingId: openId, pageId: selectedPageId })); } catch { /* ignore */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openId, selectedPageId]);
+
   // Load notes (per-device) + refresh the summary when a different plan opens.
   useEffect(() => {
     if (!openId) { setNotes(""); setSumItems([]); return; }
@@ -91,7 +110,7 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openId]);
 
-  async function openDrawing(d: Drawing) {
+  async function openDrawing(d: Drawing, preferPageId?: string) {
     setOpenId(d.id); setDetail(null); setSelectedPageId(null); setLoadingDetail(true);
     try {
       let data = (await (await fetch(`${base}/drawings/${d.id}`)).json()).drawing as PlanDetail | undefined;
@@ -105,7 +124,8 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
       }
       if (data && data.page_count !== d.page_count) setDrawings((prev) => prev.map((x) => x.id === d.id ? { ...x, page_count: data!.page_count } : x));
       setDetail(data ?? null);
-      setSelectedPageId(data?.pages[0]?.id ?? null);
+      const pages = data?.pages ?? [];
+      setSelectedPageId(preferPageId && pages.some((p) => p.id === preferPageId) ? preferPageId : pages[0]?.id ?? null);
     } catch { setDetail(null); } finally { setLoadingDetail(false); }
   }
 
