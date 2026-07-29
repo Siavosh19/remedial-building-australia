@@ -52,10 +52,17 @@ export default function DirectorySignupCategoryCell({
       <button
         type="button"
         onClick={() => { setValue(categoryId ? String(categoryId) : ""); setError(null); setOpen(true); }}
-        className="group inline-flex items-center gap-1 text-left text-slate-600 hover:text-sky-700"
+        title="Change category"
+        className="group inline-flex items-center gap-1.5 text-left text-slate-700 hover:text-sky-700"
       >
-        <span>{categoryName ?? "—"}</span>
-        <span className="text-xs text-slate-300 group-hover:text-sky-500">✎</span>
+        <span className="underline decoration-dotted decoration-slate-300 underline-offset-4 group-hover:decoration-sky-400">
+          {categoryName ?? "—"}
+        </span>
+        <span className="inline-flex h-5 w-5 items-center justify-center rounded-md bg-sky-50 text-sky-600 ring-1 ring-sky-200 transition group-hover:bg-sky-100 group-hover:text-sky-700 group-hover:ring-sky-300">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-3.5 w-3.5">
+            <path d="M13.586 3.586a2 2 0 112.828 2.828l-8.793 8.793a1 1 0 01-.44.26l-3.5 1a1 1 0 01-1.235-1.235l1-3.5a1 1 0 01.26-.44l8.793-8.793z" />
+          </svg>
+        </span>
       </button>
 
       {open && (
