@@ -714,6 +714,8 @@ export default function MapWorkspace({
   useEffect(() => { sourceRef.current.changed(); annotationSourceRef.current.changed(); }, [items, showMeasurements, showLabels, selectedMeasurementId]);
   useEffect(() => { cadastreRef.current?.setVisible(showCadastre); }, [showCadastre]);
   useEffect(() => { annotationLayerRef.current?.setVisible(showAnnotations); }, [showAnnotations]);
+  // Whenever we're back in Select/Pan, the markup palette must be closed.
+  useEffect(() => { if (tool === "select" || tool === "pan") setMarkupOpen(false); }, [tool]);
 
   // Parcel highlight for the project address.
   useEffect(() => {
@@ -1090,7 +1092,7 @@ export default function MapWorkspace({
                 const active = tool === id;
                 const isFill = id.endsWith("fill");
                 return (
-                  <button key={id} onClick={() => { setNamePopupOpen(false); setTool(id); }} title={label}
+                  <button key={id} onClick={() => { setNamePopupOpen(false); setTool(active ? "select" : id); }} title={active ? "Click to stop" : label}
                     className={["flex h-[46px] flex-col items-center justify-center gap-0.5 rounded text-[8px]", active ? "bg-[#0369a1] text-white" : "text-[#30363A] hover:bg-[#F1F3F4]"].join(" ")}>
                     <Icon size={16} fill={isFill ? "currentColor" : "none"} />
                     <span className="leading-none">{label}</span>
