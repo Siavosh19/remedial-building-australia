@@ -11,16 +11,6 @@ type PlanDetail = { id: string; filename: string; mime_type: string | null; url:
 const isPdf = (d: { mime_type: string | null; filename: string }) => (d.mime_type ?? "").includes("pdf") || /\.pdf$/i.test(d.filename);
 const fmtSize = (n: number) => (n > 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
 
-// Read a PDF's page count in the browser (dynamic import so pdf.js never runs on the server).
-async function pdfPageCount(url: string): Promise<number> {
-  try {
-    const pdfjs = await import("pdfjs-dist");
-    pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).toString();
-    const pdf = await pdfjs.getDocument({ url }).promise;
-    return pdf.numPages;
-  } catch { return 1; }
-}
-
 export default function PlansWorkspace({ projectId, initialDrawings }: { projectId: string; initialDrawings: Drawing[] }) {
   const [drawings, setDrawings] = useState<Drawing[]>(initialDrawings);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -37,15 +27,9 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     setDetail(null); setSelectedPageId(null);
     setLoadingDetail(true);
     try {
-      let data = (await (await fetch(`${base}/drawings/${d.id}`)).json()).drawing as PlanDetail | undefined;
-      if (data && data.url && isPdf(d)) {
-        const n = await pdfPageCount(data.url);
-        if (n !== data.page_count || data.pages.length !== n) {
-          const synced = await (await fetch(`${base}/drawings/${d.id}/pages`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_count: n }) })).json();
-          if (synced.pages) data = { ...data, page_count: n, pages: synced.pages };
-          setDrawings((prev) => prev.map((x) => x.id === d.id ? { ...x, page_count: n } : x));
-        }
-      }
+      // The server detects page count (and self-heals older uploads) and returns all pages.
+      const data = (await (await fetch(`${base}/drawings/${d.id}`)).json()).drawing as PlanDetail | undefined;
+      if (data && data.page_count !== d.page_count) setDrawings((prev) => prev.map((x) => x.id === d.id ? { ...x, page_count: data.page_count } : x));
       setDetail(data ?? null);
       setSelectedPageId(data?.pages[0]?.id ?? null);
     } catch { setDetail(null); } finally { setLoadingDetail(false); }

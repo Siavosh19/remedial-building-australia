@@ -20,6 +20,17 @@ export async function listDrawings(ownerUserId: number, projectId: string): Prom
   return rows.map((r) => ({ id: r.id, filename: r.filename, mime_type: r.mime_type, file_size: Number(r.file_size ?? 0), page_count: r.page_count, created_at: r.created_at.toISOString() }));
 }
 
+// Count PDF pages server-side with pdf.js (Node). Returns 1 for non-PDF / errors.
+async function countPdfPages(bytes: Buffer): Promise<number> {
+  try {
+    // legacy build runs on the Node main thread; `as string` keeps TS from
+    // demanding type decls for the subpath.
+    const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs" as string);
+    const doc = await pdfjs.getDocument({ data: new Uint8Array(bytes), isEvalSupported: false, useSystemFonts: false }).promise;
+    return doc.numPages > 0 ? doc.numPages : 1;
+  } catch (e) { console.error("[measuremap] pdf page count failed:", e); return 1; }
+}
+
 export async function createDrawingWithFile(
   ownerUserId: number,
   projectId: string,
@@ -27,26 +38,44 @@ export async function createDrawingWithFile(
 ): Promise<DrawingDTO | null> {
   const owned = await prisma.measureMapProject.findFirst({ where: { id: projectId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true } });
   if (!owned) return null;
+  const isPdf = (file.mimeType ?? "").includes("pdf") || /\.pdf$/i.test(file.filename);
+  const pageCount = isPdf ? await countPdfPages(file.bytes) : 1;
   const drawing = await prisma.measureMapDrawing.create({
-    data: { project_id: projectId, owner_user_id: ownerUserId, filename: file.filename, storage_path: "", mime_type: file.mimeType, file_size: BigInt(file.size), page_count: 1 },
+    data: { project_id: projectId, owner_user_id: ownerUserId, filename: file.filename, storage_path: "", mime_type: file.mimeType, file_size: BigInt(file.size), page_count: pageCount },
   });
   const path = drawingObjectPath(ownerUserId, projectId, drawing.id, file.filename);
   const { error } = await supabaseAdmin.storage.from(MEASUREMAP_BUCKET).upload(path, file.bytes, { contentType: file.mimeType ?? undefined, upsert: true });
   if (error) { console.error("[measuremap] upload failed:", error.message); await prisma.measureMapDrawing.delete({ where: { id: drawing.id } }); return null; }
   await prisma.measureMapDrawing.update({ where: { id: drawing.id }, data: { storage_path: path } });
-  await prisma.measureMapDrawingPage.create({ data: { drawing_id: drawing.id, project_id: projectId, page_number: 1, scale_status: "unscaled" } });
-  return { id: drawing.id, filename: file.filename, mime_type: file.mimeType, file_size: file.size, page_count: 1, created_at: drawing.created_at.toISOString() };
+  await prisma.measureMapDrawingPage.createMany({
+    data: Array.from({ length: pageCount }, (_, i) => ({ drawing_id: drawing.id, project_id: projectId, page_number: i + 1, scale_status: "unscaled" })),
+  });
+  return { id: drawing.id, filename: file.filename, mime_type: file.mimeType, file_size: file.size, page_count: pageCount, created_at: drawing.created_at.toISOString() };
 }
 
 export async function getDrawingDetail(ownerUserId: number, drawingId: string): Promise<PlanDetail | null> {
-  const d = await prisma.measureMapDrawing.findFirst({
-    where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null },
-    select: {
-      id: true, filename: true, mime_type: true, storage_path: true, page_count: true,
-      pages: { orderBy: { page_number: "asc" }, select: { id: true, page_number: true, pixels_per_metre: true, scale_status: true } },
-    },
-  });
+  const sel = {
+    id: true, filename: true, mime_type: true, storage_path: true, page_count: true,
+    pages: { orderBy: { page_number: "asc" as const }, select: { id: true, page_number: true, pixels_per_metre: true, scale_status: true } },
+  };
+  let d = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: sel });
   if (!d) return null;
+  // Self-heal drawings uploaded before server-side page detection existed.
+  const isPdf = (d.mime_type ?? "").includes("pdf") || /\.pdf$/i.test(d.filename);
+  if (isPdf && d.page_count <= 1 && d.pages.length <= 1 && d.storage_path) {
+    try {
+      const { data } = await supabaseAdmin.storage.from(MEASUREMAP_BUCKET).download(d.storage_path);
+      if (data) {
+        const buf = Buffer.from(await data.arrayBuffer());
+        const n = await countPdfPages(buf);
+        if (n > 1) {
+          await ensureDrawingPages(ownerUserId, drawingId, n);
+          const d2 = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: sel });
+          if (d2) d = d2;
+        }
+      }
+    } catch (e) { console.error("[measuremap] page self-heal failed:", e); }
+  }
   const url = d.storage_path ? await signedDrawingUrl(d.storage_path, 600) : null;
   return { id: d.id, filename: d.filename, mime_type: d.mime_type, url, page_count: d.page_count, pages: d.pages };
 }

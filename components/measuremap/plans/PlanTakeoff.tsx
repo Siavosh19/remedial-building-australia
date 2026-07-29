@@ -20,7 +20,7 @@ import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import LineString from "ol/geom/LineString";
 import Polygon from "ol/geom/Polygon";
-import { Draw, Select, Modify, Translate } from "ol/interaction";
+import { Draw, Select, Modify, Translate, Snap } from "ol/interaction";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import { defaults as defaultControls } from "ol/control";
@@ -61,6 +61,9 @@ function fmt(q: number, type: string): string {
 function itemTotal(it: Item): number {
   if (it.measurement_type === "count") return it.measurements.length;
   return it.measurements.reduce((s, m) => s + m.calculated_quantity, 0);
+}
+function orthoPoint(a: number[], b: number[]): number[] {
+  return Math.abs(b[0] - a[0]) >= Math.abs(b[1] - a[1]) ? [b[0], a[1]] : [a[0], b[1]];
 }
 function arrowStyle(colour: string, coord: number[], rotation: number): Style {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'><path d='M8 3 L14 9 L8 15' fill='none' stroke='${colour}' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>`;
@@ -104,6 +107,14 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const imageExtentRef = useRef<number[]>([0, 0, 1000, 1000]);
   const pendingRef = useRef<{ name: string; colour: string } | null>(null);
   const pendingScaleRef = useRef<number | null>(null); // real metres for the next scale line
+  const snapRef = useRef<Snap | null>(null);
+  const orthoRef = useRef(false);
+  const hLineRef = useRef<HTMLDivElement>(null);
+  const vLineRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const [snapOn, setSnapOn] = useState(true);
+  const [orthoOn, setOrthoOn] = useState(false);
+  orthoRef.current = orthoOn;
 
   const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -176,6 +187,12 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
       });
       map.getView().fit(extent, { padding: [40, 40, 40, 40] });
       mapRef.current = map;
+      // Crosshair guides (full-width/height) + live cursor readout in metres.
+      map.on("pointermove", (e) => {
+        if (hLineRef.current) hLineRef.current.style.top = `${e.pixel[1]}px`;
+        if (vLineRef.current) vLineRef.current.style.left = `${e.pixel[0]}px`;
+        if (cursorRef.current) cursorRef.current.textContent = ppmRef.current ? `${(e.coordinate[0] / ppmRef.current).toFixed(2)}, ${(e.coordinate[1] / ppmRef.current).toFixed(2)} m` : `${Math.round(e.coordinate[0])}, ${Math.round(e.coordinate[1])} px`;
+      });
       setLoading(false);
       try {
         const [tk, cats] = await Promise.all([
@@ -210,6 +227,22 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     if (selectRef.current) { map.removeInteraction(selectRef.current); selectRef.current = null; }
     if (modifyRef.current) { map.removeInteraction(modifyRef.current); modifyRef.current = null; }
     if (translateRef.current) { map.removeInteraction(translateRef.current); translateRef.current = null; }
+    if (snapRef.current) { map.removeInteraction(snapRef.current); snapRef.current = null; }
+
+    // Ortho: constrain the floating vertex to horizontal/vertical while drawing.
+    const attachOrtho = (draw: Draw) => draw.on("drawstart", (e) => {
+      const g = e.feature.getGeometry();
+      let busy = false;
+      g?.on("change", () => {
+        if (busy || !orthoRef.current) return;
+        busy = true;
+        try {
+          if (g instanceof LineString) { const c = g.getCoordinates(); if (c.length >= 2) { c[c.length - 1] = orthoPoint(c[c.length - 2], c[c.length - 1]); g.setCoordinates(c); } }
+          else if (g instanceof Polygon) { const r = g.getCoordinates()[0]; if (r.length >= 3) { r[r.length - 2] = orthoPoint(r[r.length - 3], r[r.length - 2]); g.setCoordinates([r]); } }
+        } finally { busy = false; }
+      });
+    });
+    const addSnap = () => { if (snapOn) { const snap = new Snap({ source: sourceRef.current }); map.addInteraction(snap); snapRef.current = snap; } };
 
     if (tool === "select") {
       const select = new Select({ style: styleFor as never, hitTolerance: 8, layers: (l) => l === vectorLayerRef.current });
@@ -226,17 +259,19 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
 
     if (tool === "scale") {
       const draw = new Draw({ source: new VectorSource(), type: "LineString", maxPoints: 2 });
+      attachOrtho(draw);
       draw.on("drawend", (e) => { void handleScaleEnd(e.feature); });
-      map.addInteraction(draw); drawRef.current = draw;
+      map.addInteraction(draw); drawRef.current = draw; addSnap();
       return;
     }
 
     const meta = TOOL_META[tool];
     const draw = new Draw({ source: sourceRef.current, type: meta.geom, ...(meta.maxPoints ? { maxPoints: meta.maxPoints } : {}) });
+    attachOrtho(draw);
     draw.on("drawend", (e) => { void handleDrawEnd(tool as "dimension" | "area" | "linear" | "count", e.feature); });
-    map.addInteraction(draw); drawRef.current = draw;
+    map.addInteraction(draw); drawRef.current = draw; addSnap();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tool, loading]);
+  }, [tool, loading, snapOn]);
 
   // Escape aborts + returns to Select; Delete removes selection.
   useEffect(() => {
@@ -421,7 +456,20 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
           )}
           {loading && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/90"><Loader2 className="h-6 w-6 animate-spin" /><span className="ml-2 text-sm">Loading plan…</span></div>}
           {error && <div className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-white/80"><span className="text-sm">{error}</span></div>}
+          {/* Crosshair guides while drawing */}
+          {tool !== "select" && tool !== "pan" && (
+            <>
+              <div ref={hLineRef} className="pointer-events-none absolute left-0 right-0 z-20 h-px bg-[#e4b000]/80" style={{ top: 0 }} />
+              <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px bg-[#e4b000]/80" style={{ left: 0 }} />
+            </>
+          )}
           <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
+          {/* Status bar: Ortho / Snap / cursor */}
+          <div className="absolute bottom-0 left-0 right-0 z-20 flex h-8 items-center gap-2 bg-[#082f49]/95 px-3 text-[11px] text-white/90 backdrop-blur">
+            <button onClick={() => setOrthoOn((v) => !v)} title="Constrain to horizontal/vertical" className={["rounded px-2 py-0.5 font-semibold", orthoOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Ortho</button>
+            <button onClick={() => setSnapOn((v) => !v)} title="Snap to existing points/edges" className={["rounded px-2 py-0.5 font-semibold", snapOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Snap</button>
+            <span className="ml-auto">Cursor <span ref={cursorRef} className="font-medium text-white">—</span></span>
+          </div>
         </section>
       </div>
 
