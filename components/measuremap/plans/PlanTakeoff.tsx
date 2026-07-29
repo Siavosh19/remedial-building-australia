@@ -238,13 +238,19 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     const qty = feature.get("qty") as number | undefined;
     const idx = feature.get("idx") as number | undefined;
     const text = new TextStyle({ text: mtype === "count" ? String(idx ?? "") : qty != null ? fmt(qty, mtype) : "", font: "600 12px system-ui, sans-serif", fill: new Fill({ color: "#0f172a" }), stroke: new Stroke({ color: "#fff", width: 3 }), offsetY: mtype === "count" ? -12 : 0, overflow: true });
-    if (mtype === "count") return new Style({ image: new CircleStyle({ radius: selected ? 7 : 5, fill: new Fill({ color: strokeColour }), stroke: new Stroke({ color: "#fff", width: 2 }) }), text });
+    // White dashed halo makes the selection obvious on top of the coloured line/area.
+    const dashHalo = new Style({ stroke: new Stroke({ color: "#ffffff", width: 1.6, lineDash: [6, 4] }) });
+    if (mtype === "count") {
+      const pt = new Style({ image: new CircleStyle({ radius: selected ? 7 : 5, fill: new Fill({ color: strokeColour }), stroke: new Stroke({ color: "#fff", width: 2 }) }), text });
+      if (!selected) return pt;
+      return [pt, new Style({ image: new CircleStyle({ radius: 11, stroke: new Stroke({ color: "#ffffff", width: 1.6, lineDash: [4, 3] }) }) })];
+    }
     const base = new Style({ stroke: new Stroke({ color: strokeColour, width: selected ? 4 : 2.5 }), fill: mtype === "area" ? new Fill({ color: colour + (dim ? "14" : "33") }) : undefined, text });
     if (mtype === "linear" && feature.get("dimension")) {
       const g = feature.getGeometry();
-      if (g instanceof LineString) { const c = g.getCoordinates(); if (c.length >= 2) { const s = c[0], e = c[c.length - 1]; const rot = Math.atan2(e[1] - s[1], e[0] - s[0]); return [base, arrowStyle(strokeColour, e, rot), arrowStyle(strokeColour, s, rot + Math.PI)]; } }
+      if (g instanceof LineString) { const c = g.getCoordinates(); if (c.length >= 2) { const s = c[0], e = c[c.length - 1]; const rot = Math.atan2(e[1] - s[1], e[0] - s[0]); const arr = [base, arrowStyle(strokeColour, e, rot), arrowStyle(strokeColour, s, rot + Math.PI)]; if (selected) arr.push(dashHalo); return arr; } }
     }
-    return base;
+    return selected ? [base, dashHalo] : base;
   }, []);
 
   useEffect(() => {
