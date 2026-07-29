@@ -1,9 +1,10 @@
 "use client";
 
 // On-plan takeoff — OpenLayers in a pixel projection over the plan image.
-// PDFs are rasterised to a canvas with pdf.js. A scale (pixels-per-metre) is
-// calibrated by tracing a known dimension; measurements then convert to real
-// units and save into the shared estimating model (source_type='drawing').
+// PDFs are rasterised with pdf.js. Scale (pixels-per-metre) is calibrated via a
+// dialog + traced dimension; measurements convert to real units and save into
+// the shared estimating model (source_type='drawing'). The left panel mirrors
+// Map Measure: categories, active category, name/colour on new measurement.
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import Map from "ol/Map";
@@ -11,7 +12,7 @@ import View from "ol/View";
 import ImageLayer from "ol/layer/Image";
 import Static from "ol/source/ImageStatic";
 import Projection from "ol/proj/Projection";
-import { getCenter } from "ol/extent";
+import { getCenter, createEmpty, extend as extendExtent, isEmpty as extentIsEmpty } from "ol/extent";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import Feature from "ol/Feature";
@@ -19,15 +20,15 @@ import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import LineString from "ol/geom/LineString";
 import Polygon from "ol/geom/Polygon";
-import { Draw, Select, Modify } from "ol/interaction";
+import { Draw, Select, Modify, Translate } from "ol/interaction";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import { defaults as defaultControls } from "ol/control";
 import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 import {
-  MousePointer2, Move, Ruler, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
-  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2,
+  MousePointer2, Move, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
+  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X,
 } from "lucide-react";
 import * as api from "../map/api";
 
@@ -36,6 +37,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.mi
 type MType = "area" | "linear" | "perimeter" | "count";
 type Tool = "select" | "pan" | "scale" | "dimension" | "area" | "linear" | "count";
 type Item = api.ApiItem;
+type Category = api.ApiCategory;
 type Plan = { id: string; filename: string; mime_type: string | null; url: string | null; page: { id: string; pixels_per_metre: number | null; scale_status: string } | null };
 type Snapshot = { measurementId: string; itemId: string; gj: unknown; qty: number; unit: string; mtype: MType; idx?: number };
 
@@ -43,7 +45,6 @@ const geojson = new GeoJSON();
 const COLOURS = ["#0369a1", "#7c3aed", "#dc2626", "#0f7a4d", "#b45309", "#0891b2", "#db2777", "#4f46e5", "#65a30d", "#334155"];
 const TYPE_LABEL: Record<MType, string> = { area: "Area", linear: "Distance", perimeter: "Linear", count: "Count" };
 const UNIT_FOR: Record<MType, string> = { area: "m2", linear: "m", perimeter: "m", count: "ea" };
-// tool → geometry + stored measurement_type
 const TOOL_META: Record<"dimension" | "area" | "linear" | "count", { geom: "LineString" | "Polygon" | "Point"; maxPoints?: number; type: MType }> = {
   dimension: { geom: "LineString", maxPoints: 2, type: "linear" },
   linear: { geom: "LineString", type: "perimeter" },
@@ -60,7 +61,6 @@ function itemTotal(it: Item): number {
   if (it.measurement_type === "count") return it.measurements.length;
   return it.measurements.reduce((s, m) => s + m.calculated_quantity, 0);
 }
-// Arrowhead for dimension lines.
 function arrowStyle(colour: string, coord: number[], rotation: number): Style {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'><path d='M8 3 L14 9 L8 15' fill='none' stroke='${colour}' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>`;
   return new Style({ geometry: new Point(coord), image: new Icon({ src: "data:image/svg+xml;utf8," + encodeURIComponent(svg), anchor: [0.8, 0.5], rotateWithView: true, rotation: -rotation }) });
@@ -74,8 +74,7 @@ async function loadImage(plan: Plan): Promise<{ url: string; width: number; heig
     const page = await pdf.getPage(1);
     const viewport = page.getViewport({ scale: 2 });
     const canvas = document.createElement("canvas");
-    canvas.width = Math.ceil(viewport.width);
-    canvas.height = Math.ceil(viewport.height);
+    canvas.width = Math.ceil(viewport.width); canvas.height = Math.ceil(viewport.height);
     const ctx = canvas.getContext("2d");
     if (!ctx) return null;
     await page.render({ canvasContext: ctx, viewport }).promise;
@@ -93,14 +92,21 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
   const sourceRef = useRef<VectorSource>(new VectorSource());
+  const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
   const drawRef = useRef<Draw | null>(null);
   const selectRef = useRef<Select | null>(null);
   const modifyRef = useRef<Modify | null>(null);
+  const translateRef = useRef<Translate | null>(null);
   const ppmRef = useRef<number | null>(plan.page?.pixels_per_metre ?? null);
   const undoRef = useRef<Snapshot[]>([]);
   const redoRef = useRef<Snapshot[]>([]);
+  const imageExtentRef = useRef<number[]>([0, 0, 1000, 1000]);
+  const pendingRef = useRef<{ name: string; colour: string } | null>(null);
+  const pendingScaleRef = useRef<number | null>(null); // real metres for the next scale line
 
   const [items, setItems] = useState<Item[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const [activeItemId, setActiveItemId] = useState<string | null>(null);
   const [tool, setTool] = useState<Tool>("select");
   const [ppm, setPpm] = useState<number | null>(plan.page?.pixels_per_metre ?? null);
@@ -110,9 +116,20 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   const [error, setError] = useState<string | null>(null);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [namePopupOpen, setNamePopupOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newColour, setNewColour] = useState(COLOURS[0]);
+  const [pendingType, setPendingType] = useState<"dimension" | "area" | "linear" | "count" | null>(null);
+  const [scaleOpen, setScaleOpen] = useState(false);
+  const [scaleValue, setScaleValue] = useState("");
+  const [scaleUnit, setScaleUnit] = useState<"m" | "cm" | "mm">("m");
+  const [colourFor, setColourFor] = useState<string | null>(null);
+  const [renaming, setRenaming] = useState<string | null>(null);
 
   const itemsRef = useRef(items); itemsRef.current = items;
   const activeIdRef = useRef(activeItemId); activeIdRef.current = activeItemId;
+  const activeCatRef = useRef(activeCategoryId); activeCatRef.current = activeCategoryId;
   const selRef = useRef(selectedMeasurementId); selRef.current = selectedMeasurementId;
   ppmRef.current = ppm;
   const pageId = plan.page?.id ?? null;
@@ -125,21 +142,16 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     const colour = it?.colour ?? "#0369a1";
     const mtype = (feature.get("mtype") as string) ?? "linear";
     const selected = feature.get("measurementId") === selRef.current;
+    const dim = !!selRef.current && !selected;
+    const strokeColour = dim ? colour + "59" : colour;
     const qty = feature.get("qty") as number | undefined;
     const idx = feature.get("idx") as number | undefined;
-    const text = new TextStyle({
-      text: mtype === "count" ? String(idx ?? "") : qty != null ? fmt(qty, mtype) : "",
-      font: "600 12px system-ui, sans-serif", fill: new Fill({ color: "#0f172a" }),
-      stroke: new Stroke({ color: "#fff", width: 3 }), offsetY: mtype === "count" ? -12 : 0, overflow: true,
-    });
-    if (mtype === "count") return new Style({ image: new CircleStyle({ radius: selected ? 7 : 5, fill: new Fill({ color: colour }), stroke: new Stroke({ color: "#fff", width: 2 }) }), text });
-    const base = new Style({ stroke: new Stroke({ color: colour, width: selected ? 4 : 2.5 }), fill: mtype === "area" ? new Fill({ color: colour + "33" }) : undefined, text });
+    const text = new TextStyle({ text: mtype === "count" ? String(idx ?? "") : qty != null ? fmt(qty, mtype) : "", font: "600 12px system-ui, sans-serif", fill: new Fill({ color: "#0f172a" }), stroke: new Stroke({ color: "#fff", width: 3 }), offsetY: mtype === "count" ? -12 : 0, overflow: true });
+    if (mtype === "count") return new Style({ image: new CircleStyle({ radius: selected ? 7 : 5, fill: new Fill({ color: strokeColour }), stroke: new Stroke({ color: "#fff", width: 2 }) }), text });
+    const base = new Style({ stroke: new Stroke({ color: strokeColour, width: selected ? 4 : 2.5 }), fill: mtype === "area" ? new Fill({ color: colour + (dim ? "14" : "33") }) : undefined, text });
     if (mtype === "linear" && feature.get("dimension")) {
       const g = feature.getGeometry();
-      if (g instanceof LineString) {
-        const c = g.getCoordinates();
-        if (c.length >= 2) { const s = c[0], e = c[c.length - 1]; const rot = Math.atan2(e[1] - s[1], e[0] - s[0]); return [base, arrowStyle(colour, e, rot), arrowStyle(colour, s, rot + Math.PI)]; }
-      }
+      if (g instanceof LineString) { const c = g.getCoordinates(); if (c.length >= 2) { const s = c[0], e = c[c.length - 1]; const rot = Math.atan2(e[1] - s[1], e[0] - s[0]); return [base, arrowStyle(strokeColour, e, rot), arrowStyle(strokeColour, s, rot + Math.PI)]; } }
     }
     return base;
   }, []);
@@ -151,22 +163,26 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
       if (cancelled) return;
       if (!img || !mapEl.current) { setError("Couldn't load this plan (PDF worker or file issue)."); setLoading(false); return; }
       const extent = [0, 0, img.width, img.height];
+      imageExtentRef.current = extent;
       const projection = new Projection({ code: "plan-px", units: "pixels", extent });
       const imageLayer = new ImageLayer({ source: new Static({ url: img.url, projection, imageExtent: extent }) });
       const vector = new VectorLayer({ source: sourceRef.current, style: styleFor as never });
+      vectorLayerRef.current = vector;
       const map = new Map({
         target: mapEl.current, layers: [imageLayer, vector],
         controls: defaultControls({ zoom: false, attribution: false }),
-        view: new View({ projection, center: getCenter(extent), zoom: 1, maxZoom: 8, extent }),
+        view: new View({ projection, center: getCenter(extent), zoom: 1, maxZoom: 8 }), // no extent lock → free zoom-out
       });
-      map.getView().fit(extent, { padding: [20, 20, 20, 20] });
+      map.getView().fit(extent, { padding: [40, 40, 40, 40] });
       mapRef.current = map;
       setLoading(false);
       try {
-        const res = await fetch(`/api/measuremap/projects/${projectId}/drawings/${plan.id}/takeoffs`);
-        const data = await res.json();
-        const loaded: Item[] = data.items ?? [];
-        setItems(loaded);
+        const [tk, cats] = await Promise.all([
+          fetch(`/api/measuremap/projects/${projectId}/drawings/${plan.id}/takeoffs`).then((r) => r.json()),
+          api.listCategories(projectId),
+        ]);
+        const loaded: Item[] = tk.items ?? [];
+        setItems(loaded); setCategories(cats); setActiveCategoryId(cats[0]?.id ?? null);
         for (const it of loaded) for (const m of it.measurements) addFeature(it, m);
       } catch { /* none */ }
     })();
@@ -179,11 +195,9 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
       const g = geojson.readGeometry(m.geometry as object);
       const f = new Feature(g);
       const mtype = (it.measurement_type ?? m.measurement_type) as string;
-      f.setId(m.id); f.set("measurementId", m.id); f.set("itemId", it.id);
-      f.set("mtype", mtype); f.set("qty", m.calculated_quantity);
+      f.setId(m.id); f.set("measurementId", m.id); f.set("itemId", it.id); f.set("mtype", mtype); f.set("qty", m.calculated_quantity);
       if (mtype === "linear") f.set("dimension", true);
-      if (idx != null) f.set("idx", idx);
-      else if (mtype === "count") f.set("idx", it.measurements.indexOf(m) + 1);
+      if (idx != null) f.set("idx", idx); else if (mtype === "count") f.set("idx", it.measurements.indexOf(m) + 1);
       sourceRef.current.addFeature(f);
     } catch { /* skip */ }
   }
@@ -194,14 +208,17 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     if (drawRef.current) { map.removeInteraction(drawRef.current); drawRef.current = null; }
     if (selectRef.current) { map.removeInteraction(selectRef.current); selectRef.current = null; }
     if (modifyRef.current) { map.removeInteraction(modifyRef.current); modifyRef.current = null; }
+    if (translateRef.current) { map.removeInteraction(translateRef.current); translateRef.current = null; }
 
     if (tool === "select") {
-      const select = new Select({ style: styleFor as never, hitTolerance: 8 });
+      const select = new Select({ style: styleFor as never, hitTolerance: 8, layers: (l) => l === vectorLayerRef.current });
       select.on("select", (e) => { const f = e.selected[0]; setSelectedMeasurementId(f ? (f.get("measurementId") as string) : null); if (f?.get("itemId")) setActiveItemId(f.get("itemId") as string); });
       const modify = new Modify({ source: sourceRef.current });
       modify.on("modifyend", (e) => e.features.forEach((f) => void persistGeometry(f)));
-      map.addInteraction(select); map.addInteraction(modify);
-      selectRef.current = select; modifyRef.current = modify;
+      const translate = new Translate({ features: select.getFeatures() });
+      translate.on("translateend", (e) => e.features.forEach((f) => void persistGeometry(f)));
+      map.addInteraction(select); map.addInteraction(modify); map.addInteraction(translate);
+      selectRef.current = select; modifyRef.current = modify; translateRef.current = translate;
       return;
     }
     if (tool === "pan") return;
@@ -220,14 +237,26 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tool, loading]);
 
+  // Escape aborts + returns to Select; Delete removes selection.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (e.key === "Escape") { drawRef.current?.abortDrawing(); setTool("select"); setNamePopupOpen(false); setColourFor(null); }
+      if ((e.key === "Delete" || e.key === "Backspace") && selRef.current && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); void removeMeasurement(selRef.current); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function handleScaleEnd(feature: Feature<Geometry>) {
     const g = feature.getGeometry();
-    if (!(g instanceof LineString)) { setTool("select"); return; }
-    const px = g.getLength();
-    const input = window.prompt(`That line is ${px.toFixed(0)} px.\nHow long is it in real metres? (e.g. 10)`);
     setTool("select");
-    const metres = input ? parseFloat(input) : NaN;
-    if (!Number.isFinite(metres) || metres <= 0) return;
+    if (!(g instanceof LineString) || !pendingScaleRef.current) return;
+    const px = g.getLength();
+    const metres = pendingScaleRef.current;
+    pendingScaleRef.current = null;
+    if (!(metres > 0) || !(px > 0)) return;
     const newPpm = px / metres;
     setPpm(newPpm); ppmRef.current = newPpm;
     setSaveStatus("saving");
@@ -242,20 +271,19 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   }
 
   async function ensureItem(mtype: MType): Promise<Item | null> {
-    const active = itemsRef.current.find((i) => i.id === activeIdRef.current);
-    if (active && active.measurement_type === mtype) return active;
+    const pending = pendingRef.current;
+    if (!pending) { const active = itemsRef.current.find((i) => i.id === activeIdRef.current); if (active && active.measurement_type === mtype && (active.category_id ?? null) === (activeCatRef.current ?? null)) return active; }
     const n = itemsRef.current.filter((i) => i.measurement_type === mtype).length + 1;
-    try {
-      const created = await api.createItem(projectId, { name: `${TYPE_LABEL[mtype]} ${n}`, measurement_type: mtype, colour: COLOURS[itemsRef.current.length % COLOURS.length], unit: UNIT_FOR[mtype], sort_order: itemsRef.current.length });
-      setItems((prev) => [...prev, created]); setActiveItemId(created.id);
-      return created;
-    } catch { setSaveStatus("error"); return null; }
+    const name = pending?.name?.trim() || `${TYPE_LABEL[mtype]} ${n}`;
+    const colour = pending?.colour ?? COLOURS[itemsRef.current.length % COLOURS.length];
+    pendingRef.current = null; setNamePopupOpen(false);
+    try { const created = await api.createItem(projectId, { name, measurement_type: mtype, colour, unit: UNIT_FOR[mtype], category_id: activeCatRef.current, sort_order: itemsRef.current.length }); setItems((prev) => [...prev, created]); setActiveItemId(created.id); return created; } catch { setSaveStatus("error"); return null; }
   }
 
   async function handleDrawEnd(t: "dimension" | "area" | "linear" | "count", feature: Feature<Geometry>) {
     const geom = feature.getGeometry();
     if (!geom) return;
-    if (!ppmRef.current) { sourceRef.current.removeFeature(feature); setTool("select"); alert("Set the scale first: pick “Scale”, trace a known dimension, and enter its real length."); return; }
+    if (!ppmRef.current) { sourceRef.current.removeFeature(feature); setTool("select"); alert("Set the scale first: pick “Scale”, enter a known length, then trace it on the plan."); return; }
     const mtype = TOOL_META[t].type;
     const item = await ensureItem(mtype);
     if (!item) { sourceRef.current.removeFeature(feature); setTool("select"); return; }
@@ -293,77 +321,63 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
 
   async function removeMeasurement(id: string) {
     selectRef.current?.getFeatures().clear();
-    const f = sourceRef.current.getFeatureById(id);
-    if (f) sourceRef.current.removeFeature(f);
+    const f = sourceRef.current.getFeatureById(id); if (f) sourceRef.current.removeFeature(f);
     setSelectedMeasurementId(null);
     try { await api.removeMeasurement(projectId, id); setItems((prev) => prev.map((i) => ({ ...i, measurements: i.measurements.filter((m) => m.id !== id) })).filter((i) => i.measurements.length > 0)); } catch { setSaveStatus("error"); }
   }
-  async function undo() {
-    const s = undoRef.current.pop();
-    if (!s) return;
-    const f = sourceRef.current.getFeatureById(s.measurementId);
-    if (f) sourceRef.current.removeFeature(f);
-    setItems((prev) => prev.map((i) => i.id === s.itemId ? { ...i, measurements: i.measurements.filter((m) => m.id !== s.measurementId) } : i));
-    try { await api.removeMeasurement(projectId, s.measurementId); redoRef.current.push(s); refreshUndo(); } catch { setSaveStatus("error"); }
-  }
+  async function undo() { const s = undoRef.current.pop(); if (!s) return; const f = sourceRef.current.getFeatureById(s.measurementId); if (f) sourceRef.current.removeFeature(f); setItems((prev) => prev.map((i) => i.id === s.itemId ? { ...i, measurements: i.measurements.filter((m) => m.id !== s.measurementId) } : i)); try { await api.removeMeasurement(projectId, s.measurementId); redoRef.current.push(s); refreshUndo(); } catch { setSaveStatus("error"); } }
   async function redo() {
-    const s = redoRef.current.pop();
-    if (!s) return;
+    const s = redoRef.current.pop(); if (!s) return;
     try {
       const { id } = await api.createMeasurement(projectId, { estimate_item_id: s.itemId, geometry: s.gj, calculated_quantity: s.qty, unit: s.unit, measurement_type: s.mtype, source_type: "drawing", plan_id: plan.id, plan_page_id: pageId, label: s.idx != null ? String(s.idx) : null });
-      const g = geojson.readGeometry(s.gj as object);
-      const f = new Feature(g); f.setId(id); f.set("measurementId", id); f.set("itemId", s.itemId); f.set("mtype", s.mtype); f.set("qty", s.qty);
-      if (s.mtype === "linear") f.set("dimension", true);
-      if (s.idx != null) f.set("idx", s.idx);
+      const g = geojson.readGeometry(s.gj as object); const f = new Feature(g); f.setId(id); f.set("measurementId", id); f.set("itemId", s.itemId); f.set("mtype", s.mtype); f.set("qty", s.qty);
+      if (s.mtype === "linear") f.set("dimension", true); if (s.idx != null) f.set("idx", s.idx);
       sourceRef.current.addFeature(f);
       setItems((prev) => prev.map((i) => i.id === s.itemId ? { ...i, measurements: [...i.measurements, { id, estimate_item_id: s.itemId, category_id: null, measurement_mode: "free", measurement_type: s.mtype, source_type: "drawing", name: null, colour: null, geometry: s.gj, calculated_quantity: s.qty, unit: s.unit, label: null, is_visible: true, sort_order: i.measurements.length }] } : i));
       undoRef.current.push({ ...s, measurementId: id }); refreshUndo();
     } catch { setSaveStatus("error"); }
   }
-  async function deleteItem(it: Item) {
-    if (!confirm(`Delete “${it.name}” and its ${it.measurements.length} measurement(s)?`)) return;
-    it.measurements.forEach((m) => { const f = sourceRef.current.getFeatureById(m.id); if (f) sourceRef.current.removeFeature(f); });
-    setItems((prev) => prev.filter((i) => i.id !== it.id));
-    try { await api.removeItem(projectId, it.id); } catch { setSaveStatus("error"); }
+  async function deleteItem(it: Item) { if (!confirm(`Delete “${it.name}” and its ${it.measurements.length} measurement(s)?`)) return; it.measurements.forEach((m) => { const f = sourceRef.current.getFeatureById(m.id); if (f) sourceRef.current.removeFeature(f); }); setItems((prev) => prev.filter((i) => i.id !== it.id)); try { await api.removeItem(projectId, it.id); } catch { setSaveStatus("error"); } }
+  async function toggleVisible(it: Item) { setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, is_visible: !i.is_visible } : i)); try { await api.patchItem(projectId, it.id, { is_visible: !it.is_visible }); } catch { /* visual */ } }
+  async function recolour(it: Item, colour: string) { setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, colour } : i)); setColourFor(null); sourceRef.current.changed(); try { await api.patchItem(projectId, it.id, { colour }); } catch { setSaveStatus("error"); } }
+  async function rename(it: Item, name: string) { setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, name } : i)); setRenaming(null); try { await api.patchItem(projectId, it.id, { name }); } catch { setSaveStatus("error"); } }
+  function selectItem(it: Item) { setActiveItemId(it.id); const map = mapRef.current; if (!map) return; const ext = createEmpty(); sourceRef.current.getFeatures().forEach((f) => { if (f.get("itemId") !== it.id) return; const g = f.getGeometry(); if (g) extendExtent(ext, g.getExtent()); }); if (!extentIsEmpty(ext)) map.getView().fit(ext, { padding: [60, 60, 60, 60], maxZoom: 8, duration: 200 }); }
+
+  async function addCategory(name: string, description: string) { if (!name.trim()) return; try { const cat = await api.createCategory(projectId, { name, description: description || null }); setCategories((prev) => [...prev, cat]); setActiveCategoryId(cat.id); setAddingCategory(false); } catch { setSaveStatus("error"); } }
+
+  function pickTool(t: Tool) {
+    if (t === "select" || t === "pan") { setNamePopupOpen(false); pendingRef.current = null; setTool(t); return; }
+    if (t === "scale") { setScaleOpen(true); return; }
+    const mtype = TOOL_META[t as "dimension" | "area" | "linear" | "count"].type;
+    const n = items.filter((i) => i.measurement_type === mtype).length + 1;
+    const name = `${TYPE_LABEL[mtype]} ${n}`; const colour = COLOURS[items.length % COLOURS.length];
+    pendingRef.current = { name, colour }; setNewName(name); setNewColour(colour); setPendingType(t as "dimension" | "area" | "linear" | "count"); setNamePopupOpen(true); setActiveItemId(null); setTool(t);
   }
-  async function toggleVisible(it: Item) {
-    setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, is_visible: !i.is_visible } : i));
-    try { await api.patchItem(projectId, it.id, { is_visible: !it.is_visible }); } catch { /* visual */ }
+  function confirmScale() {
+    const v = parseFloat(scaleValue);
+    if (!(v > 0)) return;
+    const metres = scaleUnit === "mm" ? v / 1000 : scaleUnit === "cm" ? v / 100 : v;
+    pendingScaleRef.current = metres; setScaleOpen(false); setTool("scale");
   }
+  function clearScale() { setPpm(null); ppmRef.current = null; setScaleOpen(false); }
+
   function zoomBy(d: number) { const v = mapRef.current?.getView(); if (v) v.animate({ zoom: (v.getZoom() ?? 1) + d, duration: 150 }); }
   function rotate() { const v = mapRef.current?.getView(); if (v) v.animate({ rotation: (v.getRotation() ?? 0) + Math.PI / 2, duration: 200 }); }
-  function fit() { const m = mapRef.current; if (m) { const ext = sourceRef.current.getExtent(); if (sourceRef.current.getFeatures().length && ext && Number.isFinite(ext[0])) m.getView().fit(ext, { padding: [40, 40, 40, 40], maxZoom: 8, duration: 200 }); } }
+  function fitPage() { const m = mapRef.current; if (m) m.getView().fit(imageExtentRef.current, { padding: [40, 40, 40, 40], duration: 200 }); }
+
+  const groups = categories.map((c) => ({ category: c, list: items.filter((i) => i.category_id === c.id) }));
+  const uncategorised = items.filter((i) => !i.category_id);
 
   return (
-    <div className="flex h-full flex-col">
-      {/* Ribbon toolbar */}
-      <div className="flex shrink-0 items-stretch gap-0 border-b border-[#D5DADD] bg-white px-2 py-1">
-        <Group label="Zoom / Pan">
-          <TBtn label="Fit" Icon={Maximize2} onClick={fit} />
-          <TBtn label="In" Icon={ZoomIn} onClick={() => zoomBy(1)} />
-          <TBtn label="Out" Icon={ZoomOut} onClick={() => zoomBy(-1)} />
-          <TBtn label="Pan" Icon={Move} active={tool === "pan"} onClick={() => setTool("pan")} />
-        </Group>
-        <Group label="Measure">
-          <TBtn label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => setTool("scale")} />
-          <TBtn label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => setTool("dimension")} />
-        </Group>
-        <Group label="Takeoff">
-          <TBtn label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => setTool("area")} />
-          <TBtn label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => setTool("linear")} />
-          <TBtn label="Count" Icon={MapPin} active={tool === "count"} onClick={() => setTool("count")} />
-        </Group>
-        <Group label="Edit" last>
-          <TBtn label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => setTool("select")} />
-          <TBtn label="Rotate" Icon={RotateCw} onClick={rotate} />
-          <TBtn label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} />
-          <TBtn label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} />
-          <TBtn label="Delete" Icon={Trash2} onClick={() => selectedMeasurementId && void removeMeasurement(selectedMeasurementId)} disabled={!selectedMeasurementId} />
-        </Group>
+    <div className="flex h-full flex-col" onClick={() => { setColourFor(null); }}>
+      {/* Ribbon */}
+      <div className="flex shrink-0 items-stretch border-b border-[#D5DADD] bg-white px-2 py-1" onClick={(e) => e.stopPropagation()}>
+        <Group label="Zoom / Pan"><TBtn label="Fit" Icon={Maximize2} onClick={fitPage} /><TBtn label="In" Icon={ZoomIn} onClick={() => zoomBy(1)} /><TBtn label="Out" Icon={ZoomOut} onClick={() => zoomBy(-1)} /><TBtn label="Pan" Icon={Move} active={tool === "pan"} onClick={() => pickTool("pan")} /></Group>
+        <Group label="Measure"><TBtn label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => pickTool("scale")} /><TBtn label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => pickTool("dimension")} /></Group>
+        <Group label="Takeoff"><TBtn label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => pickTool("area")} /><TBtn label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => pickTool("linear")} /><TBtn label="Count" Icon={MapPin} active={tool === "count"} onClick={() => pickTool("count")} /></Group>
+        <Group label="Edit" last><TBtn label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn label="Delete" Icon={Trash2} onClick={() => selectedMeasurementId && void removeMeasurement(selectedMeasurementId)} disabled={!selectedMeasurementId} /></Group>
         <div className="ml-auto flex items-center gap-2 pr-2 text-[11px]">
-          <span className={`flex items-center gap-1 rounded px-2 py-1 font-medium ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}>
-            <PencilRuler size={12} /> {ppm ? `Scale ${ppm.toFixed(1)} px/m` : "Scale not set"}
-          </span>
+          <span className={`flex items-center gap-1 rounded px-2 py-1 font-medium ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}><PencilRuler size={12} /> {ppm ? `Scale ${ppm.toFixed(1)} px/m` : "Scale not set"}</span>
           {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-3 w-3 animate-spin" /> Saving</span>}
           {saveStatus === "saved" && <span className="flex items-center gap-1 text-[#0369a1]"><Check className="h-3 w-3" /> Saved</span>}
           {saveStatus === "error" && <span className="text-[#dc2626]">Save failed</span>}
@@ -371,51 +385,126 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
       </div>
 
       <div className="flex min-h-0 flex-1">
-        {/* Takeoff list */}
-        <aside className="flex w-[240px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white">
-          <div className="border-b border-[#E2E5E7] px-3 py-2.5"><h3 className="text-[12px] font-semibold uppercase tracking-wide text-[#383E42]">Takeoffs</h3></div>
-          <div className="min-h-0 flex-1 overflow-y-auto p-2">
-            {items.length === 0 && <p className="px-2 py-6 text-center text-[12px] text-[#8A9196]">No takeoffs yet. Set the scale, then measure on the plan.</p>}
-            {items.map((it) => (
-              <div key={it.id} className="group mb-1 flex items-center gap-2 rounded px-2 py-1.5 hover:bg-[#F5F6F7]">
-                <span className="h-[10px] w-[10px] shrink-0 rounded-sm" style={{ backgroundColor: it.colour }} />
-                <button onClick={() => { setActiveItemId(it.id); fit(); }} className="min-w-0 flex-1 text-left">
-                  <span className="block truncate text-[12px] font-medium text-[#30363A]">{it.name}</span>
-                  <span className="block text-[10px] text-[#8A9196]">{fmt(itemTotal(it), it.measurement_type ?? "area")}</span>
-                </button>
-                <button onClick={() => toggleVisible(it)} className="text-[#586066] hover:text-[#30363A]">{it.is_visible ? <Eye size={13} /> : <EyeOff size={13} />}</button>
-                <button onClick={() => deleteItem(it)} className="text-[#8A9196] opacity-0 hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={13} /></button>
-              </div>
+        {/* Left panel — categories + items (Map Measure parity) */}
+        <aside className="flex w-[260px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white" onClick={(e) => e.stopPropagation()}>
+          <div className="px-3 pt-3">
+            <button onClick={() => setAddingCategory((v) => !v)} className="flex h-9 w-full items-center justify-center gap-2 rounded bg-[#0369a1] text-[13px] font-semibold text-white hover:bg-[#075985]"><FolderPlus size={16} /> Add Category</button>
+            {addingCategory && <AddCategoryForm onAdd={addCategory} onCancel={() => setAddingCategory(false)} />}
+          </div>
+          <div className="mt-2 min-h-0 flex-1 overflow-y-auto px-2 pb-3">
+            {items.length === 0 && categories.length === 0 && <p className="px-2 py-6 text-center text-[12px] text-[#8A9196]">No takeoffs yet. Set scale, add a category or just pick a tool and measure.</p>}
+            {groups.map(({ category, list }) => (
+              <PlanCategory key={category.id} category={category} list={list} active={activeCategoryId === category.id} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming}
+                onSetActive={() => setActiveCategoryId(activeCategoryId === category.id ? null : category.id)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename} />
             ))}
+            {uncategorised.length > 0 && (
+              <PlanCategory category={{ id: "__free__", name: "Uncategorised", description: null, sort_order: 999 }} list={uncategorised} active={activeCategoryId === null} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming} isFree
+                onSetActive={() => setActiveCategoryId(null)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename} />
+            )}
+          </div>
+          <div className="border-t border-[#E1E5E7] px-3 py-2 text-[11px]">
+            {activeCategoryId ? <span className="flex items-center gap-1.5 text-[#0369a1]"><Check size={13} /> Filing into <b>{categories.find((c) => c.id === activeCategoryId)?.name}</b></span> : <span className="text-[#8A9196]">Uncategorised — pick a category to file measurements.</span>}
           </div>
         </aside>
 
         {/* Canvas */}
-        <section className="relative min-w-0 flex-1 bg-[#0c2b3f]">
-          {tool === "scale" && <div className="absolute left-1/2 top-3 z-20 -translate-x-1/2 rounded-md bg-white px-3 py-1.5 text-[12px] font-medium text-[#30363A] shadow-lg">Trace a known dimension (2 clicks), then enter its real length.</div>}
-          {loading && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/80"><Loader2 className="h-6 w-6 animate-spin" /><span className="ml-2 text-sm">Loading plan…</span></div>}
-          {error && <div className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-white/70"><span className="text-sm">{error}</span></div>}
+        <section className="relative min-w-0 flex-1 bg-[#565b5e]" onClick={(e) => e.stopPropagation()}>
+          {namePopupOpen && pendingType && (
+            <div className="absolute left-1/2 top-3 z-30 w-[280px] -translate-x-1/2 rounded-md border border-[#7dd3fc] bg-white p-3 shadow-lg">
+              <div className="mb-2 flex items-center justify-between"><span className="text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">New {TYPE_LABEL[TOOL_META[pendingType].type]} measurement</span><button onClick={() => setNamePopupOpen(false)} className="grid h-5 w-5 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={13} /></button></div>
+              <input autoFocus value={newName} onChange={(e) => { setNewName(e.target.value); if (pendingRef.current) pendingRef.current.name = e.target.value; }} onKeyDown={(e) => { if (e.key === "Enter") setNamePopupOpen(false); }} placeholder="Measurement name" className="w-full rounded border border-[#D3D9DD] px-2 py-1.5 text-[12px] outline-none focus:border-[#0369a1]" />
+              <div className="mt-2 flex flex-wrap gap-1.5">{COLOURS.map((c) => <button key={c} onClick={() => { setNewColour(c); if (pendingRef.current) pendingRef.current.colour = c; }} className={`h-6 w-6 rounded-full border-2 ${newColour === c ? "border-[#212121]" : "border-transparent"}`} style={{ backgroundColor: c }} aria-label={c} />)}</div>
+              <button onClick={() => setNamePopupOpen(false)} className="mt-3 h-8 w-full rounded bg-[#0369a1] text-[12px] font-semibold text-white hover:bg-[#075985]">Start measuring</button>
+              <p className="mt-1.5 text-center text-[10px] text-[#8A9196]">Or just draw — close to use defaults.</p>
+            </div>
+          )}
+          {loading && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/90"><Loader2 className="h-6 w-6 animate-spin" /><span className="ml-2 text-sm">Loading plan…</span></div>}
+          {error && <div className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-white/80"><span className="text-sm">{error}</span></div>}
           <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
         </section>
       </div>
+
+      {/* Scale dialog */}
+      {scaleOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setScaleOpen(false)}>
+          <div className="w-[360px] rounded-lg border border-[#D7DCE0] bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between rounded-t-lg border-b border-[#E2E5E7] bg-[#F7F9FB] px-4 py-3"><h3 className="text-[14px] font-bold text-[#0c2b3f]">Set Scale</h3><button onClick={() => setScaleOpen(false)} className="grid h-6 w-6 place-items-center rounded text-[#8A9196] hover:bg-[#EEF0F1]"><X size={15} /></button></div>
+            <div className="p-4">
+              <p className="mb-3 text-[12px] text-[#586066]">Enter a known real-world length, click OK, then <b>trace that dimension</b> on the plan (2 clicks).</p>
+              <div className="flex gap-2">
+                <input autoFocus type="number" value={scaleValue} onChange={(e) => setScaleValue(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") confirmScale(); }} placeholder="e.g. 10" className="h-9 flex-1 rounded border border-[#D3D9DD] px-3 text-[13px] outline-none focus:border-[#0369a1]" />
+                <select value={scaleUnit} onChange={(e) => setScaleUnit(e.target.value as "m" | "cm" | "mm")} className="h-9 w-[80px] rounded border border-[#D3D9DD] px-2 text-[13px] outline-none"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select>
+              </div>
+              {ppm && <p className="mt-3 text-[11px] text-[#0f7a4d]">Current scale: {ppm.toFixed(1)} px/m</p>}
+            </div>
+            <div className="flex items-center justify-between border-t border-[#E2E5E7] px-4 py-3">
+              <button onClick={clearScale} className="h-9 rounded border border-[#CCD2D6] px-3 text-[12px] font-semibold text-[#586066] hover:bg-[#F5F6F7]">Clear Scale</button>
+              <div className="flex gap-2">
+                <button onClick={() => setScaleOpen(false)} className="h-9 rounded border border-[#CCD2D6] px-4 text-[12px] font-semibold text-[#30363A] hover:bg-[#F5F6F7]">Cancel</button>
+                <button onClick={confirmScale} className="h-9 rounded bg-[#0369a1] px-5 text-[12px] font-semibold text-white hover:bg-[#075985]">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 function Group({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
+  return <div className={`flex flex-col items-center px-2 ${last ? "" : "border-r border-[#E7EAEC]"}`}><div className="flex items-stretch gap-0.5">{children}</div><span className="mt-0.5 text-[9px] uppercase tracking-wide text-[#9AA0A5]">{label}</span></div>;
+}
+function TBtn({ label, Icon, onClick, active, disabled }: { label: string; Icon: typeof MapPin; onClick: () => void; active?: boolean; disabled?: boolean }) {
+  return <button onClick={onClick} disabled={disabled} title={label} className={["flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] transition", active ? "bg-[#0369a1] text-white" : "text-[#343A3E] hover:bg-[#F1F3F4]", disabled ? "opacity-30" : ""].join(" ")}><Icon size={17} /><span>{label}</span></button>;
+}
+
+function AddCategoryForm({ onAdd, onCancel }: { onAdd: (n: string, d: string) => void; onCancel: () => void }) {
+  const [name, setName] = useState(""); const [desc, setDesc] = useState("");
   return (
-    <div className={`flex flex-col items-center px-2 ${last ? "" : "border-r border-[#E7EAEC]"}`}>
-      <div className="flex items-stretch gap-0.5">{children}</div>
-      <span className="mt-0.5 text-[9px] uppercase tracking-wide text-[#9AA0A5]">{label}</span>
+    <div className="mt-2 rounded-md border border-[#D7DCE0] bg-[#F7F9FB] p-3">
+      <input autoFocus value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") onAdd(name, desc); }} placeholder="Category name" className="w-full rounded border border-[#D3D9DD] px-2 py-1.5 text-[12px] outline-none focus:border-[#0369a1]" />
+      <textarea value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Description (optional)" className="mt-2 h-[44px] w-full resize-none rounded border border-[#D3D9DD] px-2 py-1.5 text-[11px] outline-none focus:border-[#0369a1]" />
+      <div className="mt-2 flex gap-2"><button onClick={() => onAdd(name, desc)} className="flex-1 rounded bg-[#0369a1] px-2 py-1.5 text-[12px] font-semibold text-white hover:bg-[#075985]">Add</button><button onClick={onCancel} className="rounded px-2 py-1.5 text-[12px] font-medium text-[#586066]">Cancel</button></div>
     </div>
   );
 }
 
-function TBtn({ label, Icon, onClick, active, disabled }: { label: string; Icon: typeof Ruler; onClick: () => void; active?: boolean; disabled?: boolean }) {
+type CatProps = {
+  category: Category; list: Item[]; active: boolean; activeItemId: string | null; colourFor: string | null; renaming: string | null; isFree?: boolean;
+  onSetActive: () => void; onSelectItem: (it: Item) => void; onToggleVisible: (it: Item) => void; onDeleteItem: (it: Item) => void;
+  onOpenColour: (id: string | null) => void; onRecolour: (it: Item, c: string) => void; onStartRename: (id: string | null) => void; onRename: (it: Item, n: string) => void;
+};
+function PlanCategory(p: CatProps) {
+  const [open, setOpen] = useState(true);
   return (
-    <button onClick={onClick} disabled={disabled} title={label}
-      className={["flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] transition", active ? "bg-[#0369a1] text-white" : "text-[#343A3E] hover:bg-[#F1F3F4]", disabled ? "opacity-30" : ""].join(" ")}>
-      <Icon size={17} /><span>{label}</span>
-    </button>
+    <section className="mb-1">
+      <div onClick={p.onSetActive} className={["group flex items-center gap-1.5 rounded px-2 py-1.5", p.active ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
+        <button onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }} className="text-[#8A9196]">{open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</button>
+        <span className={["min-w-0 flex-1 truncate text-[12px] font-semibold", p.active ? "text-[#0c4a6e]" : "text-[#30363A]"].join(" ")}>{p.category.name}</span>
+        {p.active && <span className="rounded bg-[#0369a1] px-1.5 py-0.5 text-[8px] font-bold uppercase text-white">Active</span>}
+        <span className="rounded bg-[#ECEFF1] px-1.5 py-0.5 text-[9px] text-[#5D656A]">{p.list.length}</span>
+      </div>
+      {open && (
+        <div className="ml-4 border-l border-[#EAECEE] pl-1">
+          {p.list.length === 0 && <p className="px-2 py-1 text-[10px] text-[#A2A8AC]">No takeoffs yet.</p>}
+          {p.list.map((it) => (
+            <div key={it.id} onClick={() => p.onSelectItem(it)} className={["group relative grid grid-cols-[14px_minmax(0,1fr)_auto_22px_22px] items-center gap-1.5 rounded px-1 py-1", p.activeItemId === it.id ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
+              <div className="relative">
+                <button onClick={(e) => { e.stopPropagation(); p.onOpenColour(p.colourFor === it.id ? null : it.id); }} className="h-[11px] w-[11px] rounded-sm ring-1 ring-black/10" style={{ backgroundColor: it.colour }} />
+                {p.colourFor === it.id && <div onClick={(e) => e.stopPropagation()} className="absolute left-0 top-5 z-30 flex w-[132px] flex-wrap gap-1 rounded-md border border-[#D7DCE0] bg-white p-2 shadow-lg">{COLOURS.map((c) => <button key={c} onClick={() => p.onRecolour(it, c)} className={`h-5 w-5 rounded-full border-2 ${it.colour === c ? "border-[#212121]" : "border-transparent"}`} style={{ backgroundColor: c }} />)}</div>}
+              </div>
+              {p.renaming === it.id ? (
+                <input autoFocus defaultValue={it.name} onClick={(e) => e.stopPropagation()} onBlur={(e) => p.onRename(it, e.target.value.trim() || it.name)} onKeyDown={(e) => { if (e.key === "Enter") p.onRename(it, (e.target as HTMLInputElement).value.trim() || it.name); }} className="min-w-0 rounded border border-[#0369a1] px-1 py-0.5 text-[12px] outline-none" />
+              ) : (
+                <span onDoubleClick={(e) => { e.stopPropagation(); p.onStartRename(it.id); }} className={`min-w-0 truncate text-[12px] ${p.activeItemId === it.id ? "font-semibold text-[#0c4a6e]" : "text-[#30363A]"}`}>{it.name}</span>
+              )}
+              <span className="whitespace-nowrap text-right text-[10px] text-[#586066]">{fmt(itemTotal(it), it.measurement_type ?? "area")}</span>
+              <button onClick={(e) => { e.stopPropagation(); p.onToggleVisible(it); }} className="grid h-6 w-6 place-items-center rounded text-[#586066] hover:bg-[#E8EBED]">{it.is_visible ? <Eye size={13} /> : <EyeOff size={13} />}</button>
+              <button onClick={(e) => { e.stopPropagation(); p.onDeleteItem(it); }} className="grid h-6 w-6 place-items-center rounded text-[#8A9196] opacity-0 hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={13} /></button>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
