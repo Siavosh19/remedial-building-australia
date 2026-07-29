@@ -103,6 +103,13 @@ export async function ensureDrawingPages(ownerUserId: number, drawingId: string,
   return rows.map((p) => ({ id: p.id, page_number: p.page_number, pixels_per_metre: p.pixels_per_metre, scale_status: p.scale_status, name: pageName(p) }));
 }
 
+export async function resetPageScale(ownerUserId: number, drawingId: string, pageId: string): Promise<boolean> {
+  const owned = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true } });
+  if (!owned) return false;
+  const res = await prisma.measureMapDrawingPage.updateMany({ where: { id: pageId, drawing_id: drawingId }, data: { pixels_per_metre: null, scale_status: "unscaled" } });
+  return res.count > 0;
+}
+
 export async function renamePage(ownerUserId: number, drawingId: string, pageId: string, name: string): Promise<boolean> {
   const owned = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true } });
   if (!owned) return false;

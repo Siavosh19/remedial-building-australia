@@ -28,7 +28,7 @@ import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 import {
   MousePointer2, Move, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
-  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X,
+  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy,
 } from "lucide-react";
 import * as api from "../map/api";
 
@@ -117,6 +117,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const cursorRef = useRef<HTMLSpanElement>(null);
   const [snapOn, setSnapOn] = useState(true);
   const [orthoOn, setOrthoOn] = useState(false);
+  const [showMeas, setShowMeas] = useState(true);
   orthoRef.current = orthoOn;
 
   const [items, setItems] = useState<Item[]>([]);
@@ -363,6 +364,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   }
 
   useEffect(() => { sourceRef.current.changed(); }, [items, selectedMeasurementId]);
+  useEffect(() => { vectorLayerRef.current?.setVisible(showMeas); }, [showMeas]);
 
   async function removeMeasurement(id: string) {
     selectRef.current?.getFeatures().clear();
@@ -389,6 +391,9 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   function selectItem(it: Item) { setActiveItemId(it.id); const map = mapRef.current; if (!map) return; const ext = createEmpty(); sourceRef.current.getFeatures().forEach((f) => { if (f.get("itemId") !== it.id) return; const g = f.getGeometry(); if (g) extendExtent(ext, g.getExtent()); }); if (!extentIsEmpty(ext)) map.getView().fit(ext, { padding: [60, 60, 60, 60], maxZoom: 8, duration: 200 }); }
 
   async function addCategory(name: string, description: string) { if (!name.trim()) return; try { const cat = await api.createCategory(projectId, { name, description: description || null }); setCategories((prev) => [...prev, cat]); setActiveCategoryId(cat.id); setAddingCategory(false); } catch { setSaveStatus("error"); } }
+  async function renameCategory(c: Category) { const n = window.prompt("Rename category:", c.name); if (n == null || !n.trim()) return; setCategories((prev) => prev.map((x) => x.id === c.id ? { ...x, name: n.trim() } : x)); try { await api.patchCategory(projectId, c.id, { name: n.trim() }); } catch { setSaveStatus("error"); } }
+  async function deleteCategoryC(c: Category) { if (!confirm(`Delete category “${c.name}”? Its items become uncategorised.`)) return; setCategories((prev) => prev.filter((x) => x.id !== c.id)); setItems((prev) => prev.map((i) => i.category_id === c.id ? { ...i, category_id: null } : i)); if (activeCategoryId === c.id) setActiveCategoryId(null); try { await api.removeCategory(projectId, c.id); } catch { setSaveStatus("error"); } }
+  async function duplicateCategory(c: Category) { try { const cat = await api.createCategory(projectId, { name: `${c.name} copy` }); setCategories((prev) => [...prev, cat]); } catch { setSaveStatus("error"); } }
 
   function pickTool(t: Tool) {
     if (t === "select" || t === "pan") { setNamePopupOpen(false); pendingRef.current = null; setTool(t); return; }
@@ -409,7 +414,10 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     setPpm(p); ppmRef.current = p; setScaleOpen(false); setSaveStatus("saving");
     fetch(`/api/measuremap/projects/${projectId}/drawings/${drawing.id}/scale`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_id: page.id, pixels_per_metre: p }) }).then(() => setSaveStatus("saved")).catch(() => setSaveStatus("error"));
   }
-  function clearScale() { setPpm(null); ppmRef.current = null; setScaleOpen(false); }
+  function clearScale() {
+    setPpm(null); ppmRef.current = null; setScaleOpen(false); setSaveStatus("saving");
+    fetch(`/api/measuremap/projects/${projectId}/drawings/${drawing.id}/scale`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_id: page.id, reset: true }) }).then(() => setSaveStatus("saved")).catch(() => setSaveStatus("error"));
+  }
 
   function zoomBy(d: number) { const v = mapRef.current?.getView(); if (v) v.animate({ zoom: (v.getZoom() ?? 1) + d, duration: 150 }); }
   function rotate() { const v = mapRef.current?.getView(); if (v) v.animate({ rotation: (v.getRotation() ?? 0) + Math.PI / 2, duration: 200 }); }
@@ -445,7 +453,8 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
             {items.length === 0 && categories.length === 0 && <p className="px-2 py-6 text-center text-[12px] text-[#8A9196]">No takeoffs yet. Set scale, add a category or just pick a tool and measure.</p>}
             {groups.map(({ category, list }) => (
               <PlanCategory key={category.id} category={category} list={list} active={activeCategoryId === category.id} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming}
-                onSetActive={() => setActiveCategoryId(activeCategoryId === category.id ? null : category.id)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename} />
+                onSetActive={() => setActiveCategoryId(activeCategoryId === category.id ? null : category.id)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename}
+                onRenameCategory={renameCategory} onDeleteCategory={deleteCategoryC} onDuplicateCategory={duplicateCategory} />
             ))}
             {uncategorised.length > 0 && (
               <PlanCategory category={{ id: "__free__", name: "Uncategorised", description: null, sort_order: 999 }} list={uncategorised} active={activeCategoryId === null} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming} isFree
@@ -478,6 +487,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
           <div className="absolute bottom-0 left-0 right-0 z-20 flex h-8 items-center gap-2 bg-[#082f49]/95 px-3 text-[11px] text-white/90 backdrop-blur">
             <button onClick={() => setOrthoOn((v) => !v)} title="Constrain to horizontal/vertical" className={["rounded px-2 py-0.5 font-semibold", orthoOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Ortho</button>
             <button onClick={() => setSnapOn((v) => !v)} title="Snap to existing points/edges" className={["rounded px-2 py-0.5 font-semibold", snapOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Snap</button>
+            <button onClick={() => setShowMeas((v) => !v)} title="Show/hide all takeoffs on this page" className={["rounded px-2 py-0.5 font-semibold", showMeas ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Takeoffs</button>
             <span className="ml-auto">Cursor <span ref={cursorRef} className="font-medium text-white">—</span></span>
           </div>
         </section>
@@ -544,9 +554,11 @@ type CatProps = {
   category: Category; list: Item[]; active: boolean; activeItemId: string | null; colourFor: string | null; renaming: string | null; isFree?: boolean;
   onSetActive: () => void; onSelectItem: (it: Item) => void; onToggleVisible: (it: Item) => void; onDeleteItem: (it: Item) => void;
   onOpenColour: (id: string | null) => void; onRecolour: (it: Item, c: string) => void; onStartRename: (id: string | null) => void; onRename: (it: Item, n: string) => void;
+  onRenameCategory?: (c: Category) => void; onDeleteCategory?: (c: Category) => void; onDuplicateCategory?: (c: Category) => void;
 };
 function PlanCategory(p: CatProps) {
   const [open, setOpen] = useState(true);
+  const [menu, setMenu] = useState(false);
   return (
     <section className="mb-1">
       <div onClick={p.onSetActive} className={["group flex items-center gap-1.5 rounded px-2 py-1.5", p.active ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
@@ -554,6 +566,18 @@ function PlanCategory(p: CatProps) {
         <span className={["min-w-0 flex-1 truncate text-[12px] font-semibold", p.active ? "text-[#0c4a6e]" : "text-[#30363A]"].join(" ")}>{p.category.name}</span>
         {p.active && <span className="rounded bg-[#0369a1] px-1.5 py-0.5 text-[8px] font-bold uppercase text-white">Active</span>}
         <span className="rounded bg-[#ECEFF1] px-1.5 py-0.5 text-[9px] text-[#5D656A]">{p.list.length}</span>
+        {!p.isFree && (
+          <div className="relative">
+            <button onClick={(e) => { e.stopPropagation(); setMenu((v) => !v); }} className="grid h-6 w-6 place-items-center rounded text-[#8A9196] opacity-0 transition hover:bg-[#E8EBED] group-hover:opacity-100"><MoreVertical size={13} /></button>
+            {menu && (
+              <div onClick={(e) => e.stopPropagation()} className="absolute right-0 top-6 z-40 w-[150px] overflow-hidden rounded-md border border-[#D7DCE0] bg-white py-1 shadow-lg">
+                <button onClick={() => { setMenu(false); p.onRenameCategory?.(p.category); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-[12px] text-[#30363A] hover:bg-[#F5F6F7]"><Pencil size={13} /> Rename</button>
+                <button onClick={() => { setMenu(false); p.onDuplicateCategory?.(p.category); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-[12px] text-[#30363A] hover:bg-[#F5F6F7]"><Copy size={13} /> Duplicate</button>
+                <button onClick={() => { setMenu(false); p.onDeleteCategory?.(p.category); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-[12px] text-[#dc2626] hover:bg-[#FEF2F2]"><Trash2 size={13} /> Delete</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       {open && (
         <div className="ml-4 border-l border-[#EAECEE] pl-1">
