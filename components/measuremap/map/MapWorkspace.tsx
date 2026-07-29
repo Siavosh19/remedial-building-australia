@@ -123,6 +123,10 @@ export default function MapWorkspace({
   const [showCadastre, setShowCadastre] = useState(false);
   const [showSiteDetails, setShowSiteDetails] = useState(true);
   const [showMeasList, setShowMeasList] = useState(true);
+  const [namePopupOpen, setNamePopupOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newColour, setNewColour] = useState(COLOURS[0]);
+  const pendingRef = useRef<{ name: string; colour: string } | null>(null);
   const [parcelInfo, setParcelInfo] = useState<{ lotId: string | null; planLabel: string | null } | null>(null);
   const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: project.latitude, lng: project.longitude });
   const [placing, setPlacing] = useState(false);
@@ -351,25 +355,45 @@ export default function MapWorkspace({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tool]);
 
-  // Ensure an item of the right type exists to draw into; returns it.
+  // Ensure an item to draw into. A pending (name, colour) from the "new
+  // measurement" popup forces a fresh item; otherwise reuse the active item of
+  // the same type/category (e.g. continuous count) or fall back to a default.
   async function ensureItem(mtype: MType): Promise<Item | null> {
-    const active = itemsRef.current.find((i) => i.id === activeItemIdRef.current);
-    if (active && active.measurement_type === mtype && (active.category_id ?? null) === (activeCatRef.current ?? null)) return active;
-    // Auto-create an item under the active category (or free).
-    const count = itemsRef.current.filter((i) => i.measurement_type === mtype).length + 1;
+    const pending = pendingRef.current;
+    if (!pending) {
+      const active = itemsRef.current.find((i) => i.id === activeItemIdRef.current);
+      if (active && active.measurement_type === mtype && (active.category_id ?? null) === (activeCatRef.current ?? null)) return active;
+    }
+    const n = itemsRef.current.filter((i) => i.measurement_type === mtype).length + 1;
+    const name = pending?.name?.trim() || `${TYPE_LABEL[mtype]} ${n}`;
+    const colour = pending?.colour ?? COLOURS[itemsRef.current.length % COLOURS.length];
+    pendingRef.current = null;
+    setNamePopupOpen(false);
     try {
       const created = await api.createItem(project.id, {
-        name: `${TYPE_LABEL[mtype]} ${count}`,
-        measurement_type: mtype,
-        colour: COLOURS[itemsRef.current.length % COLOURS.length],
-        unit: UNIT_FOR[mtype],
-        category_id: activeCatRef.current,
-        sort_order: itemsRef.current.length,
+        name, measurement_type: mtype, colour, unit: UNIT_FOR[mtype],
+        category_id: activeCatRef.current, sort_order: itemsRef.current.length,
       });
       setItems((prev) => [...prev, created]);
       setActiveItemId(created.id);
       return created;
     } catch { setSaveStatus("error"); return null; }
+  }
+
+  // Picking a draw tool opens the name/colour chooser for a NEW measurement.
+  // Select/Pan just switch mode. The chooser can be closed to draw with defaults.
+  function pickTool(t: Tool) {
+    if (t === "select" || t === "pan") { setNamePopupOpen(false); pendingRef.current = null; setTool(t); return; }
+    const mtype = t as MType;
+    const n = items.filter((i) => i.measurement_type === mtype).length + 1;
+    const name = `${TYPE_LABEL[mtype]} ${n}`;
+    const colour = COLOURS[items.length % COLOURS.length];
+    pendingRef.current = { name, colour };
+    setNewName(name);
+    setNewColour(colour);
+    setNamePopupOpen(true);
+    setActiveItemId(null);
+    setTool(t);
   }
 
   async function handleDrawEnd(mtype: MType, feature: Feature<Geometry>) {
@@ -812,7 +836,7 @@ export default function MapWorkspace({
       <section className="relative min-w-0 flex-1 overflow-hidden bg-[#0c2b3f]">
         <div className="absolute left-4 top-4 z-20 flex h-[52px] items-stretch rounded-md border border-white/15 bg-[#082f49]/95 p-1 shadow-xl backdrop-blur">
           {toolBtns.map(({ id, label, Icon }) => (
-            <button key={id} onClick={() => setTool(id)} title={label}
+            <button key={id} onClick={() => pickTool(id)} title={label}
               className={["flex w-[54px] flex-col items-center justify-center gap-0.5 rounded text-[9px] text-white transition", tool === id ? "bg-[#0369a1]" : "hover:bg-white/10"].join(" ")}>
               <Icon size={17} /><span>{label}</span>
             </button>
@@ -822,8 +846,31 @@ export default function MapWorkspace({
           <TB label="Export" Icon={Camera} onClick={screenshot} />
         </div>
 
+        {/* New-measurement name + colour chooser (near the toolbar) */}
+        {namePopupOpen && tool !== "select" && tool !== "pan" && (
+          <div className="absolute left-1/2 top-[72px] z-30 w-[280px] -translate-x-1/2 rounded-md border border-[#7dd3fc] bg-white p-3 shadow-lg">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">New {TYPE_LABEL[tool as MType]} measurement</span>
+              <button onClick={() => setNamePopupOpen(false)} className="grid h-5 w-5 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={13} /></button>
+            </div>
+            <input autoFocus value={newName}
+              onChange={(e) => { setNewName(e.target.value); if (pendingRef.current) pendingRef.current.name = e.target.value; }}
+              onKeyDown={(e) => { if (e.key === "Enter") setNamePopupOpen(false); }}
+              placeholder="Measurement name"
+              className="w-full rounded border border-[#D3D9DD] px-2 py-1.5 text-[12px] outline-none focus:border-[#0369a1]" />
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {COLOURS.map((c) => (
+                <button key={c} onClick={() => { setNewColour(c); if (pendingRef.current) pendingRef.current.colour = c; }}
+                  className={`h-6 w-6 rounded-full border-2 ${newColour === c ? "border-[#212121]" : "border-transparent"}`} style={{ backgroundColor: c }} aria-label={c} />
+              ))}
+            </div>
+            <button onClick={() => setNamePopupOpen(false)} className="mt-3 h-8 w-full rounded bg-[#0369a1] text-[12px] font-semibold text-white hover:bg-[#075985]">Start measuring</button>
+            <p className="mt-1.5 text-center text-[10px] text-[#8A9196]">Or just start drawing — close to use defaults.</p>
+          </div>
+        )}
+
         {/* Drawing hint */}
-        {tool !== "select" && tool !== "pan" && (
+        {tool !== "select" && tool !== "pan" && !namePopupOpen && (
           <div className="absolute left-1/2 top-[72px] z-30 flex -translate-x-1/2 items-center gap-3 rounded-md border border-[#7dd3fc] bg-white px-4 py-2 shadow-lg">
             <span className="text-[12px] font-medium text-[#30363A]">
               {tool === "count"
