@@ -28,7 +28,7 @@ import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 import {
   MousePointer2, Move, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
-  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy, PanelLeftClose, PanelLeftOpen, GripVertical,
+  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy, PanelLeftClose, PanelLeftOpen, GripVertical, FolderInput,
 } from "lucide-react";
 import * as api from "../map/api";
 
@@ -549,6 +549,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   async function toggleVisible(it: Item) { setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, is_visible: !i.is_visible } : i)); try { await api.patchItem(projectId, it.id, { is_visible: !it.is_visible }); } catch { /* visual */ } }
   async function recolour(it: Item, colour: string) { setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, colour } : i)); setColourFor(null); sourceRef.current.changed(); try { await api.patchItem(projectId, it.id, { colour }); } catch { setSaveStatus("error"); } }
   async function rename(it: Item, name: string) { setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, name } : i)); setRenaming(null); try { await api.patchItem(projectId, it.id, { name }); } catch { setSaveStatus("error"); } }
+  async function moveItem(it: Item, catId: string | null) { setItems((prev) => prev.map((i) => i.id === it.id ? { ...i, category_id: catId, measurements: i.measurements.map((m) => ({ ...m, category_id: catId })) } : i)); sourceRef.current.changed(); try { await api.patchItem(projectId, it.id, { category_id: catId }); } catch { setSaveStatus("error"); } }
   function selectItem(it: Item) { setActiveItemId(it.id); const map = mapRef.current; if (!map) return; const ext = createEmpty(); sourceRef.current.getFeatures().forEach((f) => { if (f.get("itemId") !== it.id) return; const g = f.getGeometry(); if (g) extendExtent(ext, g.getExtent()); }); if (!extentIsEmpty(ext)) map.getView().fit(ext, { padding: [60, 60, 60, 60], maxZoom: 8, duration: 200 }); }
 
   async function addCategory(name: string, description: string) { if (!name.trim()) return; try { const cat = await api.createCategory(projectId, { name, description: description || null }); setCategories((prev) => [...prev, cat]); setActiveCategoryId(cat.id); setAddingCategory(false); } catch { setSaveStatus("error"); } }
@@ -625,13 +626,13 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
           <div className="mt-2 min-h-0 flex-1 overflow-y-auto px-2 pb-3">
             {items.length === 0 && categories.length === 0 && <p className="px-2 py-6 text-center text-[13px] text-[#8A9196]">No takeoffs yet. Set scale, add a category or just pick a tool and measure.</p>}
             {groups.map(({ category, list }) => (
-              <PlanCategory key={category.id} category={category} list={list} active={activeCategoryId === category.id} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming}
-                onSetActive={() => setActiveCategoryId(activeCategoryId === category.id ? null : category.id)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename}
+              <PlanCategory key={category.id} category={category} list={list} categories={categories} active={activeCategoryId === category.id} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming}
+                onSetActive={() => setActiveCategoryId(activeCategoryId === category.id ? null : category.id)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename} onMoveItem={moveItem}
                 onRenameCategory={renameCategory} onDeleteCategory={deleteCategoryC} onDuplicateCategory={duplicateCategory} />
             ))}
             {uncategorised.length > 0 && (
-              <PlanCategory category={{ id: "__free__", name: "Uncategorised", description: null, sort_order: 999 }} list={uncategorised} active={activeCategoryId === null} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming} isFree
-                onSetActive={() => setActiveCategoryId(null)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename} />
+              <PlanCategory category={{ id: "__free__", name: "Uncategorised", description: null, sort_order: 999 }} list={uncategorised} categories={categories} active={activeCategoryId === null} activeItemId={activeItemId} colourFor={colourFor} renaming={renaming} isFree
+                onSetActive={() => setActiveCategoryId(null)} onSelectItem={selectItem} onToggleVisible={toggleVisible} onDeleteItem={deleteItem} onOpenColour={setColourFor} onRecolour={recolour} onStartRename={setRenaming} onRename={rename} onMoveItem={moveItem} />
             )}
           </div>
           <div className="border-t border-[#E1E5E7] px-3 py-2.5 text-[12px]">
@@ -742,14 +743,15 @@ function AddCategoryForm({ onAdd, onCancel }: { onAdd: (n: string, d: string) =>
 }
 
 type CatProps = {
-  category: Category; list: Item[]; active: boolean; activeItemId: string | null; colourFor: string | null; renaming: string | null; isFree?: boolean;
+  category: Category; list: Item[]; categories: Category[]; active: boolean; activeItemId: string | null; colourFor: string | null; renaming: string | null; isFree?: boolean;
   onSetActive: () => void; onSelectItem: (it: Item) => void; onToggleVisible: (it: Item) => void; onDeleteItem: (it: Item) => void;
-  onOpenColour: (id: string | null) => void; onRecolour: (it: Item, c: string) => void; onStartRename: (id: string | null) => void; onRename: (it: Item, n: string) => void;
+  onOpenColour: (id: string | null) => void; onRecolour: (it: Item, c: string) => void; onStartRename: (id: string | null) => void; onRename: (it: Item, n: string) => void; onMoveItem: (it: Item, catId: string | null) => void;
   onRenameCategory?: (c: Category) => void; onDeleteCategory?: (c: Category) => void; onDuplicateCategory?: (c: Category) => void;
 };
 function PlanCategory(p: CatProps) {
   const [open, setOpen] = useState(true);
   const [menu, setMenu] = useState(false);
+  const [itemMenu, setItemMenu] = useState<string | null>(null);
   return (
     <section className="mb-1">
       <div onClick={p.onSetActive} className={["group flex items-center gap-1.5 rounded-lg px-2 py-2", p.active ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
@@ -774,7 +776,7 @@ function PlanCategory(p: CatProps) {
         <div className="ml-4 border-l border-[#EAECEE] pl-1">
           {p.list.length === 0 && <p className="px-2 py-1 text-[12px] text-[#A2A8AC]">No takeoffs yet.</p>}
           {p.list.map((it) => (
-            <div key={it.id} onClick={() => p.onSelectItem(it)} className={["group relative grid grid-cols-[14px_minmax(0,1fr)_auto_26px_26px] items-center gap-1.5 rounded-lg px-1.5 py-1.5", p.activeItemId === it.id ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
+            <div key={it.id} onClick={() => p.onSelectItem(it)} className={["group relative grid grid-cols-[14px_minmax(0,1fr)_auto_24px_24px] items-center gap-1.5 rounded-lg px-1.5 py-1.5", p.activeItemId === it.id ? "bg-[#EAF3FA]" : "hover:bg-[#F5F6F7]"].join(" ")}>
               <div className="relative">
                 <button onClick={(e) => { e.stopPropagation(); p.onOpenColour(p.colourFor === it.id ? null : it.id); }} className="h-[14px] w-[14px] rounded-sm ring-1 ring-black/10" style={{ backgroundColor: it.colour }} />
                 {p.colourFor === it.id && <div onClick={(e) => e.stopPropagation()} className="absolute left-0 top-5 z-30 flex w-[132px] flex-wrap gap-1 rounded-md border border-[#D7DCE0] bg-white p-2 shadow-lg">{COLOURS.map((c) => <button key={c} onClick={() => p.onRecolour(it, c)} className={`h-5 w-5 rounded-full border-2 ${it.colour === c ? "border-[#212121]" : "border-transparent"}`} style={{ backgroundColor: c }} />)}</div>}
@@ -786,7 +788,24 @@ function PlanCategory(p: CatProps) {
               )}
               <span className="whitespace-nowrap text-right text-[12px] font-semibold text-[#586066]">{fmt(itemTotal(it), it.measurement_type ?? "area")}</span>
               <button onClick={(e) => { e.stopPropagation(); p.onToggleVisible(it); }} className="grid h-7 w-7 place-items-center rounded text-[#586066] hover:bg-[#E8EBED]">{it.is_visible ? <Eye size={15} /> : <EyeOff size={15} />}</button>
-              <button onClick={(e) => { e.stopPropagation(); p.onDeleteItem(it); }} className="grid h-7 w-7 place-items-center rounded text-[#8A9196] opacity-0 hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={15} /></button>
+              <div className="relative">
+                <button onClick={(e) => { e.stopPropagation(); setItemMenu(itemMenu === it.id ? null : it.id); }} className="grid h-7 w-7 place-items-center rounded text-[#8A9196] opacity-0 hover:bg-[#E8EBED] group-hover:opacity-100"><MoreVertical size={15} /></button>
+                {itemMenu === it.id && (
+                  <div onClick={(e) => e.stopPropagation()} className="absolute right-0 top-7 z-40 max-h-[280px] w-[186px] overflow-y-auto rounded-md border border-[#D7DCE0] bg-white py-1 shadow-lg">
+                    <button onClick={() => { setItemMenu(null); p.onStartRename(it.id); }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-[#30363A] hover:bg-[#F5F6F7]"><Pencil size={14} /> Rename</button>
+                    <div className="my-1 border-t border-[#EEF0F1]" />
+                    <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#8A9196]">Move to category</div>
+                    {!it.category_id ? null : <button onClick={() => { setItemMenu(null); p.onMoveItem(it, null); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-[13px] text-[#30363A] hover:bg-[#F5F6F7]"><FolderInput size={14} /> Uncategorised</button>}
+                    {p.categories.filter((c) => c.id !== it.category_id).map((c) => (
+                      <button key={c.id} onClick={() => { setItemMenu(null); p.onMoveItem(it, c.id); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-[13px] text-[#30363A] hover:bg-[#F5F6F7]"><FolderInput size={14} /> <span className="truncate">{c.name}</span></button>
+                    ))}
+                    {p.categories.filter((c) => c.id !== it.category_id).length === 0 && it.category_id && <div className="px-3 py-1.5 text-[11px] text-[#A2A8AC]">No other categories</div>}
+                    {p.categories.length === 0 && !it.category_id && <div className="px-3 py-1.5 text-[11px] text-[#A2A8AC]">Add a category first</div>}
+                    <div className="my-1 border-t border-[#EEF0F1]" />
+                    <button onClick={() => { setItemMenu(null); p.onDeleteItem(it); }} className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-[#dc2626] hover:bg-[#FEF2F2]"><Trash2 size={14} /> Delete</button>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>

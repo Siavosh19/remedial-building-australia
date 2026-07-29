@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
-import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil, GripVertical, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil, GripVertical, PanelLeftClose, PanelLeftOpen, Sigma, Paperclip, StickyNote, RefreshCw } from "lucide-react";
 import PlanTakeoffLoader from "./PlanTakeoffLoader";
 import { supabase } from "@/lib/supabase";
+import * as api from "../map/api";
 
 const MAX_BYTES = 40 * 1024 * 1024; // 40 MB
 const BUCKET = "measuremap-files";
@@ -52,6 +53,13 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
   const [pageMenu, setPageMenu] = useState<string | null>(null);
   const [asideW, setAsideW] = useState(300);
   const [collapsed, setCollapsed] = useState(false);
+  const [sumOpen, setSumOpen] = useState(true);
+  const [attachOpen, setAttachOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [sumItems, setSumItems] = useState<api.ApiItem[]>([]);
+  const [sumCats, setSumCats] = useState<api.ApiCategory[]>([]);
+  const [sumLoading, setSumLoading] = useState(false);
+  const [notes, setNotes] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
   const base = `/api/measuremap/projects/${projectId}`;
 
@@ -62,6 +70,26 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     const onUp = () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
     window.addEventListener("mousemove", onMove); window.addEventListener("mouseup", onUp);
   }
+
+  async function loadSummary() {
+    if (!openId) return;
+    setSumLoading(true);
+    try {
+      const [tk, cats] = await Promise.all([
+        fetch(`${base}/drawings/${openId}/takeoffs`).then((r) => r.json()),
+        api.listCategories(projectId),
+      ]);
+      setSumItems((tk.items ?? []) as api.ApiItem[]); setSumCats(cats);
+    } catch { /* ignore */ } finally { setSumLoading(false); }
+  }
+
+  // Load notes (per-device) + refresh the summary when a different plan opens.
+  useEffect(() => {
+    if (!openId) { setNotes(""); setSumItems([]); return; }
+    try { setNotes(localStorage.getItem(`mm-notes-${openId}`) || ""); } catch { setNotes(""); }
+    if (sumOpen) void loadSummary();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openId]);
 
   async function openDrawing(d: Drawing) {
     setOpenId(d.id); setDetail(null); setSelectedPageId(null); setLoadingDetail(true);
@@ -140,6 +168,15 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     return ps;
   }, [detail, search, filterScaled, sortAsc]);
 
+  const sumTotal = (it: api.ApiItem) => it.measurement_type === "count" ? it.measurements.length : it.measurements.reduce((s, m) => s + m.calculated_quantity, 0);
+  const sumFmt = (q: number, t: string | null) => t === "count" ? `${Math.round(q)} ea` : t === "area" ? `${q.toFixed(2)} m²` : `${q.toFixed(2)} m`;
+  const summaryGroups = useMemo(() => {
+    const g = sumCats.map((c) => ({ name: c.name, list: sumItems.filter((i) => i.category_id === c.id) })).filter((x) => x.list.length);
+    const uncat = sumItems.filter((i) => !i.category_id);
+    if (uncat.length) g.push({ name: "Uncategorised", list: uncat });
+    return g;
+  }, [sumItems, sumCats]);
+
   return (
     <div className="flex h-full gap-3 bg-[#e5e7eb] p-3" onClick={() => setPageMenu(null)}>
       {/* Plans + pages list — collapsible + resizable */}
@@ -217,6 +254,51 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
               </div>
             );
           })}
+
+          {/* Accordion sections for the open plan */}
+          {openId && detail && (
+            <div className="mt-2 border-t border-[#EAECEE] pt-2">
+              {/* Takeoff Summary */}
+              <button onClick={() => { const n = !sumOpen; setSumOpen(n); if (n) void loadSummary(); }} className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-[14px] font-bold text-[#30363A] hover:bg-[#F5F6F7]">
+                {sumOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}<Sigma size={16} className="text-[#0369a1]" /> Takeoff Summary
+                <span onClick={(e) => { e.stopPropagation(); void loadSummary(); }} title="Refresh" className="ml-auto grid h-6 w-6 place-items-center rounded text-[#8A9196] hover:bg-[#E8EBED]"><RefreshCw size={13} className={sumLoading ? "animate-spin" : ""} /></span>
+              </button>
+              {sumOpen && (
+                <div className="px-2 pb-2">
+                  {sumItems.length === 0 && <p className="px-1 py-2 text-[12px] text-[#8A9196]">No takeoffs on this plan yet.</p>}
+                  {summaryGroups.map((g) => (
+                    <div key={g.name} className="mb-1.5">
+                      <div className="px-1 py-1 text-[11px] font-bold uppercase tracking-wide text-[#6C7378]">{g.name}</div>
+                      {g.list.map((it) => (
+                        <div key={it.id} className="flex items-center gap-2 px-1 py-1 text-[13px]">
+                          <span className="h-[11px] w-[11px] shrink-0 rounded-sm ring-1 ring-black/10" style={{ backgroundColor: it.colour }} />
+                          <span className="min-w-0 flex-1 truncate text-[#30363A]">{it.name}</span>
+                          <span className="shrink-0 font-semibold text-[#0c4a6e]">{sumFmt(sumTotal(it), it.measurement_type)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Attachments */}
+              <button onClick={() => setAttachOpen((v) => !v)} className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-[14px] font-bold text-[#30363A] hover:bg-[#F5F6F7]">
+                {attachOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}<Paperclip size={16} className="text-[#0369a1]" /> Attachments
+              </button>
+              {attachOpen && <p className="px-3 pb-2 text-[12px] text-[#8A9196]">Attach reference files (photos, specs, emails) to this plan. Needs a small database table — ask me to switch it on and I&apos;ll add the migration.</p>}
+
+              {/* Notes */}
+              <button onClick={() => setNotesOpen((v) => !v)} className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-[14px] font-bold text-[#30363A] hover:bg-[#F5F6F7]">
+                {notesOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}<StickyNote size={16} className="text-[#0369a1]" /> Notes
+              </button>
+              {notesOpen && (
+                <div className="px-2 pb-2">
+                  <textarea value={notes} onChange={(e) => { setNotes(e.target.value); try { localStorage.setItem(`mm-notes-${openId}`, e.target.value); } catch { /* ignore */ } }} placeholder="Notes for this plan…" className="h-24 w-full resize-y rounded border border-[#D7DCE0] p-2 text-[13px] outline-none focus:border-[#0369a1]" />
+                  <p className="mt-1 text-[10px] text-[#A2A8AC]">Saved on this device.</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </aside>
       {/* drag to resize */}
