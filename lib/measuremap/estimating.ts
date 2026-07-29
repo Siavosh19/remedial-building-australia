@@ -200,6 +200,38 @@ export async function getEstimateData(ownerUserId: number, projectId: string): P
   return { categories, items };
 }
 
+// Items with their measurements for ONE plan (source_type='drawing', plan_id).
+export async function listItemsForPlan(ownerUserId: number, projectId: string, planId: string): Promise<ItemDTO[]> {
+  const items = await prisma.measureMapEstimateItem.findMany({
+    where: { project_id: projectId, owner_user_id: ownerUserId, deleted_at: null },
+    orderBy: [{ sort_order: "asc" }, { created_at: "asc" }],
+    include: {
+      measurements: {
+        where: { deleted_at: null, source_type: "drawing", plan_id: planId },
+        orderBy: { sort_order: "asc" },
+        select: {
+          id: true, estimate_item_id: true, category_id: true, measurement_mode: true,
+          measurement_type: true, source_type: true, name: true, colour: true,
+          geometry: true, calculated_quantity: true, unit: true, label: true, is_visible: true, sort_order: true,
+        },
+      },
+    },
+  });
+  return items
+    .filter((it) => it.measurements.length > 0)
+    .map((it) => ({
+      id: it.id, category_id: it.category_id, name: it.name, description: it.description,
+      measurement_type: it.measurement_type, colour: it.colour, unit: it.unit,
+      is_visible: it.is_visible, sort_order: it.sort_order,
+      measurements: it.measurements.map((m) => ({
+        id: m.id, estimate_item_id: m.estimate_item_id, category_id: m.category_id,
+        measurement_mode: m.measurement_mode ?? "structured", measurement_type: m.measurement_type ?? it.measurement_type ?? "area",
+        source_type: m.source_type, name: m.name, colour: m.colour ?? it.colour, geometry: m.geometry,
+        calculated_quantity: m.calculated_quantity, unit: m.unit, label: m.label, is_visible: m.is_visible, sort_order: m.sort_order,
+      })),
+    }));
+}
+
 export async function createItem(
   ownerUserId: number,
   projectId: string,

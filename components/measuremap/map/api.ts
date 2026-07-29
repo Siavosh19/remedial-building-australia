@@ -99,6 +99,7 @@ export async function createMeasurement(
     calculated_quantity: number; unit: string; measurement_type: string;
     measurement_mode?: string; name?: string | null; colour?: string | null;
     label?: string | null; source_type: string; sort_order?: number;
+    plan_id?: string | null; plan_page_id?: string | null;
   },
 ): Promise<{ id: string }> {
   const data = await ok(await fetch(`${base(projectId)}/measurements`, {

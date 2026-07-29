@@ -66,6 +66,43 @@ export async function signedUrlForDrawing(ownerUserId: number, drawingId: string
   return signedDrawingUrl(d.storage_path, 600);
 }
 
+export type PlanDetail = {
+  id: string; filename: string; mime_type: string | null; url: string | null;
+  page: { id: string; pixels_per_metre: number | null; scale_status: string; page_width: number | null; page_height: number | null } | null;
+};
+
+export async function getDrawingDetail(ownerUserId: number, drawingId: string): Promise<PlanDetail | null> {
+  const d = await prisma.measureMapDrawing.findFirst({
+    where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null },
+    select: {
+      id: true, filename: true, mime_type: true, storage_path: true,
+      pages: { where: { page_number: 1 }, take: 1, select: { id: true, pixels_per_metre: true, scale_status: true, page_width: true, page_height: true } },
+    },
+  });
+  if (!d) return null;
+  const url = d.storage_path ? await signedDrawingUrl(d.storage_path, 600) : null;
+  const p = d.pages[0] ?? null;
+  return { id: d.id, filename: d.filename, mime_type: d.mime_type, url, page: p ?? null };
+}
+
+export async function setPageScale(
+  ownerUserId: number,
+  drawingId: string,
+  input: { pixels_per_metre: number; page_width?: number; page_height?: number },
+): Promise<boolean> {
+  const owned = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true } });
+  if (!owned) return false;
+  const res = await prisma.measureMapDrawingPage.updateMany({
+    where: { drawing_id: drawingId, page_number: 1 },
+    data: {
+      pixels_per_metre: input.pixels_per_metre, scale_status: "scaled",
+      ...(input.page_width ? { page_width: input.page_width } : {}),
+      ...(input.page_height ? { page_height: input.page_height } : {}),
+    },
+  });
+  return res.count > 0;
+}
+
 export async function deleteDrawing(ownerUserId: number, drawingId: string): Promise<boolean> {
   const d = await prisma.measureMapDrawing.findFirst({
     where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true, storage_path: true },
