@@ -8,6 +8,7 @@ export async function GET(request: NextRequest, ctx: Ctx) {
   const user = await getMeasureMapApiUser(request);
   if (!user) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const { projectId, drawingId } = await ctx.params;
-  const items = await listItemsForPlan(user.id, projectId, drawingId);
+  const pageId = request.nextUrl.searchParams.get("pageId") ?? undefined;
+  const items = await listItemsForPlan(user.id, projectId, drawingId, pageId);
   return NextResponse.json({ items });
 }

@@ -38,7 +38,8 @@ type MType = "area" | "linear" | "perimeter" | "count";
 type Tool = "select" | "pan" | "scale" | "dimension" | "area" | "linear" | "count";
 type Item = api.ApiItem;
 type Category = api.ApiCategory;
-type Plan = { id: string; filename: string; mime_type: string | null; url: string | null; page: { id: string; pixels_per_metre: number | null; scale_status: string } | null };
+type Drawing = { id: string; filename: string; mime_type: string | null; url: string | null };
+type Page = { id: string; page_number: number; pixels_per_metre: number | null; scale_status: string };
 type Snapshot = { measurementId: string; itemId: string; gj: unknown; qty: number; unit: string; mtype: MType; idx?: number };
 
 const geojson = new GeoJSON();
@@ -66,12 +67,12 @@ function arrowStyle(colour: string, coord: number[], rotation: number): Style {
   return new Style({ geometry: new Point(coord), image: new Icon({ src: "data:image/svg+xml;utf8," + encodeURIComponent(svg), anchor: [0.8, 0.5], rotateWithView: true, rotation: -rotation }) });
 }
 
-async function loadImage(plan: Plan): Promise<{ url: string; width: number; height: number } | null> {
-  if (!plan.url) return null;
-  const isPdf = (plan.mime_type ?? "").includes("pdf") || /\.pdf$/i.test(plan.filename);
+async function loadImage(d: Drawing, pageNumber: number): Promise<{ url: string; width: number; height: number } | null> {
+  if (!d.url) return null;
+  const isPdf = (d.mime_type ?? "").includes("pdf") || /\.pdf$/i.test(d.filename);
   if (isPdf) {
-    const pdf = await pdfjsLib.getDocument({ url: plan.url }).promise;
-    const page = await pdf.getPage(1);
+    const pdf = await pdfjsLib.getDocument({ url: d.url }).promise;
+    const page = await pdf.getPage(pageNumber);
     const viewport = page.getViewport({ scale: 2 });
     const canvas = document.createElement("canvas");
     canvas.width = Math.ceil(viewport.width); canvas.height = Math.ceil(viewport.height);
@@ -82,13 +83,13 @@ async function loadImage(plan: Plan): Promise<{ url: string; width: number; heig
   }
   return new Promise((resolve) => {
     const img = new Image();
-    img.onload = () => resolve({ url: plan.url as string, width: img.naturalWidth, height: img.naturalHeight });
+    img.onload = () => resolve({ url: d.url as string, width: img.naturalWidth, height: img.naturalHeight });
     img.onerror = () => resolve(null);
-    img.src = plan.url as string;
+    img.src = d.url as string;
   });
 }
 
-export default function PlanTakeoff({ projectId, plan }: { projectId: string; plan: Plan }) {
+export default function PlanTakeoff({ projectId, drawing, page }: { projectId: string; drawing: Drawing; page: Page }) {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
   const sourceRef = useRef<VectorSource>(new VectorSource());
@@ -97,7 +98,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   const selectRef = useRef<Select | null>(null);
   const modifyRef = useRef<Modify | null>(null);
   const translateRef = useRef<Translate | null>(null);
-  const ppmRef = useRef<number | null>(plan.page?.pixels_per_metre ?? null);
+  const ppmRef = useRef<number | null>(page.pixels_per_metre ?? null);
   const undoRef = useRef<Snapshot[]>([]);
   const redoRef = useRef<Snapshot[]>([]);
   const imageExtentRef = useRef<number[]>([0, 0, 1000, 1000]);
@@ -109,7 +110,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const [activeItemId, setActiveItemId] = useState<string | null>(null);
   const [tool, setTool] = useState<Tool>("select");
-  const [ppm, setPpm] = useState<number | null>(plan.page?.pixels_per_metre ?? null);
+  const [ppm, setPpm] = useState<number | null>(page.pixels_per_metre ?? null);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [selectedMeasurementId, setSelectedMeasurementId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -132,7 +133,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   const activeCatRef = useRef(activeCategoryId); activeCatRef.current = activeCategoryId;
   const selRef = useRef(selectedMeasurementId); selRef.current = selectedMeasurementId;
   ppmRef.current = ppm;
-  const pageId = plan.page?.id ?? null;
+  const pageId = page.id;
   const refreshUndo = () => { setCanUndo(undoRef.current.length > 0); setCanRedo(redoRef.current.length > 0); };
 
   const styleFor = useCallback((feature: FeatureLike): Style | Style[] | undefined => {
@@ -159,7 +160,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const img = await loadImage(plan).catch((e) => { console.error("[measuremap] plan load", e); return null; });
+      const img = await loadImage(drawing, page.page_number).catch((e) => { console.error("[measuremap] plan load", e); return null; });
       if (cancelled) return;
       if (!img || !mapEl.current) { setError("Couldn't load this plan (PDF worker or file issue)."); setLoading(false); return; }
       const extent = [0, 0, img.width, img.height];
@@ -178,7 +179,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
       setLoading(false);
       try {
         const [tk, cats] = await Promise.all([
-          fetch(`/api/measuremap/projects/${projectId}/drawings/${plan.id}/takeoffs`).then((r) => r.json()),
+          fetch(`/api/measuremap/projects/${projectId}/drawings/${drawing.id}/takeoffs?pageId=${page.id}`).then((r) => r.json()),
           api.listCategories(projectId),
         ]);
         const loaded: Item[] = tk.items ?? [];
@@ -260,7 +261,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     const newPpm = px / metres;
     setPpm(newPpm); ppmRef.current = newPpm;
     setSaveStatus("saving");
-    try { await fetch(`/api/measuremap/projects/${projectId}/drawings/${plan.id}/scale`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pixels_per_metre: newPpm }) }); setSaveStatus("saved"); } catch { setSaveStatus("error"); }
+    try { await fetch(`/api/measuremap/projects/${projectId}/drawings/${drawing.id}/scale`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_id: page.id, pixels_per_metre: newPpm }) }); setSaveStatus("saved"); } catch { setSaveStatus("error"); }
   }
 
   function qtyFor(geom: Geometry, mtype: MType): number {
@@ -295,7 +296,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
     if (idx != null) feature.set("idx", idx);
     setSaveStatus("saving");
     try {
-      const { id } = await api.createMeasurement(projectId, { estimate_item_id: item.id, category_id: item.category_id, geometry: gj, calculated_quantity: qty, unit: item.unit, measurement_type: mtype, measurement_mode: item.category_id ? "structured" : "free", label: idx != null ? String(idx) : null, source_type: "drawing", plan_id: plan.id, plan_page_id: pageId, sort_order: item.measurements.length });
+      const { id } = await api.createMeasurement(projectId, { estimate_item_id: item.id, category_id: item.category_id, geometry: gj, calculated_quantity: qty, unit: item.unit, measurement_type: mtype, measurement_mode: item.category_id ? "structured" : "free", label: idx != null ? String(idx) : null, source_type: "drawing", plan_id: drawing.id, plan_page_id: pageId, sort_order: item.measurements.length });
       feature.setId(id); feature.set("measurementId", id);
       setItems((prev) => prev.map((i) => i.id === item.id ? { ...i, measurements: [...i.measurements, { id, estimate_item_id: item.id, category_id: item.category_id, measurement_mode: "free", measurement_type: mtype, source_type: "drawing", name: null, colour: item.colour, geometry: gj, calculated_quantity: qty, unit: item.unit, label: idx != null ? String(idx) : null, is_visible: true, sort_order: i.measurements.length }] } : i));
       undoRef.current.push({ measurementId: id, itemId: item.id, gj, qty, unit: item.unit, mtype, idx }); redoRef.current = []; refreshUndo();
@@ -329,7 +330,7 @@ export default function PlanTakeoff({ projectId, plan }: { projectId: string; pl
   async function redo() {
     const s = redoRef.current.pop(); if (!s) return;
     try {
-      const { id } = await api.createMeasurement(projectId, { estimate_item_id: s.itemId, geometry: s.gj, calculated_quantity: s.qty, unit: s.unit, measurement_type: s.mtype, source_type: "drawing", plan_id: plan.id, plan_page_id: pageId, label: s.idx != null ? String(s.idx) : null });
+      const { id } = await api.createMeasurement(projectId, { estimate_item_id: s.itemId, geometry: s.gj, calculated_quantity: s.qty, unit: s.unit, measurement_type: s.mtype, source_type: "drawing", plan_id: drawing.id, plan_page_id: pageId, label: s.idx != null ? String(s.idx) : null });
       const g = geojson.readGeometry(s.gj as object); const f = new Feature(g); f.setId(id); f.set("measurementId", id); f.set("itemId", s.itemId); f.set("mtype", s.mtype); f.set("qty", s.qty);
       if (s.mtype === "linear") f.set("dimension", true); if (s.idx != null) f.set("idx", s.idx);
       sourceRef.current.addFeature(f);

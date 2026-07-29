@@ -201,13 +201,13 @@ export async function getEstimateData(ownerUserId: number, projectId: string): P
 }
 
 // Items with their measurements for ONE plan (source_type='drawing', plan_id).
-export async function listItemsForPlan(ownerUserId: number, projectId: string, planId: string): Promise<ItemDTO[]> {
+export async function listItemsForPlan(ownerUserId: number, projectId: string, planId: string, planPageId?: string): Promise<ItemDTO[]> {
   const items = await prisma.measureMapEstimateItem.findMany({
     where: { project_id: projectId, owner_user_id: ownerUserId, deleted_at: null },
     orderBy: [{ sort_order: "asc" }, { created_at: "asc" }],
     include: {
       measurements: {
-        where: { deleted_at: null, source_type: "drawing", plan_id: planId },
+        where: { deleted_at: null, source_type: "drawing", plan_id: planId, ...(planPageId ? { plan_page_id: planPageId } : {}) },
         orderBy: { sort_order: "asc" },
         select: {
           id: true, estimate_item_id: true, category_id: true, measurement_mode: true,
