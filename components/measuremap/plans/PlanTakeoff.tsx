@@ -28,7 +28,7 @@ import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
 import {
   MousePointer2, Move, ArrowLeftRight, Pentagon, Spline, MapPin, PencilRuler, Trash2, Eye, EyeOff, Loader2, Check,
-  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy,
+  Maximize2, ZoomIn, ZoomOut, RotateCw, Undo2, Redo2, FolderPlus, ChevronDown, ChevronRight, X, MoreVertical, Pencil, Copy, PanelLeftClose, PanelLeftOpen,
 } from "lucide-react";
 import * as api from "../map/api";
 
@@ -114,6 +114,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const orthoRef = useRef(false);
   const hLineRef = useRef<HTMLDivElement>(null);
   const vLineRef = useRef<HTMLDivElement>(null);
+  const reticleRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const [snapOn, setSnapOn] = useState(true);
   const [orthoOn, setOrthoOn] = useState(false);
@@ -133,6 +134,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [addingCategory, setAddingCategory] = useState(false);
+  const [catCollapsed, setCatCollapsed] = useState(false);
   const [namePopupOpen, setNamePopupOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newColour, setNewColour] = useState(COLOURS[0]);
@@ -201,6 +203,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
       map.on("pointermove", (e) => {
         if (hLineRef.current) hLineRef.current.style.top = `${e.pixel[1]}px`;
         if (vLineRef.current) vLineRef.current.style.left = `${e.pixel[0]}px`;
+        if (reticleRef.current) reticleRef.current.style.transform = `translate(${e.pixel[0]}px, ${e.pixel[1]}px)`;
         if (cursorRef.current) cursorRef.current.textContent = ppmRef.current ? `${(e.coordinate[0] / ppmRef.current).toFixed(2)}, ${(e.coordinate[1] / ppmRef.current).toFixed(2)} m` : `${Math.round(e.coordinate[0])}, ${Math.round(e.coordinate[1])} px`;
       });
       setLoading(false);
@@ -443,10 +446,19 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
       </div>
 
       <div className="flex min-h-0 flex-1 gap-3">
-        {/* Left panel — categories + items (Map Measure parity) */}
+        {/* Left panel — categories + items (Map Measure parity). Collapsible. */}
+        {catCollapsed ? (
+          <aside className="flex w-11 shrink-0 flex-col items-center gap-3 rounded-xl border border-[#D7DCE0] bg-white py-3 shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setCatCollapsed(false)} title="Show categories" className="grid h-8 w-8 place-items-center rounded-lg text-[#0369a1] hover:bg-[#EAF3FA]"><PanelLeftOpen size={20} /></button>
+            <span className="mt-1 rotate-180 text-[12px] font-bold uppercase tracking-wide text-[#586066] [writing-mode:vertical-rl]">Categories</span>
+          </aside>
+        ) : (
         <aside className="flex w-[300px] shrink-0 flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
           <div className="px-3 pt-3">
-            <button onClick={() => setAddingCategory((v) => !v)} className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white hover:bg-[#075985]"><FolderPlus size={18} /> Add Category</button>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setAddingCategory((v) => !v)} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white hover:bg-[#075985]"><FolderPlus size={18} /> Add Category</button>
+              <button onClick={() => setCatCollapsed(true)} title="Collapse panel" className="grid h-11 w-9 shrink-0 place-items-center rounded-lg border border-[#D7DCE0] text-[#586066] hover:bg-[#F1F3F4]"><PanelLeftClose size={18} /></button>
+            </div>
             {addingCategory && <AddCategoryForm onAdd={addCategory} onCancel={() => setAddingCategory(false)} />}
           </div>
           <div className="mt-2 min-h-0 flex-1 overflow-y-auto px-2 pb-3">
@@ -465,6 +477,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
             {activeCategoryId ? <span className="flex items-center gap-1.5 font-medium text-[#0369a1]"><Check size={14} /> Filing into <b>{categories.find((c) => c.id === activeCategoryId)?.name}</b></span> : <span className="text-[#8A9196]">Uncategorised — pick a category to file measurements.</span>}
           </div>
         </aside>
+        )}
 
         {/* Canvas */}
         <section className="relative min-w-0 flex-1 overflow-hidden rounded-xl bg-[#565b5e] shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
@@ -479,10 +492,15 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
           )}
           {loading && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/90"><Loader2 className="h-6 w-6 animate-spin" /><span className="ml-2 text-sm">Loading plan…</span></div>}
           {error && <div className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-white/80"><span className="text-sm">{error}</span></div>}
-          {/* Crosshair guides (always on) */}
-          <div ref={hLineRef} className="pointer-events-none absolute left-0 right-0 z-20 h-px" style={{ top: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
-          <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px" style={{ left: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
-          <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
+          {/* Sniper reticle: red crosshair guides + tracking ring/dot */}
+          <div ref={hLineRef} className="pointer-events-none absolute left-0 right-0 z-20 h-px" style={{ top: 0, backgroundColor: "rgba(220,38,38,0.85)" }} />
+          <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px" style={{ left: 0, backgroundColor: "rgba(220,38,38,0.85)" }} />
+          <div ref={reticleRef} className="pointer-events-none absolute left-0 top-0 z-20" style={{ transform: "translate(-200px, -200px)" }}>
+            <div className="absolute h-[26px] w-[26px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2" style={{ borderColor: "rgba(220,38,38,0.9)" }} />
+            <div className="absolute h-[9px] w-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full border" style={{ borderColor: "rgba(220,38,38,0.95)" }} />
+            <div className="absolute h-[3px] w-[3px] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ backgroundColor: "rgba(220,38,38,1)" }} />
+          </div>
+          <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : "cursor-none"}`} />
           {/* Status bar: Ortho / Snap / cursor */}
           <div className="absolute bottom-0 left-0 right-0 z-20 flex h-9 items-center gap-2 bg-[#082f49]/95 px-3 text-[13px] text-white/90 backdrop-blur">
             <button onClick={() => setOrthoOn((v) => !v)} title="Constrain to horizontal/vertical" className={["rounded px-2.5 py-1 font-bold", orthoOn ? "bg-[#0369a1] text-white" : "bg-white/10 text-white/70 hover:bg-white/20"].join(" ")}>Ortho</button>

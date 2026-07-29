@@ -12,6 +12,27 @@ const isPdf = (d: { mime_type: string | null; filename: string }) => (d.mime_typ
 const fmtSize = (n: number) => (n > 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
 const ratioOf = (ppm: number | null) => (ppm && ppm > 0 ? `1:${Math.round(5669.29 / ppm)}` : null);
 
+// Count PDF pages in the browser (reliable — pdf.js runs client-side here).
+// The server-side count can fail in serverless, so this is the source of truth.
+async function countPdfPagesClient(file: File): Promise<number> {
+  try {
+    const pdfjs = await import("pdfjs-dist");
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).toString();
+    const buf = await file.arrayBuffer();
+    const pdf = await pdfjs.getDocument({ data: new Uint8Array(buf) }).promise;
+    return pdf.numPages > 0 ? pdf.numPages : 1;
+  } catch (e) { console.error("[measuremap] client pdf page count failed:", e); return 1; }
+}
+// Self-heal older PDFs the server counted as single-page: count from the signed URL.
+async function countPdfPagesFromUrl(url: string): Promise<number> {
+  try {
+    const pdfjs = await import("pdfjs-dist");
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).toString();
+    const pdf = await pdfjs.getDocument({ url }).promise;
+    return pdf.numPages > 0 ? pdf.numPages : 1;
+  } catch (e) { console.error("[measuremap] client pdf url count failed:", e); return 1; }
+}
+
 export default function PlansWorkspace({ projectId, initialDrawings }: { projectId: string; initialDrawings: Drawing[] }) {
   const [drawings, setDrawings] = useState<Drawing[]>(initialDrawings);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -31,8 +52,16 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
   async function openDrawing(d: Drawing) {
     setOpenId(d.id); setDetail(null); setSelectedPageId(null); setLoadingDetail(true);
     try {
-      const data = (await (await fetch(`${base}/drawings/${d.id}`)).json()).drawing as PlanDetail | undefined;
-      if (data && data.page_count !== d.page_count) setDrawings((prev) => prev.map((x) => x.id === d.id ? { ...x, page_count: data.page_count } : x));
+      let data = (await (await fetch(`${base}/drawings/${d.id}`)).json()).drawing as PlanDetail | undefined;
+      // Client-side self-heal: PDFs the server counted as single-page → recount from URL.
+      if (data && isPdf(data) && data.page_count <= 1 && data.url) {
+        const n = await countPdfPagesFromUrl(data.url);
+        if (n > 1) {
+          try { await fetch(`${base}/drawings/${d.id}/pages`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_count: n }) }); } catch { /* ignore */ }
+          data = (await (await fetch(`${base}/drawings/${d.id}`)).json()).drawing as PlanDetail | undefined;
+        }
+      }
+      if (data && data.page_count !== d.page_count) setDrawings((prev) => prev.map((x) => x.id === d.id ? { ...x, page_count: data!.page_count } : x));
       setDetail(data ?? null);
       setSelectedPageId(data?.pages[0]?.id ?? null);
     } catch { setDetail(null); } finally { setLoadingDetail(false); }
@@ -47,8 +76,17 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
         const res = await fetch(`${base}/drawings`, { method: "POST", body: form });
         const data = await res.json();
         if (!res.ok) { setError(data.error || "Upload failed"); continue; }
-        setDrawings((prev) => [data.drawing, ...prev]);
-        void openDrawing(data.drawing);
+        let drawing = data.drawing as Drawing;
+        // Break multi-page PDFs into pages using a reliable client-side count.
+        if ((file.type || "").includes("pdf") || /\.pdf$/i.test(file.name)) {
+          const n = await countPdfPagesClient(file);
+          if (n > 1 && n !== drawing.page_count) {
+            try { await fetch(`${base}/drawings/${drawing.id}/pages`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_count: n }) }); } catch { /* ignore */ }
+            drawing = { ...drawing, page_count: n };
+          }
+        }
+        setDrawings((prev) => [drawing, ...prev]);
+        void openDrawing(drawing);
       }
     } catch { setError("Upload failed"); } finally { setUploading(false); if (fileRef.current) fileRef.current.value = ""; }
   }
