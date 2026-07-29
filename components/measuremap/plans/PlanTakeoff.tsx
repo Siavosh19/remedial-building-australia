@@ -20,7 +20,7 @@ import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import LineString from "ol/geom/LineString";
 import Polygon from "ol/geom/Polygon";
-import { Draw, Select, Modify, Translate, Snap, DragPan } from "ol/interaction";
+import { Draw, Select, Modify, Translate, Snap, DragPan, DragBox, defaults as defaultInteractions } from "ol/interaction";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import { defaults as defaultControls } from "ol/control";
@@ -155,6 +155,9 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const selectRef = useRef<Select | null>(null);
   const modifyRef = useRef<Modify | null>(null);
   const translateRef = useRef<Translate | null>(null);
+  const dragBoxRef = useRef<DragBox | null>(null);
+  const panRef = useRef<DragPan | null>(null);
+  const deleteSelectedRef = useRef<(id?: string) => void>(() => {});
   const ppmRef = useRef<number | null>(page.pixels_per_metre ?? null);
   const undoRef = useRef<Snapshot[]>([]);
   const redoRef = useRef<Snapshot[]>([]);
@@ -200,6 +203,17 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const [scaleUnit, setScaleUnit] = useState<"m" | "cm" | "mm">("m");
   const [colourFor, setColourFor] = useState<string | null>(null);
   const [renaming, setRenaming] = useState<string | null>(null);
+  const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(null);
+
+  function startPopupDrag(e: React.MouseEvent) {
+    e.preventDefault();
+    const parent = (e.currentTarget as HTMLElement).closest("section")?.getBoundingClientRect();
+    const base = popupPos ?? { x: parent ? parent.width - 296 : 12, y: 12 };
+    const startX = e.clientX, startY = e.clientY;
+    const onMove = (ev: MouseEvent) => setPopupPos({ x: base.x + ev.clientX - startX, y: base.y + ev.clientY - startY });
+    const onUp = () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    window.addEventListener("mousemove", onMove); window.addEventListener("mouseup", onUp);
+  }
 
   const itemsRef = useRef(items); itemsRef.current = items;
   const activeIdRef = useRef(activeItemId); activeIdRef.current = activeItemId;
@@ -249,6 +263,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
       const map = new Map({
         target: mapEl.current, layers: [imageLayer, borderLayer, vector],
         controls: defaultControls({ zoom: false, attribution: false }),
+        interactions: defaultInteractions({ dragPan: false }), // left-drag reserved for box-select; pan via middle-mouse / Pan tool
         view: new View({ projection, center: getCenter(extent), zoom: 1, maxZoom: 8 }), // no extent lock → free zoom-out
       });
       // Middle mouse button (scroll-wheel press) pans.
@@ -280,6 +295,17 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         if (vBarRef.current) { vBarRef.current.style.top = `${vy * 100}%`; vBarRef.current.style.height = `${Math.max(vh * 100, 3)}%`; }
       };
       map.on("postrender", updateBars); updateBars();
+      // Right-click deletes the takeoff under the cursor (or the current selection).
+      mapEl.current.addEventListener("contextmenu", (ev) => {
+        ev.preventDefault();
+        const m = mapRef.current; if (!m) return;
+        const px = m.getEventPixel(ev);
+        let hit: string | undefined;
+        m.forEachFeatureAtPixel(px, (f) => { const id = f.get("measurementId") as string | undefined; if (id) { hit = id; return true; } return false; }, { layerFilter: (l) => l === vectorLayerRef.current, hitTolerance: 8 });
+        const hasSel = !!selRef.current || (selectRef.current?.getFeatures().getLength() ?? 0) > 0;
+        if (hit) deleteSelectedRef.current(hit);
+        else if (hasSel) deleteSelectedRef.current();
+      });
       setLoading(false);
       try {
         const [tk, cats] = await Promise.all([
@@ -316,6 +342,8 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     if (translateRef.current) { map.removeInteraction(translateRef.current); translateRef.current = null; }
     if (snapRef.current) { map.removeInteraction(snapRef.current); snapRef.current = null; }
     if (cornerSnapRef.current) { map.removeInteraction(cornerSnapRef.current); cornerSnapRef.current = null; }
+    if (dragBoxRef.current) { map.removeInteraction(dragBoxRef.current); dragBoxRef.current = null; }
+    if (panRef.current) { map.removeInteraction(panRef.current); panRef.current = null; }
 
     // Ortho: constrain the floating vertex to horizontal/vertical while drawing.
     const attachOrtho = (draw: Draw) => draw.on("drawstart", (e) => {
@@ -335,15 +363,25 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     if (tool === "select") {
       const select = new Select({ style: styleFor as never, hitTolerance: 8, layers: (l) => l === vectorLayerRef.current });
       select.on("select", (e) => { const f = e.selected[0]; setSelectedMeasurementId(f ? (f.get("measurementId") as string) : null); if (f?.get("itemId")) setActiveItemId(f.get("itemId") as string); });
+      // Marquee (box) select: hold left button and drag across takeoffs.
+      const dragBox = new DragBox();
+      dragBox.on("boxend", () => {
+        const ext = dragBox.getGeometry().getExtent();
+        const feats = select.getFeatures();
+        feats.clear();
+        sourceRef.current.forEachFeatureInExtent(ext, (f) => { feats.push(f); });
+        const arr = feats.getArray();
+        setSelectedMeasurementId(arr.length ? (arr[arr.length - 1].get("measurementId") as string) : null);
+      });
       const modify = new Modify({ source: sourceRef.current });
       modify.on("modifyend", (e) => e.features.forEach((f) => void persistGeometry(f)));
       const translate = new Translate({ features: select.getFeatures() });
       translate.on("translateend", (e) => e.features.forEach((f) => void persistGeometry(f)));
-      map.addInteraction(select); map.addInteraction(modify); map.addInteraction(translate);
-      selectRef.current = select; modifyRef.current = modify; translateRef.current = translate;
+      map.addInteraction(select); map.addInteraction(dragBox); map.addInteraction(modify); map.addInteraction(translate);
+      selectRef.current = select; dragBoxRef.current = dragBox; modifyRef.current = modify; translateRef.current = translate;
       return;
     }
-    if (tool === "pan") return;
+    if (tool === "pan") { const dp = new DragPan(); map.addInteraction(dp); panRef.current = dp; return; }
 
     if (tool === "scale") {
       const draw = new Draw({ source: new VectorSource(), type: "LineString", maxPoints: 2 });
@@ -366,7 +404,10 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
       if (e.key === "Escape") { drawRef.current?.abortDrawing(); setTool("select"); setNamePopupOpen(false); setColourFor(null); }
-      if ((e.key === "Delete" || e.key === "Backspace") && selRef.current && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); void removeMeasurement(selRef.current); }
+      if ((e.key === "Delete" || e.key === "Backspace") && tag !== "INPUT" && tag !== "TEXTAREA") {
+        const hasSel = !!selRef.current || (selectRef.current?.getFeatures().getLength() ?? 0) > 0;
+        if (hasSel) { e.preventDefault(); deleteSelectedRef.current(); }
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -451,6 +492,20 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     setSelectedMeasurementId(null);
     try { await api.removeMeasurement(projectId, id); setItems((prev) => prev.map((i) => ({ ...i, measurements: i.measurements.filter((m) => m.id !== id) })).filter((i) => i.measurements.length > 0)); } catch { setSaveStatus("error"); }
   }
+  // Delete the current selection (single or marquee), optionally including a right-clicked feature.
+  async function deleteSelected(extraId?: string) {
+    const ids = new Set<string>();
+    selectRef.current?.getFeatures().forEach((f) => { const id = f.get("measurementId") as string; if (id) ids.add(id); });
+    if (extraId) ids.add(extraId);
+    if (!ids.size && selRef.current) ids.add(selRef.current);
+    if (!ids.size) return;
+    selectRef.current?.getFeatures().clear();
+    setSelectedMeasurementId(null);
+    ids.forEach((id) => { const f = sourceRef.current.getFeatureById(id); if (f) sourceRef.current.removeFeature(f); });
+    setItems((prev) => prev.map((i) => ({ ...i, measurements: i.measurements.filter((m) => !ids.has(m.id)) })).filter((i) => i.measurements.length > 0));
+    for (const id of ids) { try { await api.removeMeasurement(projectId, id); } catch { setSaveStatus("error"); } }
+  }
+  deleteSelectedRef.current = (id?: string) => void deleteSelected(id);
   async function undo() { const s = undoRef.current.pop(); if (!s) return; const f = sourceRef.current.getFeatureById(s.measurementId); if (f) sourceRef.current.removeFeature(f); setItems((prev) => prev.map((i) => i.id === s.itemId ? { ...i, measurements: i.measurements.filter((m) => m.id !== s.measurementId) } : i)); try { await api.removeMeasurement(projectId, s.measurementId); redoRef.current.push(s); refreshUndo(); } catch { setSaveStatus("error"); } }
   async function redo() {
     const s = redoRef.current.pop(); if (!s) return;
@@ -480,7 +535,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     const mtype = TOOL_META[t as "dimension" | "area" | "linear" | "count"].type;
     const n = items.filter((i) => i.measurement_type === mtype).length + 1;
     const name = `${TYPE_LABEL[mtype]} ${n}`; const colour = COLOURS[items.length % COLOURS.length];
-    pendingRef.current = { name, colour }; setNewName(name); setNewColour(colour); setPendingType(t as "dimension" | "area" | "linear" | "count"); setNamePopupOpen(true); setActiveItemId(null); setTool(t);
+    pendingRef.current = { name, colour }; setNewName(name); setNewColour(colour); setPendingType(t as "dimension" | "area" | "linear" | "count"); setPopupPos(null); setNamePopupOpen(true); setActiveItemId(null); setTool(t);
   }
   function confirmScale() {
     const v = parseFloat(scaleValue);
@@ -519,11 +574,9 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         <Group label="Zoom / Pan" tone="#343A3E"><TBtn tone="#343A3E" label="Fit" Icon={Maximize2} onClick={fitPage} /><TBtn tone="#343A3E" label="In" Icon={ZoomIn} onClick={() => zoomBy(0.5)} /><TBtn tone="#343A3E" label="Out" Icon={ZoomOut} onClick={() => zoomBy(-0.5)} /><TBtn tone="#343A3E" label="Pan" Icon={Move} active={tool === "pan"} onClick={() => pickTool("pan")} /></Group>
         <Group label="Measure" tone="#0369a1"><TBtn tone="#0369a1" label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => pickTool("scale")} /><TBtn tone="#0369a1" label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => pickTool("dimension")} /></Group>
         <Group label="Takeoff" tone="#0f7a4d"><TBtn tone="#0f7a4d" label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => pickTool("area")} /><TBtn tone="#0f7a4d" label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => pickTool("linear")} /><TBtn tone="#0f7a4d" label="Count" Icon={MapPin} active={tool === "count"} onClick={() => pickTool("count")} /></Group>
-        <Group label="Edit" tone="#dc2626" last><TBtn tone="#dc2626" label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn tone="#dc2626" label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn tone="#dc2626" label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn tone="#dc2626" label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn tone="#dc2626" label="Delete" Icon={Trash2} onClick={() => selectedMeasurementId && void removeMeasurement(selectedMeasurementId)} disabled={!selectedMeasurementId} /></Group>
+        <Group label="Edit" tone="#dc2626" last><TBtn tone="#dc2626" label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn tone="#dc2626" label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn tone="#dc2626" label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn tone="#dc2626" label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn tone="#dc2626" label="Delete" Icon={Trash2} onClick={() => deleteSelectedRef.current()} disabled={!selectedMeasurementId} /></Group>
         <div className="ml-auto flex items-center gap-2 pr-2 text-[13px]">
           <span className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 font-bold ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}><PencilRuler size={14} /> {ppm ? `SCALED 1:${Math.round(5669.29 / ppm)}` : "NOT SCALED"}</span>
-          {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-4 w-4 animate-spin" /> Saving</span>}
-          {saveStatus === "saved" && <span className="flex items-center gap-1 text-[#0369a1]"><Check className="h-4 w-4" /> Saved</span>}
           {saveStatus === "error" && <span className="text-[#dc2626]">Save failed</span>}
         </div>
       </div>
@@ -539,10 +592,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         <div className="relative flex shrink-0" style={{ width: catW }} onClick={(e) => e.stopPropagation()}>
         <aside className="flex w-full flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]">
           <div className="px-3 pt-3">
-            <div className="flex items-center gap-2">
-              <button onClick={() => setAddingCategory((v) => !v)} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white hover:bg-[#075985]"><FolderPlus size={18} /> Add Category</button>
-              <button onClick={() => setCatCollapsed(true)} title="Collapse panel" className="grid h-11 w-9 shrink-0 place-items-center rounded-lg border border-[#D7DCE0] text-[#586066] hover:bg-[#F1F3F4]"><PanelLeftClose size={18} /></button>
-            </div>
+            <button onClick={() => setAddingCategory((v) => !v)} className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white hover:bg-[#075985]"><FolderPlus size={18} /> Add Category</button>
             {addingCategory && <AddCategoryForm onAdd={addCategory} onCancel={() => setAddingCategory(false)} />}
           </div>
           <div className="mt-2 min-h-0 flex-1 overflow-y-auto px-2 pb-3">
@@ -564,14 +614,15 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         <div onMouseDown={startCatResize} title="Drag to resize" className="group absolute -right-1.5 top-0 z-10 flex h-full w-3 cursor-col-resize items-center justify-center">
           <GripVertical size={14} className="text-[#B7BEC3] opacity-0 group-hover:opacity-100" />
         </div>
+        <button onClick={() => setCatCollapsed(true)} title="Collapse panel" className="absolute right-0 top-1/2 z-20 grid h-14 w-5 -translate-y-1/2 place-items-center rounded-l-md border border-r-0 border-[#D7DCE0] bg-white text-[#586066] shadow-sm hover:bg-[#EAF3FA] hover:text-[#0369a1]"><PanelLeftClose size={15} /></button>
         </div>
         )}
 
         {/* Canvas */}
         <section className="relative min-w-0 flex-1 overflow-hidden rounded-xl bg-[#565b5e] shadow-[0_2px_10px_rgba(15,23,42,0.10)]" onClick={(e) => e.stopPropagation()}>
           {namePopupOpen && pendingType && (
-            <div className="absolute left-1/2 top-3 z-30 w-[280px] -translate-x-1/2 rounded-md border border-[#7dd3fc] bg-white p-3 shadow-lg">
-              <div className="mb-2 flex items-center justify-between"><span className="text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">New {TYPE_LABEL[TOOL_META[pendingType].type]} measurement</span><button onClick={() => setNamePopupOpen(false)} className="grid h-5 w-5 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={13} /></button></div>
+            <div style={popupPos ? { left: popupPos.x, top: popupPos.y } : undefined} className={`absolute z-30 w-[280px] rounded-md border border-[#7dd3fc] bg-white p-3 shadow-lg ${popupPos ? "" : "right-3 top-3"}`}>
+              <div onMouseDown={startPopupDrag} className="mb-2 flex cursor-move items-center justify-between"><span className="text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">New {TYPE_LABEL[TOOL_META[pendingType].type]} measurement</span><button onMouseDown={(e) => e.stopPropagation()} onClick={() => setNamePopupOpen(false)} className="grid h-5 w-5 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={13} /></button></div>
               <input autoFocus value={newName} onChange={(e) => { setNewName(e.target.value); if (pendingRef.current) pendingRef.current.name = e.target.value; }} onKeyDown={(e) => { if (e.key === "Enter") setNamePopupOpen(false); }} placeholder="Measurement name" className="w-full rounded border border-[#D3D9DD] px-2 py-1.5 text-[12px] outline-none focus:border-[#0369a1]" />
               <div className="mt-2 flex flex-wrap gap-1.5">{COLOURS.map((c) => <button key={c} onClick={() => { setNewColour(c); if (pendingRef.current) pendingRef.current.colour = c; }} className={`h-6 w-6 rounded-full border-2 ${newColour === c ? "border-[#212121]" : "border-transparent"}`} style={{ backgroundColor: c }} aria-label={c} />)}</div>
               <button onClick={() => setNamePopupOpen(false)} className="mt-3 h-8 w-full rounded bg-[#0369a1] text-[12px] font-semibold text-white hover:bg-[#075985]">Start measuring</button>

@@ -147,12 +147,9 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
       <div className="relative flex shrink-0" style={{ width: asideW }} onClick={(e) => e.stopPropagation()}>
       <aside className="flex w-full flex-col overflow-hidden rounded-xl border border-[#D7DCE0] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.10)]">
         <div className="border-b border-[#E2E5E7] p-3">
-          <div className="flex items-center gap-2">
-            <button onClick={() => fileRef.current?.click()} disabled={uploading} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white transition hover:bg-[#075985] disabled:opacity-60">
-              {uploading ? <><Loader2 className="h-5 w-5 animate-spin" /> Uploading…</> : <><Upload size={18} /> Upload Plans</>}
-            </button>
-            <button onClick={() => setCollapsed(true)} title="Collapse panel" className="grid h-11 w-9 shrink-0 place-items-center rounded-lg border border-[#D7DCE0] text-[#586066] hover:bg-[#F1F3F4]"><PanelLeftClose size={18} /></button>
-          </div>
+          <button onClick={() => fileRef.current?.click()} disabled={uploading} className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#0369a1] text-[15px] font-bold text-white transition hover:bg-[#075985] disabled:opacity-60">
+            {uploading ? <><Loader2 className="h-5 w-5 animate-spin" /> Uploading…</> : <><Upload size={18} /> Upload Plans</>}
+          </button>
           <input ref={fileRef} type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,application/pdf,image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
           <p className="mt-2 text-center text-[12px] text-[#8A9196]">PDF, PNG, JPG or WEBP · up to 40 MB</p>
           {error && <p className="mt-2 flex items-center gap-1 text-[13px] text-[#dc2626]"><AlertTriangle size={14} /> {error}</p>}
@@ -221,6 +218,7 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
       <div onMouseDown={startResize} title="Drag to resize" className="absolute -right-1.5 top-0 z-10 flex h-full w-3 cursor-col-resize items-center justify-center group">
         <GripVertical size={14} className="text-[#B7BEC3] opacity-0 group-hover:opacity-100" />
       </div>
+      <button onClick={() => setCollapsed(true)} title="Collapse panel" className="absolute right-0 top-1/2 z-20 grid h-14 w-5 -translate-y-1/2 place-items-center rounded-l-md border border-r-0 border-[#D7DCE0] bg-white text-[#586066] shadow-sm hover:bg-[#EAF3FA] hover:text-[#0369a1]"><PanelLeftClose size={15} /></button>
       </div>
       )}
 
