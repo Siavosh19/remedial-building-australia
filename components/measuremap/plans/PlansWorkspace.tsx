@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight } from "lucide-react";
+import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler } from "lucide-react";
 import PlanTakeoffLoader from "./PlanTakeoffLoader";
 
 type Drawing = { id: string; filename: string; mime_type: string | null; file_size: number; page_count: number; created_at: string };
@@ -93,9 +93,10 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
                   <div className="ml-6 mt-0.5 border-l border-[#EAECEE] pl-1">
                     {detail.pages.map((p) => (
                       <button key={p.id} onClick={() => setSelectedPageId(p.id)}
-                        className={["flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[12px]", selectedPageId === p.id ? "bg-[#EAF3FA] font-semibold text-[#0c4a6e]" : "text-[#586066] hover:bg-[#F5F6F7]"].join(" ")}>
+                        className={["flex w-full items-center gap-1.5 rounded px-2 py-1.5 text-left text-[12px]", selectedPageId === p.id ? "bg-[#EAF3FA] font-semibold text-[#0c4a6e]" : "text-[#586066] hover:bg-[#F5F6F7]"].join(" ")}>
+                        {p.scale_status === "scaled" && <PencilRuler size={11} className="shrink-0 text-[#0f7a4d]" />}
                         Page {p.page_number}
-                        {p.scale_status === "scaled" && <span className="ml-auto text-[9px] text-[#0f7a4d]">scaled</span>}
+                        {p.scale_status === "scaled" && <span className="ml-auto text-[9px] font-semibold text-[#0f7a4d]">SCALED</span>}
                       </button>
                     ))}
                   </div>

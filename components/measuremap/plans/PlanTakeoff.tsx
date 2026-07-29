@@ -20,7 +20,7 @@ import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import LineString from "ol/geom/LineString";
 import Polygon from "ol/geom/Polygon";
-import { Draw, Select, Modify, Translate, Snap } from "ol/interaction";
+import { Draw, Select, Modify, Translate, Snap, DragPan } from "ol/interaction";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import { defaults as defaultControls } from "ol/control";
@@ -44,6 +44,9 @@ type Snapshot = { measurementId: string; itemId: string; gj: unknown; qty: numbe
 
 const geojson = new GeoJSON();
 const COLOURS = ["#0369a1", "#7c3aed", "#dc2626", "#0f7a4d", "#b45309", "#0891b2", "#db2777", "#4f46e5", "#65a30d", "#334155"];
+// PDFs are rasterised at this scale (must match loadImage's getViewport scale).
+const RASTER_SCALE = 2;
+const PX_PER_MM = (RASTER_SCALE * 72) / 25.4; // ~5.67 px per paper-mm on the rasterised page
 const TYPE_LABEL: Record<MType, string> = { area: "Area", linear: "Distance", perimeter: "Linear", count: "Count" };
 const UNIT_FOR: Record<MType, string> = { area: "m2", linear: "m", perimeter: "m", count: "ea" };
 const TOOL_META: Record<"dimension" | "area" | "linear" | "count", { geom: "LineString" | "Polygon" | "Point"; maxPoints?: number; type: MType }> = {
@@ -178,13 +181,19 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
       imageExtentRef.current = extent;
       const projection = new Projection({ code: "plan-px", units: "pixels", extent });
       const imageLayer = new ImageLayer({ source: new Static({ url: img.url, projection, imageExtent: extent }) });
+      // Solid frame around the page.
+      const borderSource = new VectorSource();
+      borderSource.addFeature(new Feature(new Polygon([[[0, 0], [extent[2], 0], [extent[2], extent[3]], [0, extent[3]], [0, 0]]])));
+      const borderLayer = new VectorLayer({ source: borderSource, style: new Style({ stroke: new Stroke({ color: "#1f2937", width: 2 }) }) });
       const vector = new VectorLayer({ source: sourceRef.current, style: styleFor as never });
       vectorLayerRef.current = vector;
       const map = new Map({
-        target: mapEl.current, layers: [imageLayer, vector],
+        target: mapEl.current, layers: [imageLayer, borderLayer, vector],
         controls: defaultControls({ zoom: false, attribution: false }),
         view: new View({ projection, center: getCenter(extent), zoom: 1, maxZoom: 8 }), // no extent lock → free zoom-out
       });
+      // Middle mouse button (scroll-wheel press) pans.
+      map.addInteraction(new DragPan({ condition: (mbe) => { const oe = mbe.originalEvent as unknown as MouseEvent; return oe.button === 1 || oe.buttons === 4; } }));
       map.getView().fit(extent, { padding: [40, 40, 40, 40] });
       mapRef.current = map;
       // Crosshair guides (full-width/height) + live cursor readout in metres.
@@ -395,6 +404,11 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     const metres = scaleUnit === "mm" ? v / 1000 : scaleUnit === "cm" ? v / 100 : v;
     pendingScaleRef.current = metres; setScaleOpen(false); setTool("scale");
   }
+  function applyRatio(R: number) {
+    const p = (PX_PER_MM * 1000) / R; // pixels per real metre at scale 1:R
+    setPpm(p); ppmRef.current = p; setScaleOpen(false); setSaveStatus("saving");
+    fetch(`/api/measuremap/projects/${projectId}/drawings/${drawing.id}/scale`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_id: page.id, pixels_per_metre: p }) }).then(() => setSaveStatus("saved")).catch(() => setSaveStatus("error"));
+  }
   function clearScale() { setPpm(null); ppmRef.current = null; setScaleOpen(false); }
 
   function zoomBy(d: number) { const v = mapRef.current?.getView(); if (v) v.animate({ zoom: (v.getZoom() ?? 1) + d, duration: 150 }); }
@@ -408,12 +422,12 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
     <div className="flex h-full flex-col" onClick={() => { setColourFor(null); }}>
       {/* Ribbon */}
       <div className="flex shrink-0 items-stretch border-b border-[#D5DADD] bg-white px-2 py-1" onClick={(e) => e.stopPropagation()}>
-        <Group label="Zoom / Pan"><TBtn label="Fit" Icon={Maximize2} onClick={fitPage} /><TBtn label="In" Icon={ZoomIn} onClick={() => zoomBy(1)} /><TBtn label="Out" Icon={ZoomOut} onClick={() => zoomBy(-1)} /><TBtn label="Pan" Icon={Move} active={tool === "pan"} onClick={() => pickTool("pan")} /></Group>
-        <Group label="Measure"><TBtn label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => pickTool("scale")} /><TBtn label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => pickTool("dimension")} /></Group>
-        <Group label="Takeoff"><TBtn label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => pickTool("area")} /><TBtn label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => pickTool("linear")} /><TBtn label="Count" Icon={MapPin} active={tool === "count"} onClick={() => pickTool("count")} /></Group>
-        <Group label="Edit" last><TBtn label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn label="Delete" Icon={Trash2} onClick={() => selectedMeasurementId && void removeMeasurement(selectedMeasurementId)} disabled={!selectedMeasurementId} /></Group>
+        <Group label="Zoom / Pan" tone="#343A3E"><TBtn tone="#343A3E" label="Fit" Icon={Maximize2} onClick={fitPage} /><TBtn tone="#343A3E" label="In" Icon={ZoomIn} onClick={() => zoomBy(0.5)} /><TBtn tone="#343A3E" label="Out" Icon={ZoomOut} onClick={() => zoomBy(-0.5)} /><TBtn tone="#343A3E" label="Pan" Icon={Move} active={tool === "pan"} onClick={() => pickTool("pan")} /></Group>
+        <Group label="Measure" tone="#0369a1"><TBtn tone="#0369a1" label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => pickTool("scale")} /><TBtn tone="#0369a1" label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => pickTool("dimension")} /></Group>
+        <Group label="Takeoff" tone="#0f7a4d"><TBtn tone="#0f7a4d" label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => pickTool("area")} /><TBtn tone="#0f7a4d" label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => pickTool("linear")} /><TBtn tone="#0f7a4d" label="Count" Icon={MapPin} active={tool === "count"} onClick={() => pickTool("count")} /></Group>
+        <Group label="Edit" tone="#dc2626" last><TBtn tone="#dc2626" label="Select" Icon={MousePointer2} active={tool === "select"} onClick={() => pickTool("select")} /><TBtn tone="#dc2626" label="Rotate" Icon={RotateCw} onClick={rotate} /><TBtn tone="#dc2626" label="Undo" Icon={Undo2} onClick={() => void undo()} disabled={!canUndo} /><TBtn tone="#dc2626" label="Redo" Icon={Redo2} onClick={() => void redo()} disabled={!canRedo} /><TBtn tone="#dc2626" label="Delete" Icon={Trash2} onClick={() => selectedMeasurementId && void removeMeasurement(selectedMeasurementId)} disabled={!selectedMeasurementId} /></Group>
         <div className="ml-auto flex items-center gap-2 pr-2 text-[11px]">
-          <span className={`flex items-center gap-1 rounded px-2 py-1 font-medium ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}><PencilRuler size={12} /> {ppm ? `Scale ${ppm.toFixed(1)} px/m` : "Scale not set"}</span>
+          <span className={`flex items-center gap-1 rounded px-2 py-1 font-semibold ${ppm ? "bg-[#E6F5EE] text-[#0f7a4d]" : "bg-[#FDF3E3] text-[#b45309]"}`}><PencilRuler size={12} /> {ppm ? "SCALED" : "NOT SCALED"}</span>
           {saveStatus === "saving" && <span className="flex items-center gap-1 text-[#586066]"><Loader2 className="h-3 w-3 animate-spin" /> Saving</span>}
           {saveStatus === "saved" && <span className="flex items-center gap-1 text-[#0369a1]"><Check className="h-3 w-3" /> Saved</span>}
           {saveStatus === "error" && <span className="text-[#dc2626]">Save failed</span>}
@@ -459,8 +473,8 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
           {/* Crosshair guides while drawing */}
           {tool !== "select" && tool !== "pan" && (
             <>
-              <div ref={hLineRef} className="pointer-events-none absolute left-0 right-0 z-20 h-px bg-[#e4b000]/80" style={{ top: 0 }} />
-              <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px bg-[#e4b000]/80" style={{ left: 0 }} />
+              <div ref={hLineRef} className="pointer-events-none absolute left-0 right-0 z-20 h-px" style={{ top: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
+              <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px" style={{ left: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
             </>
           )}
           <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
@@ -484,7 +498,18 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
                 <input autoFocus type="number" value={scaleValue} onChange={(e) => setScaleValue(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") confirmScale(); }} placeholder="e.g. 10" className="h-9 flex-1 rounded border border-[#D3D9DD] px-3 text-[13px] outline-none focus:border-[#0369a1]" />
                 <select value={scaleUnit} onChange={(e) => setScaleUnit(e.target.value as "m" | "cm" | "mm")} className="h-9 w-[80px] rounded border border-[#D3D9DD] px-2 text-[13px] outline-none"><option value="m">m</option><option value="cm">cm</option><option value="mm">mm</option></select>
               </div>
-              {ppm && <p className="mt-3 text-[11px] text-[#0f7a4d]">Current scale: {ppm.toFixed(1)} px/m</p>}
+              {ppm && <p className="mt-3 text-[11px] text-[#0f7a4d]">Currently SCALED.</p>}
+              {((drawing.mime_type ?? "").includes("pdf") || /\.pdf$/i.test(drawing.filename)) && (
+                <div className="mt-4 border-t border-[#EEF0F1] pt-3">
+                  <p className="mb-2 text-[11px] font-semibold text-[#586066]">Or set by the drawing&apos;s stated ratio</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[50, 100, 200, 500].map((R) => (
+                      <button key={R} onClick={() => applyRatio(R)} className="rounded border border-[#CCD2D6] px-2.5 py-1 text-[12px] font-medium hover:bg-[#EAF3FA]">1:{R}</button>
+                    ))}
+                  </div>
+                  <p className="mt-1.5 text-[10px] text-[#8A9196]">Assumes the PDF is at true paper size — verify against a known dimension.</p>
+                </div>
+              )}
             </div>
             <div className="flex items-center justify-between border-t border-[#E2E5E7] px-4 py-3">
               <button onClick={clearScale} className="h-9 rounded border border-[#CCD2D6] px-3 text-[12px] font-semibold text-[#586066] hover:bg-[#F5F6F7]">Clear Scale</button>
@@ -500,11 +525,12 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   );
 }
 
-function Group({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
-  return <div className={`flex flex-col items-center px-2 ${last ? "" : "border-r border-[#E7EAEC]"}`}><div className="flex items-stretch gap-0.5">{children}</div><span className="mt-0.5 text-[9px] uppercase tracking-wide text-[#9AA0A5]">{label}</span></div>;
+function Group({ label, children, last, tone }: { label: string; children: React.ReactNode; last?: boolean; tone?: string }) {
+  return <div className={`flex flex-col items-center px-2 ${last ? "" : "border-r border-[#E7EAEC]"}`}><div className="flex items-stretch gap-0.5">{children}</div><span className="mt-0.5 text-[9px] font-semibold uppercase tracking-wide" style={{ color: tone ?? "#9AA0A5" }}>{label}</span></div>;
 }
-function TBtn({ label, Icon, onClick, active, disabled }: { label: string; Icon: typeof MapPin; onClick: () => void; active?: boolean; disabled?: boolean }) {
-  return <button onClick={onClick} disabled={disabled} title={label} className={["flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] transition", active ? "bg-[#0369a1] text-white" : "text-[#343A3E] hover:bg-[#F1F3F4]", disabled ? "opacity-30" : ""].join(" ")}><Icon size={17} /><span>{label}</span></button>;
+function TBtn({ label, Icon, onClick, active, disabled, tone }: { label: string; Icon: typeof MapPin; onClick: () => void; active?: boolean; disabled?: boolean; tone?: string }) {
+  const t = tone ?? "#343A3E";
+  return <button onClick={onClick} disabled={disabled} title={label} style={active ? { backgroundColor: t, color: "#fff" } : { color: t }} className={["flex w-[52px] flex-col items-center justify-center gap-0.5 rounded py-1 text-[9px] transition", active ? "" : "hover:bg-[#F1F3F4]", disabled ? "opacity-30" : ""].join(" ")}><Icon size={17} /><span>{label}</span></button>;
 }
 
 function AddCategoryForm({ onAdd, onCancel }: { onAdd: (n: string, d: string) => void; onCancel: () => void }) {
