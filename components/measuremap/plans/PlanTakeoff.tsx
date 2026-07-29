@@ -263,13 +263,26 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
       const map = new Map({
         target: mapEl.current, layers: [imageLayer, borderLayer, vector],
         controls: defaultControls({ zoom: false, attribution: false }),
-        interactions: defaultInteractions({ dragPan: false }), // left-drag reserved for box-select; pan via middle-mouse / Pan tool
+        interactions: defaultInteractions({ dragPan: false, mouseWheelZoom: false }), // left-drag = box-select; pan via middle-mouse / trackpad swipe; pinch = zoom
         view: new View({ projection, center: getCenter(extent), zoom: 1, maxZoom: 8 }), // no extent lock → free zoom-out
       });
-      // Middle mouse button (scroll-wheel press) pans.
+      // Middle mouse button (scroll-wheel press-drag) pans.
       map.addInteraction(new DragPan({ condition: (mbe) => { const oe = mbe.originalEvent as unknown as MouseEvent; return oe.button === 1 || oe.buttons === 4; } }));
       map.getView().fit(extent, { padding: [40, 40, 40, 40] });
       mapRef.current = map;
+      // Trackpad two-finger swipe / wheel scroll → pan; pinch (ctrl+wheel) → zoom.
+      map.getViewport().addEventListener("wheel", (e) => {
+        e.preventDefault();
+        const view = map.getView();
+        if (e.ctrlKey) { // pinch-zoom (and ctrl+wheel)
+          const z = view.getZoom() ?? 1;
+          view.setZoom(z - e.deltaY * 0.01);
+          return;
+        }
+        const res = view.getResolution() ?? 1;
+        const c = view.getCenter();
+        if (c) view.setCenter([c[0] + e.deltaX * res, c[1] - e.deltaY * res]); // y is up in the pixel projection
+      }, { passive: false });
       // Crosshair guides (full-width/height) + live cursor readout in metres.
       map.on("pointermove", (e) => {
         if (hLineRef.current) hLineRef.current.style.top = `${e.pixel[1]}px`;
