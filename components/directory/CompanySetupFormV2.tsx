@@ -593,15 +593,16 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
                   {plan.everything && (
                     <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{plan.everything}</p>
                   )}
-                  {/* Bullet text at 0.6× size and 0.5× spacing to fit more; green
-                      ticks on all plans (negatives keep the red cross). */}
-                  <ul className="mt-2 grid gap-x-4 gap-y-[5px] sm:grid-cols-2">
+                  {/* Bullets: compact on mobile (0.6× text, 0.5× spacing) to fit
+                      more; full original size/spacing on desktop (sm+). Green ticks
+                      on all plans (negatives keep the red cross). */}
+                  <ul className="mt-2 grid gap-x-4 gap-y-[5px] sm:grid-cols-2 sm:gap-x-8 sm:gap-y-2.5">
                     {plan.features.map((f) => (
-                      <li key={f.t} className="flex items-start gap-1" style={{ fontSize: "8.4px", lineHeight: 1.35 }}>
+                      <li key={f.t} className="flex items-start gap-1 text-[8.4px] leading-[1.35] sm:gap-2 sm:text-sm sm:leading-snug">
                         {f.neg ? (
-                          <X size={10} strokeWidth={2.5} className="mt-[1px] shrink-0 text-red-500" />
+                          <X strokeWidth={2.5} className="mt-[1px] h-2.5 w-2.5 shrink-0 text-red-500 sm:mt-0.5 sm:h-4 sm:w-4" />
                         ) : (
-                          <Check size={10} strokeWidth={3} className="mt-[1px] shrink-0" style={{ color: "#16A34A" }} />
+                          <Check strokeWidth={3} className="mt-[1px] h-2.5 w-2.5 shrink-0 sm:mt-0.5 sm:h-4 sm:w-4" style={{ color: "#16A34A" }} />
                         )}
                         <span className={f.neg ? "text-red-600" : "text-slate-700"}>{f.t}</span>
                       </li>
