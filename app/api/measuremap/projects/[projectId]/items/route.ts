@@ -22,16 +22,19 @@ export async function POST(request: NextRequest, ctx: { params: Promise<{ projec
   if (!(await getOwnedProject(user.id, projectId))) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const body = await request.json().catch(() => null);
-  if (!body || typeof body.name !== "string" || !TYPES.includes(body.measurement_type)) {
+  const rowType = typeof body?.row_type === "string" ? body.row_type : "measured";
+  const hasType = TYPES.includes(body?.measurement_type);
+  if (!body || typeof body.name !== "string" || (rowType === "measured" && !hasType)) {
     return NextResponse.json({ error: "Invalid item" }, { status: 400 });
   }
   const item = await createItem(user.id, projectId, {
     name: body.name,
-    measurement_type: body.measurement_type,
+    measurement_type: hasType ? body.measurement_type : null,
     colour: typeof body.colour === "string" ? body.colour : "#0369a1",
-    unit: typeof body.unit === "string" ? body.unit : UNIT_FOR[body.measurement_type] ?? "ea",
+    unit: typeof body.unit === "string" ? body.unit : (hasType ? UNIT_FOR[body.measurement_type] ?? "ea" : "ea"),
     category_id: typeof body.category_id === "string" ? body.category_id : null,
     sort_order: typeof body.sort_order === "number" ? body.sort_order : 0,
+    row_type: rowType,
   });
   if (!item) return NextResponse.json({ error: "Create failed" }, { status: 400 });
   return NextResponse.json({ item });

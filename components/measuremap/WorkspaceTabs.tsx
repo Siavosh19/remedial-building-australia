@@ -12,6 +12,7 @@ export default function WorkspaceTabs({ projectId }: { projectId: string }) {
     { href: `${base}/overview`, label: "Overview" },
     { href: `${base}/map`, label: "Map Measure" },
     { href: `${base}/drawings`, label: "Plans & Takeoffs" },
+    { href: `${base}/estimate`, label: "Estimate" },
     { href: `${base}/export`, label: "Export" },
   ];
   return (

@@ -38,7 +38,7 @@ export default async function OverviewPage({ params }: { params: Promise<{ proje
           <SideLink href={`${base}/overview`} label="Overview" Icon={Home} active />
           <SideLink href={`${base}/map`} label="Map Measure" Icon={MapPin} />
           <SideLink href={`${base}/drawings`} label="Plans & Takeoffs" Icon={FileText} />
-          <SideItem label="Estimate" Icon={Calculator} />
+          <SideLink href={`${base}/estimate`} label="Estimate" Icon={Calculator} />
           <SideItem label="Reports" Icon={BarChart3} />
           <SideItem label="Files & Notes" Icon={Folder} />
         </nav>

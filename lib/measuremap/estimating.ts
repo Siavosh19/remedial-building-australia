@@ -162,16 +162,55 @@ export async function listItems(ownerUserId: number, projectId: string): Promise
   }));
 }
 
+// ── Estimate view — categories + items with derived measured quantity ───────
+export type EstimateItemDTO = {
+  id: string; category_id: string | null; name: string; description: string | null;
+  unit: string; measurement_type: string | null; colour: string; row_type: string;
+  manual_quantity: number; quantity_override: number | null; waste_percent: number;
+  material_rate: number; labour_rate: number; equipment_rate: number; subcontract_rate: number;
+  other_rate: number; lump_sum_amount: number; markup_percent: number; sort_order: number;
+  measured_quantity: number; map_count: number; plan_count: number;
+};
+
+export async function getEstimateData(ownerUserId: number, projectId: string): Promise<{ categories: CategoryDTO[]; items: EstimateItemDTO[] }> {
+  const [categories, rows] = await Promise.all([
+    listCategories(ownerUserId, projectId),
+    prisma.measureMapEstimateItem.findMany({
+      where: { project_id: projectId, owner_user_id: ownerUserId, deleted_at: null },
+      orderBy: [{ sort_order: "asc" }, { created_at: "asc" }],
+      include: { measurements: { where: { deleted_at: null }, select: { calculated_quantity: true, source_type: true } } },
+    }),
+  ]);
+  const items = rows.map((it) => {
+    let measured = 0, mapCount = 0, planCount = 0;
+    for (const m of it.measurements) {
+      measured += m.calculated_quantity;
+      if (m.source_type === "map") mapCount++; else if (m.source_type === "drawing") planCount++;
+    }
+    return {
+      id: it.id, category_id: it.category_id, name: it.name, description: it.description,
+      unit: it.unit, measurement_type: it.measurement_type, colour: it.colour, row_type: it.row_type,
+      manual_quantity: it.manual_quantity, quantity_override: it.quantity_override, waste_percent: it.waste_percent,
+      material_rate: it.material_rate, labour_rate: it.labour_rate, equipment_rate: it.equipment_rate,
+      subcontract_rate: it.subcontract_rate, other_rate: it.other_rate, lump_sum_amount: it.lump_sum_amount,
+      markup_percent: it.markup_percent, sort_order: it.sort_order,
+      measured_quantity: measured, map_count: mapCount, plan_count: planCount,
+    };
+  });
+  return { categories, items };
+}
+
 export async function createItem(
   ownerUserId: number,
   projectId: string,
   input: {
     name: string;
-    measurement_type: string; // area | linear | perimeter | count
-    colour: string;
+    measurement_type?: string | null; // area | linear | perimeter | count (null for manual/lump rows)
+    colour?: string;
     unit: string;
     category_id?: string | null;
     sort_order?: number;
+    row_type?: string; // measured | manual_quantity | lump_sum | provisional_sum | ...
   },
 ) {
   if (!(await assertProjectOwned(ownerUserId, projectId))) return null;
@@ -189,10 +228,10 @@ export async function createItem(
       owner_user_id: ownerUserId,
       category_id: input.category_id ?? null,
       name: input.name.trim() || "Untitled item",
-      measurement_type: input.measurement_type,
-      colour: input.colour,
+      measurement_type: input.measurement_type ?? null,
+      colour: input.colour ?? "#0369a1",
       unit: input.unit,
-      row_type: "measured",
+      row_type: input.row_type ?? "measured",
       sort_order: input.sort_order ?? 0,
       created_by: ownerUserId,
     },
@@ -207,7 +246,13 @@ export async function createItem(
 export async function updateItem(
   ownerUserId: number,
   itemId: string,
-  patch: Partial<{ name: string; description: string | null; colour: string; category_id: string | null; is_visible: boolean; is_locked: boolean; sort_order: number }>,
+  patch: Partial<{
+    name: string; description: string | null; colour: string; category_id: string | null;
+    is_visible: boolean; is_locked: boolean; sort_order: number;
+    unit: string; row_type: string; manual_quantity: number; quantity_override: number | null;
+    waste_percent: number; material_rate: number; labour_rate: number; equipment_rate: number;
+    subcontract_rate: number; other_rate: number; lump_sum_amount: number; markup_percent: number;
+  }>,
 ) {
   const res = await prisma.measureMapEstimateItem.updateMany({
     where: { id: itemId, owner_user_id: ownerUserId, deleted_at: null },
