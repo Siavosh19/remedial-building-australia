@@ -688,6 +688,17 @@ export default function MapWorkspace({
     try { await api.removeItem(project.id, it.id); } catch { setSaveStatus("error"); }
   }
 
+  async function clearFreeItems() {
+    const free = items.filter((i) => !i.category_id);
+    if (free.length === 0) return;
+    if (!confirm(`Remove all ${free.length} uncategorised (free) measurement(s)?`)) return;
+    free.forEach((it) => it.measurements.forEach((m) => { const f = sourceRef.current.getFeatureById(m.id); if (f) sourceRef.current.removeFeature(f); }));
+    const ids = new Set(free.map((i) => i.id));
+    setItems((prev) => prev.filter((i) => !ids.has(i.id)));
+    setMenuFor(null);
+    try { await Promise.all(free.map((it) => api.removeItem(project.id, it.id))); } catch { setSaveStatus("error"); }
+  }
+
   function selectItem(it: Item) {
     setActiveItemId(it.id);
     const map = mapRef.current;
@@ -807,6 +818,7 @@ export default function MapWorkspace({
               categories={categories}
               isFree
               onSetActive={() => setActiveCategoryId(null)}
+              onClearFree={clearFreeItems}
               onStartRename={(kind, id) => setRenaming({ kind, id })}
               onRenameCategory={renameCategory}
               onRenameItem={renameItem}
@@ -1001,6 +1013,7 @@ type GroupProps = {
   onMoveItem: (id: string, categoryId: string | null) => void;
   onToggleVisible: (it: Item) => void;
   onSelectItem: (it: Item) => void;
+  onClearFree?: () => void;
 };
 
 function CategoryGroup(p: GroupProps) {
@@ -1032,6 +1045,12 @@ function CategoryGroup(p: GroupProps) {
         )}
         {active && <span className="rounded bg-[#0369a1] px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide text-white">Active</span>}
         <span className="rounded bg-[#ECEFF1] px-1.5 py-0.5 text-[9px] text-[#5D656A]">{catTotal}</span>
+        {isFree && catTotal > 0 && (
+          <button onClick={(e) => { e.stopPropagation(); p.onClearFree?.(); }} title="Remove all free measurements"
+            className="grid h-6 w-6 place-items-center rounded text-[#8A9196] opacity-0 transition hover:bg-[#E8EBED] hover:text-[#dc2626] group-hover:opacity-100">
+            <Trash2 size={13} />
+          </button>
+        )}
         {!isFree && (
           <div className="relative">
             <button onClick={(e) => { e.stopPropagation(); p.onOpenMenu("category", cat.id); }} className="grid h-6 w-6 place-items-center rounded text-[#8A9196] opacity-0 transition hover:bg-[#E8EBED] group-hover:opacity-100">
