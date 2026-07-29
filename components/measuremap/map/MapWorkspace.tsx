@@ -19,14 +19,16 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import type Geometry from "ol/geom/Geometry";
 import { Draw, Select, Translate } from "ol/interaction";
+import { createBox } from "ol/interaction/Draw";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { getLength, getArea } from "ol/sphere";
 import { createEmpty, extend as extendExtent, isEmpty as extentIsEmpty } from "ol/extent";
 import { Style, Stroke, Fill, Circle as CircleStyle, Text as TextStyle, Icon } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import Overlay from "ol/Overlay";
-import Polygon from "ol/geom/Polygon";
+import Polygon, { fromCircle } from "ol/geom/Polygon";
 import LineString from "ol/geom/LineString";
+import type CircleGeom from "ol/geom/Circle";
 import { defaults as defaultControls, FullScreen, Attribution } from "ol/control";
 import type { FeatureLike } from "ol/Feature";
 import "ol/ol.css";
@@ -34,6 +36,7 @@ import "ol/ol.css";
 import {
   MousePointer2, Move, Ruler, Spline, Pentagon, MapPin, Trash2, Maximize2, Plus, Loader2, Check, Eye, EyeOff,
   Camera, Copy, Search, Layers, Map as MapIcon, Crosshair, MoreVertical, FolderPlus, ChevronDown, ChevronRight, Pencil, Palette, FolderInput, List, X,
+  Shapes, Type, Minus, ArrowUpRight, Square, Circle, Triangle,
 } from "lucide-react";
 import * as api from "./api";
 
@@ -63,10 +66,23 @@ function arrowStyle(colour: string, coord: number[], rotation: number): Style {
 }
 
 type MType = "area" | "linear" | "perimeter" | "count";
-type Tool = "select" | "pan" | MType;
+type MarkupKind = "text" | "line" | "arrow" | "rect" | "rectfill" | "circle" | "circlefill" | "triangle";
+type Tool = "select" | "pan" | MType | `mk-${MarkupKind}`;
 type Item = api.ApiItem;
 type Category = api.ApiCategory;
+type Annotation = api.ApiAnnotation;
 type SaveStatus = "idle" | "saving" | "saved" | "error";
+
+const MARKUP_TOOLS: { id: `mk-${MarkupKind}`; label: string; Icon: typeof Ruler }[] = [
+  { id: "mk-text", label: "Text", Icon: Type },
+  { id: "mk-line", label: "Line", Icon: Minus },
+  { id: "mk-arrow", label: "Arrow", Icon: ArrowUpRight },
+  { id: "mk-rect", label: "Box", Icon: Square },
+  { id: "mk-rectfill", label: "Box fill", Icon: Square },
+  { id: "mk-circle", label: "Circle", Icon: Circle },
+  { id: "mk-circlefill", label: "Circle fill", Icon: Circle },
+  { id: "mk-triangle", label: "Polygon", Icon: Triangle },
+];
 
 const DRAW_TYPE: Record<MType, "LineString" | "Polygon" | "Point"> = {
   linear: "LineString", perimeter: "LineString", area: "Polygon", count: "Point",
@@ -102,16 +118,20 @@ export default function MapWorkspace({
   project,
   initialItems,
   initialCategories,
+  initialAnnotations,
 }: {
   project: { id: string; latitude: number | null; longitude: number | null; full_address: string };
   initialItems: Item[];
   initialCategories: Category[];
+  initialAnnotations: Annotation[];
 }) {
   const mapEl = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
   const sourceRef = useRef<VectorSource>(new VectorSource());
   const parcelSourceRef = useRef<VectorSource>(new VectorSource());
   const markerSourceRef = useRef<VectorSource>(new VectorSource());
+  const annotationSourceRef = useRef<VectorSource>(new VectorSource());
+  const annotationLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
   const markerFeatureRef = useRef<Feature | null>(null);
   const cadastreRef = useRef<TileLayer<TileArcGISRest> | null>(null);
   const drawRef = useRef<Draw | null>(null);
@@ -139,6 +159,10 @@ export default function MapWorkspace({
   const [newName, setNewName] = useState("");
   const [newColour, setNewColour] = useState(COLOURS[0]);
   const pendingRef = useRef<{ name: string; colour: string } | null>(null);
+  const [markupOpen, setMarkupOpen] = useState(false);
+  const [showAnnotations, setShowAnnotations] = useState(true);
+  const [markupColour, setMarkupColour] = useState("#dc2626");
+  const markupColourRef = useRef(markupColour); markupColourRef.current = markupColour;
   const [parcelInfo, setParcelInfo] = useState<{ lotId: string | null; planLabel: string | null } | null>(null);
   const [coords, setCoords] = useState<{ lat: number | null; lng: number | null }>({ lat: project.latitude, lng: project.longitude });
   const [placing, setPlacing] = useState(false);
@@ -206,6 +230,32 @@ export default function MapWorkspace({
     return base;
   }, []);
 
+  // Style for visual-only annotations (markup layer).
+  const annStyle = useCallback((feature: FeatureLike): Style | Style[] | undefined => {
+    const annType = (feature.get("annType") as string) ?? "text";
+    const colour = (feature.get("annColour") as string) ?? "#dc2626";
+    const name = (feature.get("annName") as string) ?? null;
+    const selected = feature.get("measurementId") === selMeasRef.current;
+    const stroke = new Stroke({ color: colour, width: selected ? 4 : 2.5 });
+    const label = name
+      ? new TextStyle({ text: name, font: "600 12px system-ui, sans-serif", fill: new Fill({ color: "#0f172a" }), stroke: new Stroke({ color: "#fff", width: 3 }), overflow: true })
+      : undefined;
+    if (annType === "text") {
+      return new Style({ text: new TextStyle({ text: name ?? "", font: "700 14px system-ui, sans-serif", fill: new Fill({ color: colour }), stroke: new Stroke({ color: "#fff", width: 4 }), overflow: true }) });
+    }
+    if (annType === "arrow") {
+      const g = feature.getGeometry();
+      if (g instanceof LineString) {
+        const c = g.getCoordinates();
+        if (c.length >= 2) { const s = c[0], e = c[c.length - 1]; const rot = Math.atan2(e[1] - s[1], e[0] - s[0]); return [new Style({ stroke, text: label }), arrowStyle(colour, e, rot)]; }
+      }
+      return new Style({ stroke, text: label });
+    }
+    if (annType === "line") return new Style({ stroke, text: label });
+    const filled = annType.endsWith("fill");
+    return new Style({ stroke, fill: filled ? new Fill({ color: colour + "44" }) : undefined, text: label });
+  }, []);
+
   // ── Map init (once) ───────────────────────────────────────────────────────
   useEffect(() => {
     if (!mapEl.current || mapRef.current) return;
@@ -237,11 +287,13 @@ export default function MapWorkspace({
     });
 
     const vector = new VectorLayer({ source: sourceRef.current, style: styleFor as never });
+    const annotationLayer = new VectorLayer({ source: annotationSourceRef.current, style: annStyle as never });
+    annotationLayerRef.current = annotationLayer;
 
     const centre = fromLonLat([project.longitude ?? 151.21, project.latitude ?? -33.87]);
     const map = new Map({
       target: mapEl.current,
-      layers: [imagery, cadastre, parcelLayer, vector],
+      layers: [imagery, cadastre, parcelLayer, vector, annotationLayer],
       controls: defaultControls({ attribution: false, zoom: false }).extend([
         new FullScreen(),
         new Attribution({ collapsible: true }),
@@ -296,6 +348,7 @@ export default function MapWorkspace({
     for (const it of initialItems) {
       for (const m of it.measurements) addFeatureFromMeasurement(it, m);
     }
+    for (const a of initialAnnotations) addAnnotationFeature(a);
 
     return () => { map.setTarget(undefined); mapRef.current = null; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -318,6 +371,20 @@ export default function MapWorkspace({
     }
   }
 
+  function addAnnotationFeature(a: Annotation) {
+    try {
+      const g = geojson.readGeometry(a.geometry, { dataProjection: "EPSG:4326", featureProjection: MAP_PROJ });
+      const f = new Feature(g);
+      f.setId(a.id);
+      f.set("measurementId", a.id);
+      f.set("kind", "annotation");
+      f.set("annType", a.annotation_type);
+      f.set("annName", a.name);
+      f.set("annColour", a.colour);
+      annotationSourceRef.current.addFeature(f);
+    } catch (e) { console.error("[measuremap] failed to load annotation", e); }
+  }
+
   // ── Tool wiring ────────────────────────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
@@ -327,7 +394,7 @@ export default function MapWorkspace({
     if (selectRef.current) { map.removeInteraction(selectRef.current); selectRef.current = null; }
 
     if (tool === "select") {
-      const select = new Select({ style: styleFor as never, hitTolerance: 8 });
+      const select = new Select({ hitTolerance: 8, style: ((f: FeatureLike) => (f.get("kind") === "annotation" ? annStyle(f) : styleFor(f))) as never });
       select.on("select", (e) => {
         const f = e.selected[0];
         const id = f ? (f.get("measurementId") as string) : null;
@@ -344,6 +411,26 @@ export default function MapWorkspace({
       map.addInteraction(translate);
       selectRef.current = select;
       translateRef.current = translate;
+      return;
+    }
+
+    // Markup (annotation) tools draw into the annotation layer.
+    if (tool.startsWith("mk-")) {
+      const kind = tool.slice(3) as MarkupKind;
+      const dtype: "Point" | "LineString" | "Polygon" | "Circle" =
+        kind === "text" ? "Point"
+          : kind === "line" || kind === "arrow" ? "LineString"
+            : kind === "triangle" ? "Polygon"
+              : "Circle";
+      const draw = new Draw({
+        source: annotationSourceRef.current,
+        type: dtype,
+        ...(kind === "line" || kind === "arrow" ? { maxPoints: 2 } : {}),
+        ...(kind === "rect" || kind === "rectfill" ? { geometryFunction: createBox() } : {}),
+      });
+      draw.on("drawend", (e) => { void handleAnnotationEnd(kind, e.feature); });
+      map.addInteraction(draw);
+      drawRef.current = draw;
       return;
     }
 
@@ -408,6 +495,7 @@ export default function MapWorkspace({
   // Picking a draw tool opens the name/colour chooser for a NEW measurement.
   // Select/Pan just switch mode. The chooser can be closed to draw with defaults.
   function pickTool(t: Tool) {
+    setMarkupOpen(false);
     if (t === "select" || t === "pan") { setNamePopupOpen(false); pendingRef.current = null; setTool(t); return; }
     const mtype = t as MType;
     const n = items.filter((i) => i.measurement_type === mtype).length + 1;
@@ -479,8 +567,46 @@ export default function MapWorkspace({
     if (mtype !== "count") setTool("select");
   }
 
+  // Visual-only markup — saved as an annotation (no item/category/quantity).
+  async function handleAnnotationEnd(kind: MarkupKind, feature: Feature<Geometry>) {
+    let geom = feature.getGeometry();
+    if (!geom) return;
+    if ((kind === "circle" || kind === "circlefill") && geom.getType() === "Circle") {
+      const poly = fromCircle(geom as CircleGeom);
+      feature.setGeometry(poly);
+      geom = poly;
+    }
+    let name: string | null = null;
+    if (kind === "text") {
+      const t = window.prompt("Text / comment:");
+      if (t == null || !t.trim()) { annotationSourceRef.current.removeFeature(feature); return; }
+      name = t.trim();
+    }
+    const colour = markupColourRef.current;
+    feature.set("kind", "annotation");
+    feature.set("annType", kind);
+    feature.set("annName", name);
+    feature.set("annColour", colour);
+    const gj = geojson.writeGeometryObject(geom, { dataProjection: "EPSG:4326", featureProjection: MAP_PROJ });
+    setSaveStatus("saving");
+    try {
+      const { id } = await api.createAnnotation(project.id, { annotation_type: kind, name, colour, geometry: gj });
+      feature.setId(id);
+      feature.set("measurementId", id);
+      setSaveStatus("saved");
+    } catch { annotationSourceRef.current.removeFeature(feature); setSaveStatus("error"); }
+    // Stay in the markup tool for continuous markup (Esc or Select to stop).
+  }
+
   async function persistGeometry(feature: FeatureLike) {
     const id = feature.get("measurementId") as string;
+    const gAll = (feature as Feature<Geometry>).getGeometry();
+    if (id && feature.get("kind") === "annotation" && gAll) {
+      const gj = geojson.writeGeometryObject(gAll, { dataProjection: "EPSG:4326", featureProjection: MAP_PROJ });
+      setSaveStatus("saving");
+      try { await api.patchMeasurement(project.id, id, { geometry: gj }); setSaveStatus("saved"); } catch { setSaveStatus("error"); }
+      return;
+    }
     const itemId = feature.get("itemId") as string;
     const it = itemsRef.current.find((i) => i.id === itemId);
     const g = (feature as Feature<Geometry>).getGeometry();
@@ -504,6 +630,7 @@ export default function MapWorkspace({
     if (!id) return;
     const f = sourceRef.current.getFeatureById(id);
     if (f) sourceRef.current.removeFeature(f);
+    else { const af = annotationSourceRef.current.getFeatureById(id); if (af) annotationSourceRef.current.removeFeature(af); }
     setSelectedMeasurementId(null);
     setSaveStatus("saving");
     try {
@@ -526,8 +653,9 @@ export default function MapWorkspace({
     return () => window.removeEventListener("keydown", onKey);
   }, [deleteSelected]);
 
-  useEffect(() => { sourceRef.current.changed(); }, [items, showMeasurements, showLabels, selectedMeasurementId]);
+  useEffect(() => { sourceRef.current.changed(); annotationSourceRef.current.changed(); }, [items, showMeasurements, showLabels, selectedMeasurementId]);
   useEffect(() => { cadastreRef.current?.setVisible(showCadastre); }, [showCadastre]);
+  useEffect(() => { annotationLayerRef.current?.setVisible(showAnnotations); }, [showAnnotations]);
 
   // Parcel highlight for the project address.
   useEffect(() => {
@@ -767,6 +895,7 @@ export default function MapWorkspace({
             <LayerToggle label="Site Details" Icon={MapPin} checked={showSiteDetails} onToggle={() => setShowSiteDetails((v) => !v)} />
             <LayerToggle label="Measurement List" Icon={List} checked={showMeasList} onToggle={() => setShowMeasList((v) => !v)} />
             <LayerToggle label="Measurements" Icon={Eye} checked={showMeasurements} onToggle={() => setShowMeasurements((v) => !v)} />
+            <LayerToggle label="Markup" Icon={Shapes} checked={showAnnotations} onToggle={() => setShowAnnotations((v) => !v)} />
             <LayerToggle label="Labels" Icon={Ruler} checked={showLabels} onToggle={() => setShowLabels((v) => !v)} />
             <LayerToggle label="Property Boundaries" Icon={Layers} checked={showCadastre} onToggle={() => setShowCadastre((v) => !v)} />
           </div>
@@ -881,7 +1010,45 @@ export default function MapWorkspace({
           <div className="mx-1 w-px bg-white/15" />
           <TB label="Fit" Icon={Maximize2} onClick={fitToScreen} />
           <TB label="Export" Icon={Camera} onClick={screenshot} />
+          <div className="mx-1 w-px bg-white/15" />
+          <button
+            onClick={() => { setNamePopupOpen(false); setMarkupOpen((v) => { const nv = !v; if (!nv) setTool("select"); return nv; }); }}
+            title="Markup (visual annotations)"
+            className={["flex w-[54px] flex-col items-center justify-center gap-0.5 rounded text-[9px] text-white transition", markupOpen ? "bg-[#0369a1]" : "hover:bg-white/10"].join(" ")}
+          >
+            <Shapes size={17} /><span>Markup</span>
+          </button>
         </div>
+
+        {/* Markup palette — visual annotations, nothing to do with measurements */}
+        {markupOpen && (
+          <div className="absolute left-4 top-[64px] z-30 w-[214px] rounded-md border border-[#D5DADD] bg-white p-2.5 shadow-lg">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">Markup</span>
+              <button onClick={() => { setMarkupOpen(false); setTool("select"); }} className="grid h-5 w-5 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={13} /></button>
+            </div>
+            <div className="grid grid-cols-4 gap-1">
+              {MARKUP_TOOLS.map(({ id, label, Icon }) => {
+                const active = tool === id;
+                const isFill = id.endsWith("fill");
+                return (
+                  <button key={id} onClick={() => { setNamePopupOpen(false); setTool(id); }} title={label}
+                    className={["flex h-[46px] flex-col items-center justify-center gap-0.5 rounded text-[8px]", active ? "bg-[#0369a1] text-white" : "text-[#30363A] hover:bg-[#F1F3F4]"].join(" ")}>
+                    <Icon size={16} fill={isFill ? "currentColor" : "none"} />
+                    <span className="leading-none">{label}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-1.5 border-t border-[#EEF0F1] pt-2">
+              <span className="mr-0.5 text-[10px] text-[#586066]">Colour</span>
+              {COLOURS.map((c) => (
+                <button key={c} onClick={() => setMarkupColour(c)} className={`h-5 w-5 rounded-full border-2 ${markupColour === c ? "border-[#212121]" : "border-transparent"}`} style={{ backgroundColor: c }} aria-label={c} />
+              ))}
+            </div>
+            <p className="mt-2 text-[10px] leading-tight text-[#8A9196]">Pick a shape and draw on the map. Text prompts for a comment. Esc or Select to stop. Visual only — never counted.</p>
+          </div>
+        )}
 
         {/* New-measurement name + colour chooser (near the toolbar) */}
         {namePopupOpen && tool !== "select" && tool !== "pan" && (

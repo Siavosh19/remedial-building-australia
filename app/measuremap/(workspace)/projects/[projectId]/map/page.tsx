@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { requireMeasureMapUser } from "@/lib/measuremap/access";
 import { getOwnedProject } from "@/lib/measuremap/projects";
-import { listItems, listCategories } from "@/lib/measuremap/estimating";
+import { listItems, listCategories, listAnnotations } from "@/lib/measuremap/estimating";
 import MapWorkspaceLoader from "@/components/measuremap/map/MapWorkspaceLoader";
 
 export default async function MapPage({ params }: { params: Promise<{ projectId: string }> }) {
@@ -10,9 +10,10 @@ export default async function MapPage({ params }: { params: Promise<{ projectId:
   const project = await getOwnedProject(user.id, projectId);
   if (!project) notFound();
 
-  const [initialItems, initialCategories] = await Promise.all([
+  const [initialItems, initialCategories, initialAnnotations] = await Promise.all([
     listItems(user.id, projectId),
     listCategories(user.id, projectId),
+    listAnnotations(user.id, projectId),
   ]);
 
   return (
@@ -25,6 +26,7 @@ export default async function MapPage({ params }: { params: Promise<{ projectId:
       }}
       initialItems={initialItems}
       initialCategories={initialCategories}
+      initialAnnotations={initialAnnotations}
     />
   );
 }

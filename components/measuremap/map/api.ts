@@ -115,3 +115,27 @@ export async function patchMeasurement(projectId: string, measurementId: string,
 export async function removeMeasurement(projectId: string, measurementId: string) {
   return ok(await fetch(`${base(projectId)}/measurements/${measurementId}`, { method: "DELETE" }));
 }
+
+// ── Annotations (visual map markup; update/delete reuse the measurement routes) ─
+export type ApiAnnotation = {
+  id: string;
+  annotation_type: string; // text | rect | circle
+  name: string | null;
+  colour: string;
+  geometry: unknown;
+};
+
+export async function listAnnotations(projectId: string): Promise<ApiAnnotation[]> {
+  const data = await ok(await fetch(`${base(projectId)}/annotations`));
+  return data.annotations;
+}
+
+export async function createAnnotation(
+  projectId: string,
+  body: { annotation_type: string; name?: string | null; colour: string; geometry: unknown },
+): Promise<{ id: string }> {
+  const data = await ok(await fetch(`${base(projectId)}/annotations`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+  }));
+  return data.annotation;
+}

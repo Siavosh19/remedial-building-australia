@@ -301,3 +301,36 @@ export async function deleteMeasurement(ownerUserId: number, measurementId: stri
   });
   return res.count > 0;
 }
+
+// ── Annotations — visual-only map markup (text + shapes). Stored in the
+// measurements table with measurement_mode='annotation' and NO item/category,
+// so they never touch quantities or the estimate. Update/delete reuse
+// updateMeasurement / deleteMeasurement.
+export type AnnotationDTO = { id: string; annotation_type: string; name: string | null; colour: string; geometry: unknown };
+
+export async function listAnnotations(ownerUserId: number, projectId: string): Promise<AnnotationDTO[]> {
+  const rows = await prisma.measureMapMeasurement.findMany({
+    where: { project_id: projectId, owner_user_id: ownerUserId, deleted_at: null, measurement_mode: "annotation" },
+    orderBy: { created_at: "asc" },
+    select: { id: true, measurement_type: true, name: true, colour: true, geometry: true },
+  });
+  return rows.map((r) => ({ id: r.id, annotation_type: r.measurement_type ?? "text", name: r.name, colour: r.colour ?? "#dc2626", geometry: r.geometry }));
+}
+
+export async function createAnnotation(
+  ownerUserId: number,
+  projectId: string,
+  input: { annotation_type: string; name?: string | null; colour: string; geometry: unknown },
+) {
+  if (!(await assertProjectOwned(ownerUserId, projectId))) return null;
+  return prisma.measureMapMeasurement.create({
+    data: {
+      project_id: projectId, owner_user_id: ownerUserId, source_type: "map",
+      measurement_mode: "annotation", measurement_type: input.annotation_type,
+      name: input.name ?? null, colour: input.colour,
+      geometry: input.geometry as object, calculated_quantity: 0, unit: "",
+      created_by: ownerUserId, sort_order: 0,
+    },
+    select: { id: true },
+  });
+}
