@@ -8,7 +8,12 @@ import { MEASUREMAP_BUCKET, drawingObjectPath, signedDrawingUrl } from "./storag
 export type DrawingDTO = {
   id: string; filename: string; mime_type: string | null; file_size: number; page_count: number; created_at: string;
 };
-export type PlanPage = { id: string; page_number: number; pixels_per_metre: number | null; scale_status: string };
+export type PlanPage = { id: string; page_number: number; pixels_per_metre: number | null; scale_status: string; name: string };
+
+function pageName(p: { page_number: number; calibration_data: unknown }): string {
+  const n = (p.calibration_data as { name?: string } | null)?.name;
+  return n && n.trim() ? n : `Page ${p.page_number}`;
+}
 export type PlanDetail = { id: string; filename: string; mime_type: string | null; url: string | null; page_count: number; pages: PlanPage[] };
 
 export async function listDrawings(ownerUserId: number, projectId: string): Promise<DrawingDTO[]> {
@@ -56,7 +61,7 @@ export async function createDrawingWithFile(
 export async function getDrawingDetail(ownerUserId: number, drawingId: string): Promise<PlanDetail | null> {
   const sel = {
     id: true, filename: true, mime_type: true, storage_path: true, page_count: true,
-    pages: { orderBy: { page_number: "asc" as const }, select: { id: true, page_number: true, pixels_per_metre: true, scale_status: true } },
+    pages: { orderBy: { page_number: "asc" as const }, select: { id: true, page_number: true, pixels_per_metre: true, scale_status: true, calibration_data: true } },
   };
   let d = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: sel });
   if (!d) return null;
@@ -77,7 +82,10 @@ export async function getDrawingDetail(ownerUserId: number, drawingId: string): 
     } catch (e) { console.error("[measuremap] page self-heal failed:", e); }
   }
   const url = d.storage_path ? await signedDrawingUrl(d.storage_path, 600) : null;
-  return { id: d.id, filename: d.filename, mime_type: d.mime_type, url, page_count: d.page_count, pages: d.pages };
+  return {
+    id: d.id, filename: d.filename, mime_type: d.mime_type, url, page_count: d.page_count,
+    pages: d.pages.map((p) => ({ id: p.id, page_number: p.page_number, pixels_per_metre: p.pixels_per_metre, scale_status: p.scale_status, name: pageName(p) })),
+  };
 }
 
 // Set the drawing's page count and create any missing per-page records.
@@ -91,7 +99,23 @@ export async function ensureDrawingPages(ownerUserId: number, drawingId: string,
   const toCreate = [];
   for (let n = 1; n <= count; n++) if (!have.has(n)) toCreate.push({ drawing_id: drawingId, project_id: d.project_id, page_number: n, scale_status: "unscaled" });
   if (toCreate.length) await prisma.measureMapDrawingPage.createMany({ data: toCreate });
-  return prisma.measureMapDrawingPage.findMany({ where: { drawing_id: drawingId }, orderBy: { page_number: "asc" }, select: { id: true, page_number: true, pixels_per_metre: true, scale_status: true } });
+  const rows = await prisma.measureMapDrawingPage.findMany({ where: { drawing_id: drawingId }, orderBy: { page_number: "asc" }, select: { id: true, page_number: true, pixels_per_metre: true, scale_status: true, calibration_data: true } });
+  return rows.map((p) => ({ id: p.id, page_number: p.page_number, pixels_per_metre: p.pixels_per_metre, scale_status: p.scale_status, name: pageName(p) }));
+}
+
+export async function renamePage(ownerUserId: number, drawingId: string, pageId: string, name: string): Promise<boolean> {
+  const owned = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true } });
+  if (!owned) return false;
+  const res = await prisma.measureMapDrawingPage.updateMany({ where: { id: pageId, drawing_id: drawingId }, data: { calibration_data: { name: name.trim() } } });
+  return res.count > 0;
+}
+
+// Clear all takeoffs (measurements) on one page — the "delete page" action.
+export async function clearPageTakeoffs(ownerUserId: number, projectId: string, drawingId: string, pageId: string): Promise<boolean> {
+  const owned = await prisma.measureMapDrawing.findFirst({ where: { id: drawingId, owner_user_id: ownerUserId, deleted_at: null }, select: { id: true } });
+  if (!owned) return false;
+  await prisma.measureMapMeasurement.deleteMany({ where: { project_id: projectId, owner_user_id: ownerUserId, source_type: "drawing", plan_id: drawingId, plan_page_id: pageId } });
+  return true;
 }
 
 export async function setPageScale(ownerUserId: number, drawingId: string, input: { pageId: string; pixels_per_metre: number }): Promise<boolean> {

@@ -419,9 +419,9 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
   const uncategorised = items.filter((i) => !i.category_id);
 
   return (
-    <div className="flex h-full flex-col" onClick={() => { setColourFor(null); }}>
+    <div className="flex h-full flex-col gap-2" onClick={() => { setColourFor(null); }}>
       {/* Ribbon */}
-      <div className="flex shrink-0 items-stretch border-b border-[#D5DADD] bg-white px-2 py-1" onClick={(e) => e.stopPropagation()}>
+      <div className="flex shrink-0 items-stretch rounded-lg border border-[#D5DADD] bg-white px-2 py-1 shadow-md" onClick={(e) => e.stopPropagation()}>
         <Group label="Zoom / Pan" tone="#343A3E"><TBtn tone="#343A3E" label="Fit" Icon={Maximize2} onClick={fitPage} /><TBtn tone="#343A3E" label="In" Icon={ZoomIn} onClick={() => zoomBy(0.5)} /><TBtn tone="#343A3E" label="Out" Icon={ZoomOut} onClick={() => zoomBy(-0.5)} /><TBtn tone="#343A3E" label="Pan" Icon={Move} active={tool === "pan"} onClick={() => pickTool("pan")} /></Group>
         <Group label="Measure" tone="#0369a1"><TBtn tone="#0369a1" label="Scale" Icon={PencilRuler} active={tool === "scale"} onClick={() => pickTool("scale")} /><TBtn tone="#0369a1" label="Dimension" Icon={ArrowLeftRight} active={tool === "dimension"} onClick={() => pickTool("dimension")} /></Group>
         <Group label="Takeoff" tone="#0f7a4d"><TBtn tone="#0f7a4d" label="Area" Icon={Pentagon} active={tool === "area"} onClick={() => pickTool("area")} /><TBtn tone="#0f7a4d" label="Linear" Icon={Spline} active={tool === "linear"} onClick={() => pickTool("linear")} /><TBtn tone="#0f7a4d" label="Count" Icon={MapPin} active={tool === "count"} onClick={() => pickTool("count")} /></Group>
@@ -434,9 +434,9 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         </div>
       </div>
 
-      <div className="flex min-h-0 flex-1">
+      <div className="flex min-h-0 flex-1 gap-2">
         {/* Left panel — categories + items (Map Measure parity) */}
-        <aside className="flex w-[260px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white" onClick={(e) => e.stopPropagation()}>
+        <aside className="flex w-[260px] shrink-0 flex-col overflow-hidden rounded-lg border border-[#D7DCE0] bg-white shadow-md" onClick={(e) => e.stopPropagation()}>
           <div className="px-3 pt-3">
             <button onClick={() => setAddingCategory((v) => !v)} className="flex h-9 w-full items-center justify-center gap-2 rounded bg-[#0369a1] text-[13px] font-semibold text-white hover:bg-[#075985]"><FolderPlus size={16} /> Add Category</button>
             {addingCategory && <AddCategoryForm onAdd={addCategory} onCancel={() => setAddingCategory(false)} />}
@@ -458,7 +458,7 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
         </aside>
 
         {/* Canvas */}
-        <section className="relative min-w-0 flex-1 bg-[#565b5e]" onClick={(e) => e.stopPropagation()}>
+        <section className="relative min-w-0 flex-1 overflow-hidden rounded-lg bg-[#565b5e] shadow-md" onClick={(e) => e.stopPropagation()}>
           {namePopupOpen && pendingType && (
             <div className="absolute left-1/2 top-3 z-30 w-[280px] -translate-x-1/2 rounded-md border border-[#7dd3fc] bg-white p-3 shadow-lg">
               <div className="mb-2 flex items-center justify-between"><span className="text-[11px] font-semibold uppercase tracking-wide text-[#383E42]">New {TYPE_LABEL[TOOL_META[pendingType].type]} measurement</span><button onClick={() => setNamePopupOpen(false)} className="grid h-5 w-5 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]"><X size={13} /></button></div>
@@ -470,13 +470,9 @@ export default function PlanTakeoff({ projectId, drawing, page }: { projectId: s
           )}
           {loading && <div className="absolute inset-0 z-10 flex items-center justify-center text-white/90"><Loader2 className="h-6 w-6 animate-spin" /><span className="ml-2 text-sm">Loading plan…</span></div>}
           {error && <div className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center text-white/80"><span className="text-sm">{error}</span></div>}
-          {/* Crosshair guides while drawing */}
-          {tool !== "select" && tool !== "pan" && (
-            <>
-              <div ref={hLineRef} className="pointer-events-none absolute left-0 right-0 z-20 h-px" style={{ top: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
-              <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px" style={{ left: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
-            </>
-          )}
+          {/* Crosshair guides (always on) */}
+          <div ref={hLineRef} className="pointer-events-none absolute left-0 right-0 z-20 h-px" style={{ top: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
+          <div ref={vLineRef} className="pointer-events-none absolute bottom-0 top-0 z-20 w-px" style={{ left: 0, backgroundColor: "rgba(228,176,0,0.9)" }} />
           <div ref={mapEl} className={`h-full w-full ${tool === "pan" ? "cursor-grab" : tool === "select" ? "cursor-default" : "cursor-crosshair"}`} />
           {/* Status bar: Ortho / Snap / cursor */}
           <div className="absolute bottom-0 left-0 right-0 z-20 flex h-8 items-center gap-2 bg-[#082f49]/95 px-3 text-[11px] text-white/90 backdrop-blur">

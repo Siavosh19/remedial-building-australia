@@ -1,15 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { Upload, FileText, Image as ImageIcon, Trash2, Loader2, AlertTriangle, ChevronDown, ChevronRight, PencilRuler, Search, ArrowDownUp, Filter, MoreVertical, Pencil } from "lucide-react";
 import PlanTakeoffLoader from "./PlanTakeoffLoader";
 
 type Drawing = { id: string; filename: string; mime_type: string | null; file_size: number; page_count: number; created_at: string };
-type PlanPage = { id: string; page_number: number; pixels_per_metre: number | null; scale_status: string };
+type PlanPage = { id: string; page_number: number; pixels_per_metre: number | null; scale_status: string; name: string };
 type PlanDetail = { id: string; filename: string; mime_type: string | null; url: string | null; page_count: number; pages: PlanPage[] };
 
 const isPdf = (d: { mime_type: string | null; filename: string }) => (d.mime_type ?? "").includes("pdf") || /\.pdf$/i.test(d.filename);
 const fmtSize = (n: number) => (n > 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
+const ratioOf = (ppm: number | null) => (ppm && ppm > 0 ? `1:${Math.round(5669.29 / ppm)}` : null);
 
 export default function PlansWorkspace({ projectId, initialDrawings }: { projectId: string; initialDrawings: Drawing[] }) {
   const [drawings, setDrawings] = useState<Drawing[]>(initialDrawings);
@@ -19,15 +20,17 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
   const [selectedPageId, setSelectedPageId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const [sortAsc, setSortAsc] = useState(true);
+  const [filterScaled, setFilterScaled] = useState<"all" | "scaled" | "unscaled">("all");
+  const [pageMenu, setPageMenu] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const base = `/api/measuremap/projects/${projectId}`;
 
   async function openDrawing(d: Drawing) {
-    setOpenId(d.id);
-    setDetail(null); setSelectedPageId(null);
-    setLoadingDetail(true);
+    setOpenId(d.id); setDetail(null); setSelectedPageId(null); setLoadingDetail(true);
     try {
-      // The server detects page count (and self-heals older uploads) and returns all pages.
       const data = (await (await fetch(`${base}/drawings/${d.id}`)).json()).drawing as PlanDetail | undefined;
       if (data && data.page_count !== d.page_count) setDrawings((prev) => prev.map((x) => x.id === d.id ? { ...x, page_count: data.page_count } : x));
       setDetail(data ?? null);
@@ -50,20 +53,45 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
     } catch { setError("Upload failed"); } finally { setUploading(false); if (fileRef.current) fileRef.current.value = ""; }
   }
 
-  async function remove(d: Drawing) {
+  async function removeDrawing(d: Drawing) {
     if (!confirm(`Delete “${d.filename}”?`)) return;
     setDrawings((prev) => prev.filter((x) => x.id !== d.id));
     if (openId === d.id) { setOpenId(null); setDetail(null); setSelectedPageId(null); }
     try { await fetch(`${base}/drawings/${d.id}`, { method: "DELETE" }); } catch { /* ignore */ }
   }
 
+  async function renamePage(p: PlanPage) {
+    setPageMenu(null);
+    const name = window.prompt("Rename page:", p.name);
+    if (name == null || !name.trim()) return;
+    setDetail((d) => d ? { ...d, pages: d.pages.map((x) => x.id === p.id ? { ...x, name: name.trim() } : x) } : d);
+    try { await fetch(`${base}/drawings/${openId}/pages`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page_id: p.id, name: name.trim() }) }); } catch { /* ignore */ }
+  }
+
+  async function clearPage(p: PlanPage) {
+    setPageMenu(null);
+    if (!confirm(`Delete all takeoffs on “${p.name}”? (The page itself stays.)`)) return;
+    try { await fetch(`${base}/drawings/${openId}/takeoffs?pageId=${p.id}`, { method: "DELETE" }); } catch { /* ignore */ }
+    if (selectedPageId === p.id) { const cur = p.id; setSelectedPageId(null); setTimeout(() => setSelectedPageId(cur), 0); } // remount to refresh
+  }
+
   const selectedPage = detail?.pages.find((p) => p.id === selectedPageId) ?? null;
 
+  const visiblePages = useMemo(() => {
+    if (!detail) return [];
+    let ps = detail.pages;
+    const q = search.trim().toLowerCase();
+    if (q) ps = ps.filter((p) => p.name.toLowerCase().includes(q));
+    if (filterScaled !== "all") ps = ps.filter((p) => filterScaled === "scaled" ? p.scale_status === "scaled" : p.scale_status !== "scaled");
+    ps = [...ps].sort((a, b) => sortAsc ? a.page_number - b.page_number : b.page_number - a.page_number);
+    return ps;
+  }, [detail, search, filterScaled, sortAsc]);
+
   return (
-    <div className="flex h-full">
+    <div className="flex h-full gap-2 bg-[#e5e7eb] p-2" onClick={() => setPageMenu(null)}>
       {/* Plans + pages list */}
-      <aside className="flex w-[260px] shrink-0 flex-col border-r border-[#D7DCE0] bg-white">
-        <div className="border-b border-[#E2E5E7] p-4">
+      <aside className="flex w-[264px] shrink-0 flex-col overflow-hidden rounded-lg border border-[#D7DCE0] bg-white shadow-md" onClick={(e) => e.stopPropagation()}>
+        <div className="border-b border-[#E2E5E7] p-3">
           <button onClick={() => fileRef.current?.click()} disabled={uploading} className="flex h-9 w-full items-center justify-center gap-2 rounded bg-[#0369a1] text-[13px] font-semibold text-white transition hover:bg-[#075985] disabled:opacity-60">
             {uploading ? <><Loader2 className="h-4 w-4 animate-spin" /> Uploading…</> : <><Upload size={16} /> Upload Plans</>}
           </button>
@@ -86,19 +114,41 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
                       <span className="block text-[10px] text-[#8A9196]">{fmtSize(d.file_size)}{d.page_count > 1 ? ` · ${d.page_count} pages` : ""}</span>
                     </span>
                   </button>
-                  <button onClick={() => remove(d)} className="grid h-6 w-6 shrink-0 place-items-center rounded text-[#8A9196] opacity-0 transition hover:bg-[#FEF2F2] hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={13} /></button>
+                  <button onClick={() => removeDrawing(d)} className="grid h-6 w-6 shrink-0 place-items-center rounded text-[#8A9196] opacity-0 transition hover:bg-[#FEF2F2] hover:text-[#dc2626] group-hover:opacity-100"><Trash2 size={13} /></button>
                 </div>
-                {/* Page list */}
+
                 {open && detail && detail.id === d.id && detail.pages.length > 1 && (
-                  <div className="ml-6 mt-0.5 border-l border-[#EAECEE] pl-1">
-                    {detail.pages.map((p) => (
-                      <button key={p.id} onClick={() => setSelectedPageId(p.id)}
-                        className={["flex w-full items-center gap-1.5 rounded px-2 py-1.5 text-left text-[12px]", selectedPageId === p.id ? "bg-[#EAF3FA] font-semibold text-[#0c4a6e]" : "text-[#586066] hover:bg-[#F5F6F7]"].join(" ")}>
-                        {p.scale_status === "scaled" && <PencilRuler size={11} className="shrink-0 text-[#0f7a4d]" />}
-                        Page {p.page_number}
-                        {p.scale_status === "scaled" && <span className="ml-auto text-[9px] font-semibold text-[#0f7a4d]">SCALED</span>}
-                      </button>
-                    ))}
+                  <div className="ml-4 mt-1 border-l border-[#EAECEE] pl-1">
+                    {/* Sort / Search / Filter */}
+                    <div className="mb-1 flex items-center gap-1 px-1">
+                      <button onClick={() => setSortAsc((v) => !v)} title={`Sort ${sortAsc ? "descending" : "ascending"}`} className="grid h-6 w-6 place-items-center rounded text-[#586066] hover:bg-[#F1F3F4]"><ArrowDownUp size={13} /></button>
+                      <button onClick={() => setShowSearch((v) => !v)} title="Search" className={["grid h-6 w-6 place-items-center rounded", showSearch ? "bg-[#EAF3FA] text-[#0369a1]" : "text-[#586066] hover:bg-[#F1F3F4]"].join(" ")}><Search size={13} /></button>
+                      <button onClick={() => setFilterScaled((f) => f === "all" ? "scaled" : f === "scaled" ? "unscaled" : "all")} title={`Filter: ${filterScaled}`} className={["grid h-6 w-6 place-items-center rounded", filterScaled !== "all" ? "bg-[#EAF3FA] text-[#0369a1]" : "text-[#586066] hover:bg-[#F1F3F4]"].join(" ")}><Filter size={13} /></button>
+                      {filterScaled !== "all" && <span className="text-[9px] text-[#0369a1]">{filterScaled}</span>}
+                    </div>
+                    {showSearch && <input autoFocus value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search pages" className="mb-1 h-7 w-full rounded border border-[#D7DCE0] px-2 text-[11px] outline-none focus:border-[#0369a1]" />}
+
+                    {visiblePages.map((p) => {
+                      const r = ratioOf(p.pixels_per_metre);
+                      return (
+                        <div key={p.id} className="relative border-b border-[#F1F3F4] last:border-b-0">
+                          <div className={["group flex items-center gap-1 rounded px-2 py-1.5 text-left text-[12px]", selectedPageId === p.id ? "bg-[#EAF3FA] font-semibold text-[#0c4a6e]" : "text-[#586066] hover:bg-[#F5F6F7]"].join(" ")}>
+                            <button onClick={() => setSelectedPageId(p.id)} className="flex min-w-0 flex-1 items-center gap-1.5 text-left">
+                              {p.scale_status === "scaled" && <PencilRuler size={11} className="shrink-0 text-[#0f7a4d]" />}
+                              {r && <span className="shrink-0 text-[10px] font-normal text-[#0f7a4d]">({r})</span>}
+                              <span className="truncate" onDoubleClick={(e) => { e.stopPropagation(); void renamePage(p); }}>{p.name}</span>
+                            </button>
+                            <button onClick={(e) => { e.stopPropagation(); setPageMenu(pageMenu === p.id ? null : p.id); }} className="grid h-5 w-5 shrink-0 place-items-center rounded text-[#8A9196] opacity-0 hover:bg-[#E8EBED] group-hover:opacity-100"><MoreVertical size={13} /></button>
+                          </div>
+                          {pageMenu === p.id && (
+                            <div onClick={(e) => e.stopPropagation()} className="absolute right-1 top-7 z-40 w-[140px] overflow-hidden rounded-md border border-[#D7DCE0] bg-white py-1 shadow-lg">
+                              <button onClick={() => renamePage(p)} className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-[12px] text-[#30363A] hover:bg-[#F5F6F7]"><Pencil size={13} /> Rename</button>
+                              <button onClick={() => clearPage(p)} className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-[12px] text-[#dc2626] hover:bg-[#FEF2F2]"><Trash2 size={13} /> Delete takeoffs</button>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
                 {open && loadingDetail && detail?.id !== d.id && <div className="ml-8 py-1 text-[11px] text-[#8A9196]">Reading pages…</div>}
@@ -109,13 +159,13 @@ export default function PlansWorkspace({ projectId, initialDrawings }: { project
       </aside>
 
       {/* Viewer / takeoff */}
-      <section className="min-w-0 flex-1">
+      <section className="min-w-0 flex-1" onClick={(e) => e.stopPropagation()}>
         {!openId && (
-          <div className="flex h-full items-center justify-center bg-[#565b5e] text-center text-white/80">
+          <div className="flex h-full items-center justify-center rounded-lg bg-[#565b5e] text-center text-white/80 shadow-md">
             <div><FileText className="mx-auto h-10 w-10 text-white/40" /><p className="mt-3 text-[14px] font-semibold">No plan selected</p><p className="mt-1 text-[12px] text-white/60">Upload a plan, then select it to set a scale and measure.</p></div>
           </div>
         )}
-        {openId && (loadingDetail || !detail) && <div className="flex h-full items-center justify-center bg-[#565b5e] text-white/80"><Loader2 className="h-5 w-5 animate-spin" /></div>}
+        {openId && (loadingDetail || !detail) && <div className="flex h-full items-center justify-center rounded-lg bg-[#565b5e] text-white/80 shadow-md"><Loader2 className="h-5 w-5 animate-spin" /></div>}
         {openId && detail && selectedPage && (
           <PlanTakeoffLoader key={selectedPage.id} projectId={projectId} drawing={{ id: detail.id, filename: detail.filename, mime_type: detail.mime_type, url: detail.url }} page={selectedPage} />
         )}
