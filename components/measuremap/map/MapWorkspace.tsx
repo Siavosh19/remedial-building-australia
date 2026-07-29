@@ -874,10 +874,12 @@ export default function MapWorkspace({
         <div className="absolute right-14 top-3 z-20 w-[224px] overflow-hidden rounded-md border border-[#D5DADD] bg-white shadow-lg">
           <div className="flex items-start gap-2 px-3 py-2">
             <MapPin size={15} className="mt-0.5 shrink-0 text-[#0369a1]" />
-            <p className="min-w-0 flex-1 text-[11px] leading-snug text-[#212121]">
-              {parcelInfo?.lotId && <span className="font-semibold text-[#0c4a6e]">(Lot/DP {parcelInfo.lotId}) </span>}
-              {project.full_address}
-            </p>
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] leading-snug text-[#212121]">{project.full_address}</p>
+              {parcelInfo?.lotId && (
+                <p className="mt-0.5 text-[11px] text-[#5D6469]">Lot/DP <span className="font-semibold text-[#0c4a6e]">{parcelInfo.lotId}</span></p>
+              )}
+            </div>
             <button onClick={() => setShowSiteDetails(false)} className="grid h-5 w-5 shrink-0 place-items-center rounded text-[#8A9196] hover:bg-[#F1F3F4]" title="Hide (re-open via Site Details)"><X size={13} /></button>
           </div>
           <div className="grid grid-cols-3 border-t border-[#E2E5E7] text-[#586066]">
