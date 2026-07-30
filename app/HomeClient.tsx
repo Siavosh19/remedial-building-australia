@@ -721,7 +721,17 @@ export default function HomeClient() {
             </p>
           </div>
           <StrataConnectSlides />
+          <div className="mt-8">
+            <Link
+              href="/strata-connect"
+              className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-7 py-4 text-base font-semibold text-white transition hover:bg-red-800"
+            >
+              See how Strata Connect works
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
         </section>
+
 
         <section className="mx-auto max-w-7xl px-5 py-20">
           <div className="mb-10">
