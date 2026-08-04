@@ -1814,13 +1814,13 @@ export default function DirectoryListing({ categories }: Props) {
               type="button"
               onClick={() => setShowManual((v) => !v)}
               aria-expanded={showManual}
-              className={`inline-flex max-w-3xl items-center gap-2.5 rounded-lg border px-6 py-3.5 text-lg font-bold shadow-sm transition sm:text-xl ${!showManual && aiMatch?.matched && !aiLoading ? "border-red-400 bg-white text-red-700 hover:border-red-500 hover:text-red-800" : "border-slate-200 bg-white text-slate-600 hover:border-sky-300 hover:text-sky-800"}`}
+              className={`inline-flex max-w-3xl items-center gap-1 rounded-md border px-2 py-1 text-xs font-bold shadow-sm transition sm:text-sm ${!showManual && aiMatch?.matched && !aiLoading ? "border-orange-400 bg-white text-orange-600 hover:border-orange-500 hover:text-orange-700" : "border-slate-200 bg-white text-slate-600 hover:border-sky-300 hover:text-sky-800"}`}
             >
               {!showManual && aiMatch?.matched && !aiLoading && (
-                <span aria-hidden className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-red-600 text-lg font-black leading-none text-white">!</span>
+                <span aria-hidden className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-orange-500 text-xs font-black leading-none text-white">!</span>
               )}
               <span className="text-center">{showManual ? "Hide standard search" : aiMatch?.matched && !aiLoading ? "Can't find the right business? Use manual search to pick your own category" : "Prefer to search yourself? Use the standard search"}</span>
-              <span aria-hidden className={`transition-transform ${showManual ? "rotate-180" : ""} ${!showManual && aiMatch?.matched && !aiLoading ? "text-red-400" : "text-slate-400"}`}>▾</span>
+              <span aria-hidden className={`transition-transform ${showManual ? "rotate-180" : ""} ${!showManual && aiMatch?.matched && !aiLoading ? "text-orange-400" : "text-slate-400"}`}>▾</span>
             </button>
           </div>
 
