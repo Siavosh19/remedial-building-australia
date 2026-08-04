@@ -77,7 +77,11 @@ export async function POST(request: NextRequest) {
     !!abnCheck.entityName &&
     !nameMismatch;
 
-  const autoClaim = abnOnFileMatches || abrNameMatches;
+  // Policy: every claim is granted instantly (no admin queue). The owner
+  // visually reviews each incoming listing and can revert a bad claim. The
+  // ABN checks below still run so their result is recorded in admin_notes.
+  const AUTO_APPROVE_ALL = true;
+  const autoClaim = AUTO_APPROVE_ALL || abnOnFileMatches || abrNameMatches;
 
   const abnNote =
     (abnCheck.source === "abr"
@@ -85,13 +89,14 @@ export async function POST(request: NextRequest) {
         (abnCheck.entityName ? ` — registered as "${abnCheck.entityName}"` : "") +
         (nameMismatch ? " ⚠ registered name differs from listing name" : "")
       : `ABN ${enteredAbn}: format/checksum OK (live ABR check not configured)`) +
-    (autoClaim
-      ? abnOnFileMatches
-        ? " — matches listing ABN → auto-claimed."
-        : " — ABR name matches listing → auto-claimed."
-      : listingAbn.length === 11
-        ? ` — DOES NOT match listing ABN ${listingAbn} → held for review.`
-        : " — could not auto-verify ownership → held for review.");
+    (abnOnFileMatches
+      ? " — matches listing ABN → auto-claimed."
+      : abrNameMatches
+        ? " — ABR name matches listing → auto-claimed."
+        : (listingAbn.length === 11
+            ? ` — ⚠ entered ABN does NOT match on-file ABN ${listingAbn}`
+            : " — ownership not auto-verified") +
+          " → auto-approved by policy (owner reviews manually).");
 
   const password_hash = await hashPassword(password);
   const user = await prisma.user.create({
@@ -126,7 +131,8 @@ export async function POST(request: NextRequest) {
           listing_claim_status: "claimed",
           is_claimed: true,
           claimed_at: new Date(),
-          abn: enteredAbn,
+          // keep a real on-file ABN; only stamp the entered one when none exists
+          ...(listingAbn.length === 11 ? {} : { abn: enteredAbn }),
           ...(abnCheck.active ? { profile_status: "business_verified" } : {}),
           // Claiming marks ownership only — it does NOT grant a Silver/Gold tier.
           // The listing stays on Free/basic until the owner subscribes via Stripe.
