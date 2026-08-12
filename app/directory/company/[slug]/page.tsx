@@ -347,7 +347,7 @@ export default async function CompanyProfilePage({ params }: Props) {
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_300px]">
 
           {/* LEFT — standard content cards, always shown with empty states */}
-          <div className="space-y-5">
+          <div className="min-w-0 space-y-5">
 
             {/* Contact Details — kept at the top so visitors see phone / email /
                 website first (same details shown on the directory search card) */}
@@ -489,7 +489,7 @@ export default async function CompanyProfilePage({ params }: Props) {
           </div>
 
           {/* RIGHT sidebar */}
-          <aside className="space-y-4">
+          <aside className="min-w-0 space-y-4">
 
             {/* Quote request — claimed/featured only */}
             {isClaimed && company.quote_requests_enabled && (
