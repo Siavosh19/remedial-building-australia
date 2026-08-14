@@ -1,0 +1,351 @@
+{
+  "note": "v2.1 = migration.json + rendering rename + 2 reactivations; dropped anchor-point-and-static-line-contractors to match the sheet final Directory Categories list.",
+  "renames": [
+    {
+      "slug": "abseiling-and-rope-access",
+      "new_name": "Rope Access Contractors",
+      "old_name": "Abseiling & Rope Access"
+    },
+    {
+      "slug": "access-consultant",
+      "new_name": "Accessibility Compliance Consultants",
+      "old_name": "Access Consultant"
+    },
+    {
+      "slug": "arborist",
+      "new_name": "Arborists",
+      "old_name": "Arborist"
+    },
+    {
+      "slug": "architect",
+      "new_name": "Architects",
+      "old_name": "Architect"
+    },
+    {
+      "slug": "building-consultant",
+      "new_name": "Building Consultants & Design Practitioners",
+      "old_name": "Building Consultant"
+    },
+    {
+      "slug": "cladding",
+      "new_name": "Cladding Contractors",
+      "old_name": "Cladding"
+    },
+    {
+      "slug": "demolition",
+      "new_name": "Demolition Contractors",
+      "old_name": "Demolition"
+    },
+    {
+      "slug": "glazing-works",
+      "new_name": "Glaziers",
+      "old_name": "Glazing Works"
+    },
+    {
+      "slug": "lift-and-elevator",
+      "new_name": "Lift & Elevator Contractors",
+      "old_name": "Lift & Elevator"
+    },
+    {
+      "slug": "metal-fabrication",
+      "new_name": "Metal Fabricators",
+      "old_name": "Metal Fabrication"
+    },
+    {
+      "slug": "pressure-washing",
+      "new_name": "Pressure Washing Contractors",
+      "old_name": "Pressure Washing"
+    },
+    {
+      "slug": "security-intercom-and-access-control",
+      "new_name": "Security, CCTV & Access Control Contractors",
+      "old_name": "Security, Intercom & Access Control"
+    },
+    {
+      "slug": "structural-engineer",
+      "new_name": "Structural Engineers",
+      "old_name": "Structural Engineer"
+    },
+    {
+      "slug": "rendering-and-coating",
+      "new_name": "Rendering & Coating",
+      "old_name": "Rendering & Skimming"
+    }
+  ],
+  "reactivations": [
+    {
+      "slug": "lawn-mowing",
+      "name": "Lawn Mowing"
+    },
+    {
+      "slug": "render-and-plaster",
+      "name": "Render & Plaster"
+    }
+  ],
+  "additions": [
+    {
+      "name": "Kitchen and Bathroom Renovators",
+      "slug": "kitchen-and-bathroom-renovators"
+    },
+    {
+      "name": "Security Doors & Screens",
+      "slug": "security-doors-and-screens"
+    },
+    {
+      "name": "Gas Fitters",
+      "slug": "gas-fitters"
+    },
+    {
+      "name": "Backflow Prevention Testers",
+      "slug": "backflow-prevention-testers"
+    },
+    {
+      "name": "Pump Service Contractors",
+      "slug": "pump-service-contractors"
+    },
+    {
+      "name": "Hot Water Service",
+      "slug": "hot-water-service"
+    },
+    {
+      "name": "Refrigeration Service",
+      "slug": "refrigeration-service"
+    },
+    {
+      "name": "Antenna and NBN Technicians",
+      "slug": "antenna-and-nbn-technicians"
+    },
+    {
+      "name": "Mechanical Ventilation Contractors",
+      "slug": "mechanical-ventilation-contractors"
+    },
+    {
+      "name": "Hydraulic Services Contractors",
+      "slug": "hydraulic-services-contractors"
+    },
+    {
+      "name": "Pool Maintenance Companies",
+      "slug": "pool-maintenance-companies"
+    },
+    {
+      "name": "Occupational Hygienists",
+      "slug": "occupational-hygienists"
+    },
+    {
+      "name": "Land Surveyors",
+      "slug": "land-surveyors"
+    },
+    {
+      "name": "Thermal Imaging Specialists",
+      "slug": "thermal-imaging-specialists"
+    },
+    {
+      "name": "Electrical Test and Tag Providers",
+      "slug": "electrical-test-and-tag-providers"
+    },
+    {
+      "name": "Air Quality Testing Companies",
+      "slug": "air-quality-testing-companies"
+    },
+    {
+      "name": "Soil and Geotechnical Consultants",
+      "slug": "soil-and-geotechnical-consultants"
+    },
+    {
+      "name": "Essential Services Contractors",
+      "slug": "essential-services-contractors"
+    },
+    {
+      "name": "Height Safety System Installers",
+      "slug": "height-safety-system-installers"
+    },
+    {
+      "name": "Pool Certification Companies",
+      "slug": "pool-certification-companies"
+    },
+    {
+      "name": "Occupational Health and Safety Providers",
+      "slug": "occupational-health-and-safety-providers"
+    },
+    {
+      "name": "Water Efficiency Assessors",
+      "slug": "water-efficiency-assessors"
+    },
+    {
+      "name": "Smoke Alarm Service Providers",
+      "slug": "smoke-alarm-service-providers"
+    },
+    {
+      "name": "Insurance Assessors and Loss Adjusters",
+      "slug": "insurance-assessors-and-loss-adjusters"
+    },
+    {
+      "name": "Accountants",
+      "slug": "accountants"
+    },
+    {
+      "name": "Auditors",
+      "slug": "auditors"
+    },
+    {
+      "name": "Debt Recovery Companies",
+      "slug": "debt-recovery-companies"
+    },
+    {
+      "name": "Utility Brokers",
+      "slug": "utility-brokers"
+    },
+    {
+      "name": "Energy Consultants",
+      "slug": "energy-consultants"
+    },
+    {
+      "name": "Strata Loan Providers",
+      "slug": "strata-loan-providers"
+    },
+    {
+      "name": "Valuers",
+      "slug": "valuers"
+    },
+    {
+      "name": "Bookkeepers",
+      "slug": "bookkeepers"
+    },
+    {
+      "name": "Tax Advisers",
+      "slug": "tax-advisers"
+    },
+    {
+      "name": "Records Storage Providers",
+      "slug": "records-storage-providers"
+    },
+    {
+      "name": "Marble Supplier and Installer",
+      "slug": "marble-supplier-and-installer"
+    },
+    {
+      "name": "Embedded Network Providers",
+      "slug": "embedded-network-providers"
+    },
+    {
+      "name": "Building Management System Contractors",
+      "slug": "building-management-system-contractors"
+    },
+    {
+      "name": "Concierge Providers",
+      "slug": "concierge-providers"
+    },
+    {
+      "name": "Resident Communication Platform Providers",
+      "slug": "resident-communication-platform-providers"
+    },
+    {
+      "name": "Short Term Letting Compliance Services",
+      "slug": "short-term-letting-compliance-services"
+    },
+    {
+      "name": "Sustainability & Energy Consultants",
+      "slug": "sustainability-and-energy-consultants"
+    },
+    {
+      "name": "Appliance Repair & Service",
+      "slug": "appliance-repair-and-service"
+    },
+    {
+      "name": "Graffiti Removal Contractors",
+      "slug": "graffiti-removal-contractors"
+    },
+    {
+      "name": "Bin Cleaning Services",
+      "slug": "bin-cleaning-services"
+    },
+    {
+      "name": "Moving and Storage Companies",
+      "slug": "moving-and-storage-companies"
+    },
+    {
+      "name": "WHS Consultants",
+      "slug": "whs-consultants"
+    },
+    {
+      "name": "Heritage Consultants",
+      "slug": "heritage-consultants"
+    },
+    {
+      "name": "Acoustic Consultants",
+      "slug": "acoustic-consultants"
+    },
+    {
+      "name": "Traffic Consultants",
+      "slug": "traffic-consultants"
+    },
+    {
+      "name": "Waterproofing Leak Detection Specialists",
+      "slug": "waterproofing-leak-detection-specialists"
+    },
+    {
+      "name": "Drone Inspection Companies",
+      "slug": "drone-inspection-companies"
+    },
+    {
+      "name": "Anchor Point Testers and Certifiers",
+      "slug": "anchor-point-testers-and-certifiers"
+    },
+    {
+      "name": "Emergency Lighting Contractors",
+      "slug": "emergency-lighting-contractors"
+    },
+    {
+      "name": "Strata Lawyers",
+      "slug": "strata-lawyers"
+    },
+    {
+      "name": "Conveyancing Lawyers",
+      "slug": "conveyancing-lawyers"
+    },
+    {
+      "name": "Car Stacker Service Companies",
+      "slug": "car-stacker-service-companies"
+    },
+    {
+      "name": "Basement Ventilation Contractors",
+      "slug": "basement-ventilation-contractors"
+    },
+    {
+      "name": "Bollard Installers",
+      "slug": "bollard-installers"
+    },
+    {
+      "name": "Car Park Line Marking Contractors",
+      "slug": "car-park-line-marking-contractors"
+    },
+    {
+      "name": "Signage Companies",
+      "slug": "signage-companies"
+    },
+    {
+      "name": "EV Charger Installers",
+      "slug": "ev-charger-installers"
+    },
+    {
+      "name": "Mailroom and Parcel Locker Providers",
+      "slug": "mailroom-and-parcel-locker-providers"
+    },
+    {
+      "name": "Laundry Equipment Providers",
+      "slug": "laundry-equipment-providers"
+    },
+    {
+      "name": "After Hours Emergency Callout Services",
+      "slug": "after-hours-emergency-callout-services"
+    },
+    {
+      "name": "Visitor Parking Management Companies",
+      "slug": "visitor-parking-management-companies"
+    },
+    {
+      "name": "Pet Management and By Law Support Services",
+      "slug": "pet-management-and-by-law-support-services"
+    }
+  ]
+}
