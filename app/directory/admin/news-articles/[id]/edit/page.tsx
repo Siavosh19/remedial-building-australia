@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { prisma } from "@/lib/prisma";
 import NewsEditForm from "./NewsEditForm";
 
 export const dynamic = "force-dynamic";
@@ -11,11 +11,18 @@ export default async function EditNewsArticlePage({
 }) {
   const { id } = await params;
 
-  const { data } = await supabaseAdmin
-    .from("industry_news")
-    .select("id, title, category, summary, industry_impact, status, source_url")
-    .eq("id", id)
-    .single();
+  const data = await prisma.industryNews.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      summary: true,
+      industry_impact: true,
+      status: true,
+      source_url: true,
+    },
+  });
 
   if (!data) notFound();
   const row = data as Record<string, unknown>;

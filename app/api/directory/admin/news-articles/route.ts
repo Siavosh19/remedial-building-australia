@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminFromRequest } from "@/lib/directory-auth";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { prisma } from "@/lib/prisma";
 import { VALID_CATEGORIES } from "@/lib/news-categories";
 
 // Remove a news article from the website (hard delete from industry_news).
@@ -11,10 +11,14 @@ export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "id is required" }, { status: 400 });
 
-  const { error } = await supabaseAdmin.from("industry_news").delete().eq("id", id);
-  if (error) {
-    console.error("[admin/news-articles] delete error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  try {
+    await prisma.industryNews.delete({ where: { id } });
+  } catch (err) {
+    console.error("[admin/news-articles] delete error:", err);
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Delete failed" },
+      { status: 500 },
+    );
   }
   return NextResponse.json({ success: true });
 }
@@ -58,10 +62,14 @@ export async function PATCH(request: NextRequest) {
   if (Object.keys(update).length === 0)
     return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
 
-  const { error } = await supabaseAdmin.from("industry_news").update(update).eq("id", id);
-  if (error) {
-    console.error("[admin/news-articles] update error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  try {
+    await prisma.industryNews.update({ where: { id }, data: update });
+  } catch (err) {
+    console.error("[admin/news-articles] update error:", err);
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Update failed" },
+      { status: 500 },
+    );
   }
   return NextResponse.json({ success: true });
 }

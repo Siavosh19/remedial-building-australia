@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminFromRequest } from "@/lib/directory-auth";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import { VALID_CATEGORIES } from "@/lib/news-categories";
 
 export const maxDuration = 60;
@@ -97,15 +98,14 @@ export async function POST(request: NextRequest) {
   const force = request.nextUrl.searchParams.get("force") === "true";
   if (!id) return NextResponse.json({ error: "id is required" }, { status: 400 });
 
-  const { data: art, error: readErr } = await supabaseAdmin
-    .from("industry_news")
-    .select("id, title, source_url, summary, category")
-    .eq("id", id)
-    .single();
-  if (readErr || !art) return NextResponse.json({ error: "Article not found" }, { status: 404 });
+  const art = await prisma.industryNews.findUnique({
+    where: { id },
+    select: { id: true, title: true, source_url: true, summary: true, category: true },
+  });
+  if (!art) return NextResponse.json({ error: "Article not found" }, { status: 404 });
 
   const row = art as Record<string, unknown>;
-  const update: Record<string, unknown> = {};
+  const update: Prisma.IndustryNewsUpdateInput = {};
   if (publish) update.status = "published";
 
   let generated: Enriched | null = null;
@@ -124,10 +124,14 @@ export async function POST(request: NextRequest) {
   if (Object.keys(update).length === 0)
     return NextResponse.json({ error: "Nothing to do." }, { status: 400 });
 
-  const { error: updErr } = await supabaseAdmin.from("industry_news").update(update).eq("id", id);
-  if (updErr) {
-    console.error("[news enrich] update error:", updErr);
-    return NextResponse.json({ error: updErr.message }, { status: 500 });
+  try {
+    await prisma.industryNews.update({ where: { id }, data: update });
+  } catch (err) {
+    console.error("[news enrich] update error:", err);
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Update failed" },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({

@@ -1,4 +1,5 @@
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import { ExternalLink } from "lucide-react";
 import RemoveNewsButton from "./RemoveNewsButton";
 import RecycleNewsButton from "./RecycleNewsButton";
@@ -43,23 +44,44 @@ export default async function AdminNewsArticlesPage({
   const { status } = await searchParams;
   const active = FILTERS.some((f) => f.key === status) ? (status as string) : "all";
 
-  let query = supabaseAdmin
-    .from("industry_news")
-    .select("id, title, slug, category, source_name, source_url, published_date, status, include_in_newsletter")
-    .order("published_date", { ascending: false, nullsFirst: false })
-    .limit(1000);
-  if (active === "newsletter") query = query.eq("include_in_newsletter", true);
-  else if (active !== "all") query = query.eq("status", active);
+  const where: Prisma.IndustryNewsWhereInput =
+    active === "newsletter"
+      ? { include_in_newsletter: true }
+      : active === "all"
+        ? {}
+        : { status: active };
 
-  const { data, error } = await query;
-  if (error) console.error("[admin/news-articles] query failed:", error);
-  const rows = (data ?? []) as NewsRow[];
-
-  // How many articles are currently queued for the next newsletter send.
-  const { count: selectedCount } = await supabaseAdmin
-    .from("industry_news")
-    .select("id", { count: "exact", head: true })
-    .eq("include_in_newsletter", true);
+  let rows: NewsRow[] = [];
+  let selectedCount = 0;
+  try {
+    const [found, queued] = await Promise.all([
+      prisma.industryNews.findMany({
+        where,
+        orderBy: { published_date: { sort: "desc", nulls: "last" } },
+        take: 1000,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          category: true,
+          source_name: true,
+          source_url: true,
+          published_date: true,
+          status: true,
+          include_in_newsletter: true,
+        },
+      }),
+      // How many articles are currently queued for the next newsletter send.
+      prisma.industryNews.count({ where: { include_in_newsletter: true } }),
+    ]);
+    rows = found.map((r) => ({
+      ...r,
+      published_date: r.published_date ? r.published_date.toISOString() : null,
+    }));
+    selectedCount = queued;
+  } catch (err) {
+    console.error("[admin/news-articles] query failed:", err);
+  }
 
   return (
     <div>
