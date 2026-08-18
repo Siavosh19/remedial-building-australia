@@ -19,7 +19,10 @@ model IndustryNews {
   status                String?   @default("published")
   priority              Int?      @default(2)
   include_in_newsletter Boolean   @default(false)
-  newsletter_sent_at    DateTime?
+  // NOTE: no newsletter_sent_at column here. It was declared in this model but
+  // never created in the database and never read by any code; leaving it in
+  // made every update()/create()/delete() on this model fail with P2022,
+  // because those return the full row by default.
   created_at            DateTime? @default(now())
 
   @@map("industry_news")
