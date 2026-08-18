@@ -1,7 +1,6 @@
 import { readdirSync, existsSync } from "fs";
 import Link from "next/link";
 import { join, extname } from "path";
-import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { NewsGridClient, type NewsArticle } from "@/components/industry-news/NewsGridClient";
@@ -10,7 +9,7 @@ import { assignUniqueImages } from "@/lib/news-categories";
 import { InsightsSidebar, type InsightCard } from "@/components/rba-insights/InsightsSidebar";
 
 import SiteHeader from "@/components/SiteHeader";
-export const revalidate = 300;
+export const revalidate = 3600; // 1 hour — a 5-min window rebuilt this 448-row page ~288x/day
 
 const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 
@@ -25,26 +24,37 @@ function getNewsImagePool(): string[] {
 }
 
 async function getArticles(): Promise<Omit<NewsArticle, "featured_image">[]> {
-  const { data } = await supabase
-    .from("industry_news")
-    .select(
-      "id, title, slug, summary, category, tags, source_name, source_url, published_date, created_at, priority"
-    )
-    .eq("status", "published")
-    .order("created_at", { ascending: false })
-    .order("published_date", { ascending: false, nullsFirst: false });
+  const rows = await prisma.industryNews.findMany({
+    where: { status: "published" },
+    orderBy: [
+      { created_at: { sort: "desc", nulls: "last" } },
+      { published_date: { sort: "desc", nulls: "last" } },
+    ],
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      summary: true,
+      category: true,
+      tags: true,
+      source_name: true,
+      source_url: true,
+      published_date: true,
+      priority: true,
+    },
+  });
 
-  return (data ?? []).map((row: Record<string, unknown>) => ({
-    id: String(row.id ?? ""),
-    title: String(row.title ?? ""),
-    slug: String(row.slug ?? ""),
-    summary: String(row.summary ?? ""),
-    category: String(row.category ?? "Other"),
-    tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
-    source_name: String(row.source_name ?? ""),
-    source_url: String(row.source_url ?? ""),
-    published_date: String(row.published_date ?? ""),
-    priority: typeof row.priority === "number" ? (row.priority as 1 | 2 | 3) : 2,
+  return rows.map((row) => ({
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    summary: row.summary ?? "",
+    category: row.category ?? "Other",
+    tags: row.tags ?? [],
+    source_name: row.source_name ?? "",
+    source_url: row.source_url ?? "",
+    published_date: row.published_date ? row.published_date.toISOString() : "",
+    priority: (row.priority === 1 || row.priority === 3 ? row.priority : 2) as 1 | 2 | 3,
   }));
 }
 

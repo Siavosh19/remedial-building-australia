@@ -19,7 +19,8 @@
 */
 
 import { NextResponse } from "next/server";
-import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { getCategoryImage, VALID_CATEGORIES } from "@/lib/news-categories";
 
 export const maxDuration = 300;
@@ -366,11 +367,11 @@ export async function GET() {
   // 3. Pre-filter against DB — only send NEW articles to Claude
   //    This is the critical step: without it, the same old articles eat the
   //    entire batch budget every run and nothing new ever gets classified.
-  const { data: existingRows } = await supabase
-    .from("industry_news")
-    .select("source_url");
+  const existingRows = await prisma.industryNews.findMany({
+    select: { source_url: true },
+  });
 
-  const existingUrls = new Set((existingRows ?? []).map((r: { source_url: string }) => r.source_url));
+  const existingUrls = new Set(existingRows.map((r) => r.source_url));
   const newQueue = queue.filter((item) => !existingUrls.has(item.link));
 
   stats.skipped_duplicate = queue.length - newQueue.length;
@@ -401,15 +402,17 @@ export async function GET() {
       if (priority === 0 || !summary || summary.trim().length < 40) {
         stats.skipped_irrelevant++;
         // Write back a minimal "rejected" record so this URL is never re-classified
-        await supabase.from("industry_news").insert({
-          title: item.title,
-          slug: `rejected-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
-          source_url: item.link,
-          status: "rejected",
-          published_date: item.pubDate
-            ? (() => { const d = new Date(item.pubDate); return isNaN(d.getTime()) ? new Date().toISOString() : new Date(Math.min(d.getTime(), Date.now())).toISOString(); })()
-            : new Date().toISOString(),
-        });
+        await prisma.industryNews.create({
+          data: {
+            title: item.title,
+            slug: `rejected-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+            source_url: item.link,
+            status: "rejected",
+            published_date: item.pubDate
+              ? (() => { const d = new Date(item.pubDate); return isNaN(d.getTime()) ? new Date() : new Date(Math.min(d.getTime(), Date.now())); })()
+              : new Date(),
+          },
+        }).catch(() => {});
         return;
       }
 
@@ -418,9 +421,9 @@ export async function GET() {
       const published_date = item.pubDate
         ? (() => {
             const d = new Date(item.pubDate);
-            return isNaN(d.getTime()) ? new Date().toISOString() : new Date(Math.min(d.getTime(), Date.now())).toISOString();
+            return isNaN(d.getTime()) ? new Date() : new Date(Math.min(d.getTime(), Date.now()));
           })()
-        : new Date().toISOString();
+        : new Date();
 
       const record = {
         title: item.title,
@@ -437,21 +440,25 @@ export async function GET() {
         priority,
       };
 
-      const { error } = await supabase.from("industry_news").insert(record);
-
-      if (error) {
-        if (error.code === "23505") {
-          const { error: e2 } = await supabase.from("industry_news").insert({
-            ...record,
-            slug: `${slug}-${Date.now().toString(36)}`,
-          });
-          if (e2) stats.errors.push(`Insert retry failed: ${e2.message}`);
-          else stats.inserted++;
-        } else {
-          stats.errors.push(`Insert failed: ${error.message}`);
-        }
-      } else {
+      try {
+        await prisma.industryNews.create({ data: record });
         stats.inserted++;
+      } catch (err) {
+        // P2002 = unique violation on slug (the old REST code checked for 23505).
+        const dupe =
+          err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
+        if (!dupe) {
+          stats.errors.push(`Insert failed: ${err instanceof Error ? err.message : String(err)}`);
+          return;
+        }
+        try {
+          await prisma.industryNews.create({
+            data: { ...record, slug: `${slug}-${Date.now().toString(36)}` },
+          });
+          stats.inserted++;
+        } catch (e2) {
+          stats.errors.push(`Insert retry failed: ${e2 instanceof Error ? e2.message : String(e2)}`);
+        }
       }
     })
   );

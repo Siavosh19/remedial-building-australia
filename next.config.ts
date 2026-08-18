@@ -2,11 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // Cache optimised variants for 31 days. Without this the optimiser re-pulls
+    // multi-MB originals from Supabase Storage every time the upstream cache
+    // header expires, which is what blew the Supabase egress quota.
+    minimumCacheTTL: 2678400,
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "krttmsatnftkdnbtwouy.supabase.co" },
+      { protocol: "https", hostname: "remedialbuildingaustralia.com.au" },
+      { protocol: "https", hostname: "www.remedialbuildingaustralia.com.au" },
     ],
   },
   async redirects() {

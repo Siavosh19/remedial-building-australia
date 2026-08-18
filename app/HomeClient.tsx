@@ -6,7 +6,6 @@ import SiteHeader from "@/components/SiteHeader";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, Users, HardHat, Droplets, Layers, Search, ScanSearch, ClipboardCheck, FileSearch, Calculator, Wrench, Building2, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/lib/supabase";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 import HomeJobsPanel from "@/components/jobs/HomeJobsPanel";
@@ -344,24 +343,16 @@ export default function HomeClient() {
   useEffect(() => {
     async function fetchNews() {
       try {
-        const [newsRes, insightRes] = await Promise.all([
-          supabase
-            .from("industry_news")
-            .select("title, slug, category, summary, source_name, published_date, source_url")
-            .eq("status", "published")
-            .order("published_date", { ascending: false, nullsFirst: false })
-            .order("created_at", { ascending: false })
-            .limit(15),
-          // RBA's own published insights — mixed into this list, badged + linked internally.
-          supabase
-            .from("rba_insights_articles")
-            .select("title, slug, category, summary, published_date")
-            .eq("status", "published")
-            .order("published_date", { ascending: false, nullsFirst: false })
-            .limit(15),
-        ]);
+        // Served by /api/home-news over the direct Postgres connection. Hitting
+        // Supabase REST from the browser cost a round trip per visitor and went
+        // dark whenever the project's egress quota gated the HTTP APIs.
+        const res = await fetch("/api/home-news");
+        const payload: {
+          news?: Array<Record<string, string | null>>;
+          insights?: Array<Record<string, string | null>>;
+        } = res.ok ? await res.json() : {};
 
-        const newsSlides: NewsSlide[] = (newsRes.error ? [] : newsRes.data ?? []).map((row) => ({
+        const newsSlides: NewsSlide[] = (payload.news ?? []).map((row) => ({
           title: row.title ?? "",
           slug: row.slug ?? "",
           tag: row.category ?? "Other",
@@ -372,7 +363,8 @@ export default function HomeClient() {
           kind: "news" as const,
         }));
 
-        const insightSlides: NewsSlide[] = (insightRes.error ? [] : insightRes.data ?? []).map((row) => ({
+        // RBA's own published insights — mixed into this list, badged + linked internally.
+        const insightSlides: NewsSlide[] = (payload.insights ?? []).map((row) => ({
           title: (row.title ?? "").trim(),
           slug: row.slug ?? "",
           tag: row.category ?? "RBA Insight",

@@ -5,7 +5,7 @@ import { readdirSync, existsSync } from "fs";
 import { join, extname } from "path";
 import { ArrowLeft, ExternalLink, Clock, Calendar, Building2, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { supabase } from "@/lib/supabase";
+import { prisma } from "@/lib/prisma";
 import { getArticleImage, formatDate } from "@/lib/news-categories";
 import { ArticleDisclaimer } from "@/components/industry-news/ArticleDisclaimer";
 import { NewsLegalFooter } from "@/components/industry-news/NewsLegalFooter";
@@ -156,15 +156,33 @@ type Article = {
   created_at: string;
 };
 
-async function getArticle(slug: string): Promise<Article | null> {
-  const { data, error } = await supabase
-    .from("industry_news")
-    .select("id, title, slug, summary, industry_impact, category, tags, source_name, source_url, published_date, created_at")
-    .eq("slug", slug)
-    .eq("status", "published")
-    .single();
+// Prisma hands back Date objects where the REST client used to return ISO
+// strings; keep the wire shape the components already expect.
+function isoOr(v: unknown): string {
+  return v instanceof Date ? v.toISOString() : String(v ?? "");
+}
 
-  if (error || !data) return null;
+const ARTICLE_SELECT = {
+  id: true,
+  title: true,
+  slug: true,
+  summary: true,
+  industry_impact: true,
+  category: true,
+  tags: true,
+  source_name: true,
+  source_url: true,
+  published_date: true,
+  created_at: true,
+} as const;
+
+async function getArticle(slug: string): Promise<Article | null> {
+  const data = await prisma.industryNews.findFirst({
+    where: { slug, status: "published" },
+    select: ARTICLE_SELECT,
+  });
+
+  if (!data) return null;
 
   const row = data as Record<string, unknown>;
   return {
@@ -177,22 +195,20 @@ async function getArticle(slug: string): Promise<Article | null> {
     tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
     source_name: String(row.source_name ?? ""),
     source_url: String(row.source_url ?? ""),
-    published_date: String(row.published_date ?? ""),
-    created_at: String(row.created_at ?? ""),
+    published_date: isoOr(row.published_date),
+    created_at: isoOr(row.created_at),
   };
 }
 
 async function getRelatedArticles(category: string, excludeSlug: string): Promise<Article[]> {
-  const { data } = await supabase
-    .from("industry_news")
-    .select("id, title, slug, summary, industry_impact, category, tags, source_name, source_url, published_date, created_at")
-    .eq("status", "published")
-    .eq("category", category)
-    .neq("slug", excludeSlug)
-    .order("published_date", { ascending: false })
-    .limit(4);
+  const data = await prisma.industryNews.findMany({
+    where: { status: "published", category, slug: { not: excludeSlug } },
+    orderBy: { published_date: { sort: "desc", nulls: "last" } },
+    take: 4,
+    select: ARTICLE_SELECT,
+  });
 
-  return (data ?? []).map((row: Record<string, unknown>) => ({
+  return (data as Record<string, unknown>[]).map((row) => ({
     id: String(row.id ?? ""),
     title: String(row.title ?? ""),
     slug: String(row.slug ?? ""),
@@ -202,8 +218,8 @@ async function getRelatedArticles(category: string, excludeSlug: string): Promis
     tags: Array.isArray(row.tags) ? (row.tags as string[]) : [],
     source_name: String(row.source_name ?? ""),
     source_url: String(row.source_url ?? ""),
-    published_date: String(row.published_date ?? ""),
-    created_at: String(row.created_at ?? ""),
+    published_date: isoOr(row.published_date),
+    created_at: isoOr(row.created_at),
   }));
 }
 
