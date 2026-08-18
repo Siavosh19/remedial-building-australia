@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
+import { prisma } from "@/lib/prisma";
 
 const SITE    = "https://www.remedialbuildingaustralia.com.au";
 const FROM    = "Remedial Building Australia <newsletter@remedialbuildingaustralia.com.au>";
@@ -466,13 +466,20 @@ async function handle(request: NextRequest) {
     subs = [{ name: "Preview", email: testTo }];
   } else {
     // Subscribers — skip placeholder domains
-    const { data, error: subError } = await supabase
-      .from("newsletter_subscribers")
-      .select("name, email")
-      .not("email", "ilike", "%example.com%");
-    if (subError)
-      return NextResponse.json({ error: subError.message }, { status: 500 });
-    subs = data;
+    // newsletter_subscribers has no Prisma model, so query it directly rather
+    // than adding one that could drift from the real table.
+    try {
+      subs = await prisma.$queryRaw<{ name: string; email: string }[]>`
+        select name, email
+        from newsletter_subscribers
+        where email not ilike '%example.com%'
+      `;
+    } catch (err) {
+      return NextResponse.json(
+        { error: err instanceof Error ? err.message : "Subscriber fetch failed" },
+        { status: 500 },
+      );
+    }
   }
   if (!subs || subs.length === 0)
     return NextResponse.json({ error: "No subscribers found" }, { status: 404 });
@@ -481,42 +488,50 @@ async function handle(request: NextRequest) {
   // true). If nothing is curated, fall back to the 8 latest published articles.
   // A curated selection is cleared after a real send (see below) so the next
   // week starts fresh.
-  const ARTICLE_COLS = "title, slug, summary, category, source_name, published_date";
+  const ARTICLE_COLS = {
+    title: true,
+    slug: true,
+    summary: true,
+    category: true,
+    source_name: true,
+    published_date: true,
+  } as const;
 
-  const { data: curated, error: curErr } = await supabase
-    .from("industry_news")
-    .select(ARTICLE_COLS)
-    .eq("status", "published")
-    .not("summary", "is", null)
-    .eq("include_in_newsletter", true)
-    .order("published_date", { ascending: false })
-    .limit(8);
-  if (curErr)
-    return NextResponse.json({ error: curErr.message }, { status: 500 });
-
-  const usedCuration = (curated?.length ?? 0) > 0;
-  let raw = curated;
-
-  if (!usedCuration) {
-    const { data: latest, error: artError } = await supabase
-      .from("industry_news")
-      .select(ARTICLE_COLS)
-      .eq("status", "published")
-      .not("summary", "is", null)
-      .order("published_date", { ascending: false })
-      .limit(8);
-    if (artError)
-      return NextResponse.json({ error: artError.message }, { status: 500 });
-    raw = latest;
+  let raw: Record<string, unknown>[];
+  let usedCuration: boolean;
+  try {
+    const curated = await prisma.industryNews.findMany({
+      where: { status: "published", summary: { not: null }, include_in_newsletter: true },
+      orderBy: { published_date: { sort: "desc", nulls: "last" } },
+      take: 8,
+      select: ARTICLE_COLS,
+    });
+    usedCuration = curated.length > 0;
+    raw = usedCuration
+      ? curated
+      : await prisma.industryNews.findMany({
+          where: { status: "published", summary: { not: null } },
+          orderBy: { published_date: { sort: "desc", nulls: "last" } },
+          take: 8,
+          select: ARTICLE_COLS,
+        });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Article fetch failed" },
+      { status: 500 },
+    );
   }
 
-  const articles: Article[] = (raw ?? []).map((r: Record<string, unknown>) => ({
+  const articles: Article[] = raw.map((r: Record<string, unknown>) => ({
     title:          String(r.title          ?? "").trim(),
     slug:           String(r.slug           ?? "").trim(),
     summary:        String(r.summary        ?? "").trim(),
     category:       normalizeCategory(String(r.category ?? "")),
     source_name:    String(r.source_name    ?? "").trim(),
-    published_date: String(r.published_date ?? ""),
+    published_date:
+      r.published_date instanceof Date
+        ? r.published_date.toISOString()
+        : String(r.published_date ?? ""),
   }));
 
   const label   = weekLabel();
@@ -553,12 +568,15 @@ async function handle(request: NextRequest) {
   // week starts empty and the same articles can't be resent by accident.
   let cleared = false;
   if (!testTo && usedCuration && sent > 0) {
-    const { error: clearErr } = await supabase
-      .from("industry_news")
-      .update({ include_in_newsletter: false })
-      .eq("include_in_newsletter", true);
-    if (clearErr) console.error("[send-newsletter] failed to clear selection:", clearErr);
-    else cleared = true;
+    try {
+      await prisma.industryNews.updateMany({
+        where: { include_in_newsletter: true },
+        data: { include_in_newsletter: false },
+      });
+      cleared = true;
+    } catch (clearErr) {
+      console.error("[send-newsletter] failed to clear selection:", clearErr);
+    }
   }
 
   return NextResponse.json({
