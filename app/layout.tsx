@@ -1,9 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, DM_Serif_Display } from "next/font/google";
 import Script from "next/script";
-import PWARegister from "@/components/PWARegister";
-import InstallPrompt from "@/components/InstallPrompt";
-import PWAAppShell from "@/components/PWAAppShell";
+// PWA DISCONNECTED (2026-08-21) — the installed-app experience was hijacking the
+// normal website, so it is unmounted here rather than deleted. The components
+// below still exist; re-add these imports + the three tags in <body>, and the
+// `manifest`/`appleWebApp` metadata fields, to switch the PWA back on.
+//   import PWARegister from "@/components/PWARegister";
+//   import InstallPrompt from "@/components/InstallPrompt";
+//   import PWAAppShell from "@/components/PWAAppShell";
+import PWADisconnect from "@/components/PWADisconnect";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -61,7 +66,7 @@ const organisationSchema = {
   ],
 };
 
-// Theme colour tints the mobile browser/status bar and the PWA splash.
+// Theme colour tints the mobile browser/status bar.
 export const viewport: Viewport = {
   themeColor: "#0f2748",
 };
@@ -71,13 +76,11 @@ export const metadata: Metadata = {
   title: "Remedial Building Australia",
   description: "Technical defect database and remedial building knowledge platform for Australian Class 2 buildings",
   applicationName: "Remedial Building Australia",
-  // PWA: link the web app manifest and enable iOS standalone ("Add to Home Screen").
-  manifest: "/manifest.webmanifest",
-  appleWebApp: {
-    capable: true,
-    title: "RBA",
-    statusBarStyle: "default",
-  },
+  // PWA DISCONNECTED: the manifest link and iOS standalone flag are removed so
+  // the site is no longer installable and never launches without browser chrome.
+  // app/manifest.ts is kept (it just stops being referenced).
+  //   manifest: "/manifest.webmanifest",
+  //   appleWebApp: { capable: true, title: "RBA", statusBarStyle: "default" },
   icons: {
     icon: [
       { url: "/favicon.ico?v=2", sizes: "any" },
@@ -112,9 +115,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organisationSchema) }}
         />
         {children}
-        <PWARegister />
-        <InstallPrompt />
-        <PWAAppShell />
+        {/* PWA disconnected — unregisters any previously installed service worker. */}
+        <PWADisconnect />
         <Script
           src="https://app.termly.io/resource-blocker/cd648cb9-82de-4258-b9b6-13de590b2886"
           strategy="afterInteractive"
