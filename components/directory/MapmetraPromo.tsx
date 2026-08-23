@@ -9,7 +9,7 @@ import Image from "next/image";
 // image, what it does, price, one button. Slide order follows the workflow —
 // aerial measure first, then takeoff, then everything downstream of it.
 const SLIDES = [
-  { file: "map-measure",     label: "Aerial site measure" },
+  { file: "aerial-measure",  label: "Aerial site measure" },
   { file: "takeoff",         label: "Takeoff" },
   { file: "boq",             label: "Bill of quantities" },
   { file: "wbs",             label: "Work breakdown structure" },
