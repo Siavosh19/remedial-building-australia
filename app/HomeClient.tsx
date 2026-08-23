@@ -319,7 +319,7 @@ export default function HomeClient() {
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroIndex((i) => (i + 1) % heroSlides.length);
-    }, 5000);
+    }, 10000);
     return () => clearInterval(timer);
   }, []);
 
@@ -559,7 +559,7 @@ export default function HomeClient() {
             <div className="text-center" style={{ marginTop: "55px" }}>
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
-                  href="/directory/login"
+                  href="/directory/signup?type=directory"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold shadow-sm transition hover:bg-sky-50 sm:w-auto"
                   style={{ color: "rgb(7,89,133)", border: "1.5px solid rgb(7,89,133)" }}
                 >

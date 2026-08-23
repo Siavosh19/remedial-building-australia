@@ -57,7 +57,7 @@ export default function MapmetraPromo() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="p-5">
+      <div className="px-5 pb-6 pt-5">
         <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#eef3fd]">
           {SLIDES.map((s, i) =>
             // Only the current slide and its two neighbours are in the DOM. All
@@ -78,7 +78,7 @@ export default function MapmetraPromo() {
           )}
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-1.5" role="group" aria-label="Choose a screenshot">
+        <div className="mt-4 flex flex-wrap gap-1.5" role="group" aria-label="Choose a screenshot">
           {SLIDES.map((s, i) => (
             <button
               key={s.file}
@@ -93,13 +93,13 @@ export default function MapmetraPromo() {
           ))}
         </div>
 
-        <p className="mt-4 text-[15px] leading-relaxed text-slate-600">
+        <p className="mt-5 text-[17px] leading-[1.65] text-slate-600">
           <b className="font-bold text-[#0a2a5e]">Mapmetra</b>{" — "}
           aerial site measure, takeoff, BOQ, WBS, estimate, program, tender and rate build.
           Every step of the job in one place.
         </p>
 
-        <p className="mt-3.5 text-[15px] leading-relaxed text-[#0a2a5e]">
+        <p className="mt-4 text-[17px] leading-[1.65] text-[#0a2a5e]">
           <b className="font-bold">From $19/month.</b>
           <span className="text-slate-500"> Free trial &mdash; no credit card required.</span>
         </p>
@@ -108,7 +108,7 @@ export default function MapmetraPromo() {
           href="https://www.mapmetra.com"
           target="_blank"
           rel="noopener"
-          className="mt-4 block rounded-xl bg-[#1b54d6] px-4 py-3.5 text-center text-sm font-bold text-white transition hover:bg-[#1746b4]"
+          className="mt-5 block rounded-xl bg-[#1b54d6] px-4 py-4 text-center text-base font-bold text-white transition hover:bg-[#1746b4]"
         >
           Start your free trial &rarr;
         </a>
