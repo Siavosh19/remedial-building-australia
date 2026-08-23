@@ -357,6 +357,11 @@ model Company {
   // Pre-paid lead credit balance (cents). Leads bought past the weekly interest
   // allowance draw down from here; topped up via /api/directory/lead-wallet/topup.
   lead_wallet_cents      Int                  @default(0)
+  // Signup chose Silver/Gold but has not completed Stripe checkout yet
+  // ("silver" | "gold"). Set on signup, cleared the moment a subscription goes
+  // active/trialing or the owner falls back to a Free listing. Drives the
+  // "Finish setting up your listing" panel on the dashboard.
+  pending_plan           String?
 
   main_category            Category?              @relation("CompanyMainCategory", fields: [main_category_id], references: [id])
   locations                Location[]

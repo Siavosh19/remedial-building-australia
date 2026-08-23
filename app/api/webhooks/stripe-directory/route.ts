@@ -169,7 +169,9 @@ async function syncSubscription(companyId: number, sub: Stripe.Subscription) {
         plan_type: isActive ? planType : "basic",
         is_featured: isActive && planType === "featured",
         quote_requests_enabled: isActive && (planType === "claimed" || planType === "featured"),
-        ...(isActive ? { status: "published", listing_claim_status: "claimed", is_claimed: true } : {}),
+        // Checkout completed — the signup is finished, so drop the
+        // "finish setting up your listing" prompt from the dashboard.
+        ...(isActive ? { status: "published", listing_claim_status: "claimed", is_claimed: true, pending_plan: null } : {}),
       },
     });
   });

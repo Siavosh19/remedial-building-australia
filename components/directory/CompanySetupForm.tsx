@@ -266,21 +266,27 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
       } catch { /* ignore — newsletter is optional */ }
     }
 
-    // Paid plan → create the listing (done above) then hand off to Stripe
-    // checkout, where a card is collected before the free trial starts. If the
-    // buyer abandons checkout, the listing simply stays Free/claimed.
+    // Paid plan → the listing is saved as a DRAFT above (with pending_plan set)
+    // and stays out of the directory until Stripe checkout completes. Abandoning
+    // checkout costs nothing and loses nothing: the dashboard shows a
+    // "Finish setting up your listing" panel to resume, switch plan or go Free.
     if (isPaid) {
       setStatus({
         type: "success",
         message: selectedPlan === "gold"
-          ? "Listing created — redirecting to secure checkout to activate Gold…"
-          : "Listing created — redirecting to secure checkout to start your free trial…",
+          ? "Your details are saved — taking you to secure checkout. Nothing is charged and your listing does not go live until you confirm."
+          : "Your details are saved — taking you to secure checkout. No charge is made and your listing does not go live until you confirm your card.",
       });
       try {
         const subRes = await fetch("/api/directory/subscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ plan: selectedPlan === "gold" ? "featured-monthly" : "claimed-monthly" }),
+          body: JSON.stringify({
+            plan: selectedPlan === "gold" ? "featured-monthly" : "claimed-monthly",
+            // Backing out of Stripe returns to the dashboard, where the
+            // "Finish setting up your listing" panel picks the signup back up.
+            cancelPath: "/directory/dashboard?checkout=cancelled",
+          }),
         });
         const subResult = await subRes.json().catch(() => ({}));
         if (subRes.ok && subResult.checkoutUrl) {
@@ -294,11 +300,11 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
         }
         // Subscribe failed (e.g. Gold full in this State) — listing is live as
         // Free; send them to the dashboard with the reason.
-        setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Your listing is live as a Free listing — you can upgrade anytime from your dashboard." });
-        window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
+        setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Nothing has been charged and your details are saved — finish setting up your listing from your dashboard." });
+        window.setTimeout(() => { window.location.href = "/directory/dashboard"; }, 3500);
       } catch {
-        setStatus({ type: "error", message: "We couldn't reach checkout. Your listing is live as Free — upgrade anytime from your dashboard." });
-        window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
+        setStatus({ type: "error", message: "We couldn't reach checkout. Nothing has been charged and your details are saved — finish setting up your listing from your dashboard." });
+        window.setTimeout(() => { window.location.href = "/directory/dashboard"; }, 3500);
       }
       return;
     }

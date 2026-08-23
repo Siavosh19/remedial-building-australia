@@ -470,14 +470,19 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
       setStatus({
         type: "success",
         message: plan === "gold"
-          ? "Listing created — redirecting to secure checkout to activate Gold…"
-          : "Listing created — redirecting to secure checkout to start your free trial…",
+          ? "Your details are saved — taking you to secure checkout. Nothing is charged and your listing does not go live until you confirm."
+          : "Your details are saved — taking you to secure checkout. No charge is made and your listing does not go live until you confirm your card.",
       });
       try {
         const subRes = await fetch("/api/directory/subscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ plan: plan === "gold" ? "featured-monthly" : "claimed-monthly" }),
+          body: JSON.stringify({
+            plan: plan === "gold" ? "featured-monthly" : "claimed-monthly",
+            // Backing out of Stripe returns to the dashboard, where the
+            // "Finish setting up your listing" panel picks the signup back up.
+            cancelPath: "/directory/dashboard?checkout=cancelled",
+          }),
         });
         const subResult = await subRes.json().catch(() => ({}));
         if (subRes.ok && subResult.checkoutUrl) {
@@ -490,15 +495,15 @@ export default function CompanySetupFormV2({ categories, plans }: { categories: 
           return;
         }
         // Subscribe failed (e.g. Gold full in this State) — the paid listing is
-        // saved as a draft (not published) until checkout completes.
-        // Free; send them to the dashboard with the reason.
+        // saved as a draft (not published) until checkout completes. Send them
+        // to the dashboard, where they can retry, switch plan or publish free.
         setLoading(false);
-        setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Your listing is saved as a draft — complete payment from your dashboard to publish it." });
-        window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
+        setStatus({ type: "error", message: (subResult.error ?? "We couldn't start checkout.") + " Nothing has been charged and your details are saved — finish setting up your listing from your dashboard." });
+        window.setTimeout(() => { window.location.href = "/directory/dashboard"; }, 3500);
       } catch {
         setLoading(false);
-        setStatus({ type: "error", message: "We couldn't reach checkout. Your listing is saved as a draft — complete payment from your dashboard to publish it." });
-        window.setTimeout(() => { window.location.href = "/directory/dashboard/subscription"; }, 3500);
+        setStatus({ type: "error", message: "We couldn't reach checkout. Nothing has been charged and your details are saved — finish setting up your listing from your dashboard." });
+        window.setTimeout(() => { window.location.href = "/directory/dashboard"; }, 3500);
       }
       return;
     }

@@ -141,6 +141,10 @@ export async function POST(request: NextRequest) {
   // Silver/Gold must NOT go live until Stripe checkout completes. New paid
   // listings are created as draft and published by the webhook on activation.
   const isPaidPlan = body.selectedPlan === "silver" || body.selectedPlan === "gold";
+  // Remember which paid plan they picked so the dashboard can offer "finish
+  // checkout" (or "publish as Free instead") if they abandon Stripe. Cleared
+  // when the subscription activates, or when they settle for a Free listing.
+  const pendingPlan = isPaidPlan ? (body.selectedPlan as string) : null;
   const queueStatus: AdminReviewStatus = autoApprove ? "published" : "discovered";
   const approvalNote = autoApprove
     ? "Auto-approved on submission — ABN confirmed active with the ABR."
@@ -202,6 +206,7 @@ export async function POST(request: NextRequest) {
           main_category_id: resolvedCategoryId || scraped.main_category_id,
           profile_status: profileStatus,
           status: companyStatus,
+          pending_plan: pendingPlan,
           ...claimSignals,
           // Claiming a listing NO LONGER grants a paid tier. It stays on its
           // current plan (Free/basic for a scraped listing) and only marks
@@ -259,6 +264,7 @@ export async function POST(request: NextRequest) {
         tagline: tagline || null,
         main_category_id: resolvedCategoryId,
         status: isPaidPlan ? "draft" : companyStatus,
+        pending_plan: pendingPlan,
         profile_status: profileStatus,
         confidence_score,
         is_claimed: true,

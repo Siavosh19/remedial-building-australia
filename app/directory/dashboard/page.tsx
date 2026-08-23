@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import DashboardLeadCards, { type DashboardLead } from "@/components/directory/DashboardLeadCards";
 import ProfileChecklistCollapsible from "@/components/directory/ProfileChecklistCollapsible";
+import FinishListingPanel from "@/components/directory/FinishListingPanel";
 import { URGENCY_LABELS } from "@/lib/quote-options";
 
 export const dynamic = "force-dynamic";
@@ -184,6 +185,15 @@ export default async function DashboardIndexPage() {
   const totalCount = checklist.filter((c) => !c.locked).length;
   const completionPct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
+  // Unfinished paid signup: they picked Silver/Gold, the listing was saved, but
+  // Stripe checkout never completed — so it sits as a draft, out of search, with
+  // no plan. Offer the way back in instead of leaving them stranded.
+  const pendingPlan =
+    company.pending_plan === "silver" || company.pending_plan === "gold" ? company.pending_plan : null;
+  const subSettled =
+    subscription?.subscription_status === "active" || subscription?.subscription_status === "trialing";
+  const showFinishSignup = !!pendingPlan && !subSettled;
+
   const listingStatus = listingStatusLabel(company?.status ?? null);
   const claimStatus = claimStatusLabel(company?.listing_claim_status ?? null);
 
@@ -202,6 +212,15 @@ export default async function DashboardIndexPage() {
 
   return (
     <div className="space-y-6">
+
+      {/* ── Unfinished Silver/Gold signup — saved, but not live or paid ─── */}
+      {showFinishSignup && pendingPlan && (
+        <FinishListingPanel
+          pendingPlan={pendingPlan}
+          isDraft={company.status !== "published"}
+          companyName={company.name}
+        />
+      )}
 
       {/* ── Claim pending alert ─────────────────────────────────────────── */}
       {claimPending && (

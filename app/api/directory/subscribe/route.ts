@@ -81,6 +81,8 @@ export async function POST(request: NextRequest) {
           listing_claim_status: "claimed",
           is_claimed: true,
           quote_requests_enabled: true,
+          // Plan is settled — no unfinished-signup prompt on the dashboard.
+          pending_plan: null,
           ...(planType === "featured" ? { is_featured: true } : {}),
         },
       });
@@ -140,7 +142,7 @@ export async function POST(request: NextRequest) {
           });
           await prisma.$transaction([
             prisma.directorySubscription.update({ where: { company_id: company.id }, data: { plan_type: planType, billing_cycle: billingCycle } }),
-            prisma.company.update({ where: { id: company.id }, data: { plan_type: planType, is_featured: planType === "featured", quote_requests_enabled: true } }),
+            prisma.company.update({ where: { id: company.id }, data: { plan_type: planType, is_featured: planType === "featured", quote_requests_enabled: true, pending_plan: null } }),
           ]);
           sendNewSubscriptionAdminEmail({ companyName: company.name, planLabel: planType === "featured" ? "Gold" : "Silver", billingCycle, changeType: "upgrade" }).catch(() => {});
           return NextResponse.json({ success: true, mode: "updated" });
@@ -153,6 +155,14 @@ export async function POST(request: NextRequest) {
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.remedialbuildingaustralia.com.au";
+  // Backing out of Stripe must land somewhere they can carry on from — never the
+  // public marketing page (which strands a half-finished signup). Callers may
+  // name their own in-app return path; anything else falls back to the
+  // subscription page. Relative, same-origin paths only.
+  const requestedCancel = String(body.cancelPath ?? "");
+  const cancelPath = /^\/[A-Za-z0-9\-_][A-Za-z0-9\-_/?=&]*$/.test(requestedCancel)
+    ? requestedCancel
+    : "/directory/dashboard/subscription?checkout=cancelled";
   let session;
   try {
     session = await stripe.checkout.sessions.create({
@@ -165,7 +175,7 @@ export async function POST(request: NextRequest) {
         metadata: { company_id: String(company.id), plan_type: planType, billing_cycle: billingCycle },
       },
       success_url: `${siteUrl}/directory/dashboard/subscription?checkout=success`,
-      cancel_url: `${siteUrl}/directory/pricing`,
+      cancel_url: `${siteUrl}${cancelPath}`,
       metadata: { company_id: String(company.id) },
     });
   } catch {
