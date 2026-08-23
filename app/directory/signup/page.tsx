@@ -525,7 +525,7 @@ export default function DirectorySignupPage() {
                       form in normal flow, so it can never push the fields or the
                       Create account button down the page. */}
                   {showPromo ? (
-                    <aside className="mt-10 w-full max-w-xl lg:sticky lg:top-6 lg:mt-0 lg:w-80 lg:shrink-0">
+                    <aside className="mt-10 w-full max-w-xl lg:sticky lg:top-6 lg:mt-0 lg:w-[340px] lg:shrink-0">
                       <MapmetraPromo />
                     </aside>
                   ) : null}
