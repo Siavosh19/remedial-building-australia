@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Building2, Package, UserCog, ClipboardList, ChevronRight, type LucideIcon } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import TurnstileWidget from "@/components/TurnstileWidget";
+import MapmetraPromo from "@/components/directory/MapmetraPromo";
 import { validateAuPhone } from "@/lib/phone-au";
 
 type AccountType = "directory" | "supplier" | "ai_scope";
@@ -221,6 +222,10 @@ export default function DirectorySignupPage() {
 
   const selected = CARDS.find((c) => c.id === accountType);
   const SelectedIcon = selected?.Icon ?? Building2;
+  // The Mapmetra cross-promo rides the business signup form only. The
+  // account-type chooser has no spare column, and a promo there would
+  // compete with the four cards.
+  const showPromo = accountType === "directory";
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
@@ -368,145 +373,162 @@ export default function DirectorySignupPage() {
                   &larr; Back
                 </button>
 
-                <div className="mb-6 flex items-center gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-950 text-white">
-                    <SelectedIcon size={22} />
-                  </span>
-                  <div>
-                    <h1 className="text-2xl font-extrabold text-slate-950">{selected?.title}</h1>
-                    <p className="mt-0.5 text-sm text-slate-500">{selected?.subtitle}</p>
-                  </div>
-                </div>
-
-                <form onSubmit={handleSubmit} className="max-w-xl space-y-5">
-                  <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
-                    <span>Full name</span>
-                    <input
-                      type="text"
-                      value={form.fullName}
-                      onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                      className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-                      required
-                    />
-                  </label>
-
-                  <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
-                    <span>Email address</span>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      autoComplete="email"
-                      placeholder="you@company.com"
-                      className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-                      required
-                    />
-                  </label>
-
-                  <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
-                    <span>Phone number</span>
-                    <input
-                      type="tel"
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      placeholder="02 9876 5432 or 0412 345 678"
-                      className={`w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${
-                        phoneCheck && !phoneCheck.valid ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"
-                      }`}
-                      required
-                    />
-                    {phoneCheck && !phoneCheck.valid && (
-                      <span className="block text-xs font-medium text-rose-600">{phoneCheck.message}</span>
-                    )}
-                  </label>
-
-                  {(accountType === "supplier" || accountType === "ai_scope") ? (
-                    <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
-                      <span>Company name</span>
-                      <input
-                        type="text"
-                        value={form.company}
-                        onChange={(e) => setForm({ ...form, company: e.target.value })}
-                        className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-                        required
-                      />
-                    </label>
-                  ) : null}
-
-                  {accountType === "ai_scope" ? (
-                    <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
-                      <span>Job role</span>
-                      <input
-                        type="text"
-                        placeholder="e.g. Remedial consultant, Engineer, Strata manager"
-                        value={form.jobRole}
-                        onChange={(e) => setForm({ ...form, jobRole: e.target.value })}
-                        className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-                        required
-                      />
-                    </label>
-                  ) : null}
-
-                  <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
-                    <span>Password</span>
-                    <input
-                      type="password"
-                      value={form.password}
-                      onChange={(e) => setForm({ ...form, password: e.target.value })}
-                      autoComplete="new-password"
-                      className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-                      minLength={8}
-                      required
-                    />
-                  </label>
-
-                  <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
-                    <span>Confirm password</span>
-                    <input
-                      type="password"
-                      value={form.confirmPassword}
-                      onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                      autoComplete="new-password"
-                      className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
-                      minLength={8}
-                      required
-                    />
-                  </label>
-
-                  <TurnstileWidget onToken={setTurnstileToken} />
-
-                  {status?.type === "error" ? (
-                    <div className="rounded-2xl bg-rose-100 px-4 py-3 text-sm text-rose-900">
-                      {status.message}
-                      {status.showReset ? (
-                        <>
-                          {" "}
-                          <a href="/directory/forgot-password" className="font-semibold underline underline-offset-2">
-                            Reset your password
-                          </a>
-                          .
-                        </>
-                      ) : null}
+                {/* Form (left) + Mapmetra cross-promo (right rail from lg up).
+                    Capping the left column at the form's own width is what makes
+                    the heading wrap onto two lines instead of stretching across
+                    the whole page. */}
+                <div className={showPromo ? "lg:flex lg:items-start lg:justify-between lg:gap-10" : ""}>
+                  <div className="w-full max-w-xl lg:min-w-0 lg:flex-1">
+                    <div className="mb-6 flex items-start gap-3">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sky-950 text-white">
+                        <SelectedIcon size={22} />
+                      </span>
+                      <div>
+                        <h1 className="text-2xl font-extrabold text-slate-950">{selected?.title}</h1>
+                        <p className="mt-1 text-sm leading-relaxed text-slate-500">{selected?.subtitle}</p>
+                      </div>
                     </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
+                        <span>Full name</span>
+                        <input
+                          type="text"
+                          value={form.fullName}
+                          onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+                          className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+                          required
+                        />
+                      </label>
+
+                      <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
+                        <span>Email address</span>
+                        <input
+                          type="email"
+                          value={form.email}
+                          onChange={(e) => setForm({ ...form, email: e.target.value })}
+                          autoComplete="email"
+                          placeholder="you@company.com"
+                          className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+                          required
+                        />
+                      </label>
+
+                      <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
+                        <span>Phone number</span>
+                        <input
+                          type="tel"
+                          value={form.phone}
+                          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                          placeholder="02 9876 5432 or 0412 345 678"
+                          className={`w-full rounded-2xl border bg-slate-50 px-4 py-3 text-sm focus:outline-none ${
+                            phoneCheck && !phoneCheck.valid ? "border-rose-400 focus:border-rose-500" : "border-slate-300 focus:border-sky-600"
+                          }`}
+                          required
+                        />
+                        {phoneCheck && !phoneCheck.valid && (
+                          <span className="block text-xs font-medium text-rose-600">{phoneCheck.message}</span>
+                        )}
+                      </label>
+
+                      {(accountType === "supplier" || accountType === "ai_scope") ? (
+                        <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
+                          <span>Company name</span>
+                          <input
+                            type="text"
+                            value={form.company}
+                            onChange={(e) => setForm({ ...form, company: e.target.value })}
+                            className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+                            required
+                          />
+                        </label>
+                      ) : null}
+
+                      {accountType === "ai_scope" ? (
+                        <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
+                          <span>Job role</span>
+                          <input
+                            type="text"
+                            placeholder="e.g. Remedial consultant, Engineer, Strata manager"
+                            value={form.jobRole}
+                            onChange={(e) => setForm({ ...form, jobRole: e.target.value })}
+                            className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+                            required
+                          />
+                        </label>
+                      ) : null}
+
+                      <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
+                        <span>Password</span>
+                        <input
+                          type="password"
+                          value={form.password}
+                          onChange={(e) => setForm({ ...form, password: e.target.value })}
+                          autoComplete="new-password"
+                          className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+                          minLength={8}
+                          required
+                        />
+                      </label>
+
+                      <label className="block space-y-1.5 text-sm font-semibold text-slate-800">
+                        <span>Confirm password</span>
+                        <input
+                          type="password"
+                          value={form.confirmPassword}
+                          onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                          autoComplete="new-password"
+                          className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-sky-600 focus:outline-none"
+                          minLength={8}
+                          required
+                        />
+                      </label>
+
+                      <TurnstileWidget onToken={setTurnstileToken} />
+
+                      {status?.type === "error" ? (
+                        <div className="rounded-2xl bg-rose-100 px-4 py-3 text-sm text-rose-900">
+                          {status.message}
+                          {status.showReset ? (
+                            <>
+                              {" "}
+                              <a href="/directory/forgot-password" className="font-semibold underline underline-offset-2">
+                                Reset your password
+                              </a>
+                              .
+                            </>
+                          ) : null}
+                        </div>
+                      ) : null}
+
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {loading ? "Creating account…" : "Create account"}
+                      </button>
+                    </form>
+
+                    <div className="mt-8 flex flex-wrap items-center gap-3 text-lg text-slate-700">
+                      <span className="font-bold text-slate-900">Already have an account?</span>
+                      <Link
+                        href="/directory/login"
+                        className="inline-flex items-center rounded-xl bg-sky-950 px-5 py-2.5 text-base font-semibold text-white transition hover:bg-sky-800"
+                      >
+                        Sign in
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Below lg the grid collapses and the promo lands AFTER the
+                      form in normal flow, so it can never push the fields or the
+                      Create account button down the page. */}
+                  {showPromo ? (
+                    <aside className="mt-10 w-full max-w-xl lg:sticky lg:top-6 lg:mt-0 lg:w-80 lg:shrink-0">
+                      <MapmetraPromo />
+                    </aside>
                   ) : null}
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="inline-flex w-full items-center justify-center rounded-2xl bg-sky-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {loading ? "Creating account…" : "Create account"}
-                  </button>
-                </form>
-
-                <div className="mt-8 flex flex-wrap items-center gap-3 text-lg text-slate-700">
-                  <span className="font-bold text-slate-900">Already have an account?</span>
-                  <Link
-                    href="/directory/login"
-                    className="inline-flex items-center rounded-xl bg-sky-950 px-5 py-2.5 text-base font-semibold text-white transition hover:bg-sky-800"
-                  >
-                    Sign in
-                  </Link>
                 </div>
               </>
             )}
