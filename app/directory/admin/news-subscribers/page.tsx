@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import RemoveSubscriberButton from "./RemoveSubscriberButton";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +47,7 @@ export default async function NewsSubscribersPage() {
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Email</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Interest</th>
               <th className="px-4 py-3 text-left font-semibold text-slate-700">Subscribed</th>
+              <th className="px-4 py-3 text-right font-semibold text-slate-700">Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -55,11 +57,14 @@ export default async function NewsSubscribersPage() {
                 <td className="px-4 py-3 text-slate-600">{r.email}</td>
                 <td className="px-4 py-3 text-slate-500">{r.interest_category || "—"}</td>
                 <td className="px-4 py-3 text-slate-400 text-xs">{fmtDate(r.subscribed_at)}</td>
+                <td className="px-4 py-3 text-right">
+                  <RemoveSubscriberButton email={r.email} name={r.name} />
+                </td>
               </tr>
             ))}
             {!rows.length && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-slate-400">No subscribers yet</td>
+                <td colSpan={5} className="px-4 py-8 text-center text-slate-400">No subscribers yet</td>
               </tr>
             )}
           </tbody>
