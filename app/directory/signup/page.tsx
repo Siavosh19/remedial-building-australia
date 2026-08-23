@@ -8,6 +8,7 @@ import { Building2, Package, UserCog, ClipboardList, ChevronRight, type LucideIc
 import SiteHeader from "@/components/SiteHeader";
 import TurnstileWidget from "@/components/TurnstileWidget";
 import MapmetraPromo from "@/components/directory/MapmetraPromo";
+import MapmetraPromoModal from "@/components/directory/MapmetraPromoModal";
 import { validateAuPhone } from "@/lib/phone-au";
 
 type AccountType = "directory" | "supplier" | "ai_scope";
@@ -521,15 +522,18 @@ export default function DirectorySignupPage() {
                     </div>
                   </div>
 
-                  {/* Below lg the grid collapses and the promo lands AFTER the
-                      form in normal flow, so it can never push the fields or the
-                      Create account button down the page. */}
+                  {/* Desktop only. Below lg there is no rail, and sitting under
+                      the Create account button meant nobody saw it — small
+                      screens get the dismiss-once popup instead. */}
                   {showPromo ? (
-                    <aside className="mt-10 w-full max-w-xl lg:sticky lg:top-6 lg:mt-0 lg:w-[340px] lg:shrink-0">
+                    <aside className="hidden lg:sticky lg:top-6 lg:block lg:w-[340px] lg:shrink-0">
                       <MapmetraPromo />
                     </aside>
                   ) : null}
                 </div>
+
+                {/* Phone/tablet: opens once shortly after landing, closes for good. */}
+                {showPromo ? <MapmetraPromoModal /> : null}
               </>
             )}
           </div>
