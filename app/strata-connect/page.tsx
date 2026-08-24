@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Strata Connect — Forward a work order, get competitive quotes",
     description:
-      "Forward a work order to one email address. It becomes a quote request matched to verified businesses near the building.",
+      "Forward a work order to one email address. It becomes a quote request matched to available businesses near the building.",
     url: "https://www.remedialbuildingaustralia.com.au/strata-connect",
     type: "website",
     siteName: "Remedial Building Australia",

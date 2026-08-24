@@ -30,7 +30,7 @@ export default function AboutPage() {
             </p>
             <p>
               The platform includes a business directory, job board, request quote system,
-              industry news and technical resources for the remedial building sector.
+              industry news and a materials index for the remedial building sector.
             </p>
             <p>
               Key resources include the Defect Library, Repair Solutions, Repair System Selector,

@@ -95,10 +95,10 @@ const FAQS: { q: string; plain: string; answer: React.ReactNode; highlight?: boo
   {
     q: "Is it free to use?",
     plain:
-      "Searching the directory, browsing the technical resources and requesting quotes is free for owners corporations, strata managers and building owners. Businesses pay to be listed and to advertise on the platform.",
+      "Searching the directory, reading the news and requesting quotes is free for owners corporations, strata managers and building owners. Businesses pay to be listed and to advertise on the platform.",
     answer: (
       <p>
-        Searching the directory, browsing the technical resources and requesting quotes is{" "}
+        Searching the directory, reading the news and requesting quotes is{" "}
         <strong>free</strong> for owners corporations, strata managers and building owners.
         Businesses pay to be listed and to advertise on the platform — see{" "}
         <Link href="/advertise" className="font-semibold text-sky-700 hover:underline">

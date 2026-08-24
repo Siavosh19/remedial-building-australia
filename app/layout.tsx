@@ -53,7 +53,7 @@ const organisationSchema = {
       url: SITE_URL,
       logo: `${SITE_URL}/icon.png`,
       description:
-        "Remedial Building Australia is a strata and remedial building platform connecting owners corporations, strata managers, building managers, contractors, consultants, engineers and suppliers across Australia. It includes a business directory, job board, Strata Connect quote requests, industry news and technical resources — Defect Library, Repair Solutions, Repair System Selector, Materials Index and AI Scope Writer — plus an Expert Remedial Advice section offering Scope, Quote & Tender Review, Remedial Budget Estimates, Building Repair Strategy Advice and Capital Works Forecasts.",
+        "Remedial Building Australia is a strata and remedial building platform connecting owners corporations, strata managers, building managers, contractors, consultants, engineers and suppliers across Australia. It includes a business directory, job board, Strata Connect quote requests, industry news and a materials and products index — plus an Expert Remedial Advice section offering Scope, Quote & Tender Review, Remedial Budget Estimates, Building Repair Strategy Advice and Capital Works Forecasts.",
       areaServed: "AU",
     },
     {
