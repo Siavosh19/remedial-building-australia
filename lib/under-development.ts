@@ -31,12 +31,6 @@ export const UNDER_DEVELOPMENT_SECTIONS: UnderDevelopmentSection[] = [
     blurb:
       "The defect library — causes, risks and repair pathways for common Class 2 building defects — is being finalised before it goes live.",
   },
-  {
-    path: "/industry-news",
-    title: "News & Insights",
-    blurb:
-      "Our industry news feed is being reworked so we can bring you Australian remedial building updates properly.",
-  },
 ];
 
 /** The disconnected section covering this path, or null when it is live. */
