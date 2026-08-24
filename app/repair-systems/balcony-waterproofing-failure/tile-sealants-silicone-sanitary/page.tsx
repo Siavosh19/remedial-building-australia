@@ -216,11 +216,6 @@ export default function TileSealantsSiliconeSanitaryPage() {
                   label: "Backer Rod & Bond Breaker Tape",
                   title: "Closed-cell PE backer rod and bond breaker tape for sealant joints",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

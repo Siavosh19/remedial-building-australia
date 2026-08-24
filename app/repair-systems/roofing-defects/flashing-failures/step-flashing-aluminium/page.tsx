@@ -174,11 +174,6 @@ export default function StepFlashingAluminiumFFPage() {
                   label: "Defect Library",
                   title: "Flashing Failures — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for roof flashing failure remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

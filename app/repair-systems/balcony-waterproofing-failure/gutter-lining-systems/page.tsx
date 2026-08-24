@@ -250,11 +250,6 @@ export default function GutterLiningSystemsPage() {
                   label: "Related — Torch-on SBS membranes",
                   title: "Full torch-on SBS modified bitumen product reference",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

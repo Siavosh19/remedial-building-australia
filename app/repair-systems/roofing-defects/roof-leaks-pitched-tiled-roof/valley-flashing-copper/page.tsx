@@ -192,11 +192,6 @@ export default function ValleyFlashingCopperPage() {
                   label: "Defect Library",
                   title: "Pitched Tiled Roof Leaks — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for copper valley flashing replacement",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

@@ -170,7 +170,6 @@ export default function ProprietaryMasonryPoulticeePage() {
                 { href: BASE_POULT, label: "Masonry Cleaning — Chemical Poultice", title: "Browse all chemical poultice masonry cleaning types" },
                 { href: HUB, label: "Masonry & Structural", title: "Browse all masonry remediation categories" },
                 { href: "/defect-library/facade-external-envelope", label: "Defect Library", title: "Masonry staining and heritage facade defects" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for masonry stain removal" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

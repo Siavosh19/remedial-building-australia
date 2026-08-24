@@ -170,11 +170,6 @@ export default function FixedSkylightSystemsPage() {
                   label: "Skylight Flashing Kits",
                   title: "Velux EDZ and Fakro LFT matched flashing kits for tiled roofs",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for skylight replacement",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

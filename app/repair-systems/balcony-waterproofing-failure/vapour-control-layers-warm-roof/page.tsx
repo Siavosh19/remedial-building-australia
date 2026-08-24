@@ -216,11 +216,6 @@ export default function VapourControlLayersWarmRoofPage() {
                   label: "Tapered Insulation Boards",
                   title: "PIR, XPS and mineral wool insulation board systems for warm-roof assemblies",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

@@ -276,11 +276,6 @@ export default function BallastSystemsPage() {
                   label: "Tapered Insulation Board Systems",
                   title: "Tapered insulation for inverted ballasted roof systems — PIR / XPS / mineral wool",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for roof waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

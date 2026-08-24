@@ -169,11 +169,6 @@ export default function SkylightFlashingSystemsPage() {
                   label: "Fixed Skylight Systems",
                   title: "Velux GGL, Fakro FTP-V U3 and Velux FCM fixed skylight units",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for skylight replacement",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

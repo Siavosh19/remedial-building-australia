@@ -154,7 +154,6 @@ export default function ExpressedJointFlashPage() {
                 { href: "/repair-systems/facade-external-envelope/cladding", label: "Back to Cladding", title: "Browse all cladding subcategories" },
                 { href: `${BASE_FLASHINGS}/external-corner-flashing`, label: "External Corner", title: "External corner flashing for cladding" },
                 { href: `${BASE_JOINTS}/joint-sealant-replacement-systems`, label: "Joint Sealant", title: "Joint sealant replacement systems for cladding" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for cladding remediation" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

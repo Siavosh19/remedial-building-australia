@@ -83,7 +83,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   entries.push({ url: BASE, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 });
 
   // ── Top-level section pages ──
-  for (const path of ["/defect-library", "/repair-systems", "/industry-news", "/directory", "/ai-scope-builder"]) {
+  for (const path of ["/defect-library", "/repair-systems", "/industry-news", "/directory"]) {
     entries.push({ url: `${BASE}${path}`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 });
   }
 

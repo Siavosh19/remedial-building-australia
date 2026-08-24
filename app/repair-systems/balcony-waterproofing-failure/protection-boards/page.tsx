@@ -222,11 +222,6 @@ export default function ProtectionBoardsPage() {
                   label: "Drainage Cell Systems",
                   title: "Drainage cell systems for planter boxes and podium slabs",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

@@ -170,11 +170,6 @@ export default function AluminiumHatchSystemsPage() {
                   label: "Insulated Hatch Systems",
                   title: "Fakro LST and Milcor SSD thermally insulated roof hatch systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for roof access hatch replacement",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

@@ -154,11 +154,6 @@ export default function FailedSealantsJointsPage() {
                   label: "Window & Door Perimeter Failure",
                   title: "Perimeter sealants, flashings and subsill drainage",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

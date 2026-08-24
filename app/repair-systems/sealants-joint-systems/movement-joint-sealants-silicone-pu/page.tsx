@@ -153,11 +153,6 @@ export default function MovementJointSealantsPage() {
                   label: "Defect Library",
                   title: "Browse defect causes, inspection and methodology references",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for joint sealant remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

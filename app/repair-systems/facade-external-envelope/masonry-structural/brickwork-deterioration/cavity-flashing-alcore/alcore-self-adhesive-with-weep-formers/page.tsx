@@ -137,7 +137,6 @@ export default function AlcoreSelfAdhesivePage() {
                 { href: BASE_ALCORE, label: "Cavity Flashing — Alcore", title: "Browse all Alcore flashing types" },
                 { href: HUB, label: "Masonry & Structural", title: "Browse all masonry remediation categories" },
                 { href: "/defect-library/facade-external-envelope", label: "Defect Library", title: "Cavity flashing failure in masonry facades" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for cavity flashing remediation" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

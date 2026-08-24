@@ -192,11 +192,6 @@ export default function RoofTileReplacementSlatePage() {
                   label: "Defect Library",
                   title: "Roofing defects — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for pitched slate roof remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

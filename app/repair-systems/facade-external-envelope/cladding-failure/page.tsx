@@ -154,11 +154,6 @@ export default function CladdingFailurePage() {
                   label: "External Coating & Paint",
                   title: "Primers, elastomeric coatings, enamels and water repellents",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

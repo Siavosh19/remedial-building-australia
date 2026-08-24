@@ -138,11 +138,6 @@ export default function DownpipeDefectsPage() {
                   label: "Gutter Replacement",
                   title: "Colorbond fascia gutter replacement systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for downpipe replacement",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

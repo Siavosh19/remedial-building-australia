@@ -175,11 +175,6 @@ export default function SaltResistantRenovatingRenderPage() {
                   label: "Defect Library",
                   title: "Render cracking & delamination — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade salt attack remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

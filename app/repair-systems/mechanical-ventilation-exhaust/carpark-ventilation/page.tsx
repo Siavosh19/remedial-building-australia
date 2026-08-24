@@ -145,11 +145,6 @@ export default function CarparkVentilationPage() {
                   label: "Subfloor Ventilation",
                   title: "Terracotta, aluminium and mechanical subfloor vent systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for carpark ventilation upgrade",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

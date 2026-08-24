@@ -164,7 +164,6 @@ export default function RebarPrimersPage() {
                 { href: "/repair-systems/concrete-structural-defects", label: "Concrete & Structural Defects", title: "Browse all concrete and structural defect subcategories" },
                 { href: BASE, label: "Concrete Spalling", title: "Browse all product categories for concrete spalling repair" },
                 { href: `${BASE}/abrasives-blades-tools`, label: "Abrasives & Tools", title: "Needle scalers and cup wheels used to clean rebar before priming" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for concrete spalling remediation" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

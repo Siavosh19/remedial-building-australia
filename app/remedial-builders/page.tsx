@@ -40,7 +40,6 @@ const config: SeoLandingConfig = {
   links: [
     { label: "Business Directory", href: "/directory", description: "Search remedial contractors and specialists across Australia." },
     { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent review of scopes, quotes and tenders before you engage a builder." },
-    { label: "AI Scope Builder", href: "/ai-scope-builder", description: "Generate a consultant, builder or strata-ready scope of works." },
     { label: "Defect Library", href: "/defect-library", description: "Causes, risks and repair pathways for common Class 2 building defects." },
   ],
   relatedLinks: [

@@ -138,11 +138,6 @@ export default function PipePenetrationFailurePage() {
                   label: "Flashing Failures",
                   title: "Step, counter and penetration flashing systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for pipe penetration repair",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

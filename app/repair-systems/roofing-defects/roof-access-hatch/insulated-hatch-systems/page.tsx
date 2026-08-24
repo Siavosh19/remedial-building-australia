@@ -170,11 +170,6 @@ export default function InsulatedHatchSystemsPage() {
                   label: "Aluminium Hatch Systems",
                   title: "Milcor Style AL, Gorter HAL and Bilco E-50TB aluminium access hatches",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for insulated roof hatch replacement",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

@@ -218,17 +218,6 @@ const coreServices: CoreService[] = [
     badge: "Now Live",
   },
   {
-    title: "AI Scope Builder",
-    text: "AI-assisted remedial scope writing — select defects, repair systems, materials and clauses, then generate a consultant, builder, strata or tender scope.",
-    image: "/Images/AI%20Scope%20Builder.jpg",
-    href: "/ai-scope-builder",
-    badge: "Live",
-    quickLinks: [
-      { label: "New Scope",        href: "/ai-scope-builder",      available: true },
-      { label: "Saved Projects",   href: "/ai-scope-builder/projects", available: true },
-    ],
-  },
-  {
     title: "Courses",
     text: "Training resources covering remedial building works, waterproofing systems, concrete repair, defect identification and industry practice.",
     image: "/Images/Courses.jpg",
@@ -278,13 +267,6 @@ const heroSlidesBase = [
     description: "Coverage of Building Commission decisions, DBP Act changes, strata remedial obligations, waterproofing compliance and façade rectification programs.",
     href: "/industry-news",
     cta: "Read News & Insights",
-  },
-  {
-    label: "AI Scope Builder",
-    title: "Generate a professional scope of works in minutes.",
-    description: "Select your defects, repair systems and clauses — the AI Scope Builder structures a consultant, builder or strata-ready scope of works tailored to the job.",
-    href: "/ai-scope-builder",
-    cta: "Open AI Scope Builder",
   },
 ];
 
@@ -804,7 +786,7 @@ export default function HomeClient() {
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-              A structured Australian remedial building knowledge platform — defects, repair systems, industry news, business directory and AI-assisted scope writing.
+              A structured Australian remedial building knowledge platform — defects, repair systems, industry news and a business directory.
             </p>
           </div>
 

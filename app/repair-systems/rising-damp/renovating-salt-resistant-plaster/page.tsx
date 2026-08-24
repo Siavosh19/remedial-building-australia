@@ -154,11 +154,6 @@ export default function SaltResistantPlasterPage() {
                   label: "Breathable Render",
                   title: "Breathable external render for rising damp walls",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for rising damp remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

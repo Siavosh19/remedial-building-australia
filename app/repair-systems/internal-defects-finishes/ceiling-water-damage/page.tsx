@@ -142,11 +142,6 @@ export default function CeilingWaterDamagePage() {
                   label: "Paint Failure — Internal",
                   title: "Alkali-resistant primer and acrylic paint systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for ceiling repair",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

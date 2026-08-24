@@ -145,11 +145,6 @@ export default function WindowMountedExhaustFansPage() {
                   label: "Mushroom Roof Vents",
                   title: "Aluminium and insulated mushroom roof vent systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for exhaust fan replacement",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

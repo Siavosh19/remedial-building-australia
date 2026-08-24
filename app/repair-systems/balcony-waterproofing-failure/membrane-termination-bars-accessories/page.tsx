@@ -216,11 +216,6 @@ export default function MembraneTerminationBarsPage() {
                   label: "PU and Hybrid Membranes",
                   title: "Liquid-applied polyurethane and hybrid waterproofing systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

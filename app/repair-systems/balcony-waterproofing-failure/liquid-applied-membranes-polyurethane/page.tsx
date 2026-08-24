@@ -247,11 +247,6 @@ export default function LiquidAppliedPUPage() {
                   label: "Defect Library",
                   title: "Balcony Waterproofing Failure — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

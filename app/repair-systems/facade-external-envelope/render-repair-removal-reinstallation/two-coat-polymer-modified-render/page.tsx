@@ -192,11 +192,6 @@ export default function TwoCoatPMRenderPage() {
                   label: "Defect Library",
                   title: "Render cracking and delamination — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade render remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

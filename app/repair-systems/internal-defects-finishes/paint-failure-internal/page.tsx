@@ -142,11 +142,6 @@ export default function PaintFailureInternalPage() {
                   label: "Mould & Moisture Damage",
                   title: "Biocide treatment and mould-resistant paint systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for internal repainting",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

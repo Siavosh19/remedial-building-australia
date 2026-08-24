@@ -154,7 +154,6 @@ export default function FCPanelPage() {
                 { href: "/repair-systems/facade-external-envelope/cladding", label: "Back to Cladding", title: "Browse all cladding subcategories" },
                 { href: `${BASE_REPLACEMENT}/fibre-cement-compressed-sheet`, label: "FC Compressed Sheet", title: "Standard fibre cement compressed sheet cladding" },
                 { href: `${BASE_SUBFRAME}/top-hat-aluminium-subframe-rail-systems`, label: "Subframe Systems", title: "Top-hat and rail subframe systems for cladding" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for cladding remediation" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

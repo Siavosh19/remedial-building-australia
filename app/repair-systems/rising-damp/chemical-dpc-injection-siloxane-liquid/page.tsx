@@ -154,11 +154,6 @@ export default function SiloxaneLiquidDPCPage() {
                   label: "Salt-Resistant Plaster",
                   title: "WTA renovation plasters for post-injection replastering",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for rising damp remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

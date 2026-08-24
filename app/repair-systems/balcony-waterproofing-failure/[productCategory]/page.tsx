@@ -636,14 +636,14 @@ export default async function BalconyProductCategoryPage({
                   </div>
                   <h2 className="text-xl font-extrabold text-sky-950">Product reference in development</h2>
                   <p className="mt-3 text-sm leading-6 text-slate-500">
-                    Detailed product comparisons, brand equivalents, technical specifications and procurement sources for {activeTab.label.toLowerCase()} are being compiled. Check back soon, or use the AI Scope Builder to get system recommendations.
+                    Detailed product comparisons, brand equivalents, technical specifications and procurement sources for {activeTab.label.toLowerCase()} are being compiled. Check back soon, or request an independent review of your repair approach.
                   </p>
                   <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                     <Link
-                      href="/ai-scope-builder"
+                      href="/expert-remedial-advice"
                       className="inline-flex items-center gap-2 rounded-xl bg-sky-950 px-5 py-2.5 text-sm font-bold text-white hover:bg-sky-800 transition"
                     >
-                      AI Scope Builder <ArrowRight size={14} />
+                      Expert Remedial Advice <ArrowRight size={14} />
                     </Link>
                     <Link
                       href="/repair-systems/balcony-waterproofing-failure/liquid-applied-membranes-polyurethane"
@@ -684,11 +684,6 @@ export default async function BalconyProductCategoryPage({
                   href: "/defect-library/waterproofing-water-ingress/balcony-waterproofing-failure",
                   label: "Defect Library",
                   title: "Balcony Waterproofing Failure — causes, inspection, methodology",
-                },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
                 },
               ].map((card) => (
                 <a

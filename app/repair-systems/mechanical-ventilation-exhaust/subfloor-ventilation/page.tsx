@@ -145,11 +145,6 @@ export default function SubfloorVentilationPage() {
                   label: "Carpark Ventilation",
                   title: "Carpark fan and CO sensor systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for subfloor ventilation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

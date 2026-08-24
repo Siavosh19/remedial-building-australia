@@ -193,7 +193,6 @@ export default function LiquidAppliedUnderTilePage() {
                 { href: "/repair-systems/waterproofing-water-ingress", label: "Back to Waterproofing Systems", title: "Browse all waterproofing defect subcategories" },
                 { href: "/repair-systems/balcony-waterproofing-failure", label: "Back to Balcony Waterproofing Failure", title: "Browse all product categories for this defect" },
                 { href: "/repair-systems/balcony-waterproofing-failure/liquid-applied-membranes-polyurethane", label: "LQ PU & Hybrid Membranes", title: "Polyurethane and hybrid liquid-applied membranes" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for balcony waterproofing" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

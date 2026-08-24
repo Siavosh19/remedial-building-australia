@@ -148,11 +148,6 @@ export default function PenetratingSiloxaneSealerPage() {
                   label: "Rising Damp",
                   title: "Chemical DPC injection and renovation plaster systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for penetrating damp remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

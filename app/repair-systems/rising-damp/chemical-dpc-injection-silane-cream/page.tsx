@@ -154,11 +154,6 @@ export default function SilaneCreamDPCPage() {
                   label: "Siloxane Liquid DPC",
                   title: "Liquid siloxane DPC injection for dense masonry substrates",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for rising damp remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

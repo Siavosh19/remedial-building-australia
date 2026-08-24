@@ -154,11 +154,6 @@ export default function BreathablePaintPage() {
                   label: "Salt-Resistant Plaster",
                   title: "WTA renovation plasters for internal replastering",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for rising damp remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

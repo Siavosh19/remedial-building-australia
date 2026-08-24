@@ -142,11 +142,6 @@ export default function MouldMoistureDamagePage() {
                   label: "Paint Failure — Internal",
                   title: "Alkali-resistant primer and interior acrylic paint systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for mould remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

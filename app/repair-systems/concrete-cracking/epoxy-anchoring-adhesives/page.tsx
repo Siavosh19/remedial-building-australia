@@ -123,7 +123,6 @@ export default function EpoxyAnchoringAdhesivesCCPage() {
                 { href: "/repair-systems/concrete-structural-defects", label: "Concrete & Structural Defects", title: "Browse all concrete and structural defect subcategories" },
                 { href: BASE, label: "Concrete Cracking", title: "Browse all product categories for concrete cracking repair" },
                 { href: "/repair-systems/reinforcement-corrosion/epoxy-anchoring-adhesives", label: "RC — Anchoring Adhesives", title: "Epoxy anchoring adhesives in the reinforcement corrosion context" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for concrete crack remediation" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

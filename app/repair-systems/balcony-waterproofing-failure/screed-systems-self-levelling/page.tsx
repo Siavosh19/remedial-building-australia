@@ -246,11 +246,6 @@ export default function ScreedSystemsSLPage() {
                   label: "Polymer-Modified Screed Systems",
                   title: "Falls correction screeds — ARDEX A 38, A 48, Mapecem Pronto",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for balcony waterproofing remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

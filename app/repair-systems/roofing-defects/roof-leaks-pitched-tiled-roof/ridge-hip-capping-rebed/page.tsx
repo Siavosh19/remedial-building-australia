@@ -192,11 +192,6 @@ export default function RidgeHipCappingRebedPage() {
                   label: "Defect Library",
                   title: "Pitched Tiled Roof Leaks — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for ridge and hip capping rebed",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

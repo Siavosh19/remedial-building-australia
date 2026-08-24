@@ -154,11 +154,6 @@ export default function FacadeCrackingPage() {
                   label: "Failed Sealants & Joints",
                   title: "PU, silicone and polysulfide facade joint sealants",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

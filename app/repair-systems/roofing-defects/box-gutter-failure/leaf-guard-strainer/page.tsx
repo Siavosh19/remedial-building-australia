@@ -177,11 +177,6 @@ export default function LeafGuardStrainerPage() {
                   label: "Defect Library",
                   title: "Box Gutter Failure — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for box gutter remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

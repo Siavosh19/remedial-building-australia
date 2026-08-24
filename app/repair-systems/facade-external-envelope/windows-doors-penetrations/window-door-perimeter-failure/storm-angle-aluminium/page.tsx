@@ -151,7 +151,6 @@ export default function StormAngleAlumPage() {
                 { href: "/repair-systems/facade-external-envelope", label: "Facade & External Envelope", title: "Browse all facade defect subcategories" },
                 { href: HUB, label: "Windows, Doors & Penetrations", title: "Browse all window remediation categories" },
                 { href: "/defect-library/facade-external-envelope", label: "Defect Library", title: "Window and door perimeter failure" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for window storm angle installation" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

@@ -154,11 +154,6 @@ export default function ArrisAngleEdgeReplacementPage() {
                   label: "Render Removal & Installation",
                   title: "Sand cement, polymer-modified, acrylic and EIFS render systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

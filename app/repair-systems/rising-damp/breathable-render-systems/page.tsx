@@ -154,11 +154,6 @@ export default function BreathableRenderPage() {
                   label: "Breathable Paint",
                   title: "Breathable topcoat paints for rising damp walls",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for rising damp remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

@@ -14,7 +14,7 @@ const config: SeoLandingConfig = {
   h1: "Remedial Repair Specifications",
   intro:
     "A remedial repair specification sets out exactly how a defect is to be repaired — the scope, the materials, the standards and the method. A clear specification is the foundation of a fair tender and a durable repair. Remedial Building Australia explains what specifications should cover and provides tools to help you prepare them.",
-  primaryCta: { label: "Open the AI Scope Builder", href: "/ai-scope-builder" },
+  primaryCta: { label: "Request an Expert Review", href: "/expert-remedial-advice" },
   sections: [
     {
       heading: "What a remedial repair specification includes",
@@ -26,7 +26,7 @@ const config: SeoLandingConfig = {
     {
       heading: "Writing specifications and scopes",
       paragraphs: [
-        "The AI Scope Builder helps you assemble a structured scope of works from defects, repair systems, materials and clauses — producing a consultant, builder, strata or tender-ready document.",
+        "A specification should be prepared or reviewed by a suitably qualified practitioner. For Class 2 buildings, designs for building work must be produced by a registered design practitioner under the Design and Building Practitioners Act 2020 (NSW).",
         "The Repair Systems reference and Materials & Products Index provide the technical detail behind each clause, so specifications reflect appropriate, available repair systems.",
       ],
     },
@@ -38,7 +38,6 @@ const config: SeoLandingConfig = {
     },
   ],
   links: [
-    { label: "AI Scope Builder", href: "/ai-scope-builder", description: "Generate a consultant, builder or strata-ready scope of works." },
     { label: "Repair Systems", href: "/repair-systems", description: "Technical reference for concrete repair, waterproofing, crack injection and coatings." },
     { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent desktop review of defects, scopes, quotes and tenders." },
     { label: "Defect Library", href: "/defect-library", description: "Causes, risks and repair pathways for common Class 2 building defects." },

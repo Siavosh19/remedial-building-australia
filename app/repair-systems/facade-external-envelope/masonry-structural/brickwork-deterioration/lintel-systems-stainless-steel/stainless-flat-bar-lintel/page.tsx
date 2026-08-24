@@ -136,7 +136,6 @@ export default function StainlessFlatBarLintelPage() {
                 { href: BASE_SS, label: "Lintel Systems — Stainless Steel", title: "Browse all stainless lintel types" },
                 { href: BASE_BRICKWORK, label: "Brickwork Deterioration", title: "Browse all brickwork remediation products" },
                 { href: "/defect-library/facade-external-envelope", label: "Defect Library", title: "Lintel corrosion and masonry cracking" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for lintel replacement" },
               ].map((card) => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

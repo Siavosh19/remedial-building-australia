@@ -154,11 +154,6 @@ export default function CrackStitchingMasonryPage() {
                   label: "Facade Cracking",
                   title: "Epoxy and PU crack injection and crack-bridging coating systems",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for facade remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

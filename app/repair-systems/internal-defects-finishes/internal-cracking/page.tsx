@@ -148,11 +148,6 @@ export default function InternalCrackingPage() {
                   label: "Facade Cracking",
                   title: "Epoxy and PU crack injection systems for external facade cracks",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for internal crack repair",
-                },
               ].map((card) => (
                 <a
                   key={card.href}

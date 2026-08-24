@@ -68,6 +68,20 @@ const nextConfig: NextConfig = {
         destination: "/repair-systems/roofing-defects",
         permanent: true,
       },
+      // ── AI Scope Builder withdrawn 2026-08-24 ──
+      // Kept as a redirect rather than a 404 because ~1,000 in-content CTAs
+      // across the repair-system pages still point here. permanent:false (307)
+      // so nothing is cached irreversibly.
+      {
+        source: "/ai-scope-builder",
+        destination: "/expert-remedial-advice",
+        permanent: false,
+      },
+      {
+        source: "/ai-scope-builder/:path*",
+        destination: "/expert-remedial-advice",
+        permanent: false,
+      },
     ];
   },
 };

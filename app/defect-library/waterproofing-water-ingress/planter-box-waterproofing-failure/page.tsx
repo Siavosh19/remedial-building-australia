@@ -111,10 +111,10 @@ export default function PlanterBoxWaterproofingFailurePage() {
             </ul>
           </section>
           <div className="mt-6">
-            <Link href="/ai-scope-builder" className="inline-flex rounded-xl bg-sky-900 px-5 py-3 text-base font-semibold text-white hover:bg-sky-800">
-              Start Inspection Checklist
+            <Link href="/expert-remedial-advice" className="inline-flex rounded-xl bg-sky-900 px-5 py-3 text-base font-semibold text-white hover:bg-sky-800">
+              Request an Expert Review
             </Link>
-            <p className="mt-2 text-sm text-slate-500">Create a project inspection record, add defect locations, upload photos, and save notes for scope writing.</p>
+            <p className="mt-2 text-sm text-slate-500">An independent desktop review of the defect, the proposed repair approach and any scope, quote or tender you have received.</p>
           </div>
 
           <section className="mt-16 rounded-3xl bg-white p-8 shadow-sm">

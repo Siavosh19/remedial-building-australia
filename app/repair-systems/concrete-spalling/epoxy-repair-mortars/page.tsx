@@ -129,7 +129,6 @@ export default function EpoxyMortarsPage() {
                 { href: BASE, label: "Concrete Spalling", title: "Browse all product categories for concrete spalling" },
                 { href: `${BASE}/repair-mortars-polymer-modified`, label: "Polymer-Modified Mortars", title: "Standard structural repair mortars for most spalling applications" },
                 { href: `${BASE}/bonding-agents-sbr-latex`, label: "Bonding Agents & SBR", title: "Primers and bonding agents for concrete repair" },
-                { href: "/ai-scope-builder", label: "AI Scope Builder", title: "Generate a scope of works for concrete spalling repair" },
               ].map(card => (
                 <a key={card.href} href={card.href} className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-200 hover:shadow-md">
                   <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-red-700">{card.label}</div>

@@ -191,11 +191,6 @@ export default function PenetrationPlinthSystemsPage() {
                   label: "Defect Library",
                   title: "Roof Leaks — Pitched Tiled Roof — causes, inspection, methodology",
                 },
-                {
-                  href: "/ai-scope-builder",
-                  label: "AI Scope Builder",
-                  title: "Generate a scope of works for pitched tiled roof leak remediation",
-                },
               ].map((card) => (
                 <a
                   key={card.href}
