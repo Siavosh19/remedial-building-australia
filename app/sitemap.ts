@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { CONCRETE_DEFECTS_DATA } from "@/lib/concrete-defects-data";
 import { prisma } from "@/lib/prisma";
 import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
+import { isUnderDevelopment } from "@/lib/under-development";
 import { isIndexable, type SeoCompany } from "@/lib/seo/business-profile";
 
 const BASE = "https://www.remedialbuildingaustralia.com.au";
@@ -263,5 +264,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Graceful degradation if DB unavailable
   }
 
-  return entries;
+  // Sections that are disconnected while under development are dropped from the
+  // sitemap so Google isn't pointed at the "Under development" notice
+  // (see lib/under-development.ts — remove a section there and they come back).
+  return entries.filter((entry) => !isUnderDevelopment(new URL(entry.url).pathname));
 }
