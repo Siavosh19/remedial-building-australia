@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { getCategoryImage } from "@/lib/news-categories";
 import {
   findGovernmentOriginal,
+  looksLikeGovernmentPublication,
   type LookupOptions,
   type SourceArticle,
 } from "@/lib/gov-original-source";
@@ -57,6 +58,13 @@ export async function importGovernmentOriginal(
     return { status: "skipped" };
   }
   if (isGovernmentSourceUrl(article.source_url)) return { status: "skipped" };
+
+  // Keywords get us to "mentions the government"; this decides whether there is
+  // plausibly an official document to go and find, before we pay to search.
+  if (!(await looksLikeGovernmentPublication(article))) {
+    await markChecked(article.id, article.tags);
+    return { status: "not_found" };
+  }
 
   const found = await findGovernmentOriginal(article, options);
   if (!found) {

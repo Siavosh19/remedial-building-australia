@@ -21,9 +21,15 @@ import { governmentAgencyFromUrl, isGovernmentSourceUrl } from "@/lib/gov-source
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? "";
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 
-// Claude Opus 5 — this runs a handful of times per ingest, not once per
-// article, and getting the right official document is the whole point.
+// Claude Opus 5 — finding the right official document, reading it and writing
+// it up is the whole point of this feature, so it runs on the strongest model.
 const MODEL = "claude-opus-5";
+
+// The triage pass ahead of it is a yes/no question with no searching, so it
+// runs on Haiku: keyword matching alone leaves roughly half the archive looking
+// like a government matter, and every false candidate would otherwise pay for
+// a full web-search lookup.
+const TRIAGE_MODEL = "claude-haiku-4-5";
 
 export interface GovernmentOriginal {
   url: string;
@@ -97,6 +103,55 @@ If you cannot find an official government publication, respond with exactly: {"f
 }
 
 type ContentBlock = { type: string; text?: string };
+
+/**
+ * Cheap yes/no gate: would an Australian government body plausibly have
+ * published something official behind this article? No searching, no writing —
+ * just the judgement that keyword matching can't make.
+ */
+export async function looksLikeGovernmentPublication(article: SourceArticle): Promise<boolean> {
+  if (!ANTHROPIC_API_KEY) return false;
+
+  const prompt = `An Australian remedial building publication is deciding whether to go looking for an official government publication behind this news article.
+
+HEADLINE: ${article.title}
+${article.source_name ? `REPORTED BY: ${article.source_name}\n` : ""}${(article.summary || article.description || "").slice(0, 1500)}
+
+Answer YES only if the article describes something a government body itself would have published: a new or amended Act, regulation or code; a regulator's decision, order, penalty or enforcement action; a minister's or department's announcement; an official inquiry, consultation or report; a tribunal or court judgment; or published government guidance.
+
+Answer NO if the article is general reporting, market or product news, a company announcement, opinion or advice, an incident report, or anything where the government is mentioned only in passing.
+
+Reply with exactly one word: YES or NO`;
+
+  try {
+    const res = await fetch(ANTHROPIC_URL, {
+      method: "POST",
+      headers: {
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model: TRIAGE_MODEL,
+        max_tokens: 8,
+        messages: [{ role: "user", content: prompt }],
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
+    if (!res.ok) return false;
+    const data = (await res.json()) as { content?: ContentBlock[]; stop_reason?: string };
+    if (data.stop_reason === "refusal") return false;
+    const text = (data.content ?? [])
+      .filter((b) => b.type === "text")
+      .map((b) => b.text ?? "")
+      .join(" ")
+      .trim()
+      .toUpperCase();
+    return text.startsWith("YES");
+  } catch {
+    return false;
+  }
+}
 
 /** Pull the JSON object out of Claude's final text, tolerating any wrapping. */
 function parseResult(blocks: ContentBlock[]): Record<string, unknown> | null {

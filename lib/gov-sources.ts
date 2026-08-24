@@ -46,34 +46,48 @@ export function isGovernmentSourceUrl(url: string | null | undefined): boolean {
   return GOV_HOST_SUFFIXES.some((suffix) => host === suffix.slice(1) || host.endsWith(suffix));
 }
 
-// Topics that mean "a government body did something" — a regulator, a minister,
-// an Act, a code, an inquiry, a court or tribunal.
-const GOV_TOPIC_PATTERNS: RegExp[] = [
+// A government matter is one of two things: a named body, Act, code or
+// instrument (strong enough on its own), or general government language that
+// happens to be attached to a building subject. The second test matters — on
+// its own, "regulation" or "government" matches an EV-charging grant and a
+// French materials-market report, and each false candidate costs a web search.
+
+// Named bodies, Acts, codes, instruments — conclusive by themselves.
+const GOV_STRONG_PATTERNS: RegExp[] = [
   /\bbuilding commission(er)?\b/i,
-  /\bnsw building commission\b/i,
   /\bdavid chandler\b/i,
   /\bfair trading\b/i,
   /\bdepartment of customer service\b/i,
   /\bconstruct nsw\b/i,
   /\bdbp act\b|\bdesign (and|&) building practitioners?\b/i,
-  /\brab act\b|\bresidential apartment buildings?\b/i,
-  /\bhome building act\b/i,
-  /\bstrata schemes management act\b/i,
-  /\bbuilding bill\b|\bbuilding act\b/i,
-  /\bnational construction code\b|\bNCC\b/,
-  /\bbuilding code of australia\b|\bBCA\b/,
-  /\babcb\b|\baustralian building codes board\b/i,
-  /\bregulator|\bregulation(s)?\b|\blegislation\b|\bstatutory\b/i,
-  /\bminister\b|\bparliament\b|\bgovernment\b|\bpremier\b/i,
-  /\bicac\b|\bombudsman\b|\bauditor[- ]general\b/i,
-  /\bncat\b|\btribunal\b|\bsupreme court\b|\bfederal court\b/i,
-  /\bsafework\b|\bworksafe\b|\bwork health and safety\b/i,
+  /\brab act\b|\bresidential apartment buildings? act\b/i,
+  /\bhome building act\b|\bstrata schemes management act\b/i,
+  /\bbuilding (act|bill|regulation) \d{4}\b/i,
+  /\bnational construction code\b|\bbuilding code of australia\b/i,
+  /\bNCC ?20\d\d\b|\babcb\b|\baustralian building codes board\b/i,
+  /\bncat\b|\bcivil and administrative tribunal\b/i,
+  /\bsafework\b|\bworksafe\b/i,
   /\bicare\b|\bhbcf\b|\bhome building compensation\b/i,
-  /\blicens(e|ing|ed)\b.{0,30}\b(builder|practitioner|trade)\b/i,
-  /\baustralian standard\b|\bAS \d{4}\b|\bEN 1504\b/,
-  /\bpublic (inquiry|consultation)\b|\bdiscussion paper\b|\bgreen paper\b|\bwhite paper\b/i,
-  /\benforcement (action|notice)\b|\bprohibition order\b|\brectification order\b|\bstop work order\b/i,
+  /\bbuilding bond\b|\bstrata building bond\b/i,
+  /\bprohibition order\b|\brectification order\b|\bstop work order\b|\bbuilding work rectification\b/i,
+  /\baustralian standard\b|\bAS ?\d{4}(\.\d+)?\b|\bEN ?1504\b/,
+  /\bicac\b|\bombudsman\b|\bauditor[- ]general\b/i,
+  /\bbuilding commissioner\b|\bbuilding regulator\b/i,
 ];
+
+// General government language — only counts alongside a building subject.
+const GOV_WEAK_PATTERNS: RegExp[] = [
+  /\bgovernment\b|\bminister\b|\bparliament\b|\bpremier\b/i,
+  /\bregulator|\bregulations?\b|\blegislation\b|\bstatutory\b|\blegislat(ed|ive|ion)\b/i,
+  /\btribunal\b|\bsupreme court\b|\bfederal court\b|\bcourt (ruling|decision|found)\b/i,
+  /\bpublic (inquiry|consultation)\b|\bdiscussion paper\b|\bgreen paper\b|\bwhite paper\b/i,
+  /\benforcement (action|notice)\b|\bpenalt(y|ies)\b|\bcompliance (order|notice)\b/i,
+  /\blicens(e|ing|ed)\b|\baccreditation\b|\bcertifier\b|\bregistration scheme\b/i,
+  /\breform(s)?\b|\binquiry\b|\bcode chang/i,
+];
+
+// The building subject that a weak signal has to be attached to.
+const BUILDING_CONTEXT = /\bbuilding(s)?\b|\bapartment(s)?\b|\bstrata\b|\bconstruction\b|\bbuilder(s)?\b|\bclass 2\b|\bdefect(s|ive)?\b|\bwaterproof|\bconcrete\b|\bfa[cç]ade\b|\bcladding\b|\bremedial\b|\bowners corporation\b|\bdwelling(s)?\b/i;
 
 // Categories that are government matters by definition.
 const GOV_CATEGORIES = new Set(["Building Commission NSW", "DBP Act"]);
@@ -98,7 +112,11 @@ export function isGovernmentTopic(article: {
   ].join("\n");
 
   if (!haystack.trim()) return false;
-  return GOV_TOPIC_PATTERNS.some((re) => re.test(haystack));
+
+  if (GOV_STRONG_PATTERNS.some((re) => re.test(haystack))) return true;
+
+  // Generic government language only qualifies when the subject is a building.
+  return GOV_WEAK_PATTERNS.some((re) => re.test(haystack)) && BUILDING_CONTEXT.test(haystack);
 }
 
 /** Readable publisher name for a government URL, e.g. "NSW Fair Trading". */
