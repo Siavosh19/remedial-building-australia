@@ -534,6 +534,18 @@ async function handle(request: NextRequest) {
         : String(r.published_date ?? ""),
   }));
 
+  // Nothing approved for the site this week — send nothing rather than an email
+  // that says there is no news. Articles are drafts until an admin publishes
+  // them, so an empty week is now a normal state, not a fault.
+  if (articles.length === 0) {
+    return NextResponse.json({
+      success: true,
+      skipped: "no published articles",
+      sent: 0,
+      subscribers: subs.length,
+    });
+  }
+
   const label   = weekLabel();
   const subject = `Construction & Remedial Building Industry News — ${label}`;
 

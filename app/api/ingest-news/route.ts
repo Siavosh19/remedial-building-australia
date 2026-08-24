@@ -436,7 +436,10 @@ export async function GET() {
         source_url: item.link,
         published_date,
         featured_image,
-        status: "published",
+        // Never auto-publish. Every ingested article lands as a draft and only
+        // goes on the website when an admin approves it in
+        // /directory/admin/news-articles.
+        status: "draft",
         priority,
       };
 

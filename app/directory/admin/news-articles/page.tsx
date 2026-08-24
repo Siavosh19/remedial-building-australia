@@ -4,6 +4,7 @@ import { ExternalLink } from "lucide-react";
 import RemoveNewsButton from "./RemoveNewsButton";
 import RecycleNewsButton from "./RecycleNewsButton";
 import UnpublishNewsButton from "./UnpublishNewsButton";
+import PublishNewsButton from "./PublishNewsButton";
 import CategorySelect from "./CategorySelect";
 import NewsletterToggle from "./NewsletterToggle";
 
@@ -13,6 +14,7 @@ const SITE = "https://www.remedialbuildingaustralia.com.au";
 
 const FILTERS = [
   { key: "all", label: "All" },
+  { key: "draft", label: "Drafts" },
   { key: "published", label: "Published" },
   { key: "rejected", label: "Rejected" },
   { key: "newsletter", label: "In newsletter" },
@@ -29,6 +31,20 @@ type NewsRow = {
   status: string | null;
   include_in_newsletter: boolean | null;
 };
+
+// Anything that is not explicitly published or rejected is a draft waiting to
+// be reviewed — that includes older rows with a null status.
+function statusLabel(status: string | null): string {
+  if (status === "published") return "published";
+  if (status === "rejected") return "rejected";
+  return "draft";
+}
+
+function statusPill(status: string | null): string {
+  if (status === "published") return "bg-emerald-100 text-emerald-700";
+  if (status === "rejected") return "bg-rose-100 text-rose-700";
+  return "bg-amber-100 text-amber-700";
+}
 
 function fmtDate(iso: string | null): string {
   if (!iso) return "—";
@@ -49,7 +65,10 @@ export default async function AdminNewsArticlesPage({
       ? { include_in_newsletter: true }
       : active === "all"
         ? {}
-        : { status: active };
+        : active === "draft"
+          // Legacy rows with no status have never been reviewed either.
+          ? { OR: [{ status: "draft" }, { status: null }] }
+          : { status: active };
 
   let rows: NewsRow[] = [];
   let selectedCount = 0;
@@ -88,8 +107,11 @@ export default async function AdminNewsArticlesPage({
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-slate-900">News Articles</h1>
         <p className="mt-1 text-sm text-slate-500">
-          Remove anything you don&apos;t want shown, or recycle a wrongly‑rejected article back onto the site.
-          Use <span className="font-semibold text-emerald-700">Add</span> to pick which articles go in the next newsletter.
+          Every article arrives as a <span className="font-semibold text-slate-700">draft</span> — nothing goes on the
+          website until you publish it. Click <span className="font-semibold text-sky-700">Read</span> to open the full
+          article inside RBA (with its original source link), then <span className="font-semibold text-emerald-700">Publish</span> the
+          ones you want live. Use <span className="font-semibold text-emerald-700">Add</span> to pick which published
+          articles go in the next newsletter.
         </p>
       </div>
 
@@ -130,29 +152,32 @@ export default async function AdminNewsArticlesPage({
       <div className="space-y-3 md:hidden">
         {rows.map((r) => {
           const isPublished = r.status === "published";
-          const internal = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
+          const isRejected = r.status === "rejected";
+          const readUrl = `/news-preview/${r.id}`;
+          const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
           return (
             <div key={String(r.id)} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="flex items-start justify-between gap-2">
                 <p className="font-semibold text-slate-900">{r.title || "—"}</p>
-                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${isPublished ? "bg-emerald-100 text-emerald-700" : r.status === "rejected" ? "bg-rose-100 text-rose-700" : "bg-slate-100 text-slate-500"}`}>
-                  {r.status || "—"}
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusPill(r.status)}`}>
+                  {statusLabel(r.status)}
                 </span>
               </div>
-              {(internal || r.source_url) && (
-                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                  {internal && (
-                    <a href={internal} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sky-700 hover:text-sky-900 hover:underline">
-                      On site <ExternalLink size={11} />
-                    </a>
-                  )}
-                  {r.source_url && (
-                    <a href={r.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-slate-500 hover:text-slate-800 hover:underline">
-                      Original source <ExternalLink size={11} />
-                    </a>
-                  )}
-                </div>
-              )}
+              <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                <a href={readUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-sky-700 hover:text-sky-900 hover:underline">
+                  Read <ExternalLink size={11} />
+                </a>
+                {liveUrl && (
+                  <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-700 hover:text-emerald-900 hover:underline">
+                    Live page <ExternalLink size={11} />
+                  </a>
+                )}
+                {r.source_url && (
+                  <a href={r.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-slate-500 hover:text-slate-800 hover:underline">
+                    Original source <ExternalLink size={11} />
+                  </a>
+                )}
+              </div>
               <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                 <div className="min-w-0">
                   <dt className="mb-1 font-semibold text-slate-400">Category</dt>
@@ -184,7 +209,13 @@ export default async function AdminNewsArticlesPage({
                 >
                   Edit
                 </a>
-                {isPublished ? <UnpublishNewsButton id={String(r.id)} /> : <RecycleNewsButton id={String(r.id)} />}
+                {isPublished ? (
+                  <UnpublishNewsButton id={String(r.id)} />
+                ) : isRejected ? (
+                  <RecycleNewsButton id={String(r.id)} />
+                ) : (
+                  <PublishNewsButton id={String(r.id)} />
+                )}
                 <RemoveNewsButton id={String(r.id)} />
               </div>
             </div>
@@ -212,15 +243,20 @@ export default async function AdminNewsArticlesPage({
           <tbody>
             {rows.map((r) => {
               const isPublished = r.status === "published";
-              const internal = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
+              const isRejected = r.status === "rejected";
+              const readUrl = `/news-preview/${r.id}`;
+              const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
               return (
                 <tr key={String(r.id)} className="border-b border-slate-100 align-top hover:bg-slate-50 transition">
                   <td className="px-4 py-3">
                     <p className="font-semibold text-slate-900">{r.title || "—"}</p>
                     <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                      {internal && (
-                        <a href={internal} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sky-700 hover:text-sky-900 hover:underline">
-                          On site <ExternalLink size={11} />
+                      <a href={readUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-sky-700 hover:text-sky-900 hover:underline">
+                        Read <ExternalLink size={11} />
+                      </a>
+                      {liveUrl && (
+                        <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-700 hover:text-emerald-900 hover:underline">
+                          Live page <ExternalLink size={11} />
                         </a>
                       )}
                       {r.source_url && (
@@ -236,8 +272,8 @@ export default async function AdminNewsArticlesPage({
                   <td className="px-4 py-3 text-slate-600">{r.source_name || "—"}</td>
                   <td className="px-4 py-3 text-xs text-slate-400">{fmtDate(r.published_date)}</td>
                   <td className="px-4 py-3">
-                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${isPublished ? "bg-emerald-100 text-emerald-700" : r.status === "rejected" ? "bg-rose-100 text-rose-700" : "bg-slate-100 text-slate-500"}`}>
-                      {r.status || "—"}
+                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusPill(r.status)}`}>
+                      {statusLabel(r.status)}
                     </span>
                   </td>
                   <td className="px-4 py-3">
@@ -255,7 +291,13 @@ export default async function AdminNewsArticlesPage({
                       >
                         Edit
                       </a>
-                      {isPublished ? <UnpublishNewsButton id={String(r.id)} /> : <RecycleNewsButton id={String(r.id)} />}
+                      {isPublished ? (
+                        <UnpublishNewsButton id={String(r.id)} />
+                      ) : isRejected ? (
+                        <RecycleNewsButton id={String(r.id)} />
+                      ) : (
+                        <PublishNewsButton id={String(r.id)} />
+                      )}
                       <RemoveNewsButton id={String(r.id)} />
                     </div>
                   </td>

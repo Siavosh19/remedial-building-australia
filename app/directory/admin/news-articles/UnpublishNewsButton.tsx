@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Reverse a recycle: take a published article back off the website
-// (status → rejected). It stays in the Rejected list and can be recycled again.
+// Take a published article back off the website (status → draft). It returns to
+// the Drafts list, where it can be read again and re-published or rejected.
 export default function UnpublishNewsButton({ id }: { id: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -14,7 +14,7 @@ export default function UnpublishNewsButton({ id }: { id: string }) {
     const res = await fetch(`/api/directory/admin/news-articles?id=${encodeURIComponent(id)}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "rejected" }),
+      body: JSON.stringify({ status: "draft" }),
     });
     if (res.ok) {
       router.refresh();
@@ -29,7 +29,7 @@ export default function UnpublishNewsButton({ id }: { id: string }) {
       type="button"
       disabled={busy}
       onClick={unpublish}
-      title="Take this article off the website (back to Rejected)"
+      title="Take this article off the website (back to Drafts)"
       className="rounded-lg border border-amber-200 px-3 py-1.5 text-xs font-semibold text-amber-700 hover:bg-amber-50 disabled:opacity-60 transition"
     >
       {busy ? "Unpublishing…" : "Unpublish"}
