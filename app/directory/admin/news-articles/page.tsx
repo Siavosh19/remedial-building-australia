@@ -91,7 +91,9 @@ export default async function AdminNewsArticlesPage({
         },
       }),
       // How many articles are currently queued for the next newsletter send.
-      prisma.industryNews.count({ where: { include_in_newsletter: true } }),
+      // Only published ones count — the send skips drafts, so a queued draft
+      // would otherwise inflate this number.
+      prisma.industryNews.count({ where: { include_in_newsletter: true, status: "published" } }),
     ]);
     rows = found.map((r) => ({
       ...r,
