@@ -11,7 +11,11 @@ import {
   type LookupOptions,
   type SourceArticle,
 } from "@/lib/gov-original-source";
-import { isGovernmentSourceUrl, isGovernmentTopic } from "@/lib/gov-sources";
+import {
+  isGovernmentSourceUrl,
+  isGovernmentStrongTopic,
+  isGovernmentTopic,
+} from "@/lib/gov-sources";
 
 /**
  * Tag written back onto an article once we have gone looking for its official
@@ -52,6 +56,10 @@ export async function importGovernmentOriginal(
   article: SourceArticle & { id?: string; tags?: string[] },
   options: LookupOptions = {},
 ): Promise<GovImportOutcome> {
+  // Without a key nothing can be looked up, and marking articles as checked
+  // here would quietly retire the whole backlog unsearched.
+  if (!process.env.ANTHROPIC_API_KEY) return { status: "skipped" };
+
   // Only chase articles that are actually about a government matter, and only
   // when the article we have is somebody else's reporting of it.
   if (!isGovernmentTopic({ title: article.title, summary: article.summary, tags: article.tags })) {
@@ -136,10 +144,17 @@ export async function sweepForGovernmentOriginals({
   limit = 2,
   budgetMs = 45000,
   lookup = {},
+  strongOnly = false,
+  poolSize = 400,
+  onResult,
 }: {
   limit?: number;
   budgetMs?: number;
   lookup?: LookupOptions;
+  /** Only articles naming a specific body, Act, code or instrument. */
+  strongOnly?: boolean;
+  poolSize?: number;
+  onResult?: (article: { id: string; title: string }, outcome: GovImportOutcome) => void;
 } = {}): Promise<SweepResult> {
   const deadline = Date.now() + budgetMs;
 
@@ -151,15 +166,25 @@ export async function sweepForGovernmentOriginals({
       summary: { not: null },
     },
     orderBy: { published_date: { sort: "desc", nulls: "last" } },
-    take: 400,
+    take: poolSize,
     select: { id: true, title: true, summary: true, source_url: true, source_name: true, tags: true },
   });
 
-  const candidates = pool.filter(
-    (row) =>
-      !isGovernmentSourceUrl(row.source_url) &&
-      isGovernmentTopic({ title: row.title, summary: row.summary, tags: row.tags }),
-  );
+  const matches = (row: (typeof pool)[number]) =>
+    strongOnly
+      ? isGovernmentStrongTopic({ title: row.title, summary: row.summary, tags: row.tags })
+      : isGovernmentTopic({ title: row.title, summary: row.summary, tags: row.tags });
+
+  // Strongest signals first: an article naming an Act or a regulator is far
+  // likelier to have an official document behind it than one that merely says
+  // "the government".
+  const candidates = pool
+    .filter((row) => !isGovernmentSourceUrl(row.source_url) && matches(row))
+    .sort((a, b) => {
+      const aStrong = isGovernmentStrongTopic({ title: a.title, summary: a.summary, tags: a.tags });
+      const bStrong = isGovernmentStrongTopic({ title: b.title, summary: b.summary, tags: b.tags });
+      return Number(bStrong) - Number(aStrong);
+    });
 
   const result: SweepResult = {
     considered: candidates.length,
@@ -186,6 +211,8 @@ export async function sweepForGovernmentOriginals({
       },
       { timeoutMs: remainingMs - 3000, ...lookup },
     );
+
+    onResult?.({ id: candidate.id, title: candidate.title }, outcome);
 
     if (outcome.status === "created") {
       result.created.push({ id: outcome.id, title: outcome.title, url: outcome.url });

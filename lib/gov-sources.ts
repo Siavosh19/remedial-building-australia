@@ -119,6 +119,27 @@ export function isGovernmentTopic(article: {
   return GOV_WEAK_PATTERNS.some((re) => re.test(haystack)) && BUILDING_CONTEXT.test(haystack);
 }
 
+/**
+ * The narrow version of the test above: the article names a specific body, Act,
+ * code or instrument. These are the ones with an official document behind them
+ * often enough to be worth searching first.
+ */
+export function isGovernmentStrongTopic(article: {
+  title?: string | null;
+  summary?: string | null;
+  category?: string | null;
+  tags?: string[] | null;
+}): boolean {
+  if (article.category && GOV_CATEGORIES.has(article.category)) return true;
+  const haystack = [
+    article.title ?? "",
+    article.summary ?? "",
+    (article.tags ?? []).join(" "),
+  ].join("\n");
+  if (!haystack.trim()) return false;
+  return GOV_STRONG_PATTERNS.some((re) => re.test(haystack));
+}
+
 /** Readable publisher name for a government URL, e.g. "NSW Fair Trading". */
 export function governmentAgencyFromUrl(url: string): string | null {
   let host: string;
