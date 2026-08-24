@@ -1,10 +1,12 @@
 import { prisma } from "@/lib/prisma";
+import { isGovernmentSourceUrl } from "@/lib/gov-sources";
 import type { Prisma } from "@prisma/client";
 import { ExternalLink } from "lucide-react";
 import RemoveNewsButton from "./RemoveNewsButton";
 import RecycleNewsButton from "./RecycleNewsButton";
 import UnpublishNewsButton from "./UnpublishNewsButton";
 import PublishNewsButton from "./PublishNewsButton";
+import GovSweepButton from "./GovSweepButton";
 import CategorySelect from "./CategorySelect";
 import NewsletterToggle from "./NewsletterToggle";
 
@@ -17,6 +19,7 @@ const FILTERS = [
   { key: "draft", label: "Drafts" },
   { key: "published", label: "Published" },
   { key: "rejected", label: "Rejected" },
+  { key: "government", label: "Government" },
   { key: "newsletter", label: "In newsletter" },
 ] as const;
 
@@ -63,12 +66,16 @@ export default async function AdminNewsArticlesPage({
   const where: Prisma.IndustryNewsWhereInput =
     active === "newsletter"
       ? { include_in_newsletter: true }
-      : active === "all"
-        ? {}
-        : active === "draft"
-          // Legacy rows with no status have never been reviewed either.
-          ? { OR: [{ status: "draft" }, { status: null }] }
-          : { status: active };
+      : active === "government"
+        // Published BY a government body — the source link is the agency's own
+        // site, not a news outlet writing about it.
+        ? { OR: [{ source_url: { contains: ".gov.au" } }, { source_url: { contains: ".gov/" } }] }
+        : active === "all"
+          ? {}
+          : active === "draft"
+            // Legacy rows with no status have never been reviewed either.
+            ? { OR: [{ status: "draft" }, { status: null }] }
+            : { status: active };
 
   let rows: NewsRow[] = [];
   let selectedCount = 0;
@@ -112,8 +119,10 @@ export default async function AdminNewsArticlesPage({
           Every article arrives as a <span className="font-semibold text-slate-700">draft</span> — nothing goes on the
           website until you publish it. Click <span className="font-semibold text-sky-700">Read</span> to open the full
           article inside RBA (with its original source link), then <span className="font-semibold text-emerald-700">Publish</span> the
-          ones you want live. Use <span className="font-semibold text-emerald-700">Add</span> to pick which published
-          articles go in the next newsletter.
+          ones you want live. Rows highlighted <span className="rounded bg-amber-100 px-1 font-semibold text-amber-800">yellow</span> come
+          straight from a government website — the agency&apos;s own media release, notice or code change, not a news outlet writing
+          about it. Use <span className="font-semibold text-emerald-700">Add</span> to pick which published articles go in the
+          next newsletter.
         </p>
       </div>
 
@@ -131,6 +140,8 @@ export default async function AdminNewsArticlesPage({
           </span>
         )}
       </div>
+
+      <GovSweepButton />
 
       {/* Filter tabs */}
       <div className="mb-5 flex flex-wrap items-center gap-2">
@@ -157,10 +168,18 @@ export default async function AdminNewsArticlesPage({
           const isRejected = r.status === "rejected";
           const readUrl = `/news-preview/${r.id}`;
           const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
+          const isGov = isGovernmentSourceUrl(r.source_url);
           return (
-            <div key={String(r.id)} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div key={String(r.id)} className={`rounded-xl border p-4 shadow-sm ${isGov ? "border-amber-300 bg-amber-50" : "border-slate-200 bg-white"}`}>
               <div className="flex items-start justify-between gap-2">
-                <p className="font-semibold text-slate-900">{r.title || "—"}</p>
+                <p className="font-semibold text-slate-900">
+                  {isGov && (
+                    <span className="mr-2 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
+                      Gov source
+                    </span>
+                  )}
+                  {r.title || "—"}
+                </p>
                 <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${statusPill(r.status)}`}>
                   {statusLabel(r.status)}
                 </span>
@@ -248,10 +267,21 @@ export default async function AdminNewsArticlesPage({
               const isRejected = r.status === "rejected";
               const readUrl = `/news-preview/${r.id}`;
               const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
+              const isGov = isGovernmentSourceUrl(r.source_url);
               return (
-                <tr key={String(r.id)} className="border-b border-slate-100 align-top hover:bg-slate-50 transition">
+                <tr
+                  key={String(r.id)}
+                  className={`border-b align-top transition ${isGov ? "border-amber-200 bg-amber-50 hover:bg-amber-100" : "border-slate-100 hover:bg-slate-50"}`}
+                >
                   <td className="px-4 py-3">
-                    <p className="font-semibold text-slate-900">{r.title || "—"}</p>
+                    <p className="font-semibold text-slate-900">
+                      {isGov && (
+                        <span className="mr-2 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
+                          Gov source
+                        </span>
+                      )}
+                      {r.title || "—"}
+                    </p>
                     <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs">
                       <a href={readUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-sky-700 hover:text-sky-900 hover:underline">
                         Read <ExternalLink size={11} />

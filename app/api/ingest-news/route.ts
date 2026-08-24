@@ -22,6 +22,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getCategoryImage, VALID_CATEGORIES } from "@/lib/news-categories";
+import { sweepForGovernmentOriginals } from "@/lib/gov-news-import";
 
 export const maxDuration = 300;
 
@@ -312,6 +313,8 @@ PRIORITY: reject`;
 export async function GET() {
   const stats = {
     inserted: 0,
+    gov_originals: 0,
+    gov_backlog: 0,
     skipped_duplicate: 0,
     skipped_irrelevant: 0,
     errors: [] as string[],
@@ -465,6 +468,24 @@ export async function GET() {
       }
     })
   );
+
+  // 6. Pull in the official government publication behind one of the
+  //    government matters we now hold. Deliberately one per run on a short
+  //    budget: a lookup runs web searches and reads the agency's page, which
+  //    is far slower than a classification, and this route has to return
+  //    inside the platform's function timeout. The rest of the backlog is
+  //    worked through from the news admin's "Find government sources" button.
+  try {
+    const sweep = await sweepForGovernmentOriginals({
+      limit: 1,
+      budgetMs: 22000,
+      lookup: { effort: "medium", maxUses: 4 },
+    });
+    stats.gov_originals = sweep.created.length;
+    stats.gov_backlog = sweep.remaining;
+  } catch (err) {
+    stats.errors.push(`Government sweep failed: ${err instanceof Error ? err.message : String(err)}`);
+  }
 
   return NextResponse.json({ success: true, ...stats });
 }
