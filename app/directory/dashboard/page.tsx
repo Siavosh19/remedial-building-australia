@@ -421,7 +421,7 @@ export default async function DashboardIndexPage() {
               <div>
                 <p className="font-bold text-indigo-900">Upgrade to Silver</p>
                 <p className="mt-0.5 text-sm text-indigo-700">
-                  Add your logo, photos, licence details, enable quote requests and get verified — from $29/month with a 60-day free trial.
+                  Add your logo, photos and licence details, and enable quote requests — from $29/month with a 60-day free trial.
                 </p>
               </div>
             </div>

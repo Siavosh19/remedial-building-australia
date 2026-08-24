@@ -150,7 +150,7 @@ export default function SeoLandingPage({ config }: { config: SeoLandingConfig })
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-              A structured Australian remedial building knowledge platform — defects, repair systems, industry news, business directory and AI-assisted scope writing.
+              Australia's remedial building directory — business listings, industry news, jobs and expert desktop review.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
@@ -159,10 +159,9 @@ export default function SeoLandingPage({ config }: { config: SeoLandingConfig })
             <Link href="/terms" className="hover:text-sky-700">Terms</Link>
             <Link href="/faq" className="hover:text-sky-700">FAQ</Link>
             <Link href="/privacy-policy" className="hover:text-sky-700">Privacy Policy</Link>
-            <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
-            <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
             <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
+            <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
             <a href="#" className="termly-display-preferences hover:text-sky-700">Consent Preferences</a>
           </div>
         </div>

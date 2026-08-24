@@ -195,22 +195,6 @@ interface CoreService {
 
 const coreServices: CoreService[] = [
   {
-    title: "Defect Library",
-    text: "Structured guidance for common Class 2 building defects, organised by category, cause, risk and repair pathway.",
-    image: "/Images/Defect%20Library.jpg",
-    href: "/defect-library",
-    badge: "In Development",
-    underDevelopment: true,
-  },
-  {
-    title: "Repair Systems",
-    text: "Technical reference for concrete repair mortars, corrosion inhibitors, waterproofing, crack injection and coatings — structured for Australian Class 2 remedial practice.",
-    image: "/Images/Repair%20methods.jpg",
-    href: "/repair-systems",
-    badge: "In Development",
-    underDevelopment: true,
-  },
-  {
     title: "Materials & Products Index",
     text: "Search products and materials used across existing repair system pages, grouped by brand, material type, application, and linked repair system.",
     image: "/Images/Material%20and%20tools.jpg",
@@ -241,29 +225,15 @@ const coverPhotos = [
 
 const heroSlidesBase = [
   {
-    label: "Business Directory",
+    label: "Remedial Building Directory",
     title: "Find remedial building specialists across Australia.",
     description: "Search waterproofing contractors, façade engineers, strata building consultants and more — filtered by location, licence status and specialisation.",
     href: "/directory",
     cta: "Search the Directory",
   },
   {
-    label: "Defect Library",
-    title: "Every major Class 2 building defect — causes, risks and repair pathways.",
-    description: "Structured technical guidance on concrete deterioration, waterproofing failure, façade defects, basement ingress and more — organised for Australian strata practice.",
-    href: "/defect-library",
-    cta: "Explore Defect Library",
-  },
-  {
-    label: "Repair Systems",
-    title: "Technical product reference for every stage of remedial work.",
-    description: "Repair mortars, corrosion inhibitors, waterproofing membranes, crack injection systems and protective coatings — with product comparisons, specs and selection criteria.",
-    href: "/repair-systems",
-    cta: "Browse Repair Systems",
-  },
-  {
-    label: "News & Insights",
-    title: "Regulatory and technical updates for the remedial building sector.",
+    label: "Latest Remedial Building News",
+    title: "The latest remedial building news and insights.",
     description: "Stay updated with Class 2 building works and remedial building news — waterproofing, façade defects, concrete repair and strata issues.",
     href: "/rba-insights",
     cta: "Read RBA Insights",
@@ -690,8 +660,8 @@ export default function HomeClient() {
             </h1>
             <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600 md:text-lg">
               Owners corporations and strata managers forward a work order once — from remedial
-              building works to cleaning and maintenance — and it&rsquo;s matched to available,
-              verified specialists who send back competitive quotes.
+              building works to cleaning and maintenance — and it&rsquo;s matched to available
+              businesses who send back competitive quotes.
             </p>
           </div>
           <StrataConnectSlides />
@@ -786,15 +756,14 @@ export default function HomeClient() {
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-              A structured Australian remedial building knowledge platform — defects, repair systems, industry news and a business directory.
+              Australia&rsquo;s remedial building directory — business listings, industry news, jobs and expert desktop review.
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
-              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
-              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
               <Link href="/rba-insights" className="hover:text-sky-700">News &amp; Insights</Link>
               <Link href="/industry-jobs" className="hover:text-sky-700">Industry Jobs</Link>
             </div>

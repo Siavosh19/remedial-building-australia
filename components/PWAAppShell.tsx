@@ -72,10 +72,25 @@ export default function PWAAppShell() {
   useEffect(() => {
     const isStandalone =
       window.matchMedia?.("(display-mode: standalone)").matches ||
-      window.matchMedia?.("(display-mode: fullscreen)").matches ||
       // iOS Safari exposes this instead of display-mode.
       (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-    setStandalone(!!isStandalone);
+    // NOTE: intentionally NOT matching "(display-mode: fullscreen)" — that also
+    // matches a normal desktop browser in F11/fullscreen, which would wrongly
+    // trigger the installed-app lockdown over the real website. The manifest
+    // uses display:"standalone", so a real install never reports fullscreen.
+
+    // Phone-only gate. This locked-down app shell is a PHONE experience; it must
+    // NEVER hijack the desktop site. Desktop Chrome/Edge can install the site as
+    // a desktop PWA (→ display-mode: standalone on desktop), and display-mode can
+    // even mis-report standalone in a plain desktop tab, so requiring a touch
+    // phone (coarse pointer + narrow viewport) is what actually keeps the shell
+    // off the desktop. A mouse-driven desktop reports a fine pointer and fails
+    // this check.
+    const isPhone =
+      window.matchMedia?.("(pointer: coarse)").matches === true &&
+      window.matchMedia?.("(max-width: 820px)").matches === true;
+
+    setStandalone(!!isStandalone && isPhone);
   }, []);
 
   // First-launch welcome gate — only in the installed app, only once.

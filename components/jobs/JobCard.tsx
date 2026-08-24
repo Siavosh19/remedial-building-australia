@@ -49,7 +49,7 @@ export default function JobCard({ job }: { job: JobCardData }) {
             <h3 className="text-base font-bold leading-snug text-sky-950 group-hover:text-red-700">{job.title}</h3>
             {job.is_featured && (
               <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-800">
-                <Star size={10} className="fill-amber-500 text-amber-500" /> Featured
+                <Star size={10} className="fill-amber-500 text-amber-500" /> Premium
               </span>
             )}
           </div>

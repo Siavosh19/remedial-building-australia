@@ -35,9 +35,9 @@ const SLIDES: Slide[] = [
     eyebrow: "Quotes, faster",
     title: "Available businesses near the building",
     body:
-      "Your work order is matched to verified businesses operating in the right area — competitive quotes come back quickly, with no chasing trades one at a time.",
+      "Your work order is matched to available businesses operating in the right area — competitive quotes come back quickly, with no chasing trades one at a time.",
     points: [
-      "Matched to verified, available specialists",
+      "Matched to available businesses in the area",
       "Compare competitive quotes side by side",
     ],
   },

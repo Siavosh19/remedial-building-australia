@@ -179,7 +179,7 @@ export default function JobForm({
               {logoUrl ? <img src={logoUrl} alt="" className="h-full w-full object-contain" /> : <Building2 className="text-slate-300" size={26} />}
             </div>
             <div>
-              {f.is_featured && <span className="mb-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-800"><Star size={10} className="fill-amber-500 text-amber-500" /> Featured</span>}
+              {f.is_featured && <span className="mb-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-800"><Star size={10} className="fill-amber-500 text-amber-500" /> Premium</span>}
               <h2 className="text-xl font-extrabold text-sky-950">{f.title || "Job title"}</h2>
               <p className="text-sm font-semibold text-slate-600">{f.company_name || "Company"} · {f.location || "Location"}{f.state ? `, ${f.state}` : ""}</p>
               {f.salary && <p className="mt-1 text-sm font-semibold text-emerald-700">{f.salary}</p>}
@@ -289,8 +289,8 @@ export default function JobForm({
         <label className={label}>Listing type</label>
         <div className="grid gap-3">
           {[
-            { featured: false, tier: pricing.standard, fallbackName: "Standard", fallbackDesc: "30-day listing" },
-            { featured: true, tier: pricing.featured, fallbackName: "Featured", fallbackDesc: "Badge + top placement" },
+            { featured: false, tier: pricing.standard, fallbackName: "Free", fallbackDesc: "30-day listing" },
+            { featured: true, tier: pricing.featured, fallbackName: "Premium", fallbackDesc: "Badge + top placement" },
           ].map(({ featured, tier, fallbackName, fallbackDesc }) => {
             const selected = Boolean(f.is_featured) === featured;
             const ring = featured

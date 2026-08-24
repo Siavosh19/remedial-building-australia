@@ -140,7 +140,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
           <div className="min-w-0 flex-1">
             {job.is_featured && (
               <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-800">
-                <Star size={10} className="fill-amber-500 text-amber-500" /> Featured
+                <Star size={10} className="fill-amber-500 text-amber-500" /> Premium
               </span>
             )}
             <h1 className="text-2xl font-extrabold leading-tight tracking-tight text-sky-950 md:text-3xl">{job.title}</h1>

@@ -31,7 +31,7 @@ const TABS = [
   { key: "active", label: "Active" },
   { key: "draft", label: "Drafts" },
   { key: "expired", label: "Expired" },
-  { key: "featured", label: "Featured" },
+  { key: "featured", label: "Premium" },
   { key: "payments", label: "Payments" },
 ] as const;
 
@@ -124,7 +124,7 @@ export default function EmployerDashboard({
           { label: "Active", value: counts.active },
           { label: "Drafts", value: counts.draft },
           { label: "Expired", value: counts.expired },
-          { label: "Featured", value: counts.featured },
+          { label: "Premium", value: counts.featured },
           { label: "Applications", value: counts.applications },
         ].map((s) => (
           <div key={s.label} className="rounded-xl border border-slate-200 bg-white p-4">
@@ -216,7 +216,7 @@ export default function EmployerDashboard({
                     )}
                     {isActive && !j.is_featured && (
                       <button onClick={() => pay(j.id, true)} disabled={busyId === j.id} className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 disabled:opacity-50">
-                        <Star size={13} /> Upgrade to Featured
+                        <Star size={13} /> Upgrade to Premium
                       </button>
                     )}
                     {(isExpired || isActive) && (

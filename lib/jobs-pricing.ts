@@ -32,7 +32,7 @@ export async function getListingTiers(): Promise<{ standard: ListingTier | null;
     r
       ? {
           name: r.name,
-          priceLabel: formatAud(r.amount_cents),
+          priceLabel: r.amount_cents === 0 ? "Free" : formatAud(r.amount_cents),
           durationDays: r.duration_days,
           description: r.description,
           features: r.features ?? [],

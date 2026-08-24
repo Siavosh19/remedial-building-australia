@@ -46,7 +46,7 @@ const FAQS: { q: string; plain: string; answer: React.ReactNode; highlight?: boo
         <ul className="mt-3 list-disc space-y-1 pl-5">
           <li>a <Link href="/directory" className="font-semibold text-sky-700 hover:underline">business directory</Link> of contractors, consultants, engineers and suppliers;</li>
           <li>Strata Connect quote requests and a <Link href="/request-quotes" className="font-semibold text-sky-700 hover:underline">request-a-quote</Link> system;</li>
-          <li>a <Link href="/defect-library" className="font-semibold text-sky-700 hover:underline">defect library</Link>, <Link href="/repair-systems" className="font-semibold text-sky-700 hover:underline">repair systems</Link> and technical resources;</li>
+          <li>a <Link href="/materials-products-index" className="font-semibold text-sky-700 hover:underline">materials and products index</Link>;</li>
           <li>a job board, industry news and an expert remedial advice section.</li>
         </ul>
       </>
@@ -145,14 +145,13 @@ const FAQS: { q: string; plain: string; answer: React.ReactNode; highlight?: boo
     ),
   },
   {
-    q: "Is the defect library and technical content a substitute for professional advice?",
+    q: "Is the technical content on this site a substitute for professional advice?",
     plain:
-      "No. The defect library, repair systems and technical resources are general, educational information only. They are not site-specific engineering, building or professional advice. Always engage a suitably qualified consultant, engineer or contractor for advice on your specific building and defect.",
+      "No. The materials index and any technical content on this site are general, educational information only. They are not site-specific engineering, building or professional advice. Always engage a suitably qualified consultant, engineer or contractor for advice on your specific building and defect.",
     answer: (
       <p>
-        No. The <Link href="/defect-library" className="font-semibold text-sky-700 hover:underline">defect library</Link>,{" "}
-        <Link href="/repair-systems" className="font-semibold text-sky-700 hover:underline">repair systems</Link> and
-        technical resources are <strong>general, educational information only</strong>. They are not
+        No. The <Link href="/materials-products-index" className="font-semibold text-sky-700 hover:underline">materials index</Link> and
+        any technical content on this site are <strong>general, educational information only</strong>. They are not
         site-specific engineering, building or professional advice. Always engage a suitably
         qualified consultant, engineer or contractor for advice on your specific building and defect.
       </p>
@@ -275,8 +274,7 @@ export default function FaqPage() {
             <div className="flex flex-col gap-2">
               <Link href="/about" className="hover:text-sky-700">About</Link>
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
-              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
-              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
               <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">

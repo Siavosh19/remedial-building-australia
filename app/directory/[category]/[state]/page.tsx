@@ -97,7 +97,7 @@ export default async function CategoryStatePage({ params }: Props) {
 
   const faqs = [
     { q: `How do I find ${title.toLowerCase()} in ${stateName}?`, a: `Browse the businesses listed below, open a company profile to view their details, and request quotes from the ones servicing your area.` },
-    { q: `Are these businesses verified?`, a: `Businesses manage their own profiles and licence/insurance details are self-declared. Always complete your own due diligence before engaging a contractor.` },
+    { q: `Does Remedial Building Australia check these businesses?`, a: `No. Businesses manage their own profiles, and licence and insurance details are self-declared and not checked by us. Always complete your own due diligence before engaging a contractor.` },
     { q: `How much does it cost to request a quote?`, a: `Requesting quotes is free for clients. Create a client account, submit your project, and choose up to 5 businesses to contact you directly.` },
   ];
   const faqSchema = {

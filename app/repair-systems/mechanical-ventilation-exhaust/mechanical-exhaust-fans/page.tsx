@@ -177,7 +177,7 @@ export default function MechanicalExhaustFansPage() {
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">
-              A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.
+              Australia's remedial building directory — business listings, industry news, jobs and expert desktop review.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">

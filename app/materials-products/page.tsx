@@ -31,8 +31,8 @@ export default function MaterialsProductsComingSoonPage() {
               We are building this section. It will be available shortly.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <Link href="/repair-systems" className="inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800">
-                Browse Repair Systems
+              <Link href="/directory" className="inline-flex items-center gap-2 rounded-xl bg-sky-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800">
+                Search the Directory
               </Link>
               <Link href="/" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-sky-950 transition hover:border-sky-300 hover:shadow-sm">
                 Back to Home
@@ -50,13 +50,12 @@ export default function MaterialsProductsComingSoonPage() {
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_1fr]">
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
-            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">A structured Australian remedial building knowledge platform for defects, repair systems, materials and AI-assisted scope writing.</p>
+            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">Australia's remedial building directory — business listings, industry news, jobs and expert desktop review.</p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
-              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
-              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
               <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">

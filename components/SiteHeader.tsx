@@ -6,12 +6,6 @@ import { usePathname } from "next/navigation";
 import { Menu, ChevronDown, X } from "lucide-react";
 import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
-const repairSystemsLinks = [
-  { title: "Repair Systems Library",       href: "/repair-systems/library" },
-  { title: "System Selector",              href: "/repair-systems/system-selector" },
-  { title: "Materials & Products Index",   href: "/materials-products-index" },
-];
-
 const allExpertServices = [
   { title: "Preliminary Defect Assessment",       href: "/expert-remedial-advice/preliminary-defect-assessment" },
   { title: "Scope, Quote & Tender Review",         href: "/expert-remedial-advice/scope-quote-tender-review" },
@@ -42,10 +36,7 @@ export default function SiteHeader() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [expertOpen, setExpertOpen] = useState(false);
   const [mobileExpertOpen, setMobileExpertOpen] = useState(false);
-  const [repairOpen, setRepairOpen] = useState(false);
-  const [mobileRepairOpen, setMobileRepairOpen] = useState(false);
   const expertCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const repairCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Lock body scroll while the slide-in drawer is open.
   useEffect(() => {
@@ -67,19 +58,6 @@ export default function SiteHeader() {
     expertCloseTimer.current = setTimeout(() => setExpertOpen(false), 500);
   };
 
-  // Same hover behaviour for the Repair Systems dropdown.
-  const openRepair = () => {
-    if (repairCloseTimer.current) {
-      clearTimeout(repairCloseTimer.current);
-      repairCloseTimer.current = null;
-    }
-    setRepairOpen(true);
-  };
-  const closeRepairSoon = () => {
-    if (repairCloseTimer.current) clearTimeout(repairCloseTimer.current);
-    repairCloseTimer.current = setTimeout(() => setRepairOpen(false), 500);
-  };
-
   return (
     <>
     <header data-site-header className="sticky top-0 z-50 border-b border-sky-100 bg-white/95 backdrop-blur">
@@ -98,7 +76,7 @@ export default function SiteHeader() {
                 Remedial Building Australia
               </div>
               <div className="mt-0.5 max-w-[17rem] text-[13px] font-medium leading-snug text-slate-600 sm:max-w-[23rem] sm:text-[15px]">
-                Australia&rsquo;s strata directory and remedial building platform for jobs, technical resources and industry connections.
+                Australia&rsquo;s strata directory and remedial building platform for jobs, news and industry connections.
               </div>
             </div>
           </Link>
@@ -106,28 +84,7 @@ export default function SiteHeader() {
 
         <nav className="hidden items-center gap-4 text-sm font-semibold text-sky-800 xl:flex">
           <Link href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</Link>
-          <div
-            className="relative"
-            onMouseEnter={openRepair}
-            onMouseLeave={closeRepairSoon}
-          >
-            <Link
-              href="/repair-systems"
-              className="flex items-center gap-1 whitespace-nowrap hover:text-red-700 transition"
-            >
-              Repair Systems
-              <ChevronDown size={13} className={`mt-px transition-transform duration-200 ${repairOpen ? "rotate-180" : ""}`} />
-            </Link>
-            {repairOpen && (
-              <div className={dPanel}>
-                {repairSystemsLinks.map((s) => (
-                  <Link key={s.href} href={s.href} className={dRow}>
-                    {s.title}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+          <Link href="/materials-products-index" className="whitespace-nowrap hover:text-red-700 transition">Materials Index</Link>
           <div
             className="relative"
             onMouseEnter={openExpert}
@@ -193,29 +150,6 @@ export default function SiteHeader() {
           <nav className="flex flex-1 flex-col overflow-y-auto">
             <Link href="/" onClick={() => setMobileNavOpen(false)} className={mRow}>Home</Link>
 
-            {/* Repair Systems — expandable */}
-            <div className="flex flex-col">
-              <button
-                className={`${mRow} justify-between ${mobileRepairOpen ? mRowActive : ""}`}
-                onClick={() => setMobileRepairOpen((o) => !o)}
-              >
-                <span>Repair Systems</span>
-                <ChevronDown size={15} className={`transition-transform duration-200 ${mobileRepairOpen ? "rotate-180" : ""}`} />
-              </button>
-              {mobileRepairOpen && (
-                <div className="flex flex-col border-l-2 border-sky-300 bg-sky-50/70">
-                  <Link href="/repair-systems" onClick={() => setMobileNavOpen(false)} className={mSubRow}>
-                    Repair Systems Overview
-                  </Link>
-                  {repairSystemsLinks.map((s) => (
-                    <Link key={s.href} href={s.href} onClick={() => setMobileNavOpen(false)} className={mSubRow}>
-                      {s.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* Expert Advice — expandable */}
             <div className="flex flex-col">
               <button
@@ -236,11 +170,11 @@ export default function SiteHeader() {
               )}
             </div>
 
-            <Link href="/defect-library" onClick={() => setMobileNavOpen(false)} className={mRow}>Defect Library</Link>
             <Link href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</Link>
             <Link href="/directory/login" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</Link>
             <Link href="/industry-news" onClick={() => setMobileNavOpen(false)} className={mRow}>News &amp; Insights</Link>
             <Link href="/industry-jobs" onClick={() => setMobileNavOpen(false)} className={mRow}>Industry Jobs</Link>
+            <Link href="/materials-products-index" onClick={() => setMobileNavOpen(false)} className={mRow}>Materials Index</Link>
           </nav>
         </div>
       </div>

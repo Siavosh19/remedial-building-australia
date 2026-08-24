@@ -82,8 +82,6 @@ export default function MaterialsProductsIndexPage() {
             </div>
           </div>
           <nav className="flex flex-wrap gap-5 text-xs font-semibold text-slate-500">
-            <Link href="/repair-systems" className="hover:text-sky-700 transition">Repair Systems</Link>
-            <Link href="/defect-library" className="hover:text-sky-700 transition">Defect Library</Link>
             <Link href="/advertise" className="hover:text-sky-700 transition">Advertise With Us</Link>
             <Link href="/terms" className="hover:text-sky-700 transition">Terms &amp; Conditions</Link>
             <Link href="/privacy-policy" className="hover:text-sky-700 transition">Privacy Policy</Link>

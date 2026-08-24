@@ -143,7 +143,7 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
         <div className="mt-3 flex flex-wrap items-center gap-4">
           <label className="inline-flex items-center gap-2 text-sm font-medium text-sky-950">
             <input type="checkbox" name="featured" value="1" defaultChecked={featuredOnly} className="h-4 w-4 rounded border-slate-300" />
-            Featured only
+            Premium only
           </label>
           <button type="submit" className="rounded-lg bg-sky-800 px-5 py-2 text-sm font-semibold text-white transition hover:bg-sky-900">
             Apply filters
@@ -157,7 +157,7 @@ export default async function IndustryJobsPage({ searchParams }: { searchParams:
       {/* Featured */}
       {featured.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-4 text-lg font-extrabold tracking-tight text-sky-950">Featured Jobs</h2>
+          <h2 className="mb-4 text-lg font-extrabold tracking-tight text-sky-950">Premium Jobs</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {featured.map((j) => <JobCard key={j.slug} job={j} />)}
           </div>

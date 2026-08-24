@@ -65,8 +65,7 @@ export default function AboutPage() {
             <div className="flex flex-col gap-2">
               <Link href="/about" className="hover:text-sky-700">About</Link>
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
-              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
-              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
               <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">

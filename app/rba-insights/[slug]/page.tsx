@@ -261,8 +261,7 @@ export default async function RbaInsightsArticlePage({
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
-              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
-              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
               <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">

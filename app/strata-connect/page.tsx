@@ -8,7 +8,7 @@ const WORKORDER_EMAIL = "workorders@remedialbuildingaustralia.com.au";
 export const metadata: Metadata = {
   title: "Strata Connect — Forward a work order, get competitive quotes | Remedial Building Australia",
   description:
-    "Owners corporations and strata managers forward a work order to one email address. Strata Connect converts it into a quote request and matches it to verified businesses near the building. Create a free account to get started.",
+    "Owners corporations and strata managers forward a work order to one email address. Strata Connect converts it into a quote request and matches it to available businesses near the building. Create a free account to get started.",
   alternates: { canonical: "https://www.remedialbuildingaustralia.com.au/strata-connect" },
   openGraph: {
     title: "Strata Connect — Forward a work order, get competitive quotes",
@@ -45,7 +45,7 @@ const STEPS = [
   {
     icon: MapPin,
     title: "Matched to businesses near the building",
-    body: "Your request is matched to verified, available specialists operating within around 50 km of the site — the right trades, close to the work.",
+    body: "Your request is matched to available businesses operating within around 50 km of the site — the right trades, close to the work.",
   },
   {
     icon: Bell,
@@ -73,7 +73,7 @@ export default function StrataConnectPage() {
         <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600 md:text-lg">
           Strata Connect turns a strata work order into competitive quotes without the admin. Owners corporations and
           strata managers forward a work order to a single email address — from remedial building works to cleaning and
-          maintenance — and it&rsquo;s matched to verified specialists near the building who compete for the job.
+          maintenance — and it&rsquo;s matched to available businesses near the building who compete for the job.
         </p>
         <div className="mt-7 flex flex-wrap items-center gap-3">
           <Link
@@ -184,8 +184,7 @@ export default function StrataConnectPage() {
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
-              <Link href="/repair-systems" className="hover:text-sky-700">Repair Systems</Link>
-              <Link href="/defect-library" className="hover:text-sky-700">Defect Library</Link>
+              <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
               <Link href="/industry-news" className="hover:text-sky-700">News &amp; Insights</Link>
             </div>
             <div className="flex flex-col gap-2">
