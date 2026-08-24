@@ -7,11 +7,11 @@ const disconnected = underDevelopmentSection("/industry-news");
 const liveMetadata: Metadata = {
   title: "News & Insights | Remedial Building Australia",
   description:
-    "Tracking Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects, strata issues, concrete repair and DBP Act developments.",
+    "Stay updated with Class 2 building works and remedial building news — waterproofing, façade defects, concrete repair and strata issues.",
   openGraph: {
     title: "News & Insights | Remedial Building Australia",
     description:
-      "Tracking Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects, strata issues, concrete repair and DBP Act developments.",
+      "Stay updated with Class 2 building works and remedial building news — waterproofing, façade defects, concrete repair and strata issues.",
     type: "website",
     siteName: "Remedial Building Australia",
   },
@@ -19,7 +19,7 @@ const liveMetadata: Metadata = {
     card: "summary_large_image",
     title: "News & Insights | Remedial Building Australia",
     description:
-      "Tracking Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects, strata issues, concrete repair and DBP Act developments.",
+      "Stay updated with Class 2 building works and remedial building news — waterproofing, façade defects, concrete repair and strata issues.",
   },
 };
 

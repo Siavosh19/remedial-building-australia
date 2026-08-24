@@ -175,7 +175,7 @@ export function NewsletterSignup({ variant = "section" }: Props) {
 
               <ul className="mt-6 space-y-3">
                 {[
-                  "Building Commission NSW & DBP Act updates",
+                  "Class 2 building works & remedial news updates",
                   "Concrete repair, waterproofing & façade defect news",
                   "Repair system & product updates",
                   "Strata defect and compliance changes",

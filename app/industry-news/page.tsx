@@ -128,7 +128,7 @@ export default async function IndustryNewsPage() {
               Industry News &amp; Remedial Insights
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-sky-300">
-              Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects, strata issues, concrete repair and DBP Act developments.
+              Stay updated with Class 2 building works and remedial building news — waterproofing, façade defects, concrete repair and strata issues.
             </p>
           </div>
         </section>

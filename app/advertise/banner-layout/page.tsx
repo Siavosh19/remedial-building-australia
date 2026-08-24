@@ -187,7 +187,7 @@ function NewsSnapshotMock() {
         <p className="text-[7px] font-bold uppercase tracking-[0.3em] text-sky-500">Industry Intelligence</p>
         <h4 className="mt-1 text-sm font-extrabold leading-tight text-white">Industry News &amp; Remedial Insights</h4>
         <p className="mt-1 text-[8px] leading-relaxed text-sky-300">
-          Australian remedial building updates — Building Commission NSW, waterproofing compliance, façade defects and DBP Act developments.
+          Stay updated with Class 2 building works and remedial building news — waterproofing, façade defects and concrete repair.
         </p>
       </div>
       {/* Gold banner — small gap to the content below */}
