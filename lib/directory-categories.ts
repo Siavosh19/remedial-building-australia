@@ -60,7 +60,8 @@ export const CATEGORY_KEYWORDS: Record<string, string[]> = {
   spalling: ["concrete-resurfacing-and-coatings", "building-maintenance"], concreter_repair: ["concrete-resurfacing-and-coatings"],
   roof: ["roofing-and-restoration", "metal-roofing", "roof-ventilation"], roofing: ["roofing-and-restoration", "roofing-supplier"],
   gutter: ["gutter-and-roof-repair-and-cleaning", "gutter-guard"],
-  paint: ["painting"], painting: ["painting"], coating: ["painting", "rendering-and-coating"], coatings: ["painting", "rendering-and-coating"],
+  paint: ["painting"], painting: ["painting"], coating: ["painting", "rendering-and-coating", "powder-coating"], coatings: ["painting", "rendering-and-coating", "powder-coating"],
+  powder: ["powder-coating"], powdercoat: ["powder-coating"], powdercoating: ["powder-coating"],
   waterproofer: ["waterproofing"], tiling: ["tiling-and-paving"], tiler: ["tiling-and-paving"], tile: ["tiling-and-paving"],
   plumbing: ["plumbing-and-drainage"], plumber: ["plumbing-and-drainage"], drainage: ["plumbing-and-drainage"],
   electrical: ["electrical-contractor"], electrician: ["electrical-contractor"],
@@ -91,6 +92,12 @@ export const QUERY_CATEGORY_SYNONYMS: Record<string, string> = {
   waterproofer: "waterproofing", waterproofers: "waterproofing",
   roofer: "roofing-and-restoration", roofers: "roofing-and-restoration", roofing: "roofing-and-restoration",
   painter: "painting", painters: "painting",
+  // Powder coating is its own trade, not painting. Someone typing "powder coaters"
+  // must land on Powder Coating, not the Painting bucket these listings used to sit in.
+  "powder coating": "powder-coating", "powder coat": "powder-coating", "powder coats": "powder-coating",
+  "powder coater": "powder-coating", "powder coaters": "powder-coating",
+  powdercoat: "powder-coating", powdercoating: "powder-coating", powdercoaters: "powder-coating",
+  "metal finishing": "powder-coating",
   tiler: "tiling-and-paving", tilers: "tiling-and-paving", tiling: "tiling-and-paving",
   concreter: "concreter-concreting-contractor", concreters: "concreter-concreting-contractor", concreting: "concreter-concreting-contractor",
   plasterer: "plastering", plasterers: "plastering", gyprocker: "plastering", gyprock: "plastering",
