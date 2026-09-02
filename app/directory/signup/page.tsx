@@ -226,7 +226,12 @@ export default function DirectorySignupPage() {
   // The Mapmetra cross-promo rides the business signup form only. The
   // account-type chooser has no spare column, and a promo there would
   // compete with the four cards.
-  const showPromo = accountType === "directory";
+  //
+  // PAUSED (2026-09-02, owner request) — the promo is switched off on signup for
+  // now. Both placements (desktop right rail + phone/tablet popup) hang off this
+  // one flag, so restoring it is a single-line change back to:
+  //   const showPromo = accountType === "directory";
+  const showPromo = false;
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
