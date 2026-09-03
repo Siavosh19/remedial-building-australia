@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { isGovernmentSourceUrl } from "@/lib/gov-sources";
+import { sourceTier, TIER_STYLE, TRUSTED_DOMAINS } from "@/lib/news-source-tiers";
+import { publishFlags, shortSummary, FLAG_STYLE } from "@/lib/news-publish-check";
 import type { Prisma } from "@prisma/client";
 import { ExternalLink } from "lucide-react";
 import RemoveNewsButton from "./RemoveNewsButton";
@@ -20,6 +21,7 @@ const FILTERS = [
   { key: "published", label: "Published" },
   { key: "rejected", label: "Rejected" },
   { key: "government", label: "Government" },
+  { key: "trusted", label: "Industry bodies" },
   { key: "newsletter", label: "In newsletter" },
 ] as const;
 
@@ -28,6 +30,7 @@ type NewsRow = {
   title: string;
   slug: string | null;
   category: string | null;
+  summary: string | null;
   source_name: string | null;
   source_url: string | null;
   published_date: string | null;
@@ -70,12 +73,16 @@ export default async function AdminNewsArticlesPage({
         // Published BY a government body — the source link is the agency's own
         // site, not a news outlet writing about it.
         ? { OR: [{ source_url: { contains: ".gov.au" } }, { source_url: { contains: ".gov/" } }] }
-        : active === "all"
-          ? {}
-          : active === "draft"
-            // Legacy rows with no status have never been reviewed either.
-            ? { OR: [{ status: "draft" }, { status: null }] }
-            : { status: active };
+        : active === "trusted"
+          // Published BY an industry peak body — same idea as the government
+          // filter, one tier down. Matched on the body's own domain.
+          ? { OR: TRUSTED_DOMAINS.map((d) => ({ source_url: { contains: d } })) }
+          : active === "all"
+            ? {}
+            : active === "draft"
+              // Legacy rows with no status have never been reviewed either.
+              ? { OR: [{ status: "draft" }, { status: null }] }
+              : { status: active };
 
   let rows: NewsRow[] = [];
   let selectedCount = 0;
@@ -90,6 +97,7 @@ export default async function AdminNewsArticlesPage({
           title: true,
           slug: true,
           category: true,
+          summary: true,
           source_name: true,
           source_url: true,
           published_date: true,
@@ -117,12 +125,22 @@ export default async function AdminNewsArticlesPage({
         <h1 className="text-2xl font-bold text-slate-900">News Articles</h1>
         <p className="mt-1 text-sm text-slate-500">
           Every article arrives as a <span className="font-semibold text-slate-700">draft</span> — nothing goes on the
-          website until you publish it. Click <span className="font-semibold text-sky-700">Read</span> to open the full
-          article inside RBA (with its original source link), then <span className="font-semibold text-emerald-700">Publish</span> the
-          ones you want live. Rows highlighted <span className="rounded bg-amber-100 px-1 font-semibold text-amber-800">yellow</span> come
-          straight from a government website — the agency&apos;s own media release, notice or code change, not a news outlet writing
-          about it. Use <span className="font-semibold text-emerald-700">Add</span> to pick which published articles go in the
-          next newsletter.
+          website until you publish it, and anything published can be unpublished again at any time. Each row carries a
+          short summary so you can decide without opening it; click <span className="font-semibold text-sky-700">Read</span> for
+          the full article and its original source link.
+        </p>
+        <p className="mt-2 text-sm text-slate-500">
+          <span className="rounded bg-amber-100 px-1 font-semibold text-amber-800">Yellow</span> rows come straight from a
+          government website — the agency&apos;s own media release, notice or code change, not a news outlet writing about it.
+          <span className="ml-1 rounded bg-emerald-100 px-1 font-semibold text-emerald-800">Green</span> rows come from an
+          industry peak body (Master Builders, HIA, Strata Community Association and the like). Both are the safest to
+          publish. Uncoloured rows are whatever the search feeds turned up — worth reading before you publish.
+        </p>
+        <p className="mt-2 text-sm text-slate-500">
+          The small tags under each summary are the legal points to check before publishing — hover one to see what it
+          means. <span className="rounded bg-rose-100 px-1 font-semibold text-rose-700">Red</span> means read the article
+          first. They are prompts, not a legal opinion. Use <span className="font-semibold text-emerald-700">Add</span> to
+          pick which published articles go in the next newsletter.
         </p>
       </div>
 
@@ -168,14 +186,19 @@ export default async function AdminNewsArticlesPage({
           const isRejected = r.status === "rejected";
           const readUrl = `/news-preview/${r.id}`;
           const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
-          const isGov = isGovernmentSourceUrl(r.source_url);
+          const tier = sourceTier(r.source_url);
+          const style = TIER_STYLE[tier];
+          // The two-paragraph article summary, cut to a line or two — enough to
+          // decide on without opening it. Flags are the legal points to check.
+          const summary = shortSummary(r.summary);
+          const flags = publishFlags(r);
           return (
-            <div key={String(r.id)} className={`rounded-xl border p-4 shadow-sm ${isGov ? "border-amber-300 bg-amber-50" : "border-slate-200 bg-white"}`}>
+            <div key={String(r.id)} className={`rounded-xl border p-4 shadow-sm ${style.card}`}>
               <div className="flex items-start justify-between gap-2">
                 <p className="font-semibold text-slate-900">
-                  {isGov && (
-                    <span className="mr-2 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
-                      Gov source
+                  {style.label && (
+                    <span className={`mr-2 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${style.badge}`}>
+                      {style.label}
                     </span>
                   )}
                   {r.title || "—"}
@@ -199,6 +222,23 @@ export default async function AdminNewsArticlesPage({
                   </a>
                 )}
               </div>
+              {summary && (
+                <p className="mt-2 max-w-3xl text-xs leading-relaxed text-slate-600">{summary}</p>
+              )}
+              {flags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {flags.map((f, i) => (
+                    <span
+                      key={i}
+                      title={f.detail}
+                      className={`cursor-help rounded px-1.5 py-0.5 text-[10px] font-semibold ${FLAG_STYLE[f.level]}`}
+                    >
+                      {f.level === "caution" ? "\u26a0 " : ""}
+                      {f.label}
+                    </span>
+                  ))}
+                </div>
+              )}
               <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                 <div className="min-w-0">
                   <dt className="mb-1 font-semibold text-slate-400">Category</dt>
@@ -267,17 +307,22 @@ export default async function AdminNewsArticlesPage({
               const isRejected = r.status === "rejected";
               const readUrl = `/news-preview/${r.id}`;
               const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
-              const isGov = isGovernmentSourceUrl(r.source_url);
+              const tier = sourceTier(r.source_url);
+              const style = TIER_STYLE[tier];
+              // The two-paragraph article summary, cut to a line or two — enough to
+              // decide on without opening it. Flags are the legal points to check.
+              const summary = shortSummary(r.summary);
+              const flags = publishFlags(r);
               return (
                 <tr
                   key={String(r.id)}
-                  className={`border-b align-top transition ${isGov ? "border-amber-200 bg-amber-50 hover:bg-amber-100" : "border-slate-100 hover:bg-slate-50"}`}
+                  className={`border-b align-top transition ${style.row}`}
                 >
                   <td className="px-4 py-3">
                     <p className="font-semibold text-slate-900">
-                      {isGov && (
-                        <span className="mr-2 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
-                          Gov source
+                      {style.label && (
+                        <span className={`mr-2 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${style.badge}`}>
+                          {style.label}
                         </span>
                       )}
                       {r.title || "—"}
@@ -297,6 +342,23 @@ export default async function AdminNewsArticlesPage({
                         </a>
                       )}
                     </div>
+                    {summary && (
+                      <p className="mt-2 max-w-3xl text-xs leading-relaxed text-slate-600">{summary}</p>
+                    )}
+                    {flags.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {flags.map((f, i) => (
+                          <span
+                            key={i}
+                            title={f.detail}
+                            className={`cursor-help rounded px-1.5 py-0.5 text-[10px] font-semibold ${FLAG_STYLE[f.level]}`}
+                          >
+                            {f.level === "caution" ? "\u26a0 " : ""}
+                            {f.label}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <CategorySelect id={String(r.id)} current={r.category || "Other"} />
