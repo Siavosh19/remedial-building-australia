@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 import { VALID_CATEGORIES } from "@/lib/news-categories";
 import { isRejectNote } from "@/lib/news-reject-note";
+import { revalidateNews } from "@/lib/news-revalidate";
 
 export const maxDuration = 60;
 
@@ -129,8 +130,10 @@ export async function POST(request: NextRequest) {
   if (Object.keys(update).length === 0)
     return NextResponse.json({ error: "Nothing to do." }, { status: 400 });
 
+  let slug: string | null = null;
   try {
-    await prisma.industryNews.update({ where: { id }, data: update });
+    const updated = await prisma.industryNews.update({ where: { id }, data: update, select: { slug: true } });
+    slug = updated.slug;
   } catch (err) {
     console.error("[news enrich] update error:", err);
     return NextResponse.json(
@@ -138,6 +141,9 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
+
+  // Recycle-to-publish and re-enrichment both change what the site shows.
+  revalidateNews(slug);
 
   return NextResponse.json({
     success: true,

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/directory-auth";
+import { revalidateInsight } from "@/lib/news-revalidate";
 
 function calcReadingTime(body: string | null | undefined): number | null {
   if (!body) return null;
@@ -78,6 +79,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     },
   });
 
+  // Insights show on /rba-insights and inside the industry-news feed.
+  revalidateInsight(updated.slug);
+
   return NextResponse.json({ article: updated });
 }
 
@@ -86,6 +90,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
-  await prisma.rbaInsightsArticle.delete({ where: { id: Number(id) } });
+  const removed = await prisma.rbaInsightsArticle.delete({ where: { id: Number(id) }, select: { slug: true } });
+  revalidateInsight(removed.slug);
   return NextResponse.json({ ok: true });
 }

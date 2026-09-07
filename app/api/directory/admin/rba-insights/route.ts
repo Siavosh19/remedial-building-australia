@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/directory-auth";
+import { revalidateInsight } from "@/lib/news-revalidate";
 
 function calcReadingTime(body: string | null | undefined): number | null {
   if (!body) return null;
@@ -84,6 +85,9 @@ export async function POST(request: NextRequest) {
       reading_time_minutes: calcReadingTime(body.body_content),
     },
   });
+
+  // A new insight can be created straight into "published".
+  revalidateInsight(article.slug);
 
   return NextResponse.json({ article }, { status: 201 });
 }

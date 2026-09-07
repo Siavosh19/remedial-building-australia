@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminFromRequest } from "@/lib/directory-auth";
 import { prisma } from "@/lib/prisma";
 import { VALID_CATEGORIES } from "@/lib/news-categories";
+import { revalidateNews } from "@/lib/news-revalidate";
 
 // Remove a news article from the website (hard delete from industry_news).
 export async function DELETE(request: NextRequest) {
@@ -11,8 +12,10 @@ export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "id is required" }, { status: 400 });
 
+  let slug: string | null = null;
   try {
-    await prisma.industryNews.delete({ where: { id } });
+    const removed = await prisma.industryNews.delete({ where: { id }, select: { slug: true } });
+    slug = removed.slug;
   } catch (err) {
     console.error("[admin/news-articles] delete error:", err);
     return NextResponse.json(
@@ -20,6 +23,9 @@ export async function DELETE(request: NextRequest) {
       { status: 500 },
     );
   }
+
+  // The article was on the site; drop it out of the ISR-cached pages now.
+  revalidateNews(slug);
   return NextResponse.json({ success: true });
 }
 
@@ -62,8 +68,10 @@ export async function PATCH(request: NextRequest) {
   if (Object.keys(update).length === 0)
     return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
 
+  let slug: string | null = null;
   try {
-    await prisma.industryNews.update({ where: { id }, data: update });
+    const updated = await prisma.industryNews.update({ where: { id }, data: update, select: { slug: true } });
+    slug = updated.slug;
   } catch (err) {
     console.error("[admin/news-articles] update error:", err);
     return NextResponse.json(
@@ -71,5 +79,9 @@ export async function PATCH(request: NextRequest) {
       { status: 500 },
     );
   }
+
+  // Publish / unpublish / recategorise / edit — flush the public pages so the
+  // change is live immediately instead of at the next hourly rebuild.
+  revalidateNews(slug);
   return NextResponse.json({ success: true });
 }
