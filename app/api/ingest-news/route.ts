@@ -23,6 +23,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getCategoryImage, VALID_CATEGORIES } from "@/lib/news-categories";
 import { sweepForGovernmentOriginals } from "@/lib/gov-news-import";
+import { formatRejectNote } from "@/lib/news-reject-note";
 
 export const maxDuration = 300;
 
@@ -213,10 +214,13 @@ interface EnrichResult {
   tags: string[];
   summary: string;
   impact: string;
+  // Why a rejected article was rejected, and what it was about. The admin list
+  // shows it in place of the summary a rejected article never gets.
+  reason: string;
 }
 
 async function classifyAndEnrich(title: string, description: string): Promise<EnrichResult> {
-  const fallback: EnrichResult = { priority: 0, category: "Other", tags: [], summary: "", impact: "" };
+  const fallback: EnrichResult = { priority: 0, category: "Other", tags: [], summary: "", impact: "", reason: "" };
 
   if (!ANTHROPIC_API_KEY) return fallback;
 
@@ -254,7 +258,8 @@ SUMMARY: <Write exactly two paragraphs, separated by a blank line. The first par
 IMPACT: <One short paragraph, 45–75 words. State plainly why this is relevant to Australian building professionals — remedial consultants, strata managers, waterproofing contractors, engineers, or certifiers. Neutral, practical tone. No hype, no marketing language, no legal or engineering advice. Do not start with "It is important", "This highlights", "This underscores", or "This reflects". Write as a plain professional observation.>
 
 For REJECT:
-PRIORITY: reject`;
+PRIORITY: reject
+REASON: <One or two plain sentences for the editor's rejected list: what the article is actually about, then why it does not belong on an Australian remedial building news site. Be specific about the subject — the editor scans these to catch anything rejected by mistake. Do not start with "The article", "This" or "It".>`;
 
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -279,7 +284,10 @@ PRIORITY: reject`;
     // Parse PRIORITY
     const priorityMatch = text.match(/PRIORITY:\s*(\S+)/i);
     const rawPriority = priorityMatch?.[1]?.toLowerCase() ?? "reject";
-    if (rawPriority === "reject") return fallback;
+    if (rawPriority === "reject") {
+      const reason = text.match(/REASON:\s*([\s\S]+)/i)?.[1]?.trim() ?? "";
+      return { ...fallback, reason };
+    }
 
     const priority: 1 | 2 | 3 = rawPriority === "priority_1" ? 1 : rawPriority === "priority_2" ? 2 : 3;
 
@@ -302,7 +310,7 @@ PRIORITY: reject`;
     const impactMatch = text.match(/IMPACT:\s*([\s\S]+)/i);
     const impact = impactMatch?.[1]?.trim() ?? "";
 
-    return { priority, category, tags, summary, impact };
+    return { priority, category, tags, summary, impact, reason: "" };
   } catch {
     return fallback;
   }
@@ -397,17 +405,27 @@ export async function GET() {
         stats.errors.push(`AI error: ${String(result.reason)}`);
         return;
       }
-      const { priority, category, tags, summary, impact } = result.value;
+      const { priority, category, tags, summary, impact, reason } = result.value;
 
       // Never publish an article with no usable summary — the AI enrichment
       // failed or returned an unparseable response. Treat it like a reject so
       // it doesn't show as a blank card and isn't re-fetched next run.
       if (priority === 0 || !summary || summary.trim().length < 40) {
         stats.skipped_irrelevant++;
+        // A line on what it was and why it did not make it, so the rejected
+        // list can be scanned for mistakes without opening every link. An
+        // article that classified fine but came back with no usable summary
+        // says so — that one is a fault at our end, not the article's.
+        const note = formatRejectNote(
+          priority === 0
+            ? reason
+            : "classified as relevant, but the summary came back unusable, so it was held rather than published blank",
+        );
         // Write back a minimal "rejected" record so this URL is never re-classified
         await prisma.industryNews.create({
           data: {
             title: item.title,
+            ...(note ? { summary: note } : {}),
             slug: `rejected-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
             source_url: item.link,
             status: "rejected",

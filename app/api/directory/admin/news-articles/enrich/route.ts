@@ -3,6 +3,7 @@ import { getAdminFromRequest } from "@/lib/directory-auth";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 import { VALID_CATEGORIES } from "@/lib/news-categories";
+import { isRejectNote } from "@/lib/news-reject-note";
 
 export const maxDuration = 60;
 
@@ -109,7 +110,11 @@ export async function POST(request: NextRequest) {
   if (publish) update.status = "published";
 
   let generated: Enriched | null = null;
-  const hasSummary = String(row.summary ?? "").trim().length > 0;
+  // A reject note is the one-line explanation of why the ingest passed on the
+  // article, not editorial copy — recycling one has to write a real summary
+  // over the top of it rather than treat it as work already done.
+  const existing = String(row.summary ?? "").trim();
+  const hasSummary = existing.length > 0 && !isRejectNote(existing);
   if (!hasSummary || force) {
     const content = row.source_url ? await fetchArticleText(String(row.source_url)) : "";
     generated = await summarize(String(row.title ?? ""), content);

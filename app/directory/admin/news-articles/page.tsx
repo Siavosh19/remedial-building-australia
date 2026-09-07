@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { sourceTier, TIER_STYLE, TRUSTED_DOMAINS } from "@/lib/news-source-tiers";
+import { reviewTier, isGovernmentTier, tierHint, TIER_STYLE, TRUSTED_DOMAINS } from "@/lib/news-source-tiers";
 import { publishFlags, shortSummary, FLAG_STYLE } from "@/lib/news-publish-check";
 import type { Prisma } from "@prisma/client";
 import { ExternalLink } from "lucide-react";
@@ -10,6 +10,7 @@ import PublishNewsButton from "./PublishNewsButton";
 import GovSweepButton from "./GovSweepButton";
 import CategorySelect from "./CategorySelect";
 import NewsletterToggle from "./NewsletterToggle";
+import SummariseRejectedButton from "./SummariseRejectedButton";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,7 @@ type NewsRow = {
   source_name: string | null;
   source_url: string | null;
   published_date: string | null;
+  tags: string[];
   status: string | null;
   include_in_newsletter: boolean | null;
 };
@@ -70,9 +72,11 @@ export default async function AdminNewsArticlesPage({
     active === "newsletter"
       ? { include_in_newsletter: true }
       : active === "government"
-        // Published BY a government body — the source link is the agency's own
-        // site, not a news outlet writing about it.
-        ? { OR: [{ source_url: { contains: ".gov.au" } }, { source_url: { contains: ".gov/" } }] }
+        // Anything with a government angle — the agency's own site, or someone
+        // else's write-up of a regulator, an Act, a code or an NCC building
+        // class. Keyword matching happens in lib/gov-sources.ts, which SQL
+        // cannot express, so this pulls the rows and sifts them below.
+        ? {}
         : active === "trusted"
           // Published BY an industry peak body — same idea as the government
           // filter, one tier down. Matched on the body's own domain.
@@ -86,12 +90,16 @@ export default async function AdminNewsArticlesPage({
 
   let rows: NewsRow[] = [];
   let selectedCount = 0;
+  let unsummarisedRejects = 0;
   try {
-    const [found, queued] = await Promise.all([
+    const [found, queued, bare] = await Promise.all([
       prisma.industryNews.findMany({
         where,
         orderBy: { published_date: { sort: "desc", nulls: "last" } },
-        take: 1000,
+        // The government tab has no SQL to narrow it, so it reads the archive
+        // and sifts afterwards — a bigger ceiling, or the oldest matches fall
+        // off the end of a list that was never filtered in the first place.
+        take: active === "government" ? 4000 : 1000,
         select: {
           id: true,
           title: true,
@@ -101,6 +109,7 @@ export default async function AdminNewsArticlesPage({
           source_name: true,
           source_url: true,
           published_date: true,
+          tags: true,
           status: true,
           include_in_newsletter: true,
         },
@@ -109,12 +118,19 @@ export default async function AdminNewsArticlesPage({
       // Only published ones count — the send skips drafts, so a queued draft
       // would otherwise inflate this number.
       prisma.industryNews.count({ where: { include_in_newsletter: true, status: "published" } }),
+      // Rejected articles that predate the reject note the ingest now writes.
+      prisma.industryNews.count({
+        where: { status: "rejected", OR: [{ summary: null }, { summary: "" }] },
+      }),
     ]);
     rows = found.map((r) => ({
       ...r,
+      tags: r.tags ?? [],
       published_date: r.published_date ? r.published_date.toISOString() : null,
     }));
+    if (active === "government") rows = rows.filter((r) => isGovernmentTier(reviewTier(r)));
     selectedCount = queued;
+    unsummarisedRejects = bare;
   } catch (err) {
     console.error("[admin/news-articles] query failed:", err);
   }
@@ -130,17 +146,22 @@ export default async function AdminNewsArticlesPage({
           the full article and its original source link.
         </p>
         <p className="mt-2 text-sm text-slate-500">
-          <span className="rounded bg-amber-100 px-1 font-semibold text-amber-800">Yellow</span> rows come straight from a
-          government website — the agency&apos;s own media release, notice or code change, not a news outlet writing about it.
-          <span className="ml-1 rounded bg-emerald-100 px-1 font-semibold text-emerald-800">Green</span> rows come from an
-          industry peak body (Master Builders, HIA, Strata Community Association and the like). Both are the safest to
-          publish. Uncoloured rows are whatever the search feeds turned up — worth reading before you publish.
+          <span className="rounded bg-slate-200 px-1 font-semibold text-slate-800">Grey</span> rows have a government
+          angle — a regulator, an Act, the Code, an NCC building class — whether they come from the agency&apos;s own
+          site (darker grey, marked <span className="font-semibold text-slate-700">Gov source</span>) or from a news
+          outlet writing about it. <span className="rounded bg-emerald-100 px-1 font-semibold text-emerald-800">Green</span>{" "}
+          rows come from an industry peak body (Master Builders, HIA, Strata Community Association and the like). Both
+          are the safest to publish. <span className="rounded border border-slate-200 bg-white px-1 font-semibold text-slate-700">White</span>{" "}
+          rows are the ordinary trade, product and market stories the search feeds turned up — they stand out because
+          they are the ones that need reading before you publish.
         </p>
         <p className="mt-2 text-sm text-slate-500">
           The small tags under each summary are the legal points to check before publishing — hover one to see what it
           means. <span className="rounded bg-rose-100 px-1 font-semibold text-rose-700">Red</span> means read the article
           first. They are prompts, not a legal opinion. Use <span className="font-semibold text-emerald-700">Add</span> to
-          pick which published articles go in the next newsletter.
+          pick which published articles go in the next newsletter. Rejected articles carry a line of their own — what
+          the article was, and why it did not make it — so the <span className="font-semibold text-slate-700">Rejected</span>{" "}
+          tab can be read for mistakes without opening every link.
         </p>
       </div>
 
@@ -160,6 +181,8 @@ export default async function AdminNewsArticlesPage({
       </div>
 
       <GovSweepButton />
+
+      <SummariseRejectedButton outstanding={unsummarisedRejects} />
 
       {/* Filter tabs */}
       <div className="mb-5 flex flex-wrap items-center gap-2">
@@ -186,7 +209,7 @@ export default async function AdminNewsArticlesPage({
           const isRejected = r.status === "rejected";
           const readUrl = `/news-preview/${r.id}`;
           const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
-          const tier = sourceTier(r.source_url);
+          const tier = reviewTier(r);
           const style = TIER_STYLE[tier];
           // The two-paragraph article summary, cut to a line or two — enough to
           // decide on without opening it. Flags are the legal points to check.
@@ -197,7 +220,10 @@ export default async function AdminNewsArticlesPage({
               <div className="flex items-start justify-between gap-2">
                 <p className="font-semibold text-slate-900">
                   {style.label && (
-                    <span className={`mr-2 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${style.badge}`}>
+                    <span
+                      title={tierHint(r, tier)}
+                      className={`mr-2 cursor-help rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${style.badge}`}
+                    >
                       {style.label}
                     </span>
                   )}
@@ -307,7 +333,7 @@ export default async function AdminNewsArticlesPage({
               const isRejected = r.status === "rejected";
               const readUrl = `/news-preview/${r.id}`;
               const liveUrl = isPublished && r.slug ? `${SITE}/industry-news/${r.slug}` : null;
-              const tier = sourceTier(r.source_url);
+              const tier = reviewTier(r);
               const style = TIER_STYLE[tier];
               // The two-paragraph article summary, cut to a line or two — enough to
               // decide on without opening it. Flags are the legal points to check.
@@ -321,7 +347,10 @@ export default async function AdminNewsArticlesPage({
                   <td className="px-4 py-3">
                     <p className="font-semibold text-slate-900">
                       {style.label && (
-                        <span className={`mr-2 rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${style.badge}`}>
+                        <span
+                          title={tierHint(r, tier)}
+                          className={`mr-2 cursor-help rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${style.badge}`}
+                        >
                           {style.label}
                         </span>
                       )}
