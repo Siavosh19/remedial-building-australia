@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { Mail, MailCheck } from "lucide-react";
 
 // Mark / unmark an article for inclusion in the next newsletter send.
-// When any articles are marked, the weekly send uses exactly those; when none
-// are marked, it falls back to the latest 8 published. Selections are cleared
-// automatically after each send.
+// The weekly send uses exactly the marked articles and nothing else — if
+// none are marked, the send is skipped (no new news). The list is cleared
+// automatically after each send that goes out.
 export default function NewsletterToggle({ id, selected }: { id: string; selected: boolean }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);

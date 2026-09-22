@@ -484,10 +484,11 @@ async function handle(request: NextRequest) {
   if (!subs || subs.length === 0)
     return NextResponse.json({ error: "No subscribers found" }, { status: 404 });
 
-  // Article selection: prefer the admin-curated set (include_in_newsletter =
-  // true). If nothing is curated, fall back to the 8 latest published articles.
-  // A curated selection is cleared after a real send (see below) so the next
-  // week starts fresh.
+  // Article selection: the newsletter only ever sends the admin-curated list
+  // (include_in_newsletter = true) — there is no fallback to "latest
+  // published" articles. If the list is empty there is no new news, and the
+  // send is skipped below. The list is cleared after a real send (see below)
+  // so the next week starts empty and nothing can be resent by accident.
   const ARTICLE_COLS = {
     title: true,
     slug: true,
@@ -498,23 +499,13 @@ async function handle(request: NextRequest) {
   } as const;
 
   let raw: Record<string, unknown>[];
-  let usedCuration: boolean;
   try {
-    const curated = await prisma.industryNews.findMany({
+    raw = await prisma.industryNews.findMany({
       where: { status: "published", summary: { not: null }, include_in_newsletter: true },
       orderBy: { published_date: { sort: "desc", nulls: "last" } },
       take: 8,
       select: ARTICLE_COLS,
     });
-    usedCuration = curated.length > 0;
-    raw = usedCuration
-      ? curated
-      : await prisma.industryNews.findMany({
-          where: { status: "published", summary: { not: null } },
-          orderBy: { published_date: { sort: "desc", nulls: "last" } },
-          take: 8,
-          select: ARTICLE_COLS,
-        });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Article fetch failed" },
@@ -534,13 +525,12 @@ async function handle(request: NextRequest) {
         : String(r.published_date ?? ""),
   }));
 
-  // Nothing approved for the site this week — send nothing rather than an email
-  // that says there is no news. Articles are drafts until an admin publishes
-  // them, so an empty week is now a normal state, not a fault.
+  // Nothing on the list — no new news was curated for this newsletter, so
+  // skip the send entirely rather than emailing "no news this week".
   if (articles.length === 0) {
     return NextResponse.json({
       success: true,
-      skipped: "no published articles",
+      skipped: "no new news to send",
       sent: 0,
       subscribers: subs.length,
     });
@@ -576,10 +566,10 @@ async function handle(request: NextRequest) {
     }
   }
 
-  // After a real send (not a preview), clear the curated selection so the next
-  // week starts empty and the same articles can't be resent by accident.
+  // After a real send (not a preview), clear the list so the next week
+  // starts empty and the same articles can't be resent by accident.
   let cleared = false;
-  if (!testTo && usedCuration && sent > 0) {
+  if (!testTo && sent > 0) {
     try {
       await prisma.industryNews.updateMany({
         where: { include_in_newsletter: true },
@@ -595,7 +585,6 @@ async function handle(request: NextRequest) {
     sent,
     total_subscribers: subs.length,
     article_count: articles.length,
-    curated: usedCuration,
     selection_cleared: cleared,
     errors: errors.length ? errors : undefined,
   });

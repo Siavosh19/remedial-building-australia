@@ -174,8 +174,8 @@ export default async function AdminNewsArticlesPage({
           </span>
         ) : (
           <span>
-            No articles selected — the next newsletter will fall back to the <strong>latest 8 published</strong>.
-            Click <strong>Add</strong> on the articles you want to curate a specific send.
+            No articles selected — the next newsletter will be <strong>skipped</strong> (no new news to send).
+            Click <strong>Add</strong> on the articles you want to include.
           </span>
         )}
       </div>
