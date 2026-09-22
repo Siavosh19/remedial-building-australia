@@ -834,3 +834,31 @@ export async function sendVerificationReminderEmail(name: string, email: string,
   const text = `Hi ${name},\n\n${s.intro} Verify your email to unlock your account:\n${link}\n\nOnce verified you can:\n- List your business in Australia's remedial building directory (${SITE_URL}/directory/signup)\n- Post a job and hire remedial trades (${SITE_URL}/industry-jobs/post)\n- Find businesses and request quotes (${SITE_URL}/directory)\n\nThis link expires in 24 hours. If you did not create this account, ignore this email.`;
   await sendEmail(s.subject, email, html, text);
 }
+
+// Finish-listing reminder — for accounts that verified (or signed up) but never
+// created a business listing at all (no company row exists yet, distinct from
+// the verify-reminders above which only chase the email-verification step).
+// Links straight to the company setup form, which redirects through login if
+// the account isn't currently signed in.
+export async function sendFinishListingReminderEmail(name: string, email: string) {
+  const link = `${SITE_URL}/directory/signup/company`;
+  const btn = (href: string, label: string, primary: boolean) =>
+    `<a href="${href}" style="display:inline-block;padding:${primary ? "14px 24px" : "11px 18px"};margin:0 8px 10px 0;background:${primary ? "#0f172a" : "#ffffff"};color:${primary ? "#ffffff" : "#0f172a"};border:1px solid ${primary ? "#0f172a" : "#cbd5e1"};border-radius:10px;text-decoration:none;font-weight:600;font-size:${primary ? "15px" : "14px"};">${label}</a>`;
+  const html = emailWrapper(
+    "Complete your listing",
+    `<p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#334155;">Hi ${safeHtml(name)},</p>
+     <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#334155;">You created an account with Remedial Building Australia but haven't finished setting up your business listing yet. It only takes a couple of minutes to get in front of the strata managers, builders, developers and homeowners searching the directory.</p>
+     <p style="margin:0 0 26px;">${btn(link, "Finish my listing", true)}</p>
+     <div style="border-top:1px solid #e2e8f0;margin:0 0 22px;"></div>
+     <p style="margin:0 0 14px;font-size:15px;font-weight:600;color:#0f172a;">Free to list. Takes about 2 minutes:</p>
+     <ul style="margin:0 0 22px;padding-left:20px;font-size:15px;line-height:1.8;color:#334155;">
+       <li>Add your business details and service area</li>
+       <li>Choose your category</li>
+       <li>Get found by people looking to hire</li>
+     </ul>
+     <p style="margin:0;font-size:13px;line-height:1.7;color:#64748b;">If the button doesn't work, paste this link into your browser:</p>
+     <p style="margin:8px 0 0;font-size:13px;line-height:1.7;color:#475569;word-break:break-all;">${safeHtml(link)}</p>`
+  );
+  const text = `Hi ${name},\n\nYou created an account with Remedial Building Australia but haven't finished setting up your business listing yet. It only takes a couple of minutes.\n\nFinish my listing: ${link}\n\nFree to list. Takes about 2 minutes:\n- Add your business details and service area\n- Choose your category\n- Get found by people looking to hire\n\nIf you did not create this account, please ignore this email.`;
+  await sendEmail("Finish setting up your business listing", email, html, text);
+}
