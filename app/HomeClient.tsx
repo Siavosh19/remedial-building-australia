@@ -536,7 +536,7 @@ export default function HomeClient() {
               <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-sky-950 md:text-5xl">Latest News &amp; Insights</h2>
               <div className="mt-3 h-[3px] w-44" style={{ background: "linear-gradient(to right, #b91c1c, rgba(185,28,28,0))" }} />
             </div>
-            <Link href="/rba-insights" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</Link>
+            <Link href="/industry-news" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</Link>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -581,7 +581,7 @@ export default function HomeClient() {
             <div className="flex flex-col px-6 py-5">
               <div className="mb-4 flex shrink-0 items-center justify-between">
                 <h3 className="text-base font-extrabold tracking-tight text-sky-950">Latest News</h3>
-                <Link href="/rba-insights" className="text-xs font-bold text-sky-600 hover:text-red-700">View all →</Link>
+                <Link href="/industry-news" className="text-xs font-bold text-sky-600 hover:text-red-700">View all →</Link>
               </div>
               <div className="divide-y divide-slate-100 overflow-y-auto" style={{ maxHeight: "520px" }}>
               {newsLoading ? (
