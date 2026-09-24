@@ -8,6 +8,7 @@ import {
   ClipboardList,
   FilePlus2,
   Pencil,
+  Building2,
   Settings,
   LogOut,
   Menu,
@@ -22,6 +23,7 @@ const ITEMS: Item[] = [
   { key: "requests", href: "/client/quote-requests", label: "My Quote Requests", icon: ClipboardList },
   { key: "new", href: "/client/quote-requests/new", label: "Create New Quote Request", icon: FilePlus2 },
   { key: "edit", href: "/client/quote-requests?mode=edit", label: "Edit Existing Quote Requests", icon: Pencil },
+  { key: "strata", href: "/client/strata", label: "Strata Management", icon: Building2 },
   { key: "settings", href: "/client/settings", label: "Settings", icon: Settings },
 ];
 
@@ -31,6 +33,7 @@ function activeKey(pathname: string, mode: string | null): string {
   if (pathname.endsWith("/edit")) return "edit";
   if (pathname === "/client/quote-requests" && mode === "edit") return "edit";
   if (pathname.startsWith("/client/quote-requests")) return "requests";
+  if (pathname.startsWith("/client/strata")) return "strata";
   if (pathname.startsWith("/client/settings")) return "settings";
   return "";
 }

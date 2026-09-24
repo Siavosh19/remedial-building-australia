@@ -538,6 +538,8 @@ model User {
   notifications               Notification[]
   push_subscriptions          PushSubscription[]
 
+  strata_schemes_owned StrataScheme[] @relation("StrataSchemeOwner")
+  strata_memberships   StrataMember[] @relation("StrataMemberUser")
   @@index([account_type])
   @@index([supplier_id])
   @@map("users")
@@ -1862,4 +1864,127 @@ model MeasureMapActivityLog {
 
   @@index([project_id, created_at])
   @@map("measuremap_activity_logs")
+}
+
+// ── Self-managed strata ──────────────────────────────────────────────────────
+// A free workspace for owners corporations that run themselves. Purely additive:
+// nothing here is referenced by the directory or the quote platform. The bridge
+// from a scheme to a quote request is a join table added in a later phase, so
+// client_quote_requests is never modified.
+//
+// Two design rules are visible in the columns below:
+//   1. Jurisdiction-neutral. Fund names are data, not enums, and every lot
+//      carries TWO apportionment figures because VIC (lot liability vs lot
+//      entitlement) and QLD (contribution vs interest schedule) levy on one
+//      number and vote on another.
+//   2. The software asserts nothing about what the law requires. Notice days,
+//      grace days, interest and spending limits are all nullable settings the
+//      committee enters for its own scheme.
+
+enum StrataMemberRole {
+  chair
+  treasurer
+  secretary
+  committee
+  owner
+}
+
+enum StrataMemberStatus {
+  invited
+  active
+}
+
+model StrataScheme {
+  id            Int           @id @default(autoincrement())
+  owner_user_id Int
+  name          String
+  plan_number   String?
+  state         LocationState
+  address       String?
+  suburb        String?
+  postcode      String?
+  property_type PropertyType  @default(residential_strata)
+
+  // Seeded from the jurisdiction label pack at creation; renameable at any time.
+  fund_1_name String @default("Administrative fund")
+  fund_2_name String @default("Sinking fund")
+
+  // Committee-set, never asserted by the software.
+  financial_year_start_month Int     @default(7)
+  levy_frequency             String  @default("quarterly")
+  levy_notice_days           Int?
+  arrears_grace_days         Int?
+  arrears_interest_rate      Float?
+  committee_spend_limit      Float?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  owner   User           @relation("StrataSchemeOwner", fields: [owner_user_id], references: [id])
+  members StrataMember[]
+  lots    StrataLot[]
+
+  @@index([owner_user_id])
+  @@map("strata_schemes")
+}
+
+model StrataMember {
+  id           Int                @id @default(autoincrement())
+  scheme_id    Int
+  user_id      Int?
+  email        String
+  full_name    String?
+  role         StrataMemberRole   @default(committee)
+  status       StrataMemberStatus @default(invited)
+  lot_id       Int?
+  invite_token String?            @unique
+  invited_at   DateTime           @default(now())
+  accepted_at  DateTime?
+  created_at   DateTime           @default(now())
+  updated_at   DateTime           @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  user   User?        @relation("StrataMemberUser", fields: [user_id], references: [id])
+  lot    StrataLot?   @relation(fields: [lot_id], references: [id], onDelete: SetNull)
+
+  @@unique([scheme_id, email])
+  @@index([scheme_id])
+  @@index([user_id])
+  @@map("strata_members")
+}
+
+model StrataLot {
+  id          Int     @id @default(autoincrement())
+  scheme_id   Int
+  lot_number  String
+  description String?
+  owner_name  String?
+  owner_email String?
+  owner_phone String?
+  occupancy   String?
+
+  // levy_basis      — what contributions are apportioned on
+  // ownership_basis — what voting / ownership share is based on
+  // Same number in most states; genuinely different in VIC and QLD.
+  levy_basis      Float @default(0)
+  ownership_basis Float @default(0)
+
+  service_address   String?
+  mortgagee         String?
+  tenancy_notice    String?
+  managing_agent    String?
+  emergency_contact String?
+  payment_reference String?
+  notices_by_email  Boolean @default(true)
+  notes             String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  scheme  StrataScheme   @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  members StrataMember[]
+
+  @@unique([scheme_id, lot_number])
+  @@index([scheme_id])
+  @@map("strata_lots")
 }
