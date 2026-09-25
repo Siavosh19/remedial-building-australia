@@ -2,9 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
+import { currentYearStart, money, round2, yearLabel as buildYearLabel } from "@/lib/strata/levies";
 import SchemeTabs from "../SchemeTabs";
-import SchemeSettingsForm from "./SchemeSettingsForm";
 import StrataHelp from "../StrataHelp";
+import SchemeSettingsForm from "./SchemeSettingsForm";
 
 export const dynamic = "force-dynamic";
 
@@ -14,20 +15,48 @@ export default async function SchemeOverviewPage({ params }: { params: Promise<{
   if (!access) notFound();
 
   const { scheme, labels, canManage } = access;
+  const now = new Date();
+  const year = buildYearLabel(scheme.financial_year_start_month, currentYearStart(scheme.financial_year_start_month));
 
-  const [lotCount, memberCount, totals] = await Promise.all([
+  const [lotCount, memberCount, totals, levies] = await Promise.all([
     prisma.strataLot.count({ where: { scheme_id: scheme.id } }),
     prisma.strataMember.count({ where: { scheme_id: scheme.id, status: "active" } }),
     prisma.strataLot.aggregate({
       where: { scheme_id: scheme.id },
-      _sum: { levy_basis: true, ownership_basis: true },
+      _sum: { levy_basis: true },
+    }),
+    prisma.strataLevy.findMany({
+      where: { scheme_id: scheme.id, period: { year_label: year } },
+      include: { period: { select: { due_date: true } }, payments: { select: { amount: true } } },
     }),
   ]);
 
-  const stats = [
-    { label: "Lots on the roll", value: lotCount },
-    { label: `Total ${labels.levyBasis.toLowerCase()}`, value: totals._sum.levy_basis ?? 0 },
-    { label: "People with access", value: memberCount },
+  let raised = 0;
+  let received = 0;
+  let overdue = 0;
+  const lotsOwing = new Set<number>();
+  for (const l of levies) {
+    const amount = l.fund_1_amount + l.fund_2_amount;
+    const paid = l.payments.reduce((s, p) => s + p.amount, 0);
+    raised += amount;
+    received += paid;
+    if (l.period.due_date <= now && amount - paid > 0.005) {
+      overdue += amount - paid;
+      lotsOwing.add(l.lot_id);
+    }
+  }
+
+  const roll = [
+    { label: "Lots on the roll", value: lotCount.toLocaleString("en-AU") },
+    { label: `Total ${labels.levyBasis.toLowerCase()}`, value: (totals._sum.levy_basis ?? 0).toLocaleString("en-AU") },
+    { label: "People with access", value: memberCount.toLocaleString("en-AU") },
+  ];
+
+  const finances = [
+    { label: `Raised in ${year}`, value: money(round2(raised)), tone: "text-slate-900" },
+    { label: "Received", value: money(round2(received)), tone: "text-slate-900" },
+    { label: "Overdue", value: money(round2(overdue)), tone: overdue > 0.005 ? "text-red-700" : "text-slate-900" },
+    { label: "Lots in arrears", value: lotsOwing.size.toLocaleString("en-AU"), tone: lotsOwing.size > 0 ? "text-red-700" : "text-slate-900" },
   ];
 
   return (
@@ -57,17 +86,26 @@ export default async function SchemeOverviewPage({ params }: { params: Promise<{
       <StrataHelp topic="overview" />
 
       <div className="grid gap-3 sm:grid-cols-3">
-        {stats.map((s) => (
+        {roll.map((s) => (
           <div key={s.label} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{s.label}</p>
-            <p className="mt-1 text-2xl font-extrabold text-slate-900">
-              {Number(s.value).toLocaleString("en-AU")}
-            </p>
+            <p className="mt-1 text-2xl font-extrabold text-slate-900">{s.value}</p>
           </div>
         ))}
       </div>
 
-      {lotCount === 0 && (
+      {levies.length > 0 && (
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {finances.map((s) => (
+            <div key={s.label} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{s.label}</p>
+              <p className={`mt-1 text-2xl font-extrabold tabular-nums ${s.tone}`}>{s.value}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {lotCount === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-5 text-center shadow-sm">
           <p className="text-sm text-slate-600">Start with the strata roll — the lots and their entitlements.</p>
           <Link
@@ -77,7 +115,19 @@ export default async function SchemeOverviewPage({ params }: { params: Promise<{
             Enter the lots
           </Link>
         </div>
-      )}
+      ) : levies.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-5 text-center shadow-sm">
+          <p className="text-sm text-slate-600">
+            The roll is in. Next: set the budget for {year}, then build the levy schedule from it.
+          </p>
+          <Link
+            href={`/client/strata/${scheme.id}/budget`}
+            className="mt-3 inline-block rounded-xl bg-sky-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-800"
+          >
+            Set the budget
+          </Link>
+        </div>
+      ) : null}
 
       <SchemeSettingsForm
         canManage={canManage}

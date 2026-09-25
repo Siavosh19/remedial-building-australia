@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDown, Info } from "lucide-react";
 
-export type HelpTopic = "schemes" | "overview" | "roll" | "members";
+export type HelpTopic = "schemes" | "overview" | "roll" | "budget" | "levies" | "arrears" | "members";
 
 type Help = { title: string; intro: string; steps: string[]; note?: string };
 
@@ -47,6 +47,45 @@ const HELP: Record<HelpTopic, Help> = {
     ],
     note:
       "In Victoria and Queensland a lot has two different figures — one that contributions are charged on and one that voting and ownership share go on. Where your state splits them, both columns are shown and both need entering.",
+  },
+  budget: {
+    title: "How the budget works",
+    intro:
+      "What the scheme expects to spend over the year, split between the two funds. The levies are worked straight out of these totals, so this comes first.",
+    steps: [
+      "Add one line per cost — insurance, cleaning, lifts, gardening, and so on.",
+      "Put each line against the fund that pays for it: day-to-day running costs in one, long-term and capital work in the other.",
+      "Enter the amount for the whole year. The per-period figure is worked out for you.",
+      "When the budget is right, go to Levies and build the schedule from it.",
+    ],
+    note:
+      "Change a figure later and the levies do not move until you rebuild the schedule — so you can revise a draft budget without disturbing contributions already raised.",
+  },
+  levies: {
+    title: "How levies work",
+    intro:
+      "The year's budget divided into periods, then apportioned across the lots by entitlement. Each lot's share follows the roll.",
+    steps: [
+      "Build the schedule once the budget and the roll are both in. Rebuild it any time either changes.",
+      "Pick a period to see every lot, what was raised, what has come in and what is still owing.",
+      "Record a payment with Receipt. Outstanding, interest and status all update from there.",
+      "Print notices produces one notice per lot with its payment reference and any arrears carried forward.",
+    ],
+    note:
+      "Notices are yours to send. The scheme emails or posts them under its own name — this site never sends anything to your owners on your behalf.",
+  },
+  arrears: {
+    title: "How arrears work",
+    intro:
+      "Everything owing across every period that has fallen due, per lot, with the escalation stage each debt has reached.",
+    steps: [
+      "Stages follow days overdue: a reminder, then a notice of demand, then a final notice, then recovery.",
+      "Interest only accrues after the grace period your committee set, at the rate your committee set.",
+      "Log action records what you did and when. Click a lot to see its history.",
+      "Anything marked Committee is a decision for the committee, never something that happens on its own.",
+    ],
+    note:
+      "The day thresholds are this product's habits, not legal periods. What your scheme must do, and when, is set by your own rules and your state's law.",
   },
   members: {
     title: "Who can see this scheme",

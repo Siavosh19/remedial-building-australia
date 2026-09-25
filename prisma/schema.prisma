@@ -1923,6 +1923,11 @@ model StrataScheme {
   owner   User           @relation("StrataSchemeOwner", fields: [owner_user_id], references: [id])
   members StrataMember[]
   lots    StrataLot[]
+  budget_items    StrataBudgetItem[]
+  levy_periods    StrataLevyPeriod[]
+  levies          StrataLevy[]
+  levy_payments   StrataLevyPayment[]
+  arrears_actions StrataArrearsAction[]
 
   @@index([owner_user_id])
   @@map("strata_schemes")
@@ -1983,8 +1988,114 @@ model StrataLot {
 
   scheme  StrataScheme   @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
   members StrataMember[]
+  levies          StrataLevy[]
+  arrears_actions StrataArrearsAction[]
 
   @@unique([scheme_id, lot_number])
   @@index([scheme_id])
   @@map("strata_lots")
+}
+
+// ── Self-managed strata · Phase 1 (budget, levies, receipts, arrears) ────────
+// The budget for a year is apportioned across the lots by entitlement into one
+// levy row per lot per period. Payments are recorded against a levy row, and
+// everything else — outstanding, interest, arrears stage — is derived, never
+// stored, so a changed setting never leaves a stale figure behind.
+
+enum StrataFund {
+  fund_1
+  fund_2
+}
+
+model StrataBudgetItem {
+  id         Int        @id @default(autoincrement())
+  scheme_id  Int
+  year_label String
+  category   String?
+  item       String
+  fund       StrataFund @default(fund_1)
+  amount     Float      @default(0)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id, year_label])
+  @@map("strata_budget_items")
+}
+
+model StrataLevyPeriod {
+  id         Int       @id @default(autoincrement())
+  scheme_id  Int
+  year_label String
+  sequence   Int
+  label      String
+  due_date   DateTime
+  issued_at  DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  levies StrataLevy[]
+
+  @@unique([scheme_id, year_label, sequence])
+  @@index([scheme_id])
+  @@map("strata_levy_periods")
+}
+
+model StrataLevy {
+  id            Int      @id @default(autoincrement())
+  scheme_id     Int
+  period_id     Int
+  lot_id        Int
+  fund_1_amount Float    @default(0)
+  fund_2_amount Float    @default(0)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  scheme   StrataScheme        @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  period   StrataLevyPeriod    @relation(fields: [period_id], references: [id], onDelete: Cascade)
+  lot      StrataLot           @relation(fields: [lot_id], references: [id], onDelete: Cascade)
+  payments StrataLevyPayment[]
+
+  @@unique([period_id, lot_id])
+  @@index([scheme_id])
+  @@index([lot_id])
+  @@map("strata_levies")
+}
+
+model StrataLevyPayment {
+  id          Int      @id @default(autoincrement())
+  scheme_id   Int
+  levy_id     Int
+  amount      Float
+  received_on DateTime
+  method      String?
+  reference   String?
+  note        String?
+  created_at  DateTime @default(now())
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  levy   StrataLevy   @relation(fields: [levy_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id])
+  @@index([levy_id])
+  @@map("strata_levy_payments")
+}
+
+model StrataArrearsAction {
+  id          Int      @id @default(autoincrement())
+  scheme_id   Int
+  lot_id      Int
+  stage       Int
+  action      String
+  actioned_on DateTime @default(now())
+  note        String?
+  created_at  DateTime @default(now())
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  lot    StrataLot    @relation(fields: [lot_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id, lot_id])
+  @@map("strata_arrears_actions")
 }
