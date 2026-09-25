@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { listSchemesForUser, listPendingInvites } from "@/lib/strata/access";
 import { labelsFor } from "@/lib/strata/jurisdictions";
+import StrataHelp from "./StrataHelp";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +33,8 @@ export default async function StrataSchemesPage() {
           Add a scheme
         </Link>
       </div>
+
+      <StrataHelp topic="schemes" />
 
       {invites.length > 0 && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-5">

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import SchemeTabs from "../SchemeTabs";
 import SchemeSettingsForm from "./SchemeSettingsForm";
+import StrataHelp from "../StrataHelp";
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +53,8 @@ export default async function SchemeOverviewPage({ params }: { params: Promise<{
       </div>
 
       <SchemeTabs schemeId={scheme.id} />
+
+      <StrataHelp topic="overview" />
 
       <div className="grid gap-3 sm:grid-cols-3">
         {stats.map((s) => (

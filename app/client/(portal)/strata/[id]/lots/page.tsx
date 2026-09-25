@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import SchemeTabs from "../../SchemeTabs";
 import LotsClient from "./LotsClient";
+import StrataHelp from "../../StrataHelp";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,8 @@ export default async function StrataRollPage({ params }: { params: Promise<{ id:
       </div>
 
       <SchemeTabs schemeId={scheme.id} />
+
+      <StrataHelp topic="roll" />
 
       <LotsClient
         schemeId={scheme.id}

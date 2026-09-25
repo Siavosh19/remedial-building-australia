@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import SchemeTabs from "../../SchemeTabs";
 import MembersClient from "./MembersClient";
+import StrataHelp from "../../StrataHelp";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,8 @@ export default async function SchemeMembersPage({ params }: { params: Promise<{ 
       </div>
 
       <SchemeTabs schemeId={scheme.id} />
+
+      <StrataHelp topic="members" />
 
       <MembersClient
         schemeId={scheme.id}
