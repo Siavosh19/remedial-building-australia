@@ -19,6 +19,7 @@ export type HelpTopic =
   | "financials"
   | "meetings"
   | "records"
+  | "bank"
   | "members";
 
 type Help = { title: string; intro: string; steps: string[]; note?: string };
@@ -219,6 +220,19 @@ const HELP: Record<HelpTopic, Help> = {
     ],
     note:
       "The wording is deliberately loose. What a notice or an approval is called differs by state, so the register takes your words rather than imposing its own.",
+  },
+  bank: {
+    title: "How the bank import works",
+    intro:
+      "Export your statement as a CSV and drop it in. This is why every lot has a permanent payment reference.",
+    steps: [
+      "A transaction quoting a lot's reference is receipted on the spot — exact matching, so nothing to confirm.",
+      "A payment is applied to that lot's oldest unpaid period first, spilling into the next if it covers more than one.",
+      "Anything else is listed for you to place: pick the lot, pick the invoice, or set the line aside.",
+      "Most Australian exports work as they come — date, description, amount, headers or not, debit and credit columns or one.",
+    ],
+    note:
+      "Nothing is guessed into your books. A suggestion is only ever a suggestion until you accept it, and a line the software cannot place stays visible rather than disappearing.",
   },
   members: {
     title: "Who can see this scheme",

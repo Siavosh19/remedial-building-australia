@@ -1947,6 +1947,8 @@ model StrataScheme {
   keys             StrataKey[]
   ai_usage         StrataAiUsage[]
   ai_messages      StrataAiMessage[]
+  bank_imports     StrataBankImport[]
+  bank_lines       StrataBankLine[]
 
   @@index([owner_user_id])
   @@map("strata_schemes")
@@ -2010,6 +2012,7 @@ model StrataLot {
   breaches        StrataBreach[]
   applications    StrataApplication[]
   keys            StrataKey[]
+  bank_lines      StrataBankLine[]
   levies          StrataLevy[]
   arrears_actions StrataArrearsAction[]
   defects         StrataDefect[]
@@ -2361,6 +2364,8 @@ model StrataExpense {
   work_order  StrataWorkOrder?  @relation(fields: [work_order_id], references: [id], onDelete: SetNull)
   contractor  StrataContractor? @relation(fields: [contractor_id], references: [id], onDelete: SetNull)
 
+  bank_lines  StrataBankLine[]
+
   @@index([scheme_id])
   @@index([budget_item_id])
   @@map("strata_expenses")
@@ -2599,4 +2604,61 @@ model StrataAiMessage {
 
   @@index([scheme_id, topic])
   @@map("strata_ai_messages")
+}
+
+// ── Self-managed strata · Phase 6 (bank statement import) ────────────────────
+// The cheap half of "the levies receipt themselves": a committee exports its
+// statement and drops it in. A line quoting a lot's payment reference is
+// matched exactly and receipted on the spot — that is arithmetic, not a guess.
+// Everything else is offered as a suggestion for a person to confirm, and
+// anything the software cannot place is left visible rather than swallowed.
+
+enum StrataBankLineStatus {
+  pending
+  matched
+  ignored
+}
+
+model StrataBankImport {
+  id          Int      @id @default(autoincrement())
+  scheme_id   Int
+  filename    String?
+  row_count   Int      @default(0)
+  auto_count  Int      @default(0)
+  imported_by Int?
+  created_at  DateTime @default(now())
+
+  scheme StrataScheme     @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  lines  StrataBankLine[]
+
+  @@index([scheme_id])
+  @@map("strata_bank_imports")
+}
+
+model StrataBankLine {
+  id               Int                  @id @default(autoincrement())
+  scheme_id        Int
+  import_id        Int
+  transaction_date DateTime
+  description      String
+  /// Positive is money in, negative is money out — as the statement reads.
+  amount           Float
+  status           StrataBankLineStatus @default(pending)
+  /// How it was placed: "reference" (exact), "suggested", "manual".
+  matched_by       String?
+  lot_id           Int?
+  expense_id       Int?
+  suggestion       String?
+  note             String?
+  created_at       DateTime             @default(now())
+  updated_at       DateTime             @updatedAt
+
+  scheme  StrataScheme     @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  import  StrataBankImport @relation(fields: [import_id], references: [id], onDelete: Cascade)
+  lot     StrataLot?       @relation(fields: [lot_id], references: [id], onDelete: SetNull)
+  expense StrataExpense?   @relation(fields: [expense_id], references: [id], onDelete: SetNull)
+
+  @@index([scheme_id, status])
+  @@index([import_id])
+  @@map("strata_bank_lines")
 }
