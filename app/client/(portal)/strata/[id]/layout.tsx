@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { hasAnthropicKey } from "@/lib/anthropic";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import AiPanel from "./AiPanel";
 
@@ -7,6 +6,11 @@ import AiPanel from "./AiPanel";
  * Wraps every page of a scheme so the AI button is available throughout. The
  * panel is the module's only AI surface — nothing else calls a model, and
  * nothing happens until somebody opens it and asks.
+ *
+ * The button renders for every member, whether or not this environment has an
+ * API key configured. Hiding it when the key is missing produced no button and
+ * no explanation, which is indistinguishable from a bug — better to show the
+ * panel and let it say what is wrong.
  */
 export default async function SchemeLayout({
   children,
@@ -25,7 +29,7 @@ export default async function SchemeLayout({
   return (
     <>
       {children}
-      {access && hasAnthropicKey() && <AiPanel schemeId={schemeId} />}
+      {access && <AiPanel schemeId={schemeId} />}
     </>
   );
 }
