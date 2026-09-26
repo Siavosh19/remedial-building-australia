@@ -1945,6 +1945,8 @@ model StrataScheme {
   applications     StrataApplication[]
   claims           StrataInsuranceClaim[]
   keys             StrataKey[]
+  ai_usage         StrataAiUsage[]
+  ai_messages      StrataAiMessage[]
 
   @@index([owner_user_id])
   @@map("strata_schemes")
@@ -2556,4 +2558,45 @@ model StrataKey {
 
   @@index([scheme_id])
   @@map("strata_keys")
+}
+
+// ── Self-managed strata · Phase 5 (the AI panel) ─────────────────────────────
+// The module is manual-first: nothing here runs unless somebody opens the panel
+// and asks. Usage is metered in tokens against a monthly allowance per scheme,
+// with a hard stop rather than a surprise bill — the product is free, so the
+// cost of running it has to have a ceiling.
+
+model StrataAiUsage {
+  id            Int      @id @default(autoincrement())
+  scheme_id     Int
+  /// Calendar month, "2026-09".
+  period        String
+  input_tokens  Int      @default(0)
+  output_tokens Int      @default(0)
+  requests      Int      @default(0)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+
+  @@unique([scheme_id, period])
+  @@map("strata_ai_usage")
+}
+
+model StrataAiMessage {
+  id            Int      @id @default(autoincrement())
+  scheme_id     Int
+  /// Which page the conversation belongs to, so each one keeps its own thread.
+  topic         String
+  role          String
+  content       String
+  user_id       Int?
+  input_tokens  Int?
+  output_tokens Int?
+  created_at    DateTime @default(now())
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id, topic])
+  @@map("strata_ai_messages")
 }
