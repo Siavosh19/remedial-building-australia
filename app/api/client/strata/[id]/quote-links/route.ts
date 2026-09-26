@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import { createAuditLog } from "@/lib/audit";
+import { logCorrespondence } from "@/lib/strata/registers";
 
 /**
  * Record that a quote request belongs to this scheme.
@@ -61,6 +62,15 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       data: { status: "awaiting_quote" },
     });
   }
+
+  await logCorrespondence({
+    schemeId: access.scheme.id,
+    party: "Remedial Building Australia",
+    subject: "Quote request raised",
+    summary: "A request for quotes was raised and matched to verified businesses.",
+    relatesTo: "Maintenance",
+    reference: `Request #${request.id}`,
+  });
 
   await createAuditLog({
     actorId: access.userId,

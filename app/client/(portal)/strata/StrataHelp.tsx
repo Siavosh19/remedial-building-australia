@@ -16,6 +16,9 @@ export type HelpTopic =
   | "expenses"
   | "compliance"
   | "capitalWorks"
+  | "financials"
+  | "meetings"
+  | "records"
   | "members";
 
 type Help = { title: string; intro: string; steps: string[]; note?: string };
@@ -177,6 +180,45 @@ const HELP: Record<HelpTopic, Help> = {
     ],
     note:
       "This is a planning tool, not a statutory capital works plan. Some states require a formal plan prepared to a set standard.",
+  },
+  financials: {
+    title: "How the statements work",
+    intro:
+      "An income and expenditure statement and a balance sheet, built from the levies, receipts and invoices already recorded. There is no second set of books.",
+    steps: [
+      "Income is what has fallen due, not what has come in. Expenditure is what has been invoiced, not what has been paid.",
+      "Cash at bank starts from the opening balances on the Overview tab, plus receipts, less invoices actually paid.",
+      "The check row must read zero. If it does not, a figure has been recorded somewhere the statements cannot see.",
+      "Build the AGM pack to get the budget, the statements, the capital works and the outstanding actions in one printable document.",
+    ],
+    note:
+      "This is a record-keeping summary, not audited accounts. Some schemes are required to have their accounts audited.",
+  },
+  meetings: {
+    title: "How meetings work",
+    intro:
+      "What was held, who was there, what was put, and what somebody now has to do about it.",
+    steps: [
+      "Record the meeting first, then add motions against it.",
+      "A motion with an action, a responsible person and a due date becomes a tracked action.",
+      "Anything past its due date and not marked done is flagged at the top of this page.",
+      "Outstanding actions are pulled into the AGM pack automatically.",
+    ],
+    note:
+      "Notice periods, quorum and what may be decided at which kind of meeting are set by your state's law and your own by-laws. Nothing here is assumed for you.",
+  },
+  records: {
+    title: "What these registers are for",
+    intro:
+      "Six registers a self-managed committee is asked for when something goes wrong, and cannot produce afterwards if it was never kept.",
+    steps: [
+      "Correspondence — everything sent and received. Notices issued and quote requests raised write themselves in here.",
+      "By-laws — the rules as registered or adopted, so a breach can point at one.",
+      "Breaches, applications and claims — what was raised, what was decided, and when.",
+      "Keys & access — who holds a fob or a remote, and what deposit is against it.",
+    ],
+    note:
+      "The wording is deliberately loose. What a notice or an approval is called differs by state, so the register takes your words rather than imposing its own.",
   },
   members: {
     title: "Who can see this scheme",

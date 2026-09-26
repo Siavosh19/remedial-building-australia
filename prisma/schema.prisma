@@ -1937,6 +1937,14 @@ model StrataScheme {
   compliance_items StrataCompliance[]
   capital_works    StrataCapitalWorksItem[]
   expenses         StrataExpense[]
+  meetings         StrataMeeting[]
+  motions          StrataMotion[]
+  correspondence   StrataCorrespondence[]
+  by_laws          StrataByLaw[]
+  breaches         StrataBreach[]
+  applications     StrataApplication[]
+  claims           StrataInsuranceClaim[]
+  keys             StrataKey[]
 
   @@index([owner_user_id])
   @@map("strata_schemes")
@@ -1997,6 +2005,9 @@ model StrataLot {
 
   scheme  StrataScheme   @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
   members StrataMember[]
+  breaches        StrataBreach[]
+  applications    StrataApplication[]
+  keys            StrataKey[]
   levies          StrataLevy[]
   arrears_actions StrataArrearsAction[]
   defects         StrataDefect[]
@@ -2351,4 +2362,198 @@ model StrataExpense {
   @@index([scheme_id])
   @@index([budget_item_id])
   @@map("strata_expenses")
+}
+
+// ── Self-managed strata · Phase 4 (records and governance) ───────────────────
+// The registers a committee is judged on when something goes wrong: what was
+// decided and when, what was sent to whom, what the by-laws say, what owners
+// asked for, what was claimed, and who holds a key.
+//
+// These are deliberately loose — free text where a committee's own wording
+// matters more than a fixed vocabulary, because the right words differ in every
+// state and the software must not impose one.
+
+model StrataMeeting {
+  id               Int       @id @default(autoincrement())
+  scheme_id        Int
+  meeting_type     String    @default("committee")
+  held_on          DateTime
+  location         String?
+  notice_issued_on DateTime?
+  quorum_met       Boolean?
+  attendance       String?
+  minutes          String?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  scheme  StrataScheme  @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  motions StrataMotion[]
+
+  @@index([scheme_id])
+  @@map("strata_meetings")
+}
+
+model StrataMotion {
+  id            Int       @id @default(autoincrement())
+  scheme_id     Int
+  meeting_id    Int?
+  motion        String
+  outcome       String?
+  votes_for     Int?
+  votes_against Int?
+  action        String?
+  responsible   String?
+  due_on        DateTime?
+  done          Boolean   @default(false)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  scheme  StrataScheme   @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  meeting StrataMeeting? @relation(fields: [meeting_id], references: [id], onDelete: SetNull)
+
+  @@index([scheme_id])
+  @@index([meeting_id])
+  @@map("strata_motions")
+}
+
+model StrataCorrespondence {
+  id              Int       @id @default(autoincrement())
+  scheme_id       Int
+  occurred_on     DateTime  @default(now())
+  direction       String    @default("out")
+  party           String
+  channel         String?
+  subject         String
+  summary         String?
+  relates_to      String?
+  reference       String?
+  action_required Boolean   @default(false)
+  due_on          DateTime?
+  closed          Boolean   @default(false)
+  /// "system" rows are written by the software when it does something worth
+  /// remembering — a levy period marked issued, a quote request raised.
+  source          String    @default("manual")
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id])
+  @@map("strata_correspondence")
+}
+
+model StrataByLaw {
+  id                 Int       @id @default(autoincrement())
+  scheme_id          Int
+  number             String?
+  title              String
+  summary            String?
+  adopted_at         String?
+  adopted_on         DateTime?
+  registered_dealing String?
+  status             String    @default("Current")
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+
+  scheme   StrataScheme   @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  breaches StrataBreach[]
+
+  @@index([scheme_id])
+  @@map("strata_by_laws")
+}
+
+model StrataBreach {
+  id               Int       @id @default(autoincrement())
+  scheme_id        Int
+  lot_id           Int?
+  by_law_id        Int?
+  reported_on      DateTime  @default(now())
+  description      String
+  notice_type      String?
+  notice_issued_on DateTime?
+  response_due     DateTime?
+  resolved_on      DateTime?
+  outcome          String?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  lot    StrataLot?   @relation(fields: [lot_id], references: [id], onDelete: SetNull)
+  by_law StrataByLaw? @relation(fields: [by_law_id], references: [id], onDelete: SetNull)
+
+  @@index([scheme_id])
+  @@map("strata_breaches")
+}
+
+model StrataApplication {
+  id                Int       @id @default(autoincrement())
+  scheme_id         Int
+  lot_id            Int?
+  received_on       DateTime  @default(now())
+  applicant         String?
+  application_type  String
+  description       String
+  documents         String?
+  approval_required String?
+  decision          String    @default("Pending")
+  decision_on       DateTime?
+  conditions        String?
+  checks_done       Boolean   @default(false)
+  completed_on      DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  lot    StrataLot?   @relation(fields: [lot_id], references: [id], onDelete: SetNull)
+
+  @@index([scheme_id])
+  @@map("strata_applications")
+}
+
+model StrataInsuranceClaim {
+  id               Int       @id @default(autoincrement())
+  scheme_id        Int
+  claim_number     String?
+  insurer          String?
+  policy_reference String?
+  incident_on      DateTime?
+  lodged_on        DateTime?
+  description      String
+  location         String?
+  estimated_damage Float?
+  excess           Float?
+  assessor         String?
+  status           String    @default("Lodged")
+  amount_paid      Float?
+  settled_on       DateTime?
+  notes            String?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id])
+  @@map("strata_insurance_claims")
+}
+
+model StrataKey {
+  id          Int       @id @default(autoincrement())
+  scheme_id   Int
+  device_id   String
+  device_type String
+  lot_id      Int?
+  holder      String?
+  issued_on   DateTime?
+  deposit     Float?
+  returned_on DateTime?
+  status      String    @default("Issued")
+  notes       String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  lot    StrataLot?   @relation(fields: [lot_id], references: [id], onDelete: SetNull)
+
+  @@index([scheme_id])
+  @@map("strata_keys")
 }

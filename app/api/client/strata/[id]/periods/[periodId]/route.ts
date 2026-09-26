@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import { createAuditLog } from "@/lib/audit";
+import { logCorrespondence } from "@/lib/strata/registers";
 
 type Ctx = { params: Promise<{ id: string; periodId: string }> };
 
@@ -38,6 +39,17 @@ export async function PATCH(req: Request, ctx: Ctx) {
       issued_at: body.issued === undefined ? undefined : body.issued ? new Date() : null,
     },
   });
+
+  if (body.issued === true && !period.issued_at) {
+    await logCorrespondence({
+      schemeId: access.scheme.id,
+      party: "All lots",
+      subject: `${period.label} contribution notices issued`,
+      summary: "Notices for this period were recorded as issued to every lot on the roll.",
+      relatesTo: "Levies",
+      reference: `${period.year_label} ${period.label}`,
+    });
+  }
 
   await createAuditLog({
     actorId: access.userId,
