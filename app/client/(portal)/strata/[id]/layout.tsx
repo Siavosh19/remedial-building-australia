@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import AiPanel from "./AiPanel";
+import EntitlementBanner from "./EntitlementBanner";
 
 /**
  * Wraps every page of a scheme so the AI button is available throughout. The
@@ -28,6 +29,11 @@ export default async function SchemeLayout({
 
   return (
     <>
+      {access && (
+        <div className="mb-4">
+          <EntitlementBanner entitlement={access.entitlement} />
+        </div>
+      )}
       {children}
       {access && <AiPanel schemeId={schemeId} />}
     </>

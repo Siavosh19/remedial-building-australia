@@ -26,12 +26,20 @@ export default async function StrataSchemesPage() {
             work is needed. Free for every scheme.
           </p>
         </div>
-        <Link
-          href="/client/strata/new"
-          className="rounded-xl bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
-        >
-          Add a scheme
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href="/client/strata/subscription"
+            className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          >
+            Your plan
+          </Link>
+          <Link
+            href="/client/strata/new"
+            className="rounded-xl bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
+          >
+            Add a scheme
+          </Link>
+        </div>
       </div>
 
       <StrataHelp topic="schemes" />

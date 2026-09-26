@@ -677,6 +677,38 @@ export default function HomeClient() {
         </section>
 
 
+        <section className="mx-auto max-w-7xl px-5 pb-10 pt-4">
+          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-950 to-sky-900 p-8 text-white md:p-10">
+            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-400">
+              Free strata software
+            </div>
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight md:text-3xl">
+              Self-managing? Run the whole scheme here, free
+            </h2>
+            <p className="mt-3 max-w-3xl text-base leading-7 text-white/80 md:text-lg">
+              The roll, the levies, the arrears, the defects, the compliance dates and the financial
+              statements — in one place, for any Australian scheme. Free for a single plan of 13 lots
+              or fewer, and 80c per lot a month beyond that.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                href="/strata-software"
+                className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-4 text-base font-semibold text-sky-950 transition hover:bg-slate-100"
+              >
+                See what it does
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+              <Link
+                href="/client/strata"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-7 py-4 text-base font-semibold text-white transition hover:bg-white/10"
+              >
+                Set up your scheme
+              </Link>
+            </div>
+          </div>
+        </section>
+
+
         <section className="mx-auto max-w-7xl px-5 py-20">
           <div className="mb-10">
             <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-700">Explore the platform</div>

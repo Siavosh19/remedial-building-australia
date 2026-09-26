@@ -9,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import type { StrataMemberRole } from "@prisma/client";
 import { labelsFor, type StrataLabels } from "@/lib/strata/jurisdictions";
+import { entitlementForOwner, type Entitlement } from "@/lib/strata/entitlement";
 
 /** Roles that may change scheme data. Plain owners get read-only access. */
 const MANAGING_ROLES: StrataMemberRole[] = ["chair", "treasurer", "secretary", "committee"];
@@ -21,7 +22,15 @@ export type SchemeAccess = {
   scheme: NonNullable<Awaited<ReturnType<typeof loadScheme>>>;
   membership: { id: number; role: StrataMemberRole };
   userId: number;
+  /**
+   * May this person change this scheme right now? Role AND entitlement — so a
+   * lapsed account is read-only everywhere at once, without thirty routes each
+   * having to remember to check. Reading and exporting are never affected.
+   */
   canManage: boolean;
+  /** Role alone, for telling "you are an owner" apart from "the account lapsed". */
+  roleCanManage: boolean;
+  entitlement: Entitlement;
   labels: StrataLabels;
 };
 
@@ -49,11 +58,16 @@ export const requireSchemeAccess = cache(async (schemeId: number): Promise<Schem
   const scheme = await loadScheme(schemeId);
   if (!scheme) return null;
 
+  const entitlement = await entitlementForOwner(scheme.owner_user_id);
+  const byRole = roleCanManage(membership.role);
+
   return {
     scheme,
     membership,
     userId: user.id,
-    canManage: roleCanManage(membership.role),
+    canManage: byRole && entitlement.canEdit,
+    roleCanManage: byRole,
+    entitlement,
     labels: labelsFor(scheme.state),
   };
 });

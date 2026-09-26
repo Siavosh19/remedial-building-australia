@@ -2662,3 +2662,73 @@ model StrataBankLine {
   @@index([import_id])
   @@map("strata_bank_lines")
 }
+
+// ── Self-managed strata · billing, trial and terms ───────────────────────────
+// Entitlement is per ACCOUNT, not per scheme: the free allowance is one strata
+// plan under the lot limit, so a second plan makes the account billable however
+// small it is. All of it is decided in one place (lib/strata/entitlement.ts) and
+// read through one function, so the UI, the API and the billing never disagree
+// about whether somebody may edit.
+
+enum StrataBillingInterval {
+  monthly
+  yearly
+}
+
+enum StrataSubscriptionStatus {
+  trialling
+  active
+  past_due
+  cancelled
+}
+
+model StrataSubscription {
+  id                     Int                       @id @default(autoincrement())
+  user_id                Int                       @unique
+  status                 StrataSubscriptionStatus  @default(trialling)
+  interval               StrataBillingInterval?
+  trial_started_at       DateTime?
+  trial_ends_at          DateTime?
+  stripe_customer_id     String?
+  stripe_subscription_id String?
+  stripe_price_id        String?
+  current_period_end     DateTime?
+  cancel_at_period_end   Boolean                   @default(false)
+  /// Lot count the last invoice was raised on, so a change mid-cycle is visible.
+  billed_lots            Int?
+  /// Set when the account was warned its trial is ending, so it is warned once.
+  warned_at              DateTime?
+  created_at             DateTime                  @default(now())
+  updated_at             DateTime                  @updatedAt
+
+  @@map("strata_subscriptions")
+}
+
+model StrataTermsAcceptance {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  version     String
+  accepted_at DateTime @default(now())
+  ip          String?
+  user_agent  String?
+
+  @@unique([user_id, version])
+  @@index([user_id])
+  @@map("strata_terms_acceptances")
+}
+
+/// Single row. The one source of truth for what the product costs, so the
+/// marketing page, the subscription page and the charge cannot drift apart.
+model StrataPricing {
+  id                    Int      @id @default(1)
+  cents_per_lot_monthly Int      @default(80)
+  /// Months charged on a yearly plan — 10 means two months free.
+  yearly_months_charged Int      @default(10)
+  free_lot_limit        Int      @default(13)
+  free_scheme_limit     Int      @default(1)
+  trial_months          Int      @default(6)
+  grace_days            Int      @default(30)
+  updated_at            DateTime @updatedAt
+
+  @@map("strata_pricing")
+}

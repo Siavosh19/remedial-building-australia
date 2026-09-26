@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import { paymentReference } from "@/lib/strata/jurisdictions";
 import { createAuditLog } from "@/lib/audit";
+import { syncQuantity } from "@/lib/strata/billing";
 import { lotFields } from "@/lib/strata/lots";
 
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
@@ -39,6 +40,9 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       action: "create",
       newValue: { scheme_id: access.scheme.id, lot_number: lot.lot_number },
     });
+
+    // A bigger roll costs more from now on; a smaller one waits for renewal.
+    await syncQuantity(access.scheme.owner_user_id);
 
     return NextResponse.json({ ok: true, id: lot.id });
   } catch (err) {

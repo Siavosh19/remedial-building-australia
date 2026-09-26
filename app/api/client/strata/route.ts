@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentDirectoryUser } from "@/lib/directory-auth";
 import { createAuditLog } from "@/lib/audit";
+import { ensureSubscription } from "@/lib/strata/entitlement";
 import { labelsFor, STATE_OPTIONS } from "@/lib/strata/jurisdictions";
 import type { LocationState, PropertyType } from "@prisma/client";
 
@@ -67,6 +68,9 @@ export async function POST(req: Request) {
 
     return created;
   });
+
+  // Starts the free trial the first time an account creates a scheme.
+  await ensureSubscription(user.id);
 
   await createAuditLog({
     actorId: user.id,
