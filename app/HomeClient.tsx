@@ -678,24 +678,73 @@ export default function HomeClient() {
 
 
         <section className="mx-auto max-w-7xl px-5 pb-10 pt-4">
-          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-950 to-sky-900 p-8 text-white md:p-10">
-            <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-400">
-              Free strata software
+          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-950 to-sky-900 p-8 text-white md:p-12">
+            <div className="max-w-3xl">
+              <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-400">
+                Free strata management software
+              </div>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight md:text-4xl">
+                Everything a self-managed scheme needs, in one place
+              </h2>
+              <p className="mt-4 text-base leading-7 text-white/75 md:text-lg">
+                Purpose-built for owners corporations that run themselves — and for the committees,
+                treasurers and secretaries who do the work. Set up your scheme, choose your state, and
+                the wording follows it.
+              </p>
             </div>
-            <h2 className="mt-2 text-2xl font-extrabold tracking-tight md:text-3xl">
-              Self-managing? Run the whole scheme here, free
-            </h2>
-            <p className="mt-3 max-w-3xl text-base leading-7 text-white/80 md:text-lg">
-              The roll, the levies, the arrears, the defects, the compliance dates and the financial
-              statements — in one place, for any Australian scheme. Free for a single plan of 13 lots
-              or fewer, and 80c per lot a month beyond that.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
+
+            <div className="mt-10 grid gap-x-10 gap-y-7 border-t border-white/10 pt-8 md:grid-cols-3">
+              {[
+                {
+                  title: "Strata roll",
+                  body: "Lots, owners, entitlements, service addresses and mortgagees, with a payment reference for every lot.",
+                },
+                {
+                  title: "Levies and notices",
+                  body: "Budget once, then contributions apportioned by entitlement and notices ready to issue each period.",
+                },
+                {
+                  title: "Arrears",
+                  body: "Outstanding balances, interest and an escalation ladder, with a record of every step taken.",
+                },
+                {
+                  title: "Defects and quotes",
+                  body: "Log what needs fixing and send it to verified trades, then track the work order through to completion.",
+                },
+                {
+                  title: "Compliance and insurance",
+                  body: "Fire, lifts, valuations and policies, with due dates that warn the committee well before they lapse.",
+                },
+                {
+                  title: "Capital works",
+                  body: "A ten-year forecast of the major works ahead, tested against what the long-term fund will hold.",
+                },
+                {
+                  title: "Financial statements",
+                  body: "Income and expenditure, a balance sheet, and an AGM pack assembled from the scheme\u2019s own records.",
+                },
+                {
+                  title: "Registers and minutes",
+                  body: "Meetings, motions, correspondence, by-laws, owner applications, insurance claims and keys.",
+                },
+                {
+                  title: "Bank reconciliation",
+                  body: "Import the scheme\u2019s statement and let the payment references receipt contributions for you.",
+                },
+              ].map((feature) => (
+                <div key={feature.title}>
+                  <h3 className="text-base font-bold text-white">{feature.title}</h3>
+                  <p className="mt-1.5 text-sm leading-6 text-white/65">{feature.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-3">
               <Link
                 href="/strata-software"
                 className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-4 text-base font-semibold text-sky-950 transition hover:bg-slate-100"
               >
-                See what it does
+                View more
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
