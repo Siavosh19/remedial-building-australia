@@ -42,6 +42,8 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       arrears_grace_days: body.arrears_grace_days !== undefined ? num(body.arrears_grace_days) : undefined,
       arrears_interest_rate: body.arrears_interest_rate !== undefined ? num(body.arrears_interest_rate) : undefined,
       committee_spend_limit: body.committee_spend_limit !== undefined ? num(body.committee_spend_limit) : undefined,
+      fund_1_opening: body.fund_1_opening !== undefined ? num(body.fund_1_opening) : undefined,
+      fund_2_opening: body.fund_2_opening !== undefined ? num(body.fund_2_opening) : undefined,
     },
   });
 

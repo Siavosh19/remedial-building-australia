@@ -141,6 +141,8 @@ export default async function SchemeOverviewPage({ params }: { params: Promise<{
           postcode: scheme.postcode,
           fund_1_name: scheme.fund_1_name,
           fund_2_name: scheme.fund_2_name,
+          fund_1_opening: scheme.fund_1_opening,
+          fund_2_opening: scheme.fund_2_opening,
           financial_year_start_month: scheme.financial_year_start_month,
           levy_frequency: scheme.levy_frequency,
           levy_notice_days: scheme.levy_notice_days,

@@ -13,6 +13,9 @@ export type HelpTopic =
   | "defects"
   | "workOrders"
   | "contractors"
+  | "expenses"
+  | "compliance"
+  | "capitalWorks"
   | "members";
 
 type Help = { title: string; intro: string; steps: string[]; note?: string };
@@ -135,6 +138,45 @@ const HELP: Record<HelpTopic, Help> = {
     ],
     note:
       "A business with work history is archived rather than deleted. The record of who did what on the building outlives the arrangement.",
+  },
+  expenses: {
+    title: "How expenses work",
+    intro:
+      "Every invoice the scheme receives, coded to a budget line so budget-versus-actual answers itself.",
+    steps: [
+      "Record an invoice as it arrives — you do not have to wait until it is paid.",
+      "Allocate it to a budget line and a fund. That is what makes the comparison at the bottom work.",
+      "Mark paid when it is paid. Money out of the long-term fund is what the capital works projection spends.",
+      "An invoice past its due date and still unpaid is flagged red.",
+    ],
+    note:
+      "Recording an invoice does not pay it. The scheme pays from its own bank account — this is the record, not the payment.",
+  },
+  compliance: {
+    title: "How the compliance register works",
+    intro:
+      "The dates that catch a self-managed scheme out: insurance, fire, lifts, valuations. Enter what applies to your building and when it was last done.",
+    steps: [
+      "Add each obligation with the date it was last done and how often it repeats.",
+      "The next due date is worked out for you, or you can set it directly.",
+      "Mark done stamps today and rolls the next date forward by the cycle.",
+      "Anything inside 60 days shows as Due soon; anything past shows as Overdue.",
+    ],
+    note:
+      "What your scheme must hold, and how often, is set by your state's law and your own policies — the register only does the date arithmetic on what you enter.",
+  },
+  capitalWorks: {
+    title: "How the capital works plan works",
+    intro:
+      "The big jobs ahead — roof, paint, lifts, waterproofing — and whether the long-term fund will cover them when they land.",
+    steps: [
+      "Add each item with what it would cost today, when it was last done, and how often it comes round.",
+      "The projection escalates costs 3% a year and grows contributions 3% a year.",
+      "The fund balance comes from the opening balance on the Overview tab plus what has been received, less what has been paid out of it.",
+      "A year that goes red is a year the fund cannot cover the work planned.",
+    ],
+    note:
+      "This is a planning tool, not a statutory capital works plan. Some states require a formal plan prepared to a set standard.",
   },
   members: {
     title: "Who can see this scheme",

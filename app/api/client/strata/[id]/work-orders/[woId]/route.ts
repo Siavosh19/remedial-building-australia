@@ -36,6 +36,25 @@ export async function PATCH(req: Request, ctx: Ctx) {
 
   const fields = workOrderFields(body);
 
+  // Hard rule, not a warning: a business whose insurance has lapsed cannot be
+  // put to work on the building until the date is updated.
+  const engaging = contractorId ?? order.contractor_id;
+  const goingLive = ["issued", "accepted", "in_progress", "completed"].includes(String(fields.status ?? ""));
+  if (engaging && goingLive) {
+    const candidate = await prisma.strataContractor.findUnique({
+      where: { id: engaging },
+      select: { business_name: true, insurance_expiry: true },
+    });
+    if (candidate?.insurance_expiry && candidate.insurance_expiry < new Date()) {
+      return NextResponse.json(
+        {
+          error: `${candidate.business_name}'s insurance expired on ${candidate.insurance_expiry.toLocaleDateString("en-AU")}. Update it on the Businesses tab before engaging them.`,
+        },
+        { status: 409 },
+      );
+    }
+  }
+
   const updated = await prisma.strataWorkOrder.update({
     where: { id: order.id },
     data: {

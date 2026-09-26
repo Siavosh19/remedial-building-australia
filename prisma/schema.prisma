@@ -1908,6 +1908,8 @@ model StrataScheme {
   // Seeded from the jurisdiction label pack at creation; renameable at any time.
   fund_1_name String @default("Administrative fund")
   fund_2_name String @default("Sinking fund")
+  fund_1_opening Float?
+  fund_2_opening Float?
 
   // Committee-set, never asserted by the software.
   financial_year_start_month Int     @default(7)
@@ -1932,6 +1934,9 @@ model StrataScheme {
   contractors     StrataContractor[]
   work_orders     StrataWorkOrder[]
   quote_links     StrataQuoteLink[]
+  compliance_items StrataCompliance[]
+  capital_works    StrataCapitalWorksItem[]
+  expenses         StrataExpense[]
 
   @@index([owner_user_id])
   @@map("strata_schemes")
@@ -2023,7 +2028,8 @@ model StrataBudgetItem {
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
 
-  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  scheme   StrataScheme    @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  expenses StrataExpense[]
 
   @@index([scheme_id, year_label])
   @@map("strata_budget_items")
@@ -2204,6 +2210,7 @@ model StrataContractor {
 
   scheme      StrataScheme      @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
   work_orders StrataWorkOrder[]
+  expenses    StrataExpense[]
 
   @@index([scheme_id])
   @@index([company_id])
@@ -2235,6 +2242,7 @@ model StrataWorkOrder {
   defect      StrataDefect?     @relation(fields: [defect_id], references: [id], onDelete: SetNull)
   contractor  StrataContractor? @relation(fields: [contractor_id], references: [id], onDelete: SetNull)
   quote_links StrataQuoteLink[]
+  expenses    StrataExpense[]
 
   @@unique([scheme_id, reference])
   @@index([scheme_id])
@@ -2259,4 +2267,88 @@ model StrataQuoteLink {
 
   @@index([scheme_id])
   @@map("strata_quote_links")
+}
+
+// ── Self-managed strata · Phase 3 (compliance, capital works, expenses) ──────
+// Money going out, and the dates that catch a self-managed scheme out.
+//
+// As everywhere in this module, nothing is asserted about what the law
+// requires: a compliance item's cycle and due date are whatever the committee
+// enters, and the register only does date arithmetic on them.
+
+enum StrataExpenseStatus {
+  unpaid
+  paid
+  disputed
+}
+
+model StrataCompliance {
+  id           Int       @id @default(autoincrement())
+  scheme_id    Int
+  item         String
+  provider     String?
+  reference    String?
+  sum_insured  Float?
+  last_done    DateTime?
+  next_due     DateTime?
+  /// Used to roll the next due date forward when an item is marked done.
+  cycle_months Int?
+  responsible  String?
+  notes        String?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id])
+  @@map("strata_compliance_items")
+}
+
+model StrataCapitalWorksItem {
+  id             Int      @id @default(autoincrement())
+  scheme_id      Int
+  item           String
+  last_done_year Int?
+  cycle_years    Int?
+  next_due_year  Int?
+  estimated_cost Float    @default(0)
+  notes          String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  scheme StrataScheme @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+
+  @@index([scheme_id])
+  @@map("strata_capital_works_items")
+}
+
+model StrataExpense {
+  id             Int                 @id @default(autoincrement())
+  scheme_id      Int
+  invoice_date   DateTime
+  invoice_number String?
+  supplier       String
+  /// Which budget line it belongs to, so budget-vs-actual needs no guessing.
+  budget_item_id Int?
+  fund           StrataFund          @default(fund_1)
+  amount         Float
+  gst            Float?
+  status         StrataExpenseStatus @default(unpaid)
+  due_on         DateTime?
+  paid_on        DateTime?
+  method         String?
+  work_order_id  Int?
+  contractor_id  Int?
+  notes          String?
+  created_at     DateTime            @default(now())
+  updated_at     DateTime            @updatedAt
+
+  scheme      StrataScheme      @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  budget_item StrataBudgetItem? @relation(fields: [budget_item_id], references: [id], onDelete: SetNull)
+  work_order  StrataWorkOrder?  @relation(fields: [work_order_id], references: [id], onDelete: SetNull)
+  contractor  StrataContractor? @relation(fields: [contractor_id], references: [id], onDelete: SetNull)
+
+  @@index([scheme_id])
+  @@index([budget_item_id])
+  @@map("strata_expenses")
 }

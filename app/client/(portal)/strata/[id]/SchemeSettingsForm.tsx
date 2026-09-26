@@ -16,6 +16,8 @@ export type SchemeSettings = {
   postcode: string | null;
   fund_1_name: string;
   fund_2_name: string;
+  fund_1_opening: number | null;
+  fund_2_opening: number | null;
   financial_year_start_month: number;
   levy_frequency: string;
   levy_notice_days: number | null;
@@ -107,6 +109,15 @@ export default function SchemeSettingsForm({
           <div>
             <label className={LABEL} htmlFor="fund_2_name">Long-term fund</label>
             <input id="fund_2_name" name="fund_2_name" defaultValue={scheme.fund_2_name} disabled={!canManage} className={`${FIELD} mt-1.5`} />
+          </div>
+          <div>
+            <label className={LABEL} htmlFor="fund_1_opening">Opening balance — day-to-day ($)</label>
+            <input id="fund_1_opening" name="fund_1_opening" type="number" step="0.01" defaultValue={scheme.fund_1_opening ?? ""} disabled={!canManage} className={`${FIELD} mt-1.5`} />
+          </div>
+          <div>
+            <label className={LABEL} htmlFor="fund_2_opening">Opening balance — long-term ($)</label>
+            <input id="fund_2_opening" name="fund_2_opening" type="number" step="0.01" defaultValue={scheme.fund_2_opening ?? ""} disabled={!canManage} className={`${FIELD} mt-1.5`} />
+            <p className="mt-1 text-xs text-slate-400">What was in the fund when you started using this — the capital works projection builds on it.</p>
           </div>
         </div>
       </section>

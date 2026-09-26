@@ -12,6 +12,9 @@ const TABS = [
   { slug: "/defects", label: "Defects" },
   { slug: "/work-orders", label: "Work orders" },
   { slug: "/contractors", label: "Businesses" },
+  { slug: "/expenses", label: "Expenses" },
+  { slug: "/compliance", label: "Compliance" },
+  { slug: "/capital-works", label: "Capital works" },
   { slug: "/members", label: "People" },
 ];
 
