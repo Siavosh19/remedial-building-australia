@@ -1928,6 +1928,10 @@ model StrataScheme {
   levies          StrataLevy[]
   levy_payments   StrataLevyPayment[]
   arrears_actions StrataArrearsAction[]
+  defects         StrataDefect[]
+  contractors     StrataContractor[]
+  work_orders     StrataWorkOrder[]
+  quote_links     StrataQuoteLink[]
 
   @@index([owner_user_id])
   @@map("strata_schemes")
@@ -1990,6 +1994,7 @@ model StrataLot {
   members StrataMember[]
   levies          StrataLevy[]
   arrears_actions StrataArrearsAction[]
+  defects         StrataDefect[]
 
   @@unique([scheme_id, lot_number])
   @@index([scheme_id])
@@ -2098,4 +2103,160 @@ model StrataArrearsAction {
 
   @@index([scheme_id, lot_id])
   @@map("strata_arrears_actions")
+}
+
+// ── Self-managed strata · Phase 2 (defects, work orders, contractors) ────────
+// The loop: something needs doing → quotes are sought through the directory →
+// a business is engaged → a work order records it → the business joins the
+// scheme's own contractor log for next time.
+//
+// One rule holds the whole module apart from the rest of RBA: the strata tables
+// NEVER add a field to an existing model. Links out to client_quote_requests
+// and companies are plain integer columns with a database-level foreign key —
+// so the quote platform and the directory keep working exactly as they do now,
+// and removing strata would be a DROP.
+
+enum StrataDefectPriority {
+  urgent
+  high
+  medium
+  low
+}
+
+enum StrataDefectStatus {
+  open
+  awaiting_quote
+  scheduled
+  in_progress
+  closed
+}
+
+enum StrataEngagement {
+  one_off
+  ongoing
+}
+
+enum StrataWorkOrderStatus {
+  draft
+  issued
+  accepted
+  in_progress
+  completed
+  cancelled
+}
+
+model StrataDefect {
+  id            Int                  @id @default(autoincrement())
+  scheme_id     Int
+  reference     String
+  reported_on   DateTime             @default(now())
+  reported_by   String?
+  lot_id        Int?
+  location_type String?
+  location      String?
+  description   String
+  priority      StrataDefectPriority @default(medium)
+  status        StrataDefectStatus   @default(open)
+  quoted_cost   Float?
+  actual_cost   Float?
+  resolved_on   DateTime?
+  notes         String?
+  created_at    DateTime             @default(now())
+  updated_at    DateTime             @updatedAt
+
+  scheme       StrataScheme      @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  lot          StrataLot?        @relation(fields: [lot_id], references: [id], onDelete: SetNull)
+  work_orders  StrataWorkOrder[]
+  quote_links  StrataQuoteLink[]
+
+  @@unique([scheme_id, reference])
+  @@index([scheme_id])
+  @@map("strata_defects")
+}
+
+model StrataContractor {
+  id            Int              @id @default(autoincrement())
+  scheme_id     Int
+  /// The RBA directory listing this business came from, when it came from one.
+  /// A plain column with a database FK — the Company model is not touched.
+  company_id    Int?
+  trade         String
+  business_name String
+  contact_name  String?
+  phone         String?
+  email         String?
+  abn           String?
+  licence_number String?
+  insurance_expiry DateTime?
+  /// one_off = engaged for a job; ongoing = a standing service such as
+  /// cleaning or lawn mowing that recurs without a new engagement each time.
+  engagement    StrataEngagement @default(one_off)
+  /// Free text for an ongoing service: "Fortnightly, Tuesdays", "Monthly".
+  frequency     String?
+  rate          Float?
+  rate_note     String?
+  active        Boolean          @default(true)
+  first_engaged DateTime?
+  last_engaged  DateTime?
+  notes         String?
+  created_at    DateTime         @default(now())
+  updated_at    DateTime         @updatedAt
+
+  scheme      StrataScheme      @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  work_orders StrataWorkOrder[]
+
+  @@index([scheme_id])
+  @@index([company_id])
+  @@map("strata_contractors")
+}
+
+model StrataWorkOrder {
+  id            Int                   @id @default(autoincrement())
+  scheme_id     Int
+  reference     String
+  title         String
+  scope         String?
+  location      String?
+  defect_id     Int?
+  contractor_id Int?
+  status        StrataWorkOrderStatus @default(draft)
+  agreed_price  Float?
+  issued_on     DateTime?
+  start_on      DateTime?
+  completed_on  DateTime?
+  warranty_until DateTime?
+  defects_liability_until DateTime?
+  invoice_reference String?
+  notes         String?
+  created_at    DateTime              @default(now())
+  updated_at    DateTime              @updatedAt
+
+  scheme      StrataScheme      @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  defect      StrataDefect?     @relation(fields: [defect_id], references: [id], onDelete: SetNull)
+  contractor  StrataContractor? @relation(fields: [contractor_id], references: [id], onDelete: SetNull)
+  quote_links StrataQuoteLink[]
+
+  @@unique([scheme_id, reference])
+  @@index([scheme_id])
+  @@map("strata_work_orders")
+}
+
+/// The one bridge to the existing quote platform. A ClientQuoteRequest raised
+/// from inside a scheme gets a row here; a request raised the ordinary way has
+/// none and behaves exactly as it always has.
+model StrataQuoteLink {
+  id                Int      @id @default(autoincrement())
+  scheme_id         Int
+  /// client_quote_requests.id — plain column with a database FK.
+  quote_request_id  Int      @unique
+  defect_id         Int?
+  work_order_id     Int?
+  created_at        DateTime @default(now())
+
+  scheme     StrataScheme     @relation(fields: [scheme_id], references: [id], onDelete: Cascade)
+  defect     StrataDefect?    @relation(fields: [defect_id], references: [id], onDelete: SetNull)
+  work_order StrataWorkOrder? @relation(fields: [work_order_id], references: [id], onDelete: SetNull)
+
+  @@index([scheme_id])
+  @@map("strata_quote_links")
 }

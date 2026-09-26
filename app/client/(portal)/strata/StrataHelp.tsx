@@ -3,7 +3,17 @@
 import { useEffect, useState } from "react";
 import { ChevronDown, Info } from "lucide-react";
 
-export type HelpTopic = "schemes" | "overview" | "roll" | "budget" | "levies" | "arrears" | "members";
+export type HelpTopic =
+  | "schemes"
+  | "overview"
+  | "roll"
+  | "budget"
+  | "levies"
+  | "arrears"
+  | "defects"
+  | "workOrders"
+  | "contractors"
+  | "members";
 
 type Help = { title: string; intro: string; steps: string[]; note?: string };
 
@@ -86,6 +96,45 @@ const HELP: Record<HelpTopic, Help> = {
     ],
     note:
       "The day thresholds are this product's habits, not legal periods. What your scheme must do, and when, is set by your own rules and your state's law.",
+  },
+  defects: {
+    title: "How defects work",
+    intro:
+      "Everything that needs fixing, from a loose fence panel to a leaking balcony. This is where a job starts, and where getting quotes begins.",
+    steps: [
+      "Log a defect describes the problem, where it is, and how urgent it is.",
+      "Get quotes raises a request on RBA and matches it to verified businesses for that trade in your area.",
+      "You see the request before anything is sent — nothing goes out until you send it.",
+      "When a business is engaged, raise a work order so the job, the price and the dates are on the record.",
+    ],
+    note:
+      "A defect out to quote shows as Awaiting quotes automatically. The quote request itself behaves exactly like one raised from the ordinary form.",
+  },
+  workOrders: {
+    title: "How work orders work",
+    intro:
+      "A work order is the record of a job: what was agreed, with whom, for how much, and when it happened. It is the building's work history.",
+    steps: [
+      "Create one from a defect, from a quote that came back, or on its own for routine work.",
+      "Businesses that were sent the job appear at the top with their responses and quotes — Engage picks one.",
+      "Engaging adds that business to your contractor log with its licence and insurance from the directory.",
+      "Record warranty and defects liability dates while you have the paperwork. Nobody can find them three years later.",
+    ],
+    note:
+      "The work order is yours to issue. RBA matches you to businesses and keeps the record; it does not instruct anyone on your behalf.",
+  },
+  contractors: {
+    title: "Who looks after this building",
+    intro:
+      "Two lists: the standing arrangements that recur, and everyone who has done a job here before.",
+    steps: [
+      "Ongoing services are the recurring ones — cleaning, lawns, lift servicing. Record how often and at what rate.",
+      "Engaged as needed builds itself: engaging a business on a work order adds it here.",
+      "Add anyone by hand — the cleaner who has been coming for ten years does not need an RBA listing.",
+      "Businesses from the directory keep a link to their listing, and their insurance expiry is flagged when it lapses.",
+    ],
+    note:
+      "A business with work history is archived rather than deleted. The record of who did what on the building outlives the arrangement.",
   },
   members: {
     title: "Who can see this scheme",
