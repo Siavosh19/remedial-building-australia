@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 // Strata Connect feature/benefit slides. Each slide is split image + text and the
 // set auto-crossfades. All slide text is rendered in the DOM (only hidden via
@@ -57,7 +59,16 @@ const SLIDES: Slide[] = [
 
 const INTERVAL_MS = 5500;
 
-export default function StrataConnectSlides() {
+export default function StrataConnectSlides({
+  ctaHref,
+  ctaLabel,
+}: {
+  /** Rendered inside the card, in the text half of every slide — the button
+      used to float below the whole slider, disconnected from what it was
+      calling to action on. */
+  ctaHref: string;
+  ctaLabel: string;
+}) {
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -94,7 +105,7 @@ export default function StrataConnectSlides() {
             </div>
 
             {/* Text half — generous padding so nothing touches the card edges */}
-            <div className="flex flex-col justify-center gap-3.5 px-7 py-7 sm:px-10 sm:py-9">
+            <div className="flex flex-col justify-center gap-3 px-7 py-6 sm:px-10 sm:py-7">
               <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-red-700">
                 {s.eyebrow}
               </p>
@@ -110,6 +121,13 @@ export default function StrataConnectSlides() {
                   </li>
                 ))}
               </ul>
+              <Link
+                href={ctaHref}
+                className="mt-1 inline-flex w-fit items-center gap-2 rounded-xl bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
+              >
+                {ctaLabel}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </article>
         ))}

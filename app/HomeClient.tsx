@@ -665,21 +665,12 @@ export default function HomeClient() {
               businesses who send back competitive quotes.
             </p>
           </div>
-          <StrataConnectSlides />
-          <div className="mt-8">
-            <Link
-              href="/strata-connect"
-              className="inline-flex items-center gap-2 rounded-xl bg-red-700 px-7 py-4 text-base font-semibold text-white transition hover:bg-red-800"
-            >
-              See how Strata Connect works
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </div>
+          <StrataConnectSlides ctaHref="/strata-connect" ctaLabel="See how Strata Connect works" />
         </section>
 
 
         <section className="mx-auto max-w-7xl px-5 pb-10 pt-4">
-          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-900 to-sky-800 p-8 text-white md:p-12">
+          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-800 to-sky-700 p-8 text-white md:p-12">
             <div className="max-w-3xl">
               <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-400">
                 Free strata management software
@@ -696,17 +687,10 @@ export default function HomeClient() {
             </div>
 
             <div className="mt-10 border-t border-white/10 pt-8">
-              <StrataSoftwareSlides />
+              <StrataSoftwareSlides ctaHref="/client/strata" ctaLabel="Start for free" />
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Link
-                href="/client/strata"
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-4 text-base font-semibold text-sky-950 transition hover:bg-slate-100"
-              >
-                Start for free
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/strata-software"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-7 py-4 text-base font-semibold text-white transition hover:bg-white/10"

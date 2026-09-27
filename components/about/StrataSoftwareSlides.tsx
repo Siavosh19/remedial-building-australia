@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 // Free strata software feature slides. Same crossfade/dots pattern as
 // StrataConnectSlides, but themed for the dark hero card: each slide groups 3 of
@@ -61,7 +63,14 @@ const SLIDES: Slide[] = [
 
 const INTERVAL_MS = 5500;
 
-export default function StrataSoftwareSlides() {
+export default function StrataSoftwareSlides({
+  ctaHref,
+  ctaLabel,
+}: {
+  /** Rendered inside the card, in the text half of every slide. */
+  ctaHref: string;
+  ctaLabel: string;
+}) {
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -98,7 +107,7 @@ export default function StrataSoftwareSlides() {
             </div>
 
             {/* Text half */}
-            <div className="flex flex-col justify-center gap-3.5 px-7 py-7 sm:px-9 sm:py-8">
+            <div className="flex flex-col justify-center gap-3 px-7 py-6 sm:px-9 sm:py-7">
               <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-red-700">
                 {s.eyebrow}
               </p>
@@ -114,6 +123,13 @@ export default function StrataSoftwareSlides() {
                   </li>
                 ))}
               </ul>
+              <Link
+                href={ctaHref}
+                className="mt-1 inline-flex w-fit items-center gap-2 rounded-xl bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800"
+              >
+                {ctaLabel}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </article>
         ))}
