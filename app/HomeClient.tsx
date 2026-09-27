@@ -688,10 +688,10 @@ export default function HomeClient() {
                 Strata management software for self-managed schemes and strata managers
               </h2>
               <p className="mt-4 text-base leading-7 text-white/75 md:text-lg">
-                Run your own scheme without paying for it, or take the admin off a strata manager&rsquo;s
-                plate. The strata roll, levies, arrears, defects and quotes, compliance, capital works and
-                financial reporting — all in one place. Choose your state and the wording follows it.
-                Start for free, forever, for one scheme of up to 13 lots.
+                Run your own scheme, or take the admin off a strata manager&rsquo;s plate. The strata roll,
+                levies, arrears, defects and quotes, compliance, capital works and financial reporting —
+                all in one place. Choose your state and the wording follows it. Free to start, no payment
+                required, for one scheme of up to 13 lots.
               </p>
             </div>
 
