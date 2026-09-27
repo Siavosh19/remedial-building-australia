@@ -10,6 +10,7 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
 import HomeJobsPanel from "@/components/jobs/HomeJobsPanel";
 import StrataConnectSlides from "@/components/about/StrataConnectSlides";
+import StrataSoftwareSlides from "@/components/about/StrataSoftwareSlides";
 import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
 
 // Home-page Expert Remedial Advice services.
@@ -693,50 +694,8 @@ export default function HomeClient() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-x-10 gap-y-7 border-t border-white/10 pt-8 md:grid-cols-3">
-              {[
-                {
-                  title: "Strata roll",
-                  body: "Lots, owners, entitlements, service addresses and mortgagees, with a payment reference for every lot.",
-                },
-                {
-                  title: "Levies and notices",
-                  body: "Budget once, then contributions apportioned by entitlement and notices ready to issue each period.",
-                },
-                {
-                  title: "Arrears",
-                  body: "Outstanding balances, interest and an escalation ladder, with a record of every step taken.",
-                },
-                {
-                  title: "Defects and quotes",
-                  body: "Log what needs fixing and send it to verified trades, then track the work order through to completion.",
-                },
-                {
-                  title: "Compliance and insurance",
-                  body: "Fire, lifts, valuations and policies, with due dates that warn the committee well before they lapse.",
-                },
-                {
-                  title: "Capital works",
-                  body: "A ten-year forecast of the major works ahead, tested against what the long-term fund will hold.",
-                },
-                {
-                  title: "Financial statements",
-                  body: "Income and expenditure, a balance sheet, and an AGM pack assembled from the scheme\u2019s own records.",
-                },
-                {
-                  title: "Registers and minutes",
-                  body: "Meetings, motions, correspondence, by-laws, owner applications, insurance claims and keys.",
-                },
-                {
-                  title: "Bank reconciliation",
-                  body: "Import the scheme\u2019s statement and let the payment references receipt contributions for you.",
-                },
-              ].map((feature) => (
-                <div key={feature.title}>
-                  <h3 className="text-base font-bold text-white">{feature.title}</h3>
-                  <p className="mt-1.5 text-sm leading-6 text-white/65">{feature.body}</p>
-                </div>
-              ))}
+            <div className="mt-10 border-t border-white/10 pt-8">
+              <StrataSoftwareSlides />
             </div>
 
             <div className="mt-10 flex flex-wrap gap-3">
