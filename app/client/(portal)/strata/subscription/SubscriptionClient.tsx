@@ -5,11 +5,17 @@ import { CreditCard } from "lucide-react";
 
 export default function SubscriptionClient({
   canSubscribe,
+  withinFreeAllowance,
   hasSubscription,
   monthly,
   yearly,
 }: {
   canSubscribe: boolean;
+  /** Nothing is billable yet (free tier) — Stripe can't check out $0, so the
+   *  live buttons below are hidden. Without this, the page showed nothing at
+   *  all where a plan picker would be — indistinguishable from a bug. Show
+   *  the same pricing as an inert preview instead. */
+  withinFreeAllowance: boolean;
   hasSubscription: boolean;
   monthly: string;
   yearly: string;
@@ -62,6 +68,30 @@ export default function SubscriptionClient({
             <p className="mt-1 text-2xl font-extrabold text-sky-950">{yearly}</p>
             <p className="mt-1 text-xs text-sky-900/70">Billed once a year.</p>
           </button>
+        </div>
+      )}
+
+      {!canSubscribe && withinFreeAllowance && (
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            What it costs beyond the free plan
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-5 text-left opacity-75">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Monthly</p>
+              <p className="mt-1 text-2xl font-extrabold text-slate-700">{monthly}</p>
+              <p className="mt-1 text-xs text-slate-500">Only charged once you pass the free allowance.</p>
+            </div>
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-5 text-left opacity-75">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Yearly</p>
+              <p className="mt-1 text-2xl font-extrabold text-slate-700">{yearly}</p>
+              <p className="mt-1 text-xs text-slate-500">2 months free — also only once it applies.</p>
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-slate-400">
+            You&rsquo;re inside the free allowance, so there is nothing to pay and nothing to sign up for right
+            now — this account moves onto one of these automatically only if it grows past it.
+          </p>
         </div>
       )}
 

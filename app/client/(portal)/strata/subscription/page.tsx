@@ -100,6 +100,7 @@ export default async function SubscriptionPage() {
 
       <SubscriptionClient
         canSubscribe={entitlement.billableLots > 0 && entitlement.state !== "active"}
+        withinFreeAllowance={entitlement.withinFreeAllowance}
         hasSubscription={Boolean(subscription?.stripe_customer_id)}
         monthly={`${formatAud(entitlement.monthlyCents)} / month`}
         yearly={`${formatAud(entitlement.yearlyCents)} / year`}
