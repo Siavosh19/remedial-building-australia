@@ -121,16 +121,18 @@ export default function DefectsClient({
     const created = await fetch("/api/client/quote-request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // The quote platform's API takes camelCase. Sending snake_case meant every
+      // field arrived empty and it answered "Building address is required".
       body: JSON.stringify({
-        contact_name: form.contact_name,
-        contact_email: form.contact_email,
-        contact_phone: form.contact_phone,
-        building_address: scheme.address,
+        contactName: form.contact_name,
+        contactEmail: form.contact_email,
+        contactPhone: form.contact_phone,
+        buildingAddress: scheme.address,
         suburb: scheme.suburb,
         postcode: scheme.postcode,
-        strata_plan_number: scheme.planNumber,
-        property_type: scheme.propertyType,
-        work_category_id: Number(form.work_category_id),
+        strataPlanNumber: scheme.planNumber,
+        propertyType: scheme.propertyType,
+        workCategoryId: Number(form.work_category_id),
         description: form.description,
         urgency: form.urgency,
       }),

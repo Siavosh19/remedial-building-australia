@@ -28,7 +28,7 @@ const HELP: Record<HelpTopic, Help> = {
   schemes: {
     title: "How this works",
     intro:
-      "A free workspace for owners corporations that manage themselves — your lots, your people, and (as it grows) your levies, defects and quotes. Nothing here costs anything.",
+      "A workspace for owners corporations that manage themselves — your roll, your levies, your defects and your registers. One scheme up to the free lot limit costs nothing; see Your plan for what applies to you.",
     steps: [
       "Add a scheme. Choose the state it is in and the whole workspace uses that state's wording.",
       "Enter the lots and their entitlements on the strata roll. This is the foundation everything else is built on.",

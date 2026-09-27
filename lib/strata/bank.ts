@@ -246,12 +246,22 @@ export async function allocateToLot(opts: {
   receivedOn: Date;
   reference: string | null;
   note: string | null;
+  /** Start here rather than at the oldest — a receipt entered against a period. */
+  startLevyId?: number;
 }) {
-  const levies = await prisma.strataLevy.findMany({
+  if (opts.amount <= 0) return { applied: 0, payments: 0 };
+
+  const all = await prisma.strataLevy.findMany({
     where: { scheme_id: opts.schemeId, lot_id: opts.lotId },
     include: { period: { select: { due_date: true } }, payments: { select: { amount: true } } },
     orderBy: { period: { due_date: "asc" } },
   });
+
+  // A receipt entered against a particular period settles that period first and
+  // then spills forward, so a manual receipt carries an overpayment on to the
+  // next quarter exactly as an imported one does.
+  const startIndex = opts.startLevyId ? all.findIndex((l) => l.id === opts.startLevyId) : 0;
+  const levies = startIndex > 0 ? [...all.slice(startIndex), ...all.slice(0, startIndex)] : all;
 
   if (levies.length === 0) return { applied: 0, payments: 0 };
 

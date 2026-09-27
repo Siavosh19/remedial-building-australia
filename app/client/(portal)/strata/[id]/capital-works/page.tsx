@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import { currentYearStart, round2, yearLabel as buildYearLabel } from "@/lib/strata/levies";
-import { project, receiptsByFund, spendByFund } from "@/lib/strata/funds";
+import { nextDueYearFor, project, receiptsByFund, spendByFund } from "@/lib/strata/funds";
 import SchemeTabs from "../../SchemeTabs";
 import StrataHelp from "../../StrataHelp";
 import CapitalWorksClient, { type CapitalRow } from "./CapitalWorksClient";
@@ -50,7 +50,13 @@ export default async function CapitalWorksPage({ params }: { params: Promise<{ i
     item: i.item,
     lastDoneYear: i.last_done_year,
     cycleYears: i.cycle_years,
-    nextDueYear: i.next_due_year,
+    // Derived when the committee entered a last-done year and a cycle instead,
+    // so the table shows the same year the projection spends in.
+    nextDueYear: nextDueYearFor({
+      nextDueYear: i.next_due_year,
+      lastDoneYear: i.last_done_year,
+      cycleYears: i.cycle_years,
+    }),
     estimatedCost: i.estimated_cost,
     notes: i.notes,
   }));

@@ -23,7 +23,7 @@ export default async function StrataSchemesPage() {
           <h1 className="text-2xl font-extrabold text-slate-900">Strata management</h1>
           <p className="mt-1 text-sm text-slate-500">
             Run your own scheme — the roll, the levies, the defects — and get quotes from verified trades when
-            work is needed. Free for every scheme.
+            work is needed.
           </p>
         </div>
         <div className="flex gap-2">

@@ -52,6 +52,18 @@ export type CapitalItem = {
   estimatedCost: number;
 };
 
+/**
+ * When an item next falls due: what was entered, or last done plus the cycle.
+ * Exported so the table and the projection cannot disagree about it.
+ */
+export function nextDueYearFor(item: { nextDueYear: number | null; lastDoneYear?: number | null; cycleYears: number | null }) {
+  if (item.nextDueYear) return item.nextDueYear;
+  if (item.lastDoneYear && item.cycleYears && item.cycleYears > 0) {
+    return item.lastDoneYear + item.cycleYears;
+  }
+  return null;
+}
+
 export type ProjectionYear = {
   year: number;
   opening: number;
@@ -86,11 +98,15 @@ export function project(opts: {
     const year = opts.startYear + i;
 
     const due = opts.items.filter((item) => {
-      if (!item.nextDueYear || year < item.nextDueYear) return false;
-      if (year === item.nextDueYear) return true;
+      // A committee that enters "last done 2019, every 10 years" has said when
+      // it is next due. Requiring the year as well dropped the item silently
+      // out of the whole projection.
+      const nextDue = nextDueYearFor(item);
+      if (!nextDue || year < nextDue) return false;
+      if (year === nextDue) return true;
       // Recurs on its cycle after the first time it falls due.
       if (!item.cycleYears || item.cycleYears <= 0) return false;
-      return (year - item.nextDueYear) % item.cycleYears === 0;
+      return (year - nextDue) % item.cycleYears === 0;
     });
 
     const items = due.map((item) => ({

@@ -21,6 +21,11 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (!body) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
 
   const fields = complianceFields(body);
+  const lastDone = fields.last_done ?? existing.last_done;
+  const cycle = fields.cycle_months ?? existing.cycle_months;
+  if (!fields.next_due && !existing.next_due && lastDone && cycle) {
+    fields.next_due = nextDueFrom(lastDone, cycle);
+  }
 
   // "Mark done" stamps today and rolls the next due date on by the cycle.
   let rolled: { last_done: Date; next_due: Date | null } | null = null;

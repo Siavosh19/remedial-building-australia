@@ -54,8 +54,41 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   });
 
   let auto = 0;
+  let duplicates = 0;
+
+  // A statement row is identified by its date, description and amount. The same
+  // row twice in one file, or the same file imported twice, was receipted twice
+  // and silently doubled the lot's credit.
+  const key = (l: { date: Date; description: string; amount: number }) =>
+    `${l.date.toISOString().slice(0, 10)}|${l.description.trim().toUpperCase()}|${l.amount.toFixed(2)}`;
+
+  const priorLines = await prisma.strataBankLine.findMany({
+    where: { scheme_id: access.scheme.id },
+    select: { transaction_date: true, description: true, amount: true },
+  });
+  const seen = new Set(
+    priorLines.map((l) => key({ date: l.transaction_date, description: l.description, amount: l.amount })),
+  );
 
   for (const line of lines) {
+    const fingerprint = key(line);
+    if (seen.has(fingerprint)) {
+      await prisma.strataBankLine.create({
+        data: {
+          scheme_id: access.scheme.id,
+          import_id: record.id,
+          transaction_date: line.date,
+          description: line.description,
+          amount: line.amount,
+          status: "ignored",
+          note: "Already imported — skipped so it is not receipted twice",
+        },
+      });
+      duplicates += 1;
+      continue;
+    }
+    seen.add(fingerprint);
+
     const match = matchLine(line, lots, unpaid);
 
     const created = await prisma.strataBankLine.create({
@@ -105,8 +138,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     entityType: "strata_bank_import",
     entityId: String(record.id),
     action: "import",
-    newValue: { scheme_id: access.scheme.id, rows: lines.length, auto, skipped },
+    newValue: { scheme_id: access.scheme.id, rows: lines.length, auto, skipped, duplicates },
   });
 
-  return NextResponse.json({ ok: true, id: record.id, rows: lines.length, auto, skipped });
+  return NextResponse.json({ ok: true, id: record.id, rows: lines.length, auto, skipped, duplicates });
 }

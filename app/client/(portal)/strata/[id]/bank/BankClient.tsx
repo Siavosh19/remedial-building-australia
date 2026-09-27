@@ -71,8 +71,8 @@ export default function BankClient({
     setFilename("");
     setResult(
       `${json.rows} transactions read. ${json.auto} receipted automatically by payment reference${
-        json.skipped ? `, ${json.skipped} rows skipped as headers or summaries` : ""
-      }.`,
+        json.duplicates ? `, ${json.duplicates} already imported and skipped` : ""
+      }${json.skipped ? `, ${json.skipped} rows skipped as headers or summaries` : ""}.`,
     );
     router.refresh();
   }

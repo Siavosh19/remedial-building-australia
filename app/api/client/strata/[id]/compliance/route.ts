@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import { createAuditLog } from "@/lib/audit";
-import { complianceFields } from "@/lib/strata/records";
+import { complianceFields, nextDueFrom } from "@/lib/strata/records";
 
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
@@ -16,8 +16,15 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const item = String(body.item ?? "").trim();
   if (!item) return NextResponse.json({ error: "Name the obligation." }, { status: 400 });
 
+  const fields = complianceFields(body);
+  // "Last done" plus a cycle already says when it is next due. Not deriving it
+  // left the register reading "Not set" and warning about nothing.
+  if (!fields.next_due && fields.last_done && fields.cycle_months) {
+    fields.next_due = nextDueFrom(fields.last_done, fields.cycle_months);
+  }
+
   const created = await prisma.strataCompliance.create({
-    data: { scheme_id: access.scheme.id, item, ...complianceFields(body) },
+    data: { scheme_id: access.scheme.id, item, ...fields },
   });
 
   await createAuditLog({

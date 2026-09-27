@@ -87,20 +87,38 @@ export function apportion(fund1PerPeriod: number, fund2PerPeriod: number, lots: 
     return lots.map((l) => ({ lotId: l.lotId, fund1: even1, fund2: even2 }));
   }
 
-  const split = lots.map((l) => ({
-    lotId: l.lotId,
-    fund1: round2((fund1PerPeriod * l.basis) / total),
-    fund2: round2((fund2PerPeriod * l.basis) / total),
-  }));
+  // Largest-remainder apportionment. Rounding each share independently gave two
+  // lots with identical entitlements different levies, which is indefensible on
+  // a notice — so each share is floored to cents and the leftover cents are
+  // handed out one at a time, largest fractional part first, with equal parts
+  // broken by entitlement then by lot. Equal entitlements therefore always
+  // produce equal levies, and the schedule still totals the budget exactly.
+  function share(poolCents: number) {
+    const exact = lots.map((l) => ({ lotId: l.lotId, basis: l.basis, raw: (poolCents * l.basis) / total }));
+    const floors = exact.map((e) => ({ ...e, cents: Math.floor(e.raw), rem: e.raw - Math.floor(e.raw) }));
+    let left = poolCents - floors.reduce((s, f) => s + f.cents, 0);
 
-  const largest = lots.reduce((best, l) => (l.basis > best.basis ? l : best), lots[0]);
-  const target = split.find((s) => s.lotId === largest.lotId);
-  if (target) {
-    target.fund1 = round2(target.fund1 + (round2(fund1PerPeriod) - round2(split.reduce((s, x) => s + x.fund1, 0))));
-    target.fund2 = round2(target.fund2 + (round2(fund2PerPeriod) - round2(split.reduce((s, x) => s + x.fund2, 0))));
+    const order = [...floors].sort(
+      (a, b) => b.rem - a.rem || b.basis - a.basis || a.lotId - b.lotId,
+    );
+    for (const entry of order) {
+      if (left <= 0) break;
+      entry.cents += 1;
+      left -= 1;
+    }
+
+    const byLot = new Map(floors.map((f) => [f.lotId, f.cents]));
+    return byLot;
   }
 
-  return split;
+  const fund1Cents = share(Math.round(fund1PerPeriod * 100));
+  const fund2Cents = share(Math.round(fund2PerPeriod * 100));
+
+  return lots.map((l) => ({
+    lotId: l.lotId,
+    fund1: (fund1Cents.get(l.lotId) ?? 0) / 100,
+    fund2: (fund2Cents.get(l.lotId) ?? 0) / 100,
+  }));
 }
 
 export const MS_PER_DAY = 86_400_000;

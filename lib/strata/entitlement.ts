@@ -163,6 +163,20 @@ export async function entitlementForOwner(ownerUserId: number, now = new Date())
     }
   }
 
+  // No subscription row at all — an account that predates billing, or one that
+  // has not created a scheme since. It has not used its trial, so it must not be
+  // treated as if the trial had expired. Locking these was the worst bug in the
+  // first release: a scheme crossed the free limit and became read-only with no
+  // way back, because the row simply did not exist yet.
+  if (!subscription) {
+    return {
+      ...base,
+      state: "trialling",
+      canEdit: true,
+      reason: `Free trial — ${settings.trialMonths} months, no card needed.`,
+    };
+  }
+
   // Trial still running.
   if (subscription?.trial_ends_at && subscription.trial_ends_at > now) {
     return {

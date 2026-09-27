@@ -64,7 +64,10 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   const { id, lotId } = await ctx.params;
   const access = await requireSchemeAccess(Number(id));
   if (!access) return NextResponse.json({ error: "Not found." }, { status: 404 });
-  if (!access.canManage) return NextResponse.json({ error: "Read-only access." }, { status: 403 });
+  // Deliberately the ROLE, not the entitlement. An account locked for being over
+  // the free limit must still be able to remove a lot — otherwise the only way
+  // out of the lock is to pay, which is a trap rather than a paywall.
+  if (!access.roleCanManage) return NextResponse.json({ error: "Read-only access." }, { status: 403 });
 
   const lot = await loadLot(access.scheme.id, Number(lotId));
   if (!lot) return NextResponse.json({ error: "Not found." }, { status: 404 });
