@@ -679,18 +679,19 @@ export default function HomeClient() {
 
 
         <section className="mx-auto max-w-7xl px-5 pb-10 pt-4">
-          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-950 to-sky-900 p-8 text-white md:p-12">
+          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-sky-900 to-sky-800 p-8 text-white md:p-12">
             <div className="max-w-3xl">
               <div className="text-sm font-extrabold uppercase tracking-[0.25em] text-red-400">
                 Free strata management software
               </div>
               <h2 className="mt-3 text-2xl font-extrabold tracking-tight md:text-4xl">
-                Everything a self-managed scheme needs, in one place
+                Strata management software for self-managed schemes and strata managers
               </h2>
               <p className="mt-4 text-base leading-7 text-white/75 md:text-lg">
-                Purpose-built for owners corporations that run themselves — and for the committees,
-                treasurers and secretaries who do the work. Set up your scheme, choose your state, and
-                the wording follows it. Free for one scheme of up to 13 lots.
+                Run your own scheme without paying for it, or take the admin off a strata manager&rsquo;s
+                plate. The strata roll, levies, arrears, defects and quotes, compliance, capital works and
+                financial reporting — all in one place. Choose your state and the wording follows it.
+                Start for free, forever, for one scheme of up to 13 lots.
               </p>
             </div>
 
@@ -700,17 +701,17 @@ export default function HomeClient() {
 
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
-                href="/strata-software"
+                href="/client/strata"
                 className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-4 text-base font-semibold text-sky-950 transition hover:bg-slate-100"
               >
-                View more
+                Start for free
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
-                href="/client/strata"
+                href="/strata-software"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-7 py-4 text-base font-semibold text-white transition hover:bg-white/10"
               >
-                Set up your scheme
+                See how it works
               </Link>
             </div>
           </div>
