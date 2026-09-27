@@ -5,6 +5,7 @@ import { requireSchemeAccess } from "@/lib/strata/access";
 import { paymentReference } from "@/lib/strata/jurisdictions";
 import { createAuditLog } from "@/lib/audit";
 import { syncQuantity } from "@/lib/strata/billing";
+import { entitlementForOwner } from "@/lib/strata/entitlement";
 import { lotFields } from "@/lib/strata/lots";
 
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
@@ -18,6 +19,23 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
 
   const lotNumber = String(body.lot_number ?? "").trim();
   if (!lotNumber) return NextResponse.json({ error: "Enter a lot number." }, { status: 400 });
+
+  // Refuse the lot that would tip the account over, rather than accepting it and
+  // then making the whole scheme read-only. Trialling and subscribed accounts are
+  // unaffected — they have already paid or are entitled to exceed it.
+  const entitlement = await entitlementForOwner(access.scheme.owner_user_id);
+  if (entitlement.state === "locked" || (entitlement.withinFreeAllowance && entitlement.state === "free")) {
+    const wouldExceed = entitlement.lots + 1 > entitlement.settings.freeLotLimit;
+    if (wouldExceed) {
+      return NextResponse.json(
+        {
+          error: `The free plan covers one scheme of up to ${entitlement.settings.freeLotLimit} lots, and this would be lot ${entitlement.lots + 1}. Subscribe on the Your plan page to add it — your existing lots keep working either way.`,
+          needsSubscription: true,
+        },
+        { status: 402 },
+      );
+    }
+  }
 
   const fields = lotFields(body);
 

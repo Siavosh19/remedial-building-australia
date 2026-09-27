@@ -2350,6 +2350,8 @@ model StrataExpense {
   amount         Float
   gst            Float?
   status         StrataExpenseStatus @default(unpaid)
+  /// A negative invoice is only valid as a credit note, and says so on screen.
+  credit_note    Boolean             @default(false)
   due_on         DateTime?
   paid_on        DateTime?
   method         String?

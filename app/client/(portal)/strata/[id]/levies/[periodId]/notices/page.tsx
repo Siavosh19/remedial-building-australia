@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import { interestOn, money, round2 } from "@/lib/strata/levies";
+import { schemeArrears } from "@/lib/strata/arrears";
 import PrintButton from "./PrintButton";
 
 export const dynamic = "force-dynamic";
@@ -53,6 +54,11 @@ export default async function NoticesPage({ params }: { params: Promise<{ id: st
     );
   }
 
+  // The same figures the arrears tab shows, so a notice can never disagree with
+  // the screen the committee is looking at.
+  const arrears = await schemeArrears(scheme.id);
+  const creditByLot = new Map(arrears.lots.map((l) => [l.lotId, l.credit]));
+
   const noticeDate = AU_DATE.format(new Date());
   const dueDate = AU_DATE.format(period.due_date);
 
@@ -84,7 +90,8 @@ export default async function NoticesPage({ params }: { params: Promise<{ id: st
           const thisPeriod = round2(levy.fund_1_amount + levy.fund_2_amount);
           const arrears = broughtForward.get(levy.lot_id) ?? 0;
           const interest = priorInterest.get(levy.lot_id) ?? 0;
-          const total = round2(thisPeriod + arrears + interest);
+          const credit = round2(creditByLot.get(levy.lot_id) ?? 0);
+          const total = round2(Math.max(0, thisPeriod + arrears + interest - credit));
 
           return (
             <article
@@ -148,6 +155,12 @@ export default async function NoticesPage({ params }: { params: Promise<{ id: st
                       <td className="py-2 text-right tabular-nums text-slate-900">{money(interest)}</td>
                     </tr>
                   )}
+                  {credit > 0.005 && (
+                    <tr className="border-t border-slate-200">
+                      <td className="py-2 text-slate-700">Less: credit brought forward</td>
+                      <td className="py-2 text-right tabular-nums text-emerald-700">-{money(credit)}</td>
+                    </tr>
+                  )}
                   <tr className="border-t-2 border-slate-900">
                     <td className="py-2.5 text-base font-extrabold text-slate-900">Total now payable</td>
                     <td className="py-2.5 text-right text-base font-extrabold tabular-nums text-slate-900">
@@ -172,8 +185,8 @@ export default async function NoticesPage({ params }: { params: Promise<{ id: st
 
               {scheme.arrears_interest_rate ? (
                 <p className="mt-4 text-xs leading-relaxed text-slate-500">
-                  This {labels.body.toLowerCase()} charges interest at {scheme.arrears_interest_rate}% per year on
-                  contributions still unpaid
+                  This {labels.body.toLowerCase()} has resolved to charge interest at{" "}
+                  {scheme.arrears_interest_rate}% per year on contributions still unpaid
                   {scheme.arrears_grace_days ? ` more than ${scheme.arrears_grace_days} days` : ""} after the due
                   date.
                 </p>

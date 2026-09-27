@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
-import { arrearsStage, daysBetween, interestOn, round2 } from "@/lib/strata/levies";
+import { byLotNumber, schemeArrears } from "@/lib/strata/arrears";
 import SchemeTabs from "../../SchemeTabs";
 import StrataHelp from "../../StrataHelp";
 import ArrearsClient, { type ArrearsRow } from "./ArrearsClient";
@@ -17,79 +17,51 @@ export default async function ArrearsPage({ params }: { params: Promise<{ id: st
   if (!access) notFound();
 
   const { scheme, canManage } = access;
-  const now = new Date();
 
-  const [lots, levies, actions] = await Promise.all([
-    prisma.strataLot.findMany({
-      where: { scheme_id: scheme.id },
-      orderBy: { id: "asc" },
-      select: { id: true, lot_number: true, owner_name: true },
-    }),
-    // Only periods that have actually fallen due can be in arrears.
-    prisma.strataLevy.findMany({
-      where: { scheme_id: scheme.id, period: { due_date: { lte: now } } },
-      include: { period: { select: { due_date: true } }, payments: { select: { amount: true } } },
-    }),
+  // One shared figure — the levies card, this tab and the assistant all read it.
+  const [summary, actions] = await Promise.all([
+    schemeArrears(scheme.id),
     prisma.strataArrearsAction.findMany({
       where: { scheme_id: scheme.id },
       orderBy: { actioned_on: "desc" },
     }),
   ]);
 
-  const byLot = new Map<number, { outstanding: number; interest: number; oldestDue: Date | null }>();
-  for (const levy of levies) {
-    const owing = round2(
-      levy.fund_1_amount + levy.fund_2_amount - levy.payments.reduce((s, p) => s + p.amount, 0),
-    );
-    const entry = byLot.get(levy.lot_id) ?? { outstanding: 0, interest: 0, oldestDue: null };
-    if (owing > 0.005) {
-      entry.outstanding = round2(entry.outstanding + owing);
-      entry.interest = round2(
-        entry.interest +
-          interestOn({
-            outstanding: owing,
-            dueDate: levy.period.due_date,
-            graceDays: scheme.arrears_grace_days,
-            annualRatePercent: scheme.arrears_interest_rate,
-            asOf: now,
-          }),
-      );
-      if (!entry.oldestDue || levy.period.due_date < entry.oldestDue) entry.oldestDue = levy.period.due_date;
-    }
-    byLot.set(levy.lot_id, entry);
-  }
+  const rows: ArrearsRow[] = summary.lots
+    .slice()
+    .sort((a, b) => b.netOwing - a.netOwing || byLotNumber(a, b))
+    .map((lot) => {
+      // A lot that has agreed a plan is being managed, not escalated.
+      const planned = actions.some((a) => a.lot_id === lot.lotId && a.action === "Payment plan agreed");
+      const stage = planned && lot.netOwing > 0.005
+        ? { stage: 1, label: "Payment plan", nextAction: "Monitor the agreed plan", needsCommittee: false }
+        : { ...lot.stage };
 
-  const rows: ArrearsRow[] = lots.map((lot) => {
-    const entry = byLot.get(lot.id) ?? { outstanding: 0, interest: 0, oldestDue: null };
-    const daysOverdue = entry.oldestDue ? Math.max(0, daysBetween(entry.oldestDue, now)) : 0;
-    const stage = arrearsStage(entry.outstanding, daysOverdue);
-
-    return {
-      lotId: lot.id,
-      lotNumber: lot.lot_number,
-      ownerName: lot.owner_name,
-      outstanding: entry.outstanding,
-      interest: entry.interest,
-      oldestDue: entry.oldestDue ? AU_DATE.format(entry.oldestDue) : null,
-      daysOverdue,
-      stage: stage.stage,
-      stageLabel: stage.label,
-      nextAction: stage.nextAction,
-      needsCommittee: stage.needsCommittee,
-      history: actions
-        .filter((a) => a.lot_id === lot.id)
-        .map((a) => ({
-          id: a.id,
-          stage: a.stage,
-          action: a.action,
-          on: AU_DATE.format(a.actioned_on),
-          note: a.note,
-        })),
-    };
-  });
-
-  // Lots that owe something first, largest debt at the top.
-  rows.sort((a, b) => b.outstanding - a.outstanding || a.lotNumber.localeCompare(b.lotNumber, "en-AU"));
+      return {
+        lotId: lot.lotId,
+        lotNumber: lot.lotNumber,
+        ownerName: lot.ownerName,
+        outstanding: lot.netOwing,
+        grossArrears: lot.grossArrears,
+        credit: lot.credit,
+        interest: lot.interest,
+        oldestDue: lot.oldestDue ? AU_DATE.format(lot.oldestDue) : null,
+        daysOverdue: lot.daysOverdue,
+        stage: stage.stage,
+        stageLabel: stage.label,
+        nextAction: stage.nextAction,
+        needsCommittee: stage.needsCommittee,
+        history: actions
+          .filter((a) => a.lot_id === lot.lotId)
+          .map((a) => ({
+            id: a.id,
+            stage: a.stage,
+            action: a.action,
+            on: AU_DATE.format(a.actioned_on),
+            note: a.note,
+          })),
+      };
+    });
 
   return (
     <div className="space-y-6">
@@ -107,7 +79,18 @@ export default async function ArrearsPage({ params }: { params: Promise<{ id: st
 
       <StrataHelp topic="arrears" />
 
-      <ArrearsClient schemeId={scheme.id} rows={rows} canManage={canManage} />
+      <ArrearsClient
+        schemeId={scheme.id}
+        rows={rows}
+        canManage={canManage}
+        totals={{
+          gross: summary.grossArrears,
+          credits: summary.credits,
+          net: summary.netArrears,
+          interest: summary.interest,
+          lotsInArrears: summary.lotsInArrears,
+        }}
+      />
     </div>
   );
 }

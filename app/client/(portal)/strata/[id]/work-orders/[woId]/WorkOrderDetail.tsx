@@ -174,8 +174,10 @@ export default function WorkOrderDetail({
             </ul>
           )}
           <p className="mt-3 text-xs text-sky-900/70">
-            Engaging adds the business to this scheme&apos;s contractor log, with its licence and insurance from
-            the directory, and attaches it to this work order.
+            Engaging adds the business to this scheme&apos;s contractor log and attaches it to this work order.
+            Licence and insurance details come from the business&apos;s own listing and may have changed since —
+            verify them and their currency of cover before work starts. RBA does not employ, supervise or
+            warrant these businesses, and the engagement is between your {"scheme"} and them.
           </p>
         </section>
       )}

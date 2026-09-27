@@ -31,6 +31,8 @@ export type Statements = {
     receivable: FundPair;
     totalAssets: FundPair;
     creditors: FundPair;
+    /** Contributions received for periods not yet levied — owed back as services. */
+    inAdvance: FundPair;
     netAssets: FundPair;
     openingFunds: FundPair;
     closingFunds: FundPair;
@@ -58,6 +60,10 @@ export async function buildStatements(schemeId: number, asAt = new Date()): Prom
   let received1 = 0;
   let received2 = 0;
   let interest = 0;
+  // Netting prepayments off receivables hid them completely. They are a
+  // liability: the scheme has the money and still owes the service.
+  let advance1 = 0;
+  let advance2 = 0;
 
   for (const levy of levies) {
     const due = levy.period.due_date <= asAt;
@@ -74,6 +80,15 @@ export async function buildStatements(schemeId: number, asAt = new Date()): Prom
         annualRatePercent: scheme.arrears_interest_rate,
         asOf: asAt,
       });
+    }
+
+    if (received > total + 0.005) {
+      const over = received - total;
+      if (total <= 0) advance1 += over;
+      else {
+        advance1 += (over * levy.fund_1_amount) / total;
+        advance2 += (over * levy.fund_2_amount) / total;
+      }
     }
 
     // Receipts follow the levy they paid, split in the same proportion.
@@ -128,10 +143,19 @@ export async function buildStatements(schemeId: number, asAt = new Date()): Prom
   const surplus = pair(raised1 + interest - totalExp1, raised2 - totalExp2);
 
   const cash = pair(opening1 + received1 - paid1, opening2 + received2 - paid2);
-  const receivable = pair(raised1 - received1 + interest, raised2 - received2);
+  const inAdvance = pair(advance1, advance2);
+  // Receivable counts only what is genuinely still owed, with prepayments shown
+  // separately on the other side of the sheet.
+  const receivable = pair(
+    raised1 - received1 + interest + advance1,
+    raised2 - received2 + advance2,
+  );
   const totalAssets = pair(cash.fund1 + receivable.fund1, cash.fund2 + receivable.fund2);
   const creditors = pair(unpaid1, unpaid2);
-  const netAssets = pair(totalAssets.fund1 - creditors.fund1, totalAssets.fund2 - creditors.fund2);
+  const netAssets = pair(
+    totalAssets.fund1 - creditors.fund1 - inAdvance.fund1,
+    totalAssets.fund2 - creditors.fund2 - inAdvance.fund2,
+  );
   const openingFunds = pair(opening1, opening2);
   const closingFunds = pair(opening1 + surplus.fund1, opening2 + surplus.fund2);
 
@@ -145,6 +169,7 @@ export async function buildStatements(schemeId: number, asAt = new Date()): Prom
       receivable,
       totalAssets,
       creditors,
+      inAdvance,
       netAssets,
       openingFunds,
       closingFunds,

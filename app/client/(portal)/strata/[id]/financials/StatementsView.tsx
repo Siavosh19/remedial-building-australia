@@ -93,6 +93,7 @@ export default function StatementsView({
             <Row label="Contributions receivable" amounts={bs.receivable} />
             <Row label="Total assets" amounts={bs.totalAssets} bold />
             <Row label="Less: invoices unpaid" amounts={bs.creditors} />
+            <Row label="Less: contributions received in advance" amounts={bs.inAdvance} />
             <Row label="Net assets" amounts={bs.netAssets} bold />
             <Row label="Fund balance brought forward" amounts={bs.openingFunds} indent />
             <Row label="Surplus / (deficit) for the period" amounts={surplus} indent />

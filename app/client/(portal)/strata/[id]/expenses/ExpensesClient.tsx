@@ -30,6 +30,7 @@ export type ExpenseRow = {
   method: string | null;
   workOrderId: number | null;
   contractorId: number | null;
+  creditNote: boolean;
   notes: string | null;
   overdue: boolean;
 };
@@ -76,7 +77,8 @@ export default function ExpensesClient({
     setBusy(true);
     setError(null);
 
-    const form = Object.fromEntries(new FormData(e.currentTarget).entries());
+    const data = new FormData(e.currentTarget);
+    const form = { ...Object.fromEntries(data.entries()), credit_note: data.get("credit_note") === "on" };
     const isNew = editing === "new";
     const res = await fetch(
       isNew ? `/api/client/strata/${schemeId}/expenses` : `/api/client/strata/${schemeId}/expenses/${editing.id}`,
@@ -239,6 +241,15 @@ export default function ExpensesClient({
                 ))}
               </select>
             </div>
+            <label className="flex items-center gap-2 text-sm text-slate-700 sm:col-span-2">
+              <input
+                type="checkbox"
+                name="credit_note"
+                defaultChecked={current?.creditNote ?? false}
+                className="h-4 w-4 rounded border-slate-300"
+              />
+              This is a credit note — enter the amount as a negative
+            </label>
             <div className="sm:col-span-2">
               <label className={LABEL} htmlFor="notes">Notes</label>
               <input id="notes" name="notes" defaultValue={current?.notes ?? ""} className={`${FIELD} mt-1.5`} />
@@ -285,6 +296,11 @@ export default function ExpensesClient({
                     <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_TONE[r.status]}`}>
                       {r.status}
                     </span>
+                    {r.creditNote && (
+                      <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+                        credit note
+                      </span>
+                    )}
                     {r.overdue && r.status === "unpaid" && (
                       <span className="ml-2 text-xs font-semibold text-red-700">past due</span>
                     )}

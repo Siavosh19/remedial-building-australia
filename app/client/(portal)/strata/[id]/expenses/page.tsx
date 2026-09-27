@@ -60,6 +60,7 @@ export default async function ExpensesPage({ params }: { params: Promise<{ id: s
     method: e.method,
     workOrderId: e.work_order_id,
     contractorId: e.contractor_id,
+    creditNote: e.credit_note,
     notes: e.notes,
     overdue: e.status === "unpaid" && e.due_on !== null && e.due_on < now,
   }));

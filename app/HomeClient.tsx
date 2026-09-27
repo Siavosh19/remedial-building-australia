@@ -689,7 +689,7 @@ export default function HomeClient() {
               <p className="mt-4 text-base leading-7 text-white/75 md:text-lg">
                 Purpose-built for owners corporations that run themselves — and for the committees,
                 treasurers and secretaries who do the work. Set up your scheme, choose your state, and
-                the wording follows it.
+                the wording follows it. Free for one scheme of up to 13 lots.
               </p>
             </div>
 

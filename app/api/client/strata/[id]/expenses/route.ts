@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireSchemeAccess } from "@/lib/strata/access";
 import { createAuditLog } from "@/lib/audit";
-import { expenseFields } from "@/lib/strata/records";
+import { expenseFields, validateExpense } from "@/lib/strata/records";
 
 /** Only link a budget line, work order or contractor that belongs to this scheme. */
 async function resolveLinks(schemeId: number, body: Record<string, unknown>) {
@@ -44,9 +44,13 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   if (!supplier) return NextResponse.json({ error: "Who is the invoice from?" }, { status: 400 });
 
   const amount = Number(body.amount);
-  if (!Number.isFinite(amount) || amount === 0) {
-    return NextResponse.json({ error: "Enter the invoice amount." }, { status: 400 });
-  }
+  const fields = expenseFields(body);
+  const problem = validateExpense({
+    amount,
+    gst: fields.gst,
+    creditNote: Boolean(body.credit_note),
+  });
+  if (problem) return NextResponse.json({ error: problem }, { status: 400 });
 
   const invoiceDate = body.invoice_date ? new Date(String(body.invoice_date)) : new Date();
   if (Number.isNaN(invoiceDate.getTime())) {
@@ -54,6 +58,25 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   }
 
   const links = await resolveLinks(access.scheme.id, body);
+
+  // An invoice coded to a capital works budget line but paid from the day-to-day
+  // fund made budget-versus-actual meaningless and misstated both fund balances.
+  let fund = fields.fund ?? "fund_1";
+  if (links.budgetItemId) {
+    const line = await prisma.strataBudgetItem.findUnique({
+      where: { id: links.budgetItemId },
+      select: { fund: true, item: true },
+    });
+    if (line && line.fund !== fund) {
+      return NextResponse.json(
+        {
+          error: `“${line.item}” is budgeted in the other fund. Either change the fund on this invoice or pick a budget line in the fund you are paying from.`,
+        },
+        { status: 400 },
+      );
+    }
+    if (line) fund = line.fund;
+  }
 
   const created = await prisma.strataExpense.create({
     data: {
@@ -64,7 +87,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       budget_item_id: links.budgetItemId,
       work_order_id: links.workOrderId,
       contractor_id: links.contractorId,
-      ...expenseFields(body),
+      ...fields,
+      fund,
     },
   });
 

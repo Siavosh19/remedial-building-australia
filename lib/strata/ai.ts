@@ -15,7 +15,8 @@
 import { prisma } from "@/lib/prisma";
 import { AI_CLASSIFIER_MODEL, anthropicMessages, hasAnthropicKey } from "@/lib/anthropic";
 import { labelsFor } from "@/lib/strata/jurisdictions";
-import { arrearsStage, daysBetween, money, round2 } from "@/lib/strata/levies";
+import { money, round2 } from "@/lib/strata/levies";
+import { schemeArrears } from "@/lib/strata/arrears";
 import { dueState } from "@/lib/strata/funds";
 
 export const AI_MODEL = AI_CLASSIFIER_MODEL;
@@ -163,38 +164,37 @@ export async function buildContext(schemeId: number, topic: Topic): Promise<stri
     }
 
     if (levies.length > 0) {
-      const owing = levies
-        .filter((l) => l.period.due_date <= now)
-        .map((l) => {
-          const total = round2(l.fund_1_amount + l.fund_2_amount);
-          const received = round2(l.payments.reduce((s, p) => s + p.amount, 0));
-          return { l, outstanding: round2(total - received), total, received };
-        })
-        .filter((x) => x.outstanding > 0.005);
-
       parts.push(
         `LEVIES: ${levies.length} levy rows. Raised to date ${money(
           round2(levies.filter((l) => l.period.due_date <= now).reduce((s, l) => s + l.fund_1_amount + l.fund_2_amount, 0)),
         )}, received ${money(round2(levies.reduce((s, l) => s + l.payments.reduce((a, p) => a + p.amount, 0), 0)))}.`,
       );
 
+      // The same figure the arrears tab and the levies card show. Working it out
+      // here independently is exactly how the three came to disagree.
+      const arrears = await schemeArrears(schemeId, now);
+      parts.push(
+        `ARREARS as at today — gross ${money(arrears.grossArrears)} owed on periods already due, ` +
+          `${money(arrears.credits)} held as credit by lots that have paid ahead, ` +
+          `net ${money(arrears.netArrears)} across ${arrears.lotsInArrears} lots. ` +
+          `Interest accrued ${money(arrears.interest)}. Quote these figures exactly; do not re-add them yourself.`,
+      );
+
+      const owing = arrears.lots.filter((l) => l.netOwing > 0.005 || l.credit > 0.005);
       if (owing.length > 0) {
         parts.push(
-          "ARREARS (only periods already due):\n" +
+          "BY LOT:\n" +
             owing
-              .map((x) => {
-                const days = Math.max(0, daysBetween(x.l.period.due_date, now));
-                const stage = arrearsStage(x.outstanding, days);
-                return `Lot ${x.l.lot.lot_number} (${x.l.lot.owner_name ?? "owner not recorded"}) · ${x.l.period.year_label} ${x.l.period.label} due ${AU.format(
-                  x.l.period.due_date,
-                )} · levied ${money(x.total)}, received ${money(x.received)}, outstanding ${money(
-                  x.outstanding,
-                )} · ${days} days overdue · stage: ${stage.label}`;
-              })
+              .map(
+                (l) =>
+                  `Lot ${l.lotNumber} (${l.ownerName ?? "owner not recorded"}) · owed ${money(l.grossArrears)}` +
+                  (l.credit > 0.005 ? ` · paid ahead ${money(l.credit)}` : "") +
+                  ` · net ${money(l.netOwing)}` +
+                  (l.oldestDue ? ` · oldest due ${AU.format(l.oldestDue)}, ${l.daysOverdue} days` : "") +
+                  ` · stage: ${l.stage.label}`,
+              )
               .join("\n"),
         );
-      } else {
-        parts.push("ARREARS: nothing outstanding on any period that has fallen due.");
       }
     }
   }

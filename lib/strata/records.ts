@@ -52,6 +52,31 @@ export function capitalWorksFields(body: Record<string, unknown>) {
   };
 }
 
+/**
+ * Sanity checks an invoice has to pass. Returned as a message rather than
+ * thrown so the route can answer with something a person can act on.
+ */
+export function validateExpense(opts: {
+  amount: number;
+  gst: number | null | undefined;
+  creditNote: boolean;
+}): string | null {
+  if (!Number.isFinite(opts.amount) || opts.amount === 0) return "Enter the invoice amount.";
+  if (opts.amount < 0 && !opts.creditNote) {
+    return "A negative amount is a credit note — tick “credit note” to record it as one.";
+  }
+  if (opts.amount > 0 && opts.creditNote) {
+    return "A credit note should be entered as a negative amount.";
+  }
+  if (opts.gst !== null && opts.gst !== undefined) {
+    if (Math.abs(opts.gst) > Math.abs(opts.amount) + 0.005) {
+      return "GST cannot be more than the invoice amount.";
+    }
+    if (opts.amount > 0 && opts.gst < 0) return "GST cannot be negative on an invoice.";
+  }
+  return null;
+}
+
 export function expenseFields(body: Record<string, unknown>) {
   const status =
     body.status !== undefined && EXPENSE_STATUSES.includes(body.status as StrataExpenseStatus)
@@ -68,6 +93,7 @@ export function expenseFields(body: Record<string, unknown>) {
     // invoice always carries a date for the cash position to use.
     paid_on: status === "paid" ? date(body, "paid_on") ?? new Date() : date(body, "paid_on"),
     method: text(body, "method"),
+    credit_note: body.credit_note === undefined ? undefined : Boolean(body.credit_note),
     notes: text(body, "notes"),
   };
 }

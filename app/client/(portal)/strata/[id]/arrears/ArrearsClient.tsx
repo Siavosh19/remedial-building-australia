@@ -14,6 +14,8 @@ export type ArrearsRow = {
   lotNumber: string;
   ownerName: string | null;
   outstanding: number;
+  grossArrears: number;
+  credit: number;
   interest: number;
   oldestDue: string | null;
   daysOverdue: number;
@@ -36,20 +38,18 @@ export default function ArrearsClient({
   schemeId,
   rows,
   canManage,
+  totals,
 }: {
   schemeId: number;
   rows: ArrearsRow[];
   canManage: boolean;
+  totals: { gross: number; credits: number; net: number; interest: number; lotsInArrears: number };
 }) {
   const router = useRouter();
   const [logging, setLogging] = useState<ArrearsRow | null>(null);
   const [expanded, setExpanded] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const owing = rows.filter((r) => r.outstanding > 0.005);
-  const totalOwing = owing.reduce((s, r) => s + r.outstanding, 0);
-  const totalInterest = owing.reduce((s, r) => s + r.interest, 0);
 
   async function record(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -76,18 +76,24 @@ export default function ArrearsClient({
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total outstanding</p>
-          <p className="mt-1 text-2xl font-extrabold tabular-nums text-slate-900">{money(totalOwing)}</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Arrears</p>
+          <p className="mt-1 text-2xl font-extrabold tabular-nums text-slate-900">{money(totals.gross)}</p>
+          <p className="mt-0.5 text-xs text-slate-500">owed on periods already due</p>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Paid in advance</p>
+          <p className="mt-1 text-2xl font-extrabold tabular-nums text-emerald-700">{money(totals.credits)}</p>
+          <p className="mt-0.5 text-xs text-slate-500">credits held by lots</p>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Interest accrued</p>
-          <p className="mt-1 text-2xl font-extrabold tabular-nums text-slate-900">{money(totalInterest)}</p>
+          <p className="mt-1 text-2xl font-extrabold tabular-nums text-slate-900">{money(totals.interest)}</p>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Lots in arrears</p>
-          <p className="mt-1 text-2xl font-extrabold tabular-nums text-slate-900">{owing.length}</p>
+          <p className="mt-1 text-2xl font-extrabold tabular-nums text-slate-900">{totals.lotsInArrears}</p>
         </div>
       </div>
 
@@ -99,6 +105,7 @@ export default function ArrearsClient({
             <tr>
               <th className="px-4 py-3">Lot</th>
               <th className="px-4 py-3 text-right">Outstanding</th>
+              <th className="px-4 py-3 text-right">In advance</th>
               <th className="px-4 py-3 text-right">Interest</th>
               <th className="px-4 py-3 text-right">Days overdue</th>
               <th className="px-4 py-3">Stage</th>
@@ -126,6 +133,9 @@ export default function ArrearsClient({
                   </td>
                   <td className={`px-4 py-3 text-right tabular-nums ${r.outstanding > 0.005 ? "font-semibold text-red-700" : "text-slate-400"}`}>
                     {money(r.outstanding)}
+                  </td>
+                  <td className="px-4 py-3 text-right tabular-nums text-emerald-700">
+                    {r.credit > 0.005 ? money(r.credit) : "—"}
                   </td>
                   <td className="px-4 py-3 text-right tabular-nums text-slate-500">
                     {r.interest > 0 ? money(r.interest) : "—"}
@@ -162,7 +172,7 @@ export default function ArrearsClient({
                 </tr>
                 {expanded === r.lotId && (
                   <tr className="bg-slate-50/70">
-                    <td colSpan={canManage ? 7 : 6} className="px-4 py-3">
+                    <td colSpan={canManage ? 8 : 7} className="px-4 py-3">
                       {r.history.length === 0 ? (
                         <p className="text-xs text-slate-500">Nothing logged for this lot yet.</p>
                       ) : (
