@@ -7,6 +7,13 @@ import { Eraser, Send, Sparkles, X } from "lucide-react";
 type Message = { id: number | string; role: string; content: string };
 type Allowance = { used: number; allowance: number; remaining: number; exhausted: boolean };
 
+/** "142k" / "1.2M" — short enough to sit on the collapsed launcher button. */
+function compact(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n >= 10_000_000 ? 0 : 1)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
+  return String(n);
+}
+
 /** Which page the conversation belongs to, so each keeps its own thread. */
 function topicFor(pathname: string, schemeId: number): { topic: string; label: string } {
   const base = `/client/strata/${schemeId}`;
@@ -64,6 +71,23 @@ export default function AiPanel({ schemeId }: { schemeId: number }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
+
+  // The allowance used to be invisible until you opened the panel, which read
+  // as "no AI usage anywhere" from every other page of the scheme. Load it
+  // once on mount (lightweight — no message thread) so the collapsed launcher
+  // can show it straight away.
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/client/strata/${schemeId}/ai/usage`)
+      .then((r) => r.json())
+      .then((json) => {
+        if (!cancelled && json.allowance) setAllowance(json.allowance);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [schemeId]);
 
   // Load this page's thread when the panel is opened, and whenever the page
   // behind it changes while the panel is still open.
@@ -132,6 +156,19 @@ export default function AiPanel({ schemeId }: { schemeId: number }) {
           className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-sky-950 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-sky-800 print:hidden"
         >
           <Sparkles size={16} /> AI
+          {allowance && (
+            <span
+              className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                allowance.exhausted
+                  ? "bg-red-600"
+                  : allowance.remaining < allowance.allowance * 0.15
+                    ? "bg-amber-500 text-slate-900"
+                    : "bg-white/15"
+              }`}
+            >
+              {allowance.exhausted ? "0 left" : `${compact(allowance.remaining)} left`}
+            </span>
+          )}
         </button>
       )}
 

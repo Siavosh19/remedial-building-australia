@@ -27,22 +27,33 @@ export default function SchemeTabs({ schemeId }: { schemeId: number }) {
   const base = `/client/strata/${schemeId}`;
 
   return (
-    <nav className="flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1">
-      {TABS.map((t) => {
-        const href = `${base}${t.slug}`;
-        const active = t.slug === "" ? pathname === base : pathname.startsWith(href);
-        return (
-          <Link
-            key={t.label}
-            href={href}
-            className={`rounded-lg px-3.5 py-2 text-sm font-semibold transition ${
-              active ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            {t.label}
-          </Link>
-        );
-      })}
+    <nav className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-slate-100 p-1">
+      <div className="flex flex-wrap gap-1">
+        {TABS.map((t) => {
+          const href = `${base}${t.slug}`;
+          const active = t.slug === "" ? pathname === base : pathname.startsWith(href);
+          return (
+            <Link
+              key={t.label}
+              href={href}
+              className={`rounded-lg px-3.5 py-2 text-sm font-semibold transition ${
+                active ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              {t.label}
+            </Link>
+          );
+        })}
+      </div>
+      {/* Account-level, not a scheme section — kept apart from the scrolling
+          list above so it never scrolls out of sight inside a busy scheme.
+          Same destination as the "Your plan" button on the scheme list. */}
+      <Link
+        href="/client/strata/subscription"
+        className="shrink-0 rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-500 transition hover:bg-white hover:text-slate-800"
+      >
+        Plan &amp; billing
+      </Link>
     </nav>
   );
 }
