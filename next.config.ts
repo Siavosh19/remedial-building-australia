@@ -14,6 +14,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // ── Industry Jobs withdrawn (2026-10-28) ──
+      // Temporary (307) so the pages, data and employer accounts can come back
+      // by deleting these four entries. Nothing in app/industry-jobs is deleted.
+      { source: "/industry-jobs", destination: "/", permanent: false },
+      { source: "/industry-jobs/:path*", destination: "/", permanent: false },
+      { source: "/directory/dashboard/jobs", destination: "/directory/dashboard", permanent: false },
+      { source: "/directory/dashboard/jobs/:path*", destination: "/directory/dashboard", permanent: false },
       // ── Merge: slab-edge-deterioration → concrete-spalling (permanent) ──
       {
         source: "/repair-systems/slab-edge-deterioration",

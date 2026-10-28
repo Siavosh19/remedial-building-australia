@@ -47,11 +47,11 @@ const CARDS: CardDef[] = [
   },
   {
     id: "directory",
-    title: "List My Business & Post Jobs",
+    title: "List My Business",
     subtitle: (
       <>
         I own a <Who>Business</Who> and want to <Who>list it in the directory</Who>, <Who>manage my subscription</Who>,{" "}
-        <Who>post jobs</Who>, receive quote requests and win more work.
+        receive quote requests and win more work.
       </>
     ),
     Icon: Building2,

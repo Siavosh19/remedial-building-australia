@@ -7,7 +7,6 @@ const liveLinks = [
   { title: "Business Directory", href: "/directory", description: "Find remedial builders, consultants, engineers and suppliers across Australia." },
   { title: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Scope and tender reviews, budget estimates, repair strategy and capital works forecasts." },
   { title: "Request Quotes", href: "/directory/login", description: "Send your remedial project to matched contractors through Strata Connect." },
-  { title: "Industry Jobs", href: "/industry-jobs", description: "Current remedial building and strata roles advertised across the industry." },
 ];
 
 /**
@@ -77,7 +76,7 @@ export default function UnderDevelopment({ section }: { section: UnderDevelopmen
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">
-              Australia&rsquo;s strata directory and remedial building platform for jobs, technical
+              Australia&rsquo;s strata directory and remedial building platform for news, technical
               resources and industry connections.
             </p>
           </div>
@@ -85,7 +84,6 @@ export default function UnderDevelopment({ section }: { section: UnderDevelopmen
             <div className="flex flex-col gap-2">
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
               <Link href="/expert-remedial-advice" className="hover:text-sky-700">Expert Advice</Link>
-              <Link href="/industry-jobs" className="hover:text-sky-700">Industry Jobs</Link>
               <Link href="/directory/login" className="hover:text-sky-700">Request Quotes</Link>
             </div>
             <div className="flex flex-col gap-2">

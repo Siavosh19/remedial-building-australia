@@ -29,7 +29,7 @@ export default function AboutPage() {
               engineers, suppliers and industry professionals across Australia.
             </p>
             <p>
-              The platform includes a business directory, job board, request quote system,
+              The platform includes a business directory, request quote system,
               industry news and a materials index for the remedial building sector.
             </p>
             <p>

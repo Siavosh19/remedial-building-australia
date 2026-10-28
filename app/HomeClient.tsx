@@ -4,185 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, Users, HardHat, Droplets, Layers, Search, ScanSearch, ClipboardCheck, FileSearch, Calculator, Wrench, Building2, LineChart } from "lucide-react";
+import { ArrowRight, Users, HardHat, Droplets, Layers, Search, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import SeoCrossPromo from "@/components/sections/SeoCrossPromo";
-import HomeJobsPanel from "@/components/jobs/HomeJobsPanel";
 import StrataConnectSlides from "@/components/about/StrataConnectSlides";
 import StrataSoftwareSlides from "@/components/about/StrataSoftwareSlides";
-import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
-
-// Home-page Expert Remedial Advice services.
-// Drives the interactive left-list / carousel / details layout.
-// Swap `image` to replace any slide — paths are relative to /public.
-const allExpertAdviceCards = [
-  {
-    title: "Preliminary Defect Assessment",
-    short: "Independent defect identification and documentation.",
-    description: "Identify and document defects with a clear, independent assessment.",
-    detail:
-      "A clear, independent first look at your building. We identify and document defects, explain likely causes and set out what matters most — so you can make confident next-step decisions.",
-    points: [
-      "Independent defect identification",
-      "Clear written documentation",
-      "Risk-based next steps",
-    ],
-    image: "/Images/Preliminary%20Defect%20Assessment.jpg",
-    href: "/expert-remedial-advice/preliminary-defect-assessment",
-    cta: "View Service",
-    Icon: ClipboardCheck,
-  },
-  {
-    title: "Scope, Quote & Tender Review",
-    short: "Check scopes, quotes and tenders for fairness.",
-    description: "Independent review of scopes, quotes and tenders to ensure completeness, accuracy and fairness.",
-    detail:
-      "An independent review of your scope, quotes and tenders to ensure they are complete, accurate and fair — helping you compare submissions on equal footing and avoid gaps that cost you later.",
-    points: [
-      "Completeness and accuracy checks",
-      "Like-for-like comparison",
-      "Independent, unbiased review",
-    ],
-    image: "/Images/Scope%2C%20Quote%20%26%20Tender%20Review.jpg",
-    href: "/expert-remedial-advice/scope-quote-tender-review",
-    cta: "Learn More",
-    Icon: FileSearch,
-  },
-  {
-    title: "Remedial Budget Estimate",
-    short: "Realistic budgets for planning and funding.",
-    description: "Realistic budget estimates to support planning, funding and decision making.",
-    detail:
-      "Realistic, well-reasoned budget estimates to support your planning, funding and decision making — giving committees and owners a dependable figure to work from before committing to works.",
-    points: [
-      "Realistic, defensible estimates",
-      "Supports funding decisions",
-      "Clear assumptions and scope",
-    ],
-    image: "/Images/Remedial%20Budget%20Estimate.jpg",
-    href: "/expert-remedial-advice/remedial-budget-estimate",
-    cta: "View Service",
-    Icon: Calculator,
-  },
-  {
-    title: "Building Repair Strategy Advice",
-    short: "Risk-based repair strategy for your asset.",
-    description: "Tailored repair strategies and risk-based recommendations to protect your asset.",
-    detail:
-      "Tailored repair strategies and risk-based recommendations that protect your asset and prioritise the right works in the right order — balancing durability, disruption and long-term value.",
-    points: [
-      "Tailored repair strategy",
-      "Risk-based prioritisation",
-      "Long-term asset protection",
-    ],
-    image: "/Images/Building%20Repair%20Strategy%20Advice.jpg",
-    href: "/expert-remedial-advice/building-repair-strategy-advice",
-    cta: "View Service",
-    Icon: Wrench,
-  },
-  {
-    title: "Pre-Purchase Apartment Defect Review",
-    short: "Defect and risk review before you buy.",
-    description: "Independent defect review and risk assessment before you buy.",
-    detail:
-      "An independent defect review and risk assessment before you buy — surfacing the building issues and red flags that affect value and liveability, so you can negotiate and decide with eyes open.",
-    points: [
-      "Independent pre-purchase review",
-      "Building risk red flags",
-      "Confident buying decisions",
-    ],
-    image: "/Images/Categories/facade-external-envelope.jpg",
-    href: "/expert-remedial-advice/pre-purchase-apartment-defect-review",
-    cta: "View Service",
-    Icon: Building2,
-  },
-  {
-    title: "Capital Works Forecast",
-    short: "Long-term forecasting for confident budgeting.",
-    description: "Long-term capital works forecasting to plan and budget with confidence.",
-    detail:
-      "Long-term capital works forecasting so you can plan and budget with confidence — mapping anticipated works across the years ahead to keep funds, levies and major projects on a steady footing.",
-    points: [
-      "Long-term works forecast",
-      "Steady, planned budgeting",
-      "Supports strata planning",
-    ],
-    image: "/Images/Capital%20Works%20Forecast.jpg",
-    href: "/expert-remedial-advice/capital-works-forecast",
-    cta: "View Service",
-    Icon: LineChart,
-  },
-];
-// Hidden services are dropped from the homepage carousel (see lib/expert-advice-hidden.ts).
-const expertAdviceCards = allExpertAdviceCards.filter((s) => !isExpertServiceHidden(s.href));
-
-// Compact Expert Remedial Advice card shown in the News section's right column.
-function HomeExpertAdviceCard() {
-  const [active, setActive] = useState(0);
-  // Auto-rotate the highlighted service top-to-bottom; the image follows.
-  useEffect(() => {
-    const t = setInterval(() => setActive((i) => (i + 1) % expertAdviceCards.length), 2600);
-    return () => clearInterval(t);
-  }, []);
-  return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      {/* Heading + red underline */}
-      <div className="px-6 pt-5">
-        <h3 className="text-xl font-extrabold tracking-tight text-sky-950">Expert Remedial Advice</h3>
-        <div className="mt-2 h-[3px] w-40" style={{ background: "linear-gradient(to right, #b91c1c, rgba(185,28,28,0))" }} />
-      </div>
-
-      {/* Rotating image — follows the auto-selected service */}
-      <div className="relative mx-6 mt-4 h-56 shrink-0 overflow-hidden rounded-xl bg-slate-200 sm:h-64">
-        {expertAdviceCards.map((s, i) => (
-          <img
-            key={s.title}
-            src={s.image}
-            alt={s.title}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-              i === active ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-sky-950/70 via-transparent to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 p-4">
-          <div className="text-sm font-extrabold leading-tight text-white drop-shadow">
-            {expertAdviceCards[active].title}
-          </div>
-        </div>
-      </div>
-
-      {/* Services — each links to its own page; active one is highlighted */}
-      <div className="flex flex-1 flex-col px-4 py-5">
-        <ul className="flex flex-col gap-1">
-          {expertAdviceCards.map((s, i) => (
-            <li key={s.title}>
-              <a
-                href={s.href}
-                onMouseEnter={() => setActive(i)}
-                className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold transition ${
-                  i === active
-                    ? "bg-sky-50 text-sky-950 ring-1 ring-sky-100"
-                    : "text-slate-800 hover:bg-slate-50"
-                }`}
-              >
-                <Check size={16} className="shrink-0 text-emerald-600" />
-                {s.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <Link
-          href="/expert-remedial-advice"
-          className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-sky-950 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-sky-900"
-        >
-          View All Services <ArrowRight size={14} />
-        </Link>
-      </div>
-    </div>
-  );
-}
 
 interface CoreService {
   title: string;
@@ -540,11 +367,10 @@ export default function HomeClient() {
             <Link href="/industry-news" className="shrink-0 text-sm font-bold text-sky-700 hover:text-red-700">View all →</Link>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-            {/* News column — image on top, latest 5 below */}
+          {/* News — full width: image on top, latest 5 below */}
             <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             {/* Rotating image panel — images loaded dynamically from /Images/News/ */}
-            <div className="relative min-h-[280px] bg-slate-200">
+            <div className="relative min-h-[280px] bg-slate-200 lg:min-h-[360px]">
               {carouselImages.length > 0 ? (
                 carouselImages.map((src, i) => (
                   <img
@@ -638,16 +464,6 @@ export default function HomeClient() {
               </div>
             </div>
             </div>
-            {/* Right column — Expert Remedial Advice card above Industry Jobs.
-                Stretches to the news column height; the jobs panel grows so both
-                columns' bottoms line up. */}
-            <div className="flex flex-col gap-6">
-              <HomeExpertAdviceCard />
-              <div className="flex flex-1 flex-col">
-                <HomeJobsPanel />
-              </div>
-            </div>
-          </div>
         </section>
 
         {/* ── Strata Connect ──────────────────────────────────────────────── */}
@@ -781,7 +597,7 @@ export default function HomeClient() {
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-              Australia&rsquo;s remedial building directory — business listings, industry news, jobs and expert desktop review.
+              Australia&rsquo;s remedial building directory — business listings, industry news and expert desktop review.
             </p>
           </div>
 
@@ -790,7 +606,6 @@ export default function HomeClient() {
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
               <Link href="/materials-products-index" className="hover:text-sky-700">Materials Index</Link>
               <Link href="/rba-insights" className="hover:text-sky-700">News &amp; Insights</Link>
-              <Link href="/industry-jobs" className="hover:text-sky-700">Industry Jobs</Link>
             </div>
             <div className="flex flex-col gap-2">
               <Link href="/about" className="hover:text-sky-700">About</Link>

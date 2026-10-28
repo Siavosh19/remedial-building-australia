@@ -76,7 +76,7 @@ export default function SiteHeader() {
                 Remedial Building Australia
               </div>
               <div className="mt-0.5 max-w-[17rem] text-[13px] font-medium leading-snug text-slate-600 sm:max-w-[23rem] sm:text-[15px]">
-                Australia&rsquo;s strata directory and remedial building platform for jobs, news and industry connections.
+                Australia&rsquo;s strata directory and remedial building platform for news and industry connections.
               </div>
             </div>
           </Link>
@@ -110,7 +110,6 @@ export default function SiteHeader() {
           <Link href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</Link>
           <Link href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</Link>
           <Link href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</Link>
-          <Link href="/industry-jobs" className="whitespace-nowrap hover:text-red-700 transition">Industry Jobs</Link>
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
@@ -173,7 +172,6 @@ export default function SiteHeader() {
             <Link href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</Link>
             <Link href="/directory/login" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</Link>
             <Link href="/industry-news" onClick={() => setMobileNavOpen(false)} className={mRow}>News &amp; Insights</Link>
-            <Link href="/industry-jobs" onClick={() => setMobileNavOpen(false)} className={mRow}>Industry Jobs</Link>
             <Link href="/materials-products-index" onClick={() => setMobileNavOpen(false)} className={mRow}>Materials Index</Link>
           </nav>
         </div>

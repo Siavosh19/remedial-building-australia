@@ -11,8 +11,6 @@ import {
   Inbox,
   List,
   Eye,
-  Pencil,
-  Plus,
   CreditCard,
   KeyRound,
   Trash2,
@@ -23,7 +21,6 @@ import {
   Menu,
   X,
   ExternalLink,
-  Briefcase,
   type LucideIcon,
 } from "lucide-react";
 
@@ -39,7 +36,7 @@ type Item = {
 type Group = { key: string; title: string; items: Item[] };
 
 // Nav reflects the real RBA workflow: businesses manage their listing, receive
-// LEADS (they never quote on-platform), post jobs, and manage account settings.
+// LEADS (they never quote on-platform), and manage account settings.
 function buildGroups(companySlug: string | null): Group[] {
   return [
     {
@@ -67,14 +64,6 @@ function buildGroups(companySlug: string | null): Group[] {
       ],
     },
     {
-      key: "jobs",
-      title: "Jobs Posted",
-      items: [
-        { href: "/directory/dashboard/jobs", label: "Edit Existing Jobs", icon: Pencil },
-        { href: "/directory/dashboard/jobs/new", label: "Post New Job", icon: Plus },
-      ],
-    },
-    {
       key: "settings",
       title: "Settings",
       items: [
@@ -95,7 +84,7 @@ const BOTTOM_TABS: { href: string; label: string; icon: LucideIcon; exact?: bool
   { href: "/directory/dashboard", label: "Home", icon: LayoutDashboard, exact: true },
   { href: "/directory/dashboard/lead-requests?view=new", label: "Leads", icon: Inbox },
   { href: "/directory/dashboard/profile", label: "Profile", icon: Building2 },
-  { href: "/directory/dashboard/jobs", label: "Jobs", icon: Briefcase },
+  { href: "/directory/dashboard/subscription", label: "Plan", icon: CreditCard },
 ];
 
 function bottomTabActive(href: string, pathname: string, exact?: boolean): boolean {
@@ -111,12 +100,6 @@ function itemActive(item: Item, pathname: string, view: string | null): boolean 
   if (base === "/directory/dashboard/lead-requests") {
     if (pathname !== base) return false;
     return (item.view ?? "all") === (view ?? "all");
-  }
-  if (base === "/directory/dashboard/jobs") {
-    return pathname.startsWith(base) && !pathname.startsWith(`${base}/new`);
-  }
-  if (base === "/directory/dashboard/jobs/new") {
-    return pathname.startsWith(base);
   }
   return pathname === base || pathname.startsWith(`${base}/`);
 }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, ClipboardList, Briefcase, Newspaper, type LucideIcon } from "lucide-react";
+import { Building2, ClipboardList, Newspaper, type LucideIcon } from "lucide-react";
 import PWAHome from "./PWAHome";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -12,7 +12,7 @@ import PWAHome from "./PWAHome";
 //
 //   welcome gate (Log in / Continue as guest)
 //     → 2×2 launcher home
-//       → Directory · News · Quotes · Jobs, with a doubled-height navy tab bar
+//       → Directory · News · Quotes, with a doubled-height navy tab bar
 //
 // EVERYTHING here is gated on `standalone` (installed-app / display-mode:
 // standalone). In a normal browser on phone, tablet or desktop this renders
@@ -28,19 +28,18 @@ import PWAHome from "./PWAHome";
 const NAVY = "#16324F";
 const RED = "#E4572E";
 
-// The only 4 sections the installed app exposes, in display order. `dot` shows a
+// The only 3 sections the installed app exposes, in display order. `dot` shows a
 // small notification dot on that tab.
 const SECTIONS: { href: string; label: string; icon: LucideIcon; dot?: boolean }[] = [
   { href: "/directory", label: "Directory", icon: Building2, dot: true },
   { href: "/industry-news", label: "News", icon: Newspaper },
   { href: "/request-quotes", label: "Quotes", icon: ClipboardList },
-  { href: "/industry-jobs", label: "Jobs", icon: Briefcase },
 ];
 
 // Internal paths the installed app may navigate to: the 4 sections + their
 // sub-pages, the auth/portal flows those funnel into, and API routes (logout /
 // account switch). Anything else is blocked in standalone mode.
-const ALLOWED_PREFIXES = ["/directory", "/industry-news", "/request-quotes", "/industry-jobs", "/client", "/supplier-dashboard"];
+const ALLOWED_PREFIXES = ["/directory", "/industry-news", "/request-quotes", "/client", "/supplier-dashboard"];
 
 // Routes that render their OWN app chrome (business/client/admin portals already
 // have a bottom tab bar) — our bar hides there to avoid two bars. Auth pages
@@ -156,7 +155,7 @@ export default function PWAAppShell() {
           <img src="/icon.png" alt="" width={76} height={76} className="mb-6 rounded-2xl shadow-lg" />
           <h1 className="text-2xl font-extrabold leading-tight text-white">Remedial Building Australia</h1>
           <p className="mt-3 max-w-xs text-sm leading-6 text-white/70">
-            Browse the directory, news and jobs freely. Log in to request quotes, post a job or manage your listing.
+            Browse the directory and news freely. Log in to request quotes or manage your listing.
           </p>
           <div className="mt-8 flex w-full max-w-xs flex-col gap-3">
             <Link href="/directory/login" onClick={dismissWelcome} className="rounded-xl bg-white px-6 py-3 text-sm font-bold" style={{ color: NAVY }}>

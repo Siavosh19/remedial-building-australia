@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import {
-  Building2, ClipboardList, Briefcase, Newspaper,
+  Building2, ClipboardList, Newspaper,
   Bell, ShieldCheck, ArrowRight, type LucideIcon,
 } from "lucide-react";
 
@@ -24,7 +24,6 @@ const CARDS: { href: string; label: string; desc: string; icon: LucideIcon; img:
   { href: "/directory", label: "Directory", desc: "Find trusted building specialists and suppliers.", icon: Building2, img: "/Images/Categories/facade-external-envelope.jpg" },
   { href: "/industry-news", label: "News", desc: "Stay informed with the latest industry updates.", icon: Newspaper, img: "/Images/building-industry-news-desk-laptop/building-industry-news-desk-laptop.jpg" },
   { href: "/request-quotes", label: "Quotes", desc: "Request and compare project quotes.", icon: ClipboardList, img: "/Images/signup-page/request-quotes.jpg" },
-  { href: "/industry-jobs", label: "Jobs", desc: "Browse and post jobs across Australia.", icon: Briefcase, img: "/Images/News/construction-site-aerial.jpg" },
 ];
 
 export default function PWAHome() {

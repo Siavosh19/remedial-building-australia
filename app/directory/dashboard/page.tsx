@@ -14,7 +14,6 @@ import {
   Inbox,
   Sparkles,
   ClipboardList,
-  Briefcase,
   ChevronRight,
 } from "lucide-react";
 import DashboardLeadCards, { type DashboardLead } from "@/components/directory/DashboardLeadCards";
@@ -67,10 +66,9 @@ export default async function DashboardIndexPage() {
   // Job-only accounts (no directory listing yet) get a create-listing prompt
   // instead of an empty business overview.
   if (!company) {
-    // First-login home for accounts without a business listing. Three things a
-    // new account can do — create a directory listing, request quotes as a
-    // client (the client portal auto-provisions a ClientProfile on entry), or
-    // post a role on the jobs board.
+    // First-login home for accounts without a business listing. Two things a
+    // new account can do — create a directory listing, or request quotes as a
+    // client (the client portal auto-provisions a ClientProfile on entry).
     const actions = [
       {
         href: "/directory/signup/company",
@@ -85,13 +83,6 @@ export default async function DashboardIndexPage() {
         title: "Get quotes from businesses",
         desc: "Describe a building or remedial job you need done and matched businesses contact you directly.",
         accent: "bg-red-700",
-      },
-      {
-        href: "/directory/dashboard/jobs/new",
-        Icon: Briefcase,
-        title: "Post a job",
-        desc: "Advertise a paid role or subcontract position on the industry jobs board.",
-        accent: "bg-emerald-700",
       },
     ];
     return (

@@ -788,7 +788,7 @@ export async function sendNewSubscriptionAdminEmail(d: {
 }
 
 // Verification reminder — nudges an unverified account to verify, and shows what
-// verifying unlocks (list a business / post a job / find a business). Sent up to
+// verifying unlocks (list a business / find a business). Sent up to
 // 3 times (≈12h / 48h / 72h after signup) by the verify-reminders cron, then it
 // stops. Reuses the same email_verification token + link as the first email.
 const REMINDER_STAGES: Record<number, { subject: string; intro: string }> = {
@@ -820,18 +820,16 @@ export async function sendVerificationReminderEmail(name: string, email: string,
      <p style="margin:0 0 14px;font-size:15px;font-weight:600;color:#0f172a;">Once you’re verified you can:</p>
      <ul style="margin:0 0 22px;padding-left:20px;font-size:15px;line-height:1.8;color:#334155;">
        <li><strong>List your business</strong> in Australia’s remedial building directory</li>
-       <li><strong>Post a job</strong> and hire remedial trades &amp; specialists</li>
        <li><strong>Find businesses</strong> and request quotes for building works</li>
      </ul>
      <p style="margin:0 0 22px;">
        ${btn(SITE_URL + "/directory/signup", "List your business", false)}
-       ${btn(SITE_URL + "/industry-jobs/post", "Post a job", false)}
        ${btn(SITE_URL + "/directory", "Find a business", false)}
      </p>
      <p style="margin:0;font-size:13px;line-height:1.7;color:#64748b;">This verification link expires in 24 hours. If the button doesn’t work, paste this link into your browser:</p>
      <p style="margin:8px 0 0;font-size:13px;line-height:1.7;color:#475569;word-break:break-all;">${safeHtml(link)}</p>`
   );
-  const text = `Hi ${name},\n\n${s.intro} Verify your email to unlock your account:\n${link}\n\nOnce verified you can:\n- List your business in Australia's remedial building directory (${SITE_URL}/directory/signup)\n- Post a job and hire remedial trades (${SITE_URL}/industry-jobs/post)\n- Find businesses and request quotes (${SITE_URL}/directory)\n\nThis link expires in 24 hours. If you did not create this account, ignore this email.`;
+  const text = `Hi ${name},\n\n${s.intro} Verify your email to unlock your account:\n${link}\n\nOnce verified you can:\n- List your business in Australia's remedial building directory (${SITE_URL}/directory/signup)\n- Find businesses and request quotes (${SITE_URL}/directory)\n\nThis link expires in 24 hours. If you did not create this account, ignore this email.`;
   await sendEmail(s.subject, email, html, text);
 }
 
