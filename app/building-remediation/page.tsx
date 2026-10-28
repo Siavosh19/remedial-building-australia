@@ -33,14 +33,13 @@ const config: SeoLandingConfig = {
     {
       heading: "Planning a remediation project",
       paragraphs: [
-        "A well-defined scope keeps a remediation project on track and makes quotes comparable. The AI Scope Builder helps you structure a scope of works, and independent expert advice can review defects, scopes and budgets before you commit.",
+        "A well-defined scope keeps a remediation project on track and makes quotes comparable. Defining it clearly before you approach contractors makes it easier to compare like with like.",
       ],
     },
   ],
   links: [
     { label: "Defect Library", href: "/defect-library", description: "Causes, risks and repair pathways for common Class 2 building defects." },
     { label: "Repair Systems", href: "/repair-systems", description: "Technical reference for concrete repair, waterproofing, crack injection and coatings." },
-    { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent desktop advice on defects, scopes, budgets and strata planning." },
     { label: "Business Directory", href: "/directory", description: "Find remedial building specialists across Australia." },
   ],
   relatedLinks: [

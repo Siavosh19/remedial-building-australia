@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // ── Expert Remedial Advice withdrawn (2026-10-28) ──
+      // Temporary (307); pages untouched — delete these two entries to restore.
+      { source: "/expert-remedial-advice", destination: "/", permanent: false },
+      { source: "/expert-remedial-advice/:path*", destination: "/", permanent: false },
       // ── Industry Jobs withdrawn (2026-10-28) ──
       // Temporary (307) so the pages, data and employer accounts can come back
       // by deleting these four entries. Nothing in app/industry-jobs is deleted.

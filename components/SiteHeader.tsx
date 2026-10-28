@@ -1,62 +1,24 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, X } from "lucide-react";
-import { isExpertServiceHidden } from "@/lib/expert-advice-hidden";
-
-const allExpertServices = [
-  { title: "Preliminary Defect Assessment",       href: "/expert-remedial-advice/preliminary-defect-assessment" },
-  { title: "Scope, Quote & Tender Review",         href: "/expert-remedial-advice/scope-quote-tender-review" },
-  { title: "Remedial Budget Estimate",             href: "/expert-remedial-advice/remedial-budget-estimate" },
-  { title: "Building Repair Strategy Advice",      href: "/expert-remedial-advice/building-repair-strategy-advice" },
-  { title: "Pre-Purchase Apartment Defect Review", href: "/expert-remedial-advice/pre-purchase-apartment-defect-review" },
-  { title: "Capital Works Forecast",               href: "/expert-remedial-advice/capital-works-forecast" },
-];
-// Hidden services are dropped from the nav (see lib/expert-advice-hidden.ts).
-const expertServices = allExpertServices.filter((s) => !isExpertServiceHidden(s.href));
+import { Menu, X } from "lucide-react";
 
 // ── Mobile menu row styling (clean horizontal rows, navy text, subtle dividers) ──
 const mRow =
   "flex w-full items-center border-b border-slate-100 border-l-2 border-l-transparent px-5 py-3.5 text-[15px] font-medium text-sky-900 transition hover:bg-sky-50 hover:text-sky-950";
-const mRowActive = "text-red-600 border-l-red-600 hover:text-red-700"; // active/expanded parent
-const mSubRow =
-  "flex w-full items-center border-b border-sky-100 px-5 py-3 pl-9 text-[14px] font-medium text-sky-800 transition hover:bg-sky-100 hover:text-sky-950";
-
-// ── Desktop dropdown panel + rows (light blue-tinted panel, blue left line) ──
-const dPanel =
-  "absolute left-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-xl border border-sky-100 border-l-2 border-l-sky-300 bg-sky-50 shadow-lg";
-const dRow =
-  "block border-b border-sky-100 px-5 py-3 text-[14px] font-medium text-sky-800 transition last:border-b-0 hover:bg-sky-100 hover:text-sky-950";
 
 export default function SiteHeader() {
   const pathname = usePathname();
   const isAuthPage = !!pathname && (pathname.startsWith("/directory/login") || pathname.startsWith("/directory/signup"));
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [expertOpen, setExpertOpen] = useState(false);
-  const [mobileExpertOpen, setMobileExpertOpen] = useState(false);
-  const expertCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Lock body scroll while the slide-in drawer is open.
   useEffect(() => {
     document.body.style.overflow = mobileNavOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileNavOpen]);
-
-  // Keep the Expert Advice dropdown open while the cursor is over the trigger
-  // or the menu; only close it ~500ms after the cursor actually leaves.
-  const openExpert = () => {
-    if (expertCloseTimer.current) {
-      clearTimeout(expertCloseTimer.current);
-      expertCloseTimer.current = null;
-    }
-    setExpertOpen(true);
-  };
-  const closeExpertSoon = () => {
-    if (expertCloseTimer.current) clearTimeout(expertCloseTimer.current);
-    expertCloseTimer.current = setTimeout(() => setExpertOpen(false), 500);
-  };
 
   return (
     <>
@@ -85,28 +47,6 @@ export default function SiteHeader() {
         <nav className="hidden items-center gap-4 text-sm font-semibold text-sky-800 xl:flex">
           <Link href="/" className="whitespace-nowrap hover:text-red-700 transition">Home</Link>
           <Link href="/materials-products-index" className="whitespace-nowrap hover:text-red-700 transition">Materials Index</Link>
-          <div
-            className="relative"
-            onMouseEnter={openExpert}
-            onMouseLeave={closeExpertSoon}
-          >
-            <Link
-              href="/expert-remedial-advice"
-              className="flex items-center gap-1 whitespace-nowrap hover:text-red-700 transition"
-            >
-              Expert Advice
-              <ChevronDown size={13} className={`mt-px transition-transform duration-200 ${expertOpen ? "rotate-180" : ""}`} />
-            </Link>
-            {expertOpen && (
-              <div className={dPanel}>
-                {expertServices.map((s) => (
-                  <Link key={s.href} href={s.href} className={dRow}>
-                    {s.title}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
           <Link href="/directory" className="whitespace-nowrap hover:text-red-700 transition">Directory</Link>
           <Link href="/directory/login" className="whitespace-nowrap hover:text-red-700 transition">Request Quotes</Link>
           <Link href="/industry-news" className="whitespace-nowrap hover:text-red-700 transition">News &amp; Insights</Link>
@@ -148,26 +88,6 @@ export default function SiteHeader() {
           </div>
           <nav className="flex flex-1 flex-col overflow-y-auto">
             <Link href="/" onClick={() => setMobileNavOpen(false)} className={mRow}>Home</Link>
-
-            {/* Expert Advice — expandable */}
-            <div className="flex flex-col">
-              <button
-                className={`${mRow} justify-between ${mobileExpertOpen ? mRowActive : ""}`}
-                onClick={() => setMobileExpertOpen((o) => !o)}
-              >
-                <span>Expert Advice</span>
-                <ChevronDown size={15} className={`transition-transform duration-200 ${mobileExpertOpen ? "rotate-180" : ""}`} />
-              </button>
-              {mobileExpertOpen && (
-                <div className="flex flex-col border-l-2 border-sky-300 bg-sky-50/70">
-                  {expertServices.map((s) => (
-                    <Link key={s.href} href={s.href} onClick={() => setMobileNavOpen(false)} className={mSubRow}>
-                      {s.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
 
             <Link href="/directory" onClick={() => setMobileNavOpen(false)} className={mRow}>Business Directory</Link>
             <Link href="/directory/login" onClick={() => setMobileNavOpen(false)} className={mRow}>Request Quotes</Link>

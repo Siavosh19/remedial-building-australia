@@ -26,7 +26,7 @@ export default function VerifyEmailPage() {
           const d = data.role === "supplier_user"
             ? "/supplier-dashboard/setup"
             : data.role === "ai_scope_user"
-            ? "/expert-remedial-advice"
+            ? "/directory/dashboard"
             : data.role === "client_user"
             ? "/client/dashboard"
             : "/directory/dashboard";

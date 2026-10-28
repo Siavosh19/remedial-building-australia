@@ -5,7 +5,6 @@ import type { UnderDevelopmentSection } from "@/lib/under-development";
 // Sections that are still fully live — offered as somewhere to go next.
 const liveLinks = [
   { title: "Business Directory", href: "/directory", description: "Find remedial builders, consultants, engineers and suppliers across Australia." },
-  { title: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Scope and tender reviews, budget estimates, repair strategy and capital works forecasts." },
   { title: "Request Quotes", href: "/directory/login", description: "Send your remedial project to matched contractors through Strata Connect." },
 ];
 
@@ -83,7 +82,6 @@ export default function UnderDevelopment({ section }: { section: UnderDevelopmen
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">
             <div className="flex flex-col gap-2">
               <Link href="/directory" className="hover:text-sky-700">Business Directory</Link>
-              <Link href="/expert-remedial-advice" className="hover:text-sky-700">Expert Advice</Link>
               <Link href="/directory/login" className="hover:text-sky-700">Request Quotes</Link>
             </div>
             <div className="flex flex-col gap-2">

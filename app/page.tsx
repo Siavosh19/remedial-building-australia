@@ -4,7 +4,7 @@ import HomeClient from "./HomeClient";
 export const metadata: Metadata = {
   title: "Remedial Building Australia | Strata Directory & Remedial Building Platform",
   description:
-    "Australia's remedial building directory — business listings, industry news and expert desktop review.",
+    "Australia's remedial building directory — business listings and industry news.",
   alternates: { canonical: "/" },
 };
 

@@ -36,7 +36,7 @@ const FAQS: { q: string; plain: string; answer: React.ReactNode; highlight?: boo
   {
     q: "What is Remedial Building Australia?",
     plain:
-      "Remedial Building Australia is a strata and remedial building platform. It brings together a business directory, Strata Connect quote requests, a defect library, repair systems and a repair-system selector, a material index, an AI scope writer, industry news and an expert remedial advice section — resources that help the strata and remedial building sector find services and make informed repair decisions.",
+      "Remedial Building Australia is a strata and remedial building platform. It brings together a business directory, Strata Connect quote requests, a defect library, repair systems and a repair-system selector, a material index, an AI scope writer and industry news — resources that help the strata and remedial building sector find services and make informed repair decisions.",
     answer: (
       <>
         <p>
@@ -47,7 +47,7 @@ const FAQS: { q: string; plain: string; answer: React.ReactNode; highlight?: boo
           <li>a <Link href="/directory" className="font-semibold text-sky-700 hover:underline">business directory</Link> of contractors, consultants, engineers and suppliers;</li>
           <li>Strata Connect quote requests and a <Link href="/request-quotes" className="font-semibold text-sky-700 hover:underline">request-a-quote</Link> system;</li>
           <li>a <Link href="/materials-products-index" className="font-semibold text-sky-700 hover:underline">materials and products index</Link>;</li>
-          <li>industry news and an expert remedial advice section.</li>
+          <li>industry news.</li>
         </ul>
       </>
     ),
@@ -266,8 +266,7 @@ export default function FaqPage() {
             </div>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-sky-900">
               Australia&rsquo;s strata and remedial building platform — directory, Strata
-              Connect quote requests, defect library, repair systems and expert remedial
-              advice.
+              Connect quote requests, industry news and a materials index.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-semibold text-sky-950">

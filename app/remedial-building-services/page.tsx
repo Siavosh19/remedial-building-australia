@@ -27,7 +27,6 @@ const config: SeoLandingConfig = {
       heading: "Find and compare specialists",
       paragraphs: [
         "Our national directory lists remedial consultants, contractors, waterproofers, façade specialists and testing providers across Australia, so you can compare specialists by location and area of expertise.",
-        "If you need an independent view before committing to works, our expert remedial advice services offer desktop reviews of defects, scopes, quotes and budgets.",
       ],
     },
     {
@@ -39,7 +38,6 @@ const config: SeoLandingConfig = {
   ],
   links: [
     { label: "Business Directory", href: "/directory", description: "Find remedial building specialists across Australia." },
-    { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent desktop advice on defects, scopes, budgets and strata planning." },
     { label: "Defect Library", href: "/defect-library", description: "Causes, risks and repair pathways for common Class 2 building defects." },
     { label: "Repair Systems", href: "/repair-systems", description: "Technical reference for concrete repair, waterproofing, crack injection and coatings." },
   ],

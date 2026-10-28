@@ -38,12 +38,6 @@ export default function AboutPage() {
               waterproofing, concrete repair, façades, roofing, structural repairs, drainage,
               basements and building defects.
             </p>
-            <p>
-              The platform also includes an Expert Remedial Advice section, offering services such
-              as Scope, Quote &amp; Tender Review, Remedial Budget Estimates, Building Repair
-              Strategy Advice and Capital Works Forecasts for strata-related building repair
-              decisions.
-            </p>
           </div>
         </div>
       </main>

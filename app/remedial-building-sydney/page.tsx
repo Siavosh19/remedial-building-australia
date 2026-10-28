@@ -32,7 +32,7 @@ const config: SeoLandingConfig = {
     {
       heading: "Find Sydney remedial specialists",
       paragraphs: [
-        "Our national directory lists remedial consultants, contractors and specialists, so you can search for providers in Sydney and across New South Wales. For an independent view before committing to works, expert remedial advice offers desktop reviews of defects, scopes and budgets.",
+        "Our national directory lists remedial consultants, contractors and specialists, so you can search for providers in Sydney and across New South Wales.",
       ],
     },
   ],
@@ -40,7 +40,6 @@ const config: SeoLandingConfig = {
     { label: "Business Directory", href: "/directory", description: "Search remedial specialists in Sydney and across Australia." },
     { label: "Defect Library", href: "/defect-library", description: "Causes, risks and repair pathways for common Class 2 building defects." },
     { label: "Repair Systems", href: "/repair-systems", description: "Technical reference for concrete repair, waterproofing, crack injection and coatings." },
-    { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent desktop advice on defects, scopes, budgets and strata planning." },
   ],
   relatedLinks: [
     { label: "Remedial Building Services", href: "/remedial-building-services" },

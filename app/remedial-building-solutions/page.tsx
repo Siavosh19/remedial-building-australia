@@ -32,14 +32,13 @@ const config: SeoLandingConfig = {
     {
       heading: "Independent advice and specialists",
       paragraphs: [
-        "If you would like help choosing between options, expert remedial advice offers building repair strategy advice and independent reviews. When you are ready to engage someone, the directory lists specialists who deliver these solutions across Australia.",
+        "If you would like help choosing between options, remedial consultants and engineers can advise on repair strategy. When you are ready to engage someone, the directory lists specialists who deliver these solutions across Australia.",
       ],
     },
   ],
   links: [
     { label: "Repair Systems", href: "/repair-systems", description: "Technical reference for concrete repair, waterproofing, crack injection and coatings." },
     { label: "Materials & Products Index", href: "/materials-products-index", description: "Browse products by brand, material type, application and repair system." },
-    { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent desktop advice on defects, repair strategy and budgets." },
     { label: "Business Directory", href: "/directory", description: "Find remedial building specialists across Australia." },
   ],
   relatedLinks: [

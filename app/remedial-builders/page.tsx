@@ -33,13 +33,12 @@ const config: SeoLandingConfig = {
     {
       heading: "Supporting your project",
       paragraphs: [
-        "Before engaging a builder, it helps to have a clear scope and an independent view. The AI Scope Builder structures a scope of works, and expert remedial advice can review scopes, quotes and tenders so you can engage a builder with confidence.",
+        "Before engaging a builder, it helps to have a clear scope and an independent view. Remedial consultants and engineers in the directory can help prepare and review a scope so you can engage a builder with confidence.",
       ],
     },
   ],
   links: [
     { label: "Business Directory", href: "/directory", description: "Search remedial contractors and specialists across Australia." },
-    { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent review of scopes, quotes and tenders before you engage a builder." },
     { label: "Defect Library", href: "/defect-library", description: "Causes, risks and repair pathways for common Class 2 building defects." },
   ],
   relatedLinks: [

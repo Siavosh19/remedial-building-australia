@@ -14,7 +14,7 @@ const config: SeoLandingConfig = {
   h1: "Remedial Repair Specifications",
   intro:
     "A remedial repair specification sets out exactly how a defect is to be repaired — the scope, the materials, the standards and the method. A clear specification is the foundation of a fair tender and a durable repair. Remedial Building Australia explains what specifications should cover and provides tools to help you prepare them.",
-  primaryCta: { label: "Request an Expert Review", href: "/expert-remedial-advice" },
+  primaryCta: { label: "Find a Specialist", href: "/directory" },
   sections: [
     {
       heading: "What a remedial repair specification includes",
@@ -33,13 +33,12 @@ const config: SeoLandingConfig = {
     {
       heading: "Standards and independent review",
       paragraphs: [
-        "Specifications should reference the appropriate standards for the repair type and building. If you would like an independent check before issuing a specification or tender, our expert remedial advice includes scope, quote and tender review.",
+        "Specifications should reference the appropriate standards for the repair type and building. Remedial engineers and consultants listed in the directory can prepare or check a specification before it is issued for tender.",
       ],
     },
   ],
   links: [
     { label: "Repair Systems", href: "/repair-systems", description: "Technical reference for concrete repair, waterproofing, crack injection and coatings." },
-    { label: "Expert Remedial Advice", href: "/expert-remedial-advice", description: "Independent desktop review of defects, scopes, quotes and tenders." },
     { label: "Defect Library", href: "/defect-library", description: "Causes, risks and repair pathways for common Class 2 building defects." },
   ],
   relatedLinks: [

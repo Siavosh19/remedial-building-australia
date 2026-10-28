@@ -597,7 +597,7 @@ export default function HomeClient() {
           <div>
             <div className="text-lg font-extrabold text-sky-950">Remedial Building Australia</div>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-              Australia&rsquo;s remedial building directory — business listings, industry news and expert desktop review.
+              Australia&rsquo;s remedial building directory — business listings and industry news.
             </p>
           </div>
 

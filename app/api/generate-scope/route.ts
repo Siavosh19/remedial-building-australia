@@ -14,8 +14,8 @@ import { NextResponse } from "next/server";
 const GONE = {
   error: "withdrawn",
   message:
-    "The AI Scope Builder has been withdrawn. For a review of a scope of works, quote or specification, use the expert remedial advice service.",
-  see: "/expert-remedial-advice",
+    "The AI Scope Builder has been withdrawn. Remedial consultants who can prepare or review a scope are listed in the directory.",
+  see: "/directory",
 };
 
 export async function POST() {
