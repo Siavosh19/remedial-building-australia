@@ -211,6 +211,9 @@ export default async function CompanyProfilePage({ params }: Props) {
 
   const isClaimed = company.plan_type === "claimed" || company.plan_type === "featured";
   const isFeatured = company.plan_type === "featured";
+  // A free (basic) listing can still be owner-claimed: hide the claim prompt on
+  // is_claimed too, not only on the paid plan types that gate contact details.
+  const ownerClaimed = isClaimed || company.is_claimed;
   const canShowContact = isClaimed;
   const location = company.locations[0];
 
@@ -321,7 +324,7 @@ export default async function CompanyProfilePage({ params }: Props) {
             </div>
 
             {/* Claim CTA — desktop: inline far right of the header (unclaimed only) */}
-            {!isClaimed && (
+            {!ownerClaimed && (
               <Link
                 href={`/directory/claim/${company.slug}`}
                 className="ml-auto hidden shrink-0 items-center gap-1.5 rounded-xl border-2 border-red-700 bg-red-700 px-5 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-red-800 hover:border-red-800 sm:inline-flex"
@@ -332,7 +335,7 @@ export default async function CompanyProfilePage({ params }: Props) {
           </div>
 
           {/* Claim CTA — phone: own line, bottom-right of the card (unclaimed only) */}
-          {!isClaimed && (
+          {!ownerClaimed && (
             <div className="mt-5 flex justify-end sm:hidden">
               <Link
                 href={`/directory/claim/${company.slug}`}
