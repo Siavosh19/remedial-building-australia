@@ -124,7 +124,8 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
     serviceRadiusKm: 50,
   });
   const [otherCategory, setOtherCategory] = useState("");
-  const [newsletterOptIn, setNewsletterOptIn] = useState(true);
+  // Marketing consent must be opt-in (Spam Act): unticked by default.
+  const [newsletterOptIn, setNewsletterOptIn] = useState(false);
   const [suburbVerified, setSuburbVerified] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -698,7 +699,7 @@ export default function CompanySetupForm({ categories, plans }: { categories: { 
           className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-sky-700 focus:ring-sky-600"
         />
         <span className="text-sm text-slate-700">
-          <span className="font-semibold text-slate-800">Send me weekly updates</span> — receive the free Weekly Remedial Building Update (industry news, compliance and technical references) to your business email. Unsubscribe anytime.
+          Send me the free Weekly Remedial Building Update and occasional offers from related products by the same company, including Map Metra. You can unsubscribe at any time.
         </span>
       </label>
 
